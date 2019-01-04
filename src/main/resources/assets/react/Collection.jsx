@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+/* global React */
+
+// ERROR The next line cause runtime errors!
+//import React, { Component } from 'react';
 
 
-export class Collection extends Component {
+export class Collection extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {

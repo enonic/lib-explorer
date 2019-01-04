@@ -11,7 +11,7 @@ import UglifyJsPlugin from 'uglifyjs-webpack-plugin'; // Supports ECMAScript2015
 //──────────────────────────────────────────────────────────────────────────────
 // Functions
 //──────────────────────────────────────────────────────────────────────────────
-const toStr = v => JSON.stringify(v, null, 4);
+//const toStr = v => JSON.stringify(v, null, 4);
 const dict = arr => Object.assign(...arr.map(([k, v]) => ({ [k]: v })));
 
 
@@ -131,6 +131,7 @@ const CLIENT_JS_CONFIG = {
 	module: {
 		rules: [{
 			test: /\.jsx$/,
+			exclude: /node_modules/,
 			use: [{
 				loader: 'babel-loader',
 				options: {
@@ -143,7 +144,10 @@ const CLIENT_JS_CONFIG = {
 						'@babel/plugin-transform-object-assign',
 						'array-includes'
 					],
-					presets: ['@babel/preset-react']
+					presets: [
+						'@babel/preset-env',
+						'@babel/preset-react'
+					]
 				} // options
 			}]
 		}]
@@ -158,6 +162,7 @@ const CLIENT_JS_CONFIG = {
 	},
 	output: {
 		filename: '[name].js',
+		//filename: 'yase.js',
 		library: 'yase',
 		libraryTarget: 'umd',
 		path: DST_ASSETS_DIR_ABS
@@ -172,7 +177,7 @@ const CLIENT_JS_CONFIG = {
 		})
 	],
 	resolve: {
-		extensions: ['.jsx']
+		extensions: ['.js', '.jsx']
 	},
 	stats: STATS
 };
