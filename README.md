@@ -6,6 +6,6 @@
 		<label>Thesauri (synonyms)</label>
 		<occurrences minimum="0" maximum="0"/>
 		<config>
-			<service>thesauriSelector</service>
+			<service>thesaurusSelector</service>
 		</config>
 	</input>
