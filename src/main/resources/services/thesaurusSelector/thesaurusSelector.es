@@ -19,7 +19,6 @@ function getThesauri(key) {
 	//log.info(toStr({key}));
 	const node = CONNECTION.get(key);
 	//log.info(toStr({node}));
-	//const id = node._path.replace(/^\/thesauri/, '');
 	const {_name: id, displayName, description} = node;
 	return {id, displayName, description};
 }
@@ -43,7 +42,7 @@ export function get({
 				body: {
 					count: ids.length,
 					total: ids.length,
-					hits: idArray.map(id => getThesauri(`/thesauri${id}`))
+					hits: idArray.map(id => getThesauri(`/thesauri/${id}`))
 				},
 				contentType: 'text/json; charset=utf-8'
 			};
