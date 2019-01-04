@@ -8,18 +8,19 @@ import {sanitize} from '/lib/xp/common';
 //──────────────────────────────────────────────────────────────────────────────
 // Admin tool
 //──────────────────────────────────────────────────────────────────────────────
-export const TOOL_PATH = getToolUrl(app.name, 'yase');
+export const APP_YASE = 'com.enonic.admin.yase';
+export const TOOL_PATH = getToolUrl(APP_YASE, 'yase');
 
 
 //──────────────────────────────────────────────────────────────────────────────
 // Node types
 //──────────────────────────────────────────────────────────────────────────────
-export const NT_COLLECTION = `${app.name}:collection`;
-export const NT_FIELD = `${app.name}:field`;
-export const NT_FOLDER = `${app.name}:folder`;
-export const NT_SYNONYM = `${app.name}:synonym`;
-export const NT_TAG = `${app.name}:tag`;
-export const NT_THESAURUS = `${app.name}:thesaurus`;
+export const NT_COLLECTION = `${APP_YASE}:collection`;
+export const NT_FIELD = `${APP_YASE}:field`;
+export const NT_FOLDER = `${APP_YASE}:folder`;
+export const NT_SYNONYM = `${APP_YASE}:synonym`;
+export const NT_TAG = `${APP_YASE}:tag`;
+export const NT_THESAURUS = `${APP_YASE}:thesaurus`;
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -33,21 +34,21 @@ export const RT_HTML = 'text/html;charset=utf-8';
 // Repo
 //──────────────────────────────────────────────────────────────────────────────
 export const BRANCH_ID = 'master';
-export const REPO_ID = sanitize(app.name);
+export const REPO_ID = sanitize(APP_YASE);
 
 
 //──────────────────────────────────────────────────────────────────────────────
 // Roles
 //──────────────────────────────────────────────────────────────────────────────
-export const ROLE_YASE_ADMIN = sanitize(`${app.name}.admin`);
-export const ROLE_YASE_READ = sanitize(`${app.name}.read`);
-export const ROLE_YASE_WRITE = sanitize(`${app.name}.write`);
+export const ROLE_YASE_ADMIN = sanitize(`${APP_YASE}.admin`);
+export const ROLE_YASE_READ = sanitize(`${APP_YASE}.read`);
+export const ROLE_YASE_WRITE = sanitize(`${APP_YASE}.write`);
 
 
 //──────────────────────────────────────────────────────────────────────────────
 // User
 //──────────────────────────────────────────────────────────────────────────────
-export const USER_YASE_JOB_RUNNER_NAME = sanitize(`${app.name}.job.runner`);
+export const USER_YASE_JOB_RUNNER_NAME = sanitize(`${APP_YASE}.job.runner`);
 export const USER_YASE_JOB_RUNNER_USERSTORE = 'system';
 export const USER_YASE_JOB_RUNNER_KEY = `user:${USER_YASE_JOB_RUNNER_USERSTORE}:${USER_YASE_JOB_RUNNER_NAME}`;
 
