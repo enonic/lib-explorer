@@ -4,6 +4,8 @@ import {assetUrl} from '/lib/xp/portal';
 
 
 export function htmlResponse({
+	bodyEnd = [],
+	headBegin = [],
 	main = '',
 	messages = [],
 	toolPath = TOOL_PATH,
@@ -16,6 +18,7 @@ export function htmlResponse({
 	return {
 		body: `<html>
 	<head>
+		${headBegin.join('\n')}
 		<title>${preTitle}YASE Administrator</title>
 		<link rel="stylesheet" type="text/css" href="${assetUrl({path: 'style.css'})}">
 	</head>
@@ -31,6 +34,7 @@ export function htmlResponse({
 		</nav>
 		${messages.length ? `<ul class="${status === 200 ? 'success' : 'error'}">${messages.map(m => `<li>${m}</li>`)}</ul>` : ''}
 		<main>${main}</main>
+		${bodyEnd.join('\n')}
 	</body>
 </html>`,
 		contentType: 'text/html; charset=utf-8',
@@ -38,7 +42,5 @@ export function htmlResponse({
 	};
 }
 /*
-<script type="text/javascript" src="${assetUrl({path: 'react/react.production.min.js'})}"></script>
-<script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.production.min.js'})}"></script>
 <script type="text/javascript" src="${assetUrl({path: 'scripts.js'})}"></script>
 */
