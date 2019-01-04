@@ -17,7 +17,8 @@ const dict = arr => Object.assign(...arr.map(([k, v]) => ({ [k]: v })));
 //──────────────────────────────────────────────────────────────────────────────
 // Constants
 //──────────────────────────────────────────────────────────────────────────────
-const MODE = 'production';
+const MODE = 'development';
+//const MODE = 'production';
 const EXTENSIONS_GLOB = '{es,js}';
 const SRC_DIR = 'src/main/resources';
 const SRC_DIR_ABS = path.resolve(__dirname, SRC_DIR);
@@ -51,7 +52,7 @@ const WEBPACK_CONFIG = {
 		`.${k.replace(`${SRC_DIR}`, '')}` // source relative to context
 	])),
 	externals: [
-		/\/lib\/(enonic|xp)/
+		/^\//
 	],
 	devtool: false, // Don't waste time generating sourceMaps
 	mode: MODE,
