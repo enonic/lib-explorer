@@ -34,7 +34,10 @@
   },
   "dependencies": {
     "lodash": "^4.17.11",
+    "prop-types": "^15.6.2",
     "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "react-dom": "^16.7.0",
+    "redux": "^4.0.1",
+    "traverse": "^0.6.6"
   }
 }

@@ -1,19 +1,25 @@
 /* global React */
 import {get, set} from 'lodash';
-
+import PropTypes from 'prop-types';
+import {Node} from './Node';
 // ERROR The next line cause runtime errors!
 //import React, { Component } from 'react';
 
 
 export class Collection extends React.Component {
-	constructor(props) {
-		//console.log(props);
+	constructor(props, context) {
+		console.log('Collection constructor() props', props);
+		console.log('Collection constructor() context', context);
+		const {store} = context;
+		const state = store.getState();
+		console.log('Collection constructor() state', state);
 		super(props);
 		const {
 			delay = 1000,
 			headers,
 			name = '',
 			newHeaderName = '',
+			node,
 			pathRange,
 			queryRange,
 			url = ''
@@ -23,6 +29,7 @@ export class Collection extends React.Component {
 			headers,
 			name,
 			newHeaderName,
+			node,
 			pathRange,
 			queryRange,
 			url
@@ -66,25 +73,36 @@ export class Collection extends React.Component {
 			console.log(state);
 			return state;
 		});
+		//stateStore.dispatch({type: 'UPDATE', newState: this.state});
 	}
 
 	handleSubmit(event) {
-		console.log(event);
+		//console.log(event);
 		event.preventDefault();
-		console.log(this.state);
+		//console.log(this.state);
+		//console.log(stateStore.getState());
 	}
 
 	render() {
 		//console.log(this.state);
+		console.log('Collection render() this.context', this.context);
+		const {store} = this.context;
+		const state = store.getState();
+		console.log('Collection render() state', state);
 		const {
 			delay,
 			headers,
 			name,
 			newHeaderName,
+			node,
 			pathRange,
 			queryRange,
 			url
 		} = this.state;
+		//const child = new Node(node);
+		//const child = React.createElement(Node, node);
+		//Node.sayHello();
+		//child.sayState();
 		return (
 			<form onSubmit={this.handleSubmit}>
 				<fieldset>
@@ -96,7 +114,7 @@ export class Collection extends React.Component {
 					<fieldset>
 						<legend>Url</legend>
 						{Array.isArray(url) ? url.map((u,i) => <input name={`url[${i}]`} onChange={this.handleInputChange} value={u}/>) : <input name="url" onChange={this.handleInputChange} value={url}/>}
-						<button onClick={this.addUrl}>Add url</button>
+						<button onClick={this.addUrl} type="button">Add url</button>
 					</fieldset>
 					{
 						pathRange
@@ -152,7 +170,7 @@ export class Collection extends React.Component {
 									<label>
 										<span>New header name</span>
 										<input name="newHeaderName" onChange={this.handleInputChange} value={newHeaderName}/>
-										<button onClick={this.addHeader}>Add header</button>
+										<button onClick={this.addHeader} type="button">Add header</button>
 									</label>
 								</fieldset>
 							)
@@ -162,8 +180,16 @@ export class Collection extends React.Component {
 						<span>Delay</span>
 						<input name="delay" onChange={this.handleInputChange} value={delay}/>
 					</label>
+					{/*child.render()*/}
+					<button type="submit">Save collection</button>
 				</fieldset>
 			</form>
 		);
 	}
 } // class Collection
+
+
+// Which context do we want to receive (opt-in)
+Collection.contextTypes = {
+	store: PropTypes.object
+};

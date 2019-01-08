@@ -120,9 +120,7 @@ const SERVER_JS_CONFIG = {
 //──────────────────────────────────────────────────────────────────────────────
 const CLIENT_JS_CONFIG = {
 	context: SRC_ASSETS_DIR_ABS,
-	entry: {
-		'react/Collection': './react/Collection.jsx'
-	},
+	entry: './react/App.jsx',
 	externals: [
 		'react'
 	],
@@ -156,13 +154,17 @@ const CLIENT_JS_CONFIG = {
 		minimizer: [
 			new UglifyJsPlugin({
 				parallel: true, // highly recommended
-				sourceMap: false
+				sourceMap: false/*,
+				uglifyOptions: {
+					mangle: false, // default is true?
+					keep_fnames: true // default is false?
+				}*/
 			})
 		]
 	},
 	output: {
-		filename: '[name].js',
-		//filename: 'yase.js',
+		//filename: '[name].js',
+		filename: 'yase.js',
 		library: 'yase',
 		libraryTarget: 'umd',
 		path: DST_ASSETS_DIR_ABS
@@ -177,7 +179,7 @@ const CLIENT_JS_CONFIG = {
 		})
 	],
 	resolve: {
-		extensions: ['.js', '.jsx']
+		extensions: ['.es', '.js', '.jsx']
 	},
 	stats: STATS
 };

@@ -25,36 +25,40 @@ export function createOrEditCollectionPage({
 			'Accept-Language': 'nb-NO'
 		},
 		delay: 1000, // ms
-		scrape: {/*
-			nested: {
+		node: {
+			scrape: {/*
+				nested: {
 				field: 'dataExtractionExpression'
 			}
-		*/},
-		download: [/*
-			'urlExtractionExpression' ,...
-		*/],
-		crawl: null/*{
-			urlExtractionExpression: 'urlExtractionExpression',
-			dynamic: false,
-			...
-		}*/
+			*/},
+			download: [/*
+				'urlExtractionExpression' ,...
+			*/],
+			crawl: null/*{
+				urlExtractionExpression: 'urlExtractionExpression',
+				dynamic: false,
+				...
+			}*/
+		}
 	};
 	//log.info(toStr({propsObj}));
 	const propsJson = JSON.stringify(propsObj);
 	//log.info(toStr({propsJson}));
 	return htmlResponse({
 		bodyEnd: [
-			`<script type="text/javascript" src="${assetUrl({path: 'react/react.production.min.js'})}"></script>`,
-			`<script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.production.min.js'})}"></script>`,
-			`<script type="text/javascript" src="${assetUrl({path: 'react/Collection.js'})}"></script>`,
+			//`<script type="text/javascript" src="${assetUrl({path: 'react/react.production.min.js'})}"></script>`,
+			`<script type="text/javascript" src="${assetUrl({path: 'react/react.development.js'})}"></script>`,
+			//`<script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.production.min.js'})}"></script>`,
+			`<script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.development.js'})}"></script>`,
+			`<script type="text/javascript" src="${assetUrl({path: 'yase.js'})}"></script>`,
 			`<script type="text/javascript">
 	ReactDOM.render(
-		React.createElement(window.yase.Collection, ${propsJson}),
-		document.getElementById('collection')
+		React.createElement(window.yase.App, ${propsJson}),
+		document.getElementById('reactApp')
 	);
 </script>`
 		],
-		main: '<div id="collection"/>',
+		main: '<div id="reactApp"/>',
 		path,
 		title: 'Create or edit collection'
 	});
