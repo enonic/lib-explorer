@@ -173,8 +173,8 @@ const CLIENT_JS_CONFIG = {
 		new CopyWebpackPlugin([
 			//{ from: 'babel-standalone/', to: 'babel-standalone/' },
 			{ from: 'formik/dist/formik.umd*', to: 'formik/[name].[ext]' },
-			{ from: 'react/umd/', to: 'react/' },
-			{ from: 'react-dom/umd/', to: 'react-dom/' },
+			{ from: 'react/umd/react.*.js', to: 'react/[name].[ext]' },
+			{ from: 'react-dom/umd/react-dom.*.js', to: 'react-dom/[name].[ext]' },
 			//{ from: 'redux/dist/', to: 'redux/' }
 		], {
 			context: path.resolve(__dirname, 'node_modules')
