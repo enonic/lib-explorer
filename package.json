@@ -33,6 +33,7 @@
     "webpack": "webpack"
   },
   "dependencies": {
+    "formik": "^1.4.2",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",

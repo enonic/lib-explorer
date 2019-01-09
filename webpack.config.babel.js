@@ -120,9 +120,9 @@ const SERVER_JS_CONFIG = {
 //──────────────────────────────────────────────────────────────────────────────
 const CLIENT_JS_CONFIG = {
 	context: SRC_ASSETS_DIR_ABS,
-	entry: './react/App.jsx',
+	entry: './react/Collection.jsx',
 	externals: [
-		'react'
+		//'react'
 	],
 	devtool: false, // Don't waste time generating sourceMaps
 	mode: MODE,
@@ -172,8 +172,10 @@ const CLIENT_JS_CONFIG = {
 	plugins: [
 		new CopyWebpackPlugin([
 			//{ from: 'babel-standalone/', to: 'babel-standalone/' },
+			{ from: 'formik/dist/formik.umd*', to: 'formik/[name].[ext]' },
 			{ from: 'react/umd/', to: 'react/' },
-			{ from: 'react-dom/umd/', to: 'react-dom/' }
+			{ from: 'react-dom/umd/', to: 'react-dom/' },
+			//{ from: 'redux/dist/', to: 'redux/' }
 		], {
 			context: path.resolve(__dirname, 'node_modules')
 		})

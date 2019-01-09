@@ -2,13 +2,14 @@
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {assetUrl} from '/lib/xp/portal';
 
+const ID_REACT_COLLECTION_CONTAINER = 'reactCollectionContainer';
 
 export function createOrEditCollectionPage({
 	path
 }) {
 	const propsObj = {
 		name: 'testName',
-		url: [
+		urls: [
 			'https://www.example.com/first',
 			'https://www.example.com/second'
 		],
@@ -21,9 +22,13 @@ export function createOrEditCollectionPage({
 			min: 1,
 			max: 2
 		},
-		headers: {
+		/*headers: {
 			'Accept-Language': 'nb-NO'
-		},
+		},*/
+		headers: [{
+			name: 'Accept-Language',
+			value: 'nb-NO'
+		}],
 		delay: 1000, // ms
 		node: {
 			scrape: {/*
@@ -53,12 +58,12 @@ export function createOrEditCollectionPage({
 			`<script type="text/javascript" src="${assetUrl({path: 'yase.js'})}"></script>`,
 			`<script type="text/javascript">
 	ReactDOM.render(
-		React.createElement(window.yase.App, ${propsJson}),
-		document.getElementById('reactApp')
+		React.createElement(window.yase.Collection, ${propsJson}),
+		document.getElementById('${ID_REACT_COLLECTION_CONTAINER}')
 	);
 </script>`
 		],
-		main: '<div id="reactApp"/>',
+		main: `<div id="${ID_REACT_COLLECTION_CONTAINER}"/>`,
 		path,
 		title: 'Create or edit collection'
 	});
