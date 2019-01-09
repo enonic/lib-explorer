@@ -7,7 +7,7 @@ const ID_REACT_COLLECTION_CONTAINER = 'reactCollectionContainer';
 export function createOrEditCollectionPage({
 	path
 }) {
-	const propsObj = {
+	const propsObj = {/*
 		name: 'testName',
 		urls: [
 			'https://www.example.com/first',
@@ -22,29 +22,40 @@ export function createOrEditCollectionPage({
 			min: 1,
 			max: 2
 		},
-		/*headers: {
-			'Accept-Language': 'nb-NO'
-		},*/
 		headers: [{
 			name: 'Accept-Language',
 			value: 'nb-NO'
 		}],
 		delay: 1000, // ms
 		node: {
-			scrape: {/*
-				nested: {
-				field: 'dataExtractionExpression'
-			}
-			*/},
-			download: [/*
-				'urlExtractionExpression' ,...
-			*/],
-			crawl: null/*{
-				urlExtractionExpression: 'urlExtractionExpression',
+			scrape: [{
+				field: 'title',
+				dataExpr: 'so body head title | rtc'
+			}, {
+				field: 'nested.name',
+				dataExpr: 'so body | rtc'
+			}],
+			download: [
+				'1',
+				'2'
+			],
+			crawl: [{
+				urlExpr: 'urlExtractionExpression',
 				dynamic: false,
-				...
-			}*/
-		}
+				scrape: [{
+					field: 'title',
+					dataExpr: 'so body head title | rtc'
+				}],
+				download: [
+					'3',
+					'4'
+				],
+				crawl: [{
+					urlExpr: 'urlExtractionExpression',
+					dynamic: false
+				}]
+			}]
+		}*/
 	};
 	//log.info(toStr({propsObj}));
 	const propsJson = JSON.stringify(propsObj);
