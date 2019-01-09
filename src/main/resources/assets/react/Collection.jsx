@@ -11,11 +11,16 @@ import {SubmitButton} from './buttons/SubmitButton';
 
 // Elements
 import {Fieldset} from './elements/Fieldset';
+import {Label} from './elements/Label';
 import {LabeledField} from './elements/LabeledField';
 import {Table} from './elements/Table';
 
 // Fields
+import {DelayField} from './fields/DelayField';
+import {HeadersField} from './fields/HeadersField';
 import {NameField} from './fields/NameField';
+import {PathRangeField} from './fields/PathRangeField';
+import {QueryRangeField} from './fields/QueryRangeField';
 import {UrlsField} from './fields/UrlsField';
 
 //import {Node} from './Node';
@@ -69,65 +74,14 @@ export const Collection = ({
 					urls
 				}, null, 4));
 				return (<Form>
-					<NameField/>
+					<NameField name={name}/>
 
 					<Fieldset legend="Request">
 						<UrlsField urls={urls}/>
-
-						{pathRange
-							? (<Fieldset legend="Path range">
-								<LabeledField label="Min" name="pathRange.min"/>
-								<Label label="Max">
-									<Field name="pathRange.max"/>
-								</Label>
-								<SetFieldValueButton field='pathRange' value={null} setFieldValue={setFieldValue} text="Remove path range"/>
-							</Fieldset>)
-							: <SetFieldValueButton field='pathRange' value={{min: 0, max: 1}} setFieldValue={setFieldValue} text="Add path range"/>
-						}
-
-						{queryRange
-							? (<Fieldset legend="Query range">
-								<LabeledField label="Name" name="queryRange.name"/>
-								<LabeledField label="Min" name="queryRange.min" type="number"/>
-								<LabeledField label="Max" name="queryRange.max" type="number"/>
-								<SetFieldValueButton field='queryRange' value={null} setFieldValue={setFieldValue} text="Remove query range"/>
-							</Fieldset>)
-							: <SetFieldValueButton field='queryRange' value={{name: '', min: 0, max: 1}} setFieldValue={setFieldValue} text="Add query range"/>
-						}
-
-						{headers && headers.length
-							? (<Fieldset legend="Headers">
-								<FieldArray
-									name="headers"
-									render={({insert, swap, remove}) => (
-										<Table headers={['Name', 'Value', 'Action(s)']}>
-											{headers && headers.length > 0 && headers.map(({name, value}, index) => {
-												console.log(JSON.stringify({
-													index,
-													name,
-													value
-												}, null, 4));
-												return (<tr key={`headers[${index}]`}>
-													{/*<button type="button" onClick={() => insert(index, {name: '', value: ''})}>+</button>*/}
-													<td><Field name={`headers[${index}].name`}/></td>
-													<td><Field name={`headers[${index}].value`}/></td>
-													<td>
-														<RemoveButton index={index} remove={remove}/>
-														{index ? <MoveUpButton index={index} swap={swap}/> : null}
-														{index < headers.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
-														<InsertButton index={index} insert={insert} value={{name: '', value: ''}}/>
-													</td>
-												</tr>);
-											})}
-										</Table>
-									)}
-								/>
-							</Fieldset>)
-							: <SetFieldValueButton field='headers' value={[{name: '', value: ''}]} setFieldValue={setFieldValue} text="Add header(s)"/>
-						}
-
-						<LabeledField label="Delay" name="delay"/>
-
+						<PathRangeField pathRange={pathRange} setFieldValue={setFieldValue}/>
+						<QueryRangeField queryRange={queryRange} setFieldValue={setFieldValue}/>
+						<HeadersField headers={headers} setFieldValue={setFieldValue}/>
+						<DelayField delay={delay}/>
 					</Fieldset>{/* Request */}
 
 					{node && node.scrape && node.scrape.length
