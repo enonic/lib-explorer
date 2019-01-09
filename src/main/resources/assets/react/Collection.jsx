@@ -29,7 +29,7 @@ export const Collection = ({
 	delay = 1000,
 	headers = null,
 	name = '',
-	node = {},
+	node = null,
 	pathRange = null,
 	queryRange = null,
 	urls = [''] // At least one is required
@@ -164,67 +164,79 @@ export const Collection = ({
 
 						<Fieldset legend="Node">
 
-							<Fieldset legend="Scrape">
-								<FieldArray
-									name="node.scrape"
-									render={({insert, swap, remove}) => (
-										<div>
-											{node.scrape && node.scrape.length > 0 && node.scrape.map(({field, dataExpr}, index) => (
-												<Fieldset key={index} legend={`Scrape[${index}]`}>
-													{/*<button type="button" onClick={() => insert(index, {field: '', dataExpr: ''})}>+</button>*/}
-													<LabeledField label="Field" name={`node.scrape[${index}].field`}/>
-													<LabeledField label="Data extraction expression" name={`node.scrape[${index}].dataExpr`}/>
-													<RemoveButton index={index} remove={remove}/>
-													{index ? <MoveUpButton index={index} swap={swap}/> : null}
-													{index < node.scrape.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
-													<InsertButton index={index} insert={insert} value={{field: '', dataExpr: ''}}/>
-												</Fieldset>
-											))}
-										</div>
-									)}
-								/>
-							</Fieldset>
+							{node && node.scrape && node.scrape.length
+								? (<Fieldset legend="Scrape">
+									<FieldArray
+										name="node.scrape"
+										render={({insert, swap, remove}) => (
+											<div>
+												{node.scrape && node.scrape.length > 0 && node.scrape.map(({field, dataExpr}, index) => (
+													<Fieldset key={index} legend={`Scrape[${index}]`}>
+														{/*<button type="button" onClick={() => insert(index, {field: '', dataExpr: ''})}>+</button>*/}
+														<LabeledField label="Field" name={`node.scrape[${index}].field`}/>
+														<LabeledField label="Data extraction expression" name={`node.scrape[${index}].dataExpr`}/>
+														<RemoveButton index={index} remove={remove}/>
+														{index ? <MoveUpButton index={index} swap={swap}/> : null}
+														{index < node.scrape.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
+														<InsertButton index={index} insert={insert} value={{field: '', dataExpr: ''}}/>
+													</Fieldset>
+												))}
+											</div>
+										)}
+									/>
+								</Fieldset>)
+								: <SetFieldValueButton field='node.scrape' value={[{field: '', dataExpr: ''}]} text="Add scrape field"/>
+							}
 
-							<Fieldset legend="Download">
-								<FieldArray
-									name="node.download"
-									render={({insert, swap, remove}) => (
-										<div>
-											{node.download && node.download.length > 0 && node.download.map((aDownloadExpression, index) => (
-												<div key={index}>
-													{/*<button type="button" onClick={() => insert(index, '')}>⎀</button>*/}
-													<Field name={`node.download[${index}]`} />
-													<RemoveButton index={index} remove={remove}/>
-													{index ? <MoveUpButton index={index} swap={swap}/> : null}
-													{index < node.download.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
-													<InsertButton index={index} insert={insert} value={''}/>
-												</div>
-											))}
-										</div>
-									)}
-								/>
-							</Fieldset>
 
-							<Fieldset legend="Crawl">
-								<FieldArray
-									name="node.crawl"
-									render={({insert, swap, remove}) => (
-										<div>
-											{node.crawl && node.crawl.length > 0 && node.crawl.map(({dynamic, urlExpr}, index) => (
-												<Fieldset key={index} legend={`Crawl[${index}]`}>
-													{/*<button type="button" onClick={() => insert(index, {dynamic: false, urlExpr: ''})}>+</button>*/}
-													<LabeledField label="Dynamic" name={`node.crawl[${index}].dynamic`} type="checkbox"/>
-													<LabeledField label="Url extraction expression" name={`node.crawl[${index}].urlExpr`}/>
-													<RemoveButton index={index} remove={remove}/>
-													{index ? <MoveUpButton index={index} swap={swap}/> : null}
-													{index < node.crawl.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
-													<InsertButton index={index} insert={insert} value={{dynamic: false, urlExpr: ''}}/>
-												</Fieldset>
-											))}
-										</div>
-									)}
-								/>
-							</Fieldset>
+
+							{node && node.download && node.download.length
+								? (<Fieldset legend="Download">
+									<FieldArray
+										name="node.download"
+										render={({insert, swap, remove}) => (
+											<div>
+												{node.download && node.download.length > 0 && node.download.map((aDownloadExpression, index) => (
+													<div key={index}>
+														{/*<button type="button" onClick={() => insert(index, '')}>⎀</button>*/}
+														<Field name={`node.download[${index}]`} />
+														<RemoveButton index={index} remove={remove}/>
+														{index ? <MoveUpButton index={index} swap={swap}/> : null}
+														{index < node.download.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
+														<InsertButton index={index} insert={insert} value={''}/>
+													</div>
+												))}
+											</div>
+										)}
+									/>
+								</Fieldset>)
+								: <SetFieldValueButton field='node.download' value={['']} text="Add download expression(s)"/>
+							}
+
+							{node && node.crawl && node.crawl.length
+								? (<Fieldset legend="Crawl">
+									<FieldArray
+										name="node.crawl"
+										render={({insert, swap, remove}) => (
+											<div>
+												{node.crawl && node.crawl.length > 0 && node.crawl.map(({dynamic, urlExpr}, index) => (
+													<Fieldset key={index} legend={`Crawl[${index}]`}>
+														{/*<button type="button" onClick={() => insert(index, {dynamic: false, urlExpr: ''})}>+</button>*/}
+														<LabeledField label="Dynamic" name={`node.crawl[${index}].dynamic`} type="checkbox"/>
+														<LabeledField label="Url extraction expression" name={`node.crawl[${index}].urlExpr`}/>
+														<RemoveButton index={index} remove={remove}/>
+														{index ? <MoveUpButton index={index} swap={swap}/> : null}
+														{index < node.crawl.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
+														<InsertButton index={index} insert={insert} value={{dynamic: false, urlExpr: ''}}/>
+													</Fieldset>
+												))}
+											</div>
+										)}
+									/>
+								</Fieldset>)
+								: <SetFieldValueButton field='node.crawl' value={[{dynamic: false, urlExpr: ''}]} text="Add crawl expression(s)"/>
+							}
+
 						</Fieldset>{/* Node */}
 						<SubmitButton text="Save collection"/>
 					</Fieldset>{/* Collection */}
