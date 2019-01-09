@@ -38,4 +38,4 @@ export const HeadersField = ({headers, setFieldValue}) => headers && headers.len
 			)}
 		/>
 	</Fieldset>)
-	: <SetFieldValueButton field='headers' value={[{name: '', value: ''}]} setFieldValue={setFieldValue} text="Add header(s)"/>
+	: <SetFieldValueButton classes='block' field='headers' value={[{name: '', value: ''}]} setFieldValue={setFieldValue} text="Add header(s)"/>

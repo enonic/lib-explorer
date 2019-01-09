@@ -10,4 +10,4 @@ export const PathRangeField = ({pathRange, setFieldValue}) => pathRange
 		<LabeledField label="Max" name="pathRange.max"/>
 		<SetFieldValueButton field='pathRange' value={null} setFieldValue={setFieldValue} text="Remove path range"/>
 		</Fieldset>)
-	: <SetFieldValueButton field='pathRange' value={{min: 0, max: 1}} setFieldValue={setFieldValue} text="Add path range"/>;
+	: <SetFieldValueButton classes='block' field='pathRange' value={{min: 0, max: 1}} setFieldValue={setFieldValue} text="Add path range"/>;

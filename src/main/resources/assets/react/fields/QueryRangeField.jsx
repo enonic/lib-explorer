@@ -11,4 +11,4 @@ export const QueryRangeField = ({queryRange, setFieldValue}) => queryRange
 		<LabeledField label="Max" name="queryRange.max" type="number"/>
 		<SetFieldValueButton field='queryRange' value={null} setFieldValue={setFieldValue} text="Remove query range"/>
 	</Fieldset>)
-	: <SetFieldValueButton field='queryRange' value={{name: '', min: 0, max: 1}} setFieldValue={setFieldValue} text="Add query range"/>;
+	: <SetFieldValueButton classes='block' field='queryRange' value={{name: '', min: 0, max: 1}} setFieldValue={setFieldValue} text="Add query range"/>;

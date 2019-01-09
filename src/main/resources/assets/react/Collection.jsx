@@ -16,12 +16,14 @@ import {LabeledField} from './elements/LabeledField';
 import {Table} from './elements/Table';
 
 // Fields
+import {CrawlField} from './fields/CrawlField';
 import {DelayField} from './fields/DelayField';
+import {DownloadField} from './fields/DownloadField';
 import {HeadersField} from './fields/HeadersField';
 import {NameField} from './fields/NameField';
-import {NodeField} from './fields/NodeField';
 import {PathRangeField} from './fields/PathRangeField';
 import {QueryRangeField} from './fields/QueryRangeField';
+import {ScrapeField} from './fields/ScrapeField';
 import {UrlsField} from './fields/UrlsField';
 
 //import {Node} from './Node';
@@ -30,23 +32,28 @@ import {UrlsField} from './fields/UrlsField';
 
 
 export const Collection = ({
+	crawl,
 	delay = 1000,
-	headers = null,
+	download,
+	headers,
 	name = '',
-	node = null,
-	pathRange = null,
-	queryRange = null,
+	node,
+	pathRange,
+	queryRange,
+	scrape,
 	urls = [''] // At least one is required
 }) => (
 	<div>
 		<Formik
 			initialValues={{
+				crawl,
 				delay,
+				download,
 				headers,
 				name,
-				node,
 				pathRange,
 				queryRange,
+				scrape,
 				urls
 			}}
 			onSubmit={values => {
@@ -56,22 +63,26 @@ export const Collection = ({
 				setFieldValue,
 				setValues,
 				values: {
+					crawl,
 					delay,
+					download,
 					headers,
 					name,
-					node,
 					pathRange,
 					queryRange,
+					scrape,
 					urls
 				}
 			}) => {
 				/*console.log(JSON.stringify({
+					crawl,
 					delay,
+					download,
 					headers,
 					name,
-					node,
 					pathRange,
 					queryRange,
+					scrape,
 					urls
 				}, null, 4));*/
 				return (<Form>
@@ -82,8 +93,10 @@ export const Collection = ({
 						<QueryRangeField queryRange={queryRange} setFieldValue={setFieldValue}/>
 						<HeadersField headers={headers} setFieldValue={setFieldValue}/>
 						<DelayField delay={delay}/>
-					</Fieldset>{/* Request */}
-					<NodeField path="node" setFieldValue={setFieldValue} value={node}/>
+					</Fieldset>
+					<ScrapeField path="scrape" value={scrape} setFieldValue={setFieldValue}/>
+					<DownloadField path="download" value={download} setFieldValue={setFieldValue}/>
+					<CrawlField path="crawl" value={crawl} setFieldValue={setFieldValue}/>
 					<SubmitButton text="Save collection"/>
 				</Form>);
 			}}
