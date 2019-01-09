@@ -10,6 +10,9 @@ import {Checkbox} from '../elements/Checkbox';
 import {Fieldset} from '../elements/Fieldset';
 import {LabeledField} from '../elements/LabeledField';
 
+import {DownloadField} from './DownloadField';
+import {ScrapeField} from './ScrapeField';
+
 
 export const CrawlField = ({path, setFieldValue, value}) => {
 	console.log(JSON.stringify({path, value}, null, 4));
@@ -18,10 +21,15 @@ export const CrawlField = ({path, setFieldValue, value}) => {
 	}
 	return <FieldArray
 		name={path}
-		render={({insert, swap, remove}) => value.map(({dynamic, urlExpr}, index) => (
+		render={({insert, swap, remove}) => value.map(({crawl, download, dynamic, scrape, urlExpr}, index) => (
 			<Fieldset key={`${path}[${index}]`} legend={`${path}[${index}]`}>
 				<Checkbox checked={dynamic} label="Dynamic" name={`${path}[${index}].dynamic`}/>
 				<LabeledField label="Url extraction expression" name={`${path}[${index}].urlExpr`}/>
+
+				<ScrapeField path={`${path}[${index}].scrape`} value={scrape} setFieldValue={setFieldValue}/>
+				<DownloadField path={`${path}[${index}].download`} value={download} setFieldValue={setFieldValue}/>
+				<CrawlField path={`${path}[${index}].crawl`} value={crawl} setFieldValue={setFieldValue}/>{/*Recursive*/}
+
 				<RemoveButton index={index} remove={remove}/>
 				{index ? <MoveUpButton index={index} swap={swap}/> : null}
 				{index < value.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}

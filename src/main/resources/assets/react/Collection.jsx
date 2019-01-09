@@ -16,14 +16,12 @@ import {LabeledField} from './elements/LabeledField';
 import {Table} from './elements/Table';
 
 // Fields
-import {CrawlField} from './fields/CrawlField';
 import {DelayField} from './fields/DelayField';
-import {DownloadField} from './fields/DownloadField';
 import {HeadersField} from './fields/HeadersField';
 import {NameField} from './fields/NameField';
+import {NodeField} from './fields/NodeField';
 import {PathRangeField} from './fields/PathRangeField';
 import {QueryRangeField} from './fields/QueryRangeField';
-import {ScrapeField} from './fields/ScrapeField';
 import {UrlsField} from './fields/UrlsField';
 
 //import {Node} from './Node';
@@ -85,9 +83,7 @@ export const Collection = ({
 						<HeadersField headers={headers} setFieldValue={setFieldValue}/>
 						<DelayField delay={delay}/>
 					</Fieldset>{/* Request */}
-					<ScrapeField path="node.scrape" value={node && node.scrape} setFieldValue={setFieldValue}/>
-					<DownloadField path="node.download" value={node && node.download} setFieldValue={setFieldValue}/>
-					<CrawlField path="node.crawl" value={node && node.crawl} setFieldValue={setFieldValue}/>
+					<NodeField path="node" setFieldValue={setFieldValue} value={node}/>
 					<SubmitButton text="Save collection"/>
 				</Form>);
 			}}
