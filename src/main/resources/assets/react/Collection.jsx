@@ -1,28 +1,26 @@
 /* global React */
-import { Field, FieldArray, Form, Formik } from 'formik';
-import PropTypes from 'prop-types';
+import {Field, FieldArray, Form, Formik} from 'formik';
+
+// Buttons
+import {InsertButton} from './buttons/InsertButton';
+import {MoveUpButton} from './buttons/MoveUpButton';
+import {MoveDownButton} from './buttons/MoveDownButton';
+import {RemoveButton} from './buttons/RemoveButton';
+import {SetFieldValueButton} from './buttons/SetFieldValueButton';
+import {SubmitButton} from './buttons/SubmitButton';
+
+// Elements
+import {Fieldset} from './elements/Fieldset';
+import {LabeledField} from './elements/LabeledField';
+import {Table} from './elements/Table';
+
+// Fields
+import {NameField} from './fields/NameField';
+import {UrlsField} from './fields/UrlsField';
 
 //import {Node} from './Node';
 // ERROR The next line cause runtime errors!
 //import React, { Component } from 'react';
-
-const Fieldset = ({children, legend, ...rest}) =>
-	<fieldset {...rest}><legend>{legend}</legend>{children}</fieldset>;
-
-
-const Label = ({children, label}) =>
-	<label><span>{label}</span>{children}</label>;
-
-
-const LabeledField = ({children, label, ...rest}) =>
-	<Label label={label}><Field {...rest}/></Label>;
-
-
-const SubmitButton = ({text}) => <button type="submit">{text}</button>;
-
-
-const Table = ({children, headers}) =>
-	<table><thead><tr>{headers.map(h => <th>{h}</th>)}</tr></thead><tbody>{children}</tbody></table>;
 
 
 export const Collection = ({
@@ -46,7 +44,7 @@ export const Collection = ({
 				urls
 			}}
 			onSubmit={values => {
-				console.log(values);
+				console.log(JSON.Stringify(values, null, 4));
 			}}
 			render={({
 				setFieldValue,
@@ -70,39 +68,11 @@ export const Collection = ({
 					queryRange,
 					urls
 				}, null, 4));
-				const SetFieldValueButton = ({children, field, value, onClick, text}) => <button type="button" onClick={() => setFieldValue(field, value)}>{children||text}</button>;
-				const RemoveButton = ({index, remove}) => <button type="button" onClick={() => remove(index)}>⌫</button>;
-				const MoveUpButton = ({index, swap}) => <button type="button" onClick={() => swap(index, index-1)}>↑</button>;
-				const MoveDownButton = ({index, swap}) => <button type="button" onClick={() => swap(index, index+1)}>↓</button>;
-				const InsertButton = ({index, insert, value}) => <button type="button" onClick={() => insert(index+1, value)}>+</button>;
-
 				return (<Form>
-					<LabeledField label='Name' name="name" />
+					<NameField/>
 
 					<Fieldset legend="Request">
-						<Fieldset legend="Url">
-							<FieldArray
-								name="urls"
-								render={({insert, swap, remove}) => (
-									<div>
-										{urls && urls.map((anUrl, index) => {
-											/*console.log(JSON.stringify({
-												anUrl,
-												index
-											}, null, 4));*/
-											return (<div key={`urls[${index}]`}>
-												{/*<button type="button" onClick={() => insert(index, '')}>⎀</button>*/}
-												<Field name={`urls[${index}]`} />
-												{urls.length > 1 ? <RemoveButton index={index} remove={remove}/> : null}
-												{index ? <MoveUpButton index={index} swap={swap}/> : null}
-												{index < urls.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
-												<InsertButton index={index} insert={insert} value={''}/>
-											</div>);
-										})}
-									</div>
-								)}
-							/>
-						</Fieldset>
+						<UrlsField urls={urls}/>
 
 						{pathRange
 							? (<Fieldset legend="Path range">
@@ -110,9 +80,9 @@ export const Collection = ({
 								<Label label="Max">
 									<Field name="pathRange.max"/>
 								</Label>
-								<SetFieldValueButton field='pathRange' value={null} text="Remove path range"/>
+								<SetFieldValueButton field='pathRange' value={null} setFieldValue={setFieldValue} text="Remove path range"/>
 							</Fieldset>)
-							: <SetFieldValueButton field='pathRange' value={{min: 0, max: 1}} text="Add path range"/>
+							: <SetFieldValueButton field='pathRange' value={{min: 0, max: 1}} setFieldValue={setFieldValue} text="Add path range"/>
 						}
 
 						{queryRange
@@ -120,9 +90,9 @@ export const Collection = ({
 								<LabeledField label="Name" name="queryRange.name"/>
 								<LabeledField label="Min" name="queryRange.min" type="number"/>
 								<LabeledField label="Max" name="queryRange.max" type="number"/>
-								<SetFieldValueButton field='queryRange' value={null} text="Remove query range"/>
+								<SetFieldValueButton field='queryRange' value={null} setFieldValue={setFieldValue} text="Remove query range"/>
 							</Fieldset>)
-							: <SetFieldValueButton field='queryRange' value={{name: '', min: 0, max: 1}} text="Add query range"/>
+							: <SetFieldValueButton field='queryRange' value={{name: '', min: 0, max: 1}} setFieldValue={setFieldValue} text="Add query range"/>
 						}
 
 						{headers && headers.length
@@ -153,7 +123,7 @@ export const Collection = ({
 									)}
 								/>
 							</Fieldset>)
-							: <SetFieldValueButton field='headers' value={[{name: '', value: ''}]} text="Add header(s)"/>
+							: <SetFieldValueButton field='headers' value={[{name: '', value: ''}]} setFieldValue={setFieldValue} text="Add header(s)"/>
 						}
 
 						<LabeledField label="Delay" name="delay"/>
@@ -179,7 +149,7 @@ export const Collection = ({
 									</div>
 								)}
 							/>)
-						: <SetFieldValueButton field='node.scrape' value={[{field: '', dataExpr: ''}]} text="Add scrape field"/>
+						: <SetFieldValueButton field='node.scrape' value={[{field: '', dataExpr: ''}]} setFieldValue={setFieldValue} text="Add scrape field"/>
 					}
 
 
@@ -202,7 +172,7 @@ export const Collection = ({
 									</div>
 								)}
 							/>)
-						: <SetFieldValueButton field='node.download' value={['']} text="Add download expression(s)"/>
+						: <SetFieldValueButton field='node.download' value={['']} setFieldValue={setFieldValue} text="Add download expression(s)"/>
 					}
 
 					{node && node.crawl && node.crawl.length
@@ -224,7 +194,7 @@ export const Collection = ({
 									</div>
 								)}
 							/>)
-						: <SetFieldValueButton field='node.crawl' value={[{dynamic: false, urlExpr: ''}]} text="Add crawl expression(s)"/>
+						: <SetFieldValueButton field='node.crawl' value={[{dynamic: false, urlExpr: ''}]} setFieldValue={setFieldValue} text="Add crawl expression(s)"/>
 					}
 
 					<SubmitButton text="Save collection"/>
