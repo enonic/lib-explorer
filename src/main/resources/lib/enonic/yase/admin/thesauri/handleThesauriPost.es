@@ -48,14 +48,12 @@ export function handleThesauriPost(req) {
 	parseCsv({
 		csvString: text,
 		columns: ['first', null],
-		map: ({first, second}, i) => {
-			log.info(toStr({first, second, i}));
-			return {second: first};
-		},
-		forEach: ({first, second}, i) => {
-			log.info(toStr({first, second, i}));
-		},
 		start: 1 // Aka skip line 0
+	}).map(({first, second}, i) => {
+		log.info(toStr({first, second, i}));
+		return {second: first};
+	}).forEach(({first, second}, i) => {
+		log.info(toStr({first, second, i}));
 	});
 
 	//const stream = getMultipartStream('file');
