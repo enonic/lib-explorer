@@ -34,7 +34,15 @@ export function listThesauriPage(
 	{messages, status} = {}
 ) {
 	return htmlResponse({
-		main: `<form action="${TOOL_PATH}/thesauri" autocomplete="off" method="POST">
+		main: `
+<form action="${TOOL_PATH}/thesauri" autocomplete="off" enctype="multipart/form-data" method="POST">
+	<label>
+		<span>Name</span>
+		<input accept="text/csv" name="file" type="file">
+	</label>
+	<button type="submit">Import csv</button>
+</form>
+<form action="${TOOL_PATH}/thesauri" autocomplete="off" method="POST">
 	<fieldset>
 		<legend>Thesaurus</legend>
 		<label>
