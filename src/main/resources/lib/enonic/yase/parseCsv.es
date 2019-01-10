@@ -11,7 +11,7 @@ import {csvParseRows} from 'd3-dsv/src/csv';
 
 export function parseCsv({
 	// columns = true means get names from first line, and include all columns with names
-	// A value "false" "null", or "undefined" inside the column array skips the column from the output
+	// A Falsy value inside the column array skips the column from the output.
 	columns = true,
 
 	csvString,
