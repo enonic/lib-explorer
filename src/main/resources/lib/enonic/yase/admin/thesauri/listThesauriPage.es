@@ -33,14 +33,21 @@ export function listThesauriPage(
 	{path} = {},
 	{messages, status} = {}
 ) {
+	const thesauri = getThesauri();
 	return htmlResponse({
 		main: `
 <form action="${TOOL_PATH}/thesauri" autocomplete="off" enctype="multipart/form-data" method="POST">
-	<label>
-		<span>Name</span>
-		<input accept="text/csv" name="file" type="file">
-	</label>
-	<button type="submit">Import csv</button>
+	<fieldset>
+		<legend>Import</legend>
+		<label>
+			<span>Name</span>
+			<input accept="text/csv" name="file" type="file">
+		</label>
+		<select name="thesaurus">
+			${thesauri.map(t => `<option value="${t.name}">${t.displayName}</option>`)}
+		</select>
+		<button type="submit">Import csv</button>
+	</fieldset>
 </form>
 <form action="${TOOL_PATH}/thesauri" autocomplete="off" method="POST">
 	<fieldset>
@@ -66,7 +73,7 @@ export function listThesauriPage(
 		</tr>
 	</thead>
 	<tbody>
-		${getThesauri().map(t => `<tr>
+		${thesauri.map(t => `<tr>
 			<td><a href="${TOOL_PATH}/thesauri/${t.name}">${t.name}</a></td>
 			<td>${t.displayName}</td>
 			<td>${t.description}</td>

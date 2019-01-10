@@ -1,9 +1,9 @@
-import {NT_SYNONYM, TOOL_PATH} from '/lib/enonic/yase/constants';
+import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {thesaurusPage} from '/lib/enonic/yase/admin/thesauri/thesaurusPage';
 import {createNode} from '/lib/enonic/yase/createNode';
 import {modifyNode} from '/lib/enonic/yase/modifyNode';
 import {toStr} from '/lib/enonic/util';
-
+import {synonym} from '/lib/enonic/yase/nodeTypes/synonym';
 
 export function handleThesaurusPost({
 	params: {
@@ -17,18 +17,11 @@ export function handleThesaurusPost({
 	log.info(toStr({
 		from, id, to, path, _parentPath
 	}));
-	const displayName = `${Array.isArray(from) ? from.join(', ') : from} => ${Array.isArray(to) ? to.join(', ') : to}`;
-	const params = {
+	const params = synonym({
 		_parentPath,
-		_name: displayName,
-		_indexConfig: {
-			default: 'byType'
-		},
-		displayName,
 		from,
-		to,
-		type: NT_SYNONYM
-	};
+		to
+	});
 
 	if (id) {
 		params.key = id;

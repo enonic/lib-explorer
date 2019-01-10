@@ -1,26 +1,30 @@
-import {toStr} from '/lib/enonic/util';
-//import {readLines} from '/lib/xp/io';
+//import {toStr} from '/lib/enonic/util';
+import {isString} from '/lib/enonic/util/value';
+
 import {
 	//getMultipartForm,
-	//getMultipartStream,
 	getMultipartText
 } from '/lib/xp/portal';
 
-import {NT_THESAURUS} from '/lib/enonic/yase/constants';
+import {NT_THESAURUS, TOOL_PATH} from '/lib/enonic/yase/constants';
 import {listThesauriPage} from '/lib/enonic/yase/admin/thesauri/listThesauriPage';
+import {thesaurusPage} from '/lib/enonic/yase/admin/thesauri/thesaurusPage';
 import {createOrModifyNode} from '/lib/enonic/yase/createOrModifyNode';
 import {parseCsv} from '/lib/enonic/yase/parseCsv';
+
+import {synonym} from '/lib/enonic/yase/nodeTypes/synonym';
 
 
 export function handleThesauriPost(req) {
 	const {
 		params: {
 			description,
-			name
+			name,
+			thesaurus
 		},
 		path
 	} = req;
-	log.info(toStr({req}));
+	//log.info(toStr({req}));
 
 	if (name && description) {
 		const node = createOrModifyNode({
@@ -47,19 +51,29 @@ export function handleThesauriPost(req) {
 	const text = getMultipartText('file'); //log.info(toStr({text}));
 	parseCsv({
 		csvString: text,
-		columns: ['first', null],
+		columns: ['from', 'to'],
 		start: 1 // Aka skip line 0
-	}).map(({first, second}, i) => {
-		log.info(toStr({first, second, i}));
-		return {second: first};
-	}).forEach(({first, second}, i) => {
-		log.info(toStr({first, second, i}));
+	}).forEach(({from, to}) => {
+		//log.info(toStr({from, to}));
+		if (
+			from // Skip empty cells
+			&& to // Skip empty cells
+			&& isString(from) && from.trim() // Skip cells with just whitespace, emptystring is Falsy
+			&& isString(to) && to.trim() // Skip cells with just whitespace, emptystring is Falsy
+		) { // Skip empty values
+			const fromArr = from.trim().split(',').map(str => str.trim());
+			const toArr = to.trim().split(',').map(str => str.trim());
+			const params = synonym({
+				_parentPath: `/thesauri/${thesaurus}`,
+				from: fromArr.length > 1 ? fromArr : fromArr.join(),
+				to: toArr.length > 1 ? toArr : toArr.join()
+			});
+			//log.info(toStr({params}));
+			createOrModifyNode(params);
+		}
 	});
-
-	//const stream = getMultipartStream('file');
-
-	return {
-		body: {},
-		contentType: 'text/json;charset=utf-8'
-	};
+	return thesaurusPage({
+		messages: [`Imported synonyms to ${thesaurus}.`],
+		page: `${TOOL_PATH}/thesauri/${thesaurus}`
+	});
 }

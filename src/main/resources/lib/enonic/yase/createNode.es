@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {getUser} from '/lib/xp/auth';
 import {sanitize} from '/lib/xp/common';
 //import {get as getContext} from '/lib/xp/context';
@@ -47,9 +47,9 @@ export function createNode({
 
 	...rest
 } = {}) {
-	log.info(toStr({
+	/*log.info(toStr({
 		_parentPath, _name, displayName, rest
-	}));
+	}));*/
 	//const context = getContext(); log.info(toStr({context}));
 	const pathParts = _parentPath.split('/'); //log.info(toStr({pathParts}));
 	for (let i = 1; i < pathParts.length; i += 1) {
