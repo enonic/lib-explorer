@@ -1,2 +1,2 @@
-export const SetFieldValueButton = ({children, classes, field, value, onClick, setFieldValue, text}) =>
-	<button class={classes} type="button" onClick={() => setFieldValue(field, value)}>{children||text}</button>;
+export const SetFieldValueButton = ({children, field, onClick, setFieldValue, text, value, ...rest}) =>
+	<button onClick={() => setFieldValue(field, value)} type="button" {...rest}>{children||text}</button>;

@@ -14,7 +14,7 @@ import {LabeledField} from '../elements/LabeledField';
 export const ScrapeField = ({path, setFieldValue, value}) => {
 	//console.log(JSON.stringify({path, value}, null, 4));
 	if(!(value && Array.isArray(value) && value.length)) {
-		return <SetFieldValueButton classes='block' field={path} value={[{field: '', dataExpr: ''}]} setFieldValue={setFieldValue} text="Add scrape field"/>
+		return <SetFieldValueButton className='block' field={path} value={[{field: '', dataExpr: ''}]} setFieldValue={setFieldValue} text="Add scrape field"/>
 	}
 	return <Fieldset legend={capitalize(path)}>
 		<FieldArray
@@ -23,10 +23,10 @@ export const ScrapeField = ({path, setFieldValue, value}) => {
 				<div key={`${path}[${index}]`}>
 					<LabeledField label="Field" name={`${path}[${index}].field`}/>
 					<LabeledField label="Data extraction expression" name={`${path}[${index}].dataExpr`}/>
-					<RemoveButton index={index} remove={remove}/>
-					{index ? <MoveUpButton index={index} swap={swap}/> : null}
-					{index < value.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
 					<InsertButton index={index} insert={insert} value={{field: '', dataExpr: ''}}/>
+					<RemoveButton index={index} remove={remove}/>
+					<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
+					<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
 				</div>
 			))}
 		/>

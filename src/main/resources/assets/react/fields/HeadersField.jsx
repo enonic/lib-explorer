@@ -27,10 +27,10 @@ export const HeadersField = ({headers, setFieldValue}) => headers && headers.len
 							<td><Field name={`headers[${index}].name`}/></td>
 							<td><Field name={`headers[${index}].value`}/></td>
 							<td>
-								<RemoveButton index={index} remove={remove}/>
-								{index ? <MoveUpButton index={index} swap={swap}/> : null}
-								{index < headers.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
 								<InsertButton index={index} insert={insert} value={{name: '', value: ''}}/>
+								<RemoveButton index={index} remove={remove}/>
+								<MoveDownButton disabled={index === headers.length-1} index={index} swap={swap} visible={headers.length > 1}/>
+								<MoveUpButton index={index} swap={swap} visible={headers.length > 1}/>
 							</td>
 						</tr>);
 					})}
@@ -38,4 +38,4 @@ export const HeadersField = ({headers, setFieldValue}) => headers && headers.len
 			)}
 		/>
 	</Fieldset>)
-	: <SetFieldValueButton classes='block' field='headers' value={[{name: '', value: ''}]} setFieldValue={setFieldValue} text="Add header(s)"/>
+	: <SetFieldValueButton className='block' field='headers' value={[{name: '', value: ''}]} setFieldValue={setFieldValue} text="Add header(s)"/>

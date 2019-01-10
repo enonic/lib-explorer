@@ -16,10 +16,10 @@ export const UrlsField = ({urls}) =>
 			render={({insert, swap, remove}) => urls && urls.map((anUrl, index) => (
 				<div key={`urls[${index}]`}>
 					<Field name={`urls[${index}]`} />
-					{urls.length > 1 ? <RemoveButton index={index} remove={remove}/> : null}
-					{index ? <MoveUpButton index={index} swap={swap}/> : null}
-					{index < urls.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
 					<InsertButton index={index} insert={insert} value={''}/>
+					<RemoveButton index={index} remove={remove} visible={urls.length > 1}/>
+					<MoveDownButton disabled={index === urls.length-1} index={index} swap={swap} visible={urls.length > 1}/>
+					<MoveUpButton index={index} swap={swap} visible={urls.length > 1}/>
 				</div>
 			))}
 		/>

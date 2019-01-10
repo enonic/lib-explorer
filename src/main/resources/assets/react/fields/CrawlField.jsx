@@ -18,7 +18,7 @@ import {ScrapeField} from './ScrapeField';
 export const CrawlField = ({path, setFieldValue, value}) => {
 	//console.log(JSON.stringify({path, value}, null, 4));
 	if(!(value && Array.isArray(value) && value.length)) {
-		return <SetFieldValueButton classes='block' field={path} value={[{dynamic: false, urlExpr: ''}]} setFieldValue={setFieldValue} text="Add crawl expression(s)"/>;
+		return <SetFieldValueButton className='block' field={path} value={[{dynamic: false, urlExpr: ''}]} setFieldValue={setFieldValue} text="Add crawl expression(s)"/>;
 	}
 	return <Fieldset legend={capitalize(path)}>
 		<FieldArray
@@ -32,10 +32,10 @@ export const CrawlField = ({path, setFieldValue, value}) => {
 					<DownloadField path={`${path}[${index}].download`} value={download} setFieldValue={setFieldValue}/>
 					<CrawlField path={`${path}[${index}].crawl`} value={crawl} setFieldValue={setFieldValue}/>{/*Recursive*/}
 
-					<RemoveButton index={index} remove={remove}/>
-					{index ? <MoveUpButton index={index} swap={swap}/> : null}
-					{index < value.length-1 ? <MoveDownButton index={index} swap={swap}/> : null}
 					<InsertButton index={index} insert={insert} value={{dynamic: false, urlExpr: ''}}/>
+					<RemoveButton index={index} remove={remove}/>
+					<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
+					<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
 				</div>
 			))}
 		/>
