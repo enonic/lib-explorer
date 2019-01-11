@@ -3,6 +3,7 @@ import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {insertAdjacentHTML} from '/lib/enonic/yase/insertAdjacentHTML';
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
 
+//import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 
 
@@ -42,7 +43,20 @@ export function thesaurusPage({
 	messages,
 	status
 } = {}) {
-	const name = path.replace(`${TOOL_PATH}/thesauri/`, '');
+	const fileName = path.replace(`${TOOL_PATH}/thesauri/`, '');
+	//log.info(toStr({fileName}));
+	const [match, name, dotExtension] = fileName.match(/^(.*?)(\.csv)?$/); // eslint-disable-line no-unused-vars
+	//log.info(toStr({match, name, dotExtension}));
+	const thesaurus = getThesaurus({name});
+	if (dotExtension === '.csv') {
+		return {
+			body: `"From","To"${thesaurus.map(s => `\n"${Array.isArray(s.from) ? s.from.join(', ') : s.from}","${Array.isArray(s.to) ? s.to.join(', ') : s.to}"`).join('')}\n`,
+			contentType: 'text/csv;charset=utf-8',
+			headers: {
+				'Content-Disposition': `attachment; filename="${name}.csv"`
+			}
+		};
+	}
 	const fromInput = '<input class="block" name="from" type="text"/>';
 	const toInput = '<input class="block" name="to" type="text"/>';
 	return htmlResponse({
@@ -72,7 +86,7 @@ export function thesaurusPage({
 		</tr>
 	</thead>
 	<tbody>
-		${getThesaurus({name}).map(s => `<tr>
+		${thesaurus.map(s => `<tr>
 	<td>${s.displayName}</td>
 	<td>${forceArray(s.from).join('<br/>')}</td>
 	<td>${forceArray(s.to).join('<br/>')}</td>

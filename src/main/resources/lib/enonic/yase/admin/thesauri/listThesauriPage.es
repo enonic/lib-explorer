@@ -69,7 +69,7 @@ export function listThesauriPage(
 			<th>Name</th>
 			<th>Display name</th>
 			<th>Description</th>
-			<th>Synonyms count</th>
+			<th>Export</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -77,7 +77,7 @@ export function listThesauriPage(
 			<td><a href="${TOOL_PATH}/thesauri/${t.name}">${t.name}</a></td>
 			<td>${t.displayName}</td>
 			<td>${t.description}</td>
-			<td></td>
+			<td><a href="${TOOL_PATH}/thesauri/${t.name}.csv">${t.name}.csv</a></td>
 		</tr>`).join('\n')}
 	</tbody>
 </table>`,
