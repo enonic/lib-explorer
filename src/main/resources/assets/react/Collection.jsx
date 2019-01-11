@@ -35,6 +35,7 @@ export const Collection = ({
 	crawl,
 	delay = 1000,
 	download,
+	fields,
 	headers,
 	name = '',
 	node,
@@ -49,6 +50,7 @@ export const Collection = ({
 				crawl,
 				delay,
 				download,
+				fields,
 				headers,
 				name,
 				pathRange,
@@ -66,6 +68,7 @@ export const Collection = ({
 					crawl,
 					delay,
 					download,
+					fields,
 					headers,
 					name,
 					pathRange,
@@ -94,9 +97,9 @@ export const Collection = ({
 						<HeadersField headers={headers} setFieldValue={setFieldValue}/>
 						<DelayField delay={delay}/>
 					</Fieldset>
-					<ScrapeField path="scrape" value={scrape} setFieldValue={setFieldValue}/>
+					<ScrapeField fields={fields} path="scrape" value={scrape} setFieldValue={setFieldValue}/>
 					<DownloadField path="download" value={download} setFieldValue={setFieldValue}/>
-					<CrawlField path="crawl" value={crawl} setFieldValue={setFieldValue}/>
+					<CrawlField fields={fields} path="crawl" value={crawl} setFieldValue={setFieldValue}/>
 					<SubmitButton text="Save collection"/>
 				</Form>);
 			}}

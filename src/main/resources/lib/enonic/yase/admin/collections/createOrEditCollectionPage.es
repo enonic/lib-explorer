@@ -1,62 +1,18 @@
 //import {toStr} from '/lib/enonic/util';
-import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {assetUrl} from '/lib/xp/portal';
 
+import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
+import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
+
+
 const ID_REACT_COLLECTION_CONTAINER = 'reactCollectionContainer';
+
 
 export function createOrEditCollectionPage({
 	path
 }) {
-	const propsObj = {/*
-		name: 'testName',
-		urls: [
-			'https://www.example.com/first',
-			'https://www.example.com/second'
-		],
-		pathRange: {
-			min: 1,
-			max: 2
-		},
-		queryRange: {
-			name: 'page',
-			min: 1,
-			max: 2
-		},
-		headers: [{
-			name: 'Accept-Language',
-			value: 'nb-NO'
-		}],
-		delay: 1000, // ms
-		node: {
-			scrape: [{
-				field: 'title',
-				dataExpr: 'so body head title | rtc'
-			}, {
-				field: 'nested.name',
-				dataExpr: 'so body | rtc'
-			}],
-			download: [
-				'1',
-				'2'
-			],
-			crawl: [{
-				urlExpr: 'urlExtractionExpression',
-				dynamic: false,
-				scrape: [{
-					field: 'title',
-					dataExpr: 'so body head title | rtc'
-				}],
-				download: [
-					'3',
-					'4'
-				],
-				crawl: [{
-					urlExpr: 'urlExtractionExpression',
-					dynamic: false
-				}]
-			}]
-		}*/
-	};
+	const fields = [{displayName: 'Please select a field', key: null}].concat(getFields().hits.map(({displayName, key}) => ({displayName, key})));
+	const propsObj = {fields};
 	//log.info(toStr({propsObj}));
 	const propsJson = JSON.stringify(propsObj);
 	//log.info(toStr({propsJson}));
