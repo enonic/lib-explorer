@@ -62,6 +62,8 @@ export const Collection = ({
 				console.log(JSON.Stringify(values, null, 4));
 			}}
 			render={({
+				handleBlur,
+				handleChange,
 				setFieldValue,
 				setValues,
 				values: {
@@ -97,9 +99,9 @@ export const Collection = ({
 						<HeadersField headers={headers} setFieldValue={setFieldValue}/>
 						<DelayField delay={delay}/>
 					</Fieldset>
-					<ScrapeField fields={fields} path="scrape" value={scrape} setFieldValue={setFieldValue}/>
+					<ScrapeField fields={fields} handleBlur={handleBlur} handleChange={handleChange} path="scrape" value={scrape} setFieldValue={setFieldValue}/>
 					<DownloadField path="download" value={download} setFieldValue={setFieldValue}/>
-					<CrawlField fields={fields} path="crawl" value={crawl} setFieldValue={setFieldValue}/>
+					<CrawlField fields={fields} handleBlur={handleBlur} handleChange={handleChange} path="crawl" value={crawl} setFieldValue={setFieldValue}/>
 					<SubmitButton text="Save collection"/>
 				</Form>);
 			}}

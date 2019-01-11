@@ -15,7 +15,14 @@ import {DownloadField} from './DownloadField';
 import {ScrapeField} from './ScrapeField';
 
 
-export const CrawlField = ({fields, path, setFieldValue, value}) => {
+export const CrawlField = ({
+	fields,
+	handleBlur,
+	handleChange,
+	path,
+	setFieldValue,
+	value
+}) => {
 	//console.log(JSON.stringify({path, value}, null, 4));
 	if(!(value && Array.isArray(value) && value.length)) {
 		return <SetFieldValueButton className='block' field={path} value={[{dynamic: false, urlExpr: ''}]} setFieldValue={setFieldValue} text="Add crawl expression(s)"/>;
@@ -28,9 +35,9 @@ export const CrawlField = ({fields, path, setFieldValue, value}) => {
 					<Checkbox checked={dynamic} label="Dynamic" name={`${path}[${index}].dynamic`}/>
 					<LabeledField label="Url extraction expression" name={`${path}[${index}].urlExpr`}/>
 
-					<ScrapeField fields={fields} path={`${path}[${index}].scrape`} value={scrape} setFieldValue={setFieldValue}/>
+					<ScrapeField fields={fields} handleBlur={handleBlur} handleChange={handleChange} path={`${path}[${index}].scrape`} value={scrape} setFieldValue={setFieldValue}/>
 					<DownloadField path={`${path}[${index}].download`} value={download} setFieldValue={setFieldValue}/>
-					<CrawlField fields={fields} path={`${path}[${index}].crawl`} value={crawl} setFieldValue={setFieldValue}/>{/*Recursive*/}
+					<CrawlField fields={fields} handleBlur={handleBlur} handleChange={handleChange} path={`${path}[${index}].crawl`} value={crawl} setFieldValue={setFieldValue}/>{/*Recursive*/}
 
 					<InsertButton index={index} insert={insert} value={{dynamic: false, urlExpr: ''}}/>
 					<RemoveButton index={index} remove={remove}/>

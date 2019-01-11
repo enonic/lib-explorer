@@ -11,7 +11,7 @@ const ID_REACT_COLLECTION_CONTAINER = 'reactCollectionContainer';
 export function createOrEditCollectionPage({
 	path
 }) {
-	const fields = [{displayName: 'Please select a field', key: null}].concat(getFields().hits.map(({displayName, key}) => ({displayName, key})));
+	const fields = getFields().hits.map(({displayName, key}) => ({label: displayName, value: key}));
 	const propsObj = {fields};
 	//log.info(toStr({propsObj}));
 	const propsJson = JSON.stringify(propsObj);
