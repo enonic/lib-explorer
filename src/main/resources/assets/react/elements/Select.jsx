@@ -1,14 +1,14 @@
+import {Field} from 'formik';
 import {Label} from './Label';
 
 export const Select = ({
-	handleBlur,
-	handleChange,
+	component,
 	label,
 	name,
 	options,
-	placeholder,
-	value,
-	...rest
+	placeholder = null,
+	setFieldValue,
+	...rest // multiple, size, value
 }) => {
 	/*console.log(JSON.stringify({
 		label,
@@ -18,15 +18,26 @@ export const Select = ({
 		value,
 		rest
 	}, null, 4));*/
-	const select = <select name={name} onBlur={handleBlur} onChange={handleChange} value={value} {...rest}>
+	const select = <Field
+		component="select"
+		name={name}
+		onChange={({
+			target: {
+				selectedOptions
+			}
+		}) => setFieldValue(
+			name,
+			[].slice
+			.call(selectedOptions)
+			.map(({value}) => value)
+		)}
+		{...rest}
+	>
 		{placeholder ? <option value="">{placeholder}</option> : null}
 		{options.map(({label: optionLabel, value: optionValue = null}) => <option key={optionValue} value={optionValue}>{optionLabel}</option>)}
-	</select>;
+	</Field>;
 	if(!label) { return select; }
 	return <Label label={label}>
 		{select}
 	</Label>;
 }
-/*
-selected={optionValue === value ? 'selected' : null}
-*/

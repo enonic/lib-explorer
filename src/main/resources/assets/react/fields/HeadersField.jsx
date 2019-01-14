@@ -20,8 +20,8 @@ export const HeadersField = ({
 			<FieldArray
 				name={path}
 				render={({insert, swap, remove}) => headers.map(({name, value}, index) => <tr key={`${path}[${index}]`}>
-					<td><Field name={`${path}[${index}].name`}/></td>
-					<td><Field name={`${path}[${index}].value`}/></td>
+					<td><Field autoComplete="off" name={`${path}[${index}].name`}/></td>
+					<td><Field autoComplete="off" name={`${path}[${index}].value`}/></td>
 					<td>
 						<InsertButton index={index} insert={insert} value={{name: '', value: ''}}/>
 						<RemoveButton index={index} remove={remove}/>

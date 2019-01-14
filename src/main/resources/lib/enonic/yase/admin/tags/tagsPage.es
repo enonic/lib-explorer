@@ -2,33 +2,9 @@ import {phrasesQuery} from '/lib/enonic/phrases/phrasesQuery';
 //import {toStr} from '/lib/enonic/util';
 
 
-import {NT_TAG, TOOL_PATH} from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
-
-
-export function getTags({
-	connection = connectRepo()
-} = {}) {
-	const queryParams = {
-		count: -1,
-		filters: {
-			boolean: {
-				must: [{
-					hasValue: {
-						field: 'type',
-						values: [NT_TAG]
-					}
-				}]
-			}
-		},
-		query: '', //"_parentPath = '/tags'",
-		sort: '_path ASC'
-	};
-	const queryRes = connection.query(queryParams);
-	queryRes.hits = queryRes.hits.map(hit => connection.get(hit.id));
-	return queryRes;
-}
+import {getTags} from '/lib/enonic/yase/admin/tags/getTags';
 
 
 export function tagsPage(

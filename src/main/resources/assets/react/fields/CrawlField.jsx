@@ -17,11 +17,12 @@ import {ScrapeField} from './ScrapeField';
 
 export const CrawlField = ({
 	fields,
-	handleBlur,
-	handleChange,
 	path,
+	parentPath,
 	setFieldValue,
-	value
+	tags,
+	value,
+	values
 }) => {
 	//console.log(JSON.stringify({path, value}, null, 4));
 	if(!(value && Array.isArray(value) && value.length)) {
@@ -33,11 +34,24 @@ export const CrawlField = ({
 			render={({insert, swap, remove}) => value.map(({crawl, download, dynamic, scrape, urlExpr}, index) => (
 				<React.Fragment key={`${path}[${index}]`}>
 					<Checkbox checked={dynamic} label="Dynamic" name={`${path}[${index}].dynamic`}/>
-					<LabeledField label="Url extraction expression" name={`${path}[${index}].urlExpr`}/>
+					<LabeledField autoComplete="off" label="Url extraction expression" name={`${path}[${index}].urlExpr`}/>
 
-					<ScrapeField fields={fields} handleBlur={handleBlur} handleChange={handleChange} path={`${path}[${index}].scrape`} value={scrape} setFieldValue={setFieldValue}/>
-					<DownloadField path={`${path}[${index}].download`} value={download} setFieldValue={setFieldValue}/>
-					<CrawlField fields={fields} handleBlur={handleBlur} handleChange={handleChange} path={`${path}[${index}].crawl`} value={crawl} setFieldValue={setFieldValue}/>{/*Recursive*/}
+					<ScrapeField
+						fields={fields}
+						parentPath={`${path}[${index}]`}
+						setFieldValue={setFieldValue}
+						tags={tags}
+						value={scrape}
+						values={values}
+					/>
+					<DownloadField
+						parentPath={`${path}[${index}]`}
+						setFieldValue={setFieldValue}
+						tags={tags}
+						value={download}
+						values={values}
+					/>
+					<CrawlField fields={fields} path={`${path}[${index}].crawl`} value={crawl} setFieldValue={setFieldValue}/>{/*Recursive*/}
 
 					<InsertButton index={index} insert={insert} value={{dynamic: false, urlExpr: ''}}/>
 					<RemoveButton index={index} remove={remove}/>

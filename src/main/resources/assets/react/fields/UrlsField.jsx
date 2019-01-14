@@ -22,7 +22,7 @@ export const UrlsField = ({
 			name={path}
 			render={({insert, swap, remove}) => value && value.map((anUrl, index) => (
 				<React.Fragment key={`${path}[${index}]`}>
-					<Field name={`${path}[${index}]`} />
+					<Field autoComplete="off" name={`${path}[${index}]`} />
 					<InsertButton index={index} insert={insert} value={''}/>
 					<RemoveButton index={index} remove={remove} visible={value.length > 1}/>
 					<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>

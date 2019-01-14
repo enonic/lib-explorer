@@ -11,10 +11,12 @@ import {Surgeon} from './fields/Surgeon';
 
 export const Collection = ({
 	fields = [],
+	tags = [],
 	initialValues = {
 		collector: {
 			config: { // Avoid uncontrolled to controlled warning:
 				delay: 1000,
+				download: [],
 				urls: [''] // At least one is required
 			},
 			name: 'surgeon'
@@ -27,21 +29,18 @@ export const Collection = ({
 		console.log(JSON.stringify(values, null, 4));
 	}}
 	render={({
-		handleBlur,
-		handleChange,
 		setFieldValue,
 		setValues,
 		values
 	}) => /*{
-		console.log(JSON.stringify({fields, values}, null, 4));
+		console.log(JSON.stringify({fields, tags, values}, null, 4));
 		return */<Form>
 	<NameField/>
 	<Surgeon
 		fields={fields}
-		handleBlur={handleBlur}
-		handleChange={handleChange}
 		path='collector.config'
 		setFieldValue={setFieldValue}
+		tags={tags}
 		values={values}
 	/>
 	<SubmitButton text="Save collection"/>

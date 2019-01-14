@@ -24,11 +24,12 @@ import {UrlsField} from './UrlsField';
 
 export const Surgeon = ({
 	fields,
-	handleBlur,
-	handleChange,
 	path,
 	setFieldValue,
-	values: {
+	tags,
+	values
+}) => {
+	const {
 		collector: {
 			name: collectorName,
 			config: {
@@ -42,9 +43,8 @@ export const Surgeon = ({
 				urls
 			}
 		}
-	}
-}) => /*{
-	console.log(JSON.stringify({
+	} = values;
+	/*console.log(JSON.stringify({
 		fields,
 		path,
 		collectorName,
@@ -56,15 +56,37 @@ export const Surgeon = ({
 		headers,
 		scrape,
 		urls
-	}, null, 4));
-	return */<><Fieldset legend="Request">
+	}, null, 4));*/
+	return <>
+	<Fieldset legend="Request">
 		<UrlsField path={`${path}.urls`} value={urls}/>
 		<PathRangeField path={`${path}.pathRange`} pathRange={pathRange} setFieldValue={setFieldValue}/>
 		<QueryRangeField path={`${path}.queryRange`} queryRange={queryRange} setFieldValue={setFieldValue}/>
 		<HeadersField path={`${path}.headers`} headers={headers} setFieldValue={setFieldValue}/>
 		<DelayField path={`${path}.delay`} value={delay}/>
 	</Fieldset>
-	<ScrapeField fields={fields} handleBlur={handleBlur} handleChange={handleChange} path={`${path}.scrape`} value={scrape} setFieldValue={setFieldValue}/>
-	<DownloadField path={`${path}.download`} value={download} setFieldValue={setFieldValue}/>
-	<CrawlField fields={fields} handleBlur={handleBlur} handleChange={handleChange} path={`${path}.crawl`} value={crawl} setFieldValue={setFieldValue}/>
-</>/*}*/;
+	<ScrapeField
+		fields={fields}
+		parentPath={path}
+		setFieldValue={setFieldValue}
+		tags={tags}
+		value={scrape}
+		values={values}
+	/>
+	<DownloadField
+		parentPath={path}
+		setFieldValue={setFieldValue}
+		tags={tags}
+		value={download}
+		values={values}
+	/>
+	<CrawlField
+		fields={fields}
+		parentPath={path}
+		path={`${path}.crawl`}
+		setFieldValue={setFieldValue}
+		tags={tags}
+		value={crawl}
+		values={values}
+	/>
+</>};
