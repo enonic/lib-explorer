@@ -31,7 +31,7 @@ export const CrawlField = ({
 		<FieldArray
 			name={path}
 			render={({insert, swap, remove}) => value.map(({crawl, download, dynamic, scrape, urlExpr}, index) => (
-				<div key={`${path}[${index}]`}>
+				<React.Fragment key={`${path}[${index}]`}>
 					<Checkbox checked={dynamic} label="Dynamic" name={`${path}[${index}].dynamic`}/>
 					<LabeledField label="Url extraction expression" name={`${path}[${index}].urlExpr`}/>
 
@@ -43,7 +43,7 @@ export const CrawlField = ({
 					<RemoveButton index={index} remove={remove}/>
 					<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
 					<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
-				</div>
+				</React.Fragment>
 			))}
 		/>
 	</Fieldset>;

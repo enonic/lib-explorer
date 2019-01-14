@@ -10,14 +10,18 @@ import {Fieldset} from '../elements/Fieldset';
 import {Table} from '../elements/Table';
 
 
-export const HeadersField = ({headers, setFieldValue}) => headers && headers.length
-	? <Fieldset legend="Headers">
+export const HeadersField = ({
+	headers,
+	path,
+	setFieldValue
+}) => headers && headers.length
+	? <Fieldset legend={`Headers (${path})`}>
 		<Table headers={['Name', 'Value', 'Action(s)']}>
 			<FieldArray
-				name="headers"
-				render={({insert, swap, remove}) => headers.map(({name, value}, index) => <tr key={`headers[${index}]`}>
-					<td><Field name={`headers[${index}].name`}/></td>
-					<td><Field name={`headers[${index}].value`}/></td>
+				name={path}
+				render={({insert, swap, remove}) => headers.map(({name, value}, index) => <tr key={`${path}[${index}]`}>
+					<td><Field name={`${path}[${index}].name`}/></td>
+					<td><Field name={`${path}[${index}].value`}/></td>
 					<td>
 						<InsertButton index={index} insert={insert} value={{name: '', value: ''}}/>
 						<RemoveButton index={index} remove={remove}/>
@@ -28,4 +32,4 @@ export const HeadersField = ({headers, setFieldValue}) => headers && headers.len
 			/>
 		</Table>
 	</Fieldset>
-	: <SetFieldValueButton className='block' field='headers' value={[{name: '', value: ''}]} setFieldValue={setFieldValue} text="Add header(s)"/>
+	: <SetFieldValueButton className='block' field={path} value={[{name: '', value: ''}]} setFieldValue={setFieldValue} text="Add header(s)"/>

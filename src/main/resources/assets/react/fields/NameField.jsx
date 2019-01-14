@@ -1,4 +1,4 @@
 import {LabeledField} from '../elements/LabeledField';
 
-export const NameField = ({name}) =>
+export const NameField = () =>
 	<LabeledField label='Name' name="name" />

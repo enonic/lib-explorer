@@ -27,14 +27,14 @@ export const ScrapeField = ({
 	return <Fieldset legend={capitalize(path)}>
 		<FieldArray
 			name={path}
-			render={({insert, swap, remove}) => value.map(({field, dataExpr}, index) => <div key={`${path}[${index}]`}>
+			render={({insert, swap, remove}) => value.map(({field, dataExpr}, index) => <React.Fragment key={`${path}[${index}]`}>
 				<Select handleBlur={handleBlur} handleChange={handleChange} label="Field" name={`${path}[${index}].field`} options={fields} placeholder="Please select a field" value={field}/>
 				<LabeledField label="Data extraction expression" name={`${path}[${index}].dataExpr`}/>
 				<InsertButton index={index} insert={insert} value={{field: '', dataExpr: ''}}/>
 				<RemoveButton index={index} remove={remove}/>
 				<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
 				<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
-			</div>)}
+			</React.Fragment>)}
 		/>
 	</Fieldset>;
 };

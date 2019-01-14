@@ -19,13 +19,13 @@ export const DownloadField = ({path, setFieldValue, value}) => {
 		<FieldArray
 			name={path}
 			render={({insert, swap, remove}) => value.map((aDownloadExpression, index) => (
-				<div key={`${path}[${index}]`}>
+				<React.Fragment key={`${path}[${index}]`}>
 					<Field name={`${path}[${index}]`} />
 					<InsertButton index={index} insert={insert} value={''}/>
 					<RemoveButton index={index} remove={remove}/>
 					<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
 					<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
-				</div>
+				</React.Fragment>
 			))}
 		/>
 	</Label>;
