@@ -9,7 +9,7 @@ export const QueryRangeField = ({
 	queryRange,
 	setFieldValue
 }) => queryRange
-	? <Fieldset legend={`Query range (${path})`}>
+	? <Fieldset legend="Query range">
 		<LabeledField autoComplete="off" label="Name" name={`${path}.name`}/>
 		<LabeledField label="Min" name={`${path}.min`} type="number"/>
 		<LabeledField label="Max" name={`${path}.max`} type="number"/>

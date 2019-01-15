@@ -1,7 +1,10 @@
 module.exports = {
 
 	// https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/style.js
-	extends: 'airbnb-base',
+	extends: [
+		'plugin:jsx-a11y/recommended',
+		//'airbnb-base',
+	],
 
 	globals: {
 
@@ -28,6 +31,14 @@ module.exports = {
 		//jQuery: false,
 
 	},
+
+	parser: 'babel-eslint',
+
+	plugins: [
+		'jsx-a11y',
+		//'react'
+	],
+
 	rules: { // https://eslint.org/docs/rules
 		'comma-dangle': ['error', {
 			arrays: 'ignore',
@@ -42,7 +53,7 @@ module.exports = {
 		'import/no-extraneous-dependencies': ['off'],
 		'import/no-unresolved': ['off'],
 		indent: ['warn', 'tab'],
-		'max-len': ['error', 100, 2, {
+		'max-len': ['error', 160, 2, {
 			ignoreUrls: true,
 			ignoreComments: true,
 			ignoreRegExpLiterals: true,

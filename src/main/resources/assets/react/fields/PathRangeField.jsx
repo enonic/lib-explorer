@@ -9,7 +9,7 @@ export const PathRangeField = ({
 	pathRange,
 	setFieldValue
 }) => pathRange
-	? (<Fieldset legend={`Path range (${path})`}>
+	? (<Fieldset legend="Path range">
 		<LabeledField label="Min" name={`${path}.min`} type="number"/>
 		<LabeledField label="Max" name={`${path}.max`} type="number"/>
 		<SetFieldValueButton field={path} value={null} setFieldValue={setFieldValue} text="Remove path range"/>

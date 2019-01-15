@@ -25,7 +25,7 @@ export const DownloadField = ({
 		return <SetFieldValueButton className='block' field={path} value={[{expr: '', tags: []}]} setFieldValue={setFieldValue} text="Add download expression(s)"/>
 	}
 
-	return <Fieldset legend={`Download (${parentPath})`}>
+	return <Fieldset legend="Download">
 		<Table headers={['Expression', 'Tag(s)', 'Action(s)']}>
 			<FieldArray
 				name={path}

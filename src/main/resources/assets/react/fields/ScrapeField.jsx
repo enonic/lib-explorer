@@ -34,7 +34,7 @@ export const ScrapeField = ({
 	if(!(value && Array.isArray(value) && value.length)) {
 		return <SetFieldValueButton className='block' field={path} value={[{field: '', dataExpr: ''}]} setFieldValue={setFieldValue} text="Add scrape field"/>
 	}
-	return <Fieldset legend={`Scrape (${parentPath})`}>
+	return <Fieldset legend="Scrape">
 		<Table headers={['Field', 'Expression', 'Action(s)']}>
 			<FieldArray
 				name={path}

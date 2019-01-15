@@ -15,7 +15,7 @@ export const HeadersField = ({
 	path,
 	setFieldValue
 }) => headers && headers.length
-	? <Fieldset legend={`Headers (${path})`}>
+	? <Fieldset legend="Headers">
 		<Table headers={['Name', 'Value', 'Action(s)']}>
 			<FieldArray
 				name={path}

@@ -1,9 +1,4 @@
-/* global React */
 import {Form, Formik} from 'formik';
-
-// ERROR The next line cause runtime errors!
-//import React, { Component } from 'react';
-
 import {SubmitButton} from './buttons/SubmitButton';
 import {NameField} from './fields/NameField';
 import {Surgeon} from './fields/Surgeon';
@@ -30,19 +25,18 @@ export const Collection = ({
 	}}
 	render={({
 		setFieldValue,
-		setValues,
 		values
 	}) => /*{
 		console.log(JSON.stringify({fields, tags, values}, null, 4));
 		return */<Form>
-	<NameField/>
-	<Surgeon
-		fields={fields}
-		path='collector.config'
-		setFieldValue={setFieldValue}
-		tags={tags}
-		values={values}
-	/>
-	<SubmitButton text="Save collection"/>
-</Form>/*}*/}
+			<NameField/>
+			<Surgeon
+				fields={fields}
+				path='collector.config'
+				setFieldValue={setFieldValue}
+				tags={tags}
+				values={values}
+			/>
+			<SubmitButton text="Save collection"/>
+		</Form>/*}*/}
 />; // Collection

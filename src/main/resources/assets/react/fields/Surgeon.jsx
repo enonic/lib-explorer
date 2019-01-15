@@ -59,7 +59,7 @@ export const Surgeon = ({
 	}, null, 4));*/
 	return <>
 	<Fieldset legend="Request">
-		<UrlsField path={`${path}.urls`} value={urls}/>
+		<UrlsField parentPath={path} value={urls}/>
 		<PathRangeField path={`${path}.pathRange`} pathRange={pathRange} setFieldValue={setFieldValue}/>
 		<QueryRangeField path={`${path}.queryRange`} queryRange={queryRange} setFieldValue={setFieldValue}/>
 		<HeadersField path={`${path}.headers`} headers={headers} setFieldValue={setFieldValue}/>
@@ -83,7 +83,6 @@ export const Surgeon = ({
 	<CrawlField
 		fields={fields}
 		parentPath={path}
-		path={`${path}.crawl`}
 		setFieldValue={setFieldValue}
 		tags={tags}
 		value={crawl}
