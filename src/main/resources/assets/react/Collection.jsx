@@ -5,6 +5,7 @@ import {Surgeon} from './fields/Surgeon';
 
 
 export const Collection = ({
+	action,
 	fields = [],
 	tags = [],
 	initialValues = {
@@ -20,15 +21,21 @@ export const Collection = ({
 	}
 } = {}) => <Formik
 	initialValues={initialValues}
-	onSubmit={values => {
-		console.log(JSON.stringify(values, null, 4));
-	}}
+
 	render={({
+		handleSubmit,
 		setFieldValue,
 		values
 	}) => /*{
 		console.log(JSON.stringify({fields, tags, values}, null, 4));
-		return */<Form>
+		return */<Form action={action} autoComplete="off" method="POST" onSubmit={(/*event*/) => {
+			//event.preventDefault();
+			//console.log(this); // undefined
+			//console.log(event);
+			//console.log(values);
+			const el = document.getElementById('json'); //console.log(el);
+			el.setAttribute('value', JSON.stringify(values)); //console.log(el);
+		}}>
 			<NameField/>
 			<Surgeon
 				fields={fields}
@@ -38,5 +45,6 @@ export const Collection = ({
 				values={values}
 			/>
 			<SubmitButton text="Save collection"/>
+			<input id="json" name="json" type="hidden"/>
 		</Form>/*}*/}
 />; // Collection

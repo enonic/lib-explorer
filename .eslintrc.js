@@ -66,7 +66,10 @@ module.exports = {
 		'no-underscore-dangle': ['error', {
 			allow: [
 				'_path',
-				'_id'
+				'_id',
+				'_indexConfig',
+				'_name',
+				'_parentPath'
 			],
 			allowAfterThis: false,
 			allowAfterSuper: false,

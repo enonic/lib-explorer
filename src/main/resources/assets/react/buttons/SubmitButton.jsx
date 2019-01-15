@@ -1,1 +1,1 @@
-export const SubmitButton = ({text}) => <button type="submit">{text}</button>;
+export const SubmitButton = ({text, ...rest}) => <button type="submit" {...rest}>{text}</button>;
