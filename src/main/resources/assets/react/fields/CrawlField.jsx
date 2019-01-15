@@ -11,6 +11,8 @@ import {Checkbox} from '../elements/Checkbox';
 import {Fieldset} from '../elements/Fieldset';
 import {LabeledField} from '../elements/LabeledField';
 
+//import {toStr} from '../utils/toStr';
+
 import {DownloadField} from './DownloadField';
 import {ScrapeField} from './ScrapeField';
 
@@ -23,15 +25,22 @@ export const CrawlField = ({
 	value,
 	values
 }) => {
+	//console.log(toStr({parentPath, value}));
+
 	const path = `${parentPath}.crawl`;
-	//console.log(JSON.stringify({path, value}, null, 4));
-	if(!(value && Array.isArray(value) && value.length)) {
+	//console.log(toStr({path}));
+
+	if(!value || !value.length) {
 		return <SetFieldValueButton className='block' field={path} value={[{dynamic: false, urlExpr: ''}]} setFieldValue={setFieldValue} text="Add crawl expression(s)"/>;
 	}
 	return <FieldArray
 		name={path}
 		render={({insert, swap, remove}) => value.map(({crawl, download, dynamic, scrape, urlExpr}, index) => {
+			//console.log(toStr({crawl, download, dynamic, scrape, urlExpr, index}));
+
 			const key = `${path}[${index}]`;
+			//console.log(toStr({key}));
+
 			return <Fieldset key={key} legend={`Crawl ${key
 				.replace(/^collector\.config/, '')
 				.replace(/\.crawl\[/g, '')

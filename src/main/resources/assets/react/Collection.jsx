@@ -2,6 +2,7 @@ import {Form, Formik} from 'formik';
 import {SubmitButton} from './buttons/SubmitButton';
 import {NameField} from './fields/NameField';
 import {Surgeon} from './fields/Surgeon';
+//import {toStr} from './utils/toStr';
 
 
 export const Collection = ({
@@ -21,21 +22,20 @@ export const Collection = ({
 	}
 } = {}) => <Formik
 	initialValues={initialValues}
-
 	render={({
 		handleSubmit,
 		setFieldValue,
 		values
 	}) => /*{
-		console.log(JSON.stringify({fields, tags, values}, null, 4));
-		return */<Form action={action} autoComplete="off" method="POST" onSubmit={(/*event*/) => {
-			//event.preventDefault();
-			//console.log(this); // undefined
-			//console.log(event);
-			//console.log(values);
-			const el = document.getElementById('json'); //console.log(el);
-			el.setAttribute('value', JSON.stringify(values)); //console.log(el);
-		}}>
+		console.log(toStr({fields, tags, values}));
+		return */<Form
+			action={action}
+			autoComplete="off"
+			method="POST"
+			onSubmit={() => {
+				document.getElementById('json').setAttribute('value', JSON.stringify(values))
+			}}
+		>
 			<NameField/>
 			<Surgeon
 				fields={fields}

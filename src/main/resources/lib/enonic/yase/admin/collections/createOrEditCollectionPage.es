@@ -1,4 +1,6 @@
-//import {toStr} from '/lib/enonic/util';
+import traverse from 'traverse';
+
+import {toStr} from '/lib/enonic/util';
 import {assetUrl} from '/lib/xp/portal';
 
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
@@ -10,6 +12,31 @@ import {getTags} from '/lib/enonic/yase/admin/tags/getTags';
 
 
 const ID_REACT_COLLECTION_CONTAINER = 'reactCollectionContainer';
+
+function convert(node) {
+	traverse(node).forEach(function(value) { // Fat arrow destroys this
+		const key = this.key;
+		//log.info(toStr({key}));
+		if([
+			'crawl',
+			'download',
+			'headers',
+			'pathRange',
+			'queryRange',
+			'scrape',
+			'tags',
+			'urls',
+		].includes(key)) {
+			if (!value) {
+				this.update([]);
+			} else if (!Array.isArray(value)) {
+				const array = [value];
+				convert(array); // Recurse
+				this.update(array);
+			}
+		}
+	});
+}
 
 
 export function createOrEditCollectionPage({
@@ -27,17 +54,18 @@ export function createOrEditCollectionPage({
 		//log.info(toStr({node}));
 
 		const {collector} = node;
-		//log.info(toStr({collector}));
-
-		if (collector.name === 'surgeon' && (!collector.config.urls || !collector.config.urls.length)) {
-			collector.config.urls = [''];
+		convert(collector);
+		if(!collector.config.urls.length) {
+			collector.config.urls.push('');
 		}
+		//log.info(toStr({collector}));
 
 		initialValues = {
 			name: collectionName,
 			collector
 		};
 	}
+	log.info(toStr({initialValues}));
 
 	const fields = getFields().hits.map(({displayName, key}) => ({label: displayName, value: key}));
 	//log.info(toStr({fields}));

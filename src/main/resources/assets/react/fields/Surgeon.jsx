@@ -11,6 +11,8 @@ import {Label} from '../elements/Label';
 import {LabeledField} from '../elements/LabeledField';
 import {Table} from '../elements/Table';
 
+//import {toStr} from '../utils/toStr';
+
 // Fields
 import {CrawlField} from './CrawlField';
 import {DelayField} from './DelayField';
@@ -44,11 +46,11 @@ export const Surgeon = ({
 			}
 		}
 	} = values;
-	/*console.log(JSON.stringify({
+	/*console.log(toStr({
 		fields,
 		path,
 		collectorName,
-		crawl,
+		crawl/*,
 		delay,
 		download,
 		pathRange,
@@ -56,7 +58,7 @@ export const Surgeon = ({
 		headers,
 		scrape,
 		urls
-	}, null, 4));*/
+	}));*/
 	return <>
 	<Fieldset legend="Request">
 		<UrlsField parentPath={path} value={urls}/>

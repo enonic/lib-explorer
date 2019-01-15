@@ -21,7 +21,10 @@ export const DownloadField = ({
 }) => {
 	const path = `${parentPath}.download`;
 	//console.log(JSON.stringify({parentPath, path/*, tags*/, value, values}, null, 4));
-	if(!(value && Array.isArray(value) && value.length)) {
+	if(!value || !Array.isArray(value)) {
+		value = [];
+	}
+	if(!value.length) {
 		return <SetFieldValueButton className='block' field={path} value={[{expr: '', tags: []}]} setFieldValue={setFieldValue} text="Add download expression(s)"/>
 	}
 
