@@ -22,7 +22,7 @@ export const collectionsPage = ({
 		</tr>
 	</thead>
 	<tbody>
-		${collections.hits.map(({_name, displayName, collector: {name: collectorName}}) => `<tr><td><a href="${TOOL_PATH}/collections/${_name}">${displayName}</a></td><td>${collectorName}</td></tr>`)}
+		${collections.hits.map(({_name, displayName, collector: {name: collectorName}}) => `<tr><td><a href="${TOOL_PATH}/collections/${_name}">${displayName}</a></td><td>${collectorName}</td></tr>`).join('\n')}
 	</tbody>
 </table>
 <ul>
