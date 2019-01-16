@@ -2,11 +2,14 @@ import {NT_COLLECTION} from '/lib/enonic/yase/constants';
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
 
 
-export function getCollections({
-	connection = connectRepo()
+export function queryCollections({
+	connection = connectRepo(),
+	count = -1,
+	query = '', //"_parentPath = '/collections'",
+	sort = '_name ASC'
 } = {}) {
 	const queryParams = {
-		count: -1,
+		count,
 		filters: {
 			boolean: {
 				must: [{
@@ -17,8 +20,8 @@ export function getCollections({
 				}]
 			}
 		},
-		query: '', //"_parentPath = '/collections'",
-		sort: '_name ASC'
+		query,
+		sort
 	};
 	const queryRes = connection.query(queryParams);
 	queryRes.hits = queryRes.hits.map(hit => connection.get(hit.id));
