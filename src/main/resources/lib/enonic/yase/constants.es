@@ -18,6 +18,8 @@ export const TOOL_PATH = getToolUrl(APP_YASE, 'yase');
 export const NT_COLLECTION = `${APP_YASE}:collection`;
 export const NT_FIELD = `${APP_YASE}:field`;
 export const NT_FOLDER = `${APP_YASE}:folder`;
+export const NT_SCRAPE = `${APP_YASE}:scrape`;
+//export const NT_SCRAPED_PDF = `${APP_YASE}:scrapedPdf`;
 export const NT_SYNONYM = `${APP_YASE}:synonym`;
 export const NT_TAG = `${APP_YASE}:tag`;
 export const NT_THESAURUS = `${APP_YASE}:thesaurus`;
@@ -35,6 +37,7 @@ export const RT_HTML = 'text/html;charset=utf-8';
 //──────────────────────────────────────────────────────────────────────────────
 export const BRANCH_ID = 'master';
 export const REPO_ID = sanitize(APP_YASE);
+export const COLLECTION_REPO_PREFIX = 'com.enonic.yase:collection:';
 
 
 //──────────────────────────────────────────────────────────────────────────────

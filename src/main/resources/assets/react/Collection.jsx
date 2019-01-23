@@ -14,6 +14,7 @@ export const Collection = ({
 			config: { // Avoid uncontrolled to controlled warning:
 				delay: 1000,
 				download: [],
+				dynamic: false,
 				urls: [''] // At least one is required
 			},
 			name: 'surgeon'

@@ -21,8 +21,7 @@ function convert(node) {
 			'crawl',
 			'download',
 			'headers',
-			'pathRange',
-			'queryRange',
+			'queryParams',
 			'scrape',
 			'tags',
 			'urls',
@@ -53,7 +52,7 @@ export function createOrEditCollectionPage({
 		const node = connection.get(`/collections/${collectionName}`)
 		//log.info(toStr({node}));
 
-		const {collector} = node;
+		const {displayName, collector} = node;
 		convert(collector);
 		if(!collector.config.urls.length) {
 			collector.config.urls.push('');
@@ -61,7 +60,7 @@ export function createOrEditCollectionPage({
 		//log.info(toStr({collector}));
 
 		initialValues = {
-			name: collectionName,
+			name: displayName,
 			collector
 		};
 	}

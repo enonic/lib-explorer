@@ -6,6 +6,7 @@ import {RemoveButton} from '../buttons/RemoveButton';
 import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
 
 // Elements
+import {Checkbox} from '../elements/Checkbox';
 import {Fieldset} from '../elements/Fieldset';
 import {Label} from '../elements/Label';
 import {LabeledField} from '../elements/LabeledField';
@@ -19,6 +20,7 @@ import {DelayField} from './DelayField';
 import {DownloadField} from './DownloadField';
 import {HeadersField} from './HeadersField';
 import {PathRangeField} from './PathRangeField';
+import {QueryParameters} from './QueryParameters';
 import {QueryRangeField} from './QueryRangeField';
 import {ScrapeField} from './ScrapeField';
 import {UrlsField} from './UrlsField';
@@ -38,7 +40,9 @@ export const Surgeon = ({
 				crawl,
 				delay,
 				download,
+				dynamic,
 				pathRange,
+				queryParams,
 				queryRange,
 				headers,
 				scrape,
@@ -52,8 +56,10 @@ export const Surgeon = ({
 		collectorName,
 		crawl/*,
 		delay,
+		dynamic,
 		download,
 		pathRange,
+		queryParams,
 		queryRange,
 		headers,
 		scrape,
@@ -64,8 +70,10 @@ export const Surgeon = ({
 		<UrlsField parentPath={path} value={urls}/>
 		<PathRangeField path={`${path}.pathRange`} pathRange={pathRange} setFieldValue={setFieldValue}/>
 		<QueryRangeField path={`${path}.queryRange`} queryRange={queryRange} setFieldValue={setFieldValue}/>
+		<QueryParameters parentPath={path} setFieldValue={setFieldValue} value={queryParams}/>
 		<HeadersField path={`${path}.headers`} headers={headers} setFieldValue={setFieldValue}/>
 		<DelayField path={`${path}.delay`} value={delay}/>
+		<Checkbox checked={dynamic} label="Dynamic" name={`${path}.dynamic`}/>
 	</Fieldset>
 	<ScrapeField
 		fields={fields}
