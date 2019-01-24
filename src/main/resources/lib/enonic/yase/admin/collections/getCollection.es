@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
 
 
@@ -9,8 +9,8 @@ export const getCollection = ({
 	const keys = Array.isArray(name)
 		? name.map(n => `/collections/${n}`)
 		: `/collections/${name}`;
-	log.info(toStr({keys}));
+	//log.info(toStr({keys}));
 	const res = connection.get(keys);
-	log.info(toStr({res}));
+	//log.info(toStr({res}));
 	return res;
 };
