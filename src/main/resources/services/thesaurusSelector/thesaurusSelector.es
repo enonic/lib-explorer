@@ -1,12 +1,7 @@
 import {toStr} from '/lib/enonic/util';
 import {connect} from '/lib/xp/node';
 
-
-const BRANCH_ID = 'master';
-
-const APP_YASE = 'com.enonic.admin.yase';
-const NT_THESAURUS = `${APP_YASE}:thesaurus`;
-const REPO_ID = APP_YASE;
+import {BRANCH_ID, PACKAGE, NT_THESAURUS, REPO_ID} from '/lib/enonic/yase/constants';
 
 
 const CONNECTION = connect({
