@@ -1,6 +1,6 @@
 import traverse from 'traverse';
 
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {assetUrl} from '/lib/xp/portal';
 
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
@@ -64,7 +64,7 @@ export function createOrEditCollectionPage({
 			collector
 		};
 	}
-	log.info(toStr({initialValues}));
+	//log.info(toStr({initialValues}));
 
 	const fields = getFields().hits.map(({displayName, key}) => ({label: displayName, value: key}));
 	//log.info(toStr({fields}));
