@@ -3,8 +3,16 @@
 //──────────────────────────────────────────────────────────────────────────────
 import {resolve as _resolve} from 'uri-js';
 
+//──────────────────────────────────────────────────────────────────────────────
+// Enonic XP imports (included in jar via gradle dependencies)
+//──────────────────────────────────────────────────────────────────────────────
+import {toStr} from '/lib/enonic/util';
+
 
 //──────────────────────────────────────────────────────────────────────────────
 // Public function
 //──────────────────────────────────────────────────────────────────────────────
-export const resolve = ({base, uri}) => _resolve(base, uri);
+export function resolve({base, uri}) {
+	log.info(toStr({base, uri}));
+	return _resolve(base, uri);
+}
