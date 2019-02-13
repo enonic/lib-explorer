@@ -16,11 +16,11 @@ export function smartRequest({
 	method = 'GET',
 	multipart,
 	params = {},
-	prevReqFinishedAtMillis,
 	proxy,
 	readTimeout = 5000,
 	retryCount = 0, // Gets incremented on recursion
 	retries = 0,
+	stateRef = { prevReqFinishedAtMillis: null },
 	url
 }) {
 	log.info(toStr({delay, retries, retryCount}));
@@ -42,17 +42,18 @@ export function smartRequest({
 
 	let response;
 	try {
-		if (prevReqFinishedAtMillis && delay) {
-			const msToSleep = delay - (currentTimeMillis() - prevReqFinishedAtMillis);
+		if (stateRef && stateRef.prevReqFinishedAtMillis && delay) {
+			const msToSleep = delay - (currentTimeMillis() - stateRef.prevReqFinishedAtMillis);
 			log.info(toStr({msToSleep}));
 			if (msToSleep) { sleep(msToSleep); }
 		}
 		const sentRequestAtMillis = currentTimeMillis();
 		response = httpClientRequest(reqParams);
-		const receivedResponseAtMillis = currentTimeMillis();
-		const latency = receivedResponseAtMillis - sentRequestAtMillis;
+		stateRef.prevReqFinishedAtMillis = currentTimeMillis();
+		const latency = stateRef.prevReqFinishedAtMillis - sentRequestAtMillis;
 		log.info(toStr({latency}));
 	} catch (e) {
+		stateRef.prevReqFinishedAtMillis = currentTimeMillis();
 		if (e instanceof java.net.ConnectException) {
 			log.error(e.message + ': on url ' + url);
 		} else if (e instanceof java.net.SocketTimeoutException) {
@@ -73,7 +74,7 @@ export function smartRequest({
 			reqParams.readTimeout = readTimeout * 2; // Double on each retry
 			reqParams.retries = retries;
 			reqParams.retryCount = retryCount + 1; // Increment before recursion
-			reqParams.prevReqFinishedAtMillis = currentTimeMillis();
+			reqParams.stateRef = stateRef; // Pass on reference
 			response = smartRequest(reqParams); // Recursion
 		} else {
 			throw e;
