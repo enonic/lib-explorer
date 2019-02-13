@@ -111,7 +111,7 @@ export const handleCollectionAction = ({
 			//log.info(toStr({submitNamedParams}));
 
 			const taskId = submitNamed(submitNamedParams);
-			log.info(toStr({taskId}));
+			//log.info(toStr({taskId}));
 		}
 	}
 }; // handleCollectionAction

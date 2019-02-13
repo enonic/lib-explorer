@@ -23,7 +23,7 @@ export function smartRequest({
 	stateRef = { prevReqFinishedAtMillis: null },
 	url
 }) {
-	log.info(toStr({delay, retries, retryCount}));
+	//log.info(toStr({delay, retries, retryCount}));
 	const reqParams = {
 		connectionTimeout,
 		contentType,
@@ -38,20 +38,20 @@ export function smartRequest({
 	if (contentType) { reqParams.contentType = contentType; }
 	if (multipart) { reqParams.multipart = multipart; }
 	if (proxy) { reqParams.proxy = proxy; }
-	log.info(toStr({reqParams}));
+	//log.info(toStr({reqParams}));
 
 	let response;
 	try {
 		if (stateRef && stateRef.prevReqFinishedAtMillis && delay) {
 			const msToSleep = delay - (currentTimeMillis() - stateRef.prevReqFinishedAtMillis);
-			log.info(toStr({msToSleep}));
+			//log.info(toStr({msToSleep}));
 			if (msToSleep) { sleep(msToSleep); }
 		}
 		const sentRequestAtMillis = currentTimeMillis();
 		response = httpClientRequest(reqParams);
 		stateRef.prevReqFinishedAtMillis = currentTimeMillis();
 		const latency = stateRef.prevReqFinishedAtMillis - sentRequestAtMillis;
-		log.info(toStr({latency}));
+		//log.info(toStr({latency}));
 	} catch (e) {
 		stateRef.prevReqFinishedAtMillis = currentTimeMillis();
 		if (e instanceof java.net.ConnectException) {
