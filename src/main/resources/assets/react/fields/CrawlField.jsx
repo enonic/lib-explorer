@@ -73,6 +73,7 @@ export const CrawlField = ({
 					fields={fields}
 					parentPath={key}
 					setFieldValue={setFieldValue}
+					tags={tags}
 					value={crawl}
 					values={values}
 				/>{/*Recursive*/}
