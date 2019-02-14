@@ -1,16 +1,29 @@
 import {Form, Formik} from 'formik';
 import {SubmitButton} from './buttons/SubmitButton';
-import {NameField} from './fields/NameField';
+
+// Elements
+import {Fieldset} from './elements/Fieldset';
+import {Radio} from './elements/Radio';
 import {Select} from './elements/Select';
+
+import {NameField} from './fields/NameField';
+import {Fulltext} from './fields/Fulltext';
+
+
 import {toStr} from './utils/toStr';
 
 
 export const Interface = ({
 	action,
 	collections,
+	fields,
 	initialValues = {
 		name: '',
-		collections: []
+		collections: []/*,
+		fulltext: [{
+			field: 'title',
+			boost: 1
+		}]*/
 	}
 } = {}) => <Formik
 	initialValues={initialValues}
@@ -40,6 +53,36 @@ export const Interface = ({
 				options={collections}
 				setFieldValue={setFieldValue}
 				value={values.collections}
+			/>
+			{/*<Select
+				label="Field"
+				name="field"
+				options={fields}
+				setFieldValue={setFieldValue}
+				value={values.field}
+			/>*/}
+			<Fieldset legend="Query">
+				<Radio
+					label="Group"
+					name="query"
+					value="group"
+				/>
+				<Radio
+					label="Fulltext"
+					name="query"
+					value="fulltext"
+				/>
+				<Radio
+					label="Ngram"
+					name="query"
+					value="ngram"
+				/>
+			</Fieldset>
+			<Fulltext
+				fields={fields}
+				path="fulltext"
+				setFieldValue={setFieldValue}
+				value={values.fulltext}
 			/>
 			<SubmitButton text="Save interface"/>
 			<input id="json" name="json" type="hidden"/>

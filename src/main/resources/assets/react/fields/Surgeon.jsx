@@ -10,7 +10,7 @@ import {Checkbox} from '../elements/Checkbox';
 import {Fieldset} from '../elements/Fieldset';
 import {Label} from '../elements/Label';
 import {LabeledField} from '../elements/LabeledField';
-import {Table} from '../elements/Table';
+//import {Table} from '../elements/Table';
 
 //import {toStr} from '../utils/toStr';
 
