@@ -120,7 +120,7 @@ const SERVER_JS_CONFIG = {
 //──────────────────────────────────────────────────────────────────────────────
 const CLIENT_JS_CONFIG = {
 	context: SRC_ASSETS_DIR_ABS,
-	entry: './react/Collection.jsx',
+	entry: './react/index.jsx',
 	externals: [
 		//'react'
 	],

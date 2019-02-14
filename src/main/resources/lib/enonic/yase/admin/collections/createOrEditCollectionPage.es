@@ -49,7 +49,7 @@ export function createOrEditCollectionPage({
 		//log.info(toStr({collectionName}));
 
 		const connection = connectRepo();
-		const node = connection.get(`/collections/${collectionName}`)
+		const node = connection.get(`/collections/${collectionName}`);
 		//log.info(toStr({node}));
 
 		const {displayName, collector} = node;

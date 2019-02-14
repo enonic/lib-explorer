@@ -1,25 +1,16 @@
 import {Form, Formik} from 'formik';
 import {SubmitButton} from './buttons/SubmitButton';
 import {NameField} from './fields/NameField';
-import {Surgeon} from './fields/Surgeon';
-//import {toStr} from './utils/toStr';
+import {Select} from './elements/Select';
+import {toStr} from './utils/toStr';
 
 
-export const Collection = ({
+export const Interface = ({
 	action,
-	fields = [],
-	tags = [],
+	collections,
 	initialValues = {
-		collector: {
-			config: { // Avoid uncontrolled to controlled warning:
-				delay: 1000,
-				download: [],
-				dynamic: false,
-				urls: [''] // At least one is required
-			},
-			name: 'surgeon'
-		},
-		name: ''
+		name: '',
+		collections: []
 	}
 } = {}) => <Formik
 	initialValues={initialValues}
@@ -27,9 +18,9 @@ export const Collection = ({
 		handleSubmit,
 		setFieldValue,
 		values
-	}) => /*{
-		console.log(toStr({fields, tags, values}));
-		return */<Form
+	}) => {
+		console.log(toStr({values}));
+		return <Form
 			action={action}
 			autoComplete="off"
 			method="POST"
@@ -42,14 +33,15 @@ export const Collection = ({
 				name="name"
 				value={values.name}
 			/>
-			<Surgeon
-				fields={fields}
-				path='collector.config'
+			<Select
+				label="Collection(s)"
+				multiple={true}
+				name="collections"
+				options={collections}
 				setFieldValue={setFieldValue}
-				tags={tags}
-				values={values}
+				value={values.collections}
 			/>
-			<SubmitButton text="Save collection"/>
+			<SubmitButton text="Save interface"/>
 			<input id="json" name="json" type="hidden"/>
-		</Form>/*}*/}
-/>; // Collection
+		</Form>}}
+/>; // Interface

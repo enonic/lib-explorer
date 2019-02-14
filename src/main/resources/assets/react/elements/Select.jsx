@@ -28,8 +28,8 @@ export const Select = ({
 		}) => setFieldValue(
 			name,
 			[].slice
-			.call(selectedOptions)
-			.map(({value}) => value)
+				.call(selectedOptions)
+				.map(({value}) => value)
 		)}
 		{...rest}
 	>

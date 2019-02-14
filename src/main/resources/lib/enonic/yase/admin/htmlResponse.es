@@ -30,6 +30,7 @@ export function htmlResponse({
 				<li><a class="${relPath.startsWith('/fields') ? 'current' : ''}" href="${toolPath}/fields">Fields</a></li>
 				<li><a class="${relPath.startsWith('/tags') ? 'current' : ''}" href="${toolPath}/tags">Tags</a></li>
 				<li><a class="${relPath.startsWith('/thesauri') ? 'current' : ''}" href="${toolPath}/thesauri">Thesauri</a></li>
+				<li><a class="${relPath.startsWith('/interfaces') ? 'current' : ''}" href="${toolPath}/interfaces">Interfaces</a></li>
 			</ul>
 		</nav>
 		${messages.length ? `<ul class="${status === 200 ? 'success' : 'error'}">${messages.map(m => `<li>${m}</li>`)}</ul>` : ''}

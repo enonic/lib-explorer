@@ -19,6 +19,7 @@ export const TOOL_PATH = getToolUrl(YASE_ADMIN, 'yase');
 export const NT_COLLECTION = `${PACKAGE}:collection`;
 export const NT_FIELD = `${PACKAGE}:field`;
 export const NT_FOLDER = `${PACKAGE}:folder`;
+export const NT_INTERFACE = `${PACKAGE}:interface`;
 export const NT_SCRAPE = `${PACKAGE}:scrape`;
 //export const NT_SCRAPED_PDF = `${PACKAGE}:scrapedPdf`;
 export const NT_SYNONYM = `${PACKAGE}:synonym`;
