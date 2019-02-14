@@ -17,10 +17,10 @@ export const QueryParameters = ({
 	setFieldValue,
 	value // queryParams
 }) => {
-	console.log(toStr({parentPath, value}));
+	//console.log(toStr({parentPath, value}));
 
 	const path = `${parentPath}.queryParams`;
-	console.log(toStr({path}));
+	//console.log(toStr({path}));
 
 	if (!value || !value.length) {
 		return <SetFieldValueButton className='block' field={path} value={[{name: '', value: ''}]} setFieldValue={setFieldValue} text="Add query parameter(s)"/>
