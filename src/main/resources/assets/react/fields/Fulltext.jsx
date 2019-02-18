@@ -1,4 +1,5 @@
 import {Field, FieldArray} from 'formik';
+import {get} from 'lodash';
 
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
@@ -10,61 +11,62 @@ import {Radio} from '../elements/Radio';
 import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
 
-import {toStr} from '../utils/toStr';
+import {OperatorSelector} from '../fields/OperatorSelector';
+
+
+//import {toStr} from '../utils/toStr';
 
 
 export const Fulltext = ({
-	fields,
-	path,
-	setFieldValue,
-	value = {
+	defaultBoost = '',
+	defaultValue = {
 		fields: [{
 			field: '',
-			boost: ''
+			boost: defaultBoost
 		}],
 		operator: 'or'
-	}
-
+	},
+	fields,
+	parentPath,
+	path = parentPath ? `${parentPath}.fulltext` : 'fulltext',
+	setFieldValue,
+	values,
+	value = values ? get(values, path, defaultValue) : defaultValue
 }) => {
-	console.log(toStr({value}));
-	//const path = `${parentPath}.fulltext`;
+	/*console.debug(toStr({
+		//defaultValue,
+		//fields,
+		parentPath, path,
+		//values,
+		value
+	}));*/
 	return <Fieldset legend="Fulltext">
 		<Table headers={['Field', 'Boost']}>
 			<FieldArray
-				name={path}
-				render={({insert, swap, remove}) => value.fields.map(({field, boost}, index) => {
-					const key = `${path}.fields[${index}]`;
-					return <tr key={key}>
-						<td><Select
-							name={`${key}.field`}
-							options={fields}
-							setFieldValue={setFieldValue}
-							value={field}
-						/></td>
-						<td><Field autoComplete="off" name={`${key}.boost`} value={boost}/></td>
-						<td>
-							<InsertButton index={index} insert={insert} value={{field:'', boost:''}}/>
-							<RemoveButton index={index} remove={remove} visible={value.length > 1}/>
-							<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
-							<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
-						</td>
-					</tr>
-				})}
+				name={`${path}.fields`}
+				render={({insert, swap, remove}) => value.fields
+					.map(({field = '', boost = defaultBoost}, index) => {
+						const key = `${path}.fields[${index}]`;
+						return <tr key={key}>
+							<td><Select
+								parentPath={key}
+								name="field"
+								options={fields}
+								placeholder='Select field'
+								setFieldValue={setFieldValue}
+								values={values}
+							/></td>
+							<td><Field autoComplete="off" name={`${key}.boost`} value={boost}/></td>
+							<td>
+								<InsertButton index={index} insert={insert} value={{field: '', boost: defaultBoost}}/>
+								<RemoveButton index={index} remove={remove} visible={value.length > 1}/>
+								<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
+								<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
+							</td>
+						</tr>
+					})}
 			/>
 		</Table>
-		<Fieldset legend="Operator">
-			<Radio
-				checked={value.operator !== 'and'}
-				label="OR"
-				name={`${path}.operator`}
-				value="or"
-			/>
-			<Radio
-				checked={value.operator === 'and'}
-				label="AND"
-				name={`${path}.operator`}
-				value="and"
-			/>
-		</Fieldset>
+		<OperatorSelector parentPath={path} setFieldValue={setFieldValue} values={values}/>
 	</Fieldset>;
 }

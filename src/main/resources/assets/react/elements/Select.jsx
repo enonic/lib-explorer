@@ -1,36 +1,55 @@
 import {Field} from 'formik';
+import {get} from 'lodash';
+
 import {Label} from './Label';
+
+import {toStr} from '../utils/toStr';
+
 
 export const Select = ({
 	component,
 	label,
+	multiple = false,
+	parentPath,
 	name,
+	path = parentPath ? `${parentPath}.${name}` : name,
 	options,
 	placeholder = null,
+	defaultValue = placeholder ? '' : options[0].value,
 	setFieldValue,
-	...rest // multiple, size, value
+	values,
+	value = values ? get(values, path, defaultValue) : defaultValue,
+	...rest // size
 }) => {
-	/*console.log(JSON.stringify({
-		label,
-		name,
-		options,
-		placeholder,
+	/*console.debug({
+		//label,
+		multiple,
+		//parentPath,
+		//name,
+		path,
+		//options,
+		//placeholder,
 		value,
+		//values,
 		rest
-	}, null, 4));*/
+	});*/
 	const select = <Field
 		component="select"
-		name={name}
+		multiple={multiple}
+		name={path}
 		onChange={({
 			target: {
-				selectedOptions
+				selectedOptions // HTMLCollection
 			}
-		}) => setFieldValue(
-			name,
-			[].slice
+		}) => {
+			const htmlCollectionAsArray = [].slice
 				.call(selectedOptions)
-				.map(({value}) => value)
-		)}
+				.map(({value}) => value);
+			const newValue = multiple ? htmlCollectionAsArray : htmlCollectionAsArray[0];
+			//console.debug({multiple, path, htmlCollectionAsArray, newValue});
+			setFieldValue(path, newValue)
+		}}
+		value={value}
 		{...rest}
 	>
 		{placeholder ? <option value="">{placeholder}</option> : null}

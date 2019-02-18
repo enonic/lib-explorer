@@ -8,7 +8,7 @@ import {Select} from './elements/Select';
 
 import {NameField} from './fields/NameField';
 import {Fulltext} from './fields/Fulltext';
-
+import {OperatorSelector} from './fields/OperatorSelector';
 
 import {toStr} from './utils/toStr';
 
@@ -19,11 +19,14 @@ export const Interface = ({
 	fields,
 	initialValues = {
 		name: '',
-		collections: []/*,
-		fulltext: [{
-			field: 'title',
-			boost: 1
-		}]*/
+		collections: [],
+		fulltext: {
+			fields: [{
+				field: '',
+				boost: ''
+			}],
+			operator: 'or'
+		}
 	}
 } = {}) => <Formik
 	initialValues={initialValues}
@@ -32,7 +35,7 @@ export const Interface = ({
 		setFieldValue,
 		values
 	}) => {
-		console.log(toStr({values}));
+		console.debug(toStr({values}));
 		return <Form
 			action={action}
 			autoComplete="off"
@@ -52,7 +55,7 @@ export const Interface = ({
 				name="collections"
 				options={collections}
 				setFieldValue={setFieldValue}
-				value={values.collections}
+				values={values}
 			/>
 			{/*<Select
 				label="Field"
@@ -60,7 +63,8 @@ export const Interface = ({
 				options={fields}
 				setFieldValue={setFieldValue}
 				value={values.field}
-			/>*/}
+			/>
+			<OperatorSelector setFieldValue={setFieldValue} values={values}/>*/}
 			<Fieldset legend="Query">
 				<Radio
 					label="Group"
@@ -80,9 +84,8 @@ export const Interface = ({
 			</Fieldset>
 			<Fulltext
 				fields={fields}
-				path="fulltext"
 				setFieldValue={setFieldValue}
-				value={values.fulltext}
+				values={values}
 			/>
 			<SubmitButton text="Save interface"/>
 			<input id="json" name="json" type="hidden"/>
