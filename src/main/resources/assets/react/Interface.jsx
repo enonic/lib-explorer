@@ -2,13 +2,14 @@ import {Form, Formik} from 'formik';
 import {SubmitButton} from './buttons/SubmitButton';
 
 // Elements
-import {Fieldset} from './elements/Fieldset';
-import {Radio} from './elements/Radio';
+//import {Fieldset} from './elements/Fieldset';
+//import {Radio} from './elements/Radio';
 import {Select} from './elements/Select';
 
 import {NameField} from './fields/NameField';
-import {Fulltext} from './fields/Fulltext';
-import {OperatorSelector} from './fields/OperatorSelector';
+//import {Fulltext} from './fields/Fulltext';
+//import {OperatorSelector} from './fields/OperatorSelector';
+import {QueryGroup} from './fields/QueryGroup';
 
 import {toStr} from './utils/toStr';
 
@@ -20,10 +21,16 @@ export const Interface = ({
 	initialValues = {
 		name: '',
 		collections: [],
-		fulltext: {
+		/*fulltext: {
 			fields: [{
 				field: '',
 				boost: ''
+			}],
+			operator: 'or'
+		},*/
+		group: {
+			expressions: [{
+				type: 'fulltext'
 			}],
 			operator: 'or'
 		}
@@ -64,7 +71,7 @@ export const Interface = ({
 				setFieldValue={setFieldValue}
 				value={values.field}
 			/>
-			<OperatorSelector setFieldValue={setFieldValue} values={values}/>*/}
+			<OperatorSelector setFieldValue={setFieldValue} values={values}/>
 			<Fieldset legend="Query">
 				<Radio
 					label="Group"
@@ -81,12 +88,17 @@ export const Interface = ({
 					name="query"
 					value="ngram"
 				/>
-			</Fieldset>
-			<Fulltext
+			</Fieldset>*/}
+			<QueryGroup
 				fields={fields}
 				setFieldValue={setFieldValue}
 				values={values}
 			/>
+			{/*<Fulltext
+				fields={fields}
+				setFieldValue={setFieldValue}
+				values={values}
+			/>*/}
 			<SubmitButton text="Save interface"/>
 			<input id="json" name="json" type="hidden"/>
 		</Form>}}
