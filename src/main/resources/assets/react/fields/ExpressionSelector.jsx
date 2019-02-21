@@ -1,14 +1,8 @@
-import {FieldArray} from 'formik';
-import {get} from 'lodash';
+import {getIn} from 'formik';
 
 import {Fieldset} from '../elements/Fieldset';
 import {Select} from '../elements/Select';
 
-import {
-	DEFAULT_FULLTEXT_PARAMS,
-	DEFAULT_FULLTEXT_EXPRESSION,
-	DEFAULT_GROUP_PARAMS
-} from './constants'
 import {Fulltext} from './Fulltext';
 import {QueryGroup} from './QueryGroup';
 
@@ -16,7 +10,6 @@ import {QueryGroup} from './QueryGroup';
 
 
 export const ExpressionSelector = ({
-	defaultValue = DEFAULT_FULLTEXT_EXPRESSION,
 	fields,
 	name = 'query',
 	legend = null,
@@ -24,7 +17,16 @@ export const ExpressionSelector = ({
 	path = parentPath ? `${parentPath}.${name}` : name,
 	setFieldValue,
 	values,
-	value = values ? get(values, path, defaultValue) : defaultValue
+	value = values && getIn(values, path) || {
+		type: 'fulltext',
+		params: {
+			fields: [{
+				field: '',
+				boost: ''
+			}],
+			operator: 'or'
+		}
+	}
 }) => {
 	const {params, type} = value;
 	const selectPath = `${path}.type`;
@@ -43,7 +45,28 @@ export const ExpressionSelector = ({
 				const newType = htmlCollectionAsArray[0];
 				//console.debug({ selectPath, htmlCollectionAsArray});
 				setFieldValue(selectPath, newType);
-				setFieldValue(paramsPath, newType === 'group' ? DEFAULT_GROUP_PARAMS : DEFAULT_FULLTEXT_PARAMS);
+				setFieldValue(paramsPath, newType === 'group'
+					? {
+						expressions: [{
+							type: 'fulltext',
+							params: {
+								fields: [{
+									field: '',
+									boost: ''
+								}],
+								operator: 'or'
+							}
+						}],
+						operator: 'or'
+					}
+					: {
+						fields: [{
+							field: '',
+							boost: ''
+						}],
+						operator: 'or'
+					}
+				);
 			}}
 			options={[{
 				label: 'Group',
@@ -60,7 +83,6 @@ export const ExpressionSelector = ({
 		{['fulltext', 'ngram'].includes(type)
 			? <Fulltext
 				fields={fields}
-				name={type}
 				path={paramsPath}
 				setFieldValue={setFieldValue}
 				values={values}

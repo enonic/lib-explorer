@@ -1,5 +1,5 @@
-import {Field, FieldArray} from 'formik';
-import {get} from 'lodash';
+import {Field, FieldArray, getIn} from 'formik';
+import generateUuidv4 from 'uuid/v4';
 
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
@@ -18,14 +18,6 @@ import {OperatorSelector} from '../fields/OperatorSelector';
 
 
 export const Fulltext = ({
-	defaultBoost = '',
-	defaultValue = {
-		fields: [{
-			field: '',
-			boost: defaultBoost
-		}],
-		operator: 'or'
-	},
 	fields,
 	name = 'fulltext',
 	legend = null,
@@ -33,16 +25,21 @@ export const Fulltext = ({
 	path = parentPath ? `${parentPath}.${name}` : name,
 	setFieldValue,
 	values,
-	value = values ? get(values, path, defaultValue) : defaultValue
+	value = values && getIn(values, path) || {
+		fields: [{
+			field: '',
+			boost: ''
+		}],
+		operator: 'or'
+	}
 }) => {
 	/*console.debug(toStr({
-		//defaultValue,
 		//fields,
-		name,
+		//name,
 		//parentPath,
-		path,
+		//path,
 		//values,
-		value
+		//value,
 	}));*/
 	const fragment = <>
 		<OperatorSelector parentPath={path} setFieldValue={setFieldValue} values={values}/>
@@ -50,20 +47,34 @@ export const Fulltext = ({
 			<FieldArray
 				name={`${path}.fields`}
 				render={({insert, swap, remove}) => value.fields
-					.map(({field = '', boost = defaultBoost}, index) => {
-						const key = `${path}.fields[${index}]`;
-						return <tr key={key}>
+					.map(({field = '', boost = '', uuid4}, index) => {
+						// https://reactjs.org/docs/lists-and-keys.html#keys-must-only-be-unique-among-siblings
+						// https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318
+						const pathWithIndex = `${path}.fields[${index}]`;
+						const boostPath = `${pathWithIndex}.boost`;
+						const fieldPath = `${pathWithIndex}.field`;
+						const fieldValue = getIn(values, fieldPath, '');
+						const boostValue = getIn(values, boostPath, '');
+						//console.debug(toStr({uuid4, index, fieldPath, field, fieldValue, boostPath, boost, boostValue}));
+						return <tr key={uuid4}>
 							<td><Select
-								parentPath={key}
-								name="field"
+								path={fieldPath}
 								options={fields}
 								placeholder='Select field'
 								setFieldValue={setFieldValue}
 								values={values}
 							/></td>
-							<td><Field autoComplete="off" name={`${key}.boost`} value={boost}/></td>
+							<td><Field autoComplete="off" name={boostPath} value={boost}/></td>
 							<td>
-								<InsertButton index={index} insert={insert} value={{field: '', boost: defaultBoost}}/>
+								<InsertButton
+									index={index}
+									insert={insert}
+									value={{
+										field: '',
+										boost: '',
+										uuid4: generateUuidv4()
+									}}
+								/>
 								<RemoveButton index={index} remove={remove} visible={value.fields.length > 1}/>
 								<MoveDownButton disabled={index === value.fields.length-1} index={index} swap={swap} visible={value.fields.length > 1}/>
 								<MoveUpButton index={index} swap={swap} visible={value.fields.length > 1}/>

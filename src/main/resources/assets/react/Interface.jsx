@@ -1,14 +1,45 @@
 import {Form, Formik} from 'formik';
+import traverse from 'traverse';
+import generateUuidv4 from 'uuid/v4';
+//import {all as mergeAll} from 'deepmerge';
+
 import {SubmitButton} from './buttons/SubmitButton';
 
 // Elements
 import {Select} from './elements/Select';
 
-import {DEFAULT_GROUP_EXPRESSION} from './fields/constants'
 import {NameField} from './fields/NameField';
 import {ExpressionSelector} from './fields/ExpressionSelector';
 
 import {toStr} from './utils/toStr';
+
+
+function convert(node) {
+	traverse(node).forEach(function(value) { // Fat arrow destroys this
+		const key = this.key;
+		if ([
+			'expressions',
+			'fields'
+		].includes(key)) {
+			/*if (!value) {
+				this.update([]);
+			} else if (!Array.isArray(value)) { // Convert single value to array
+				const array = [value];
+				convert(array); // Recurse
+				this.update(array);
+			} else*/
+			if (Array.isArray(value)) {
+				this.update(value.map(entry => {
+					//const clone = mergeAll([{}, entry]); // Avoid modifying original object reference.
+					if (!entry.uuid4) {
+						entry.uuid4 = generateUuidv4();//seqenceCounter;
+					}
+					return entry;
+				}));
+			} // if isArray
+		} // if key
+	}); // traverse
+} // convert
 
 
 export const Interface = ({
@@ -18,7 +49,22 @@ export const Interface = ({
 	initialValues = {
 		name: '',
 		collections: [],
-		query: DEFAULT_GROUP_EXPRESSION
+		query: {
+			type: 'group',
+			params: {
+				expressions: [{
+					type: 'fulltext',
+					params: {
+						fields: [{
+							field: '',
+							boost: ''
+						}],
+						operator: 'or'
+					}
+				}], // expressions
+				operator: 'or'
+			} // params
+		} // query
 	}
 } = {}) => <Formik
 	initialValues={initialValues}
@@ -27,6 +73,7 @@ export const Interface = ({
 		setFieldValue,
 		values
 	}) => {
+		convert(values);
 		console.debug(toStr({values}));
 		return <Form
 			action={action}
