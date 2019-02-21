@@ -1,6 +1,5 @@
 import {get} from 'lodash';
 
-import {Fieldset} from '../elements/Fieldset';
 import {Radio} from '../elements/Radio';
 
 //import {toStr} from '../utils/toStr';
@@ -8,7 +7,6 @@ import {Radio} from '../elements/Radio';
 
 export const OperatorSelector = ({
 	defaultValue = 'or',
-	legend = 'Operator',
 	parentPath,
 	name = parentPath ? `${parentPath}.operator` : 'operator',
 	setFieldValue,
@@ -18,7 +16,7 @@ export const OperatorSelector = ({
 	/*console.debug(toStr({
 		defaultValue, legend, parentPath, name, values, value
 	}));*/
-	return <Fieldset legend={legend}>
+	return <React.Fragment>
 		<Radio
 			checked={value !== 'and'}
 			label="OR"
@@ -39,5 +37,5 @@ export const OperatorSelector = ({
 			}}
 			value={value}
 		/>
-	</Fieldset>;
+	</React.Fragment>;
 }

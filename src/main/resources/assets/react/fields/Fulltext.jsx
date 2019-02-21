@@ -27,8 +27,10 @@ export const Fulltext = ({
 		operator: 'or'
 	},
 	fields,
+	name = 'fulltext',
+	legend = null,
 	parentPath,
-	path = parentPath ? `${parentPath}.fulltext` : 'fulltext',
+	path = parentPath ? `${parentPath}.${name}` : name,
 	setFieldValue,
 	values,
 	value = values ? get(values, path, defaultValue) : defaultValue
@@ -36,12 +38,15 @@ export const Fulltext = ({
 	/*console.debug(toStr({
 		//defaultValue,
 		//fields,
-		parentPath, path,
+		name,
+		//parentPath,
+		path,
 		//values,
 		value
 	}));*/
-	return <Fieldset legend="Fulltext">
-		<Table headers={['Field', 'Boost']}>
+	const fragment = <>
+		<OperatorSelector parentPath={path} setFieldValue={setFieldValue} values={values}/>
+		<Table headers={['Field', 'Boost', `Action${value.fields.length > 1 ? 's' : ''}`]}>
 			<FieldArray
 				name={`${path}.fields`}
 				render={({insert, swap, remove}) => value.fields
@@ -59,14 +64,14 @@ export const Fulltext = ({
 							<td><Field autoComplete="off" name={`${key}.boost`} value={boost}/></td>
 							<td>
 								<InsertButton index={index} insert={insert} value={{field: '', boost: defaultBoost}}/>
-								<RemoveButton index={index} remove={remove} visible={value.length > 1}/>
-								<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
-								<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
+								<RemoveButton index={index} remove={remove} visible={value.fields.length > 1}/>
+								<MoveDownButton disabled={index === value.fields.length-1} index={index} swap={swap} visible={value.fields.length > 1}/>
+								<MoveUpButton index={index} swap={swap} visible={value.fields.length > 1}/>
 							</td>
 						</tr>
 					})}
 			/>
 		</Table>
-		<OperatorSelector parentPath={path} setFieldValue={setFieldValue} values={values}/>
-	</Fieldset>;
+	</>;
+	return legend ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
 }

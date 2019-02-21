@@ -19,6 +19,18 @@ export const Select = ({
 	setFieldValue,
 	values,
 	value = values ? get(values, path, defaultValue) : defaultValue,
+	onChange = ({
+		target: {
+			selectedOptions // HTMLCollection
+		}
+	}) => {
+		const htmlCollectionAsArray = [].slice
+			.call(selectedOptions)
+			.map(({value}) => value);
+		const newValue = multiple ? htmlCollectionAsArray : htmlCollectionAsArray[0];
+		//console.debug({multiple, path, htmlCollectionAsArray, newValue});
+		setFieldValue(path, newValue)
+	},
 	...rest // size
 }) => {
 	/*console.debug({
@@ -37,18 +49,7 @@ export const Select = ({
 		component="select"
 		multiple={multiple}
 		name={path}
-		onChange={({
-			target: {
-				selectedOptions // HTMLCollection
-			}
-		}) => {
-			const htmlCollectionAsArray = [].slice
-				.call(selectedOptions)
-				.map(({value}) => value);
-			const newValue = multiple ? htmlCollectionAsArray : htmlCollectionAsArray[0];
-			//console.debug({multiple, path, htmlCollectionAsArray, newValue});
-			setFieldValue(path, newValue)
-		}}
+		onChange={onChange}
 		value={value}
 		{...rest}
 	>
