@@ -8,8 +8,10 @@ import {RemoveButton} from '../buttons/RemoveButton';
 import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
 
 import {Fieldset} from '../elements/Fieldset';
-import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
+
+import {FieldSelector} from './FieldSelector';
+import {TagSelector} from './TagSelector';
 
 
 export const ScrapeField = ({
@@ -39,10 +41,9 @@ export const ScrapeField = ({
 			<FieldArray
 				name={path}
 				render={({insert, swap, remove}) => value.map(({field, dataExpr}, index) => <tr key={`${path}[${index}]`}>
-					<td><Select
+					<td><FieldSelector
 						name={`${path}[${index}].field`}
-						options={fields}
-						placeholder="Please select a field"
+						fields={fields}
 						setFieldValue={setFieldValue}
 						value={field}
 					/></td>
@@ -56,11 +57,11 @@ export const ScrapeField = ({
 				</tr>)}
 			/>
 		</Table>
-		<Select
+		<TagSelector
 			label="Tag(s)"
 			multiple={true}
-			name={tagsPath}
-			options={tags}
+			path={tagsPath}
+			tags={tags}
 			setFieldValue={setFieldValue}
 			value={selectedTags}
 		/>

@@ -8,8 +8,9 @@ import {RemoveButton} from '../buttons/RemoveButton';
 import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
 
 import {Fieldset} from '../elements/Fieldset';
-import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
+
+import {TagSelector} from './TagSelector';
 
 
 export const DownloadField = ({
@@ -43,10 +44,10 @@ export const DownloadField = ({
 
 					return <tr key={key}>
 						<td><Field autoComplete="off" name={`${key}.expr`} value={expr}/></td>
-						<td><Select
+						<td><TagSelector
 							multiple={true}
-							name={`${key}.tags`}
-							options={tags}
+							path={`${key}.tags`}
+							tags={tags}
 							setFieldValue={setFieldValue}
 							value={selectedTags}
 						/></td>
