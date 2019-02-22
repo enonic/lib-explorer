@@ -69,6 +69,8 @@ export const Interface = ({
 		}, // query
 		resultMappings: [{
 			field: '',
+			highlight: false,
+			lengthLimit: '',
 			to: ''
 		}]
 	}

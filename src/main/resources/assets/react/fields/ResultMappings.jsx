@@ -6,7 +6,9 @@ import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
 
+import {Checkbox} from '../elements/Checkbox';
 import {Fieldset} from '../elements/Fieldset';
+import {LabeledField} from '../elements/LabeledField';
 import {Table} from '../elements/Table';
 
 import {FieldSelector} from './FieldSelector';
@@ -22,15 +24,23 @@ export const ResultMappings = ({
 	values,
 	value = values && getIn(values, path) || [{
 		field: '',
+		highlight: false,
+		lengthLimit: '',
 		to: ''
 	}]
 }) => {
 	const fragment = <>
-		<Table headers={['Field', 'To', 'Action(s)']}>
+		<Table headers={['Field', 'To', 'Options', 'Action(s)']}>
 			<FieldArray
 				name={path}
 				render={({insert, swap, remove}) => value
-					.map(({field = '', to = '', uuid4}, index) => {
+					.map(({
+						field = '',
+						highlight = false,
+						lengthLimit = '',
+						to = '',
+						uuid4
+					}, index) => {
 						const pathWithIndex = `${path}[${index}]`;
 						return <tr key={uuid4}>
 							<td><FieldSelector
@@ -44,8 +54,23 @@ export const ResultMappings = ({
 								value={to}
 							/></td>
 							<td>
+								<Checkbox
+									checked={highlight}
+									label="Highlight?"
+									name={`${pathWithIndex}.highlight`}
+								/>
+								<LabeledField
+									label="Limit length to"
+									name={`${pathWithIndex}.lengthLimit`}
+									type="number"
+									value={lengthLimit}
+								/>
+							</td>
+							<td>
 								<InsertButton index={index} insert={insert} value={{
 									field: '',
+									highlight: false,
+									lengthLimit: '',
 									to: '',
 									uuid4: generateUuidv4() // Might not be needed
 								}}/>
