@@ -109,14 +109,14 @@ export function search(params) {
 		branch: 'master', // NOTE Hardcoded
 		principals: [`role:${ROLE_YASE_READ}`] // TODO Remove hardcode?
 	}));
-	log.info(toStr({sources}));
+	//log.info(toStr({sources}));
 
 	let page = params.page ? parseInt(params.page, 10) : 1; // NOTE First index is 1 not 0
 	const count = params.count ? parseInt(params.count, 10) : 10;
 	const start = params.count ? parseInt(params.start, 10) : (page - 1) * count; // NOTE First index is 0 not 1
 	if (!page) { page = Math.floor(start / count) + 1; }
 
-	const query = buildQuery({queryConfig, searchString});
+	const query = buildQuery({expression: queryConfig, searchString});
 
 	const queryParams = {
 		count,
@@ -136,9 +136,10 @@ export function search(params) {
 	const pages = Math.ceil(queryRes.total / count);
 
 	const debug = {
-		queryConfig,
+		//queryConfig,
 		query,
-		sources
+		collections//,
+		//sources
 	};
 
 	return {

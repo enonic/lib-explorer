@@ -1,7 +1,7 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
@@ -12,7 +12,7 @@ import {jsonResponse} from '/lib/enonic/yase/jsonResponse';
 
 
 export function get({params}) {
-	log.info(toStr({params}));
+	//log.info(toStr({params}));
 	if (!params.interface) { return jsonError('Required param interface missing!'); }
 	return jsonResponse(search(params));
 } // function get
