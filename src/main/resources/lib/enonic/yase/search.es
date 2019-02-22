@@ -20,6 +20,7 @@ import {
 } from '/lib/enonic/yase/constants';
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
 import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
+import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
 import {getInterface} from '/lib/enonic/yase/admin/interfaces/getInterface';
 
 
@@ -112,8 +113,12 @@ export function search(params) {
 	//log.info(toStr({sources}));
 
 	let page = params.page ? parseInt(params.page, 10) : 1; // NOTE First index is 1 not 0
+	//log.info(toStr({page}));
+
 	const count = params.count ? parseInt(params.count, 10) : 10;
-	const start = params.count ? parseInt(params.start, 10) : (page - 1) * count; // NOTE First index is 0 not 1
+	const start = params.start ? parseInt(params.start, 10) : (page - 1) * count; // NOTE First index is 0 not 1
+	//log.info(toStr({start}));
+
 	if (!page) { page = Math.floor(start / count) + 1; }
 
 	const query = buildQuery({expression: queryConfig, searchString});
@@ -132,14 +137,17 @@ export function search(params) {
 		connection: multiRepoConnection,
 		params: queryParams
 	});
+	const {hits, total} = queryRes;
 
-	const pages = Math.ceil(queryRes.total / count);
+	const pages = Math.ceil(total / count);
 
 	const debug = {
 		//queryConfig,
-		query,
-		collections//,
-		//sources
+		query//,
+		//collections,
+		//sources,
+		//resultMappings//,
+		//hits
 	};
 
 	return {
@@ -156,7 +164,12 @@ export function search(params) {
 		pages,
 		//pagination,
 		count: queryRes.count,
-		total: queryRes.total,
-		hits: queryRes.hits
+		total,
+		hits: mapMultiRepoQueryHits({
+			hits,
+			nodeCache: NODE_CACHE,
+			resultMappings,
+			searchString
+		})
 	};
 } // function search
