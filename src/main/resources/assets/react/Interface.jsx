@@ -10,6 +10,7 @@ import {Select} from './elements/Select';
 
 import {NameField} from './fields/NameField';
 import {ExpressionSelector} from './fields/ExpressionSelector';
+import {ResultMappings} from './fields/ResultMappings';
 
 import {toStr} from './utils/toStr';
 
@@ -19,7 +20,8 @@ function convert(node) {
 		const key = this.key;
 		if ([
 			'expressions',
-			'fields'
+			'fields',
+			'resultMappings'
 		].includes(key)) {
 			/*if (!value) {
 				this.update([]);
@@ -64,7 +66,11 @@ export const Interface = ({
 				}], // expressions
 				operator: 'or'
 			} // params
-		} // query
+		}, // query
+		resultMappings: [{
+			field: '',
+			to: ''
+		}]
 	}
 } = {}) => <Formik
 	initialValues={initialValues}
@@ -100,6 +106,12 @@ export const Interface = ({
 				fields={fields}
 				legend='Query'
 				name='query'
+				setFieldValue={setFieldValue}
+				values={values}
+			/>
+			<ResultMappings
+				fields={fields}
+				legend='Result mappings'
 				setFieldValue={setFieldValue}
 				values={values}
 			/>

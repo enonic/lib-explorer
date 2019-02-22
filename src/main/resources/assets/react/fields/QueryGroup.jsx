@@ -8,7 +8,6 @@ import {RemoveButton} from '../buttons/RemoveButton';
 
 import {Fieldset} from '../elements/Fieldset';
 import {Radio} from '../elements/Radio';
-import {Table} from '../elements/Table';
 
 import {OperatorSelector} from './OperatorSelector';
 import {ExpressionSelector} from './ExpressionSelector';

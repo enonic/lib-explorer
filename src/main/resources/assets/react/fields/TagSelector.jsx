@@ -15,7 +15,7 @@ export const TagSelector = ({
 	//setFieldValue, // in rest
 	tags = options,
 	values,
-	value = values && getIn(values, path) || null,
+	value = values && getIn(values, path) || '',
 	...rest
 }) => {
 	//console.log(toStr({rest}));

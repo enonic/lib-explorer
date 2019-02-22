@@ -15,7 +15,7 @@ export const FieldSelector = ({
 	//setFieldValue, // in rest
 	fields = options,
 	values,
-	value = values && getIn(values, path) || null,
+	value = values && getIn(values, path) || '',
 	...rest
 }) => {
 	//console.log(toStr({rest}));
