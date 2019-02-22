@@ -6,6 +6,7 @@ import {connectRepo} from '/lib/enonic/yase/connectRepo';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {queryCollections} from '/lib/enonic/yase/admin/collections/queryCollections';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
+import {getTags} from '/lib/enonic/yase/admin/tags/getTags';
 
 
 const ID_REACT_INTERFACE_CONTAINER = 'reactInterfaceContainer';
@@ -35,6 +36,7 @@ export function createOrEditInterfacePage({
 		action: `${TOOL_PATH}/interfaces`,
 		collections: queryCollections().hits.map(({displayName: label, _name: value}) => ({label, value})),
 		fields: getFields().hits.map(({displayName, key}) => ({label: displayName, value: key})),
+		tags: getTags().hits.map(({displayName, _path}) => ({label: displayName, value: _path.replace(/^\/tags\//, '')})),
 		initialValues
 	};
 

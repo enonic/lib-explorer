@@ -10,6 +10,7 @@ import {Select} from './elements/Select';
 
 import {NameField} from './fields/NameField';
 import {ExpressionSelector} from './fields/ExpressionSelector';
+import {Facets} from './fields/Facets';
 import {ResultMappings} from './fields/ResultMappings';
 
 import {toStr} from './utils/toStr';
@@ -20,6 +21,7 @@ function convert(node) {
 		const key = this.key;
 		if ([
 			'expressions',
+			'facets',
 			'fields',
 			'resultMappings'
 		].includes(key)) {
@@ -72,8 +74,10 @@ export const Interface = ({
 			highlight: false,
 			lengthLimit: '',
 			to: ''
-		}]
-	}
+		}],
+		facets: []
+	},
+	tags
 } = {}) => <Formik
 	initialValues={initialValues}
 	render={({
@@ -82,7 +86,7 @@ export const Interface = ({
 		values
 	}) => {
 		convert(values);
-		console.debug(toStr({values}));
+		console.debug(toStr({tags, values}));
 		return <Form
 			action={action}
 			autoComplete="off"
@@ -113,8 +117,14 @@ export const Interface = ({
 			/>
 			<ResultMappings
 				fields={fields}
-				legend='Result mappings'
+				legend='Result mapping(s)'
 				setFieldValue={setFieldValue}
+				values={values}
+			/>
+			<Facets
+				legend='Facet(s)'
+				setFieldValue={setFieldValue}
+				tags={tags}
 				values={values}
 			/>
 			<SubmitButton text="Save interface"/>
