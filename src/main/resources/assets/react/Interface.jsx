@@ -1,7 +1,6 @@
 import {Form, Formik} from 'formik';
 import traverse from 'traverse';
 import generateUuidv4 from 'uuid/v4';
-//import {all as mergeAll} from 'deepmerge';
 
 import {SubmitButton} from './buttons/SubmitButton';
 
@@ -25,16 +24,14 @@ function convert(node) {
 			'fields',
 			'resultMappings'
 		].includes(key)) {
-			/*if (!value) {
+			if (!value) {
 				this.update([]);
 			} else if (!Array.isArray(value)) { // Convert single value to array
 				const array = [value];
 				convert(array); // Recurse
 				this.update(array);
-			} else*/
-			if (Array.isArray(value)) {
+			} else if (Array.isArray(value)) {
 				this.update(value.map(entry => {
-					//const clone = mergeAll([{}, entry]); // Avoid modifying original object reference.
 					if (!entry.uuid4) {
 						entry.uuid4 = generateUuidv4();//seqenceCounter;
 					}
@@ -86,7 +83,10 @@ export const Interface = ({
 		values
 	}) => {
 		convert(values);
-		console.debug(toStr({tags, values}));
+		console.debug(toStr({
+			//tags,
+			values
+		}));
 		return <Form
 			action={action}
 			autoComplete="off"

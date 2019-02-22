@@ -25,9 +25,17 @@ export function createOrEditInterfacePage({
 		const node = connection.get(`/interfaces/${interfaceName}`)
 		const name = node.name || '';
 		const collections = node.collections ? forceArray(node.collections) : []
+		const {
+			facets = [],
+			query,
+			resultMappings
+		} = node;
 		initialValues = {
 			name,
-			collections
+			collections,
+			query,
+			resultMappings,
+			facets
 		};
 	}
 
