@@ -12,6 +12,7 @@ export const cachedNode = ({
 	repoId,
 	branch,
 	id,
+	principals = ['role:system.admin'],  // TODO Remove hardcode?
 	repoBranchNodeId
 }) => {
 	if (repoBranchNodeId) {
@@ -30,7 +31,7 @@ export const cachedNode = ({
 		const repoConnection = connect({
 			repoId,
 			branch,
-			principals: ['role:system.admin'] // TODO Remove hardcode?
+			principals
 		});
 		const node = repoConnection.get(id); //log.info(toStr({node}));
 		if (!node) {

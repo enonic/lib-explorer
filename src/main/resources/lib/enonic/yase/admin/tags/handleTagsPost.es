@@ -1,12 +1,16 @@
 import {toStr} from '/lib/enonic/util';
-import {NT_TAG, TOOL_PATH} from '/lib/enonic/yase/constants';
+import {
+	NT_TAG,
+	PATH_TAG,
+	TOOL_PATH
+} from '/lib/enonic/yase/constants';
 import {createNode} from '/lib/enonic/yase/createNode';
 import {tagsPage} from '/lib/enonic/yase/admin/tags/tagsPage';
 
 
 export function handleTagsPost({
 	params: {
-		_parentPath = '/tags',
+		_parentPath = PATH_TAG,
 		name,
 		phrase
 	}

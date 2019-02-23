@@ -26,6 +26,11 @@ export const NT_SYNONYM = `${PACKAGE}:synonym`;
 export const NT_TAG = `${PACKAGE}:tag`;
 export const NT_THESAURUS = `${PACKAGE}:thesaurus`;
 
+//──────────────────────────────────────────────────────────────────────────────
+// Node paths
+//──────────────────────────────────────────────────────────────────────────────
+export const PATH_TAG = '/tags';
+
 
 //──────────────────────────────────────────────────────────────────────────────
 // Return types

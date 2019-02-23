@@ -7,7 +7,7 @@ import traverse from 'traverse';
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {newCache} from '/lib/cache';
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {getLocale} from '/lib/xp/admin';
 import {multiRepoConnect} from '/lib/xp/node';
 
@@ -20,6 +20,7 @@ import {
 } from '/lib/enonic/yase/constants';
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
 import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
+import {localizeFacets} from '/lib/enonic/yase/localizeFacets';
 import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
 import {getInterface} from '/lib/enonic/yase/admin/interfaces/getInterface';
 
@@ -141,12 +142,20 @@ export function search(params) {
 
 	const pages = Math.ceil(total / count);
 
+	const localizedFacets = localizeFacets({
+		facets: facetConfig,
+		locale,
+		nodeCache: NODE_CACHE
+	});
+
 	const debug = {
 		//queryConfig,
-		query//,
+		query,
 		//collections,
 		//sources,
 		//resultMappings//,
+		//facetConfig,
+		localizedFacets//,
 		//hits
 	};
 
