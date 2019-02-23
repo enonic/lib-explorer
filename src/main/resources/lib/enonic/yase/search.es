@@ -21,6 +21,7 @@ import {
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
 import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
 import {localizeFacets} from '/lib/enonic/yase/localizeFacets';
+import {buildFacets} from '/lib/enonic/yase/buildFacets';
 import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
 import {getInterface} from '/lib/enonic/yase/admin/interfaces/getInterface';
 
@@ -70,14 +71,14 @@ function convert(node) {
 export function search(params) {
 	const {
 		clearCache = false,
-		facets,
+		facets: facetsParam,
 		interface: interfaceName,
 		name = 'q',
 		locale = getLocale(),
 		searchString = params[name] || ''
 	} = params;
 	/*log.info(toStr({
-		facets,
+		facetsParam,
 		interfaceName,
 		name,
 		searchString
@@ -148,21 +149,27 @@ export function search(params) {
 		nodeCache: NODE_CACHE
 	});
 
+	const facetsCategories = buildFacets({
+		facetConfig,
+		params,
+		localizedFacets
+	});
+
 	const debug = {
 		//queryConfig,
-		query,
+		query//,
 		//collections,
 		//sources,
-		//resultMappings//,
+		//resultMappings,
 		//facetConfig,
-		localizedFacets//,
+		//localizedFacets,
 		//hits
 	};
 
 	return {
 		params: {
 			count,
-			facets,
+			facets: facetsParam,
 			interface: interfaceName,
 			locale,
 			name,
@@ -174,6 +181,7 @@ export function search(params) {
 		//pagination,
 		count: queryRes.count,
 		total,
+		facetsCategories,
 		hits: mapMultiRepoQueryHits({
 			hits,
 			nodeCache: NODE_CACHE,

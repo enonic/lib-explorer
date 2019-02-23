@@ -84,7 +84,8 @@ const SERVER_JS_CONFIG = {
 					plugins: [
 						'@babel/plugin-proposal-object-rest-spread',
 						'@babel/plugin-transform-object-assign',
-						'array-includes'
+						'array-includes',
+						'transform-es2017-object-entries',
 					],
 					presets: ['@babel/preset-env']
 				} // options
