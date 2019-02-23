@@ -125,9 +125,11 @@ export function search(params) {
 
 	const query = buildQuery({expression: queryConfig, searchString});
 
+	const filters = {};
+
 	const queryParams = {
 		count,
-		//filters,
+		filters,
 		query,
 		start
 	};
@@ -151,8 +153,12 @@ export function search(params) {
 
 	const facetsCategories = buildFacets({
 		facetConfig,
+		//filters,
+		localizedFacets,
+		multiRepoConnection,
 		params,
-		localizedFacets
+		query,
+		queryCache: QUERY_CACHE
 	});
 
 	const debug = {
@@ -163,6 +169,7 @@ export function search(params) {
 		//resultMappings,
 		//facetConfig,
 		//localizedFacets,
+		//filters,
 		//hits
 	};
 
