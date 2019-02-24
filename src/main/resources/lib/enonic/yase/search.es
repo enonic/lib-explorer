@@ -163,7 +163,7 @@ export function search(params) {
 		nodeCache: NODE_CACHE
 	});
 
-	const facetsCategories = buildFacets({
+	const facetCategories = buildFacets({
 		facetConfig,
 		//filters,
 		localizedFacets,
@@ -200,7 +200,7 @@ export function search(params) {
 		//pagination,
 		count: queryRes.count,
 		total,
-		facetsCategories,
+		facetCategories,
 		hits: mapMultiRepoQueryHits({
 			hits,
 			nodeCache: NODE_CACHE,
