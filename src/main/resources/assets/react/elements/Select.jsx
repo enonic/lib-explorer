@@ -1,5 +1,4 @@
-import {Field} from 'formik';
-import {get} from 'lodash';
+import {Field, getIn} from 'formik';
 
 import {Label} from './Label';
 
@@ -7,7 +6,7 @@ import {toStr} from '../utils/toStr';
 
 
 export const Select = ({
-	component,
+	component, // So it doesn't end up in rest
 	label,
 	multiple = false,
 	parentPath,
@@ -18,7 +17,7 @@ export const Select = ({
 	defaultValue = placeholder ? '' : options[0].value,
 	setFieldValue,
 	values,
-	value = values ? get(values, path, defaultValue) : defaultValue,
+	value = values ? getIn(values, path, defaultValue) : defaultValue,
 	onChange = ({
 		target: {
 			selectedOptions // HTMLCollection
