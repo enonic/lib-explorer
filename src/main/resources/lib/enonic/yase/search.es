@@ -9,17 +9,19 @@ import traverse from 'traverse';
 import {newCache} from '/lib/cache';
 //import {toStr} from '/lib/enonic/util';
 import {getLocale} from '/lib/xp/admin';
-import {multiRepoConnect} from '/lib/xp/node';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {
 	COLLECTION_REPO_PREFIX,
-	ROLE_YASE_READ
+	ROLE_YASE_READ,
+	ROLE_YASE_ADMIN
 } from '/lib/enonic/yase/constants';
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
 import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
+import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connectRepos} from '/lib/enonic/yase/connectRepos';
 import {localizeFacets} from '/lib/enonic/yase/localizeFacets';
 import {buildFacets} from '/lib/enonic/yase/buildFacets';
 import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
@@ -90,7 +92,14 @@ export function search(params) {
 		QUERY_CACHE.clear();
 	}
 
-	const interfaceNode = getInterface({interfaceName});
+
+	const yaseReadConnection = connectRepo({
+		principals: [`role:${ROLE_YASE_READ}`]
+	})
+	const interfaceNode = getInterface({
+		connection: yaseReadConnection,
+		interfaceName
+	});
 	convert(interfaceNode);
 	//log.info(toStr({interfaceNode}));
 
@@ -134,11 +143,14 @@ export function search(params) {
 		start
 	};
 
-	const multiRepoConnection = multiRepoConnect({sources});
+	const yaseReadConnections = connectRepos({
+		principals: [`role:${ROLE_YASE_READ}`],
+		sources
+	});
 
 	const queryRes = cachedQuery({
 		cache: QUERY_CACHE,
-		connection: multiRepoConnection,
+		connection: yaseReadConnections,
 		params: queryParams
 	});
 	const {hits, total} = queryRes;
@@ -155,7 +167,7 @@ export function search(params) {
 		facetConfig,
 		//filters,
 		localizedFacets,
-		multiRepoConnection,
+		multiRepoConnection: yaseReadConnections,
 		params,
 		query,
 		queryCache: QUERY_CACHE
