@@ -134,7 +134,28 @@ export function search(params) {
 
 	const query = buildQuery({expression: queryConfig, searchString});
 
+	const localizedFacets = localizeFacets({
+		facets: facetConfig,
+		locale,
+		nodeCache: NODE_CACHE
+	});
+
 	const filters = {};
+
+	const yaseReadConnections = connectRepos({
+		principals: [`role:${ROLE_YASE_READ}`],
+		sources
+	});
+
+	const facetCategories = buildFacets({
+		facetConfig,
+		filters, // Filters gets modified here
+		localizedFacets,
+		multiRepoConnection: yaseReadConnections,
+		params,
+		query,
+		queryCache: QUERY_CACHE
+	});
 
 	const queryParams = {
 		count,
@@ -142,11 +163,6 @@ export function search(params) {
 		query,
 		start
 	};
-
-	const yaseReadConnections = connectRepos({
-		principals: [`role:${ROLE_YASE_READ}`],
-		sources
-	});
 
 	const queryRes = cachedQuery({
 		cache: QUERY_CACHE,
@@ -156,22 +172,6 @@ export function search(params) {
 	const {hits, total} = queryRes;
 
 	const pages = Math.ceil(total / count);
-
-	const localizedFacets = localizeFacets({
-		facets: facetConfig,
-		locale,
-		nodeCache: NODE_CACHE
-	});
-
-	const facetCategories = buildFacets({
-		facetConfig,
-		//filters,
-		localizedFacets,
-		multiRepoConnection: yaseReadConnections,
-		params,
-		query,
-		queryCache: QUERY_CACHE
-	});
 
 	const debug = {
 		//queryConfig,
