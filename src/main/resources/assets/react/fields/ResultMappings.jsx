@@ -12,6 +12,7 @@ import {LabeledField} from '../elements/LabeledField';
 import {Table} from '../elements/Table';
 
 import {FieldSelector} from './FieldSelector';
+import {ResultMappingTypeSelector} from './ResultMappingTypeSelector';
 
 
 export const ResultMappings = ({
@@ -30,7 +31,7 @@ export const ResultMappings = ({
 	}]
 }) => {
 	const fragment = <>
-		<Table headers={['Field', 'To', 'Options', 'Action(s)']}>
+		<Table headers={['Field', 'To', 'Type', 'Options', 'Action(s)']}>
 			<FieldArray
 				name={path}
 				render={({insert, swap, remove}) => value
@@ -42,6 +43,8 @@ export const ResultMappings = ({
 						uuid4
 					}, index) => {
 						const pathWithIndex = `${path}[${index}]`;
+						const typePath = `${pathWithIndex}.type`;
+						const type = getIn(values, typePath, 'string');
 						return <tr key={uuid4}>
 							<td><FieldSelector
 								fields={fields}
@@ -53,18 +56,25 @@ export const ResultMappings = ({
 								name={`${pathWithIndex}.to`}
 								value={to}
 							/></td>
+							<td><ResultMappingTypeSelector
+								path={typePath}
+								setFieldValue={setFieldValue}
+								value={type}
+							/></td>
 							<td>
-								<Checkbox
-									checked={highlight}
-									label="Highlight?"
-									name={`${pathWithIndex}.highlight`}
-								/>
-								<LabeledField
-									label="Limit length to"
-									name={`${pathWithIndex}.lengthLimit`}
-									type="number"
-									value={lengthLimit}
-								/>
+								{type === 'string' ? <>
+									<Checkbox
+										checked={highlight}
+										label="Highlight?"
+										name={`${pathWithIndex}.highlight`}
+									/>
+									<LabeledField
+										label="Limit length to"
+										name={`${pathWithIndex}.lengthLimit`}
+										type="number"
+										value={lengthLimit}
+									/>
+								</> : null}
 							</td>
 							<td>
 								<InsertButton index={index} insert={insert} value={{

@@ -203,6 +203,7 @@ export function search(params) {
 		facetCategories,
 		hits: mapMultiRepoQueryHits({
 			hits,
+			locale,
 			nodeCache: NODE_CACHE,
 			resultMappings,
 			searchString

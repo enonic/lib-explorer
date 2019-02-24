@@ -9,16 +9,19 @@ import set from 'set-value';
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 //import {toStr} from '/lib/enonic/util';
+import {forceArray} from '/lib/enonic/util/data';
 import {dlv as get} from '/lib/enonic/util/object';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {cachedNode} from '/lib/enonic/yase/cachedNode';
+import {localizeTag} from '/lib/enonic/yase/localizeTag';
 
 
 export function mapMultiRepoQueryHits({
 	hits,
+	locale,
 	nodeCache,
 	resultMappings,
 	searchString
@@ -37,29 +40,44 @@ export function mapMultiRepoQueryHits({
 			field,
 			highlight,
 			lengthLimit,
-			to
+			to,
+			type = 'string'
 		}) => {
 			/*log.info(toStr({
 				field,
 				highlight,
 				lengthLimit,
-				to
+				to,
+				type
 			}));*/
 
-			const textToHighlight = get(node, field, '');
-			//log.info(toStr({textToHighlight}));
+			const value = get(node, field);
+			//log.info(toStr({value}));
 
-			let v;
-			if (highlight) {
-				v = highlightSearchResult(textToHighlight, searchString, lengthLimit || textToHighlight.length, str => `<b>${str}</b>`);
-			} else {
-				v = lengthLimit
-					? textToHighlight.substring(0, lengthLimit)
-					: textToHighlight;
+			let mappedValue = value;
+			if (type === 'string') {
+				const textToHighlight = value || '';
+				//log.info(toStr({textToHighlight}));
+
+				if (highlight) {
+					mappedValue = highlightSearchResult(
+						textToHighlight,
+						searchString,
+						lengthLimit || textToHighlight.length,
+						str => `<b>${str}</b>`
+					);
+				} else {
+					mappedValue = lengthLimit
+						? textToHighlight.substring(0, lengthLimit)
+						: textToHighlight;
+					//log.info(toStr({v}));
+				}
+			} else if (type === 'tags') {
+				mappedValue = (value ? forceArray(value) : [])
+					.map(tag => localizeTag({locale, nodeCache, tag}));
 			}
-			//log.info(toStr({v}));
-			set(obj, to, v);
-		})
+			set(obj, to, mappedValue);
+		}) // resultMappings.forEach
 		//log.info(toStr({obj}));
 		return obj;
 	});
