@@ -17,7 +17,7 @@ export const Pagination = ({
 	path = parentPath ? `${parentPath}.${name}` : name,
 	setFieldValue,
 	values,
-	value = values && getIn(values, path) || undefined
+	value = values && getIn(values, path) || false
 }) => {
 	if (!value) {
 		return <SetFieldValueButton
@@ -44,7 +44,7 @@ export const Pagination = ({
 			field={path}
 			setFieldValue={setFieldValue}
 			text="Remove pagination"
-			value={undefined}/>
+			value={false}/>
 	</>;
 	return isSet(legend) ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
 } // pagination

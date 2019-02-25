@@ -28,14 +28,16 @@ export function createOrEditInterfacePage({
 		const {
 			facets = [],
 			query,
-			resultMappings
+			resultMappings,
+			pagination
 		} = node;
 		initialValues = {
 			name,
 			collections,
 			query,
 			resultMappings,
-			facets
+			facets,
+			pagination
 		};
 	}
 

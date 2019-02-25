@@ -73,7 +73,14 @@ export const Interface = ({
 			lengthLimit: '',
 			to: ''
 		}],
-		facets: []
+		facets: [],
+		pagination: {
+			pagesToShow: 10,
+			first: true,
+			prev: true,
+			next: true,
+			last: true
+		}
 	},
 	tags
 } = {}) => <Formik
