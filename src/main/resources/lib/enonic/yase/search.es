@@ -18,6 +18,7 @@ import {
 	ROLE_YASE_READ,
 	ROLE_YASE_ADMIN
 } from '/lib/enonic/yase/constants';
+import {buildPagination} from '/lib/enonic/yase/buildPagination';
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
 import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
@@ -75,8 +76,8 @@ export function search(params) {
 		clearCache = false,
 		facets: facetsParam,
 		interface: interfaceName,
-		name = 'q',
 		locale = getLocale(),
+		name = 'q',
 		searchString = params[name] || ''
 	} = params;
 	/*log.info(toStr({
@@ -106,6 +107,7 @@ export function search(params) {
 	const {
 		collections,
 		facets: facetConfig,
+		pagination: paginationConfig,
 		query: queryConfig,
 		resultMappings
 	} = interfaceNode;
@@ -173,6 +175,16 @@ export function search(params) {
 
 	const pages = Math.ceil(total / count);
 
+	const pagination = buildPagination({
+		facets: facetsParam,
+		locale,
+		name,
+		page,
+		pages,
+		paginationConfig,
+		searchString
+	});
+
 	const debug = {
 		//queryConfig,
 		query//,
@@ -182,7 +194,8 @@ export function search(params) {
 		//facetConfig,
 		//localizedFacets,
 		//filters,
-		//hits
+		//hits,
+		//paginationConfig
 	};
 
 	return {
@@ -197,7 +210,7 @@ export function search(params) {
 		},
 		debug, // WARNING This should be commented out in production mode!
 		pages,
-		//pagination,
+		pagination,
 		count: queryRes.count,
 		total,
 		facetCategories,
