@@ -11,11 +11,12 @@ export const PhraseSelector = ({
 	options = [],
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	//placeholder, // in rest
+	placeholder,
+	defaultValue = placeholder ? '' : options[0].value,
 	//setFieldValue, // in rest
 	phrases = options,
 	values,
-	value = values && getIn(values, path) || '',
+	value = values && getIn(values, path) || defaultValue,
 	...rest
 }) => {
 	//console.log(toStr({rest}));
@@ -23,6 +24,7 @@ export const PhraseSelector = ({
 		multiple={multiple}
 		name={path}
 		options={phrases}
+		placeholder={placeholder}
 		value={value}
 		{...rest}
 	/>;

@@ -48,6 +48,7 @@ export const Interface = ({
 	action,
 	collections,
 	fields,
+	phrases,
 	initialValues = {
 		name: '',
 		collections: [],
@@ -137,6 +138,7 @@ export const Interface = ({
 			/>
 			<Pagination
 				legend='Pagination'
+				phrases={phrases}
 				setFieldValue={setFieldValue}
 				values={values}
 			/>
