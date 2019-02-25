@@ -18,16 +18,17 @@ import {
 	ROLE_YASE_READ,
 	ROLE_YASE_ADMIN
 } from '/lib/enonic/yase/constants';
+import {applySynonyms} from '/lib/enonic/yase/applySynonyms';
+import {buildFacets} from '/lib/enonic/yase/buildFacets';
 import {buildPagination} from '/lib/enonic/yase/buildPagination';
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
 import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
 import {connectRepos} from '/lib/enonic/yase/connectRepos';
 import {localizeFacets} from '/lib/enonic/yase/localizeFacets';
-import {buildFacets} from '/lib/enonic/yase/buildFacets';
 import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
-import {getInterface} from '/lib/enonic/yase/admin/interfaces/getInterface';
 
+import {getInterface} from '/lib/enonic/yase/admin/interfaces/getInterface';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Private constants
@@ -109,7 +110,8 @@ export function search(params) {
 		facets: facetConfig,
 		pagination: paginationConfig,
 		query: queryConfig,
-		resultMappings
+		resultMappings,
+		thesauri
 	} = interfaceNode;
 	/*log.info(toStr({
 		collections,
@@ -134,7 +136,13 @@ export function search(params) {
 
 	if (!page) { page = Math.floor(start / count) + 1; }
 
-	const query = buildQuery({expression: queryConfig, searchString});
+	const searchStringWithSynonyms = applySynonyms({
+		//expand: true, // default is false
+		searchString,
+		thesauri
+	});
+
+	const query = buildQuery({expression: queryConfig, searchString: searchStringWithSynonyms});
 
 	const localizedFacets = localizeFacets({
 		facets: facetConfig,

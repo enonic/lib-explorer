@@ -52,6 +52,7 @@ export const Interface = ({
 	initialValues = {
 		name: '',
 		collections: [],
+		thesauri: [],
 		query: {
 			type: 'group',
 			params: {
@@ -83,7 +84,8 @@ export const Interface = ({
 			last: true
 		}
 	},
-	tags
+	tags,
+	thesauri
 } = {}) => <Formik
 	initialValues={initialValues}
 	render={({
@@ -93,7 +95,10 @@ export const Interface = ({
 	}) => {
 		convert(values);
 		console.debug(toStr({
+			//collections,
+			//fields,
 			//tags,
+			//thesauri,
 			values
 		}));
 		return <Form
@@ -127,6 +132,14 @@ export const Interface = ({
 			<ResultMappings
 				fields={fields}
 				legend='Result mapping(s)'
+				setFieldValue={setFieldValue}
+				values={values}
+			/>
+			<Select
+				label="Thesauri"
+				multiple={true}
+				name="thesauri"
+				options={thesauri}
 				setFieldValue={setFieldValue}
 				values={values}
 			/>

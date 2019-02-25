@@ -9,6 +9,7 @@ import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {queryCollections} from '/lib/enonic/yase/admin/collections/queryCollections';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 import {getTags} from '/lib/enonic/yase/admin/tags/getTags';
+import {getThesauri} from '/lib/enonic/yase/admin/thesauri/getThesauri';
 
 
 const ID_REACT_INTERFACE_CONTAINER = 'reactInterfaceContainer';
@@ -27,6 +28,7 @@ export function createOrEditInterfacePage({
 		const node = connection.get(`/interfaces/${interfaceName}`)
 		const name = node.name || '';
 		const collections = node.collections ? forceArray(node.collections) : []
+		const thesauri = node.thesauri ? forceArray(node.thesauri) : []
 		const {
 			facets = [],
 			query,
@@ -39,7 +41,8 @@ export function createOrEditInterfacePage({
 			query,
 			resultMappings,
 			facets,
-			pagination
+			pagination,
+			thesauri
 		};
 	}
 
@@ -50,6 +53,7 @@ export function createOrEditInterfacePage({
 		fields: getFields().hits.map(({displayName, key}) => ({label: displayName, value: key})),
 		phrases: getPhrases().map(({key}) => ({label: key, value: key})),
 		tags: getTags().hits.map(({displayName, _path}) => ({label: displayName, value: _path.replace(/^\/tags\//, '')})),
+		thesauri: getThesauri().map(({displayName, name}) => ({label: displayName, value: name})),
 		initialValues
 	};
 
