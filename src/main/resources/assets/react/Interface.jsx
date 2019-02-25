@@ -10,6 +10,7 @@ import {Select} from './elements/Select';
 import {NameField} from './fields/NameField';
 import {ExpressionSelector} from './fields/ExpressionSelector';
 import {Facets} from './fields/Facets';
+import {Pagination} from './fields/Pagination'
 import {ResultMappings} from './fields/ResultMappings';
 
 import {toStr} from './utils/toStr';
@@ -125,6 +126,11 @@ export const Interface = ({
 				legend='Facet(s)'
 				setFieldValue={setFieldValue}
 				tags={tags}
+				values={values}
+			/>
+			<Pagination
+				legend='Pagination'
+				setFieldValue={setFieldValue}
 				values={values}
 			/>
 			<SubmitButton text="Save interface"/>
