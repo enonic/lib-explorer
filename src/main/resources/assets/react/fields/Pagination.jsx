@@ -1,8 +1,5 @@
-import {FieldArray, getIn} from 'formik';
-import generateUuidv4 from 'uuid/v4';
+import {getIn} from 'formik';
 
-
-import {RemoveButton} from '../buttons/RemoveButton';
 import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
 
 import {Fieldset} from '../elements/Fieldset';
@@ -10,7 +7,7 @@ import {LabeledField} from '../elements/LabeledField';
 import {Checkbox} from '../elements/Checkbox';
 
 import {isSet} from '../utils/isSet';
-import {toStr} from '../utils/toStr';
+//import {toStr} from '../utils/toStr';
 
 
 export const Pagination = ({
@@ -20,47 +17,34 @@ export const Pagination = ({
 	path = parentPath ? `${parentPath}.${name}` : name,
 	setFieldValue,
 	values,
-	value = values && getIn(values, path) || []
+	value = values && getIn(values, path) || undefined
 }) => {
-	if (!(Array.isArray(value) && value.length)) {
+	if (!value) {
 		return <SetFieldValueButton
 			className='block'
 			field={path}
 			setFieldValue={setFieldValue}
 			text="Add pagination"
-			value={[{
+			value={{
 				pagesToShow: 10,
 				first: true,
 				prev: true,
 				next: true,
-				last: true,
-				uuid4: generateUuidv4()
-			}]}
-		/>;
+				last: true
+			}}/>;
 	}
 	const fragment = <>
-		<FieldArray
-			name={path}
-			render={({remove}) => value
-				.map(({
-					pagesToShow,
-					first,
-					prev,
-					next,
-					last,
-					uuid4
-				}, index) => {
-					//console.debug(toStr({pagesToShow, first, prev, next, last, uuid4}));
-					return <div key={uuid4}>
-						<LabeledField label="Pages to show" name={'pagesToShow'} value={isSet(pagesToShow) ? pagesToShow : 10}/>
-						<Checkbox checked={first} label="Provide first" name={`${name}.first`}/>
-						<Checkbox checked={prev} label="Provide previous" name={`${name}.prev`}/>
-						<Checkbox checked={next} label="Provide next" name={`${name}.next`}/>
-						<Checkbox checked={last} label="Provide last" name={`${name}.first`}/>
-						<RemoveButton index={index} remove={remove}/>
-					</div>
-				})}
-		/>
+		<LabeledField label="Pages to show" name={`${path}.pagesToShow`} value={value.pagesToShow || 10}/>
+		<Checkbox checked={value.first} label="Provide first" name={`${path}.first`}/>
+		<Checkbox checked={value.prev} label="Provide previous" name={`${path}.prev`}/>
+		<Checkbox checked={value.next} label="Provide next" name={`${path}.next`}/>
+		<Checkbox checked={value.last} label="Provide last" name={`${path}.last`}/>
+		<SetFieldValueButton
+			className='block'
+			field={path}
+			setFieldValue={setFieldValue}
+			text="Remove pagination"
+			value={undefined}/>
 	</>;
 	return isSet(legend) ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
 } // pagination
