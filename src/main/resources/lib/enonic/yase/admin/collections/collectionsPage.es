@@ -24,9 +24,12 @@ export const collectionsPage = ({
 	</thead>
 	<tbody>
 		${collections.hits.map(({_name, displayName, collector: {name: collectorName}}) => `<tr>
-			<td><a href="${TOOL_PATH}/collections/${_name}">${displayName}</a></td>
+			<td>${displayName}</td>
 			<td>${collectorName}</td>
 			<td>
+				<form action="${TOOL_PATH}/collections/${_name}" method="post">
+					<button type="submit">Edit</button>
+				</form>
 				<form action="${TOOL_PATH}/collections/${_name}/collect" method="post">
 					<button type="submit">Collect</button>
 				</form>
