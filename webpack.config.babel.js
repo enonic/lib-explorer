@@ -4,7 +4,10 @@
 //──────────────────────────────────────────────────────────────────────────────
 import glob from 'glob';
 import path from 'path';
+import CleanWebpackPlugin from 'clean-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import postcssPresetEnv from 'postcss-preset-env';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'; // Supports ECMAScript2015
 
 
@@ -57,6 +60,28 @@ const STATS = {
 //──────────────────────────────────────────────────────────────────────────────
 // Server-side Javascript
 //──────────────────────────────────────────────────────────────────────────────
+const BABEL_USE = {
+	loader: 'babel-loader',
+	options: {
+		babelrc: false, // The .babelrc file should only be used to transpile config files.
+		comments: false,
+		compact: false,
+		minified: false,
+		plugins: [
+			'@babel/plugin-proposal-object-rest-spread',
+			'@babel/plugin-transform-object-assign',
+			'array-includes',
+			'transform-es2017-object-entries',
+		],
+		presets: ['@babel/preset-env']
+	} // options
+};
+
+const ES_RULE = {
+	test: /\.(es6?|js)$/, // Will need js for node module depenencies
+	use: [BABEL_USE]
+};
+
 const SERVER_JS_ENTRY = dict(FILES.map(k => [
 	k.replace(`${SRC_DIR}/`, '').replace(/\.[^.]*$/, ''), // name
 	`.${k.replace(`${SRC_DIR}`, '')}` // source relative to context
@@ -72,25 +97,7 @@ const SERVER_JS_CONFIG = {
 	devtool: false, // Don't waste time generating sourceMaps
 	mode: MODE,
 	module: {
-		rules: [{
-			test: /\.(es6?|js)$/, // Will need js for node module depenencies
-			use: [{
-				loader: 'babel-loader',
-				options: {
-					babelrc: false, // The .babelrc file should only be used to transpile config files.
-					comments: false,
-					compact: false,
-					minified: false,
-					plugins: [
-						'@babel/plugin-proposal-object-rest-spread',
-						'@babel/plugin-transform-object-assign',
-						'array-includes',
-						'transform-es2017-object-entries',
-					],
-					presets: ['@babel/preset-env']
-				} // options
-			}] // use
-		}] // rules
+		rules: [ES_RULE]
 	}, // module
 	optimization: {
 		minimizer: [
@@ -115,6 +122,63 @@ const SERVER_JS_CONFIG = {
 	stats: STATS
 };
 
+
+//──────────────────────────────────────────────────────────────────────────────
+// Styling
+//──────────────────────────────────────────────────────────────────────────────
+const STYLE_CONFIG = {
+	context: path.resolve(__dirname, SRC_DIR, 'assets/style'),
+	entry: './index.es',
+	mode: MODE,
+	module: {
+		rules: [{
+			test: /\.sass$/,
+			use: [
+				MiniCssExtractPlugin.loader,
+				{
+					loader: 'css-loader', // translates CSS into CommonJS
+					options: { importLoaders: 1 }
+				}, {
+					loader: 'postcss-loader',
+					options: {
+						ident: 'postcss',
+						plugins: () => [
+							postcssPresetEnv(/* options */)
+						]
+					}
+				},
+				'sass-loader' // compiles Sass to CSS
+			]
+		}, {
+			test: /\.svg/,
+			use: {
+				loader: 'svg-url-loader',
+				options: {}
+			}
+		}, ES_RULE]
+	}, // module
+	output: {
+		path: path.join(__dirname, '.build')
+	},
+	plugins: [
+		new CleanWebpackPlugin(
+			{
+				cleanOnceBeforeBuildPatterns: [
+					path.join(__dirname, '.build')
+				],
+				verbose: true
+			}
+		),
+		new MiniCssExtractPlugin({
+			filename: `../${DST_DIR}/assets/style.css`
+		})
+	],
+	resolve: {
+		extensions: ['.sass', '.scss', '.less', '.styl', '.css']
+	},
+	stats: STATS
+};
+//console.log(`STYLE_CONFIG:${JSON.stringify(STYLE_CONFIG, null, 4)}`);
 
 //──────────────────────────────────────────────────────────────────────────────
 // Client-side Javascript
@@ -190,6 +254,7 @@ const CLIENT_JS_CONFIG = {
 
 const WEBPACK_CONFIG = [
 	SERVER_JS_CONFIG,
+	STYLE_CONFIG,
 	CLIENT_JS_CONFIG
 ];
 //console.log(`WEBPACK_CONFIG:${toStr(WEBPACK_CONFIG)}`);
