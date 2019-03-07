@@ -27,6 +27,7 @@ import {connectRepo} from '/lib/enonic/yase/connectRepo';
 import {connectRepos} from '/lib/enonic/yase/connectRepos';
 import {localizeFacets} from '/lib/enonic/yase/localizeFacets';
 import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
+import {replaceNonLetters} from '/lib/enonic/yase/replaceNonLetters';
 
 import {getInterface} from '/lib/enonic/yase/admin/interfaces/getInterface';
 
@@ -136,9 +137,11 @@ export function search(params) {
 
 	if (!page) { page = Math.floor(start / count) + 1; }
 
+	const washedSearchString = replaceNonLetters({string: searchString});
+
 	const searchStringWithSynonyms = applySynonyms({
 		//expand: true, // default is false
-		searchString,
+		searchString: washedSearchString,
 		thesauri
 	});
 
@@ -195,9 +198,11 @@ export function search(params) {
 
 	const debug = {
 		//queryConfig,
-		query//,
+		washedSearchString,
+		searchStringWithSynonyms,
+		query,
 		//collections,
-		//sources,
+		sources//,
 		//resultMappings,
 		//facetConfig,
 		//localizedFacets,
