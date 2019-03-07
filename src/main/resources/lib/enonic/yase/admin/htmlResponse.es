@@ -19,7 +19,7 @@ export function htmlResponse({
 		body: `<html>
 	<head>
 		${headBegin.join('\n')}
-		<title>${preTitle}YASE Administrator</title>
+		<title>${preTitle}YASE</title>
 		<link rel="shortcut icon" href="${assetUrl({path: 'favicon.ico'})}">
 		<link rel="stylesheet" type="text/css" href="${assetUrl({path: 'style.css'})}">
 	</head>
