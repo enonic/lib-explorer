@@ -6,6 +6,7 @@ import {forceArray} from '/lib/enonic/util/data';
 
 import {localize} from '/lib/xp/i18n';
 
+import {YASE_ADMIN} from '/lib/enonic/yase/constants';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Public function
@@ -35,14 +36,22 @@ export function buildPagination({
 	if (first && page > 1) {
 		pagination.push({
 			href,
-			text: localize({locale, key: 'pagination.first'})
+			text: localize({
+				application: YASE_ADMIN,
+				key: 'pagination.first',
+				locale
+			})
 		});
 	}
 
 	if (prev && page > 2) {
 		pagination.push({
 			href: `${href}&page=${page - 1}`,
-			text: localize({locale, key: 'pagination.prev'})
+			text: localize({
+				application: YASE_ADMIN,
+				key: 'pagination.prev',
+				locale
+			})
 		});
 	}
 
@@ -64,13 +73,21 @@ export function buildPagination({
 		if (next && page < (pages - 1)) {
 			pagination.push({
 				href: `${href}&page=${page + 1}`,
-				text: localize({locale, key: 'pagination.next'})
+				text: localize({
+					application: YASE_ADMIN,
+					key: 'pagination.next',
+					locale
+				})
 			});
 		}
 		if (last) {
 			pagination.push({
 				href: `${href}&page=${pages}`,
-				text: localize({locale, key: 'pagination.last'})
+				text: localize({
+					application: YASE_ADMIN,
+					key: 'pagination.last',
+					locale
+				})
 			});
 		}
 	}
