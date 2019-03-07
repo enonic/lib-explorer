@@ -2,7 +2,6 @@
 // Enonic XP libs (included in jar via gradle dependencies)
 //──────────────────────────────────────────────────────────────────────────────
 import {addMembers, createRole, createUser} from '/lib/xp/auth';
-import {init as initPhrases} from '/lib/enonic/phrases/init';
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -22,8 +21,6 @@ import {runAsSu} from '/lib/enonic/yase/runAsSu';
 
 
 export function init() {
-	initPhrases();
-
 	runAsSu(() => {
 		ignoreErrors(() => {
 			createRole({

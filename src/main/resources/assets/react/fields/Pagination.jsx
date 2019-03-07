@@ -15,7 +15,6 @@ export const Pagination = ({
 	name = 'pagination',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	phrases,
 	setFieldValue,
 	values,
 	value = values && getIn(values, path) || false

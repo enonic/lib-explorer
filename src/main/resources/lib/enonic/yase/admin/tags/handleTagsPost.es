@@ -11,11 +11,11 @@ import {tagsPage} from '/lib/enonic/yase/admin/tags/tagsPage';
 export function handleTagsPost({
 	params: {
 		_parentPath = PATH_TAG,
-		name,
-		phrase
+		name, // sanitize(displayName)
+		displayName //ucFirst(name)
 	}
 }) {
-	log.info(toStr({_parentPath, name, phrase}));
+	log.info(toStr({_parentPath, name, displayName}));
 
 	const createNodeParams = {
 		_parentPath,
@@ -23,7 +23,7 @@ export function handleTagsPost({
 		_indexConfig: {
 			default: 'byType'
 		},
-		phrase,
+		displayName,
 		type: NT_TAG
 	};
 	log.info(toStr({createNodeParams}));

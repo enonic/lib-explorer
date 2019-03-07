@@ -1,5 +1,5 @@
 //import {toStr} from '/lib/enonic/util';
-import {getLocale} from '/lib/xp/admin';
+//import {getLocale} from '/lib/xp/admin';
 
 import {
 	BRANCH_ID,
@@ -7,11 +7,10 @@ import {
 	REPO_ID
 } from '/lib/enonic/yase/constants';
 import {cachedNode} from '/lib/enonic/yase/cachedNode';
-import {localize} from '/lib/enonic/phrases/localize';
 
 
 export function localizeTag({
-	locale = getLocale(),
+	//locale = getLocale(),
 	nodeCache,
 	tag
 }) {
@@ -24,12 +23,7 @@ export function localizeTag({
 		id: nodePath
 	});
 	//log.info(toStr({tagNode}));
-	const {phrase} = tagNode;
-	const localizedTag = localize({
-		locale,
-		nodeCache,
-		phrase
-	});
-	//log.info(toStr({locale, tag, phrase, localizedTag}));
-	return localizedTag;
+	const {displayName} = tagNode;
+	//log.info(toStr({locale, tag, displayName}));
+	return displayName;
 } // function localizeTag

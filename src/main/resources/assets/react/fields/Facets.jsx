@@ -23,7 +23,6 @@ export const Facets = ({
 	name = 'facets',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	//phrases,
 	setFieldValue,
 	tags,
 	values,

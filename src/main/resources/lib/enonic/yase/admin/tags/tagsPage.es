@@ -1,4 +1,3 @@
-import {phrasesQuery} from '/lib/enonic/phrases/phrasesQuery';
 //import {toStr} from '/lib/enonic/util';
 
 
@@ -19,15 +18,14 @@ export function tagsPage(
 		status
 	} = {}
 ) {
-	const phrases = phrasesQuery().hits;
-	//log.info(toStr({phrases}));
-
 	const fieldRows = getTags().hits.map(({
-		_path
+		_path,
+		displayName
 	}) => {
 		const tagPath = _path.replace(/^\/tags\//, '');
 		return `<tr>
 		<td>${tagPath}</td>
+		<td>${displayName}</td>
 		<td><button onClick="document.getElementById('_parentPath').setAttribute('value', '/tags/${tagPath}')">Create child tag</button></td>
 	</tr>`;
 	}).join('\n');
@@ -47,10 +45,8 @@ export function tagsPage(
 		</label>
 
 		<label>
-			<span>Phrase</span>
-			<select name="phrase">
-				${phrases.map(phrase => `<option value="${phrase.id}">${phrase.displayName}</option>`)}
-			</select>
+			<span>Display name</span>
+			<input name="displayName" type="text"/>
 		</label>
 
 		<button type="submit">Add tag</button>
@@ -60,7 +56,8 @@ export function tagsPage(
 	<thead>
 		<tr>
 			<th>Tag</th>
-			<th></th>
+			<th>Display name</th>
+			<th>Action(s)</th>
 		</tr>
 	</thead>
 	<tbody>
