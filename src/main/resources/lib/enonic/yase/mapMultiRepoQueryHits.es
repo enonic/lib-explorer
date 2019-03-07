@@ -1,7 +1,7 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Node modules (webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-import highlightSearchResult from 'highlight-search-result';
+//import highlightSearchResult from 'highlight-search-result';
 //import {get, set} from 'lodash'; // Cannot read property "Array" from undefined
 import set from 'set-value';
 
@@ -17,6 +17,7 @@ import {dlv as get} from '/lib/enonic/util/object';
 //──────────────────────────────────────────────────────────────────────────────
 import {cachedNode} from '/lib/enonic/yase/cachedNode';
 import {localizeTag} from '/lib/enonic/yase/localizeTag';
+import {highlight as highlightSearchResult} from '/lib/enonic/yase/highlight';
 
 
 export function mapMultiRepoQueryHits({
