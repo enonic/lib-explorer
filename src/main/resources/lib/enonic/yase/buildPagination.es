@@ -4,7 +4,7 @@
 //import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 
-import {localize} from '/lib/enonic/phrases/localize';
+import {localize} from '/lib/xp/i18n';
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -26,28 +26,23 @@ export function buildPagination({
 	const {
 		pagesToShow = 10,
 		first = true,
-		firstPhrase,
 		prev = true,
-		prevPhrase,
 		next = true,
-		nextPhrase,
-		last = true,
-		lastPhrase
+		last = true
 	} = paginationConfig;
-	//log.info(toStr({firstPhrase, prevPhrase, nextPhrase, lastPhrase}));
 
 	const pagination = [];
 	if (first && page > 1) {
 		pagination.push({
 			href,
-			text: localize({locale, phrase: firstPhrase})
+			text: localize({locale, key: 'pagination.first'})
 		});
 	}
 
 	if (prev && page > 2) {
 		pagination.push({
 			href: `${href}&page=${page - 1}`,
-			text: localize({locale, phrase: prevPhrase})
+			text: localize({locale, key: 'pagination.prev'})
 		});
 	}
 
@@ -69,13 +64,13 @@ export function buildPagination({
 		if (next && page < (pages - 1)) {
 			pagination.push({
 				href: `${href}&page=${page + 1}`,
-				text: localize({locale, phrase: nextPhrase})
+				text: localize({locale, key: 'pagination.next'})
 			});
 		}
 		if (last) {
 			pagination.push({
 				href: `${href}&page=${pages}`,
-				text: localize({locale, phrase: lastPhrase})
+				text: localize({locale, key: 'pagination.last'})
 			});
 		}
 	}
