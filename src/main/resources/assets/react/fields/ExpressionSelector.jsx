@@ -69,7 +69,7 @@ export const ExpressionSelector = ({
 				);
 			}}
 			options={[{
-				label: 'Group',
+				label: 'Logic',
 				value: 'group'
 			}, {
 				label: 'Fulltext',
