@@ -1,13 +1,16 @@
 //import {toStr} from '/lib/enonic/util';
+import {sanitize} from '/lib/xp/common';
+
 import {NT_FIELD} from '/lib/enonic/yase/constants';
 import {createNode} from '/lib/enonic/yase/createNode';
+import {ucFirst} from '/lib/enonic/yase/ucFirst';
 import {fieldsPage} from '/lib/enonic/yase/admin/fields/fieldsPage';
 
 
 export function handleFieldsPost({
 	params: {
 		key,
-		displayName = `${key.charAt(0).toUpperCase()}${key.substr(1)}`,
+		displayName,
 		description = '',
 		//iconUrl = '',
 		instruction = 'type',
@@ -20,6 +23,17 @@ export function handleFieldsPost({
 	},
 	path: reqPath
 }) {
+	if (!key) {
+		if (!displayName) {
+			return fieldsPage({path: reqPath}, {
+				messages: [`You must provide either key or Display name!`],
+				status: 400
+			});
+		}
+		key = sanitize(displayName);
+	} else if (!displayName) {
+		displayName = ucFirst(key);
+	}
 	/*log.info(toStr({
 		key,
 		instruction,
