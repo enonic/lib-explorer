@@ -2,8 +2,16 @@ import {TOOL_PATH} from '/lib/enonic/yase/constants';
 
 
 export function fieldFormHtml({
+	description = '',
+	decideByType = true, //'checked',
 	displayName = '',
-	key = ''
+	enabled = true, //'checked',
+	fulltext = true, //'checked',
+	includeInAllText = true, //'checked',
+	instruction = 'type',
+	key = '',
+	ngram = true, //'checked',
+	path = false //''
 } = {}) {
 	return `<script type="text/javascript">
 	function ready(fn) {
@@ -33,7 +41,7 @@ export function fieldFormHtml({
 
 		<label>
 			<span>Description</span>
-			<input name="description" type="text"/>
+			<input name="description" type="text" value="${description}"/>
 		</label>
 
 		<!--label>
@@ -43,7 +51,7 @@ export function fieldFormHtml({
 
 		<label>
 			<span>Index config</span>
-			<select id="instruction-selector" name="instruction" onchange="setCustomInstructionsVisibility(this)">
+			<select id="instruction-selector" name="instruction" onchange="setCustomInstructionsVisibility(this)" value="${instruction}">
 				<option value="type" selected>type (default) - Indexing is done based on type; e.g numeric values are indexed as both string and numeric.</option>
 				<option value="minimal">minimal - Value is indexed as a string-value only, no matter what type of data.</option>
 				<option value="none">none - Value is not indexed.</option>
@@ -56,32 +64,32 @@ export function fieldFormHtml({
 		<div id="custom-instructions" style="display:none">
 			<label>
 				<span>decideByType</span>
-				<input name="decideByType" type="checkbox" checked/>
+				<input name="decideByType" type="checkbox" ${decideByType ? 'checked' : ''}/>
 			</label>
 
 			<label>
 				<span>enabled</span>
-				<input name="enabled" type="checkbox" checked/>
+				<input name="enabled" type="checkbox" ${enabled ? 'checked' : ''}/>
 			</label>
 
 			<label>
 				<span>nGram</span>
-				<input name="nGram" type="checkbox" checked/>
+				<input name="nGram" type="checkbox" ${ngram ? 'checked' : ''}/>
 			</label>
 
 			<label>
 				<span>fulltext</span>
-				<input name="fulltext" type="checkbox" checked/>
+				<input name="fulltext" type="checkbox" ${fulltext ? 'checked' : ''}/>
 			</label>
 
 			<label>
 				<span>includeInAllText</span>
-				<input name="includeInAllText" type="checkbox" checked/>
+				<input name="includeInAllText" type="checkbox" ${includeInAllText ? 'checked' : ''}/>
 			</label>
 
 			<label>
 				<span>path</span>
-				<input name="path" type="checkbox"/>
+				<input name="path" type="checkbox" ${path ? 'checked' : ''}/>
 			</label>
 		</div>
 

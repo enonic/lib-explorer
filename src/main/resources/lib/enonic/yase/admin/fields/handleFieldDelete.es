@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {
 	BRANCH_ID,
 	TOOL_PATH,
@@ -20,11 +20,11 @@ export function handleFieldDelete({
 	});
 	const key = `/fields/${fieldName}`;
 	const deleteRes = connection.delete(key);
-	log.info(toStr({deleteRes}));
+	//log.info(toStr({deleteRes}));
 	return fieldsPage({path}, {
-		messages: deleteRes
+		messages: deleteRes.length
 			? [`Field with key:${key} deleted.`]
 			: [`Something went wrong when trying to delete field with key:${key}.`],
-		status: deleteRes ? 200 : 500
+		status: deleteRes.length ? 200 : 500
 	});
 }
