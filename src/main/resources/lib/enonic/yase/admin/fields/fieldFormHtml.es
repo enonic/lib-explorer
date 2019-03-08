@@ -5,7 +5,19 @@ export function fieldFormHtml({
 	displayName = '',
 	key = ''
 } = {}) {
-	return `<form action="${TOOL_PATH}/fields" autocomplete="off" method="POST">
+	return `<script type="text/javascript">
+	function ready(fn) {
+		if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+			fn();
+		} else {
+			document.addEventListener('DOMContentLoaded', fn);
+		}
+	}
+	function setCustomInstructionsVisibility(instructionSelectorEl) {
+		document.getElementById('custom-instructions').style.display = instructionSelectorEl.value === 'custom' ? 'block' : 'none';
+	}
+</script>
+<form action="${TOOL_PATH}/fields" autocomplete="off" method="POST">
 	<fieldset>
 		<legend>New field</legend>
 
@@ -31,7 +43,7 @@ export function fieldFormHtml({
 
 		<label>
 			<span>Instruction</span>
-			<select name="instruction">
+			<select id="instruction-selector" name="instruction" onchange="setCustomInstructionsVisibility(this)">
 				<option value="type" selected>type (default) - Indexing is done based on type; e.g numeric values are indexed as both string and numeric.</option>
 				<option value="minimal">minimal - Value is indexed as a string-value only, no matter what type of data.</option>
 				<option value="none">none - Value is not indexed.</option>
@@ -41,42 +53,43 @@ export function fieldFormHtml({
 			</select>
 		</label>
 
-		<label>
-			<span>decideByType</span>
-			<input name="decideByType" type="checkbox" checked/>
-		</label>
+		<div id="custom-instructions" style="display:none">
+			<label>
+				<span>decideByType</span>
+				<input name="decideByType" type="checkbox" checked/>
+			</label>
 
-		<label>
-			<span>enabled</span>
-			<input name="enabled" type="checkbox" checked/>
-		</label>
+			<label>
+				<span>enabled</span>
+				<input name="enabled" type="checkbox" checked/>
+			</label>
 
-		<label>
-			<span>nGram</span>
-			<input name="nGram" type="checkbox" checked/>
-		</label>
+			<label>
+				<span>nGram</span>
+				<input name="nGram" type="checkbox" checked/>
+			</label>
 
-		<label>
-			<span>fulltext</span>
-			<input name="fulltext" type="checkbox" checked/>
-		</label>
+			<label>
+				<span>fulltext</span>
+				<input name="fulltext" type="checkbox" checked/>
+			</label>
 
-		<label>
-			<span>includeInAllText</span>
-			<input name="includeInAllText" type="checkbox" checked/>
-		</label>
+			<label>
+				<span>includeInAllText</span>
+				<input name="includeInAllText" type="checkbox" checked/>
+			</label>
 
-		<label>
-			<span>path</span>
-			<input name="path" type="checkbox"/>
-		</label>
-
-		<label>
-			<span>Comment</span>
-			<input name="comment" type="text"/>
-		</label>
+			<label>
+				<span>path</span>
+				<input name="path" type="checkbox"/>
+			</label>
+		</div>
 
 		<button type="submit">Add field</button>
 	</fieldset>
-</form>`;
+</form><script type="text/javascript">
+ready(function() {
+	setCustomInstructionsVisibility(document.getElementById('instruction-selector'));
+})
+</script>`;
 }
