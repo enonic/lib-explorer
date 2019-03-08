@@ -9,7 +9,7 @@ import {sanitize} from '/lib/xp/common';
 // Admin tool
 //──────────────────────────────────────────────────────────────────────────────
 export const PACKAGE = 'com.enonic.yase';
-export const YASE_ADMIN = `${PACKAGE}.admin`;
+export const YASE_ADMIN = 'com.enonic.app.yase';
 export const TOOL_PATH = getToolUrl(YASE_ADMIN, 'yase');
 
 
