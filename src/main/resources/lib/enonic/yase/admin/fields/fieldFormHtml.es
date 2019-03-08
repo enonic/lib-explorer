@@ -42,7 +42,7 @@ export function fieldFormHtml({
 		</label-->
 
 		<label>
-			<span>Instruction</span>
+			<span>Index config</span>
 			<select id="instruction-selector" name="instruction" onchange="setCustomInstructionsVisibility(this)">
 				<option value="type" selected>type (default) - Indexing is done based on type; e.g numeric values are indexed as both string and numeric.</option>
 				<option value="minimal">minimal - Value is indexed as a string-value only, no matter what type of data.</option>
