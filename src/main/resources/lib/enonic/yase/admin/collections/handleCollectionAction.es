@@ -10,7 +10,7 @@ import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {getCollection} from '/lib/enonic/yase/admin/collections/getCollection';
 
 
-const COLLECT_TASK_NAME = 'com.enonic.yase.collector.surgeon:collect';
+const COLLECT_TASK_NAME = 'com.enonic.app.yase:collect';
 
 
 function getTasksWithPropertyValue({
