@@ -1,3 +1,4 @@
+import {toStr} from '/lib/enonic/util';
 import {fieldFormHtml} from '/lib/enonic/yase/admin/fields/fieldFormHtml';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
@@ -10,29 +11,16 @@ export function fieldsPage({
 	status
 } = {}) {
 	const fieldRows = getFields().hits.map(({
-		comment,
 		displayName,
 		description,
 		indexConfig,
-		key,
-		...rest
+		key
 	}) => {
-		const indexConfigStr = indexConfig === 'custom'
-			? [
-				'decideByType',
-				'enabled',
-				'nGram',
-				'fulltext',
-				'includeInAllText',
-				'path'
-			].map(k => rest[k] ? k : '').filter(x => x).join(', ') // eslint-disable-line no-confusing-arrow
-			: indexConfig;
 		return `<tr>
 		<td>${displayName}</td>
 		<td>${key}</td>
 		<td>${description}</td>
-		<td>${indexConfigStr}</td>
-		<td>${comment}</td>
+		<td>${toStr(indexConfig)}</td>
 	</tr>`;
 	}).join('\n');
 	return htmlResponse({
@@ -44,7 +32,6 @@ export function fieldsPage({
 			<th>Key</th>
 			<th>Description</th>
 			<th>IndexConfig</th>
-			<th>Comment</th>
 		</tr>
 	</thead>
 	<tbody>

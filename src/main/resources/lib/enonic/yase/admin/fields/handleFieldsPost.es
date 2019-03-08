@@ -16,8 +16,7 @@ export function handleFieldsPost({
 		nGram = 'on',
 		fulltext = 'on',
 		includeInAllText = 'on',
-		path,
-		comment = ''
+		path
 	},
 	path: reqPath
 }) {
@@ -30,14 +29,12 @@ export function handleFieldsPost({
 		fulltext,
 		includeInAllText,
 		path,
-		comment
 	}));*/
 	const lcKey = key.toLowerCase();
 	const node = createNode({
 		_indexConfig: {default: 'byType'},
 		_name: lcKey,
 		_parentPath: '/fields',
-		comment,
 		description,
 		displayName,
 		key: lcKey,
