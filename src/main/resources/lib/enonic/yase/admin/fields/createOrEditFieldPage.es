@@ -23,7 +23,7 @@ export function createOrEditFieldPage({
 	const node = connection.get(key);
 	log.info(toStr({node}));
 
-	const {description, displayName, key, indexConfig} = node;
+	const {description, displayName, indexConfig} = node;
 	log.info(toStr({description, displayName, key, indexConfig}));
 
 	const decideByType = dlv(indexConfig, 'decideByType', true);
