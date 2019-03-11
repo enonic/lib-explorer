@@ -8,7 +8,7 @@
 // Public function
 //──────────────────────────────────────────────────────────────────────────────
 export const cachedQuery = ({cache, connection, params}) => {
-	const key = JSON.stringify(params);
+	const key = JSON.stringify(params); // TODO Perhaps this becomes too long? Use one way hash with low collision?
 	//log.info(toStr({params, key}));
 	return cache.get(key, () => connection.query(params));
 	/*let fromCache = true;
