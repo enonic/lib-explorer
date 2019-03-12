@@ -33,6 +33,9 @@ export const collectionsPage = ({
 				<form action="${TOOL_PATH}/collections/${_name}/collect" method="post">
 					<button type="submit">Collect</button>
 				</form>
+				<form action="${TOOL_PATH}/collections/${_name}/collect?resume=true" method="post">
+					<button type="submit">Resume</button>
+				</form>
 			</td>
 		</tr>`).join('\n')}
 	</tbody>

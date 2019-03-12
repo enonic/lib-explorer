@@ -1,10 +1,10 @@
-import {parse as parseCookie} from 'cookie';
+//import {parse as parseCookie} from 'cookie';
 
 import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 import {list as listTasks, submitNamed} from '/lib/xp/task';
 import {request as httpClientRequest} from '/lib/http-client';
-import {serviceUrl} from '/lib/xp/portal';
+//import {serviceUrl} from '/lib/xp/portal';
 
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {getCollection} from '/lib/enonic/yase/admin/collections/getCollection';
@@ -39,16 +39,17 @@ function getTasksWithPropertyValue({
 export const handleCollectionAction = ({
 	path,
 	method,
-	headers: {
+	/*headers: {
 		Cookie: cookieHeader
-	}
+	}*/
+	params
 }) => {
 	//log.info(toStr({path, method, cookieHeader}));
 
-	const cookies = parseCookie(cookieHeader);
+	//const cookies = parseCookie(cookieHeader);
 	//log.info(toStr({cookies}));
 
-	const sessionId = cookies.JSESSIONID;
+	//const sessionId = cookies.JSESSIONID;
 	//log.info(toStr({sessionId}));
 
 	const relPath = path.replace(TOOL_PATH, '');
@@ -74,6 +75,9 @@ export const handleCollectionAction = ({
 				}
 			} = collectionNode;
 			//log.info(toStr({name, config}));
+			if (params.resume === 'true') {
+				config.resume = true;
+			}
 
 			const configJson = JSON.stringify(config);
 			//log.info(toStr({configJson}));
