@@ -12,9 +12,12 @@ export const Collection = ({
 	initialValues = {
 		collector: {
 			config: { // Avoid uncontrolled to controlled warning:
+				connectionTimeout: 10000,
 				delay: 1000,
 				download: [],
 				dynamic: false,
+				readTimeout: 10000,
+				retries: 1,
 				urls: [''] // At least one is required
 			},
 			name: 'surgeon'

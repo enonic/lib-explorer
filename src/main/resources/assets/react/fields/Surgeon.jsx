@@ -12,6 +12,7 @@ import {Label} from '../elements/Label';
 import {LabeledField} from '../elements/LabeledField';
 //import {Table} from '../elements/Table';
 
+import {isSet} from '../utils/isSet';
 //import {toStr} from '../utils/toStr';
 
 // Fields
@@ -38,6 +39,7 @@ export const Surgeon = ({
 			name: collectorName,
 			config: {
 				crawl,
+				connectionTimeout,
 				delay,
 				download,
 				dynamic,
@@ -45,6 +47,8 @@ export const Surgeon = ({
 				queryParams,
 				queryRange,
 				headers,
+				readTimeout,
+				retries,
 				scrape,
 				urls
 			}
@@ -73,6 +77,9 @@ export const Surgeon = ({
 		<QueryParameters parentPath={path} setFieldValue={setFieldValue} value={queryParams}/>
 		<HeadersField path={`${path}.headers`} headers={headers} setFieldValue={setFieldValue}/>
 		<DelayField path={`${path}.delay`} value={delay}/>
+		<LabeledField label="Connection timeout" name={`${path}.connectionTimeout`} value={isSet(connectionTimeout) ? connectionTimeout : 10000}/>
+		<LabeledField label="Read timeout" name={`${path}.readTimeout`} value={isSet(readTimeout) ? readTimeout : 10000}/>
+		<LabeledField label="Retries" name={`${path}.retries`} value={isSet(retries) ? retries : 1}/>
 		<Checkbox checked={dynamic} label="Dynamic" name={`${path}.dynamic`}/>
 	</Fieldset>
 	<ScrapeField
