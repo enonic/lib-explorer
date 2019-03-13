@@ -69,7 +69,14 @@ export function createOrEditCollectionPage({
 	const fields = getFields().hits.map(({displayName, key}) => ({label: displayName, value: key}));
 	//log.info(toStr({fields}));
 
-	const tags = getTags().hits.map(({displayName, _path}) => ({label: displayName, value: _path.replace(/^\/tags\//, '')}));
+	const tags = {};
+	getTags().hits.forEach(({displayName: label, field, tag: value}) => {
+		if(tags[field]) {
+			tags[field].push({label, value});
+		} else {
+			tags[field] = [{label, value}];
+		}
+	});
 	//log.info(toStr({tags}));
 
 	const propsObj = {action: `${TOOL_PATH}/collections`, fields, initialValues, tags};
