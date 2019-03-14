@@ -12,6 +12,7 @@ import set from 'set-value';
 //import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 import {dlv} from '/lib/enonic/util/object';
+import {sanitize} from '/lib/xp/common';
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -86,7 +87,7 @@ export function buildFacets({
 
 			if (active) {
 				activeCount += 1;
-				const value = facetTag.replace(/^.+\//, '');
+				const value = facetTag.replace(/^.+\//, '').replace(/-/g, ' '); // TODO This is real ugly! Need to rethink field, tag -> aggregation -> facet
 				if (hasValuesInCategory[field]) {
 					hasValuesInCategory[field].push(value);
 				} else {
@@ -213,7 +214,7 @@ export function buildFacets({
 				//log.info(toStr({tag, childIndex, field}));
 				//const field = tag.replace(/^\/tags\//, '').replace(/\/.*$/, '');
 				//log.info(toStr({buckets: queryRes.aggregations[field].buckets}));
-				const filteredBuckets = queryRes.aggregations[field].buckets.filter(({key}) => key === tag.replace(/^.*\//, ''));
+				const filteredBuckets = queryRes.aggregations[field].buckets.filter(({key}) => sanitize(key) === tag.replace(/^.*\//, '').toLowerCase());
 				//log.info(toStr({filteredBuckets}));
 				if (filteredBuckets.length) {
 					firstPass[index].facets[childIndex].count = filteredBuckets[0].docCount;
