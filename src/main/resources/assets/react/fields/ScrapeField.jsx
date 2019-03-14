@@ -11,6 +11,7 @@ import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
 
 import {FieldSelector} from './FieldSelector';
+import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
 import {TagSelector} from './TagSelector';
 
 
@@ -68,11 +69,18 @@ export const ScrapeField = ({
 					</td>
 					<td>
 						{option === 'scrape'
-							? <Field
-								autoComplete="off"
-								label="Data extraction expression"
-								name={`${path}[${index}].dataExpr`}
-							/>
+							? <>
+								{dataExpr ? <Field
+									autoComplete="off"
+									label="Data extraction expression"
+									name={`${path}[${index}].dataExpr`}
+								/> : null}
+								<ScrapeExpressionBuilder
+									parentPath={`${path}[${index}]`}
+									setFieldValue={setFieldValue}
+									values={values}
+								/>
+							</>
 							: field
 								? <TagSelector
 									label=""
