@@ -1,13 +1,15 @@
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 //import {getUser} from '/lib/xp/auth';
 import {get as getContext} from '/lib/xp/context';
 import {multiRepoConnect} from '/lib/xp/node';
+import {list as listRepos} from '/lib/xp/repo';
 
 
 export function connectRepos({
 	sources,
 	context = getContext(),
 	principals: passedPrincipals,
+	repoList = listRepos(),
 
 	// There might not be a logged in user
 	login = context.authInfo.user && context.authInfo.user.login,
@@ -28,10 +30,34 @@ export function connectRepos({
 		});
 	}
 	//log.info(toStr({contextPrincipals, passedPrincipals, basePrincipals}));
+	const repos = {};
+	repoList.forEach(({id, branches}) => {
+		repos[id] = branches;
+	});
+	//log.info(toStr({repos}));
 
-	const sourcesWithExtendedPrincipals = sources.map(({
+	const existingReposWithBranch = [];
+	const missingReposWithBranch = [];
+	sources.forEach(({
 		branch,
 		principals: sourcePrincipals,
+		repoId
+	}) => {
+		//log.info(toStr({repoId}));
+		if (repos[repoId] && repos[repoId].includes(branch)) {
+			existingReposWithBranch.push({branch, sourcePrincipals, repoId});
+		} else {
+			missingReposWithBranch.push({branch, sourcePrincipals, repoId});
+		}
+	});
+	//log.info(toStr({existingReposWithBranch, missingReposWithBranch}));
+	if (missingReposWithBranch.length) { // TODO log error or throw could be configurable
+		log.error(`Skipping missing sources: ${toStr(missingReposWithBranch)}`);
+	}
+
+	const sourcesWithExtendedPrincipals = existingReposWithBranch.map(({
+		branch,
+		sourcePrincipals,
 		repoId
 	}) => {
 		const principals = [].concat(basePrincipals);
