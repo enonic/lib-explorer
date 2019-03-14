@@ -13,7 +13,7 @@ import {Facets} from './fields/Facets';
 import {Pagination} from './fields/Pagination'
 import {ResultMappings} from './fields/ResultMappings';
 
-import {toStr} from './utils/toStr';
+//import {toStr} from './utils/toStr';
 
 
 function convert(node) {
@@ -93,13 +93,13 @@ export const Interface = ({
 		values
 	}) => {
 		convert(values);
-		console.debug(toStr({
+		/*console.debug(toStr({
 			//collections,
 			//fields,
 			//tags,
 			//thesauri,
 			values
-		}));
+		}));*/
 		return <Form
 			action={action}
 			autoComplete="off"
@@ -143,6 +143,7 @@ export const Interface = ({
 				values={values}
 			/>
 			<Facets
+				fields={fields}
 				legend='Facet(s)'
 				setFieldValue={setFieldValue}
 				tags={tags}

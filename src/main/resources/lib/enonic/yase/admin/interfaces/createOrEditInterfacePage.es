@@ -44,12 +44,20 @@ export function createOrEditInterfacePage({
 		};
 	}
 
+	const tags = {};
+	getTags().hits.forEach(({displayName: label, field, tag: value}) => {
+		if(tags[field]) {
+			tags[field].push({label, value});
+		} else {
+			tags[field] = [{label, value}];
+		}
+	});
 
 	const propsObj = {
 		action: `${TOOL_PATH}/interfaces`,
 		collections: queryCollections().hits.map(({displayName: label, _name: value}) => ({label, value})),
 		fields: getFields().hits.map(({displayName, key}) => ({label: displayName, value: key})),
-		tags: getTags().hits.map(({displayName, _path}) => ({label: displayName, value: _path.replace(/^\/tags\//, '')})),
+		tags,
 		thesauri: getThesauri().map(({displayName, name}) => ({label: displayName, value: name})),
 		initialValues
 	};

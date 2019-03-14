@@ -10,6 +10,7 @@ import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
 
 import {Fieldset} from '../elements/Fieldset';
 
+import {FieldSelector} from './FieldSelector';
 import {TagSelector} from './TagSelector';
 
 import {isSet} from '../utils/isSet';
@@ -17,6 +18,8 @@ import {isSet} from '../utils/isSet';
 
 
 export const Facets = ({
+	field,
+	fields,
 	legend = null,
 	level = 0,
 	levels = 2,
@@ -24,7 +27,7 @@ export const Facets = ({
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	setFieldValue,
-	tags,
+	tags = [],
 	values,
 	value = values && getIn(values, path) || []
 }) => {
@@ -41,8 +44,14 @@ export const Facets = ({
 		/>;
 	}
 	level += 1;
-	const allowChildren = level === levels;
-	//console.debug(toStr({level, levels, allowChildren}));
+	const allowChildren = level !== levels;
+	/*console.debug(toStr({level, levels, allowChildren, path, field, value}));
+	if (field && tags) {
+		console.debug(toStr({
+			tags,
+			[`tag[${field}]`]: tags[field]
+		}));
+	}*/
 	const fragment = <>
 		<FieldArray
 			name={path}
@@ -55,14 +64,23 @@ export const Facets = ({
 					//console.debug(toStr({facets, tag, uuid4}));
 					const pathWithIndex = `${path}[${index}]`;
 					return <div key={uuid4}>
-						<TagSelector
+						{level === 1 ? <FieldSelector
+							fields={fields}
+							name='tag'
+							parentPath={pathWithIndex}
+							placeholder='Please select a field'
+							setFieldValue={setFieldValue}
+							values={values}
+						/> : (field ? <TagSelector
 							parentPath={pathWithIndex}
 							placeholder='Please select a tag'
 							setFieldValue={setFieldValue}
-							tags={tags}
+							tags={tags[field]}
 							values={values}
-						/>
-						{allowChildren ? null : <Facets
+						/> : null)}
+						{allowChildren ? <Facets
+							field={tag}
+							fields={fields}
 							legend=''
 							level={level}
 							levels={levels}
@@ -70,7 +88,7 @@ export const Facets = ({
 							setFieldValue={setFieldValue}
 							tags={tags}
 							values={values}
-						/>}
+						/> : null}
 						<InsertButton index={index} insert={insert} value={{
 							tag: '',
 							//facets: [],
