@@ -56,8 +56,7 @@ export function buildFacets({
 	query,
 	queryCache
 }) {
-	const path = 'tags';
-	const hasValues = {[path]: []}; // Built in 1st pass, used in 2nd pass.
+	const hasValues = {}; // Built in 1st pass, used in 2nd pass.
 	const facetsArrayFromRequestParams = params.facets ? forceArray(params.facets) : [];
 	//log.info(toStr({facetsArrayFromRequestParams}));
 
@@ -65,11 +64,12 @@ export function buildFacets({
 	// First pass: Localize facetName, find active/inactive facets and build links.
 	//──────────────────────────────────────────────────────────────────────────
 	const firstPass = facetConfig.map(({tag, facets: children}) => {
+		const field = tag.replace(/^\/fields\//, '');
 		let activeCount = 0;
 		let inactiveCount = 0;
 		const facetCategoryUri = uriObjFromParams(params);
 		const facetCategoryClearUri = uriObjFromParams(params);
-		const hasValuesInCategory = {[path]: []};
+		const hasValuesInCategory = {};
 
 		const facets = children.map(({tag: facetTag}) => {
 			const facetUri = uriObjFromParams(params);
@@ -86,11 +86,17 @@ export function buildFacets({
 
 			if (active) {
 				activeCount += 1;
-				//if (!Array.isArray(hasValuesInCategory[path])) { hasValuesInCategory[path] = [];}
-				hasValuesInCategory[path].push(facetTag);
-
-				//if (!Array.isArray(hasValues[path])) { hasValues[path] = [];}
-				hasValues[path].push(facetTag);
+				const value = facetTag.replace(/^.+\//, '');
+				if (hasValuesInCategory[field]) {
+					hasValuesInCategory[field].push(value);
+				} else {
+					hasValuesInCategory[field] = [value];
+				}
+				if (hasValues[field]) {
+					hasValues[field].push(value);
+				} else {
+					hasValues[field] = [value];
+				}
 			} else {
 				inactiveCount += 1;
 			}
@@ -107,6 +113,7 @@ export function buildFacets({
 		return {
 			activeCount,
 			clearHref: facetCategoryClearUri.toString(),
+			field, // Gets removed in 2nd pass
 			hasValuesInCategory, // Gets removed in 2nd pass
 			href: facetCategoryUri.toString(),
 			inactiveCount,
@@ -121,32 +128,31 @@ export function buildFacets({
 	//──────────────────────────────────────────────────────────────────────────
 	//log.info(toStr({hasValues}));
 	const hasValueEntries = Object.entries(hasValues); //log.info(toStr({hasValueEntries}));
-	/*if (hasValueEntries.length && !dlv(filters, 'boolean.must')) {
+	if (hasValueEntries.length && !dlv(filters, 'boolean.must')) {
 		set(filters, 'boolean.must', []);
-	}*/
+	}
 	hasValueEntries.forEach(([field, values]) => {
 		//log.info(toStr({field, values}));
-		if (values.length) {
-			if (!dlv(filters, 'boolean.must')) {
-				set(filters, 'boolean.must', []);
+		//if (values.length) {
+		/*if (!dlv(filters, 'boolean.must')) {
+			set(filters, 'boolean.must', []);
+		}*/
+		filters.boolean.must.push({
+			hasValue: {
+				field,
+				values
 			}
-			filters.boolean.must.push({
-				hasValue: {
-					field,
-					values
-				}
-			});
-		}
+		});
+		//}
 	});
 	//log.info(toStr({filters}));
 
 	//──────────────────────────────────────────────────────────────────────────
 	// Second pass: Build and do aggregation queries and apply counts.
 	//──────────────────────────────────────────────────────────────────────────
-	firstPass.forEach(({facets, hasValuesInCategory}, index) => {
+	firstPass.forEach(({facets, field, hasValuesInCategory}, index) => {
 		const filtersExceptCategory = merge.all([{}, filters]);
 		//log.info(toStr({filtersExceptCategory}));
-
 		if (hasValuesInCategory) {
 			Object.entries(hasValuesInCategory).forEach(([path, values]) => {
 				//log.info(toStr({path, values}));
@@ -178,13 +184,12 @@ export function buildFacets({
 				} // if values.length
 			}); // entries hasValuesInCategory
 
-			const aggregations = {
-				[path]: {
-					terms: {
-						field: path,
-						order: 'count desc',
-						size: 100
-					}
+			const aggregations = {};
+			aggregations[field] = {
+				terms: {
+					field: field,
+					order: 'count desc', // '_term asc'
+					size: 100
 				}
 			};
 			//log.info(toStr({aggregations}));
@@ -203,10 +208,12 @@ export function buildFacets({
 			});
 			//log.info(toStr({queryRes}));
 
+			//log.info(toStr({facets}));
 			facets.forEach(({tag}, childIndex) => {
-				//log.info(toStr({childIndex, path}));
-				//log.info(toStr({buckets: queryRes.aggregations[path].buckets}));
-				const filteredBuckets = queryRes.aggregations[path].buckets.filter(({key}) => key === tag);
+				//log.info(toStr({tag, childIndex, field}));
+				//const field = tag.replace(/^\/tags\//, '').replace(/\/.*$/, '');
+				//log.info(toStr({buckets: queryRes.aggregations[field].buckets}));
+				const filteredBuckets = queryRes.aggregations[field].buckets.filter(({key}) => key === tag.replace(/^.*\//, ''));
 				//log.info(toStr({filteredBuckets}));
 				if (filteredBuckets.length) {
 					firstPass[index].facets[childIndex].count = filteredBuckets[0].docCount;
@@ -216,6 +223,7 @@ export function buildFacets({
 				delete firstPass[index].facets[childIndex].tag;
 			}); // facets.forEach
 		} // if hasValuesInCategory
+		delete firstPass[index].field;
 		delete firstPass[index].hasValuesInCategory;
 	}); // firstPass.forEach
 

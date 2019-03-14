@@ -3,7 +3,7 @@
 
 import {
 	BRANCH_ID,
-	PATH_TAG,
+	//PATH_TAG,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
 import {cachedNode} from '/lib/enonic/yase/cachedNode';
@@ -15,12 +15,12 @@ export function localizeTag({
 	tag
 }) {
 	//log.info(toStr({locale, tag}));
-	const nodePath = `${PATH_TAG}/${tag}`;
+	//const nodePath = `${PATH_TAG}/${tag}`;
 	const tagNode = cachedNode({
 		cache: nodeCache,
 		repoId: REPO_ID,
 		branch: BRANCH_ID,
-		id: nodePath
+		id: tag
 	});
 	//log.info(toStr({tagNode}));
 	const {displayName} = tagNode;

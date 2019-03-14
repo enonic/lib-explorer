@@ -143,7 +143,7 @@ export const Interface = ({
 				values={values}
 			/>
 			<Facets
-				fields={fields}
+				fields={fields.map(({label, path: value}) => ({label, value}))}
 				legend='Facet(s)'
 				setFieldValue={setFieldValue}
 				tags={tags}

@@ -155,6 +155,7 @@ export function search(params) {
 		locale,
 		nodeCache: NODE_CACHE
 	});
+	//log.info(toStr({localizedFacets}));
 
 	const filters = {};
 
