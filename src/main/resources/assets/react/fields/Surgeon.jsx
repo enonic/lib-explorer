@@ -91,6 +91,7 @@ export const Surgeon = ({
 		values={values}
 	/>
 	<DownloadField
+		fields={fields}
 		parentPath={path}
 		setFieldValue={setFieldValue}
 		tags={tags}

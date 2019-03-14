@@ -66,6 +66,7 @@ export function smartRequest({
 				log.error(e);
 			}
 		} else {
+			// TODO java.lang.RuntimeException: SSL peer shut down incorrectly
 			log.error(e.message + ': unhandled error on url ' + url);
 		}
 		if(retries && retryCount < retries) {

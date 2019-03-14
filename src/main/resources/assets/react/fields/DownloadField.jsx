@@ -1,5 +1,9 @@
-import {Field, FieldArray} from 'formik';
-//import {get} from 'lodash';
+import {
+	Field,
+	FieldArray,
+	getIn
+} from 'formik';
+import generateUuidv4 from 'uuid/v4';
 
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
@@ -10,56 +14,145 @@ import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
 import {Fieldset} from '../elements/Fieldset';
 import {Table} from '../elements/Table';
 
+import {FieldSelector} from './FieldSelector';
 import {TagSelector} from './TagSelector';
+
+//import {toStr} from '../utils/toStr';
 
 
 export const DownloadField = ({
+	fields = [],
+	name = 'download',
 	parentPath,
+	path = parentPath ? `${parentPath}.${name}` : name,
 	setFieldValue,
 	tags = [],
-	value = []/*,
-	values*/
+	values,
+	value = getIn(values, path) || []
 }) => {
-	const path = `${parentPath}.download`;
-	//console.log(JSON.stringify({parentPath, path/*, tags*/, value, values}, null, 4));
-	if(!value || !Array.isArray(value)) {
+	//console.log(toStr({parentPath, path/*, tags*/, value, values}));
+	/*if(!value || !Array.isArray(value)) {
 		value = [];
-	}
+	}*/
 	if(!value.length) {
-		return <SetFieldValueButton className='block' field={path} value={[{expr: '', tags: []}]} setFieldValue={setFieldValue} text="Add download expression(s)"/>
+		return <SetFieldValueButton
+			className='block'
+			field={path}
+			value={[{
+				expr: '',
+				tags: [{
+					field: '',
+					tags: []
+				}]
+			}]}
+			setFieldValue={setFieldValue}
+			text="Add download expression(s)"
+		/>;
 	}
 
 	return <Fieldset legend="Download">
-		<Table headers={['Expression', 'Tag(s)', 'Action(s)']}>
+		<Table headers={['Expression', 'Tags', 'Actions']}>
 			<FieldArray
+				id={path}
 				name={path}
-				render={({insert, swap, remove}) => value.map(({expr, tags: selectedTags}, index) => {
-					//console.log(JSON.stringify({expr, selectedTags, index}, null, 4));
+			>
+				{({insert, remove, swap}) => value.map(({
+					expr,
+					tags: tagsArr = [{
+						field: '',
+						tags: []
+					}],
+					uuid4 = generateUuidv4()
+				}, downloadIndex) => {
+					//console.log(JSON.stringify({expr, selectedTags, downloadIndex}, null, 4));
 
-					const key = `${path}[${index}]`;
-					//console.log(JSON.stringify({key}, null, 4));
+					const downloadKey = `${path}[${downloadIndex}]`;
+					//console.log(JSON.stringify({downloadKey}, null, 4));
 
-					//const selectedTags = get(values, tagsPath, []);
-					//console.log(JSON.stringify({selectedTags}, null, 4));
-
-					return <tr key={key}>
-						<td><Field autoComplete="off" name={`${key}.expr`} value={expr}/></td>
-						<td><TagSelector
-							multiple={true}
-							path={`${key}.tags`}
-							tags={tags}
-							setFieldValue={setFieldValue}
-							value={selectedTags}
-						/></td>
+					return <tr key={uuid4}>
+						<td><Field autoComplete="off" name={`${downloadKey}.expr`} value={expr}/></td>
+						<td>{tagsArr && tagsArr.length
+							? <Table headers={['Field', 'Tags', 'Actions']}>
+								<FieldArray
+									name={path}
+									id={path}
+									render={(arrayHelpers) => tagsArr.map(({
+										field = '',
+										tags: selectedTags = [],
+										tagsUuid4 = generateUuidv4()
+									}, tagIndex) => {
+										const tagsKey = `${downloadKey}.tags[${tagIndex}]`;
+										//console.log(JSON.stringify({tagsKey}, null, 4));
+										return <tr key={tagsUuid4}>
+											<td>
+												<FieldSelector
+													name={`${tagsKey}.field`}
+													fields={fields}
+													setFieldValue={setFieldValue}
+													value={field}
+												/>
+											</td>
+											<td>
+												{field ? <TagSelector
+													label=""
+													multiple={true}
+													path={`${tagsKey}.tags`}
+													tags={tags[field]}
+													setFieldValue={setFieldValue}
+													value={selectedTags}
+												/> : null}
+											</td>
+											<td>
+												<InsertButton
+													index={tagIndex}
+													path={`${downloadKey}.tags`}
+													setFieldValue={setFieldValue}
+													values={values}
+													value={{field: '', tags: []}}
+												/>
+												<RemoveButton
+													index={tagIndex}
+													path={`${downloadKey}.tags`}
+													setFieldValue={setFieldValue}
+													values={values}
+												/>
+												<MoveDownButton
+													disabled={tagIndex === tagsArr.length-1}
+													index={tagIndex}
+													path={`${downloadKey}.tags`}
+													setFieldValue={setFieldValue}
+													values={values}
+													visible={tagsArr.length > 1}
+												/>
+												<MoveUpButton
+													index={tagIndex}
+													path={`${downloadKey}.tags`}
+													setFieldValue={setFieldValue}
+													values={values}
+													visible={tagsArr.length > 1}
+												/>
+											</td>
+										</tr>;
+									})}
+								/>
+							</Table>
+							: <SetFieldValueButton
+								className='block'
+								field={`${downloadKey}.tags`}
+								value={[{field: '', tags: []}]}
+								setFieldValue={setFieldValue}
+								text="Add tag(s)"
+							/>
+						}</td>
 						<td>
-							<InsertButton index={index} insert={insert} value={''}/>
-							<RemoveButton index={index} remove={remove}/>
-							<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
-							<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
+							<InsertButton insert={insert} index={downloadIndex} value={{expr: '', field: '', tags: []}}/>
+							<RemoveButton remove={remove} index={downloadIndex}/>
+							<MoveDownButton swap={swap} disabled={downloadIndex === value.length-1} index={downloadIndex} visible={value.length > 1}/>
+							<MoveUpButton swap={swap} index={downloadIndex} visible={value.length > 1}/>
 						</td>
 					</tr>;
 				})}
-			/>
+			</FieldArray>
 		</Table>
 	</Fieldset>;
 }

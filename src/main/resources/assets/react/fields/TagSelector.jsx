@@ -14,7 +14,7 @@ export const TagSelector = ({
 	//placeholder, // in rest
 	//setFieldValue, // in rest
 	tags = options,
-	size = tags.length,
+	size = multiple ? tags.length : 1,
 	values,
 	value = values && getIn(values, path) || '',
 	...rest
