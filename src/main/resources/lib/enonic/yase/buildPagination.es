@@ -22,7 +22,11 @@ export function buildPagination({
 }) {
 	if (!paginationConfig) { return []; }
 
-	const postfix = facets ? forceArray(facets).map(f => `&facetId=${f}`).join('') : '';
+	const postfix = facets ? Object.keys(facets)
+		.map(key => forceArray(facets[key])
+			.map(value => value ? `&${key}=${value}` : '')
+			.join(''))
+		.join('') : '';
 	const href = `?${name}=${searchString}${postfix}`;
 	const {
 		pagesToShow = 10,
