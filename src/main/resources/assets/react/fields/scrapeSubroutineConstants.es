@@ -70,7 +70,7 @@ const READ_PROPERTY = {
 //──────────────────────────────────────────────────────────────────────────
 const REPLACE_WHITESPACE = {
 	label: 'Replace multiple whitespace with single space',
-	value: 'wc'
+	value: 'ws'
 };
 
 const REPLACE_NEWLINES = {
