@@ -27,7 +27,13 @@ import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
 function uriObjFromParams(params) {
 	const uri = new Uri();
 	Object.entries(params).forEach(([k, v]) => {
-		if (![
+		if(k === 'facets') {
+			Object.entries(v).forEach(([field, tag]) => {
+				Array.isArray(tag)
+				 ? tag.forEach(value => uri.addQueryParam(field, value))
+				 : tag && uri.addQueryParam(field, tag)
+			});
+		} else if (![
 			'clearCache', // The enduser should not see this
 			'count', // The enduser should not provide nor see this
 			'interface', // The enduser should not provide nor see this
@@ -60,46 +66,57 @@ export function buildFacets({
 	query,
 	queryCache
 }) {
+	//log.info(toStr({params}));
 	const hasValues = {}; // Built in 1st pass, used in 2nd pass.
-	const facetsArrayFromRequestParams = params.facets ? forceArray(params.facets) : [];
-	//log.info(toStr({facetsArrayFromRequestParams}));
+	const facetsObjWithChildBeeingArray = {};
+	if (params.facets) {
+		Object.keys(params.facets).forEach(field => {
+			const value = params.facets[field];
+			facetsObjWithChildBeeingArray[field] = value ? forceArray(value) : [];
+		});
+	}
+	//log.info(toStr({facetsObjWithChildBeeingArray}));
 
 	//──────────────────────────────────────────────────────────────────────────
 	// First pass: Localize facetName, find active/inactive facets and build links.
 	//──────────────────────────────────────────────────────────────────────────
-	const firstPass = facetConfig.map(({tag, facets: children}) => {
-		const field = tag.replace(/^\/fields\//, '');
+	const firstPass = facetConfig.map(({tag: fieldPath, facets: children}) => {
+		const field = fieldPath.replace(/^\/fields\//, '');
 		let activeCount = 0;
 		let inactiveCount = 0;
-		const facetCategoryUri = uriObjFromParams(params);
+
 		const facetCategoryClearUri = uriObjFromParams(params);
+		facetCategoryClearUri.deleteQueryParam(field); // Remove current field, but keep all the others
+		//log.info(toStr({'facetCategoryClearUri': facetCategoryClearUri.toString(), field}));
+
+		const facetCategoryUri = uriObjFromParams(params);
+		facetCategoryUri.deleteQueryParam(field); // Remove current field, but keep all the others
+		//log.info(toStr({'facetCategoryUri': facetCategoryUri.toString(), field}));
+
 		const hasValuesInCategory = {};
 
-		const facets = children.map(({tag: facetTag}) => {
+		const facets = children.map(({tag: tagPath}) => {
+			const tagName = tagPath.replace(`/tags/${field}/`, ''); //log.info(toStr({tagName}));
+			facetCategoryUri.addQueryParam(field, tagName); // Add all tags in field
+
 			const facetUri = uriObjFromParams(params);
 
-			const active = facetsArrayFromRequestParams.includes(facetTag);
+			facetUri.deleteQueryParam(field, tagName); // Remove the current tag
+			const removeHref = facetUri.toString() || '?';
+			facetUri.addQueryParam(field, tagName); // Re-add the current tag
 
-			facetUri.deleteQueryParam('facets', facetTag);
-			const removeHref = facetUri.toString();
-			facetUri.addQueryParam('facets', facetTag);
-
-			facetCategoryUri.deleteQueryParam('facets', facetTag); // Avoid duplication
-			facetCategoryUri.addQueryParam('facets', facetTag);
-			facetCategoryClearUri.deleteQueryParam('facets', facetTag);
-
+			const active = facetsObjWithChildBeeingArray[field] && facetsObjWithChildBeeingArray[field].includes(tagName);
 			if (active) {
 				activeCount += 1;
-				const value = facetTag.replace(/^.+\//, '').replace(/-/g, ' '); // TODO This is real ugly! Need to rethink field, tag -> aggregation -> facet
 				if (hasValuesInCategory[field]) {
-					hasValuesInCategory[field].push(value);
+					hasValuesInCategory[field].push(tagName);
 				} else {
-					hasValuesInCategory[field] = [value];
+					hasValuesInCategory[field] = [tagName];
 				}
 				if (hasValues[field]) {
-					hasValues[field].push(value);
+					hasValues[field].push(tagName);
 				} else {
-					hasValues[field] = [value];
+					hasValues[field] = [tagName];
 				}
 			} else {
 				inactiveCount += 1;
@@ -108,20 +125,20 @@ export function buildFacets({
 				active,
 				//count, // Gets added in 2nd pass
 				href: facetUri.toString(),
-				name: localizedFacets[facetTag],
+				name: localizedFacets[tagPath],
 				removeHref,
-				tag: facetTag // Gets used and removed in 2nd pass
+				tag: tagName // Gets used and removed in 2nd pass
 			};
 		}); // children.map
 
 		return {
 			activeCount,
-			clearHref: facetCategoryClearUri.toString(),
+			clearHref: facetCategoryClearUri.toString() || '?',
 			field, // Gets removed in 2nd pass
 			hasValuesInCategory, // Gets removed in 2nd pass
 			href: facetCategoryUri.toString(),
 			inactiveCount,
-			name: localizedFacets[tag],
+			name: localizedFacets[fieldPath],
 			facets
 		}; // return
 	}); //facetConfig.map
@@ -217,9 +234,10 @@ export function buildFacets({
 				//log.info(toStr({tag, childIndex, field}));
 				//const field = tag.replace(/^\/tags\//, '').replace(/\/.*$/, '');
 				//log.info(toStr({buckets: queryRes.aggregations[field].buckets}));
-				const filteredBuckets = queryRes.aggregations[field].buckets.filter(({key}) => sanitize(key) === tag.replace(/^.*\//, '').toLowerCase());
+				const filteredBuckets = queryRes.aggregations[field].buckets.filter(({key}) => sanitize(key) === tag);
 				//log.info(toStr({filteredBuckets}));
 				if (filteredBuckets.length) {
+					//log.info(toStr({[`firstPass[${index}]`]: firstPass[index]}));
 					firstPass[index].facets[childIndex].count = filteredBuckets[0].docCount;
 				} else {
 					firstPass[index].facets[childIndex].count = 0;
