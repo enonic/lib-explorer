@@ -28,9 +28,12 @@ function uriObjFromParams(params) {
 	const uri = new Uri();
 	Object.entries(params).forEach(([k, v]) => {
 		if (![
+			'clearCache', // The enduser should not see this
+			'count', // The enduser should not provide nor see this
+			'interface', // The enduser should not provide nor see this
+			'locale', // The enduser should not see this
 			'name', // The enduser should not provide nor see this
 			'page', // Adding or removing a facet resets pagination
-			'interface', // The enduser should not provide nor see this
 			'searchString' // The enduser should not provide nor see this
 		].includes(k)) {
 			if (Array.isArray(v)) {
