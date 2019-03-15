@@ -70,7 +70,7 @@ export function createOrEditCollectionPage({
 	//log.info(toStr({fields}));
 
 	const tags = {};
-	getTags().hits.forEach(({displayName: label, field, tag: value}) => {
+	getTags().hits.forEach(({displayName: label, field, _name: value}) => {
 		if(tags[field]) {
 			tags[field].push({label, value});
 		} else {
