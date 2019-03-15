@@ -1,4 +1,5 @@
 import {Field, getIn} from 'formik';
+import generateUuidv4 from 'uuid/v4';
 
 import {Label} from './Label';
 
@@ -12,7 +13,8 @@ export const Select = ({
 	parentPath,
 	name,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	options,
+	optgroups = [],
+	options = [],
 	placeholder = null,
 	defaultValue = placeholder ? '' : options[0].value,
 	setFieldValue,
@@ -52,8 +54,30 @@ export const Select = ({
 		value={value}
 		{...rest}
 	>
-		{placeholder ? <option value="">{placeholder}</option> : null}
-		{options.map(({label: optionLabel, value: optionValue = null}) => <option key={optionValue} value={optionValue}>{optionLabel}</option>)}
+		{placeholder ? <option disabled={true} value="">{placeholder}</option> : null}
+		{optgroups.map(({
+			label: optgroupLabel,
+			options: optgroupOptions
+		}) => <optgroup key={generateUuidv4()} label={optgroupLabel}>{optgroupOptions.map(({
+			disabled = false,
+			label: optionLabel,
+			value: optionValue = null
+		}) => <option
+			key={generateUuidv4()}
+			disabled={disabled}
+			key={optionValue}
+			value={optionValue}
+		>{optionLabel}</option>)}</optgroup>)}
+		{options.map(({
+			disabled = false,
+			label: optionLabel,
+			value: optionValue = null
+		}) => <option
+			key={generateUuidv4()}
+			disabled={disabled}
+			key={optionValue}
+			value={optionValue}
+		>{optionLabel}</option>)}
 	</Field>;
 	if(!label) { return select; }
 	return <Label label={label}>

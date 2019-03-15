@@ -19,7 +19,7 @@ export const ScrapeQuantifierSelector = ({
 	}],
 	setFieldValue,
 	values,
-	value = getIn(values, path) || undefined,
+	value = getIn(values, path) || '{0,}',
 	...rest
 }) => <Select
 	path={path}

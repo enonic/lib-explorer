@@ -16,6 +16,9 @@ import {LabeledField} from '../elements/LabeledField';
 import {DownloadField} from './DownloadField';
 import {ScrapeField} from './ScrapeField';
 
+import {URL_OPTGROUPS} from './scrapeSubroutineConstants';
+import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
+
 
 export const CrawlField = ({
 	fields,
@@ -52,7 +55,14 @@ export const CrawlField = ({
 				})
 			}`}>
 				<Checkbox checked={dynamic} label="Dynamic" name={`${key}.dynamic`}/>
-				<LabeledField autoComplete="off" label="Url extraction expression" name={`${key}.urlExpr`}/>
+				{urlExpr ? <LabeledField autoComplete="off" label="Url extraction expression" name={`${key}.urlExpr`}/> : null}
+				<ScrapeExpressionBuilder
+					parentPath={key}
+					name='urlExpression'
+					setFieldValue={setFieldValue}
+					optgroups={URL_OPTGROUPS}
+					values={values}
+				/>
 
 				<ScrapeField
 					fields={fields}

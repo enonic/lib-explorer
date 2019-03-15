@@ -9,6 +9,8 @@ import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
 import {Table} from '../elements/Table';
 
 import {ScrapeQuantifierSelector} from './ScrapeQuantifierSelector';
+
+import {SCRAPE_OPTGROUPS} from './scrapeSubroutineConstants';
 import {ScrapeSubroutineSelector} from './ScrapeSubroutineSelector';
 
 //import {toStr} from '../utils/toStr';
@@ -18,10 +20,12 @@ const tdStyle = {
 };
 
 export const ScrapeExpressionBuilder = ({
+	headers,// = ['Subroutine', 'Selector/Attribute/Property', 'Quantifier', 'Node index', 'Actions'],
 	name = 'scrapeExpression',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	setFieldValue,
+	optgroups = SCRAPE_OPTGROUPS,
 	values,
 	value = getIn(values, path) || [{subroutine: ''}]
 }) => {
@@ -30,16 +34,19 @@ export const ScrapeExpressionBuilder = ({
 		return <SetFieldValueButton
 			className='block'
 			field={path}
-			value={[{subroutine: ''}]}
+			value={[{
+				subroutine: ''
+			}]}
 			setFieldValue={setFieldValue}
 			text="Add scrape expression"/>
 	}
-	return <Table><FieldArray
+	return <Table headers={headers} thStyle={tdStyle}><FieldArray
 		name={path}
 		render={() => value.map(({
 			attribute = '',
-			quantifier = '',
+			nodeIndex = '',
 			property = '',
+			quantifier = '{0,}',
 			selector = '',
 			subroutine = ''
 		}, index) => {
@@ -47,34 +54,47 @@ export const ScrapeExpressionBuilder = ({
 			//console.debug(toStr({key}));
 			return <tr key={key}>
 				<td style={tdStyle}><ScrapeSubroutineSelector
+					optgroups={optgroups}
 					parentPath={key}
 					placeholder='Select subroutine'
 					setFieldValue={setFieldValue}
 					value={subroutine}
 				/></td>
 				<td style={tdStyle}>
-					{['select', 'remove', 'x'].includes(subroutine) ? <Field
+					{['remove', 'rmx', 'select', 'sl', 'slx', 'sx'].includes(subroutine) ? <Field
 						autoComplete="off"
 						name={`${key}.selector`}
+						placeholder={['remove', 'select', 'sl'].includes(subroutine) ? 'Css selector' : 'Xpath selector'}
 						value={selector}
 					/> : null}
 					{subroutine === 'read attribute' ?<Field
 						autoComplete="off"
 						name={`${key}.attribute`}
+						placeholder='attribute'
 						value={attribute}
 					/> : null}
 					{subroutine === 'read property' ?<Field
 						autoComplete="off"
 						name={`${key}.property`}
+						placeholder='property'
 						value={property}
 					/> : null}
 				</td>
 				<td style={tdStyle}>
-					{['select', 'remove', 'x'].includes(subroutine) ? <ScrapeQuantifierSelector
+					{['remove', 'rmx', 'select', 'sx'].includes(subroutine) ? <ScrapeQuantifierSelector
 						parentPath={key}
 						placeholder='Select quantifier'
 						setFieldValue={setFieldValue}
 						value={quantifier}
+					/> : null}
+				</td>
+				<td style={tdStyle}>
+					{['remove', 'rmx', 'select', 'sl', 'slx', 'sx'].includes(subroutine) ? <Field
+						autoComplete="off"
+						name={`${key}.nodeIndex`}
+						placeholder='Node index'
+						type='number'
+						value={nodeIndex}
 					/> : null}
 				</td>
 				{subroutine ? <td style={tdStyle}>
