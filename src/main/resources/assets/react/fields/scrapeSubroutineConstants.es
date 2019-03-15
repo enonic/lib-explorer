@@ -145,8 +145,8 @@ export const SCRAPE_OPTGROUPS = [{
 }, {
 	label: 'Manipulate',
 	options: [
-		REPLACE_WHITESPACE,
 		REPLACE_NEWLINES,
+		REPLACE_WHITESPACE,
 		TRIM,
 		SANITIZE,
 		LOWERCASE,
