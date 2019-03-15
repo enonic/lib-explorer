@@ -15,6 +15,10 @@ import {dlv as get} from '/lib/enonic/util/object';
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
+import {
+	BRANCH_ID,
+	REPO_ID
+} from '/lib/enonic/yase/constants';
 import {cachedNode} from '/lib/enonic/yase/cachedNode';
 import {localizeTag} from '/lib/enonic/yase/localizeTag';
 import {highlight as highlightSearchResult} from '/lib/enonic/yase/highlight';
@@ -75,7 +79,18 @@ export function mapMultiRepoQueryHits({
 				}
 			} else if (type === 'tags') {
 				mappedValue = (value ? forceArray(value) : [])
-					.map(tag => localizeTag({locale, nodeCache, tag}));
+					.map(name => {
+						const path = `/tags/${field}/${name}`;
+						const fieldNode = cachedNode({
+							cache: nodeCache, repoId: REPO_ID, branch: BRANCH_ID, id: path
+						});
+						return {
+							displayName: fieldNode.displayName,
+							name,
+							path,
+							field
+						}
+					});
 			}
 			set(obj, to, mappedValue);
 		}) // resultMappings.forEach
