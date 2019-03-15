@@ -157,7 +157,20 @@ export function search(params) {
 	});
 	//log.info(toStr({localizedFacets}));
 
-	const filters = {};
+	const filters = {
+		boolean: {
+			mustNot: [{
+				hasValue: { // Avoid root node whoos _path is '/'
+					field: '_path',
+					values: ['/']
+				}
+				/*hasValue: { // Avoid root node which has an empty name
+					field: '_name',
+					values: ['']
+				}*/
+			}]
+		}
+	};
 
 	const yaseReadConnections = connectRepos({
 		principals: [`role:${ROLE_YASE_READ}`],
