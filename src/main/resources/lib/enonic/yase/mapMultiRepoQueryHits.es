@@ -20,7 +20,7 @@ import {
 	REPO_ID
 } from '/lib/enonic/yase/constants';
 import {cachedNode} from '/lib/enonic/yase/cachedNode';
-import {localizeTag} from '/lib/enonic/yase/localizeTag';
+//import {localizeTag} from '/lib/enonic/yase/localizeTag';
 import {highlight as highlightSearchResult} from '/lib/enonic/yase/highlight';
 
 
@@ -81,11 +81,16 @@ export function mapMultiRepoQueryHits({
 				mappedValue = (value ? forceArray(value) : [])
 					.map(name => {
 						const path = `/tags/${field}/${name}`;
-						const fieldNode = cachedNode({
-							cache: nodeCache, repoId: REPO_ID, branch: BRANCH_ID, id: path
-						});
+						let tagNode = {displayName: name};
+						try {
+							tagNode = cachedNode({
+								cache: nodeCache, repoId: REPO_ID, branch: BRANCH_ID, id: path
+							});
+						} catch (e) {
+							log.error(`Could not find node ${REPO_ID}:${BRANCH_ID}:${path}`);
+						}
 						return {
-							displayName: fieldNode.displayName,
+							displayName: tagNode.displayName,
 							name,
 							path,
 							field
