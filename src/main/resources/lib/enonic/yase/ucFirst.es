@@ -1,4 +1,10 @@
-import {isFunction, isString} from '/lib/enonic/util/value';
+import {isString} from '/lib/enonic/util/value';
+
+
+function isFunction(value) {
+	return !!(value && value.constructor && value.call && value.apply); // highly performant from underscore
+}
+
 
 export function ucFirst(string) {
 	if(!isString(string) || !isFunction(string.charAt)) {

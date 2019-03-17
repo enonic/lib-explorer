@@ -1,30 +1,56 @@
 //import {toStr} from '/lib/enonic/util';
-//import {sanitize} from '/lib/xp/common';
+import {sanitize} from '/lib/xp/common';
 import {
 	NT_TAG,
 	PATH_TAG,
 	TOOL_PATH
 } from '/lib/enonic/yase/constants';
 import {createNode} from '/lib/enonic/yase/createNode';
+import {modifyNode} from '/lib/enonic/yase/modifyNode';
 import {ucFirst} from '/lib/enonic/yase/ucFirst';
 import {tagsPage} from '/lib/enonic/yase/admin/tags/tagsPage';
 
 
 export function handleTagsPost({
 	params: {
+		displayName,
 		field,
-		tag,
-		displayName
+		//id,
+		operation = 'CREATE',
+		tag
 	}
 }) {
-	if (!displayName || !displayName.length) {
-		displayName = ucFirst(tag);
+	//log.info(toStr({displayName, field, operation, tag}));
+	const messages = [];
+	let status = 200;
+	if(!field) {
+		messages.push('Missing parameter field!');
+		status = 400;
 	}
-	//log.info(toStr({_parentPath, name, displayName}));
-	const name = tag.toLowerCase(); // sanitize
+	if (!tag) {
+		if (!displayName) {
+			messages.push('You must provide either tag or displayName!');
+			status = 400;
+		} else {
+			tag = sanitize(displayName);
+		}
+	} else {
+		if (!displayName) {
+			displayName = ucFirst(tag);
+		}
+	}
+
+	if (status !== 200) {
+		return tagsPage({
+			path: `${TOOL_PATH}/tags`
+		}, {messages, status});
+	}
+
+	//log.info(toStr({displayName, field, tag}));
+	const name = tag.toLowerCase(); // sanitized in createNode/modifyNode
 	const parentPath = `${PATH_TAG}/${field}`;
 
-	const createNodeParams = {
+	const params = {
 		_parentPath: parentPath,
 		_name: name,
 		_indexConfig: {
@@ -35,17 +61,17 @@ export function handleTagsPost({
 		tag,
 		type: NT_TAG
 	};
-	//log.info(toStr({createNodeParams}));
+	//log.info(toStr({params}));
 
-	const node = createNode(createNodeParams);
+	const node = operation === 'CREATE' ? createNode(params) : modifyNode(params);
 	//log.info(toStr({node}));
 
 	return tagsPage({
 		path: `${TOOL_PATH}/tags`
 	}, {
 		messages: node
-			? [`Tag ${parentPath}/${name} created.`]
-			: [`Something went wrong while creating tag ${parentPath}/${name}!`],
+			? [`Tag ${parentPath}/${name} ${operation === 'CREATE' ? 'created' : 'modified'}.`]
+			: [`Something went wrong while ${operation === 'CREATE' ? 'creating' : 'modifying'} tag ${parentPath}/${name}!`],
 		status: node ? 200 : 500
 	});
 }
