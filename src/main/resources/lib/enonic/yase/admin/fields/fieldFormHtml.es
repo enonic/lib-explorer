@@ -10,6 +10,7 @@ export function fieldFormHtml({
 	includeInAllText = true, //'checked',
 	instruction = 'type',
 	key = '',
+	operation = key ? 'UPDATE' : 'CREATE',
 	ngram = true, //'checked',
 	path = false //''
 } = {}) {
@@ -26,12 +27,13 @@ export function fieldFormHtml({
 	}
 </script>
 <form action="${TOOL_PATH}/fields" autocomplete="off" method="POST">
+	<input name="operation" type="hidden" value="${operation}">
 	<fieldset>
-		<legend>New field</legend>
+		<legend>${key ? 'Edit' : 'New'} field ${displayName}</legend>
 
 		<label>
 			<span>Display name</span>
-			<input name="displayName" ${displayName ? 'readonly ' : ''}type="text" value="${displayName}"/>
+			<input name="displayName" type="text" value="${displayName}"/>
 		</label>
 
 		<label>
@@ -93,7 +95,7 @@ export function fieldFormHtml({
 			</label>
 		</div>
 
-		<button type="submit">Add field</button>
+		<button type="submit">${operation === 'CREATE' ? 'Create' : 'Modify'} field</button>
 	</fieldset>
 </form><script type="text/javascript">
 ready(function() {

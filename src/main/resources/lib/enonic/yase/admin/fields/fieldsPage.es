@@ -13,6 +13,8 @@ export function fieldsPage({
 	status
 } = {}) {
 	const fieldRows = getFields().hits.map(({
+		_id: id,
+		_name: name,
 		displayName,
 		description,
 		indexConfig,
@@ -24,10 +26,14 @@ export function fieldsPage({
 		<td>${description}</td>
 		<td>${toStr(indexConfig)}</td>
 		<td>
-			<form action="${TOOL_PATH}/fields/${key}" method="get">
+			<form action="${TOOL_PATH}/fields/${name}" method="get">
+				<input name="id" type="hidden" value="${id}"/>
+				<input name="operation" type="hidden" value="EDIT"/>
 				<button type="submit">Edit</button>
 			</form>
-			<form action="${TOOL_PATH}/fields/${key}/delete" method="get">
+			<form action="${TOOL_PATH}/fields/${name}/delete" method="post">
+				<input name="id" type="hidden" value="${id}"/>
+				<input name="operation" type="hidden" value="DELETE"/>
 				<button type="submit">Delete</button>
 			</form>
 		</td>

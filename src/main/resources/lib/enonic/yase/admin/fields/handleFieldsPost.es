@@ -3,6 +3,7 @@ import {sanitize} from '/lib/xp/common';
 
 import {NT_FIELD} from '/lib/enonic/yase/constants';
 import {createNode} from '/lib/enonic/yase/createNode';
+import {modifyNode} from '/lib/enonic/yase/modifyNode';
 import {ucFirst} from '/lib/enonic/yase/ucFirst';
 import {fieldsPage} from '/lib/enonic/yase/admin/fields/fieldsPage';
 
@@ -16,6 +17,7 @@ export function handleFieldsPost({
 		instruction = 'type',
 		decideByType = 'on',
 		enabled = 'on',
+		operation = 'CREATE',
 		nGram = 'on',
 		fulltext = 'on',
 		includeInAllText = 'on',
@@ -45,7 +47,7 @@ export function handleFieldsPost({
 		path,
 	}));*/
 	const lcKey = key.toLowerCase();
-	const node = createNode({
+	const params = {
 		_indexConfig: {default: 'byType'},
 		_name: lcKey,
 		_parentPath: '/fields',
@@ -62,12 +64,13 @@ export function handleFieldsPost({
 			path: path && path === 'on'
 		} : instruction,
 		type: NT_FIELD
-	});
+	};
+	const node = operation === 'CREATE' ? createNode(params) : modifyNode(params);
 	//log.info(toStr({node}));
 	return fieldsPage({path: reqPath}, {
 		messages: node
-			? [`Field with key:${lcKey} created.`]
-			: [`Something went wrong when trying to create field with key:${lcKey}.`],
+			? [`Field with key:${lcKey} ${operation === 'CREATE' ? 'created' : 'modified'}.`]
+			: [`Something went wrong when trying to ${operation === 'CREATE' ? 'create' : 'modify'} field with key:${lcKey}.`],
 		status: node ? 200 : 500
 	});
 } // function post
