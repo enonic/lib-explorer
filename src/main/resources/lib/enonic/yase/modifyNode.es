@@ -24,8 +24,6 @@ export function modifyNode({
 	_id, // So it doesn't end up in rest.
 	_parentPath = '/',
 	_name,
-	sanitizedName = sanitize(_name), // NOTE May already be sanitized
-	key = `${_parentPath}/${sanitizedName}`, // TODO Use path join
 	displayName = Array.isArray(_name)
 		? _name.join(', ')
 		: _name,
@@ -33,7 +31,7 @@ export function modifyNode({
 } = {}) {
 	//log.info(toStr({key, displayName, rest}));
 	return __connection.modify({
-		key,
+		key: `${_parentPath}/${sanitize(_name)}`, // TODO Use path join
 		editor: (node) => {
 			/* eslint-disable no-param-reassign */
 			//node._timestamp = new Date(); // DOES NOT WORK?
