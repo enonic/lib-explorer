@@ -4,12 +4,14 @@ import {get as getContext} from '/lib/xp/context';
 import {multiRepoConnect} from '/lib/xp/node';
 import {list as listRepos} from '/lib/xp/repo';
 
+import {runAsSu} from '/lib/enonic/yase/runAsSu';
+
 
 export function connectRepos({
 	sources,
 	context = getContext(),
 	principals: passedPrincipals,
-	repoList = listRepos(),
+	repoList = runAsSu(() => listRepos()),
 
 	// There might not be a logged in user
 	login = context.authInfo.user && context.authInfo.user.login,
