@@ -51,7 +51,7 @@ function trim (text, first, last, length, ellipsis) {
 }
 
 
-function highlight (text, words, length, map, ellipsis) {
+export function highlight (text, words, length, map, ellipsis) {
 	try {
 	  map = map || function (word) {
 	    return '*'+word.toUpperCase()+'*'
@@ -114,6 +114,3 @@ function highlight (text, words, length, map, ellipsis) {
 		}
 	}
 }
-
-
-module.exports = highlight
