@@ -10,6 +10,7 @@ import {sanitize} from '/lib/xp/common';
 //──────────────────────────────────────────────────────────────────────────────
 export const PACKAGE = 'com.enonic.yase';
 export const YASE_ADMIN = 'com.enonic.app.yase';
+export const APP_SURGEON = `${PACKAGE}.surgeon`;
 export const TOOL_PATH = getToolUrl(YASE_ADMIN, 'yase');
 
 
@@ -17,11 +18,10 @@ export const TOOL_PATH = getToolUrl(YASE_ADMIN, 'yase');
 // Node types
 //──────────────────────────────────────────────────────────────────────────────
 export const NT_COLLECTION = `${PACKAGE}:collection`;
+export const NT_DOCUMENT = `${PACKAGE}:document`;
 export const NT_FIELD = `${PACKAGE}:field`;
 export const NT_FOLDER = `${PACKAGE}:folder`;
 export const NT_INTERFACE = `${PACKAGE}:interface`;
-export const NT_SCRAPE = `${PACKAGE}:scrape`;
-//export const NT_SCRAPED_PDF = `${PACKAGE}:scrapedPdf`;
 export const NT_SYNONYM = `${PACKAGE}:synonym`;
 export const NT_TAG = `${PACKAGE}:tag`;
 export const NT_THESAURUS = `${PACKAGE}:thesaurus`;
