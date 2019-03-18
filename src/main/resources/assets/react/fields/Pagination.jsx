@@ -1,4 +1,4 @@
-import {getIn} from 'formik';
+import {connect, getIn} from 'formik';
 
 import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
 
@@ -10,20 +10,20 @@ import {isSet} from '../utils/isSet';
 //import {toStr} from '../utils/toStr';
 
 
-export const Pagination = ({
+export const Pagination = connect(({
+	formik: {
+		values
+	},
 	legend = null,
 	name = 'pagination',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	setFieldValue,
-	values,
 	value = values && getIn(values, path) || false
 }) => {
 	if (!value) {
 		return <SetFieldValueButton
 			className='block'
 			field={path}
-			setFieldValue={setFieldValue}
 			text="Add pagination"
 			value={{
 				pagesToShow: 10,
@@ -43,9 +43,8 @@ export const Pagination = ({
 		<SetFieldValueButton
 			className='block'
 			field={path}
-			setFieldValue={setFieldValue}
 			text="Remove pagination"
 			value={false}/>
 	</>;
 	return isSet(legend) ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
-} // pagination
+}); // pagination

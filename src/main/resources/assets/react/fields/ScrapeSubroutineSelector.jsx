@@ -11,7 +11,6 @@ export const ScrapeSubroutineSelector = ({
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	optgroups = SCRAPE_OPTGROUPS,
-	setFieldValue,
 	values,
 	value = getIn(values, path) || undefined,
 	...rest
@@ -20,7 +19,6 @@ export const ScrapeSubroutineSelector = ({
 	return <Select
 		path={path}
 		optgroups={optgroups}
-		setFieldValue={setFieldValue}
 		value={value}
 		{...rest}
 	/>;

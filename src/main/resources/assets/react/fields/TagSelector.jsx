@@ -1,10 +1,13 @@
-import {getIn} from 'formik';
+import {connect, getIn} from 'formik';
 import {Select} from '../elements/Select';
 
 //import {toStr} from '../utils/toStr';
 
 
-export const TagSelector = ({
+export const TagSelector = connect(({
+	formik: {
+		values
+	},
 	//label, // in rest
 	multiple = false,
 	name = `tag${multiple ? 's' : ''}`,
@@ -12,20 +15,16 @@ export const TagSelector = ({
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	//placeholder, // in rest
-	//setFieldValue, // in rest
 	tags = options,
-	size = multiple ? tags.length : 1,
-	values,
 	value = values && getIn(values, path) || '',
-	...rest
+	...rest // size
 }) => {
-	//console.log(toStr({rest}));
+	//console.debug(toStr({component: 'TagSelector', path, value, rest}));
 	return <Select
 		multiple={multiple}
 		name={path}
 		options={tags}
-		size={size}
 		value={value}
 		{...rest}
 	/>;
-} // TagSelector
+}); // TagSelector

@@ -1,17 +1,19 @@
-import {get} from 'lodash';
+import {connect, getIn} from 'formik';
 
 import {Radio} from '../elements/Radio';
 
 //import {toStr} from '../utils/toStr';
 
 
-export const OperatorSelector = ({
+export const OperatorSelector = connect(({
+	formik: {
+		setFieldValue,
+		values
+	},
 	defaultValue = 'or',
 	parentPath,
 	name = parentPath ? `${parentPath}.operator` : 'operator',
-	setFieldValue,
-	values,
-	value = values ? get(values, name, defaultValue) : defaultValue
+	value = values ? getIn(values, name, defaultValue) : defaultValue
 }) => {
 	/*console.debug(toStr({
 		defaultValue, legend, parentPath, name, values, value
@@ -38,4 +40,4 @@ export const OperatorSelector = ({
 			value={value}
 		/>
 	</React.Fragment>;
-}
+});

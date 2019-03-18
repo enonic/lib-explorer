@@ -6,12 +6,11 @@ import {LabeledField} from '../elements/LabeledField';
 
 export const PathRangeField = ({
 	path,
-	pathRange,
-	setFieldValue
+	pathRange
 }) => pathRange
 	? (<Fieldset legend="Path range">
 		<LabeledField label="Min" name={`${path}.min`} type="number"/>
 		<LabeledField label="Max" name={`${path}.max`} type="number"/>
-		<SetFieldValueButton field={path} value={null} setFieldValue={setFieldValue} text="Remove path range"/>
-		</Fieldset>)
-	: <SetFieldValueButton className='block' field={path} value={{min: 0, max: 1}} setFieldValue={setFieldValue} text="Add path range"/>;
+		<SetFieldValueButton field={path} value={null} text="Remove path range"/>
+	</Fieldset>)
+	: <SetFieldValueButton className='block' field={path} value={{min: 0, max: 1}} text="Add path range"/>;

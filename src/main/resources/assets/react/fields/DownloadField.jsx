@@ -1,4 +1,5 @@
 import {
+	connect,
 	Field,
 	FieldArray,
 	getIn
@@ -20,14 +21,15 @@ import {TagSelector} from './TagSelector';
 //import {toStr} from '../utils/toStr';
 
 
-export const DownloadField = ({
+export const DownloadField = connect(({
+	formik: {
+		values
+	},
 	fields = [],
 	name = 'download',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	setFieldValue,
 	tags = [],
-	values,
 	value = getIn(values, path) || []
 }) => {
 	//console.log(toStr({parentPath, path/*, tags*/, value, values}));
@@ -45,7 +47,6 @@ export const DownloadField = ({
 					tags: []
 				}]
 			}]}
-			setFieldValue={setFieldValue}
 			text="Add download expression(s)"
 		/>;
 	}
@@ -56,7 +57,7 @@ export const DownloadField = ({
 				id={path}
 				name={path}
 			>
-				{({insert, remove, swap}) => value.map(({
+				{() => value.map(({
 					expr,
 					tags: tagsArr = [{
 						field: '',
@@ -88,7 +89,6 @@ export const DownloadField = ({
 												<FieldSelector
 													name={`${tagsKey}.field`}
 													fields={fields}
-													setFieldValue={setFieldValue}
 													value={field}
 												/>
 											</td>
@@ -98,7 +98,6 @@ export const DownloadField = ({
 													multiple={true}
 													path={`${tagsKey}.tags`}
 													tags={tags[field]}
-													setFieldValue={setFieldValue}
 													value={selectedTags}
 												/> : null}
 											</td>
@@ -106,29 +105,21 @@ export const DownloadField = ({
 												<InsertButton
 													index={tagIndex}
 													path={`${downloadKey}.tags`}
-													setFieldValue={setFieldValue}
-													values={values}
 													value={{field: '', tags: []}}
 												/>
 												<RemoveButton
 													index={tagIndex}
 													path={`${downloadKey}.tags`}
-													setFieldValue={setFieldValue}
-													values={values}
 												/>
 												<MoveDownButton
 													disabled={tagIndex === tagsArr.length-1}
 													index={tagIndex}
 													path={`${downloadKey}.tags`}
-													setFieldValue={setFieldValue}
-													values={values}
 													visible={tagsArr.length > 1}
 												/>
 												<MoveUpButton
 													index={tagIndex}
 													path={`${downloadKey}.tags`}
-													setFieldValue={setFieldValue}
-													values={values}
 													visible={tagsArr.length > 1}
 												/>
 											</td>
@@ -140,19 +131,18 @@ export const DownloadField = ({
 								className='block'
 								field={`${downloadKey}.tags`}
 								value={[{field: '', tags: []}]}
-								setFieldValue={setFieldValue}
 								text="Add tag(s)"
 							/>
 						}</td>
 						<td>
-							<InsertButton insert={insert} index={downloadIndex} value={{expr: '', field: '', tags: []}}/>
-							<RemoveButton remove={remove} index={downloadIndex}/>
-							<MoveDownButton swap={swap} disabled={downloadIndex === value.length-1} index={downloadIndex} visible={value.length > 1}/>
-							<MoveUpButton swap={swap} index={downloadIndex} visible={value.length > 1}/>
+							<InsertButton path={path} index={downloadIndex} value={{expr: '', field: '', tags: []}}/>
+							<RemoveButton path={path} index={downloadIndex}/>
+							<MoveDownButton path={path} disabled={downloadIndex === value.length-1} index={downloadIndex} visible={value.length > 1}/>
+							<MoveUpButton path={path} index={downloadIndex} visible={value.length > 1}/>
 						</td>
 					</tr>;
 				})}
 			</FieldArray>
 		</Table>
 	</Fieldset>;
-}
+});

@@ -1,13 +1,14 @@
-import {getIn} from 'formik';
+import {connect, getIn} from 'formik';
 import {Select} from '../elements/Select';
 
 
-export const ResultMappingTypeSelector = ({
+export const ResultMappingTypeSelector = connect(({
+	formik: {
+		values
+	},
 	name = 'type',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	setFieldValue,
-	values,
 	value = values && getIn(values, path) || 'string',
 	...rest
 }) => <Select
@@ -19,7 +20,6 @@ export const ResultMappingTypeSelector = ({
 		label: 'Tag(s)',
 		value: 'tags'
 	}]}
-	setFieldValue={setFieldValue}
 	value={value}
 	{...rest}
-/> // ResultMappingTypeSelector
+/>); // ResultMappingTypeSelector

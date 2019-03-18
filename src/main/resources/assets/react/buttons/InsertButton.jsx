@@ -1,4 +1,4 @@
-import {getIn} from 'formik';
+import {connect, getIn} from 'formik';
 
 //import {toStr} from '../utils/toStr';
 
@@ -10,18 +10,19 @@ const myInsert = (array, index, value) => {
 };
 
 
-export const InsertButton = ({
+export const InsertButton = connect(({
+	formik: {
+		setFieldValue,
+		values
+	},
 	index,
 	insert,
 	path,
-	setFieldValue,
 	text = '+',
 	value,
-	values,
 	currentValue = values && path && getIn(values, path)
 }) => {
-	//const currentValue = (path && values) ? getIn(values, path) : 'path or values not passed in';
-	//console.debug(toStr({values, path, currentValue, value}));
+	//console.debug(toStr({component: 'InsertButton', path, text, currentValue, value}));
 	const nextIndex = index+1;
 
 	return <button
@@ -31,4 +32,4 @@ export const InsertButton = ({
 			: insert(nextIndex, value)
 		}
 	>{text}</button>;
-}
+});

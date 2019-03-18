@@ -1,4 +1,4 @@
-import {getIn} from 'formik';
+import {connect, getIn} from 'formik';
 
 import {Fieldset} from '../elements/Fieldset';
 import {Select} from '../elements/Select';
@@ -9,14 +9,16 @@ import {QueryGroup} from './QueryGroup';
 //import {toStr} from '../utils/toStr';
 
 
-export const ExpressionSelector = ({
+export const ExpressionSelector = connect(({
+	formik: {
+		setFieldValue,
+		values
+	},
 	fields,
 	name = 'query',
 	legend = null,
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	setFieldValue,
-	values,
 	value = values && getIn(values, path) || {
 		type: 'fulltext',
 		params: {
@@ -84,8 +86,6 @@ export const ExpressionSelector = ({
 			? <Fulltext
 				fields={fields}
 				path={paramsPath}
-				setFieldValue={setFieldValue}
-				values={values}
 			/>
 			: null
 		}
@@ -93,11 +93,9 @@ export const ExpressionSelector = ({
 			? <QueryGroup
 				fields={fields}
 				path={paramsPath}
-				setFieldValue={setFieldValue}
-				values={values}
 			/>
 			: null
 		}
 	</>;
 	return legend ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
-}
+});

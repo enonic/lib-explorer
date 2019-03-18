@@ -1,9 +1,11 @@
-
-import {getIn} from 'formik';
+import {connect, getIn} from 'formik';
 import {Select} from '../elements/Select';
 
 
-export const ScrapeQuantifierSelector = ({
+export const ScrapeQuantifierSelector = connect(({
+	formik: {
+		values
+	},
 	name = 'quantifier',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
@@ -17,14 +19,11 @@ export const ScrapeQuantifierSelector = ({
 		label: 'One (or fail)',
 		value: '{1}'
 	}],
-	setFieldValue,
-	values,
 	value = getIn(values, path) || '{0,}',
 	...rest
 }) => <Select
 	path={path}
 	options={options}
-	setFieldValue={setFieldValue}
 	value={value}
 	{...rest}
-/>
+/>);

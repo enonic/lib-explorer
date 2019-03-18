@@ -1,9 +1,4 @@
-// Buttons
-import {InsertButton} from '../buttons/InsertButton';
-import {MoveUpButton} from '../buttons/MoveUpButton';
-import {MoveDownButton} from '../buttons/MoveDownButton';
-import {RemoveButton} from '../buttons/RemoveButton';
-import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
+import {connect} from 'formik';
 
 // Elements
 import {Checkbox} from '../elements/Checkbox';
@@ -27,12 +22,13 @@ import {ScrapeField} from './ScrapeField';
 import {UrlsField} from './UrlsField';
 
 
-export const Surgeon = ({
+export const Surgeon = connect(({
+	formik: {
+		values
+	},
 	fields,
 	path,
-	setFieldValue,
-	tags,
-	values
+	tags
 }) => {
 	const {
 		collector: {
@@ -72,10 +68,10 @@ export const Surgeon = ({
 	return <>
 	<Fieldset legend="Request">
 		<UrlsField parentPath={path} value={urls}/>
-		<PathRangeField path={`${path}.pathRange`} pathRange={pathRange} setFieldValue={setFieldValue}/>
-		<QueryRangeField path={`${path}.queryRange`} queryRange={queryRange} setFieldValue={setFieldValue}/>
-		<QueryParameters parentPath={path} setFieldValue={setFieldValue} value={queryParams}/>
-		<HeadersField path={`${path}.headers`} headers={headers} setFieldValue={setFieldValue}/>
+		<PathRangeField path={`${path}.pathRange`} pathRange={pathRange}/>
+		<QueryRangeField path={`${path}.queryRange`} queryRange={queryRange}/>
+		<QueryParameters parentPath={path} value={queryParams}/>
+		<HeadersField path={`${path}.headers`} headers={headers}/>
 		<DelayField path={`${path}.delay`} value={delay}/>
 		<LabeledField label="Connection timeout" name={`${path}.connectionTimeout`} value={isSet(connectionTimeout) ? connectionTimeout : 10000}/>
 		<LabeledField label="Read timeout" name={`${path}.readTimeout`} value={isSet(readTimeout) ? readTimeout : 10000}/>
@@ -85,25 +81,19 @@ export const Surgeon = ({
 	<ScrapeField
 		fields={fields}
 		parentPath={path}
-		setFieldValue={setFieldValue}
 		tags={tags}
 		value={scrape}
-		values={values}
 	/>
 	<DownloadField
 		fields={fields}
 		parentPath={path}
-		setFieldValue={setFieldValue}
 		tags={tags}
 		value={download}
-		values={values}
 	/>
 	<CrawlField
 		fields={fields}
 		parentPath={path}
-		setFieldValue={setFieldValue}
 		tags={tags}
 		value={crawl}
-		values={values}
 	/>
-</>};
+</>});

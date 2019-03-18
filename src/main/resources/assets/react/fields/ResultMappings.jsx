@@ -1,4 +1,4 @@
-import {Field, FieldArray, getIn} from 'formik';
+import {connect, Field, FieldArray, getIn} from 'formik';
 import generateUuidv4 from 'uuid/v4';
 
 import {InsertButton} from '../buttons/InsertButton';
@@ -15,14 +15,15 @@ import {FieldSelector} from './FieldSelector';
 import {ResultMappingTypeSelector} from './ResultMappingTypeSelector';
 
 
-export const ResultMappings = ({
+export const ResultMappings = connect(({
+	formik: {
+		values
+	},
 	fields,
 	legend = null,
 	name = 'resultMappings',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	setFieldValue,
-	values,
 	value = values && getIn(values, path) || [{
 		field: '',
 		highlight: false,
@@ -34,7 +35,7 @@ export const ResultMappings = ({
 		<Table headers={['Field', 'To', 'Type', 'Options', 'Action(s)']}>
 			<FieldArray
 				name={path}
-				render={({insert, swap, remove}) => value
+				render={() => value
 					.map(({
 						field = '',
 						highlight = false,
@@ -49,8 +50,6 @@ export const ResultMappings = ({
 							<td><FieldSelector
 								fields={fields}
 								parentPath={pathWithIndex}
-								setFieldValue={setFieldValue}
-								values={values}
 							/></td>
 							<td><Field
 								name={`${pathWithIndex}.to`}
@@ -58,7 +57,6 @@ export const ResultMappings = ({
 							/></td>
 							<td><ResultMappingTypeSelector
 								path={typePath}
-								setFieldValue={setFieldValue}
 								value={type}
 							/></td>
 							<td>
@@ -77,16 +75,16 @@ export const ResultMappings = ({
 								</> : null}
 							</td>
 							<td>
-								<InsertButton index={index} insert={insert} value={{
+								<InsertButton index={index} path={path} value={{
 									field: '',
 									highlight: false,
 									lengthLimit: '',
 									to: '',
 									uuid4: generateUuidv4() // Might not be needed
 								}}/>
-								<RemoveButton index={index} remove={remove} visible={value.length > 1}/>
-								<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
-								<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
+								<RemoveButton index={index} path={path} visible={value.length > 1}/>
+								<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
+								<MoveUpButton index={index} path={path} visible={value.length > 1}/>
 							</td>
 						</tr>;
 					})}
@@ -94,4 +92,4 @@ export const ResultMappings = ({
 		</Table>
 	</>;
 	return legend ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
-} // ResultMappings
+}); // ResultMappings

@@ -1,4 +1,4 @@
-import {Field, FieldArray, getIn} from 'formik';
+import {connect, Field, FieldArray, getIn} from 'formik';
 
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
@@ -19,14 +19,15 @@ const tdStyle = {
 	padding: '0 5px 0 0'
 };
 
-export const ScrapeExpressionBuilder = ({
+export const ScrapeExpressionBuilder = connect(({
+	formik: {
+		values
+	},
 	headers,// = ['Subroutine', 'Selector/Attribute/Property', 'Quantifier', 'Node index', 'Actions'],
 	name = 'scrapeExpression',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	setFieldValue,
 	optgroups = SCRAPE_OPTGROUPS,
-	values,
 	value = getIn(values, path) || [{subroutine: ''}]
 }) => {
 	//console.debug(toStr({path, value}))
@@ -37,7 +38,6 @@ export const ScrapeExpressionBuilder = ({
 			value={[{
 				subroutine: ''
 			}]}
-			setFieldValue={setFieldValue}
 			text="Add scrape expression"/>
 	}
 	return <Table headers={headers} thStyle={tdStyle}><FieldArray
@@ -57,7 +57,6 @@ export const ScrapeExpressionBuilder = ({
 					optgroups={optgroups}
 					parentPath={key}
 					placeholder='Select subroutine'
-					setFieldValue={setFieldValue}
 					value={subroutine}
 				/></td>
 				<td style={tdStyle}>
@@ -84,7 +83,6 @@ export const ScrapeExpressionBuilder = ({
 					{['remove', 'rmx', 'select', 'sx'].includes(subroutine) ? <ScrapeQuantifierSelector
 						parentPath={key}
 						placeholder='Select quantifier'
-						setFieldValue={setFieldValue}
 						value={quantifier}
 					/> : null}
 				</td>
@@ -101,33 +99,25 @@ export const ScrapeExpressionBuilder = ({
 					<InsertButton
 						index={index}
 						path={path}
-						setFieldValue={setFieldValue}
-						values={values}
 						value={{subroutine: ''}}
 					/>
 					<RemoveButton
 						index={index}
 						path={path}
-						setFieldValue={setFieldValue}
-						values={values}
 					/>
 					<MoveDownButton
 						disabled={index === value.length-1}
 						index={index}
 						path={path}
-						setFieldValue={setFieldValue}
-						values={values}
 						visible={value.length > 1}
 					/>
 					<MoveUpButton
 						index={index}
 						path={path}
-						setFieldValue={setFieldValue}
-						values={values}
 						visible={value.length > 1}
 					/>
 				</td> : null}
 			</tr>;
 		})}
 	/></Table>;
-} // ScrapeExpressionBuilder
+}); // ScrapeExpressionBuilder

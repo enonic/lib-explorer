@@ -1,4 +1,4 @@
-import {getIn} from 'formik';
+import {connect, getIn} from 'formik';
 
 
 const mySwap = (array, indexA, indexB) => {
@@ -10,13 +10,15 @@ const mySwap = (array, indexA, indexB) => {
 };
 
 
-export const MoveDownButton = ({
+export const MoveDownButton = connect(({
+	formik: {
+		setFieldValue,
+		values
+	},
 	index,
 	path,
-	setFieldValue,
 	swap,
 	type,
-	values,
 	currentValue = values && path && getIn(values, path),
 	visible = true,
 	...rest
@@ -26,4 +28,4 @@ export const MoveDownButton = ({
 	return <button type="button" onClick={() => (path && currentValue)
 		? setFieldValue(path, mySwap(currentValue, index, nextIndex))
 		: swap(index, nextIndex)} {...rest}>↓</button>;
-};
+});

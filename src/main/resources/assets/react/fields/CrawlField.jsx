@@ -1,5 +1,4 @@
-import {FieldArray} from 'formik';
-import {capitalize} from 'lodash';
+import {connect, FieldArray} from 'formik';
 
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
@@ -20,13 +19,14 @@ import {URL_OPTGROUPS} from './scrapeSubroutineConstants';
 import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
 
 
-export const CrawlField = ({
+export const CrawlField = connect(({
+	formik: {
+		values
+	},
 	fields,
 	parentPath,
-	setFieldValue,
 	tags,
-	value,
-	values
+	value
 }) => {
 	//console.log(toStr({parentPath, value}));
 
@@ -34,11 +34,11 @@ export const CrawlField = ({
 	//console.log(toStr({path}));
 
 	if(!value || !value.length) {
-		return <SetFieldValueButton className='block' field={path} value={[{dynamic: false, urlExpr: ''}]} setFieldValue={setFieldValue} text="Add crawl expression(s)"/>;
+		return <SetFieldValueButton className='block' field={path} value={[{dynamic: false, urlExpr: ''}]} text="Add crawl expression(s)"/>;
 	}
 	return <FieldArray
 		name={path}
-		render={({insert, swap, remove}) => value.map(({crawl, download, dynamic, scrape, urlExpr}, index) => {
+		render={() => value.map(({crawl, download, dynamic, scrape, urlExpr}, index) => {
 			//console.log(toStr({crawl, download, dynamic, scrape, urlExpr, index}));
 
 			const key = `${path}[${index}]`;
@@ -59,40 +59,32 @@ export const CrawlField = ({
 				<ScrapeExpressionBuilder
 					parentPath={key}
 					name='urlExpression'
-					setFieldValue={setFieldValue}
 					optgroups={URL_OPTGROUPS}
-					values={values}
 				/>
 
 				<ScrapeField
 					fields={fields}
 					parentPath={key}
-					setFieldValue={setFieldValue}
 					tags={tags}
 					value={scrape}
-					values={values}
 				/>
 				<DownloadField
 					parentPath={key}
-					setFieldValue={setFieldValue}
 					tags={tags}
 					value={download}
-					values={values}
 				/>
 				<CrawlField
 					fields={fields}
 					parentPath={key}
-					setFieldValue={setFieldValue}
 					tags={tags}
 					value={crawl}
-					values={values}
 				/>{/*Recursive*/}
 
-				<InsertButton index={index} insert={insert} value={{dynamic: false, urlExpr: ''}}/>
-				<RemoveButton index={index} remove={remove}/>
-				<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
-				<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
+				<InsertButton index={index} path={path} value={{dynamic: false, urlExpr: ''}}/>
+				<RemoveButton index={index} path={path}/>
+				<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
+				<MoveUpButton index={index} path={path} visible={value.length > 1}/>
 			</Fieldset>
 		})}
 	/>;
-};
+});

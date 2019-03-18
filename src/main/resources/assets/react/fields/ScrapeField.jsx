@@ -1,4 +1,4 @@
-import {Field, FieldArray, getIn} from 'formik';
+import {connect, Field, FieldArray, getIn} from 'formik';
 
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
@@ -15,14 +15,15 @@ import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
 import {TagSelector} from './TagSelector';
 
 
-export const ScrapeField = ({
+export const ScrapeField = connect(({
+	formik: {
+		values
+	},
 	fields = [],
 	name = 'scrape',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	setFieldValue,
 	tags = [],
-	values,
 	value = getIn(values, path) || undefined
 }) => {
 	//console.log(JSON.stringify({/*parentPath, value, */values}, null, 4));
@@ -33,13 +34,13 @@ export const ScrapeField = ({
 	const tagsArray = getIn(values, tagsPath) || [{field: '', tags: []}];
 
 	if(!(value && Array.isArray(value) && value.length)) {
-		return <SetFieldValueButton className='block' field={path} value={[{field: '', dataExpr: ''}]} setFieldValue={setFieldValue} text="Add scrape field"/>
+		return <SetFieldValueButton className='block' field={path} value={[{field: '', dataExpr: ''}]} text="Add scrape field"/>
 	}
 	return <Fieldset legend="Field(s)">
 		<Table headers={['Field', 'Type', 'Options', 'Actions']}>
 			<FieldArray
 				name={path}
-				render={({insert, swap, remove}) => value.map(({
+				render={() => value.map(({
 					field,
 					option = 'scrape',
 					dataExpr,
@@ -49,7 +50,6 @@ export const ScrapeField = ({
 						<FieldSelector
 							name={`${path}[${index}].field`}
 							fields={fields}
-							setFieldValue={setFieldValue}
 							value={field}
 						/>
 					</td>
@@ -63,7 +63,6 @@ export const ScrapeField = ({
 								label: 'Tag',
 								value: 'tag'
 							}]}
-							setFieldValue={setFieldValue}
 							value={option}
 						/>
 					</td>
@@ -77,8 +76,6 @@ export const ScrapeField = ({
 								/> : null}
 								<ScrapeExpressionBuilder
 									parentPath={`${path}[${index}]`}
-									setFieldValue={setFieldValue}
-									values={values}
 								/>
 							</>
 							: field
@@ -87,20 +84,19 @@ export const ScrapeField = ({
 									multiple={true}
 									path={`${path}[${index}].tags`}
 									tags={tags[field]}
-									setFieldValue={setFieldValue}
 									value={selectedTags}
 								/>
 								: null
 						}
 					</td>
 					<td>
-						<InsertButton index={index} insert={insert} value={{field: '', dataExpr: ''}}/>
-						<RemoveButton index={index} remove={remove}/>
-						<MoveDownButton disabled={index === value.length-1} index={index} swap={swap} visible={value.length > 1}/>
-						<MoveUpButton index={index} swap={swap} visible={value.length > 1}/>
+						<InsertButton index={index} path={path} value={{field: '', dataExpr: ''}}/>
+						<RemoveButton index={index} path={path}/>
+						<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
+						<MoveUpButton index={index} path={path} visible={value.length > 1}/>
 					</td>
 				</tr>)}
 			/>
 		</Table>
 	</Fieldset>;
-};
+});

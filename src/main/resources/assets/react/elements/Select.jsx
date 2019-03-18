@@ -1,13 +1,35 @@
-import {Field, getIn} from 'formik';
+import {connect, Field, getIn} from 'formik';
 import generateUuidv4 from 'uuid/v4';
 
 import {Label} from './Label';
 
-import {toStr} from '../utils/toStr';
+import {isSet} from '../utils/isSet';
+//import {toStr} from '../utils/toStr';
 
 
-export const Select = ({
+function buildSize({
+	multiple,
+	optgroups,
+	options,
+	placeholder
+}) {
+	if (!multiple) { return 1; }
+	let size = 0;
+	optgroups.forEach(({options=[]}) => { size += options.length});
+	size += options.length
+	if (placeholder) {
+		size += 1;
+	}
+	return size;
+}
+
+
+export const Select = connect(({
 	component, // So it doesn't end up in rest
+	formik: {
+		setFieldValue,
+		values
+	},
 	label,
 	multiple = false,
 	parentPath,
@@ -16,9 +38,18 @@ export const Select = ({
 	optgroups = [],
 	options = [],
 	placeholder = null,
-	defaultValue = placeholder ? '' : options[0].value,
-	setFieldValue,
-	values,
+	defaultValue = placeholder
+		? ''
+		: (
+			isSet(getIn(optgroups, '[0].options[0].value'))
+			|| getIn(options, '[0].value', '')
+		),
+	size = buildSize({
+		multiple,
+		optgroups,
+		options,
+		placeholder
+	}),
 	value = values ? getIn(values, path, defaultValue) : defaultValue,
 	onChange = ({
 		target: {
@@ -30,12 +61,13 @@ export const Select = ({
 			.map(({value}) => value);
 		const newValue = multiple ? htmlCollectionAsArray : htmlCollectionAsArray[0];
 		//console.debug({multiple, path, htmlCollectionAsArray, newValue});
-		setFieldValue(path, newValue)
+		setFieldValue(path, newValue);
 	},
 	...rest // size
 }) => {
 	/*console.debug({
-		//label,
+		component: 'Select',
+		label,
 		multiple,
 		//parentPath,
 		//name,
@@ -83,4 +115,4 @@ export const Select = ({
 	return <Label label={label}>
 		{select}
 	</Label>;
-}
+});

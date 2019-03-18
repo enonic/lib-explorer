@@ -1,10 +1,13 @@
-import {getIn} from 'formik';
+import {connect, getIn} from 'formik';
 import {Select} from '../elements/Select';
 
 //import {toStr} from '../utils/toStr';
 
 
-export const FieldSelector = ({
+export const FieldSelector = connect(({
+	formik: {
+		values
+	},
 	//label, // in rest
 	multiple = false,
 	name = `field${multiple ? 's' : ''}`,
@@ -12,13 +15,11 @@ export const FieldSelector = ({
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	placeholder = 'Please select a field',
-	//setFieldValue, // in rest
 	fields = options,
-	values,
 	value = values && getIn(values, path) || '',
 	...rest
 }) => {
-	//console.log(toStr({rest}));
+	//console.debug(toStr({component: 'FieldSelector', path, value, rest}));
 	return <Select
 		multiple={multiple}
 		name={path}
@@ -27,4 +28,4 @@ export const FieldSelector = ({
 		value={value}
 		{...rest}
 	/>;
-} // FieldSelector
+}); // FieldSelector

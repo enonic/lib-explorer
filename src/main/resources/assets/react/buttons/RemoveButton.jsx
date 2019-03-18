@@ -1,4 +1,4 @@
-import {getIn} from 'formik';
+import {connect, getIn} from 'formik';
 
 
 const isFunction = (obj) => typeof obj === 'function';
@@ -13,14 +13,16 @@ const myRemove = (array, index) => {
 }
 
 
-export const RemoveButton = ({
+export const RemoveButton = connect(({
+	formik: {
+		setFieldValue,
+		values
+	},
 	index,
 	path,
 	remove,
-	setFieldValue,
 	text = '-',
 	type,
-	values,
 	currentValue = values && path && getIn(values, path),
 	visible = true,
 	...rest}) => {
@@ -30,4 +32,4 @@ export const RemoveButton = ({
 		? setFieldValue(path, myRemove(currentValue, index))
 		: remove(index)
 	} type="button" {...rest}>{text}</button>
-};
+});

@@ -89,11 +89,11 @@ export const Interface = ({
 	initialValues={initialValues}
 	render={({
 		handleSubmit,
-		setFieldValue,
 		values
 	}) => {
 		convert(values);
 		/*console.debug(toStr({
+			component: 'Interface',
 			//collections,
 			//fields,
 			//tags,
@@ -118,41 +118,30 @@ export const Interface = ({
 				multiple={true}
 				name="collections"
 				options={collections}
-				setFieldValue={setFieldValue}
 				values={values}
 			/>
 			<ExpressionSelector
 				fields={fields}
 				legend='Query'
 				name='query'
-				setFieldValue={setFieldValue}
-				values={values}
 			/>
 			<ResultMappings
 				fields={fields}
 				legend='Result mapping(s)'
-				setFieldValue={setFieldValue}
-				values={values}
 			/>
 			<Select
 				label="Thesauri"
 				multiple={true}
 				name="thesauri"
 				options={thesauri}
-				setFieldValue={setFieldValue}
-				values={values}
 			/>
 			<Facets
 				fields={fields.map(({label, path: value}) => ({label, value}))}
 				legend='Facet(s)'
-				setFieldValue={setFieldValue}
 				tags={tags}
-				values={values}
 			/>
 			<Pagination
 				legend='Pagination'
-				setFieldValue={setFieldValue}
-				values={values}
 			/>
 			<SubmitButton text="Save interface"/>
 			<input id="json" name="json" type="hidden"/>

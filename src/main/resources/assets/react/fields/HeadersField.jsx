@@ -12,24 +12,23 @@ import {Table} from '../elements/Table';
 
 export const HeadersField = ({
 	headers,
-	path,
-	setFieldValue
+	path
 }) => headers && headers.length
 	? <Fieldset legend="Headers">
 		<Table headers={['Name', 'Value', 'Action(s)']}>
 			<FieldArray
 				name={path}
-				render={({insert, swap, remove}) => headers.map(({name, value}, index) => <tr key={`${path}[${index}]`}>
+				render={() => headers.map(({name, value}, index) => <tr key={`${path}[${index}]`}>
 					<td><Field autoComplete="off" name={`${path}[${index}].name`}/></td>
 					<td><Field autoComplete="off" name={`${path}[${index}].value`}/></td>
 					<td>
-						<InsertButton index={index} insert={insert} value={{name: '', value: ''}}/>
-						<RemoveButton index={index} remove={remove}/>
-						<MoveDownButton disabled={index === headers.length-1} index={index} swap={swap} visible={headers.length > 1}/>
-						<MoveUpButton index={index} swap={swap} visible={headers.length > 1}/>
+						<InsertButton index={index} path={path} value={{name: '', value: ''}}/>
+						<RemoveButton index={index} path={path}/>
+						<MoveDownButton disabled={index === headers.length-1} index={index} path={path} visible={headers.length > 1}/>
+						<MoveUpButton index={index} path={path} visible={headers.length > 1}/>
 					</td>
 				</tr>)}
 			/>
 		</Table>
 	</Fieldset>
-	: <SetFieldValueButton className='block' field={path} value={[{name: '', value: ''}]} setFieldValue={setFieldValue} text="Add header(s)"/>
+	: <SetFieldValueButton className='block' field={path} value={[{name: '', value: ''}]} text="Add header(s)"/>

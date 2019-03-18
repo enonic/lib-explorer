@@ -28,7 +28,6 @@ export const Collection = ({
 	initialValues={initialValues}
 	render={({
 		handleSubmit,
-		setFieldValue,
 		values
 	}) => /*{
 		console.log(toStr({fields, tags, values}));
@@ -48,9 +47,7 @@ export const Collection = ({
 			<Surgeon
 				fields={fields}
 				path='collector.config'
-				setFieldValue={setFieldValue}
 				tags={tags}
-				values={values}
 			/>
 			<SubmitButton text="Save collection"/>
 			<input id="json" name="json" type="hidden"/>

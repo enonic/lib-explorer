@@ -1,5 +1,5 @@
 // WIP
-import {Field, getIn} from 'formik';
+import {connect, Field, getIn} from 'formik';
 import generateUuidv4 from 'uuid/v4';
 
 import {Label} from './Label';
@@ -7,7 +7,11 @@ import {Label} from './Label';
 import {toStr} from '../utils/toStr';
 
 
-export function Datalist({
+export const Datalist = connect(({
+	formik: {
+		setFieldValue,
+		values
+	},
 	component, // So it doesn't end up in rest
 	label,
 	multiple = false, // https://stackoverflow.com/questions/14148538/multiple-selections-with-datalist
@@ -16,8 +20,6 @@ export function Datalist({
 	path = parentPath ? `${parentPath}.${name}` : name,
 	options,
 	placeholder = null,
-	setFieldValue,
-	values,
 	value = values && getIn(values, path, ''),
 	onChange = ({
 		target: {
@@ -32,7 +34,7 @@ export function Datalist({
 		setFieldValue(path, newValue)
 	},
 	...rest
-}) {
+}) => {
 	console.debug(toStr({
 		//parentPath,
 		//name,
@@ -60,4 +62,4 @@ export function Datalist({
 	</>;
 	if(!label) { return fragment; }
 	return <Label label={label}>{fragment}</Label>;
-} // function Datalist
+}); // function Datalist
