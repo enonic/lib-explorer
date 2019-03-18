@@ -29,6 +29,7 @@ export function createOrEditInterfacePage({
 		const thesauri = node.thesauri ? forceArray(node.thesauri) : []
 		const {
 			facets = [],
+			filters,
 			query,
 			resultMappings,
 			pagination
@@ -36,6 +37,7 @@ export function createOrEditInterfacePage({
 		initialValues = {
 			name,
 			collections,
+			filters,
 			query,
 			resultMappings,
 			facets,

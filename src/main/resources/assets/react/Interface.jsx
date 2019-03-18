@@ -9,6 +9,7 @@ import {Select} from './elements/Select';
 
 import {NameField} from './fields/NameField';
 import {ExpressionSelector} from './fields/ExpressionSelector';
+import {QueryFiltersBuilder} from './fields/QueryFiltersBuilder';
 import {Facets} from './fields/Facets';
 import {Pagination} from './fields/Pagination'
 import {ResultMappings} from './fields/ResultMappings';
@@ -23,6 +24,8 @@ function convert(node) {
 			'expressions',
 			'facets',
 			'fields',
+			'must',
+			'mustNot',
 			'resultMappings'
 		].includes(key)) {
 			if (!value) {
@@ -119,6 +122,9 @@ export const Interface = ({
 				name="collections"
 				options={collections}
 				values={values}
+			/>
+			<QueryFiltersBuilder
+				fields={fields}
 			/>
 			<ExpressionSelector
 				fields={fields}
