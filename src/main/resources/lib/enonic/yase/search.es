@@ -20,6 +20,7 @@ import {
 } from '/lib/enonic/yase/constants';
 import {applySynonyms} from '/lib/enonic/yase/applySynonyms';
 import {buildFacets} from '/lib/enonic/yase/buildFacets';
+import {buildFilters} from '/lib/enonic/yase/search/buildFilters';
 import {buildPagination} from '/lib/enonic/yase/buildPagination';
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
 import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
@@ -110,6 +111,7 @@ export function search(params) {
 	const {
 		collections,
 		facets: facetConfig,
+		filters: filtersConfig,
 		pagination: paginationConfig,
 		query: queryConfig,
 		resultMappings,
@@ -157,20 +159,8 @@ export function search(params) {
 	});
 	//log.info(toStr({localizedFacets}));
 
-	const filters = {
-		boolean: {
-			mustNot: [{
-				hasValue: { // Avoid root node whoos _path is '/'
-					field: '_path',
-					values: ['/']
-				}
-				/*hasValue: { // Avoid root node which has an empty name
-					field: '_name',
-					values: ['']
-				}*/
-			}]
-		}
-	};
+	const filters = buildFilters(filtersConfig);
+	//log.info(toStr({filters}));
 
 	const yaseReadConnections = connectRepos({
 		principals: [`role:${ROLE_YASE_READ}`],
@@ -218,13 +208,13 @@ export function search(params) {
 		searchStringWithoutStopWords,
 		washedSearchString,
 		searchStringWithSynonyms,
+		filters,
 		query//,
 		//collections,
 		//sources,
 		//resultMappings,
 		//facetConfig,
 		//localizedFacets,
-		//filters,
 		//hits,
 		//paginationConfig
 	};
