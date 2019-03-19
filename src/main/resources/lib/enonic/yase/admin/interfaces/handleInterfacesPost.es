@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {
 	BRANCH_ID,
 	NT_INTERFACE,
@@ -47,17 +47,17 @@ export function handleInterfacesPost({
 	} // if action === 'delete'
 
 	const {json} = params;
-	log.info(toStr({json}));
+	//log.info(toStr({json}));
 
 	const obj = JSON.parse(json);
-	log.info(toStr({obj}));
+	//log.info(toStr({obj}));
 
 	obj._indexConfig = {default: 'byType'};
 	obj._name = obj.name;
 	obj._parentPath = '/interfaces';
 	obj.displayName = obj.name;
 	obj.type = NT_INTERFACE;
-	log.info(toStr({obj}));
+	//log.info(toStr({obj}));
 
 	const node = createOrModifyNode(obj);
 
