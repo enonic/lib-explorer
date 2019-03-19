@@ -2,6 +2,7 @@ import {TOOL_PATH} from '/lib/enonic/yase/constants';
 
 
 export function fieldFormHtml({
+	action = `${TOOL_PATH}/fields`,
 	description = '',
 	decideByType = true, //'checked',
 	displayName = '',
@@ -10,7 +11,6 @@ export function fieldFormHtml({
 	includeInAllText = true, //'checked',
 	instruction = 'type',
 	key = '',
-	operation = key ? 'UPDATE' : 'CREATE',
 	ngram = true, //'checked',
 	path = false //''
 } = {}) {
@@ -26,8 +26,7 @@ export function fieldFormHtml({
 		document.getElementById('custom-instructions').style.display = instructionSelectorEl.value === 'custom' ? 'block' : 'none';
 	}
 </script>
-<form action="${TOOL_PATH}/fields" autocomplete="off" method="POST">
-	<input name="operation" type="hidden" value="${operation}">
+<form action="${action}" autocomplete="off" method="POST">
 	<fieldset>
 		<legend>${key ? 'Edit' : 'New'} field ${displayName}</legend>
 
@@ -95,7 +94,7 @@ export function fieldFormHtml({
 			</label>
 		</div>
 
-		<button type="submit">${operation === 'CREATE' ? 'Create' : 'Modify'} field</button>
+		<button type="submit">${key ? 'Modify' : 'Create'} field</button>
 	</fieldset>
 </form><script type="text/javascript">
 ready(function() {

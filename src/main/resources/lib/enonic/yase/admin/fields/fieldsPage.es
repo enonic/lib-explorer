@@ -26,14 +26,10 @@ export function fieldsPage({
 		<td>${description}</td>
 		<td>${toStr(indexConfig)}</td>
 		<td>
-			<form action="${TOOL_PATH}/fields/${name}" method="get">
-				<input name="id" type="hidden" value="${id}"/>
-				<input name="operation" type="hidden" value="EDIT"/>
+			<form action="${TOOL_PATH}/fields/${name}/edit" method="get">
 				<button type="submit">Edit</button>
 			</form>
 			<form action="${TOOL_PATH}/fields/${name}/delete" method="post">
-				<input name="id" type="hidden" value="${id}"/>
-				<input name="operation" type="hidden" value="DELETE"/>
 				<button type="submit">Delete</button>
 			</form>
 		</td>

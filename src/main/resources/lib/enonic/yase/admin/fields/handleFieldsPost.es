@@ -1,7 +1,13 @@
 //import {toStr} from '/lib/enonic/util';
 import {sanitize} from '/lib/xp/common';
 
-import {NT_FIELD} from '/lib/enonic/yase/constants';
+import {
+	BRANCH_ID,
+	NT_FIELD,
+	REPO_ID,
+	TOOL_PATH
+} from '/lib/enonic/yase/constants';
+import {connectRepo} from '/lib/enonic/yase/connectRepo';
 import {createNode} from '/lib/enonic/yase/createNode';
 import {modifyNode} from '/lib/enonic/yase/modifyNode';
 import {ucFirst} from '/lib/enonic/yase/ucFirst';
@@ -9,22 +15,45 @@ import {fieldsPage} from '/lib/enonic/yase/admin/fields/fieldsPage';
 
 
 export function handleFieldsPost({
-	params: {
+	params,
+	path: reqPath
+}) {
+	const relPath = reqPath.replace(TOOL_PATH, '');
+	const pathParts = relPath.match(/[^/]+/g);
+	const fieldName = pathParts[1];
+	const action = pathParts[2];
+
+	if (action === 'delete') {
+		const connection = connectRepo({
+			repoId: REPO_ID,
+			branch: BRANCH_ID
+		});
+		const path = `/fields/${fieldName}`;
+		const deleteRes = connection.delete(path);
+		//log.info(toStr({deleteRes}));
+		return fieldsPage({path: reqPath}, {
+			messages: deleteRes.length
+				? [`Field with path:${path} deleted.`]
+				: [`Something went wrong when trying to delete field with path:${path}.`],
+			status: deleteRes.length ? 200 : 500
+		});
+	} // if action === 'delete'
+
+	let {
 		key,
-		displayName,
+		displayName
+	} = params;
+	const {
 		description = '',
 		//iconUrl = '',
 		instruction = 'type',
 		decideByType = 'on',
 		enabled = 'on',
-		operation = 'CREATE',
 		nGram = 'on',
 		fulltext = 'on',
 		includeInAllText = 'on',
 		path
-	},
-	path: reqPath
-}) {
+	} = params;
 	if (!key) {
 		if (!displayName) {
 			return fieldsPage({path: reqPath}, {
@@ -47,7 +76,7 @@ export function handleFieldsPost({
 		path,
 	}));*/
 	const lcKey = key.toLowerCase();
-	const params = {
+	const nodeParams = {
 		_indexConfig: {default: 'byType'},
 		_name: lcKey,
 		_parentPath: '/fields',
@@ -65,12 +94,12 @@ export function handleFieldsPost({
 		} : instruction,
 		type: NT_FIELD
 	};
-	const node = operation === 'CREATE' ? createNode(params) : modifyNode(params);
+	const node = fieldName ? modifyNode(nodeParams) : createNode(nodeParams);
 	//log.info(toStr({node}));
 	return fieldsPage({path: reqPath}, {
 		messages: node
-			? [`Field with key:${lcKey} ${operation === 'CREATE' ? 'created' : 'modified'}.`]
-			: [`Something went wrong when trying to ${operation === 'CREATE' ? 'create' : 'modify'} field with key:${lcKey}.`],
+			? [`Field with key:${lcKey} ${fieldName ? 'modified' : 'created'}.`]
+			: [`Something went wrong when trying to ${fieldName ? 'modify' : 'create'} field with key:${lcKey}.`],
 		status: node ? 200 : 500
 	});
 } // function post
