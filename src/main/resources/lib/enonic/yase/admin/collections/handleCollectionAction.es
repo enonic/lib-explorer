@@ -6,8 +6,14 @@ import {list as listTasks, submitNamed} from '/lib/xp/task';
 import {request as httpClientRequest} from '/lib/http-client';
 //import {serviceUrl} from '/lib/xp/portal';
 
-import {TOOL_PATH} from '/lib/enonic/yase/constants';
+import {
+	BRANCH_ID,
+	TOOL_PATH,
+	REPO_ID
+} from '/lib/enonic/yase/constants';
+import {connectRepo} from '/lib/enonic/yase/connectRepo';
 import {getCollection} from '/lib/enonic/yase/admin/collections/getCollection';
+import {collectionsPage} from '/lib/enonic/yase/admin/collections/collectionsPage';
 
 
 const COLLECT_TASK_NAME = 'com.enonic.app.yase:collect';
@@ -117,5 +123,33 @@ export const handleCollectionAction = ({
 			const taskId = submitNamed(submitNamedParams);
 			//log.info(toStr({taskId}));
 		}
+	} else if (action === 'delete' && method === 'POST') {
+		const messages = [];
+		let status = 200;
+		const {typedCollectionName} = params;
+		if (!typedCollectionName) {
+			messages.push('Missing required parameter "typedCollectionName"!');
+			status = 400;
+		} else if (typedCollectionName !== collectionName) {
+			messages.push(`Typed collection name: "${typedCollectionName}" doesn't match actual collection name: "${collectionName}"!`);
+			status = 400;
+		} else {
+			const connection = connectRepo({
+				repoId: REPO_ID,
+				branch: BRANCH_ID
+			});
+			const nodePath = `/collections/${collectionName}`;
+			const deleteRes = connection.delete(nodePath);
+			if(deleteRes) {
+				messages.push(`Collection with path:${nodePath} deleted.`)
+			} else {
+				messages.push(`Something went wrong when trying to delete collection with path:${nodePath}.`)
+				status = 500;
+			}
+		}
+		return collectionsPage({path}, {
+			messages,
+			status
+		});
 	}
 }; // handleCollectionAction

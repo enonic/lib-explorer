@@ -27,8 +27,11 @@ export const collectionsPage = ({
 			<td>${displayName}</td>
 			<td>${collectorName}</td>
 			<td>
-				<form action="${TOOL_PATH}/collections/${_name}" method="post">
+				<form action="${TOOL_PATH}/collections/${_name}" method="get">
 					<button type="submit">Edit</button>
+				</form>
+				<form action="${TOOL_PATH}/collections/${_name}/delete" method="get">
+					<button type="submit">Delete</button>
 				</form>
 				<form action="${TOOL_PATH}/collections/${_name}/collect" method="post">
 					<button type="submit">Collect</button>
