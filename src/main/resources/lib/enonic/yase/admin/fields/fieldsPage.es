@@ -3,6 +3,7 @@ import {toStr} from '/lib/enonic/util';
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {fieldFormHtml} from '/lib/enonic/yase/admin/fields/fieldFormHtml';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
+import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 
 
@@ -25,8 +26,9 @@ export function fieldsPage({
 		<td>${key}</td>
 		<td>${description}</td>
 		<td>${toStr(indexConfig)}</td>
+		<td>${getFieldValues({field: name}).hits.map(({displayName: vN}) => vN).join(', ')}</td>
 		<td>
-			<form action="${TOOL_PATH}/fields/${name}/edit" method="get">
+			<form action="${TOOL_PATH}/fields/${name}" method="get">
 				<button type="submit">Edit</button>
 			</form>
 			<form action="${TOOL_PATH}/fields/${name}/delete" method="post">
@@ -44,6 +46,7 @@ export function fieldsPage({
 			<th>Key</th>
 			<th>Description</th>
 			<th>IndexConfig</th>
+			<th>Values</th>
 			<th>Actions</th>
 		</tr>
 	</thead>

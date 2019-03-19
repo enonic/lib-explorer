@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 import {dlv} from '/lib/enonic/util/object';
 import {
 	BRANCH_ID,
@@ -8,6 +8,8 @@ import {
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {fieldFormHtml} from '/lib/enonic/yase/admin/fields/fieldFormHtml';
+import {fieldValueFormHtml} from '/lib/enonic/yase/admin/fields/fieldValueFormHtml';
+import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 
 
 export function createOrEditFieldPage({
@@ -16,14 +18,16 @@ export function createOrEditFieldPage({
 		id,
 		name
 	}*/
-}) {
+}, {
+	messages = [],
+	status = 200
+} = {}) {
 	//log.info(toStr({reqPath}));
 	const relPath = reqPath.replace(TOOL_PATH, ''); //log.info(toStr({relPath}));
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
 	const fieldName = pathParts[1]; //log.info(toStr({fieldName}));
-	const action = pathParts[2];
 
-	if (action === 'edit') {
+	if (fieldName) {
 		const connection = connectRepo({
 			repoId: REPO_ID,
 			branch: BRANCH_ID
@@ -37,30 +41,66 @@ export function createOrEditFieldPage({
 		const {description, displayName, indexConfig, key} = node;
 		//log.info(toStr({description, displayName, key, indexConfig}));
 
+		const fieldForm = fieldFormHtml({
+			action: `${TOOL_PATH}/fields/${fieldName}`,
+			description,
+			decideByType: dlv(indexConfig, 'decideByType', true),
+			displayName,
+			enabled: dlv(indexConfig, 'enabled', true),
+			fulltext: dlv(indexConfig, 'fulltext', true),
+			includeInAllText: dlv(indexConfig, 'includeInAllText', true),
+			key,
+			ngram: dlv(indexConfig, 'ngram', true),
+			path: dlv(indexConfig, 'path', false)
+			/*,
+			instruction*/
+		});
+
+		const values = getFieldValues({field: fieldName}).hits;
+		log.info(toStr({values}));
+
+		const valueForm = fieldValueFormHtml({
+			field: fieldName
+		});
+
 		return htmlResponse({
-			main: fieldFormHtml({
-				action: `${TOOL_PATH}/fields/${fieldName}`,
-				description,
-				decideByType: dlv(indexConfig, 'decideByType', true),
-				displayName,
-				enabled: dlv(indexConfig, 'enabled', true),
-				fulltext: dlv(indexConfig, 'fulltext', true),
-				includeInAllText: dlv(indexConfig, 'includeInAllText', true),
-				key,
-				ngram: dlv(indexConfig, 'ngram', true),
-				path: dlv(indexConfig, 'path', false)
-				/*,
-				instruction*/
-			}),
+			main: `${fieldForm}
+<table>
+	<thead>
+		<tr>
+			<th>Value</th>
+			<th>Display name</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		${values.map(({_name: value, displayName: vDN}) => `<tr>
+			<td>${value}</td>
+			<td>${vDN}</td>
+			<td>
+				<form action="${TOOL_PATH}/fields/${fieldName}/values/${value}/edit" method="get">
+					<button type="submit">Edit</button>
+				</form>
+				<form action="${TOOL_PATH}/fields/${fieldName}/values/${value}/delete" method="post">
+					<button type="submit">Delete</button>
+				</form>
+			</td>
+		</tr>`)}
+	</tbody>
+</table>
+${valueForm}`,
+			messages,
 			path: reqPath,
+			status,
 			title: `Edit field ${displayName} `
 		});
 	}
 
 	return htmlResponse({
-		main: fieldFormHtml({
-			path: reqPath,
-			title: 'Create field'
-		})
+		main: fieldFormHtml(),
+		messages,
+		path: reqPath,
+		status,
+		title: 'Create field'
 	});
 } // createOrEditFieldPage
