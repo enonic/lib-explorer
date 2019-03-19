@@ -20,8 +20,14 @@ export function interfacesPage({
 	</thead>
 	<tbody>
 		${interfaces.hits.map(({_name, displayName}) => `<tr>
-			<td><a href="${TOOL_PATH}/interfaces/${_name}">${displayName}</a></td>
+			<td>${displayName}</td>
 			<td>
+				<form action="${TOOL_PATH}/interfaces/${_name}" method="get">
+					<button type="submit">Edit</button>
+				</form>
+				<form action="${TOOL_PATH}/interfaces/${_name}/delete" method="get">
+					<button type="submit">Delete</button>
+				</form>
 			</td>
 		</tr>`).join('\n')}
 	</tbody>
