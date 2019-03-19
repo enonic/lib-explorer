@@ -14,7 +14,7 @@ import {Facets} from './fields/Facets';
 import {Pagination} from './fields/Pagination'
 import {ResultMappings} from './fields/ResultMappings';
 
-//import {toStr} from './utils/toStr';
+import {toStr} from './utils/toStr';
 
 
 function convert(node) {
@@ -26,7 +26,8 @@ function convert(node) {
 			'fields',
 			'must',
 			'mustNot',
-			'resultMappings'
+			'resultMappings',
+			'values'
 		].includes(key)) {
 			if (!value) {
 				this.update([]);
@@ -51,6 +52,7 @@ export const Interface = ({
 	action,
 	collections,
 	fields,
+	fieldsObj,
 	initialValues = {
 		name: '',
 		collections: [],
@@ -95,14 +97,15 @@ export const Interface = ({
 		values
 	}) => {
 		convert(values);
-		/*console.debug(toStr({
+		console.debug(toStr({
 			component: 'Interface',
 			//collections,
 			//fields,
+			fieldsObj//,
 			//tags,
 			//thesauri,
-			values
-		}));*/
+			//values
+		}));
 		return <Form
 			action={action}
 			autoComplete="off"
@@ -125,6 +128,7 @@ export const Interface = ({
 			/>
 			<QueryFiltersBuilder
 				fields={fields}
+				tags={tags}
 			/>
 			<ExpressionSelector
 				fields={fields}

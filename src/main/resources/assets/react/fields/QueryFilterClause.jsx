@@ -15,6 +15,7 @@ import {ucFirst} from '../utils/ucFirst';
 
 import {FieldSelector} from './FieldSelector';
 import {QueryFilterSelector} from './QueryFilterSelector';
+import {TagSelector} from './TagSelector';
 
 
 export const QueryFilterClause = connect(({
@@ -26,6 +27,7 @@ export const QueryFilterClause = connect(({
 	name = 'must',
 	legend = ucFirst(name),
 	path = parentPath ? `${parentPath}.${name}` : name,
+	tags,
 	value = getIn(values, path)
 }) => {
 	//console.debug(toStr({component: 'QueryFilterClause', parentPath, name, path, value}));
@@ -56,7 +58,14 @@ export const QueryFilterClause = connect(({
 								/>
 								: null
 							}</td>
-							<td>{['hasValue', 'ids'].includes(filter)
+							<td>{filter === 'hasValue'
+								? <TagSelector
+									multiple={true}
+									path={`${key}.params.values`}
+									tags={tags[`/fields/${field}`]}
+								/>
+								: null
+							}{filter === 'ids'
 								? <Field
 									name={`${key}.params.values`}
 									size={Math.max(30, fieldValues.length)}

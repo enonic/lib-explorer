@@ -5,7 +5,7 @@ import {connectRepo} from '/lib/enonic/yase/connectRepo';
 export function getFieldValues({
 	connection = connectRepo(),
 	field
-}) {
+} = {}) {
 	const must = [{
 		hasValue: {
 			field: 'type',
