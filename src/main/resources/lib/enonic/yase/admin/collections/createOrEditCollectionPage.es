@@ -26,6 +26,7 @@ function convert(node) {
 			'scrape',
 			'tags',
 			'urls',
+			'value'
 		].includes(key)) {
 			if (!value) {
 				this.update([]);

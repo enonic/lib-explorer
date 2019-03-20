@@ -14,6 +14,8 @@ import {SCRAPE_OPTGROUPS} from './scrapeSubroutineConstants';
 import {ScrapeSubroutineSelector} from './ScrapeSubroutineSelector';
 
 //import {toStr} from '../utils/toStr';
+
+
 const tdStyle = {
 	border: '0 none',
 	padding: '0 5px 0 0'
@@ -30,7 +32,7 @@ export const ScrapeExpressionBuilder = connect(({
 	optgroups = SCRAPE_OPTGROUPS,
 	value = getIn(values, path) || [{subroutine: ''}]
 }) => {
-	//console.debug(toStr({path, value}))
+	//console.debug(toStr({component: 'ScrapeExpressionBuilder', path, value}));
 	if(!(value && Array.isArray(value) && value.length)) {
 		return <SetFieldValueButton
 			className='block'

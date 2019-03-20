@@ -14,6 +14,8 @@ import {FieldSelector} from './FieldSelector';
 import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
 import {TagSelector} from './TagSelector';
 
+import {toStr} from '../utils/toStr';
+
 
 export const ScrapeField = connect(({
 	formik: {
@@ -27,7 +29,12 @@ export const ScrapeField = connect(({
 	tags = [],
 	value = getIn(values, path) || undefined
 }) => {
-	//console.log(JSON.stringify({/*parentPath, value, */values}, null, 4));
+	/*console.debug(toStr({
+		component: 'ScrapeField',
+		parentPath,
+		value//,
+		//values
+	}));*/
 
 	const tagsPath = `${parentPath}.tags`;
 	//console.log(JSON.stringify({tagsPath}, null, 4));
@@ -35,7 +42,7 @@ export const ScrapeField = connect(({
 	const tagsArray = getIn(values, tagsPath) || [{field: '', tags: []}];
 
 	if(!(value && Array.isArray(value) && value.length)) {
-		return <SetFieldValueButton className='block' field={path} value={[{field: '', dataExpr: ''}]} text="Add scrape field"/>
+		return <SetFieldValueButton className='block' field={path} value={[{field: ''}]} text="Add scrape field"/>
 	}
 	return <Fieldset legend="Field(s)">
 		<Table headers={['Field', 'Type', 'Options', 'Actions']}>
@@ -44,7 +51,6 @@ export const ScrapeField = connect(({
 				render={() => value.map(({
 					field,
 					option = 'scrape',
-					dataExpr,
 					tags: selectedTags = []
 				}, index) => <tr key={`${path}[${index}]`}>
 					<td>
@@ -69,16 +75,9 @@ export const ScrapeField = connect(({
 					</td>
 					<td>
 						{option === 'scrape'
-							? <>
-								{dataExpr ? <Field
-									autoComplete="off"
-									label="Data extraction expression"
-									name={`${path}[${index}].dataExpr`}
-								/> : null}
-								<ScrapeExpressionBuilder
-									parentPath={`${path}[${index}]`}
-								/>
-							</>
+							? <ScrapeExpressionBuilder
+								parentPath={`${path}[${index}]`}
+							/>
 							: field
 								? <TagSelector
 									label=""
@@ -91,7 +90,7 @@ export const ScrapeField = connect(({
 						}
 					</td>
 					<td>
-						<InsertButton index={index} path={path} value={{field: '', dataExpr: ''}}/>
+						<InsertButton index={index} path={path} value={{field: ''}}/>
 						<RemoveButton index={index} path={path}/>
 						<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
 						<MoveUpButton index={index} path={path} visible={value.length > 1}/>
