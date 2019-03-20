@@ -85,7 +85,7 @@ export function createOrEditFieldPage({
 					<button type="submit">Delete</button>
 				</form>
 			</td>
-		</tr>`)}
+		</tr>`).join('')}
 	</tbody>
 </table>
 ${valueForm}`,
