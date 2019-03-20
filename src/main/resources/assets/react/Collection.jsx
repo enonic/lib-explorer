@@ -8,6 +8,7 @@ import {Surgeon} from './fields/Surgeon';
 export const Collection = ({
 	action,
 	fields = [],
+	fieldsObj = {},
 	tags = [],
 	initialValues = {
 		collector: {
@@ -46,6 +47,7 @@ export const Collection = ({
 			/>
 			<Surgeon
 				fields={fields}
+				fieldsObj={fieldsObj}
 				path='collector.config'
 				tags={tags}
 			/>

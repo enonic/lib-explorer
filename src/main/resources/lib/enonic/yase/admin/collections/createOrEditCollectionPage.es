@@ -8,6 +8,7 @@ import {TOOL_PATH} from '/lib/enonic/yase/constants';
 
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
+import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 import {getTags} from '/lib/enonic/yase/admin/tags/getTags';
 
 
@@ -66,7 +67,34 @@ export function createOrEditCollectionPage({
 	}
 	//log.info(toStr({initialValues}));
 
-	const fields = getFields().hits.map(({displayName, key}) => ({label: displayName, value: key}));
+	const fieldValuesArray = getFieldValues().hits;
+	const fieldValuesObj = {};
+	fieldValuesArray.forEach(({
+		_name: name,
+		_path: path,
+		displayName: label,
+		field
+	}) => {
+		if (!fieldValuesObj[field]) {fieldValuesObj[field] = {}}
+		fieldValuesObj[field][name] = {
+			label,
+			path
+		};
+	});
+
+	const fieldsArr = getFields().hits.map(({
+		_path: path,
+		displayName: label,
+		key: value
+	}) => ({label, value, path}));
+	const fieldsObj = {};
+	fieldsArr.forEach(({label, path, value: field}) => {
+		fieldsObj[field] = {
+			label,
+			path,
+			values: fieldValuesObj[field]
+		};
+	});
 	//log.info(toStr({fields}));
 
 	const tags = {};
@@ -79,7 +107,13 @@ export function createOrEditCollectionPage({
 	});
 	//log.info(toStr({tags}));
 
-	const propsObj = {action: `${TOOL_PATH}/collections`, fields, initialValues, tags};
+	const propsObj = {
+		action: `${TOOL_PATH}/collections`,
+		fields: fieldsArr,
+		fieldsObj,
+		initialValues,
+		tags
+	};
 	//log.info(toStr({propsObj}));
 
 	const propsJson = JSON.stringify(propsObj);

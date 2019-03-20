@@ -27,6 +27,7 @@ export const Surgeon = connect(({
 		values
 	},
 	fields,
+	fieldsObj,
 	path,
 	tags
 }) => {
@@ -80,6 +81,7 @@ export const Surgeon = connect(({
 	</Fieldset>
 	<ScrapeField
 		fields={fields}
+		fieldsObj={fieldsObj}
 		parentPath={path}
 		tags={tags}
 		value={scrape}

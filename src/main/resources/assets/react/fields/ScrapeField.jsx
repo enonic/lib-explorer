@@ -20,6 +20,7 @@ export const ScrapeField = connect(({
 		values
 	},
 	fields = [],
+	fieldsObj, // {}
 	name = 'scrape',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
