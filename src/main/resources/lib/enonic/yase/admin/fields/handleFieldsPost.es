@@ -118,7 +118,8 @@ export function handleFieldsPost({
 		nGram = 'on',
 		fulltext = 'on',
 		includeInAllText = 'on',
-		path
+		path,
+		fieldType = 'text'
 	} = params;
 	if (!key) {
 		if (!displayName) {
@@ -148,6 +149,7 @@ export function handleFieldsPost({
 		_parentPath: '/fields',
 		description,
 		displayName,
+		fieldType,
 		key: lcKey,
 		//iconUrl,
 		indexConfig: instruction === 'custom' ? {

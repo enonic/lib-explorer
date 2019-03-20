@@ -4,15 +4,16 @@ import {TOOL_PATH} from '/lib/enonic/yase/constants';
 export function fieldFormHtml({
 	action = `${TOOL_PATH}/fields`,
 	description = '',
-	decideByType = true, //'checked',
+	decideByType = true,
 	displayName = '',
-	enabled = true, //'checked',
-	fulltext = true, //'checked',
-	includeInAllText = true, //'checked',
+	enabled = true,
+	fulltext = true,
+	includeInAllText = true,
 	instruction = 'type',
 	key = '',
-	ngram = true, //'checked',
-	path = false //''
+	ngram = true,
+	path = false,
+	fieldType = 'text'
 } = {}) {
 	return `<script type="text/javascript">
 	function ready(fn) {
@@ -49,6 +50,17 @@ export function fieldFormHtml({
 			<span>Icon url</span>
 			<input name="iconUrl" type="text"/>
 		</label-->
+
+		<label>
+			<span>Type</span>
+			<select name="fieldType" value="${fieldType}">
+				<option value="text" selected>Text</option>
+				<option value="tag">Tag</option><!-- Enum Map Keys -->
+				<option value="uri">Uri</option>
+				<option value="html">Html</option>
+				<option value="base64">Base64 encoded data</option>
+			</select>
+		</label>
 
 		<label>
 			<span>Index config</span>

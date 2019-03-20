@@ -17,15 +17,16 @@ export function fieldsPage({
 		_id: id,
 		_name: name,
 		displayName,
-		description,
+		//description,
+		fieldType,
 		indexConfig,
 		key
 	}) => {
 		return `<tr>
-		<td>${displayName}</td>
 		<td>${key}</td>
-		<td>${description}</td>
-		<td>${toStr(indexConfig)}</td>
+		<td>${displayName}</td>
+		<td>${fieldType}</td>
+		<!--td>${toStr(indexConfig)}</td-->
 		<td>${getFieldValues({field: name}).hits.map(({displayName: vN}) => vN).join(', ')}</td>
 		<td>
 			<form action="${TOOL_PATH}/fields/${name}" method="get">
@@ -42,10 +43,10 @@ export function fieldsPage({
 <table>
 	<thead>
 		<tr>
-			<th>Display name</th>
 			<th>Key</th>
-			<th>Description</th>
-			<th>IndexConfig</th>
+			<th>Display name</th>
+			<th>Type</th>
+			<!--th>IndexConfig</th-->
 			<th>Values</th>
 			<th>Actions</th>
 		</tr>
