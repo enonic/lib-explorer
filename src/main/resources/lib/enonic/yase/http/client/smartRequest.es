@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {request as httpClientRequest} from '/lib/http-client';
 import {sleep} from '/lib/xp/task';
 
@@ -33,6 +33,7 @@ export function smartRequest({
 		readTimeout,
 		url
 	};
+	//log.info(toStr({body, headers, url}));
 	if (auth) { reqParams.auth = auth; }
 	if (body) { reqParams.body = body; }
 	if (contentType) { reqParams.contentType = contentType; }
