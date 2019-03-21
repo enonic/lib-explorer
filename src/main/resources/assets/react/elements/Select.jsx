@@ -94,7 +94,7 @@ export const Select = connect(({
 		//console.debug({multiple, path, htmlCollectionAsArray, newValue});
 		setFieldValue(path, newValue);
 	},
-	...rest // size
+	...rest
 }) => {
 	/*console.debug({
 		component: 'Select',
@@ -114,6 +114,7 @@ export const Select = connect(({
 		multiple={multiple}
 		name={path}
 		onChange={onChange}
+		size={size}
 		value={value}
 		{...rest}
 	>

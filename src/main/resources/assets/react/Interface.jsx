@@ -6,8 +6,8 @@ import {SubmitButton} from './buttons/SubmitButton';
 
 // Elements
 import {Select} from './elements/Select';
+import {TextInput} from './elements/TextInput';
 
-import {NameField} from './fields/NameField';
 import {ExpressionSelector} from './fields/ExpressionSelector';
 import {QueryFiltersBuilder} from './fields/QueryFiltersBuilder';
 import {Facets} from './fields/Facets';
@@ -114,10 +114,9 @@ export const Interface = ({
 				document.getElementById('json').setAttribute('value', JSON.stringify(values))
 			}}
 		>
-			<NameField
+			<TextInput
 				label="Name"
 				name="name"
-				value={values.name}
 			/>
 			<Select
 				label="Collection(s)"

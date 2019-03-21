@@ -1,6 +1,6 @@
 import {Form, Formik} from 'formik';
 import {SubmitButton} from './buttons/SubmitButton';
-import {NameField} from './fields/NameField';
+import {TextInput} from './elements/TextInput';
 import {Surgeon} from './fields/Surgeon';
 import {toStr} from './utils/toStr';
 
@@ -44,10 +44,9 @@ export const Collection = ({
 				document.getElementById('json').setAttribute('value', JSON.stringify(values))
 			}}
 		>
-			<NameField
+			<TextInput
 				label="Name"
 				name="name"
-				value={values.name}
 			/>
 			<Surgeon
 				fields={fields}

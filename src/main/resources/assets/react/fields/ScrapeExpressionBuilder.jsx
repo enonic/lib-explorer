@@ -1,4 +1,4 @@
-import {connect, Field, FieldArray, getIn} from 'formik';
+import {connect, FieldArray, getIn} from 'formik';
 
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
@@ -7,6 +7,8 @@ import {RemoveButton} from '../buttons/RemoveButton';
 import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
 
 import {Table} from '../elements/Table';
+import {NumberInput} from '../elements/NumberInput';
+import {TextInput} from '../elements/TextInput';
 
 import {ScrapeQuantifierSelector} from './ScrapeQuantifierSelector';
 
@@ -62,21 +64,18 @@ export const ScrapeExpressionBuilder = connect(({
 					value={subroutine}
 				/></td>
 				<td style={tdStyle}>
-					{['remove', 'rmx', 'select', 'sl', 'slx', 'sx'].includes(subroutine) ? <Field
-						autoComplete="off"
-						name={`${key}.selector`}
+					{['remove', 'rmx', 'select', 'sl', 'slx', 'sx'].includes(subroutine) ? <TextInput
+						path={`${key}.selector`}
 						placeholder={['remove', 'select', 'sl'].includes(subroutine) ? 'Css selector' : 'Xpath selector'}
 						value={selector}
 					/> : null}
-					{subroutine === 'read attribute' ?<Field
-						autoComplete="off"
-						name={`${key}.attribute`}
+					{subroutine === 'read attribute' ?<TextInput
+						path={`${key}.attribute`}
 						placeholder='attribute'
 						value={attribute}
 					/> : null}
-					{subroutine === 'read property' ?<Field
-						autoComplete="off"
-						name={`${key}.property`}
+					{subroutine === 'read property' ?<TextInput
+						path={`${key}.property`}
 						placeholder='property'
 						value={property}
 					/> : null}
@@ -89,11 +88,9 @@ export const ScrapeExpressionBuilder = connect(({
 					/> : null}
 				</td>
 				<td style={tdStyle}>
-					{['remove', 'rmx', 'select', 'sl', 'slx', 'sx'].includes(subroutine) ? <Field
-						autoComplete="off"
-						name={`${key}.nodeIndex`}
+					{['remove', 'rmx', 'select', 'sl', 'slx', 'sx'].includes(subroutine) ? <NumberInput
+						path={`${key}.nodeIndex`}
 						placeholder='Node index'
-						type='number'
 						value={nodeIndex}
 					/> : null}
 				</td>

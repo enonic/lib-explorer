@@ -1,4 +1,4 @@
-import {Field, FieldArray} from 'formik';
+import {connect, FieldArray, getIn} from 'formik';
 
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
@@ -6,15 +6,19 @@ import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
 
 import {Fieldset} from '../elements/Fieldset';
-import {Label} from '../elements/Label';
 import {Table} from '../elements/Table';
+import {TextInput} from '../elements/TextInput';
 
 
-export const UrlsField = ({
+export const UrlsField = connect(({
+	formik: {
+		values
+	},
 	parentPath,
-	value
+	name = 'urls',
+	path = `${parentPath}.${name}`,
+	value = getIn(values, path) || ['']
 }) => {
-	const path = `${parentPath}.urls`;
 	/*console.log(JSON.stringify({
 		parentPath,
 		value
@@ -27,7 +31,7 @@ export const UrlsField = ({
 				render={() => value.map((anUrl, index) => {
 					const key = `${path}[${index}]`;
 					return <tr key={key}>
-						<td><Field autoComplete="off" name={key} value={anUrl} /></td>
+						<td><TextInput path={key}/></td>
 						<td>
 							<InsertButton index={index} path={path} value={''}/>
 							<RemoveButton index={index} path={path} visible={value.length > 1}/>
@@ -39,4 +43,4 @@ export const UrlsField = ({
 			/>
 		</Table>
 	</Fieldset>
-};
+});
