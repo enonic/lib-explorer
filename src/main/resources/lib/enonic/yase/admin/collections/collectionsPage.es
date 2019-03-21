@@ -3,6 +3,7 @@
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {getDocumentCount} from '/lib/enonic/yase/admin/collections/getDocumentCount';
 import {queryCollections} from '/lib/enonic/yase/admin/collections/queryCollections';
+import {usedInInterfaces} from '/lib/enonic/yase/admin/collections/usedInInterfaces';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 
 
@@ -20,6 +21,7 @@ export const collectionsPage = ({
 		<tr>
 			<th>Name</th>
 			<th>Documents</th>
+			<th>Interfaces</th>
 			<th>Collector</th>
 			<th>Action(s)</th>
 		</tr>
@@ -27,7 +29,8 @@ export const collectionsPage = ({
 	<tbody>
 		${collections.hits.map(({_name: name, displayName, collector: {name: collectorName}}) => `<tr>
 			<td>${displayName}</td>
-			<td>${getDocumentCount({collectionName: name})}</td>
+			<td style="text-align: right;">${getDocumentCount(name)}</td>
+			<td>${usedInInterfaces(name).join(', ')}</td>
 			<td>${collectorName}</td>
 			<td>
 				<form action="${TOOL_PATH}/collections/${name}" method="get">

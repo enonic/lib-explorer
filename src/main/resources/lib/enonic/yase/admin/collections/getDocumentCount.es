@@ -7,13 +7,11 @@ import {hasValue} from '/lib/enonic/yase/query/hasValue';
 import {getTotal} from '/lib/enonic/yase/query/getTotal';
 
 
-export function getDocumentCount({
-	collectionName
-}) {
+export function getDocumentCount(name) {
 	let count = -1;
 	try {
 		count = getTotal({
-			connection: connectToCollection(collectionName),
+			connection: connectToCollection(name),
 			filters: addFilter({
 				filter: hasValue('type', [NT_DOCUMENT])
 			})

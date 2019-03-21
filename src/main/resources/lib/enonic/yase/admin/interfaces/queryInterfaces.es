@@ -1,25 +1,22 @@
 import {NT_INTERFACE} from '/lib/enonic/yase/constants';
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {addFilter} from '/lib/enonic/yase/query/addFilter';
+import {hasValue} from '/lib/enonic/yase/query/hasValue';
 
 
 export function queryInterfaces({
 	connection = connectRepo(),
 	count = -1,
+	filters = {},
 	query = '', //"_parentPath = '/interfaces'",
 	sort = '_name ASC'
 } = {}) {
 	const queryParams = {
 		count,
-		filters: {
-			boolean: {
-				must: [{
-					hasValue: {
-						field: 'type',
-						values: [NT_INTERFACE]
-					}
-				}]
-			}
-		},
+		filters: addFilter({
+			filters,
+			filter: hasValue('type', [NT_INTERFACE])
+		}),
 		query,
 		sort
 	};
