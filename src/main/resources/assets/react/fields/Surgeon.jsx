@@ -19,6 +19,7 @@ import {PathRangeField} from './PathRangeField';
 import {QueryParameters} from './QueryParameters';
 import {QueryRangeField} from './QueryRangeField';
 import {ScrapeField} from './ScrapeField';
+import {ScrapeJson} from './ScrapeJson';
 import {UrlsField} from './UrlsField';
 
 
@@ -79,6 +80,10 @@ export const Surgeon = connect(({
 		<LabeledField label="Retries" name={`${path}.retries`} value={isSet(retries) ? retries : 1}/>
 		<Checkbox checked={dynamic} label="Dynamic" name={`${path}.dynamic`}/>
 	</Fieldset>
+	<ScrapeJson
+		parentPath={path}
+		fieldsObj={fieldsObj}
+	/>
 	<ScrapeField
 		fields={fields}
 		fieldsObj={fieldsObj}
@@ -94,6 +99,7 @@ export const Surgeon = connect(({
 	/>
 	<CrawlField
 		fields={fields}
+		fieldsObj={fieldsObj}
 		parentPath={path}
 		tags={tags}
 		value={crawl}

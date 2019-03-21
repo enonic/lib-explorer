@@ -24,6 +24,7 @@ function convert(node) {
 			'headers',
 			'queryParams',
 			'scrape',
+			'scrapeJson',
 			'tags',
 			'urls',
 			'value'

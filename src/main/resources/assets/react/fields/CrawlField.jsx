@@ -14,6 +14,7 @@ import {LabeledField} from '../elements/LabeledField';
 
 import {DownloadField} from './DownloadField';
 import {ScrapeField} from './ScrapeField';
+import {ScrapeJson} from './ScrapeJson';
 
 import {URL_OPTGROUPS} from './scrapeSubroutineConstants';
 import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
@@ -24,6 +25,7 @@ export const CrawlField = connect(({
 		values
 	},
 	fields,
+	fieldsObj,
 	parentPath,
 	tags,
 	value
@@ -61,7 +63,10 @@ export const CrawlField = connect(({
 					name='urlExpression'
 					optgroups={URL_OPTGROUPS}
 				/>
-
+				<ScrapeJson
+					parentPath={path}
+					fieldsObj={fieldsObj}
+				/>
 				<ScrapeField
 					fields={fields}
 					parentPath={key}
@@ -75,6 +80,7 @@ export const CrawlField = connect(({
 				/>
 				<CrawlField
 					fields={fields}
+					fieldsObj={fieldsObj}
 					parentPath={key}
 					tags={tags}
 					value={crawl}
