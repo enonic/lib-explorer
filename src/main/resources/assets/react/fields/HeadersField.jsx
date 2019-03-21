@@ -1,4 +1,4 @@
-import {Field, FieldArray} from 'formik';
+import {FieldArray} from 'formik';
 
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
@@ -7,6 +7,7 @@ import {RemoveButton} from '../buttons/RemoveButton';
 import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
 
 import {Fieldset} from '../elements/Fieldset';
+import {TextInput} from '../elements/TextInput';
 import {Table} from '../elements/Table';
 
 
@@ -19,8 +20,8 @@ export const HeadersField = ({
 			<FieldArray
 				name={path}
 				render={() => headers.map(({name, value}, index) => <tr key={`${path}[${index}]`}>
-					<td><Field autoComplete="off" name={`${path}[${index}].name`}/></td>
-					<td><Field autoComplete="off" name={`${path}[${index}].value`}/></td>
+					<td><TextInput path={`${path}[${index}].name`}/></td>
+					<td><TextInput path={`${path}[${index}].value`}/></td>
 					<td>
 						<InsertButton index={index} path={path} value={{name: '', value: ''}}/>
 						<RemoveButton index={index} path={path}/>

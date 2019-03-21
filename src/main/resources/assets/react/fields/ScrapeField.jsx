@@ -42,9 +42,13 @@ export const ScrapeField = connect(({
 	const tagsArray = getIn(values, tagsPath) || [{field: '', tags: []}];
 
 	if(!(value && Array.isArray(value) && value.length)) {
-		return <SetFieldValueButton className='block' field={path} value={[{field: ''}]} text="Add scrape field"/>
+		return <SetFieldValueButton
+			className='block'
+			field={path}
+			value={[{field: ''}]}
+			text="Scrape HTML/XML"/>
 	}
-	return <Fieldset legend="Field(s)">
+	return <Fieldset legend="Scrape HTML/XML">
 		<Table headers={['Field', 'Type', 'Options', 'Actions']}>
 			<FieldArray
 				name={path}

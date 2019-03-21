@@ -14,8 +14,8 @@ export const Input = connect(({
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	type = 'text',
-	value = getIn(values, path) || undefined,
-	size = Math.max(30, value.length||0),
+	value = getIn(values, path) || '',
+	size = Math.max(30, value && value.length || 0),
 	...rest
 }) => {
 	//console.log(toStr({component: 'Input', autoComplete, label, parentPath, name, path, type, size, value, rest}));
