@@ -1,6 +1,7 @@
 //import {toStr} from '/lib/enonic/util';
 
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
+import {getDocumentCount} from '/lib/enonic/yase/admin/collections/getDocumentCount';
 import {queryCollections} from '/lib/enonic/yase/admin/collections/queryCollections';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 
@@ -18,25 +19,27 @@ export const collectionsPage = ({
 	<thead>
 		<tr>
 			<th>Name</th>
+			<th>Documents</th>
 			<th>Collector</th>
 			<th>Action(s)</th>
 		</tr>
 	</thead>
 	<tbody>
-		${collections.hits.map(({_name, displayName, collector: {name: collectorName}}) => `<tr>
+		${collections.hits.map(({_name: name, displayName, collector: {name: collectorName}}) => `<tr>
 			<td>${displayName}</td>
+			<td>${getDocumentCount({collectionName: name})}</td>
 			<td>${collectorName}</td>
 			<td>
-				<form action="${TOOL_PATH}/collections/${_name}" method="get">
+				<form action="${TOOL_PATH}/collections/${name}" method="get">
 					<button type="submit">Edit</button>
 				</form>
-				<form action="${TOOL_PATH}/collections/${_name}/delete" method="get">
+				<form action="${TOOL_PATH}/collections/${name}/delete" method="get">
 					<button type="submit">Delete</button>
 				</form>
-				<form action="${TOOL_PATH}/collections/${_name}/collect" method="post">
+				<form action="${TOOL_PATH}/collections/${name}/collect" method="post">
 					<button type="submit">Collect</button>
 				</form>
-				<form action="${TOOL_PATH}/collections/${_name}/collect?resume=true" method="post">
+				<form action="${TOOL_PATH}/collections/${name}/collect?resume=true" method="post">
 					<button type="submit">Resume</button>
 				</form>
 			</td>
