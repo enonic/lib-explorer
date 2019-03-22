@@ -10,14 +10,14 @@ import {isString} from '../utils/isString';
 
 function buildSize({
 	multiple,
-	optgroups,
-	options,
+	optgroupsArr,
+	optionsArr,
 	placeholder
 }) {
 	if (!multiple) { return 1; }
 	let size = 0;
-	optgroups.forEach(({options=[]}) => { size += options.length});
-	size += options.length
+	optgroupsArr.forEach(({options=[]}) => { size += options.length});
+	size += optionsArr.length
 	if (placeholder) {
 		size += 1;
 	}
@@ -67,18 +67,20 @@ export const Select = connect(({
 	name,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	optgroups = [],
+	optgroupsArr = objToArr(optgroups),
 	options = [],
+	optionsArr = objToArr(options),
 	placeholder = null,
 	defaultValue = placeholder
 		? ''
 		: (
-			isSet(getIn(optgroups, '[0].options[0].value'))
-			|| getIn(options, '[0].value', '')
+			isSet(getIn(optgroupsArr, '[0].options[0].value'))
+			|| getIn(optionsArr, '[0].value', '')
 		),
 	size = buildSize({
 		multiple,
-		optgroups,
-		options,
+		optgroupsArr,
+		optionsArr,
 		placeholder
 	}),
 	value = values ? getIn(values, path, defaultValue) : defaultValue,
@@ -96,19 +98,22 @@ export const Select = connect(({
 	},
 	...rest
 }) => {
-	/*console.debug({
+	/*console.debug(toStr({
 		component: 'Select',
-		label,
-		multiple,
+		//label,
+		//multiple,
 		//parentPath,
 		//name,
 		path,
-		//options,
+		//optgroups,
+		optgroupsArr,
+		options,
+		optionsArr,
 		//placeholder,
 		value,
 		//values,
 		rest
-	});*/
+	}));*/
 	const select = <Field
 		component="select"
 		multiple={multiple}
@@ -119,7 +124,7 @@ export const Select = connect(({
 		{...rest}
 	>
 		{placeholder ? <option disabled={true} value="">{placeholder}</option> : null}
-		{optgroups.map(({
+		{optgroupsArr.map(({
 			label: optgroupLabel,
 			options: optgroupOptions
 		}) => <optgroup key={generateUuidv4()} label={optgroupLabel}>{optgroupOptions.map(({
@@ -132,7 +137,7 @@ export const Select = connect(({
 			key={optionValue}
 			value={optionValue}
 		>{optionLabel}</option>)}</optgroup>)}
-		{options.map(({
+		{optionsArr.map(({
 			disabled = false,
 			label: optionLabel,
 			value: optionValue = null
