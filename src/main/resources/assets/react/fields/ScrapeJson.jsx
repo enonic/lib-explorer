@@ -12,7 +12,7 @@ import {Table} from '../elements/Table';
 
 import {FieldSelector} from './FieldSelector';
 
-import {toStr} from '../utils/toStr';
+//import {toStr} from '../utils/toStr';
 
 
 export const ScrapeJson = connect(({
@@ -25,7 +25,7 @@ export const ScrapeJson = connect(({
 	path = parentPath ? `${parentPath}.${name}` : name,
 	value = getIn(values, path)
 }) => {
-	console.debug(toStr({component: 'ScrapeJson', parentPath, name, path, value}));
+	//console.debug(toStr({component: 'ScrapeJson', parentPath, name, path, value}));
 	if(!(value && Array.isArray(value) && value.length)) {
 		return <SetFieldValueButton
 			className='block'
@@ -39,7 +39,8 @@ export const ScrapeJson = connect(({
 				name={path}
 				render={() => value.map(({
 					field,
-					option = 'scrape'
+					option = 'scrape',
+					tags = []
 				}, index) => <tr key={`${path}[${index}]`}>
 					<td>
 						<FieldSelector
@@ -61,7 +62,19 @@ export const ScrapeJson = connect(({
 							value={option}
 						/>
 					</td>
-					<td></td>
+					<td>
+						{option === 'scrape'
+							? null
+							: field
+								? <Select
+									multiple={true}
+									path={`${path}[${index}].tags`}
+									options={fieldsObj[field].values}
+									value={tags}
+								/>
+								: null
+						}
+					</td>
 					<td>
 						<InsertButton index={index} path={path} value={{field: ''}}/>
 						<RemoveButton index={index} path={path}/>
