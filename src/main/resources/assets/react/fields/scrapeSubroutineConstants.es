@@ -98,6 +98,11 @@ const UPPERCASE_FIRST = {
 	value: 'ucFirst'
 };
 
+/*const JOIN = {
+	label: 'Join',
+	value: 'join'
+};*/
+
 //──────────────────────────────────────────────────────────────────────────
 // Exports
 //──────────────────────────────────────────────────────────────────────────
@@ -150,6 +155,7 @@ export const SCRAPE_OPTGROUPS = [{
 		TRIM,
 		SANITIZE,
 		LOWERCASE,
-		UPPERCASE_FIRST
+		UPPERCASE_FIRST/*,
+		JOIN*/
 	]
 }];

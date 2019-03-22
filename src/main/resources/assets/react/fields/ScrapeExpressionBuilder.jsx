@@ -52,6 +52,7 @@ export const ScrapeExpressionBuilder = connect(({
 			property = '',
 			quantifier = '{0,}',
 			selector = '',
+			//separator = ' ',
 			subroutine = ''
 		}, index) => {
 			const key = `${path}[${index}]`;
@@ -79,6 +80,11 @@ export const ScrapeExpressionBuilder = connect(({
 						placeholder='property'
 						value={property}
 					/> : null}
+					{/*subroutine === 'join' ?<TextInput
+						path={`${key}.separator`}
+						placeholder='separator'
+						value={separator}
+					/> : null*/}
 				</td>
 				<td style={tdStyle}>
 					{['remove', 'rmx', 'select', 'sx'].includes(subroutine) ? <ScrapeQuantifierSelector
