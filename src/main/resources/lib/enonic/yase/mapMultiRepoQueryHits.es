@@ -44,7 +44,9 @@ export function mapMultiRepoQueryHits({
 		resultMappings.forEach(({
 			field,
 			highlight,
+			join = true,
 			lengthLimit,
+			separator = ' ',
 			to,
 			type = 'string'
 		}) => {
@@ -61,7 +63,10 @@ export function mapMultiRepoQueryHits({
 
 			let mappedValue = value;
 			if (type === 'string') {
-				const textToHighlight = value || '';
+				const maybeArray = value || '';
+				const textToHighlight = (join && Array.isArray(maybeArray))
+					? maybeArray.join(separator)
+					: maybeArray;
 				//log.info(toStr({textToHighlight}));
 
 				if (highlight) {

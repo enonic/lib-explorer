@@ -10,6 +10,7 @@ import {Checkbox} from '../elements/Checkbox';
 import {Fieldset} from '../elements/Fieldset';
 import {LabeledField} from '../elements/LabeledField';
 import {Table} from '../elements/Table';
+import {TextInput} from '../elements/TextInput';
 
 import {FieldSelector} from './FieldSelector';
 import {ResultMappingTypeSelector} from './ResultMappingTypeSelector';
@@ -39,7 +40,9 @@ export const ResultMappings = connect(({
 					.map(({
 						field = '',
 						highlight = false,
+						join = true,
 						lengthLimit = '',
+						separator = ' ',
 						to = '',
 						uuid4
 					}, index) => {
@@ -61,6 +64,17 @@ export const ResultMappings = connect(({
 							/></td>
 							<td>
 								{type === 'string' ? <>
+									<Checkbox
+										checked={join}
+										label="Join if array?"
+										name={`${pathWithIndex}.join`}
+									/>
+									{join ? <TextInput
+										label='Separator'
+										path={`${pathWithIndex}.separator`}
+										placeholder='separator'
+										value={separator}
+									/> : null}
 									<Checkbox
 										checked={highlight}
 										label="Highlight?"
