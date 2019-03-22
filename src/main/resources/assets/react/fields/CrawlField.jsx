@@ -40,7 +40,7 @@ export const CrawlField = connect(({
 	}
 	return <FieldArray
 		name={path}
-		render={() => value.map(({crawl, download, dynamic, scrape, urlExpr}, index) => {
+		render={() => value.map(({crawl, download, dynamic, scrape}, index) => {
 			//console.log(toStr({crawl, download, dynamic, scrape, urlExpr, index}));
 
 			const key = `${path}[${index}]`;
@@ -57,7 +57,6 @@ export const CrawlField = connect(({
 				})
 			}`}>
 				<Checkbox checked={dynamic} label="Dynamic" name={`${key}.dynamic`}/>
-				{urlExpr ? <LabeledField autoComplete="off" label="Url extraction expression" name={`${key}.urlExpr`}/> : null}
 				<ScrapeExpressionBuilder
 					parentPath={key}
 					name='urlExpression'
