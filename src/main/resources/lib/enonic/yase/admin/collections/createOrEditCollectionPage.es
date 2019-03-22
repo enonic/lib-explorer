@@ -24,10 +24,12 @@ function convert(node) {
 			'headers',
 			'queryParams',
 			'scrape',
+			'scrapeExpression',
 			'scrapeJson',
 			'tags',
 			'urls',
-			'value'
+			'urlExpression'
+			//'value' // Nope this will destroy headers[index].value
 		].includes(key)) {
 			if (!value) {
 				this.update([]);
@@ -97,7 +99,7 @@ export function createOrEditCollectionPage({
 			values: fieldValuesObj[field]
 		};
 	});
-	//log.info(toStr({fields}));
+	//log.info(toStr({fieldsObj}));
 
 	const tags = {};
 	getTags().hits.forEach(({displayName: label, field, _name: value}) => {
