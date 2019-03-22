@@ -2,7 +2,7 @@ import {Form, Formik} from 'formik';
 import {SubmitButton} from './buttons/SubmitButton';
 import {TextInput} from './elements/TextInput';
 import {Surgeon} from './fields/Surgeon';
-import {toStr} from './utils/toStr';
+//import {toStr} from './utils/toStr';
 
 
 export const Collection = ({
@@ -33,8 +33,9 @@ export const Collection = ({
 	}) => {
 		/*console.log(toStr({
 			//fields,
+			fieldsObj//,
 			//tags,
-			values
+			//values
 		}));*/
 		return <Form
 			action={action}

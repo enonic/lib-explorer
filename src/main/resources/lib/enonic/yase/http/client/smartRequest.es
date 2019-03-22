@@ -83,5 +83,6 @@ export function smartRequest({
 		}
 	} // catch
 
+	//log.info(toStr({response}));
 	return response;
 } // function smartRequest
