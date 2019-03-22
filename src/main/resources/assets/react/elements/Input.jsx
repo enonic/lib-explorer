@@ -15,10 +15,10 @@ export const Input = connect(({
 	path = parentPath ? `${parentPath}.${name}` : name,
 	type = 'text',
 	value = getIn(values, path) || '',
-	size = Math.max(30, value && value.length || 0),
+	size = Math.max(25, value ? value.length : 0),
 	...rest
 }) => {
-	//console.log(toStr({component: 'Input', autoComplete, label, parentPath, name, path, type, size, value, rest}));
+	//console.debug(toStr({component: 'Input', autoComplete, label, parentPath, name, path, type, size, value, rest}));
 	const fragment = <Field
 		autoComplete={autoComplete}
 		name={path}
