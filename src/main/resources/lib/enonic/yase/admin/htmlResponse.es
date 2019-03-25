@@ -22,6 +22,7 @@ export function htmlResponse({
 		<title>${preTitle}YASE</title>
 		<link rel="shortcut icon" href="${assetUrl({path: 'favicon.ico'})}">
 		<link rel="stylesheet" type="text/css" href="${assetUrl({path: 'style.css'})}">
+		<link rel="stylesheet" type="text/css" href="${assetUrl({path: 'semantic-ui/semantic.css'})}">
 	</head>
 	<body>
 		<nav>
@@ -37,6 +38,17 @@ export function htmlResponse({
 		${messages.length ? `<ul class="${status === 200 ? 'success' : 'error'}">${messages.map(m => `<li>${m}</li>`)}</ul>` : ''}
 		<main>${main}</main>
 		${bodyEnd.join('\n')}
+		<script type="text/javascript" src="${assetUrl({path: 'jquery/jquery.js'})}"></script>
+		<script type="text/javascript">
+			jQuery = $;
+		</script>
+		<script type="text/javascript" src="${assetUrl({path: 'semantic-ui/semantic.js'})}"></script>
+		<script type="text/javascript" src="${assetUrl({path: 'js/tablesort.js'})}"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('table').tablesort();
+		    });
+		</script>
 	</body>
 </html>`,
 		contentType: 'text/html; charset=utf-8',
