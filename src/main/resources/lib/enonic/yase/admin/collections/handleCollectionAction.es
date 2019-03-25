@@ -65,7 +65,7 @@ export const handleCollectionAction = ({
 	const action = pathParts[2];
 	//log.info(toStr({collectionName, action}));
 
-	if(action === 'collect' && method === 'POST') {
+	if(action === 'collect') {
 		const runningTasksWithName = getTasksWithPropertyValue({value: collectionName, state: 'RUNNING'});
 		if (runningTasksWithName.length) {
 			const alreadyRunningtaskId = runningTasksWithName[0].id;
@@ -123,7 +123,7 @@ export const handleCollectionAction = ({
 			const taskId = submitNamed(submitNamedParams);
 			//log.info(toStr({taskId}));
 		}
-	} else if (action === 'delete' && method === 'POST') {
+	} else if (action === 'delete') {
 		const messages = [];
 		let status = 200;
 		const {typedCollectionName} = params;
