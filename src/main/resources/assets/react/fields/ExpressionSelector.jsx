@@ -6,6 +6,7 @@ import {Select} from '../elements/Select';
 import {Fulltext} from './Fulltext';
 import {QueryGroup} from './QueryGroup';
 import {CompareExpression} from '../query/CompareExpression';
+import {Range} from '../query/Range';
 
 //import {toStr} from '../utils/toStr';
 
@@ -83,6 +84,9 @@ export const ExpressionSelector = connect(({
 			}, {
 				label: 'Compare expression',
 				value: 'compareExpr'
+			}, {
+				label: 'Range',
+				value: 'range'
 			}]}
 			value={type}
 		/>
@@ -102,6 +106,13 @@ export const ExpressionSelector = connect(({
 		}
 		{type === 'compareExpr'
 			? <CompareExpression
+				path={paramsPath}
+				fields={fields}
+			/>
+			: null
+		}
+		{type === 'range'
+			? <Range
 				path={paramsPath}
 				fields={fields}
 			/>
