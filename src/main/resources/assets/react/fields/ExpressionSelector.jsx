@@ -6,6 +6,7 @@ import {Select} from '../elements/Select';
 import {Fulltext} from './Fulltext';
 import {QueryGroup} from './QueryGroup';
 import {CompareExpression} from '../query/CompareExpression';
+import {PathMatch} from '../query/PathMatch';
 import {Range} from '../query/Range';
 
 //import {toStr} from '../utils/toStr';
@@ -87,6 +88,9 @@ export const ExpressionSelector = connect(({
 			}, {
 				label: 'Range',
 				value: 'range'
+			}, {
+				label: 'Path match',
+				value: 'pathMatch'
 			}]}
 			value={type}
 		/>
@@ -113,6 +117,13 @@ export const ExpressionSelector = connect(({
 		}
 		{type === 'range'
 			? <Range
+				path={paramsPath}
+				fields={fields}
+			/>
+			: null
+		}
+		{type === 'pathMatch'
+			? <PathMatch
 				path={paramsPath}
 				fields={fields}
 			/>

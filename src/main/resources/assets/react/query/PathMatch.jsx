@@ -1,16 +1,16 @@
 import {connect, getIn} from 'formik';
 
-import {Checkbox} from '../elements/Checkbox';
+import {NumberInput} from '../elements/NumberInput';
 import {TextInput} from '../elements/TextInput';
 import {FieldSelector} from '../fields/FieldSelector';
 
 
-export const Range = connect(({
+export const PathMatch = connect(({
 	fields,
 	formik: {
 		values
 	},
-	name = 'range',
+	name = 'pathMatch',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	value = getIn(values, path)
@@ -21,24 +21,13 @@ export const Range = connect(({
 			fields={fields}
 		/>
 		<TextInput
-			name='from'
-			placeholder='From'
+			name='path'
+			placeholder='Path'
 			parentPath={path}
 		/>
-		<TextInput
-			name='to'
-			placeholder='To'
-			parentPath={path}
-		/>
-		<Checkbox
-			label='Include from?'
-			name='includeFrom'
-			parentPath={path}
-		/>
-		<Checkbox
-			label='Include to?'
-			name='includeTo'
+		<NumberInput
+			name='minMatch'
 			parentPath={path}
 		/>
 	</>;
-}); // Range
+}); // PathMatch
