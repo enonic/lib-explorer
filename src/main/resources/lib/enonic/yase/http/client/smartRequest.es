@@ -66,6 +66,9 @@ export function smartRequest({
 				log.error('java.net.SocketTimeoutException with unknown message:' + e.message);
 				log.error(e);
 			}
+		} else if (e instanceof java.lang.NullPointerException) {
+			log.error('java.lang.NullPointerException with message:' + e.message);
+			log.error(e);
 		} else {
 			// TODO java.lang.RuntimeException: SSL peer shut down incorrectly
 			log.error(e.message + ': unhandled error on url ' + url);
