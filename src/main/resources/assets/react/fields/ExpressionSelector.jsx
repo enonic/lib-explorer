@@ -5,6 +5,7 @@ import {Select} from '../elements/Select';
 
 import {Fulltext} from './Fulltext';
 import {QueryGroup} from './QueryGroup';
+import {CompareExpression} from '../query/CompareExpression';
 
 //import {toStr} from '../utils/toStr';
 
@@ -79,6 +80,9 @@ export const ExpressionSelector = connect(({
 			}, {
 				label: 'Ngram',
 				value: 'ngram'
+			}, {
+				label: 'Compare expression',
+				value: 'compareExpr'
 			}]}
 			value={type}
 		/>
@@ -93,6 +97,13 @@ export const ExpressionSelector = connect(({
 			? <QueryGroup
 				fields={fields}
 				path={paramsPath}
+			/>
+			: null
+		}
+		{type === 'compareExpr'
+			? <CompareExpression
+				path={paramsPath}
+				fields={fields}
 			/>
 			: null
 		}
