@@ -14,32 +14,11 @@ import {
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
 import {getCollection} from '/lib/enonic/yase/admin/collections/getCollection';
 import {collectionsPage} from '/lib/enonic/yase/admin/collections/collectionsPage';
+import {getTasksWithPropertyValue} from '/lib/enonic/yase/task/getTasksWithPropertyValue';
 
 
-const COLLECT_TASK_NAME = 'com.enonic.app.yase:collect';
+import {TASK_COLLECT} from '/lib/enonic/yase/constants';
 
-
-function getTasksWithPropertyValue({
-	property = 'name',
-	value,
-	name = COLLECT_TASK_NAME,
-	state
-}) {
-	const tasks = listTasks({
-		name,
-		state
-	}); //log.info(toStr({rootTasks}));
-
-	const tasksWithPropertyValue = tasks.map((t) => {
-		if (t.progress.info) {
-			t.progress.info = JSON.parse(t.progress.info); // eslint-disable-line no-param-reassign
-		} /*else {
-			t.progress.info = {}; // eslint-disable-line no-param-reassign
-		}*/
-		return t;
-	}).filter(t => t.progress.info && t.progress.info[property] === value); //log.info(toStr({tasksWithPropertyValue}));
-	return tasksWithPropertyValue;
-}
 
 
 export const handleCollectionAction = ({
@@ -112,7 +91,7 @@ export const handleCollectionAction = ({
 			log.info(toStr({response}));*/
 
 			const submitNamedParams = {
-				name: COLLECT_TASK_NAME,
+				name: TASK_COLLECT,
 				config: {
 					name,
 					configJson

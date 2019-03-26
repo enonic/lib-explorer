@@ -28,6 +28,8 @@ export function htmlResponse({
 		<nav>
 			<ul>
 				<li><a class="${relPath === '' ? 'current' : ''}" href="${toolPath}">YASE</a></li>
+				<li><a class="${relPath.startsWith('/status') ? 'current' : ''}" href="${toolPath}/status">Status</a></li>
+				<li><a class="${relPath.startsWith('/history') ? 'current' : ''}" href="${toolPath}/history">History</a></li>
 				<li><a class="${relPath.startsWith('/collections') ? 'current' : ''}" href="${toolPath}/collections">Collections</a></li>
 				<li><a class="${relPath.startsWith('/fields') ? 'current' : ''}" href="${toolPath}/fields">Fields</a></li>
 				<li><a class="${relPath.startsWith('/tags') ? 'current' : ''}" href="${toolPath}/tags">Tags</a></li>
@@ -37,6 +39,14 @@ export function htmlResponse({
 		</nav>
 		${messages.length ? `<ul class="${status === 200 ? 'success' : 'error'}">${messages.map(m => `<li>${m}</li>`)}</ul>` : ''}
 		<main>${main}</main>
+
+		<!--script type="text/javascript" src="${assetUrl({path: 'react/react.production.min.js'})}"></script-->
+		<script type="text/javascript" src="${assetUrl({path: 'react/react.development.js'})}"></script>
+
+		<!--script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.production.min.js'})}"></script-->
+		<script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.development.js'})}"></script>
+
+		<script type="text/javascript" src="${assetUrl({path: 'yase.js'})}"></script>
 		${bodyEnd.join('\n')}
 		<script type="text/javascript" src="${assetUrl({path: 'jquery/jquery.js'})}"></script>
 		<script type="text/javascript">

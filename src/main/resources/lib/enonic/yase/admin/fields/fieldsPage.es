@@ -36,7 +36,7 @@ export function fieldsPage({
 	}).join('\n');
 	return htmlResponse({
 		main: `${fieldFormHtml()}
-<table class="compact ui sortable selectable celled striped table">
+<table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
 			<th class="sorted ascending">Key</th>

@@ -17,14 +17,14 @@ export const collectionsPage = ({
 	let totalCount = 0;
 	//log.info(toStr({collections}));
 	return htmlResponse({
-		main: `<table class="compact ui sortable selectable celled striped table">
+		main: `<table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
-			<th class="collapsing sorted ascending">Name</th>
-			<th class="collapsing">Documents</th>
-			<th class="collapsing no-sort">Interfaces</th>
-			<th class="collapsing no-sort">Collector</th>
-			<th class="collapsing no-sort">Action(s)</th>
+			<th class="sorted ascending">Name</th>
+			<th>Documents</th>
+			<th class="no-sort">Interfaces</th>
+			<th class="no-sort">Collector</th>
+			<th class="no-sort">Action(s)</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -35,11 +35,11 @@ export const collectionsPage = ({
 			totalCount += count;
 		}
 		return `<tr>
-			<td class="collapsing">${displayName}</td>
-			<td class="collapsing right aligned" data-sort-value="${count}">${count}</td>
-			<td class="collapsing">${usedInInterfaces(name).join(', ')}</td>
-			<td class="collapsing">${collectorName}</td>
-			<td class="collapsing">
+			<td>${displayName}</td>
+			<td class="right aligned" data-sort-value="${count}">${count}</td>
+			<td>${usedInInterfaces(name).join(', ')}</td>
+			<td>${collectorName}</td>
+			<td>
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}"><i class="blue edit icon"></i>Edit</a>
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}/collect"><i class="green cloud download icon"></i>Collect</a>
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}/collect?resume=true"><i class="green redo alternate icon"></i>Resume</a>
@@ -58,7 +58,7 @@ export const collectionsPage = ({
 	<tfoot>
 		<tr>
 			<th><a class="tiny compact ui button" href="${TOOL_PATH}/collections/createform"><i class="green plus icon"></i>New collection</a></th>
-			<th class="collapsing right aligned">${totalCount}</th>
+			<th class="right aligned">${totalCount}</th>
 			<th></th>
 			<th></th>
 			<th></th>

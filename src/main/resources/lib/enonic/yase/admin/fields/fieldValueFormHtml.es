@@ -7,7 +7,7 @@ export function fieldValueFormHtml({
 	displayName = '',
 	value = ''
 } = {}) {
-	return `<form action="${action}" autocomplete="off" method="POST">
+	return `<form action="${action}" autocomplete="off" class="ui form" method="POST">
 	<h2>${value ? 'Edit' : 'New'} value</h2>
 
 	<label>
@@ -22,6 +22,6 @@ export function fieldValueFormHtml({
 		<p class="help-text">Used when selecting field values. Could also be used in front-end facets.</p>
 	</label>
 
-	<button type="submit">${value ? 'Modify' : 'Create'} field value ${displayName}</button>
+	<button class="ui button" type="submit"><i class="green plus ui icon"></i>${value ? 'Modify' : 'Create'} field value ${displayName}</button>
 </form>`;
 }

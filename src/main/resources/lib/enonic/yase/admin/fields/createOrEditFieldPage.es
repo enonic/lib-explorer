@@ -65,12 +65,12 @@ export function createOrEditFieldPage({
 
 		return htmlResponse({
 			main: `${fieldForm}
-<table>
+<table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
-			<th>Value</th>
+			<th class="sorted ascending">Value</th>
 			<th>Display name</th>
-			<th>Actions</th>
+			<th class="no-sort">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -78,11 +78,9 @@ export function createOrEditFieldPage({
 			<td>${value}</td>
 			<td>${vDN}</td>
 			<td>
-				<form action="${TOOL_PATH}/fields/${fieldName}/values/${value}/edit" method="get">
-					<button type="submit">Edit</button>
-				</form>
+				<a class="tiny compact ui button" href="${TOOL_PATH}/fields/${fieldName}/values/${value}/edit"><i class="blue edit icon"></i>Edit</a>
 				<form action="${TOOL_PATH}/fields/${fieldName}/values/${value}/delete" method="post">
-					<button type="submit">Delete</button>
+					<button class="tiny compact ui button" type="submit"><i class="red trash alternate outline icon"></i>Delete</button>
 				</form>
 			</td>
 		</tr>`).join('')}

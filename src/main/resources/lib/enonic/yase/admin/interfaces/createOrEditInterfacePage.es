@@ -101,11 +101,6 @@ export function createOrEditInterfacePage({
 
 	return htmlResponse({
 		bodyEnd: [
-			//`<script type="text/javascript" src="${assetUrl({path: 'react/react.production.min.js'})}"></script>`,
-			`<script type="text/javascript" src="${assetUrl({path: 'react/react.development.js'})}"></script>`,
-			//`<script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.production.min.js'})}"></script>`,
-			`<script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.development.js'})}"></script>`,
-			`<script type="text/javascript" src="${assetUrl({path: 'yase.js'})}"></script>`,
 			`<script type="text/javascript">
 	ReactDOM.render(
 		React.createElement(window.yase.Interface, ${propsJson}),

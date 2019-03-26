@@ -34,6 +34,9 @@ export const PATH_INTERFACES = '/interfaces';
 export const PATH_TAG = '/tags';
 
 
+export const TASK_COLLECT = `${YASE_ADMIN}:collect`;
+
+
 //──────────────────────────────────────────────────────────────────────────────
 // Return types
 //──────────────────────────────────────────────────────────────────────────────
