@@ -6,6 +6,9 @@ import {Table} from './elements/Table';
 import {toStr} from './utils/toStr';
 
 
+const FORMAT = 'YYYY-MM-DD hh:mm:ss';
+
+
 function taskStateToProgressClassName(state) {
 	switch (state) {
 	case 'RUNNING': return 'active';
@@ -65,6 +68,7 @@ export class Status extends React.Component {
 			'Total',
 			'Left',
 			'Average',
+			'Time left',
 			'Eta',
 			'Progress',
 			'Uri'
@@ -83,7 +87,7 @@ export class Status extends React.Component {
 				//startTime,
 				state
 			}, index) => {
-				console.debug(toStr({
+				/*console.debug(toStr({
 					component: 'Status',
 					name,
 					state,
@@ -91,37 +95,51 @@ export class Status extends React.Component {
 					total,
 					currentTime,
 					startTime
-				}));
+				}));*/
+				const percent = current / total * 100;
 				const duration = currentTime - startTime;
 				const average = duration / current;
 				const left = total - current;
-				const eta = left * average;
+				const eta = currentTime + (left * average);
 				console.debug(toStr({
 					component: 'Status',
+					percent,
 					duration,
 					average,
 					left,
 					eta
 				}));
+				moment.locale('nb'); // TODO use locale from backend?
 				return <tr key={index}>
 					<td>{name}</td>
 					<td>{state}</td>
-					<td>{moment(startTime).format('LLL')}</td>
-					<td>{prettyMs(duration)}</td>
-					<td>{state === 'RUNNING' ? '' : moment(currentTime).format('LLL')}</td>
-					<td>{current}</td>
-					<td>{total}</td>
-					<td>{left}</td>
-					<td>{prettyMs(average)}</td>
-					<td>{moment(eta).format('LLL')}</td>
-					<td><div
+					<td data-sort-value={startTime}>{moment(Date(startTime)).format(FORMAT)}</td>
+					<td data-sort-value={duration}>{prettyMs(duration, {
+						formatSubMs: true,
+						separateMs: true
+					})}</td>
+					<td data-sort-value={currentTime}>{state === 'RUNNING' ? '' : moment(Date(currentTime)).format(FORMAT)}</td>
+					<td data-sort-value={current}>{current}</td>
+					<td data-sort-value={total}>{total}</td>
+					<td data-sort-value={left}>{left}</td>
+					<td data-sort-value={average}>{prettyMs(average, {
+						formatSubMs: true,
+						separateMs: true
+					})}</td>
+					<td data-sort-value={eta}>{state === 'RUNNING' ? prettyMs(eta, {
+						formatSubMs: true,
+						separateMs: true
+					}) : null}</td>
+					<td data-sort-value={eta}>{state === 'RUNNING' ? moment(Date(eta)).format(FORMAT) : null}</td>
+					<td data-sort-value={percent}><div
 						className={classNames(
 							'ui',
 							'progress',
 							taskStateToProgressClassName(state)
 						)}
-						data-value={current}
+						data-percent={percent}
 						data-total={total}
+						data-value={current}
 					>
 						<div className="bar">
 	    					<div className="progress"></div>

@@ -5,13 +5,13 @@ import classNames from 'classnames';
 export const Button = ({
 	className,
 	children,
-	type, // So it doesn't end up in rest
+	type = 'button',
 	...rest
 }) => {
 	//console.debug(toStr({component: 'Button', className, rest}));
 	return <button
 		className={classNames('ui', 'button', className)}
-		type='button'
+		type={type}
 		{...rest}
 	>{children}</button>;
 }

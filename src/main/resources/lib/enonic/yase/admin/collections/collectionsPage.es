@@ -25,7 +25,6 @@ export const collectionsPage = ({
 			<th class="no-sort">Interfaces</th>
 			<th class="no-sort">Collector</th>
 			<th class="no-sort">Action(s)</th>
-			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -44,14 +43,6 @@ export const collectionsPage = ({
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}/collect"><i class="green cloud download icon"></i>Collect</a>
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}/collect?resume=true"><i class="green redo alternate icon"></i>Resume</a>
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}/delete"><i class="red trash alternate outline icon"></i>Delete</a>
-			</td>
-			<td data-sort-value="10">
-				<div class="ui active progress" data-value="10" data-total="20" data-percent="50">
-  					<div class="bar">
-    					<div class="progress"></div>
-  					</div>
-  					<div class="label">Processing...</div>
-				</div>
 			</td>
 		</tr>`;}).join('\n')}
 	</tbody>
