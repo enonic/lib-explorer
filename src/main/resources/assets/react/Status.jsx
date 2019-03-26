@@ -101,14 +101,14 @@ export class Status extends React.Component {
 				const average = duration / current;
 				const left = total - current;
 				const eta = currentTime + (left * average);
-				console.debug(toStr({
+				/*console.debug(toStr({
 					component: 'Status',
 					percent,
 					duration,
 					average,
 					left,
 					eta
-				}));
+				}));*/
 				moment.locale('nb'); // TODO use locale from backend?
 				return <tr key={index}>
 					<td>{name}</td>
