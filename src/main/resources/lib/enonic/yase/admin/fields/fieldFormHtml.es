@@ -27,7 +27,7 @@ export function fieldFormHtml({
 		document.getElementById('custom-instructions').style.display = instructionSelectorEl.value === 'custom' ? 'block' : 'none';
 	}
 </script>
-<form action="${action}" autocomplete="off" method="POST">
+<form action="${action}" autocomplete="off" class="ui form" method="POST">
 	<fieldset>
 		<legend>${key ? 'Edit' : 'New'} field ${displayName}</legend>
 
@@ -53,7 +53,7 @@ export function fieldFormHtml({
 
 		<label>
 			<span>Type</span>
-			<select name="fieldType" value="${fieldType}">
+			<select class="ui dropdown" name="fieldType" value="${fieldType}">
 				<option value="text" selected>Text</option>
 				<option value="tag">Tag</option><!-- Enum Map Keys -->
 				<option value="uri">Uri</option>
@@ -64,7 +64,7 @@ export function fieldFormHtml({
 
 		<label>
 			<span>Index config</span>
-			<select id="instruction-selector" name="instruction" onchange="setCustomInstructionsVisibility(this)" value="${instruction}">
+			<select class="ui dropdown" id="instruction-selector" name="instruction" onchange="setCustomInstructionsVisibility(this)" value="${instruction}">
 				<option value="type" selected>type (default) - Indexing is done based on type; e.g numeric values are indexed as both string and numeric.</option>
 				<option value="minimal">minimal - Value is indexed as a string-value only, no matter what type of data.</option>
 				<option value="none">none - Value is not indexed.</option>
@@ -74,39 +74,52 @@ export function fieldFormHtml({
 			</select>
 		</label>
 
-		<div id="custom-instructions" style="display:none">
-			<label>
-				<span>decideByType</span>
-				<input name="decideByType" type="checkbox" ${decideByType ? 'checked' : ''}/>
-			</label>
+		<div class="grouped fields" id="custom-instructions" style="display:none">
+			<label>Custom index config</label>
+			<div class="field">
+				<div class="ui checkbox">
+					<input name="decideByType" type="checkbox" ${decideByType ? 'checked' : ''}/>
+					<label>decideByType</label>
+				</div>
+			</div>
 
-			<label>
-				<span>enabled</span>
-				<input name="enabled" type="checkbox" ${enabled ? 'checked' : ''}/>
-			</label>
+			<div class="field">
+				<div class="ui checkbox">
+					<input name="enabled" type="checkbox" ${enabled ? 'checked' : ''}/>
+					<label>enabled</label>
+				</div>
+			</div>
 
-			<label>
-				<span>nGram</span>
-				<input name="nGram" type="checkbox" ${ngram ? 'checked' : ''}/>
-			</label>
+			<div class="field">
+				<div class="ui checkbox">
+					<input name="nGram" type="checkbox" ${ngram ? 'checked' : ''}/>
+					<label>nGram</label>
+				</div>
+			</div>
 
-			<label>
-				<span>fulltext</span>
-				<input name="fulltext" type="checkbox" ${fulltext ? 'checked' : ''}/>
-			</label>
+			<div class="field">
+				<div class="ui checkbox">
+					<input name="fulltext" type="checkbox" ${fulltext ? 'checked' : ''}/>
+					<label>fulltext</label>
+				</div>
+			</div>
 
-			<label>
-				<span>includeInAllText</span>
-				<input name="includeInAllText" type="checkbox" ${includeInAllText ? 'checked' : ''}/>
-			</label>
+			<div class="field">
+				<div class="ui checkbox">
+					<input name="includeInAllText" type="checkbox" ${includeInAllText ? 'checked' : ''}/>
+					<label>includeInAllText</label>
+				</div>
+			</div>
 
-			<label>
-				<span>path</span>
-				<input name="path" type="checkbox" ${path ? 'checked' : ''}/>
-			</label>
+			<div class="field">
+				<div class="ui checkbox">
+					<input name="path" type="checkbox" ${path ? 'checked' : ''}/>
+					<label>path</label>
+				</div>
+			</div>
 		</div>
 
-		<button type="submit">${key ? 'Modify' : 'Create'} field</button>
+		<button class="ui button" type="submit"><i class="green plus icon"></i>${key ? 'Modify' : 'Create'} field</button>
 	</fieldset>
 </form><script type="text/javascript">
 ready(function() {

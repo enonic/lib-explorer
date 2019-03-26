@@ -29,26 +29,22 @@ export function fieldsPage({
 		<!--td>${toStr(indexConfig)}</td-->
 		<td>${getFieldValues({field: name}).hits.map(({displayName: vN}) => vN).join(', ')}</td>
 		<td>
-			<form action="${TOOL_PATH}/fields/${name}" method="get">
-				<button type="submit">Edit</button>
-			</form>
-			<form action="${TOOL_PATH}/fields/${name}/delete" method="post">
-				<button type="submit">Delete</button>
-			</form>
+			<a class="tiny compact ui button" href="${TOOL_PATH}/fields/${name}"><i class="blue edit icon"></i>Edit</a>
+			<a class="tiny compact ui button" href="${TOOL_PATH}/fields/${name}/delete"><i class="red trash alternate outline icon"></i>Delete</a>
 		</td>
 	</tr>`;
 	}).join('\n');
 	return htmlResponse({
 		main: `${fieldFormHtml()}
-<table>
+<table class="compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
-			<th>Key</th>
+			<th class="sorted ascending">Key</th>
 			<th>Display name</th>
 			<th>Type</th>
 			<!--th>IndexConfig</th-->
 			<th>Values</th>
-			<th>Actions</th>
+			<th class="no-sort">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
