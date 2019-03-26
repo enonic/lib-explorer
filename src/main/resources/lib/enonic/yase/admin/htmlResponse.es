@@ -46,6 +46,7 @@ export function htmlResponse({
 		<script type="text/javascript" src="${assetUrl({path: 'js/tablesort.js'})}"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
+				$('select.dropdown').dropdown();
 				$('table').tablesort();
 		    });
 		</script>
@@ -56,5 +57,6 @@ export function htmlResponse({
 	};
 }
 /*
+$('.ui.checkbox').checkbox();
 <script type="text/javascript" src="${assetUrl({path: 'scripts.js'})}"></script>
 */

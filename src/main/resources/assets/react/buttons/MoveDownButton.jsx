@@ -1,4 +1,6 @@
 import {connect, getIn} from 'formik';
+import {Button} from './Button';
+import {Icon} from '../icons/Icon';
 
 
 const mySwap = (array, indexA, indexB) => {
@@ -18,14 +20,18 @@ export const MoveDownButton = connect(({
 	index,
 	path,
 	swap,
-	type,
+	text = '', // ↓
 	currentValue = values && path && getIn(values, path),
 	visible = true,
 	...rest
 }) => {
 	if(!visible) { return null; }
 	const nextIndex = index + 1;
-	return <button type="button" onClick={() => (path && currentValue)
-		? setFieldValue(path, mySwap(currentValue, index, nextIndex))
-		: swap(index, nextIndex)} {...rest}>↓</button>;
+	return <Button
+		className={text ? '' : 'icon'}
+		onClick={() => (path && currentValue)
+			? setFieldValue(path, mySwap(currentValue, index, nextIndex))
+			: swap(index, nextIndex)}
+		{...rest}
+	><Icon className='blue arrow down'/>{text}</Button>;
 });

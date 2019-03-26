@@ -1,23 +1,21 @@
 import {connect, getIn} from 'formik';
-
+import {Button} from './Button';
+import {Icon} from '../icons/Icon';
 //import {toStr} from '../utils/toStr';
 
 
 export const SetFieldValueButton = connect(({
 	children,
 	formik: {
-		setFieldValue: formikSetFieldValue,
-		values: formikValues
+		setFieldValue,
+		values
 	} = {},
 	name = '',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	field = path, // Backwards compatibility (should be cleaned up)
-	setFieldValue = formikSetFieldValue,
 	text,
-	type, // So it doesn't end up in ...rest
 	value,
-	values = formikValues,
 	onClick = () => {
 		//console.debug(toStr({field, value}));
 		setFieldValue(field, value)
@@ -25,9 +23,8 @@ export const SetFieldValueButton = connect(({
 	...rest
 }) => {
 	//console.debug(toStr({parentPath, name, path, field, value}));
-	return <button
+	return <Button
 		onClick={onClick}
-		type="button"
 		{...rest}
-	>{children||text}</button>;
+	><Icon className='green plus'/>{children||text}</Button>;
 });

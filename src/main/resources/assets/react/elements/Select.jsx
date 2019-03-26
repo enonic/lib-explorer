@@ -115,6 +115,7 @@ export const Select = connect(({
 		rest
 	}));*/
 	const select = <Field
+		className='ui dropdown'
 		component="select"
 		multiple={multiple}
 		name={path}

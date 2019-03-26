@@ -17,7 +17,7 @@ export const collectionsPage = ({
 	let totalCount = 0;
 	//log.info(toStr({collections}));
 	return htmlResponse({
-		main: `<table class="compact collapsing ui sortable selectable celled striped table">
+		main: `<table class="compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
 			<th class="collapsing sorted ascending">Name</th>
@@ -25,6 +25,7 @@ export const collectionsPage = ({
 			<th class="collapsing no-sort">Interfaces</th>
 			<th class="collapsing no-sort">Collector</th>
 			<th class="collapsing no-sort">Action(s)</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -42,7 +43,15 @@ export const collectionsPage = ({
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}"><i class="blue edit icon"></i>Edit</a>
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}/collect"><i class="green cloud download icon"></i>Collect</a>
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}/collect?resume=true"><i class="green redo alternate icon"></i>Resume</a>
-				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}/delete"><i class="red ban icon"></i>Delete</a>
+				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/${name}/delete"><i class="red trash alternate outline icon"></i>Delete</a>
+			</td>
+			<td data-sort-value="10">
+				<div class="ui active progress" data-value="10" data-total="20" data-percent="50">
+  					<div class="bar">
+    					<div class="progress"></div>
+  					</div>
+  					<div class="label">Processing...</div>
+				</div>
 			</td>
 		</tr>`;}).join('\n')}
 	</tbody>

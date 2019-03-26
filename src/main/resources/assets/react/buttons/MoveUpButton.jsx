@@ -1,4 +1,6 @@
 import {connect, getIn} from 'formik';
+import {Button} from './Button';
+import {Icon} from '../icons/Icon';
 
 
 const mySwap = (array, indexA, indexB) => {
@@ -19,15 +21,19 @@ export const MoveUpButton = connect(({
 	disabled = index < 1,
 	path,
 	swap,
-	type,
+	text = '', // ↑
 	currentValue = values && path && getIn(values, path),
 	visible = true,
 	...rest
 }) => {
 	if(!visible) { return null; }
 	const prevIndex = index - 1;
-	return <button disabled={disabled} onClick={() => (path && currentValue)
-		? setFieldValue(path, mySwap(currentValue, index, prevIndex))
-		: swap(index, prevIndex)} type="button" {...rest}
-	>↑</button>;
+	return <Button
+		className={text ? '' : 'icon'}
+		disabled={disabled}
+		onClick={() => (path && currentValue)
+			? setFieldValue(path, mySwap(currentValue, index, prevIndex))
+			: swap(index, prevIndex)}
+		{...rest}
+	><Icon className='blue arrow up'/>{text}</Button>;
 });

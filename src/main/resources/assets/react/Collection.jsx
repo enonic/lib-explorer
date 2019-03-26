@@ -40,6 +40,7 @@ export const Collection = ({
 		return <Form
 			action={action}
 			autoComplete="off"
+			className='ui form'
 			method="POST"
 			onSubmit={() => {
 				document.getElementById('json').setAttribute('value', JSON.stringify(values))
@@ -55,7 +56,7 @@ export const Collection = ({
 				path='collector.config'
 				tags={tags}
 			/>
-			<SubmitButton text="Save collection"/>
+			<SubmitButton className='primary' text="Save collection"/>
 			<input id="json" name="json" type="hidden"/>
 		</Form>}}
 />; // Collection

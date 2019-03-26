@@ -1,5 +1,6 @@
 import {connect, getIn} from 'formik';
-
+import {Button} from './Button';
+import {Icon} from '../icons/Icon';
 //import {toStr} from '../utils/toStr';
 
 
@@ -18,18 +19,20 @@ export const InsertButton = connect(({
 	index,
 	insert,
 	path,
-	text = '+',
+	text = '',
 	value,
-	currentValue = values && path && getIn(values, path)
+	currentValue = values && path && getIn(values, path),
+	...rest
 }) => {
 	//console.debug(toStr({component: 'InsertButton', path, text, currentValue, value}));
 	const nextIndex = index+1;
 
-	return <button
-		type="button"
+	return <Button
+		className={text ? '' : 'icon'}
 		onClick={() => (path && currentValue)
 			? setFieldValue(path, myInsert(currentValue, nextIndex, value))
 			: insert(nextIndex, value)
 		}
-	>{text}</button>;
+		{...rest}
+	><Icon className='green plus'/>{text}</Button>;
 });

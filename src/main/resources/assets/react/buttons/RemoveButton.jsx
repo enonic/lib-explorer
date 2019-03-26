@@ -1,4 +1,6 @@
 import {connect, getIn} from 'formik';
+import {Button} from './Button';
+import {Icon} from '../icons/Icon';
 
 
 const isFunction = (obj) => typeof obj === 'function';
@@ -21,15 +23,17 @@ export const RemoveButton = connect(({
 	index,
 	path,
 	remove,
-	text = '-',
-	type,
+	text = '',
 	currentValue = values && path && getIn(values, path),
 	visible = true,
 	...rest}) => {
 	if(!visible) { return null; }
 	//console.log(JSON.stringify({index, rest}, null, 4));
-	return <button onClick={() => (path && currentValue)
-		? setFieldValue(path, myRemove(currentValue, index))
-		: remove(index)
-	} type="button" {...rest}>{text}</button>
+	return <Button
+		className={text ? '' : 'icon'}
+		onClick={() => (path && currentValue)
+			? setFieldValue(path, myRemove(currentValue, index))
+			: remove(index)
+		} {...rest}
+	><Icon className='red minus'/>{text}</Button>
 });
