@@ -5,7 +5,6 @@ import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
 
-import {Fieldset} from '../elements/Fieldset';
 import {Table} from '../elements/Table';
 import {TextInput} from '../elements/TextInput';
 
@@ -24,23 +23,21 @@ export const UrlsField = connect(({
 		value
 	}, null, 4));*/
 
-	return <Fieldset legend="Url(s)">
-		<Table headers={['Url', 'Action(s)']}>
-			<FieldArray
-				name={path}
-				render={() => value.map((anUrl, index) => {
-					const key = `${path}[${index}]`;
-					return <tr key={key}>
-						<td><TextInput path={key}/></td>
-						<td>
-							<InsertButton index={index} path={path} value={''}/>
-							<RemoveButton index={index} path={path} visible={value.length > 1}/>
-							<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
-							<MoveUpButton index={index} path={path} visible={value.length > 1}/>
-						</td>
-					</tr>
-				})}
-			/>
-		</Table>
-	</Fieldset>
+	return <Table id='uris' headers={['Uri(s)', 'Action(s)']}>
+		<FieldArray
+			name={path}
+			render={() => value.map((anUrl, index) => {
+				const key = `${path}[${index}]`;
+				return <tr key={key}>
+					<td><TextInput path={key}/></td>
+					<td>
+						<InsertButton index={index} path={path} value={''}/>
+						<RemoveButton index={index} path={path} visible={value.length > 1}/>
+						<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
+						<MoveUpButton index={index} path={path} visible={value.length > 1}/>
+					</td>
+				</tr>
+			})}
+		/>
+	</Table>
 });

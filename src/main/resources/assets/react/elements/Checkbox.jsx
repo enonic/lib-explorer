@@ -12,7 +12,7 @@ export const Checkbox = ({
 	...rest
 }) => {
 	//console.log(JSON.stringify({checked, label, rest, type, value}, null, 4));
-	return <div class='field'>
+	return <div className='field'>
 		<div className='ui checkbox'>
 			<Field
 				checked={checked}

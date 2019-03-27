@@ -7,6 +7,7 @@ export function htmlResponse({
 	bodyBegin = [],
 	bodyEnd = [],
 	headBegin = [],
+	headEnd = [],
 	main = '',
 	messages = [],
 	toolPath = TOOL_PATH,
@@ -24,11 +25,12 @@ export function htmlResponse({
 		<link rel="shortcut icon" href="${assetUrl({path: 'favicon.ico'})}">
 		<link rel="stylesheet" type="text/css" href="${assetUrl({path: 'style.css'})}">
 		<link rel="stylesheet" type="text/css" href="${assetUrl({path: 'semantic-ui/semantic.css'})}">
+		${headEnd.join('\n')}
 	</head>
 	<body>
-		<nav class="ui stackable tabular menu">
+		<nav class="stackable tabular ui menu" id="top">
 			<div class="ui container">
-    			<a class="item ${relPath === '' ? 'active' : ''}" href="${toolPath}""><i class="search icon"></i> YASE</a>
+				<a class="item ${relPath === '' ? 'active' : ''}" href="${toolPath}""><i class="search icon"></i> YASE</a>
 				<a class="item ${relPath.startsWith('/collections') ? 'active' : ''}" href="${toolPath}/collections"><i class="database icon"></i> Collections</a>
 				<a class="item ${relPath.startsWith('/fields') ? 'active' : ''}" href="${toolPath}/fields"><i class="sitemap icon"></i> Fields</a>
 				<a class="item ${relPath.startsWith('/tags') ? 'active' : ''}" href="${toolPath}/tags"><i class="tag icon"></i> Tags</a>
@@ -40,8 +42,10 @@ export function htmlResponse({
 			</div>
 		</nav>
 		${bodyBegin.join('\n')}
-		${messages.length ? `<ul class="${status === 200 ? 'success' : 'error'}">${messages.map(m => `<li>${m}</li>`)}</ul>` : ''}
-		<main class="ui container">${main}</main>
+		<main class="ui main container">
+			${messages.length ? `<ul class="${status === 200 ? 'success' : 'error'}">${messages.map(m => `<li>${m}</li>`)}</ul>` : ''}
+			${main}
+		</main>
 
 		<!--script type="text/javascript" src="${assetUrl({path: 'react/react.production.min.js'})}"></script-->
 		<script type="text/javascript" src="${assetUrl({path: 'react/react.development.js'})}"></script>
@@ -50,7 +54,6 @@ export function htmlResponse({
 		<script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.development.js'})}"></script>
 
 		<script type="text/javascript" src="${assetUrl({path: 'yase.js'})}"></script>
-		${bodyEnd.join('\n')}
 		<script type="text/javascript" src="${assetUrl({path: 'jquery/jquery.js'})}"></script>
 		<script type="text/javascript">
 			jQuery = $;
@@ -63,6 +66,7 @@ export function htmlResponse({
 				$('table').tablesort();
 		    });
 		</script>
+		${bodyEnd.join('\n')}
 	</body>
 </html>`,
 		contentType: 'text/html; charset=utf-8',

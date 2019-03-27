@@ -47,6 +47,7 @@ export const Collection = ({
 			}}
 		>
 			<TextInput
+				id='name'
 				label="Name"
 				name="name"
 			/>

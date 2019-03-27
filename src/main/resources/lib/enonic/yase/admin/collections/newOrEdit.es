@@ -135,9 +135,23 @@ export function newOrEdit({
 		React.createElement(window.yase.Collection, ${propsJson}),
 		document.getElementById('${ID_REACT_COLLECTION_CONTAINER}')
 	);
+	$('.ui.sticky').sticky({
+    context: '#stickyContext'
+  })
+;
 </script>`
 		],
-		main: `<div id="${ID_REACT_COLLECTION_CONTAINER}"/>`,
+		main: `<div class="ui segment" id="stickyContext">
+	<div class="ui left very close rail">
+  	<div class="sticky vertical ui menu">
+      <a class="item" href="#top">Menu <i class="angle double up icon"></i></a>
+			<a class="item"href="#name">Name</a>
+			<a class="item" href="#uris">Uris</a>
+			<a class="item" href="#crawl">Crawl</a>
+  	</div>
+	</div>
+	<div id="${ID_REACT_COLLECTION_CONTAINER}"/>
+</div>`,
 		path,
 		title: 'Create or edit collection'
 	});
