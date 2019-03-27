@@ -13,7 +13,7 @@ import {isSet} from '../utils/isSet';
 // Fields
 import {CrawlField} from './CrawlField';
 import {DelayField} from './DelayField';
-import {DownloadField} from './DownloadField';
+//import {DownloadField} from './DownloadField';
 import {HeadersField} from './HeadersField';
 import {PathRangeField} from './PathRangeField';
 import {QueryParameters} from './QueryParameters';
@@ -68,18 +68,16 @@ export const Surgeon = connect(({
 		urls
 	}));*/
 	return <>
-	<Fieldset legend="Request">
-		<UrlsField parentPath={path} value={urls}/>
-		<PathRangeField path={`${path}.pathRange`} pathRange={pathRange}/>
-		<QueryRangeField path={`${path}.queryRange`} queryRange={queryRange}/>
-		<QueryParameters parentPath={path} value={queryParams}/>
-		<HeadersField path={`${path}.headers`} headers={headers}/>
-		<DelayField path={`${path}.delay`} value={delay}/>
-		<LabeledField label="Connection timeout" name={`${path}.connectionTimeout`} value={isSet(connectionTimeout) ? connectionTimeout : 10000}/>
-		<LabeledField label="Read timeout" name={`${path}.readTimeout`} value={isSet(readTimeout) ? readTimeout : 10000}/>
-		<LabeledField label="Retries" name={`${path}.retries`} value={isSet(retries) ? retries : 1}/>
-		<Checkbox checked={dynamic} label="Dynamic" name={`${path}.dynamic`}/>
-	</Fieldset>
+	<UrlsField parentPath={path} value={urls}/>
+	<PathRangeField path={`${path}.pathRange`} pathRange={pathRange}/>
+	<QueryRangeField path={`${path}.queryRange`} queryRange={queryRange}/>
+	<QueryParameters parentPath={path} value={queryParams}/>
+	<HeadersField path={`${path}.headers`} headers={headers}/>
+	<DelayField path={`${path}.delay`} value={delay}/>
+	<LabeledField label="Connection timeout" name={`${path}.connectionTimeout`} value={isSet(connectionTimeout) ? connectionTimeout : 10000}/>
+	<LabeledField label="Read timeout" name={`${path}.readTimeout`} value={isSet(readTimeout) ? readTimeout : 10000}/>
+	<LabeledField label="Retries" name={`${path}.retries`} value={isSet(retries) ? retries : 1}/>
+	<Checkbox checked={dynamic} label="Dynamic" name={`${path}.dynamic`}/>
 	{/*<ScrapeJson
 		parentPath={path}
 		fieldsObj={fieldsObj}
@@ -91,12 +89,12 @@ export const Surgeon = connect(({
 		tags={tags}
 		value={scrape}
 	/>
-	<DownloadField
+	{/*<DownloadField
 		fields={fields}
 		parentPath={path}
 		tags={tags}
 		value={download}
-	/>
+	/>*/}
 	<CrawlField
 		fields={fields}
 		fieldsObj={fieldsObj}

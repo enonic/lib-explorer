@@ -1,6 +1,6 @@
 import {connect, getIn} from 'formik';
 
-import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
+import {SetButton} from '../buttons/SetButton';
 
 import {Fieldset} from '../elements/Fieldset';
 import {LabeledField} from '../elements/LabeledField';
@@ -21,7 +21,7 @@ export const Pagination = connect(({
 	value = values && getIn(values, path) || false
 }) => {
 	if (!value) {
-		return <SetFieldValueButton
+		return <SetButton
 			className='block'
 			field={path}
 			text="Add pagination"
@@ -40,7 +40,7 @@ export const Pagination = connect(({
 		<Checkbox checked={prev} label="Provide previous" name={`${path}.prev`}/>
 		<Checkbox checked={next} label="Provide next" name={`${path}.next`}/>
 		<Checkbox checked={last} label="Provide last" name={`${path}.last`}/>
-		<SetFieldValueButton
+		<SetButton
 			className='block'
 			field={path}
 			text="Remove pagination"

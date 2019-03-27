@@ -1,10 +1,9 @@
 import {connect, getIn} from 'formik';
-import {Button} from './Button';
-import {Icon} from '../icons/Icon';
+import {Button} from '../semantic-ui/Button';
 //import {toStr} from '../utils/toStr';
 
 
-export const SetFieldValueButton = connect(({
+export const SetButton = connect(({
 	children,
 	formik: {
 		setFieldValue,
@@ -14,7 +13,6 @@ export const SetFieldValueButton = connect(({
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	field = path, // Backwards compatibility (should be cleaned up)
-	text,
 	value,
 	onClick = () => {
 		//console.debug(toStr({field, value}));
@@ -26,5 +24,5 @@ export const SetFieldValueButton = connect(({
 	return <Button
 		onClick={onClick}
 		{...rest}
-	><Icon className='green plus'/>{children||text}</Button>;
+	>{children}</Button>;
 });

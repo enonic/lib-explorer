@@ -8,7 +8,7 @@ export const Table = ({
 	thStyle,
 	...rest
 }) => <table
-	className={classNames('collapsing', 'compact', 'ui', 'selectable', 'celled', 'striped', 'table', className)}
+	className={classNames('compact', 'ui', 'selectable', 'celled', 'striped', 'table', className)}
 	{...rest}
 >
 	{headers.length ? <thead>

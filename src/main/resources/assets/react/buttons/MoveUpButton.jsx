@@ -1,6 +1,6 @@
 import {connect, getIn} from 'formik';
-import {Button} from './Button';
-import {Icon} from '../icons/Icon';
+import {Button} from '../semantic-ui/Button';
+import {Icon} from '../semantic-ui/Icon';
 
 
 const mySwap = (array, indexA, indexB) => {

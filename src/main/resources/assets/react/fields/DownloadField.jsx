@@ -10,7 +10,7 @@ import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
-import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
+import {SetButton} from '../buttons/SetButton';
 
 import {Fieldset} from '../elements/Fieldset';
 import {Table} from '../elements/Table';
@@ -37,7 +37,7 @@ export const DownloadField = connect(({
 		value = [];
 	}*/
 	if(!value.length) {
-		return <SetFieldValueButton
+		return <SetButton
 			className='block'
 			field={path}
 			value={[{
@@ -127,7 +127,7 @@ export const DownloadField = connect(({
 									})}
 								/>
 							</Table>
-							: <SetFieldValueButton
+							: <SetButton
 								className='block'
 								field={`${downloadKey}.tags`}
 								value={[{field: '', tags: []}]}

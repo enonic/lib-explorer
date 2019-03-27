@@ -4,7 +4,7 @@ import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
-import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
+import {SetButton} from '../buttons/SetButton';
 
 import {Fieldset} from '../elements/Fieldset';
 import {Table} from '../elements/Table';
@@ -105,7 +105,7 @@ export const QueryFilterClause = connect(({
 				/>
 			</Table>
 		</Fieldset>
-		: <SetFieldValueButton
+		: <SetButton
 			className='block'
 			path={path}
 			text={`Add ${name} filter(s)`}

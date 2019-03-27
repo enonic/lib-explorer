@@ -4,7 +4,7 @@ import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
-import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
+import {SetButton} from '../buttons/SetButton';
 
 import {Table} from '../elements/Table';
 import {NumberInput} from '../elements/NumberInput';
@@ -36,7 +36,7 @@ export const ScrapeExpressionBuilder = connect(({
 }) => {
 	//console.debug(toStr({component: 'ScrapeExpressionBuilder', path, value}));
 	if(!(value && Array.isArray(value) && value.length)) {
-		return <SetFieldValueButton
+		return <SetButton
 			className='block'
 			field={path}
 			value={[{

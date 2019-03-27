@@ -6,7 +6,7 @@ import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
-import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
+import {SetButton} from '../buttons/SetButton';
 
 import {Fieldset} from '../elements/Fieldset';
 
@@ -34,7 +34,7 @@ export const Facets = connect(({
 }) => {
 	//console.debug(toStr({component: 'Facets', path, field, value}));
 	if (!(Array.isArray(value) && value.length)) {
-		return <SetFieldValueButton
+		return <SetButton
 			className='block'
 			field={path}
 			text="Add facet(s)"

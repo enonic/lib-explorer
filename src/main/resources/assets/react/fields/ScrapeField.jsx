@@ -1,18 +1,23 @@
-import {connect, Field, FieldArray, getIn} from 'formik';
+import {connect, FieldArray, getIn} from 'formik';
 
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
-import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
+import {SetButton} from '../buttons/SetButton';
 
-import {Fieldset} from '../elements/Fieldset';
 import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
+
+import {Buttons} from '../semantic-ui/Buttons';
+import {Field} from '../semantic-ui/Field';
+import {Header} from '../semantic-ui/Header';
+import {Icon} from '../semantic-ui/Icon';
 
 import {FieldSelector} from './FieldSelector';
 import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
 import {TagSelector} from './TagSelector';
+
 
 import {toStr} from '../utils/toStr';
 
@@ -42,13 +47,15 @@ export const ScrapeField = connect(({
 	const tagsArray = getIn(values, tagsPath) || [{field: '', tags: []}];
 
 	if(!(value && Array.isArray(value) && value.length)) {
-		return <SetFieldValueButton
-			className='block'
-			field={path}
-			value={[{field: ''}]}
-			text="Scrape HTML/XML"/>
+		return <Field>
+			<SetButton
+				field={path}
+				value={[{field: ''}]}
+			><Icon className='green plus'/> Scrape</SetButton>
+		</Field>
 	}
-	return <Fieldset legend="Scrape HTML/XML">
+	return <>
+		<Header dividing>Scrape</Header>
 		<Table headers={['Field', 'Type', 'Options', 'Actions']}>
 			<FieldArray
 				name={path}
@@ -94,13 +101,15 @@ export const ScrapeField = connect(({
 						}
 					</td>
 					<td>
-						<InsertButton index={index} path={path} value={{field: ''}}/>
-						<RemoveButton index={index} path={path}/>
-						<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
-						<MoveUpButton index={index} path={path} visible={value.length > 1}/>
+						<Buttons icon>
+							<InsertButton index={index} path={path} value={{field: ''}}/>
+							<RemoveButton index={index} path={path}/>
+							<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
+							<MoveUpButton index={index} path={path} visible={value.length > 1}/>
+						</Buttons>
 					</td>
 				</tr>)}
 			/>
 		</Table>
-	</Fieldset>;
+	</>;
 });

@@ -2,7 +2,7 @@ import {Form, Formik} from 'formik';
 import traverse from 'traverse';
 import generateUuidv4 from 'uuid/v4';
 
-import {SubmitButton} from './buttons/SubmitButton';
+import {SubmitButton} from './semantic-ui/SubmitButton';
 
 // Elements
 import {Select} from './elements/Select';

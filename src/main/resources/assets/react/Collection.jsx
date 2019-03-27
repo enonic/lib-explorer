@@ -1,8 +1,10 @@
 import {Form, Formik} from 'formik';
-import {SubmitButton} from './buttons/SubmitButton';
+import {SubmitButton} from './semantic-ui/SubmitButton';
 import {TextInput} from './elements/TextInput';
 import {Surgeon} from './fields/Surgeon';
 //import {toStr} from './utils/toStr';
+
+import {Field} from './semantic-ui/Field';
 
 
 export const Collection = ({
@@ -45,6 +47,9 @@ export const Collection = ({
 			onSubmit={() => {
 				document.getElementById('json').setAttribute('value', JSON.stringify(values))
 			}}
+			style={{
+				width: '100%'
+			}}
 		>
 			<TextInput
 				id='name'
@@ -57,7 +62,7 @@ export const Collection = ({
 				path='collector.config'
 				tags={tags}
 			/>
-			<SubmitButton className='primary' text="Save collection"/>
+			<Field><SubmitButton className='primary' text="Save collection"/></Field>
 			<input id="json" name="json" type="hidden"/>
 		</Form>}}
 />; // Collection

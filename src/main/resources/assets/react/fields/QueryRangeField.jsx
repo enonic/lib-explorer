@@ -1,17 +1,29 @@
-import {SetFieldValueButton} from '../buttons/SetFieldValueButton';
+import {SetButton} from '../buttons/SetButton';
 
-import {Fieldset} from '../elements/Fieldset';
-import {LabeledField} from '../elements/LabeledField';
+import {NumberInput} from '../elements/NumberInput';
+import {TextInput} from '../elements/TextInput';
+
+import {Field} from '../semantic-ui/Field';
+import {Fields} from '../semantic-ui/Fields';
+import {Header} from '../semantic-ui/Header';
+import {Icon} from '../semantic-ui/Icon';
 
 
 export const QueryRangeField = ({
 	path,
 	queryRange
 }) => queryRange
-	? <Fieldset legend="Query range">
-		<LabeledField autoComplete="off" label="Name" name={`${path}.name`}/>
-		<LabeledField label="Min" name={`${path}.min`} type="number"/>
-		<LabeledField label="Max" name={`${path}.max`} type="number"/>
-		<SetFieldValueButton field={path} value={null} text="Remove query range"/>
-	</Fieldset>
-	: <SetFieldValueButton className='block' field={path} value={{name: '', min: 0, max: 1}} text="Add query range"/>;
+	? <>
+		<Header dividing>Query range</Header>
+		<Fields>
+			<TextInput label="Name" name={`${path}.name`}/>
+			<NumberInput label="Min" name={`${path}.min`}/>
+			<NumberInput label="Max" name={`${path}.max`}/>
+		</Fields>
+		<Field>
+			<SetButton field={path} value={null}><Icon className='red minus'/> Remove query range</SetButton>
+		</Field>
+	</>
+	: <Field>
+		<SetButton field={path} value={{name: '', min: 0, max: 1}}><Icon className='green plus'/> Add query range</SetButton>
+	</Field>;
