@@ -109,6 +109,7 @@ export const Interface = ({
 		return <Form
 			action={action}
 			autoComplete="off"
+			className='ui form'
 			method="POST"
 			onSubmit={() => {
 				document.getElementById('json').setAttribute('value', JSON.stringify(values))
@@ -152,7 +153,7 @@ export const Interface = ({
 			<Pagination
 				legend='Pagination'
 			/>
-			<SubmitButton text="Save interface"/>
+			<SubmitButton className='primary' text="Save interface"/>
 			<input id="json" name="json" type="hidden"/>
 		</Form>}}
 />; // Interface

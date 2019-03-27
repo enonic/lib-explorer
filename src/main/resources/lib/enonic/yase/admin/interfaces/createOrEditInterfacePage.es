@@ -4,7 +4,7 @@ import {assetUrl} from '/lib/xp/portal';
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
-import {queryCollections} from '/lib/enonic/yase/admin/collections/queryCollections';
+import {query as queryCollections} from '/lib/enonic/yase/collection/query';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 import {getTags} from '/lib/enonic/yase/admin/tags/getTags';

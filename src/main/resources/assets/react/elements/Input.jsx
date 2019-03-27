@@ -23,6 +23,7 @@ export const Input = connect(({
 		autoComplete={autoComplete}
 		name={path}
 		size={size}
+		type={type}
 		value={value}
 		{...rest}
 	/>;

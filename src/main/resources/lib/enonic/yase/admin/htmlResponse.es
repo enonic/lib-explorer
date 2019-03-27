@@ -4,6 +4,7 @@ import {assetUrl} from '/lib/xp/portal';
 
 
 export function htmlResponse({
+	bodyBegin = [],
 	bodyEnd = [],
 	headBegin = [],
 	main = '',
@@ -25,20 +26,22 @@ export function htmlResponse({
 		<link rel="stylesheet" type="text/css" href="${assetUrl({path: 'semantic-ui/semantic.css'})}">
 	</head>
 	<body>
-		<nav>
-			<ul>
-				<li><a class="${relPath === '' ? 'current' : ''}" href="${toolPath}">YASE</a></li>
-				<li><a class="${relPath.startsWith('/status') ? 'current' : ''}" href="${toolPath}/status">Status</a></li>
-				<li><a class="${relPath.startsWith('/history') ? 'current' : ''}" href="${toolPath}/history">History</a></li>
-				<li><a class="${relPath.startsWith('/collections') ? 'current' : ''}" href="${toolPath}/collections">Collections</a></li>
-				<li><a class="${relPath.startsWith('/fields') ? 'current' : ''}" href="${toolPath}/fields">Fields</a></li>
-				<li><a class="${relPath.startsWith('/tags') ? 'current' : ''}" href="${toolPath}/tags">Tags</a></li>
-				<li><a class="${relPath.startsWith('/thesauri') ? 'current' : ''}" href="${toolPath}/thesauri">Thesauri</a></li>
-				<li><a class="${relPath.startsWith('/interfaces') ? 'current' : ''}" href="${toolPath}/interfaces">Interfaces</a></li>
-			</ul>
+		<nav class="ui stackable tabular menu">
+			<div class="ui container">
+    			<a class="item ${relPath === '' ? 'active' : ''}" href="${toolPath}""><i class="search icon"></i> YASE</a>
+				<a class="item ${relPath.startsWith('/collections') ? 'active' : ''}" href="${toolPath}/collections"><i class="database icon"></i> Collections</a>
+				<a class="item ${relPath.startsWith('/fields') ? 'active' : ''}" href="${toolPath}/fields"><i class="sitemap icon"></i> Fields</a>
+				<a class="item ${relPath.startsWith('/tags') ? 'active' : ''}" href="${toolPath}/tags"><i class="tag icon"></i> Tags</a>
+				<a class="item ${relPath.startsWith('/thesauri') ? 'active' : ''}" href="${toolPath}/thesauri"><i class="font icon"></i> Thesauri</a>
+				<a class="item ${relPath.startsWith('/interfaces') ? 'active' : ''}" href="${toolPath}/interfaces"><i class="plug icon"></i> Interfaces</a>
+				<!--div class="right item">
+					<div class="ui input"><input type="text" placeholder="Search..."></div>
+				</div-->
+			</div>
 		</nav>
+		${bodyBegin.join('\n')}
 		${messages.length ? `<ul class="${status === 200 ? 'success' : 'error'}">${messages.map(m => `<li>${m}</li>`)}</ul>` : ''}
-		<main>${main}</main>
+		<main class="ui container">${main}</main>
 
 		<!--script type="text/javascript" src="${assetUrl({path: 'react/react.production.min.js'})}"></script-->
 		<script type="text/javascript" src="${assetUrl({path: 'react/react.development.js'})}"></script>

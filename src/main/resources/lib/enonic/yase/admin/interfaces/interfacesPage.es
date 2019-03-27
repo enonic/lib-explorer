@@ -11,29 +11,23 @@ export function interfacesPage({
 } = {}) {
 	const interfaces = queryInterfaces();
 	return htmlResponse({
-		main: `<table>
+		main: `<table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
-			<th>Name</th>
-			<th>Action(s)</th>
+			<th class="sorted ascending">Name</th>
+			<th class="no-sort">Action(s)</th>
 		</tr>
 	</thead>
 	<tbody>
-		${interfaces.hits.map(({_name, displayName}) => `<tr>
+		${interfaces.hits.map(({_name: name, displayName}) => `<tr>
 			<td>${displayName}</td>
 			<td>
-				<form action="${TOOL_PATH}/interfaces/${_name}" method="get">
-					<button type="submit">Edit</button>
-				</form>
-				<form action="${TOOL_PATH}/interfaces/${_name}/delete" method="get">
-					<button type="submit">Delete</button>
-				</form>
+				<a class="tiny compact ui button" href="${TOOL_PATH}/interfaces/${name}"><i class="blue edit icon"></i>Edit</a>
+				<a class="tiny compact ui button" href="${TOOL_PATH}/interfaces/${name}/delete"><i class="red trash alternate outline icon"></i>Delete</a>
 			</td>
 		</tr>`).join('\n')}
 	</tbody>
-</table><ul>
-			<li><a href="${TOOL_PATH}/interfaces/createform">Create interface</a></li>
-		</ul>`,
+</table><a class="tiny compact ui button" href="${TOOL_PATH}/interfaces/createform"><i class="green plus icon"></i>New interface</a>`,
 		messages,
 		path,
 		status,

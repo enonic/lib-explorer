@@ -1,15 +1,19 @@
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
+import {menu} from '/lib/enonic/yase/admin/collections/menu';
 
 
-export const deleteCollectionPage = ({
-	path: reqPath
+export const confirmDelete = ({
+	path
 }) => {
-	const relPath = reqPath.replace(TOOL_PATH, '');
-	const pathParts = relPath.match(/[^/]+/g);
-	const collectionName = pathParts[1];
+	const relPath = path.replace(TOOL_PATH, '');
+	const pathParts = path.match(/[^/]+/g);
+	const name = pathParts[1];
 	return htmlResponse({
-		main: `<form action="${TOOL_PATH}/collections/${collectionName}/delete" method="post">
+		bodyBegin: [
+			menu({path})
+		],
+		main: `<form action="${TOOL_PATH}/collections/delete/${name}" method="post">
 	<fieldset>
 		<legend>Confirm delete collection</legend>
 		<label>
@@ -20,4 +24,4 @@ export const deleteCollectionPage = ({
 	<fieldset>
 </form>`
 	});
-} // deleteCollectionPage
+} // confirmDelete

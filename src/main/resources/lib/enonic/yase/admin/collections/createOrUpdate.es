@@ -1,16 +1,16 @@
 //import {toStr} from '/lib/enonic/util';
 import {NT_COLLECTION} from '/lib/enonic/yase/constants';
 import {createOrModifyNode} from '/lib/enonic/yase/createOrModifyNode';
-import {collectionsPage} from '/lib/enonic/yase/admin/collections/collectionsPage';
+//import {list} from '/lib/enonic/yase/admin/collections/list';
 
 
-export const handleCollectionsPost = ({
-	params,
-	path: reqPath
+export const createOrUpdate = ({
+	params//,
+	//path
 }) => {
 	/*log.info(toStr({
 		params,
-		reqPath
+		path
 	}));*/
 
 	const {json} = params;
@@ -26,13 +26,20 @@ export const handleCollectionsPost = ({
 	obj.type = NT_COLLECTION;
 	//log.info(toStr({obj}));
 
+	let status = 200;
+	const messages = [];
 	const node = createOrModifyNode(obj);
-	return collectionsPage({
-		path: reqPath
+	return {
+		redirect: `${TOOL_PATH}/collections/list?${
+			messages.map(m => `messages=${m}`).join('&')
+		}&status=${status}`
+	}
+	/*return list({
+		path
 	}, {
 		messages: node
 			? [`Collection ${obj.name} saved.`]
 			: [`Something went wrong when saving collection ${obj.name}!`],
 		statue: node ? 200 : 500
-	});
+	});*/
 };

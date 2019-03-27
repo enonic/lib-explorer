@@ -1,10 +1,12 @@
 import {serviceUrl} from '/lib/xp/portal';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
+import {menu} from '/lib/enonic/yase/admin/collections/menu';
+
 
 const ID_REACT_STATUS_CONTAINER = 'reactStatusContainer';
 
 
-export const statusPage = ({
+export const status = ({
 	path
 }) => {
 	const propsObj = {
@@ -14,6 +16,9 @@ export const statusPage = ({
 	};
 	const propsJson = JSON.stringify(propsObj);
 	return htmlResponse({
+		bodyBegin: [
+			menu({path})
+		],
 		bodyEnd: [
 			`<script type="text/javascript">
 	ReactDOM.render(
@@ -26,4 +31,4 @@ export const statusPage = ({
 		path,
 		title: 'Status'
 	})
-} // statusPage
+} // status

@@ -2,7 +2,7 @@
 import {connectRepo} from '/lib/enonic/yase/connectRepo';
 
 
-export const getCollection = ({
+export const get = ({
 	connection = connectRepo(),
 	name
 }) => {

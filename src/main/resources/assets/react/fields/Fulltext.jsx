@@ -1,4 +1,4 @@
-import {connect, Field, FieldArray, getIn} from 'formik';
+import {connect, FieldArray, getIn} from 'formik';
 import generateUuidv4 from 'uuid/v4';
 
 import {InsertButton} from '../buttons/InsertButton';
@@ -7,6 +7,7 @@ import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
 
 import {Fieldset} from '../elements/Fieldset';
+import {NumberInput} from '../elements/NumberInput';
 import {Radio} from '../elements/Radio';
 import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
@@ -63,7 +64,7 @@ export const Fulltext = connect(({
 								options={fields}
 								placeholder='Select field'
 							/></td>
-							<td><Field autoComplete="off" name={boostPath} value={boost}/></td>
+							<td><NumberInput path={boostPath}/></td>
 							<td>
 								<InsertButton
 									index={index}

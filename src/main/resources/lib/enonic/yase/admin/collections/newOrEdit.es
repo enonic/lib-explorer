@@ -7,6 +7,7 @@ import {connectRepo} from '/lib/enonic/yase/connectRepo';
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
+import {menu} from '/lib/enonic/yase/admin/collections/menu';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 import {getTags} from '/lib/enonic/yase/admin/tags/getTags';
@@ -43,14 +44,15 @@ function convert(node) {
 }
 
 
-export function createOrEditCollectionPage({
+export function newOrEdit({
 	path
 }) {
 	const relPath = path.replace(TOOL_PATH, '');
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
+	const action = pathParts[1];
 	let initialValues;
-	if (pathParts[1] !== 'createform') {
-		const collectionName = pathParts[1];
+	if (action === 'edit') {
+		const collectionName = pathParts[2];
 		//log.info(toStr({collectionName}));
 
 		const connection = connectRepo();
@@ -124,6 +126,9 @@ export function createOrEditCollectionPage({
 	//log.info(toStr({propsJson}));
 
 	return htmlResponse({
+		bodyBegin: [
+			menu({path})
+		],
 		bodyEnd: [
 			`<script type="text/javascript">
 	ReactDOM.render(
