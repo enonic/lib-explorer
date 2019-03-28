@@ -5,10 +5,11 @@ export const response = ({
 	_parentPath = '/',
 	_name,
 	request,
-	response
+	response,
+	...rest // __repoId
 }) => ({
 	_indexConfig: {
-		default: 'none',
+		default: 'none', // none make node invisible in datatoolbox?
 		configs: [{/*
 			path: 'request',
 			config: 'none'
@@ -26,5 +27,6 @@ export const response = ({
 	//_permissions // TODO Only superadmin and crawler should have access
 	request,
 	response,
-	type: NT_RESPONSE
+	type: NT_RESPONSE,
+	...rest // __repoId
 });

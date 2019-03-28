@@ -28,8 +28,8 @@ export function maybeCreate({
 
 	return branchAlreadyExists
 		? {id: branchId}
-		: createBranch({
-			branchId,
+		: createRepoBranch({
+			branchId, // NOTE lib.xp.repo.createBranch uses branchId not branch!
 			repoId
 		});
 } // function maybeCreate

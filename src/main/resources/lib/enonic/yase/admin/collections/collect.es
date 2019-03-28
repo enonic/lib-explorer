@@ -32,7 +32,7 @@ export const collect = ({
 	const relPath = path.replace(TOOL_PATH, '');
 
 	const pathParts = relPath.match(/[^/]+/g);
-	const collectionName = pathParts[1];
+	const collectionName = pathParts[2];
 
 	const messages = [];
 	let status = 200;

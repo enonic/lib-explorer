@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 import {sanitize} from '/lib/xp/common';
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -11,10 +11,6 @@ import {connect} from '/lib/enonic/yase/repo/connect';
 export function modify({
 	__repoId = REPO_ID,
 	__branch = BRANCH_ID,
-	__connection = connect({
-		repoId: __repoId,
-		branch: __branch
-	}),
 	_id, // So it doesn't end up in rest.
 	_parentPath = '/',
 	_name,
@@ -23,8 +19,13 @@ export function modify({
 		: _name,
 	...rest
 } = {}) {
+	log.info(toStr({__repoId}));
+	const connection = connect({ // eslint-disable-line no-underscore-dangle
+		repoId: __repoId,
+		branch: __branch
+	});
 	//log.info(toStr({key, displayName, rest}));
-	return __connection.modify({
+	return connection.modify({
 		key: `${_parentPath}/${sanitize(_name)}`, // TODO Use path join
 		editor: (node) => {
 			/* eslint-disable no-param-reassign */

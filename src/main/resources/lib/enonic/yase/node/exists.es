@@ -17,13 +17,13 @@ import {connect} from '/lib/enonic/yase/repo/connect';
 export function exists({
 	repoId,
 	branch = 'master',
-	connection = connect({
-		repoId,
-		branch
-	}),
 	_path = '/',
 	_name
 }) {
+	const connection = connect({
+		repoId,
+		branch
+	});
 	//log.info(toStr({repoId, branch}));
 	const queryParams = {
 		count: 0,

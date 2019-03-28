@@ -48,7 +48,7 @@ export function init({
 	};
 	try {
 		createBranchRes = createBranch({
-			branchId,
+			branchId, // NOTE lib.xp.repo.createBranch uses branchId not branch!
 			repoId
 		});
 	} catch (e) {

@@ -1,7 +1,7 @@
 const ITEMS = '_items';
 
 
-export default class Queue {
+export class Queue {
 	constructor(...items) {
 		this[ITEMS] = [...items];
 	}

@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 import {getUser} from '/lib/xp/auth';
 import {sanitize} from '/lib/xp/common';
 //import {get as getContext} from '/lib/xp/context';
@@ -18,10 +18,6 @@ import {connect} from '/lib/enonic/yase/repo/connect';
 export function create({
 	__repoId = REPO_ID,
 	__branch = BRANCH_ID,
-	__connection = connect({
-		repoId: __repoId,
-		branch: __branch
-	}),
 	__user = getUser(),
 
 	// It appears that properties that starts with an undescore are ignored, except the standard ones.
@@ -47,6 +43,11 @@ export function create({
 
 	...rest
 } = {}) {
+	log.info(toStr({__repoId}));
+	const connection = connect({ // eslint-disable-line no-underscore-dangle
+		repoId: __repoId,
+		branch: __branch
+	});
 	/*log.info(toStr({
 		_parentPath, _name, displayName, rest
 	}));*/
@@ -54,7 +55,7 @@ export function create({
 	const pathParts = _parentPath.split('/'); //log.info(toStr({pathParts}));
 	for (let i = 1; i < pathParts.length; i += 1) {
 		const path = pathParts.slice(0, i + 1).join('/'); //log.info(toStr({path}));
-		const ancestor = __connection.get(path); //log.info(toStr({ancestor}));
+		const ancestor = connection.get(path); //log.info(toStr({ancestor}));
 		if (!ancestor) {
 			const folderParams = {
 				_indexConfig: {default: 'none'},
@@ -67,7 +68,7 @@ export function create({
 			};
 			//log.info(toStr({folderParams}));
 			//const folder =
-			__connection.create(folderParams);
+			connection.create(folderParams);
 			//log.info(toStr({folder}));
 		}
 	}
@@ -84,7 +85,7 @@ export function create({
 		...rest
 	};
 	//log.info(toStr(CREATE_PARAMS));
-	const createRes = __connection.create(CREATE_PARAMS);
-	__connection.refresh(); // So the data becomes immidiately searchable
+	const createRes = connection.create(CREATE_PARAMS);
+	connection.refresh(); // So the data becomes immidiately searchable
 	return createRes;
 }
