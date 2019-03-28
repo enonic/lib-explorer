@@ -8,7 +8,7 @@ import {sanitize} from '/lib/xp/common';
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -17,7 +17,7 @@ import {connectRepo} from '/lib/enonic/yase/connectRepo';
 export function exists({
 	repoId,
 	branch = 'master',
-	connection = connectRepo({
+	connection = connect({
 		repoId,
 		branch
 	}),

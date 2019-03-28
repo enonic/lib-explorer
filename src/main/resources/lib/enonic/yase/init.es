@@ -16,7 +16,7 @@ import {
 	USER_YASE_JOB_RUNNER_KEY
 } from '/lib/enonic/yase/constants';
 import {ignoreErrors} from '/lib/enonic/yase/ignoreErrors';
-import {initRepo} from '/lib/enonic/yase/initRepo';
+import {init as initRepo} from '/lib/enonic/yase/repo/init';
 import {runAsSu} from '/lib/enonic/yase/runAsSu';
 
 

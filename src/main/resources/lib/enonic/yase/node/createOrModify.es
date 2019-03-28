@@ -1,20 +1,12 @@
 import {toStr} from '/lib/enonic/util';
 
 //──────────────────────────────────────────────────────────────────────────────
-// Local libs (relative path with extension so it gets webpacked)
-//──────────────────────────────────────────────────────────────────────────────
-/*import {BRANCH_ID, REPO_ID} from './constants.es';
-import connectRepo from './connectRepo.es';
-import createNode from './createNode.es';
-import modifyNode from './modifyNode.es';*/
-
-//──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {BRANCH_ID, REPO_ID} from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
-import {createNode} from '/lib/enonic/yase/createNode';
-import {modifyNode} from '/lib/enonic/yase/modifyNode';
+import {connect} from '/lib/enonic/yase/repo/connect';
+import {create} from '/lib/enonic/yase/node/create';
+import {modify} from '/lib/enonic/yase/node/modify';
 
 
 const CATCH_CLASS_NAMES = [
@@ -23,10 +15,10 @@ const CATCH_CLASS_NAMES = [
 ];
 
 
-export function createOrModifyNode({
+export function createOrModify({
 	__repoId = REPO_ID,
 	__branch = BRANCH_ID,
-	__connection = connectRepo({
+	__connection = connect({
 		repoId: __repoId,
 		branch: __branch
 	}),
@@ -43,12 +35,12 @@ export function createOrModifyNode({
 	}));*/
 	let rv;
 	try {
-		rv = createNode({
+		rv = create({
 			__connection, _parentPath, _name, displayName, ...rest
 		});
 	} catch (catchedError) {
 		if (CATCH_CLASS_NAMES.includes(catchedError.class.name)) {
-			rv = modifyNode({
+			rv = modify({
 				__connection, _parentPath, _name, displayName, ...rest
 			});
 		} else {

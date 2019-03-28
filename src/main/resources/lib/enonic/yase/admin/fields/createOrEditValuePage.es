@@ -4,7 +4,7 @@ import {
 	TOOL_PATH,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {fieldValueFormHtml} from '/lib/enonic/yase/admin/fields/fieldValueFormHtml';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 
@@ -21,7 +21,7 @@ export function createOrEditValuePage({
 	log.info(toStr({fieldName, action, valueName, valueAction}));
 
 	if(valueName) {
-		const connection = connectRepo({
+		const connection = connect({
 			repoId: REPO_ID,
 			branch: BRANCH_ID
 		});

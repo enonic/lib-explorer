@@ -1,11 +1,11 @@
 //import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 import {NT_SYNONYM} from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 function querySynonyms({
-	connection = connectRepo(),
+	connection = connect(),
 	fields = 'from',
 	searchString,
 	thesauri

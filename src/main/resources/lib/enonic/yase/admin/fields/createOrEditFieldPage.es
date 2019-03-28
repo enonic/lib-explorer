@@ -5,7 +5,7 @@ import {
 	TOOL_PATH,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {fieldFormHtml} from '/lib/enonic/yase/admin/fields/fieldFormHtml';
 import {fieldValueFormHtml} from '/lib/enonic/yase/admin/fields/fieldValueFormHtml';
@@ -28,7 +28,7 @@ export function createOrEditFieldPage({
 	const fieldName = pathParts[1]; //log.info(toStr({fieldName}));
 
 	if (fieldName) {
-		const connection = connectRepo({
+		const connection = connect({
 			repoId: REPO_ID,
 			branch: BRANCH_ID
 		});

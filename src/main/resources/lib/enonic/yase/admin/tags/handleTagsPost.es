@@ -5,8 +5,8 @@ import {
 	PATH_TAG,
 	TOOL_PATH
 } from '/lib/enonic/yase/constants';
-import {createNode} from '/lib/enonic/yase/createNode';
-import {modifyNode} from '/lib/enonic/yase/modifyNode';
+import {create} from '/lib/enonic/yase/node/create';
+import {modify} from '/lib/enonic/yase/node/modify';
 import {ucFirst} from '/lib/enonic/yase/ucFirst';
 import {tagsPage} from '/lib/enonic/yase/admin/tags/tagsPage';
 
@@ -47,7 +47,7 @@ export function handleTagsPost({
 	}
 
 	//log.info(toStr({displayName, field, tag}));
-	const name = tag.toLowerCase(); // sanitized in createNode/modifyNode
+	const name = tag.toLowerCase(); // sanitized in create/modify
 	const parentPath = `${PATH_TAG}/${field}`;
 
 	const params = {
@@ -63,7 +63,7 @@ export function handleTagsPost({
 	};
 	//log.info(toStr({params}));
 
-	const node = operation === 'CREATE' ? createNode(params) : modifyNode(params);
+	const node = operation === 'CREATE' ? create(params) : modify(params);
 	//log.info(toStr({node}));
 
 	return tagsPage({

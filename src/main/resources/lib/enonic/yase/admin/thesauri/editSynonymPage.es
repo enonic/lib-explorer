@@ -4,7 +4,7 @@ import {forceArray} from '/lib/enonic/util/data';
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {insertAdjacentHTML} from '/lib/enonic/yase/insertAdjacentHTML';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export function editSynonymPage({
@@ -15,7 +15,7 @@ export function editSynonymPage({
 	pathParts = relPath.match(/[^/]+/g),
 	thesaurusName = pathParts[1],
 	synonymId = pathParts[2],
-	connection = connectRepo()
+	connection = connect()
 } = {}) {
 	log.info(toStr({
 		path, relPath, pathParts, synonymId

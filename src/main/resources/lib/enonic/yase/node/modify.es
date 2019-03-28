@@ -2,22 +2,16 @@
 import {sanitize} from '/lib/xp/common';
 
 //──────────────────────────────────────────────────────────────────────────────
-// Local libs (relative path with extension so it gets webpacked)
-//──────────────────────────────────────────────────────────────────────────────
-/*import {BRANCH_ID, REPO_ID} from './constants.es';
-import connectRepo from './connectRepo.es';*/
-
-//──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {BRANCH_ID, REPO_ID} from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
-export function modifyNode({
+export function modify({
 	__repoId = REPO_ID,
 	__branch = BRANCH_ID,
-	__connection = connectRepo({
+	__connection = connect({
 		repoId: __repoId,
 		branch: __branch
 	}),

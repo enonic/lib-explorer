@@ -8,9 +8,9 @@ import {
 	REPO_ID,
 	TOOL_PATH
 } from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
-import {createNode} from '/lib/enonic/yase/createNode';
-import {modifyNode} from '/lib/enonic/yase/modifyNode';
+import {connect} from '/lib/enonic/yase/repo/connect';
+import {create} from '/lib/enonic/yase/node/create';
+import {modify} from '/lib/enonic/yase/node/modify';
 import {ucFirst} from '/lib/enonic/yase/ucFirst';
 import {fieldsPage} from '/lib/enonic/yase/admin/fields/fieldsPage';
 import {createOrEditFieldPage} from '/lib/enonic/yase/admin/fields/createOrEditFieldPage';
@@ -30,7 +30,7 @@ export function handleFieldsPost({
 
 	if(action === 'values') {
 		if(valueAction === 'delete') {
-			const connection = connectRepo({
+			const connection = connect({
 				repoId: REPO_ID,
 				branch: BRANCH_ID
 			});
@@ -78,7 +78,7 @@ export function handleFieldsPost({
 			field: fieldName,
 			type: NT_FIELD_VALUE
 		};
-		const node = valueName ? modifyNode(nodeParams) : createNode(nodeParams);
+		const node = valueName ? modify(nodeParams) : create(nodeParams);
 		if(node) {
 			messages.push(`Field value with path:${valueNodePath} ${valueName ? 'modified' : 'created'}.`);
 		} else {
@@ -90,7 +90,7 @@ export function handleFieldsPost({
 	} // values
 
 	if (action === 'delete') {
-		const connection = connectRepo({
+		const connection = connect({
 			repoId: REPO_ID,
 			branch: BRANCH_ID
 		});
@@ -162,7 +162,7 @@ export function handleFieldsPost({
 		} : instruction,
 		type: NT_FIELD
 	};
-	const node = fieldName ? modifyNode(nodeParams) : createNode(nodeParams);
+	const node = fieldName ? modify(nodeParams) : create(nodeParams);
 	//log.info(toStr({node}));
 	return fieldsPage({path: reqPath}, {
 		messages: node

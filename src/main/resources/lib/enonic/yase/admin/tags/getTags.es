@@ -1,11 +1,11 @@
 //import {toStr} from '/lib/enonic/util';
 
 import {NT_TAG} from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export function getTags({
-	connection = connectRepo()
+	connection = connect()
 } = {}) {
 	const queryParams = {
 		count: -1,

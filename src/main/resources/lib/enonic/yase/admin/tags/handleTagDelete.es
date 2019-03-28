@@ -3,7 +3,7 @@ import {
 	TOOL_PATH,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {tagsPage} from '/lib/enonic/yase/admin/tags/tagsPage';
 
 
@@ -27,7 +27,7 @@ export function handleTagDelete({
 	if (status !== 200) {
 		return tagsPage({path}, {messages, status});
 	}
-	const connection = connectRepo({
+	const connection = connect({
 		repoId: REPO_ID,
 		branch: BRANCH_ID
 	});

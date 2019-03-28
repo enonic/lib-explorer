@@ -2,7 +2,7 @@ import {forceArray} from '/lib/enonic/util/data';
 import {assetUrl} from '/lib/xp/portal';
 
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {query as queryCollections} from '/lib/enonic/yase/collection/query';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
@@ -23,7 +23,7 @@ export function createOrEditInterfacePage({
 	let initialValues;
 	if (pathParts[1] !== 'createform') {
 		const interfaceName = pathParts[1];
-		const connection = connectRepo();
+		const connection = connect();
 		const node = connection.get(`/interfaces/${interfaceName}`)
 		const name = node.name || '';
 		const collections = node.collections ? forceArray(node.collections) : []

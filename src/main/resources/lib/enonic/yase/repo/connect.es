@@ -1,7 +1,7 @@
 //import {toStr} from '/lib/enonic/util';
 //import {getUser} from '/lib/xp/auth';
 import {get as getContext} from '/lib/xp/context';
-import {connect} from '/lib/xp/node';
+import {connect as libConnect} from '/lib/xp/node';
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -10,7 +10,7 @@ import {connect} from '/lib/xp/node';
 import {BRANCH_ID, REPO_ID} from '/lib/enonic/yase/constants';
 
 
-export function connectRepo({
+export function connect({
 	context = getContext(),
 	repoId = REPO_ID,
 	branch = BRANCH_ID,
@@ -45,5 +45,5 @@ export function connectRepo({
 		user
 	};
 	//log.info(toStr({connectParams}));
-	return connect(connectParams);
+	return libConnect(connectParams);
 }

@@ -1,9 +1,9 @@
 import {NT_FIELD_VALUE} from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export function getFieldValues({
-	connection = connectRepo(),
+	connection = connect(),
 	field
 } = {}) {
 	const must = [{

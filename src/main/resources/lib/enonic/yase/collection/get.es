@@ -1,9 +1,9 @@
 //import {toStr} from '/lib/enonic/util';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export const get = ({
-	connection = connectRepo(),
+	connection = connect(),
 	name
 }) => {
 	const keys = Array.isArray(name)

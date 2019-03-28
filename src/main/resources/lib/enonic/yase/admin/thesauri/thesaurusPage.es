@@ -1,14 +1,14 @@
 import {NT_SYNONYM, TOOL_PATH} from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {insertAdjacentHTML} from '/lib/enonic/yase/insertAdjacentHTML';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 //import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 
 
 function getThesaurus({name}) {
-	const connection = connectRepo();
+	const connection = connect();
 	const queryParams = {
 		count: -1,
 		filters: {

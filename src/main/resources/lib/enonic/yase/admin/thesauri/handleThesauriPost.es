@@ -9,7 +9,7 @@ import {
 import {NT_THESAURUS, TOOL_PATH} from '/lib/enonic/yase/constants';
 import {listThesauriPage} from '/lib/enonic/yase/admin/thesauri/listThesauriPage';
 import {thesaurusPage} from '/lib/enonic/yase/admin/thesauri/thesaurusPage';
-import {createOrModifyNode} from '/lib/enonic/yase/createOrModifyNode';
+import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
 import {parseCsv} from '/lib/enonic/yase/parseCsv';
 
 import {synonym} from '/lib/enonic/yase/nodeTypes/synonym';
@@ -27,7 +27,7 @@ export function handleThesauriPost(req) {
 	//log.info(toStr({req}));
 
 	if (name && description) {
-		const node = createOrModifyNode({
+		const node = createOrModify({
 			_parentPath: '/thesauri',
 			_name: name,
 			_indexConfig: {
@@ -69,7 +69,7 @@ export function handleThesauriPost(req) {
 				to: toArr.length > 1 ? toArr : toArr.join()
 			});
 			//log.info(toStr({params}));
-			createOrModifyNode(params);
+			createOrModify(params);
 		}
 	});
 	return thesaurusPage({

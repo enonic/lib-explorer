@@ -3,7 +3,7 @@ import traverse from 'traverse';
 //import {toStr} from '/lib/enonic/util';
 import {assetUrl} from '/lib/xp/portal';
 
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
@@ -55,7 +55,7 @@ export function newOrEdit({
 		const collectionName = pathParts[2];
 		//log.info(toStr({collectionName}));
 
-		const connection = connectRepo();
+		const connection = connect();
 		const node = connection.get(`/collections/${collectionName}`);
 		//log.info(toStr({node}));
 

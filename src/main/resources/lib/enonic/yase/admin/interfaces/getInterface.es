@@ -1,8 +1,8 @@
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export function getInterface({
-	connection = connectRepo(),
+	connection = connect(),
 	interfaceName,
 	key = `/interfaces/${interfaceName}`
 }) {

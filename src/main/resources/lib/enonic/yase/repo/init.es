@@ -19,7 +19,7 @@ import {
 } from '/lib/enonic/yase/constants';
 
 
-export function initRepo({
+export function init({
 	repoId = REPO_ID,
 	branchId = BRANCH_ID
 } = {}) {

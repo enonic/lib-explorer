@@ -1,6 +1,6 @@
 //import {toStr} from '/lib/enonic/util';
 import {NT_COLLECTION} from '/lib/enonic/yase/constants';
-import {createOrModifyNode} from '/lib/enonic/yase/createOrModifyNode';
+import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
 //import {list} from '/lib/enonic/yase/admin/collections/list';
 
 
@@ -28,7 +28,7 @@ export const createOrUpdate = ({
 
 	let status = 200;
 	const messages = [];
-	const node = createOrModifyNode(obj);
+	const node = createOrModify(obj);
 	return {
 		redirect: `${TOOL_PATH}/collections/list?${
 			messages.map(m => `messages=${m}`).join('&')

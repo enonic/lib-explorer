@@ -1,11 +1,11 @@
 import {NT_INTERFACE} from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {addFilter} from '/lib/enonic/yase/query/addFilter';
 import {hasValue} from '/lib/enonic/yase/query/hasValue';
 
 
 export function queryInterfaces({
-	connection = connectRepo(),
+	connection = connect(),
 	count = -1,
 	filters = {},
 	query = '', //"_parentPath = '/interfaces'",

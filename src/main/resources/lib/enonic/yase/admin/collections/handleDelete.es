@@ -20,7 +20,7 @@ export const handleDelete = ({
 		messages.push(`Typed collection name: "${typedCollectionName}" doesn't match actual collection name: "${collectionName}"!`);
 		status = 400;
 	} else {
-		const connection = connectRepo({
+		const connection = connect({
 			repoId: REPO_ID,
 			branch: BRANCH_ID
 		});

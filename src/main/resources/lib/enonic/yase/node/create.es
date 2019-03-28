@@ -12,13 +12,13 @@ import {
 	NT_FOLDER,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
-export function createNode({
+export function create({
 	__repoId = REPO_ID,
 	__branch = BRANCH_ID,
-	__connection = connectRepo({
+	__connection = connect({
 		repoId: __repoId,
 		branch: __branch
 	}),

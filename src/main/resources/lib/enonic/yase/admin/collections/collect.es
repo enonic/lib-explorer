@@ -10,7 +10,7 @@ import {
 	TOOL_PATH,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {get as getCollection} from '/lib/enonic/yase/collection/get';
 //import {list} from '/lib/enonic/yase/admin/collections/list';
 import {getTasksWithPropertyValue} from '/lib/enonic/yase/task/getTasksWithPropertyValue';

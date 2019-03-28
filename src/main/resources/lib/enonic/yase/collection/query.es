@@ -1,9 +1,9 @@
 import {NT_COLLECTION} from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export function query({
-	connection = connectRepo(),
+	connection = connect(),
 	count = -1,
 	query = '', //"_parentPath = '/collections'",
 	sort = '_name ASC'

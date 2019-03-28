@@ -24,8 +24,8 @@ import {buildFilters} from '/lib/enonic/yase/search/buildFilters';
 import {buildPagination} from '/lib/enonic/yase/buildPagination';
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
 import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
-import {connectRepos} from '/lib/enonic/yase/connectRepos';
+import {connect} from '/lib/enonic/yase/repo/connect';
+import {multiConnect} from '/lib/enonic/yase/multiConnect';
 import {localizeFacets} from '/lib/enonic/yase/localizeFacets';
 import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
 import {removeStopWords} from '/lib/enonic/yase/removeStopWords';
@@ -98,7 +98,7 @@ export function search(params) {
 	}
 
 
-	const yaseReadConnection = connectRepo({
+	const yaseReadConnection = connect({
 		principals: [`role:${ROLE_YASE_READ}`]
 	})
 	const interfaceNode = getInterface({
@@ -162,7 +162,7 @@ export function search(params) {
 	const filters = buildFilters(filtersConfig);
 	//log.info(toStr({filters}));
 
-	const yaseReadConnections = connectRepos({
+	const yaseReadConnections = multiConnect({
 		principals: [`role:${ROLE_YASE_READ}`],
 		sources
 	});

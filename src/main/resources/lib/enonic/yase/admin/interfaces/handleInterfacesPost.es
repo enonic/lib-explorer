@@ -5,8 +5,8 @@ import {
 	TOOL_PATH,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
-import {createOrModifyNode} from '/lib/enonic/yase/createOrModifyNode';
+import {connect} from '/lib/enonic/yase/repo/connect';
+import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
 import {interfacesPage} from '/lib/enonic/yase/admin/interfaces/interfacesPage';
 
 
@@ -30,7 +30,7 @@ export function handleInterfacesPost({
 			messages.push(`Typed interface name: "${typedInterfaceName}" doesn't match actual interface name: "${interfaceName}"!`);
 			status = 400;
 		} else {
-			const connection = connectRepo({
+			const connection = connect({
 				repoId: REPO_ID,
 				branch: BRANCH_ID
 			});
@@ -59,7 +59,7 @@ export function handleInterfacesPost({
 	obj.type = NT_INTERFACE;
 	//log.info(toStr({obj}));
 
-	const node = createOrModifyNode(obj);
+	const node = createOrModify(obj);
 
 	return interfacesPage({
 		path: reqPath

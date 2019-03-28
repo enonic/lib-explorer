@@ -1,9 +1,9 @@
 import {COLLECTION_REPO_PREFIX} from '/lib/enonic/yase/constants';
-import {connectRepo} from '/lib/enonic/yase/connectRepo';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export function connectToCollection(name) {
-	return connectRepo({
+	return connect({
 		repoId: `${COLLECTION_REPO_PREFIX}${name}`
 	});
 }

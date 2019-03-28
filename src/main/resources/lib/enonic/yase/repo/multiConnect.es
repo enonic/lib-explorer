@@ -7,7 +7,7 @@ import {list as listRepos} from '/lib/xp/repo';
 import {runAsSu} from '/lib/enonic/yase/runAsSu';
 
 
-export function connectRepos({
+export function multiConnect({
 	sources,
 	context = getContext(),
 	principals: passedPrincipals,
@@ -81,4 +81,4 @@ export function connectRepos({
 	//log.info(toStr({sourcesWithExtendedPrincipals}));
 
 	return multiRepoConnect({sources: sourcesWithExtendedPrincipals});
-} // function connectRepos
+} // function multiConnect

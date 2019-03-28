@@ -1,7 +1,7 @@
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {thesaurusPage} from '/lib/enonic/yase/admin/thesauri/thesaurusPage';
-import {createNode} from '/lib/enonic/yase/createNode';
-import {modifyNode} from '/lib/enonic/yase/modifyNode';
+import {create} from '/lib/enonic/yase/node/create';
+import {modify} from '/lib/enonic/yase/node/modify';
 import {toStr} from '/lib/enonic/util';
 import {synonym} from '/lib/enonic/yase/nodeTypes/synonym';
 
@@ -25,7 +25,7 @@ export function handleThesaurusPost({
 
 	if (id) {
 		params.key = id;
-		const node = modifyNode(params);
+		const node = modify(params);
 		return thesaurusPage({
 			messages: node
 				? [`Updated synonym ${from}.`]
@@ -35,7 +35,7 @@ export function handleThesaurusPost({
 		});
 	}
 
-	const node = createNode(params);
+	const node = create(params);
 	return thesaurusPage({
 		messages: node
 			? [`Created synonym ${from}.`]
