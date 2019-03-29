@@ -50,9 +50,9 @@ export function newOrEdit({
 	const relPath = path.replace(TOOL_PATH, '');
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
 	const action = pathParts[1];
+	const collectionName = pathParts[2];
 	let initialValues;
 	if (action === 'edit') {
-		const collectionName = pathParts[2];
 		//log.info(toStr({collectionName}));
 
 		const connection = connect();
@@ -114,7 +114,7 @@ export function newOrEdit({
 	//log.info(toStr({tags}));
 
 	const propsObj = {
-		action: `${TOOL_PATH}/collections`,
+		action: `${TOOL_PATH}/collections/${action === 'edit' ? `update/${collectionName}` : 'create'}`,
 		fields: fieldsArr,
 		fieldsObj,
 		initialValues,

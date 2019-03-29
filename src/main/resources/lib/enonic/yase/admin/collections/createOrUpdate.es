@@ -1,5 +1,8 @@
 //import {toStr} from '/lib/enonic/util';
-import {NT_COLLECTION} from '/lib/enonic/yase/constants';
+import {
+	NT_COLLECTION,
+	TOOL_PATH
+} from '/lib/enonic/yase/constants';
 import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
 //import {list} from '/lib/enonic/yase/admin/collections/list';
 
