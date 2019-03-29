@@ -1,3 +1,4 @@
+//import {toStr} from '/lib/enonic/util';
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {menu} from '/lib/enonic/yase/admin/collections/menu';
@@ -6,9 +7,9 @@ import {menu} from '/lib/enonic/yase/admin/collections/menu';
 export const confirmDelete = ({
 	path
 }) => {
-	const relPath = path.replace(TOOL_PATH, '');
-	const pathParts = path.match(/[^/]+/g);
-	const name = pathParts[1];
+	const relPath = path.replace(TOOL_PATH, ''); //log.info(toStr({relPath}));
+	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
+	const name = pathParts[2];
 	return htmlResponse({
 		bodyBegin: [
 			menu({path})

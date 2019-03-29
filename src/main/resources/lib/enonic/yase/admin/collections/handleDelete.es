@@ -1,4 +1,9 @@
-//import {list} from '/lib/enonic/yase/admin/collections/list';
+import {
+	BRANCH_ID,
+	REPO_ID,
+	TOOL_PATH
+} from '/lib/enonic/yase/constants';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export const handleDelete = ({
@@ -9,7 +14,7 @@ export const handleDelete = ({
 }) => {
 	const relPath = path.replace(TOOL_PATH, '');
 	const pathParts = relPath.match(/[^/]+/g);
-	const collectionName = pathParts[1];
+	const collectionName = pathParts[2];
 
 	const messages = [];
 	let status = 200;
@@ -34,7 +39,7 @@ export const handleDelete = ({
 		}
 	}
 	return {
-		redirect: `${TOOL_PATH}/collections/delete/${name}?${
+		redirect: `${TOOL_PATH}/collections/list?${
 			messages.map(m => `messages=${m}`).join('&')
 		}&status=${status}`
 	}
