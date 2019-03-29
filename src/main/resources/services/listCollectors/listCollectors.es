@@ -1,19 +1,20 @@
-import {listCollectors} from '/lib/enonic/yase/collector/listCollectors';
-
+import {toStr} from '/lib/enonic/util';
 import {RT_JSON} from '/lib/enonic/yase/constants';
-
-
-const {nanoTime} = Java.type('java.lang.System');
+import {listCollectors} from '/lib/enonic/yase/collector/listCollectors';
+import {currentTimeMillis} from '/lib/enonic/yase/time/currentTimeMillis';
 
 
 export const get = () => ({
 	contentType: RT_JSON,
 	body: listCollectors().map(task => {
 		task.progress.info = JSON.parse(task.progress.info);
+		//log.info(toStr({task}));
 		if (!task.progress.info.currentTime) {
-			task.progress.info.currentTime = nanoTime() / 1000000;
+			log.info('Setting new currentTime');
+			task.progress.info.currentTime = currentTimeMillis();
 		}
 		if (!task.progress.info.startTime) {
+			log.info('Setting new startTime');
 			task.progress.info.startTime = task.progress.info.currentTime;
 		}
 		return task;

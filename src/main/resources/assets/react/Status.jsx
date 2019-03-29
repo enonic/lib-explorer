@@ -42,7 +42,7 @@ export class Status extends React.Component {
 					collectors: data,
 					isLoading: false
 				}));
-		}, 2000);
+		}, 1000);
   	}
 
 
@@ -58,20 +58,26 @@ export class Status extends React.Component {
 			state: this.state
 		}));*/
 		const {collectors} = this.state;
-		return <Table className='sortable' headers={[
+		return <>
+		<Table className='sortable' headers={[
 			'Collection',
 			'State',
+
+			'Current',
+			'Remaining',
+			'Total',
+			'Percent',
+
 			'Start time',
 			'Duration',
-			'End time',
-			'Current',
-			'Total',
-			'Left',
+
 			'Average',
 			'Time left',
 			'Eta',
-			'Progress',
-			'Message'
+			'End time'//,
+
+			//'Progress',
+			//'Message'
 		]}>
 			{collectors.map(({
 				progress: {
@@ -96,57 +102,74 @@ export class Status extends React.Component {
 					currentTime,
 					startTime
 				}));*/
-				const percent = current / total * 100;
-				const duration = currentTime - startTime;
-				const average = duration / current;
-				const left = total - current;
-				const eta = currentTime + (left * average);
+				const remainingCount = total - current;
+				const percent = Math.floor(current / total * 10000)/100; // Keeping two decimals
+
+				const durationMs = currentTime - startTime;
+				const averageMs = durationMs / current;
+				const remainingMs = (remainingCount * averageMs)
+				const etaMs = currentTime + remainingMs;
 				/*console.debug(toStr({
 					component: 'Status',
 					percent,
-					duration,
-					average,
-					left,
-					eta
+					durationMs,
+					averageMs,
+					remainingCount,
+					remainingMs,
+					etaMs
 				}));*/
 				moment.locale('nb'); // TODO use locale from backend?
-				return <tr key={index}>
-					<td>{name}</td>
-					<td>{state}</td>
-					<td data-sort-value={startTime}>{moment(Date(startTime)).format(FORMAT)}</td>
-					<td data-sort-value={duration}>{prettyMs(duration, {
-						formatSubMs: true,
-						separateMs: true
-					})}</td>
-					<td data-sort-value={currentTime}>{state === 'RUNNING' ? '' : moment(Date(currentTime)).format(FORMAT)}</td>
-					<td data-sort-value={current}>{current}</td>
-					<td data-sort-value={total}>{total}</td>
-					<td data-sort-value={left}>{left}</td>
-					<td data-sort-value={average}>{prettyMs(average, {
-						formatSubMs: true,
-						separateMs: true
-					})}</td>
-					<td data-sort-value={eta}>{state === 'RUNNING' ? prettyMs(eta, {
-						formatSubMs: true,
-						separateMs: true
-					}) : null}</td>
-					<td data-sort-value={eta}>{state === 'RUNNING' ? moment(Date(eta)).format(FORMAT) : null}</td>
-					<td data-sort-value={percent}><div
-						className={classNames(
-							'ui',
-							'progress',
-							taskStateToProgressClassName(state)
-						)}
-						data-percent={percent}
-						data-total={total}
-						data-value={current}
-					>
-						<div className="bar">
-	    					<div className="progress"></div>
-	  					</div>
-					</div></td>
-					<td>{message}</td>
-				</tr>;})}
-		</Table>;
+				return <React.Fragment key={index}>
+					<tr>
+						<td>{name}</td>
+						<td>{state}</td>
+
+						<td data-sort-value={current}>{current}</td>
+						<td data-sort-value={remainingCount}>{remainingCount}</td>
+						<td data-sort-value={total}>{total}</td>
+						<td data-sort-value={percent}>{percent}</td>
+
+						<td data-sort-value={startTime}>{moment(new Date(startTime)).format(FORMAT)}</td>
+						<td data-sort-value={durationMs}>{prettyMs(durationMs, {
+							//formatSubMs: true,
+							separateMs: true
+						})}</td>
+
+						<td data-sort-value={averageMs}>{prettyMs(averageMs, {
+							//formatSubMs: true,
+							separateMs: true
+						})}</td>
+						<td data-sort-value={remainingMs}>{state === 'RUNNING' ? prettyMs(remainingMs, {
+							//formatSubMs: true,
+							separateMs: true
+						}) : null}</td>
+						<td data-sort-value={etaMs}>{state === 'RUNNING' ? moment(new Date(etaMs)).format(FORMAT) : null}</td>
+						{/* End time */}
+						<td data-sort-value={currentTime}>{state === 'RUNNING' ? '' : moment(new Date(currentTime)).format(FORMAT)}</td>
+
+						{/*<td>{message}</td>*/}
+					</tr>
+					<tr>
+						<td colSpan='12' data-sort-value={percent}><div
+							className={classNames(
+								'ui',
+								'progress',
+								taskStateToProgressClassName(state)
+							)}
+							data-percent={percent}
+							data-total={total}
+							data-value={current}
+						>
+							<div className="bar" style={{
+								width: `${percent}%`
+							}}>
+								<div className="progress">{percent}%</div>
+							</div>
+							<div className="label">{message}</div>
+						</div></td>
+					</tr>
+				</React.Fragment>;})}
+		</Table>
+		</>;
 	}
 } // class Status
