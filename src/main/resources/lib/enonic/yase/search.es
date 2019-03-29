@@ -25,7 +25,7 @@ import {buildPagination} from '/lib/enonic/yase/buildPagination';
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
 import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
 import {connect} from '/lib/enonic/yase/repo/connect';
-import {multiConnect} from '/lib/enonic/yase/multiConnect';
+import {multiConnect} from '/lib/enonic/yase/repo/multiConnect';
 import {localizeFacets} from '/lib/enonic/yase/localizeFacets';
 import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
 import {removeStopWords} from '/lib/enonic/yase/removeStopWords';
