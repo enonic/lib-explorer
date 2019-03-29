@@ -9,10 +9,10 @@ import {Select} from './elements/Select';
 import {TextInput} from './elements/TextInput';
 
 import {ExpressionSelector} from './query/ExpressionSelector';
+import {Pagination} from './query/Pagination'
 import {QueryFiltersBuilder} from './query/filter/QueryFiltersBuilder';
-import {Facets} from './fields/Facets';
-import {Pagination} from './fields/Pagination'
-import {ResultMappings} from './fields/ResultMappings';
+import {Facets} from './query/Facets';
+import {ResultMappings} from './query/ResultMappings';
 
 import {toStr} from './utils/toStr';
 

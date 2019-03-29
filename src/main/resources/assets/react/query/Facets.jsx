@@ -8,10 +8,13 @@ import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
 import {SetButton} from '../buttons/SetButton';
 
-import {Fieldset} from '../elements/Fieldset';
+import {FieldSelector} from '../fields/FieldSelector';
+import {TagSelector} from '../fields/TagSelector';
 
-import {FieldSelector} from './FieldSelector';
-import {TagSelector} from './TagSelector';
+import {Buttons} from '../semantic-ui/Buttons';
+import {Field} from '../semantic-ui/Field';
+import {Header} from '../semantic-ui/Header';
+import {Icon} from '../semantic-ui/Icon';
 
 import {isSet} from '../utils/isSet';
 //mport {toStr} from '../utils/toStr';
@@ -34,15 +37,15 @@ export const Facets = connect(({
 }) => {
 	//console.debug(toStr({component: 'Facets', path, field, value}));
 	if (!(Array.isArray(value) && value.length)) {
-		return <SetButton
-			className='block'
-			field={path}
-			text="Add facet(s)"
-			value={[{
-				tag: '',
-				uuid4: generateUuidv4()
-			}]}
-		/>;
+		return <Field>
+			<SetButton
+				field={path}
+				value={[{
+					tag: '',
+					uuid4: generateUuidv4()
+				}]}
+			><Icon className='green plus'/> Add facet(s)</SetButton>
+		</Field>;
 	}
 	level += 1;
 	const allowChildren = level !== levels;
@@ -53,7 +56,8 @@ export const Facets = connect(({
 			[`tag[${field}]`]: tags[field]
 		}));
 	}*/
-	const fragment = <>
+	return <>
+		<Header dividing>{legend}</Header>
 		<FieldArray
 			name={path}
 			render={() => value
@@ -84,33 +88,34 @@ export const Facets = connect(({
 							parentPath={pathWithIndex}
 							tags={tags}
 						/> : null}
-						<InsertButton
-							index={index}
-							path={path}
-							value={{
-								tag: '',
-								//facets: [],
-								uuid4: generateUuidv4() // Might not be needed
-							}}
-						/>
-						<RemoveButton
-							index={index}
-							path={path}
-						/>
-						<MoveDownButton
-							disabled={index === value.length-1}
-							index={index}
-							path={path}
-							visible={value.length > 1}
-						/>
-						<MoveUpButton
-							index={index}
-							path={path}
-							visible={value.length > 1}
-						/>
+						<Buttons icon>
+							<InsertButton
+								index={index}
+								path={path}
+								value={{
+									tag: '',
+									//facets: [],
+									uuid4: generateUuidv4() // Might not be needed
+								}}
+							/>
+							<RemoveButton
+								index={index}
+								path={path}
+							/>
+							<MoveDownButton
+								disabled={index === value.length-1}
+								index={index}
+								path={path}
+								visible={value.length > 1}
+							/>
+							<MoveUpButton
+								index={index}
+								path={path}
+								visible={value.length > 1}
+							/>
+						</Buttons>
 					</div>
 				})}
 		/>
 	</>;
-	return isSet(legend) ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
 }); // Facets

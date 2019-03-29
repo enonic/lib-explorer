@@ -6,13 +6,16 @@ import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
 
-import {Checkbox} from '../elements/Checkbox';
-import {Fieldset} from '../elements/Fieldset';
-import {LabeledField} from '../elements/LabeledField';
+import {NumberInput} from '../elements/NumberInput';
 import {Table} from '../elements/Table';
 import {TextInput} from '../elements/TextInput';
 
-import {FieldSelector} from './FieldSelector';
+import {FieldSelector} from '../fields/FieldSelector';
+
+import {Buttons} from '../semantic-ui/Buttons';
+import {Checkbox} from '../semantic-ui/Checkbox';
+import {Header} from '../semantic-ui/Header';
+
 import {ResultMappingTypeSelector} from './ResultMappingTypeSelector';
 
 
@@ -32,7 +35,8 @@ export const ResultMappings = connect(({
 		to: ''
 	}]
 }) => {
-	const fragment = <>
+	return <>
+		<Header dividing>{legend}</Header>
 		<Table headers={['Field', 'To', 'Type', 'Options', 'Action(s)']}>
 			<FieldArray
 				name={path}
@@ -80,30 +84,30 @@ export const ResultMappings = connect(({
 										label="Highlight?"
 										name={`${pathWithIndex}.highlight`}
 									/>
-									<LabeledField
+									<NumberInput
 										label="Limit length to"
-										name={`${pathWithIndex}.lengthLimit`}
-										type="number"
+										path={`${pathWithIndex}.lengthLimit`}
 										value={lengthLimit}
 									/>
 								</> : null}
 							</td>
 							<td>
-								<InsertButton index={index} path={path} value={{
-									field: '',
-									highlight: false,
-									lengthLimit: '',
-									to: '',
-									uuid4: generateUuidv4() // Might not be needed
-								}}/>
-								<RemoveButton index={index} path={path} visible={value.length > 1}/>
-								<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
-								<MoveUpButton index={index} path={path} visible={value.length > 1}/>
+								<Buttons icon>
+									<InsertButton index={index} path={path} value={{
+										field: '',
+										highlight: false,
+										lengthLimit: '',
+										to: '',
+										uuid4: generateUuidv4() // Might not be needed
+									}}/>
+									<RemoveButton index={index} path={path} visible={value.length > 1}/>
+									<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
+									<MoveUpButton index={index} path={path} visible={value.length > 1}/>
+								</Buttons>
 							</td>
 						</tr>;
 					})}
 			/>
 		</Table>
 	</>;
-	return legend ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
 }); // ResultMappings

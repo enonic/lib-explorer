@@ -30,7 +30,6 @@ export const OperatorSelector = connect(({
 					//console.debug(toStr({name, or: 'or'}));
 					setFieldValue(name, 'or')
 				}}
-				value={value}
 			/>
 		</Field>
 		<Field>
@@ -42,7 +41,6 @@ export const OperatorSelector = connect(({
 					//console.debug(toStr({name, and: 'and'}));
 					setFieldValue(name, 'and')
 				}}
-				value={value}
 			/>
 		</Field>
 	</Fields>;

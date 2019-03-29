@@ -3,7 +3,7 @@ import classNames from 'classnames';
 //import {toStr} from '../utils/toStr';
 
 
-export const Radio = ({
+export const Checkbox = ({
 	className,
 	checked,
 	children, // So it doesn't end up in ...rest
@@ -12,12 +12,12 @@ export const Radio = ({
 	type, // So it doesn't end up in ...rest
 	...rest
 }) => {
-	//console.debug(toStr({component: 'Radio', className, label, rest}));
-	return <div className={classNames(className, 'ui radio checkbox')}>
+	//console.debug(toStr({component: 'Checkbox', className, label, rest}));
+	return <div className={classNames(className, 'ui checkbox')}>
 		<Field
 			checked={checked}
 			name={name}
-			type='radio'
+			type='checkbox'
 			{...rest}
 		/>
 		<label>{label}</label>
