@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {getUser} from '/lib/xp/auth';
 import {sanitize} from '/lib/xp/common';
 //import {get as getContext} from '/lib/xp/context';
@@ -43,7 +43,7 @@ export function create({
 
 	...rest
 } = {}) {
-	log.info(toStr({__repoId}));
+	//log.info(toStr({__repoId}));
 	const connection = connect({ // eslint-disable-line no-underscore-dangle
 		repoId: __repoId,
 		branch: __branch

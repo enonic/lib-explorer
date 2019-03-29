@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {sanitize} from '/lib/xp/common';
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -19,7 +19,7 @@ export function modify({
 		: _name,
 	...rest
 } = {}) {
-	log.info(toStr({__repoId}));
+	//log.info(toStr({__repoId}));
 	const connection = connect({ // eslint-disable-line no-underscore-dangle
 		repoId: __repoId,
 		branch: __branch

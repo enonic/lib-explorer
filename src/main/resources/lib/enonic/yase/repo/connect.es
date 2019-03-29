@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 //import {getUser} from '/lib/xp/auth';
 import {get as getContext} from '/lib/xp/context';
 import {connect as libConnect} from '/lib/xp/node';
@@ -24,7 +24,7 @@ export function connect({
 		userStore
 	} : null
 } = {}) {
-	log.info(toStr({repoId}));
+	//log.info(toStr({repoId}));
 	//const maybeUser = getUser(); log.info(toStr({maybeUser}));
 	//log.info(toStr({context}));
 	const contextPrincipals = context.authInfo.principals;
