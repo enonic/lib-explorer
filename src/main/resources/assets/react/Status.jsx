@@ -71,7 +71,7 @@ export class Status extends React.Component {
 			'Time left',
 			'Eta',
 			'Progress',
-			'Uri'
+			'Message'
 		]}>
 			{collectors.map(({
 				progress: {
@@ -80,7 +80,7 @@ export class Status extends React.Component {
 						name,
 						currentTime,
 						startTime = currentTime,
-						url
+						message
 					},
 					total
 				},
@@ -145,7 +145,7 @@ export class Status extends React.Component {
 	    					<div className="progress"></div>
 	  					</div>
 					</div></td>
-					<td>{url}</td>
+					<td>{message}</td>
 				</tr>;})}
 		</Table>;
 	}
