@@ -7,7 +7,7 @@ import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 
 
-export function fieldsPage({
+export function list({
 	path
 }, {
 	messages,
@@ -29,8 +29,8 @@ export function fieldsPage({
 		<!--td>${toStr(indexConfig)}</td-->
 		<td>${getFieldValues({field: name}).hits.map(({displayName: vN}) => vN).join(', ')}</td>
 		<td>
-			<a class="tiny compact ui button" href="${TOOL_PATH}/fields/${name}"><i class="blue edit icon"></i>Edit</a>
-			<a class="tiny compact ui button" href="${TOOL_PATH}/fields/${name}/delete"><i class="red trash alternate outline icon"></i>Delete</a>
+			<a class="tiny compact ui button" href="${TOOL_PATH}/fields/edit/${name}"><i class="blue edit icon"></i>Edit</a>
+			<a class="tiny compact ui button" href="${TOOL_PATH}/fields/delete/${name}"><i class="red trash alternate outline icon"></i>Delete</a>
 		</td>
 	</tr>`;
 	}).join('\n');

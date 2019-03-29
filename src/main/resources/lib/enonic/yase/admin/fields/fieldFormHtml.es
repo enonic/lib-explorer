@@ -2,7 +2,6 @@ import {TOOL_PATH} from '/lib/enonic/yase/constants';
 
 
 export function fieldFormHtml({
-	action = `${TOOL_PATH}/fields`,
 	description = '',
 	decideByType = true,
 	displayName = '',
@@ -11,6 +10,7 @@ export function fieldFormHtml({
 	includeInAllText = true,
 	instruction = 'type',
 	key = '',
+	action = `${TOOL_PATH}/fields/${key ? `update/${key}`: 'create'}`,
 	ngram = true,
 	path = false,
 	fieldType = 'text'
@@ -27,32 +27,36 @@ export function fieldFormHtml({
 		document.getElementById('custom-instructions').style.display = instructionSelectorEl.value === 'custom' ? 'block' : 'none';
 	}
 </script>
-<form action="${action}" autocomplete="off" class="ui form" method="POST">
-	<fieldset>
-		<legend>${key ? 'Edit' : 'New'} field ${displayName}</legend>
-
-		<label>
-			<span>Display name</span>
+<form
+	action="${action}"
+	autocomplete="off"
+	class="ui form"
+	method="POST"
+	style="width: 100%;"
+>
+	<h2>${key ? 'Edit' : 'New'} field ${displayName}</h2>
+	<div class="grouped fields">
+		<div class="field">
+			<label>Display name</label>
 			<input name="displayName" type="text" value="${displayName}"/>
-		</label>
-
-		<label>
-			<span>Key</span>
+		</div>
+		<div class="field">
+			<label>Key</label>
 			<input name="key" ${key ? 'readonly ' : ''}type="text" value="${key}"/>
-		</label>
+		</div>
 
-		<label>
-			<span>Description</span>
+		<div class="field">
+			<label>Description</label>
 			<input name="description" type="text" value="${description}"/>
-		</label>
+		</div>
 
-		<!--label>
-			<span>Icon url</span>
+		<!--div class="field">
+			<label>Icon url</label>
 			<input name="iconUrl" type="text"/>
-		</label-->
+		</div-->
 
-		<label>
-			<span>Type</span>
+		<div class="field">
+			<label>Type</label>
 			<select class="ui dropdown" name="fieldType" value="${fieldType}">
 				<option value="text" selected>Text</option>
 				<option value="tag">Tag</option><!-- Enum Map Keys -->
@@ -62,8 +66,8 @@ export function fieldFormHtml({
 			</select>
 		</label>
 
-		<label>
-			<span>Index config</span>
+		<div class="field">
+			<label>Index config</label>
 			<select class="ui dropdown" id="instruction-selector" name="instruction" onchange="setCustomInstructionsVisibility(this)" value="${instruction}">
 				<option value="type" selected>type (default) - Indexing is done based on type; e.g numeric values are indexed as both string and numeric.</option>
 				<option value="minimal">minimal - Value is indexed as a string-value only, no matter what type of data.</option>
@@ -72,7 +76,7 @@ export function fieldFormHtml({
 				<option value="path">path - Values are stored as ‘path’ type and applicable for the pathMatch-function</option>
 				<option value="custom">custom - use settings below</option>
 			</select>
-		</label>
+		</div>
 
 		<div class="grouped fields" id="custom-instructions" style="display:none">
 			<label>Custom index config</label>
@@ -118,9 +122,10 @@ export function fieldFormHtml({
 				</div>
 			</div>
 		</div>
-
-		<button class="ui button" type="submit"><i class="green plus icon"></i>${key ? 'Modify' : 'Create'} field</button>
-	</fieldset>
+		<div class="field">
+			<button class="ui button" type="submit"><i class="green plus icon"></i>${key ? 'Modify' : 'Create'} field</button>
+		</div>
+	</div>
 </form><script type="text/javascript">
 ready(function() {
 	setCustomInstructionsVisibility(document.getElementById('instruction-selector'));

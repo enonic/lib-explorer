@@ -10,8 +10,7 @@ import {connect} from '/lib/enonic/yase/repo/connect';
 export function editSynonymPage({
 	path
 }, {
-	toolPath = TOOL_PATH,
-	relPath = path.replace(toolPath, ''),
+	relPath = path.replace(TOOL_PATH, ''),
 	pathParts = relPath.match(/[^/]+/g),
 	thesaurusName = pathParts[1],
 	synonymId = pathParts[2],
@@ -33,10 +32,11 @@ export function editSynonymPage({
 	return htmlResponse({
 		main: `
 <form
-	action="${toolPath}/thesauri/${thesaurusName}"
+	action="${TOOL_PATH}/thesauri/${thesaurusName}"
 	autocomplete="off"
 	class="ui form"
 	method="POST"
+	style="width: 100%;"
 >
 	<div class="ui header">Edit synonym ${displayName}</div>
 	<input name="id" type="hidden" value="${synonymId}"/>

@@ -1,5 +1,5 @@
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 import {assetUrl} from '/lib/xp/portal';
 
 
@@ -10,12 +10,13 @@ export function htmlResponse({
 	headEnd = [],
 	main = '',
 	messages = [],
-	toolPath = TOOL_PATH,
-	path = toolPath,
+	path = TOOL_PATH,
 	title = '',
 	status = 200
 } = {}) {
-	const relPath = path.replace(toolPath, ''); //log.info(toStr({relPath}));
+	const relPath = path.replace(TOOL_PATH, ''); //log.info(toStr({relPath}));
+	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
+	const tab = pathParts[0]; log.info(toStr({tab}));
 	const preTitle = title ? `${title} - ` : '';
 	return {
 		body: `<html>
@@ -30,12 +31,12 @@ export function htmlResponse({
 	<body>
 		<nav class="stackable tabular ui menu" id="top">
 			<div class="ui container">
-				<a class="item ${relPath === '' ? 'active' : ''}" href="${toolPath}""><i class="search icon"></i> YASE</a>
-				<a class="item ${relPath.startsWith('/collections') ? 'active' : ''}" href="${toolPath}/collections"><i class="database icon"></i> Collections</a>
-				<a class="item ${relPath.startsWith('/fields') ? 'active' : ''}" href="${toolPath}/fields"><i class="sitemap icon"></i> Fields</a>
-				<a class="item ${relPath.startsWith('/tags') ? 'active' : ''}" href="${toolPath}/tags"><i class="tag icon"></i> Tags</a>
-				<a class="item ${relPath.startsWith('/thesauri') ? 'active' : ''}" href="${toolPath}/thesauri"><i class="font icon"></i> Thesauri</a>
-				<a class="item ${relPath.startsWith('/interfaces') ? 'active' : ''}" href="${toolPath}/interfaces"><i class="plug icon"></i> Interfaces</a>
+				<a class="item ${relPath === '' ? 'active' : ''}" href="${TOOL_PATH}""><i class="search icon"></i> YASE</a>
+				<a class="item ${tab === 'collections' ? 'active' : ''}" href="${TOOL_PATH}/collections"><i class="database icon"></i> Collections</a>
+				<a class="item ${tab === 'fields' ? 'active' : ''}" href="${TOOL_PATH}/fields"><i class="sitemap icon"></i> Fields</a>
+				<a class="item ${tab === 'tags' ? 'active' : ''}" href="${TOOL_PATH}/tags"><i class="tag icon"></i> Tags</a>
+				<a class="item ${tab === 'thesauri' ? 'active' : ''}" href="${TOOL_PATH}/thesauri"><i class="font icon"></i> Thesauri</a>
+				<a class="item ${tab === 'interfaces' ? 'active' : ''}" href="${TOOL_PATH}/interfaces"><i class="plug icon"></i> Interfaces</a>
 				<!--div class="right item">
 					<div class="ui input"><input type="text" placeholder="Search..."></div>
 				</div-->

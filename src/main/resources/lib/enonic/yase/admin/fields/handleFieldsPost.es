@@ -12,8 +12,6 @@ import {connect} from '/lib/enonic/yase/repo/connect';
 import {create} from '/lib/enonic/yase/node/create';
 import {modify} from '/lib/enonic/yase/node/modify';
 import {ucFirst} from '/lib/enonic/yase/ucFirst';
-import {fieldsPage} from '/lib/enonic/yase/admin/fields/fieldsPage';
-import {createOrEditFieldPage} from '/lib/enonic/yase/admin/fields/createOrEditFieldPage';
 
 
 export function handleFieldsPost({
@@ -22,12 +20,14 @@ export function handleFieldsPost({
 }) {
 	const relPath = reqPath.replace(TOOL_PATH, '');
 	const pathParts = relPath.match(/[^/]+/g);
-	const fieldName = pathParts[1];
-	const action = pathParts[2]; // update, delete, values
-	const valueName = pathParts[3];
-	const valueAction = pathParts[4];
+	const action = pathParts[1]; // update, delete, values
+	const fieldName = pathParts[2];
+	const valueAction = pathParts[3];
+	const valueName = pathParts[4];
 	log.info(toStr({fieldName, action, valueName, valueAction}));
 
+	const messages = [];
+	let status = 200;
 	if(action === 'values') {
 		if(valueAction === 'delete') {
 			const connection = connect({
@@ -36,26 +36,29 @@ export function handleFieldsPost({
 			});
 			const nodePath = `/fields/${fieldName}/${valueName}`;
 			const deleteRes = connection.delete(nodePath);
+			messages.push(deleteRes.length
+				? `Field value with path:${nodePath} deleted.`
+				: `Something went wrong when trying to delete field value with path:${nodePath}.`);
 			//log.info(toStr({deleteRes}));
-			return createOrEditFieldPage({path: reqPath}, {
-				messages: deleteRes.length
-					? [`Field value with path:${nodePath} deleted.`]
-					: [`Something went wrong when trying to delete field value with path:${nodePath}.`],
-				status: deleteRes.length ? 200 : 500
-			});
+			if (!deleteRes.length) { status = 500; }
+			return {
+				redirect: `${TOOL_PATH}/fields/edit/${fieldName}?${
+					messages.map(m => `messages=${m}`).join('&')
+				}&status=${status}`
+			}
 		}
-
-		const messages = [];
-		let status = 200;
 
 		let {value, displayName} = params;
 		log.info(toStr({value, displayName}));
 		if (!value) {
 			if (!displayName) {
-				return createOrEditFieldPage({path: reqPath}, {
-					messages: [`You must provide either value or display name!`],
-					status: 400
-				});
+				messages.push(`You must provide either value or display name!`);
+				status = 400;
+				return {
+					redirect: `${TOOL_PATH}/fields/edit/${fieldName}?${
+						messages.map(m => `messages=${m}`).join('&')
+					}&status=${status}`
+				}
 			}
 			value = sanitize(displayName);
 		} else if (!displayName) {
@@ -86,7 +89,11 @@ export function handleFieldsPost({
 			status = 500;
 		}
 
-		return createOrEditFieldPage({path: reqPath},{messages, status});
+		return {
+			redirect: `${TOOL_PATH}/fields/edit/${fieldName}?${
+				messages.map(m => `messages=${m}`).join('&')
+			}&status=${status}`
+		}
 	} // values
 
 	if (action === 'delete') {
@@ -97,12 +104,15 @@ export function handleFieldsPost({
 		const path = `/fields/${fieldName}`;
 		const deleteRes = connection.delete(path);
 		//log.info(toStr({deleteRes}));
-		return fieldsPage({path: reqPath}, {
-			messages: deleteRes.length
-				? [`Field with path:${path} deleted.`]
-				: [`Something went wrong when trying to delete field with path:${path}.`],
-			status: deleteRes.length ? 200 : 500
-		});
+		messages.push(deleteRes.length
+			? `Field with path:${path} deleted.`
+			: `Something went wrong when trying to delete field with path:${path}.`);
+		if(!deleteRes.length) { status = 500; }
+		return {
+			redirect: `${TOOL_PATH}/fields?${
+				messages.map(m => `messages=${m}`).join('&')
+			}&status=${status}`
+		}
 	} // if action === 'delete'
 
 	let {
@@ -123,10 +133,13 @@ export function handleFieldsPost({
 	} = params;
 	if (!key) {
 		if (!displayName) {
-			return fieldsPage({path: reqPath}, {
-				messages: [`You must provide either key or Display name!`],
-				status: 400
-			});
+			messages.push('You must provide either key or Display name!');
+			status = 400;
+			return {
+				redirect: `${TOOL_PATH}/fields?${
+					messages.map(m => `messages=${m}`).join('&')
+				}&status=${status}`
+			}
 		}
 		key = sanitize(displayName);
 	} else if (!displayName) {
@@ -164,10 +177,13 @@ export function handleFieldsPost({
 	};
 	const node = fieldName ? modify(nodeParams) : create(nodeParams);
 	//log.info(toStr({node}));
-	return fieldsPage({path: reqPath}, {
-		messages: node
-			? [`Field with key:${lcKey} ${fieldName ? 'modified' : 'created'}.`]
-			: [`Something went wrong when trying to ${fieldName ? 'modify' : 'create'} field with key:${lcKey}.`],
-		status: node ? 200 : 500
-	});
+	messages.push(node
+		? `Field with key:${lcKey} ${fieldName ? 'modified' : 'created'}.`
+		: `Something went wrong when trying to ${fieldName ? 'modify' : 'create'} field with key:${lcKey}.`);
+	if (!node) { status = 500;}
+	return {
+		redirect: `${TOOL_PATH}/fields?${
+			messages.map(m => `messages=${m}`).join('&')
+		}&status=${status}`
+	}
 } // function post

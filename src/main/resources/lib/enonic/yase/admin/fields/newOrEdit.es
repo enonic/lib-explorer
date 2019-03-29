@@ -8,11 +8,11 @@ import {
 import {connect} from '/lib/enonic/yase/repo/connect';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {fieldFormHtml} from '/lib/enonic/yase/admin/fields/fieldFormHtml';
-import {fieldValueFormHtml} from '/lib/enonic/yase/admin/fields/fieldValueFormHtml';
+import {fieldValueFormHtml} from '/lib/enonic/yase/admin/fields/values/fieldValueFormHtml';
 import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 
 
-export function createOrEditFieldPage({
+export function newOrEdit({
 	path: reqPath/*,
 	params: {
 		id,
@@ -25,7 +25,7 @@ export function createOrEditFieldPage({
 	//log.info(toStr({reqPath}));
 	const relPath = reqPath.replace(TOOL_PATH, ''); //log.info(toStr({relPath}));
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
-	const fieldName = pathParts[1]; //log.info(toStr({fieldName}));
+	const fieldName = pathParts[2]; //log.info(toStr({fieldName}));
 
 	if (fieldName) {
 		const connection = connect({
@@ -42,7 +42,7 @@ export function createOrEditFieldPage({
 		//log.info(toStr({description, displayName, key, indexConfig}));
 
 		const fieldForm = fieldFormHtml({
-			action: `${TOOL_PATH}/fields/${fieldName}`,
+			//action: `${TOOL_PATH}/fields/update/${fieldName}`,
 			description,
 			decideByType: dlv(indexConfig, 'decideByType', true),
 			displayName,
@@ -101,4 +101,4 @@ ${valueForm}`,
 		status,
 		title: 'Create field'
 	});
-} // createOrEditFieldPage
+} // newOrEdit

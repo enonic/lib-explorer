@@ -5,19 +5,19 @@ import {
 	REPO_ID
 } from '/lib/enonic/yase/constants';
 import {connect} from '/lib/enonic/yase/repo/connect';
-import {fieldValueFormHtml} from '/lib/enonic/yase/admin/fields/fieldValueFormHtml';
+import {fieldValueFormHtml} from '/lib/enonic/yase/admin/fields/values/fieldValueFormHtml';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 
 
-export function createOrEditValuePage({
+export function newOrEdit({
 	path: reqPath
 }) {
 	const relPath = reqPath.replace(TOOL_PATH, ''); //log.info(toStr({relPath}));
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
-	const fieldName = pathParts[1]; //log.info(toStr({fieldName}));
-	const action = pathParts[2];
-	const valueName = pathParts[3];
-	const valueAction = pathParts[4];
+	const action = pathParts[1];
+	const fieldName = pathParts[2]; //log.info(toStr({fieldName}));
+	const valueAction = pathParts[3];
+	const valueName = pathParts[4];
 	log.info(toStr({fieldName, action, valueName, valueAction}));
 
 	if(valueName) {
@@ -31,7 +31,7 @@ export function createOrEditValuePage({
 		return htmlResponse({
 			main: fieldValueFormHtml({
 				field: fieldName,
-				action: `${TOOL_PATH}/fields/${fieldName}/values/${valueName}/update`,
+				//action: `${TOOL_PATH}/fields/values/${fieldName}/update/${valueName}`,
 				displayName,
 				value: valueName
 			})
@@ -43,4 +43,4 @@ export function createOrEditValuePage({
 			field: fieldName
 		})
 	});
-} // createOrEditValuePage
+} // newOrEdit
