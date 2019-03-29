@@ -11,34 +11,30 @@ export function listThesauriPage(
 	const thesauri = getThesauri();
 	return htmlResponse({
 		main: `
-<form action="${TOOL_PATH}/thesauri" autocomplete="off" enctype="multipart/form-data" method="POST">
-	<fieldset>
-		<legend>Import</legend>
-		<label>
-			<span>Name</span>
-			<input accept="text/csv" name="file" type="file">
-		</label>
-		<select name="thesaurus">
-			${thesauri.map(t => `<option value="${t.name}">${t.displayName}</option>`)}
-		</select>
-		<button type="submit">Import csv</button>
-	</fieldset>
-</form>
-<form action="${TOOL_PATH}/thesauri" autocomplete="off" method="POST">
-	<fieldset>
-		<legend>Thesaurus</legend>
-		<label>
-			<span>Name</span>
+<form
+	action="${TOOL_PATH}/thesauri"
+	autocomplete="off"
+	class="ui form"
+	method="POST"
+	style="width: 100%;"
+>
+	<div class="ui header">Thesaurus</div>
+	<div class="grouped fields">
+		<div class="field">
+			<label>Name</label>
 			<input name="name" type="text"/>
-		</label>
-		<label>
-			<span>Description</span>
+		</div>
+		<div class="field">
+			<label>Description</label>
 			<input name="description" type="text"/>
-		</label>
-		<button type="submit">Save thesaurus</button>
-	</fieldset>
+		</div>
+		<div class="field">
+			<button class="ui button" type="submit"><i class="green plus icon"></i> New thesaurus</button>
+		</div>
+	</div>
 </form>
-<table>
+
+<table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
 			<th>Name</th>
@@ -55,7 +51,33 @@ export function listThesauriPage(
 			<td><a href="${TOOL_PATH}/thesauri/${t.name}.csv">${t.name}.csv</a></td>
 		</tr>`).join('\n')}
 	</tbody>
-</table>`,
+</table>
+
+<form
+	action="${TOOL_PATH}/thesauri"
+	autocomplete="off"
+	class="ui form"
+	enctype="multipart/form-data"
+	method="POST"
+	style="width: 100%;"
+>
+	<div class="ui header">Import</div>
+	<div class="grouped fields">
+		<div class="field">
+			<label>Name</label>
+			<input accept="text/csv" name="file" type="file">
+		</div>
+		<div class="field">
+			<select class="ui dropdown" name="thesaurus">
+				${thesauri.map(t => `<option value="${t.name}">${t.displayName}</option>`)}
+			</select>
+		</div>
+		<div class="field">
+			<button class="ui button" type="submit"><i class="blue download icon"></i> Import csv</button>
+		</div>
+	</div>
+</form>
+`,
 		messages,
 		path,
 		status,

@@ -61,33 +61,42 @@ export function thesaurusPage({
 	const toInput = '<input class="block" name="to" type="text"/>';
 	return htmlResponse({
 		main: `<h1>${name}</h1>
-<form action="${path}" autocomplete="off" method="POST">
-	<fieldset>
-		<legend>Synonym</legend>
-		<label>
-			<span>From</span>
+<form
+	action="${path}"
+	autocomplete="off"
+	class="ui form"
+	method="POST"
+	style="width: 100%;"
+>
+	<div class="ui header">Synonym</div>
+	<div class="grouped fields">
+		<div class="field">
+			<label>From</label>
 			${fromInput}
-			<button type="button" onClick="${insertAdjacentHTML(fromInput)}">+</button>
-		</label>
-		<label>
-			<span>To</span>
+			<button class="ui icon button" type="button" onClick="${insertAdjacentHTML(fromInput)}"><i class="green plus icon"></i></button>
+		</div>
+		<div class="field">
+			<label>To</label>
 			${toInput}
-			<button type="button" onClick="${insertAdjacentHTML(toInput)}">+</button>
-		</label>
-		<button type="submit">Save synonym</button>
-	</fieldset>
+			<button class="ui icon button" type="button" onClick="${insertAdjacentHTML(toInput)}"><i class="green plus icon"></i></button>
+		</div>
+		<div class="field">
+			<button class="ui button" type="submit"><i class="green plus icon"></i> New synonym</button>
+		</div>
+	</div>
 </form>
-<table>
+
+<table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
-			<th>Display name</th>
+			<!--th>Display name</th-->
 			<th>From</th>
-			<th>To</th>
+			<th colspan="2">To</th>
 		</tr>
 	</thead>
 	<tbody>
 		${thesaurus.map(s => `<tr>
-	<td>${s.displayName}</td>
+	<!--td>${s.displayName}</td-->
 	<td>${forceArray(s.from).join('<br/>')}</td>
 	<td>${forceArray(s.to).join('<br/>')}</td>
 	<td><a href="${TOOL_PATH}/thesauri/${name}/${s.id}">Edit</a></td>

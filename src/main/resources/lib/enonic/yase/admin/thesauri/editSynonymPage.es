@@ -31,22 +31,30 @@ export function editSynonymPage({
 	const toInput = '<input class="block" name="to" type="text"/>';
 
 	return htmlResponse({
-		main: `<form action="${toolPath}/thesauri/${thesaurusName}" autocomplete="off" method="POST">
-	<fieldset>
-		<legend>Edit synonym ${displayName}</legend>
-		<input name="id" type="hidden" value="${synonymId}"/>
-		<label>
-			<span>From</span>
+		main: `
+<form
+	action="${toolPath}/thesauri/${thesaurusName}"
+	autocomplete="off"
+	class="ui form"
+	method="POST"
+>
+	<div class="ui header">Edit synonym ${displayName}</div>
+	<input name="id" type="hidden" value="${synonymId}"/>
+	<div class="grouped fields">
+		<div class="field">
+			<label>From</label>
 			${forceArray(from).map(value => `<input class="block" name="from" type="text" value="${value}"/>`).join('\n')}
-			<button type="button" onClick="${insertAdjacentHTML(fromInput)}">+</button>
-		</label>
-		<label>
-			<span>To</span>
+			<button class="ui icon button" type="button" onClick="${insertAdjacentHTML(fromInput)}"><i class="green plus icon"></i></button>
+		</div>
+		<div class="field">
+			<label>To</label>
 			${forceArray(to).map(value => `<input class="block" name="to" type="text" value="${value}"/>`).join('\n')}
-			<button type="button" onClick="${insertAdjacentHTML(toInput)}">+</button>
-		</label>
-		<button type="submit">Update synonym</button>
-	</fieldset>
+			<button class="ui icon button" type="button" onClick="${insertAdjacentHTML(toInput)}"><i class="green plus icon"></i></button>
+		</div>
+		<div class="field">
+			<button class="ui primary button" type="submit"><i class="save icon"></i>Update synonym</button>
+		</div>
+	</div>
 </form>`,
 		path,
 		title: `Edit synonym ${displayName}`
