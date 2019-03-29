@@ -6,8 +6,8 @@ import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
 
-import {Fieldset} from '../elements/Fieldset';
-import {Radio} from '../elements/Radio';
+import {Buttons} from '../semantic-ui/Buttons';
+import {Header} from '../semantic-ui/Header';
 
 import {OperatorSelector} from './OperatorSelector';
 import {ExpressionSelector} from './ExpressionSelector';
@@ -48,16 +48,17 @@ export const QueryGroup = connect(({
 		<OperatorSelector
 			parentPath={path}
 		/>
-		<Fieldset legend={`Expression${value.expressions.length > 1 ? 's' : ''}`}>
-			<FieldArray
-				name={`${path}.expressions`}
-				render={() => value.expressions.map(({uuid4}, index) => {
-					const expressionPath = `${path}.expressions[${index}]`;
-					return <div key={uuid4}>
-						<ExpressionSelector
-							fields={fields}
-							path={expressionPath}
-						/>
+		<Header dividing>Expression{value.expressions.length > 1 && 's'}</Header>
+		<FieldArray
+			name={`${path}.expressions`}
+			render={() => value.expressions.map(({uuid4}, index) => {
+				const expressionPath = `${path}.expressions[${index}]`;
+				return <div key={uuid4}>
+					<ExpressionSelector
+						fields={fields}
+						path={expressionPath}
+					/>
+					<Buttons icon>
 						<InsertButton
 							index={index}
 							path={path}
@@ -77,11 +78,10 @@ export const QueryGroup = connect(({
 						<RemoveButton index={index} path={path} text="Remove expression" visible={value.expressions.length > 1}/>
 						<MoveDownButton disabled={index === value.expressions.length-1} index={index} path={path} visible={value.expressions.length > 1}/>
 						<MoveUpButton index={index} path={path} visible={value.expressions.length > 1}/>
-						<br />
-					</div>;
-				})}
-			/>
-		</Fieldset>
+					</Buttons>
+				</div>;
+			})}
+		/>
 	</>;
 	return legend ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
 }); // QueryGroup

@@ -1,6 +1,6 @@
 import {connect, getIn} from 'formik';
 
-import {Select} from '../elements/Select';
+import {Select} from '../../elements/Select';
 
 //import {toStr} from '../utils/toStr';
 

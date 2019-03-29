@@ -12,7 +12,7 @@ import {Radio} from '../elements/Radio';
 import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
 
-import {OperatorSelector} from '../fields/OperatorSelector';
+import {OperatorSelector} from './OperatorSelector';
 
 
 //import {toStr} from '../utils/toStr';

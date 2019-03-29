@@ -1,13 +1,15 @@
 import {connect, getIn} from 'formik';
 
-import {Fieldset} from '../elements/Fieldset';
 import {Select} from '../elements/Select';
+
+import {Header} from '../semantic-ui/Header';
+
 
 import {Fulltext} from './Fulltext';
 import {QueryGroup} from './QueryGroup';
-import {CompareExpression} from '../query/CompareExpression';
-import {PathMatch} from '../query/PathMatch';
-import {Range} from '../query/Range';
+import {CompareExpression} from './CompareExpression';
+import {PathMatch} from './PathMatch';
+import {Range} from './Range';
 
 //import {toStr} from '../utils/toStr';
 
@@ -36,7 +38,8 @@ export const ExpressionSelector = connect(({
 	const {params, type} = value;
 	const selectPath = `${path}.type`;
 	const paramsPath = `${path}.params`;
-	const fragment = <>
+	return <>
+		<Header dividing>{legend}</Header>
 		<Select
 			path={selectPath}
 			onChange={({
@@ -130,5 +133,4 @@ export const ExpressionSelector = connect(({
 			: null
 		}
 	</>;
-	return legend ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
 });

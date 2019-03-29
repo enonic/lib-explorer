@@ -8,8 +8,8 @@ import {SubmitButton} from './semantic-ui/SubmitButton';
 import {Select} from './elements/Select';
 import {TextInput} from './elements/TextInput';
 
-import {ExpressionSelector} from './fields/ExpressionSelector';
-import {QueryFiltersBuilder} from './fields/QueryFiltersBuilder';
+import {ExpressionSelector} from './query/ExpressionSelector';
+import {QueryFiltersBuilder} from './query/filter/QueryFiltersBuilder';
 import {Facets} from './fields/Facets';
 import {Pagination} from './fields/Pagination'
 import {ResultMappings} from './fields/ResultMappings';
@@ -97,7 +97,7 @@ export const Interface = ({
 		values
 	}) => {
 		convert(values);
-		console.debug(toStr({
+		/*console.debug(toStr({
 			component: 'Interface',
 			//collections,
 			//fields,
@@ -105,7 +105,7 @@ export const Interface = ({
 			//tags,
 			//thesauri,
 			//values
-		}));
+		}));*/
 		return <Form
 			action={action}
 			autoComplete="off"
