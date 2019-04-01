@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {sanitize} from '/lib/xp/common';
 
 import {
@@ -24,7 +24,7 @@ export function handleFieldsPost({
 	const fieldName = pathParts[2];
 	const valueAction = pathParts[3];
 	const valueName = pathParts[4];
-	log.info(toStr({fieldName, action, valueName, valueAction}));
+	//log.info(toStr({fieldName, action, valueName, valueAction}));
 
 	const messages = [];
 	let status = 200;
@@ -49,7 +49,7 @@ export function handleFieldsPost({
 		}
 
 		let {value, displayName} = params;
-		log.info(toStr({value, displayName}));
+		//log.info(toStr({value, displayName}));
 		if (!value) {
 			if (!displayName) {
 				messages.push(`You must provide either value or display name!`);

@@ -1,5 +1,5 @@
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {assetUrl} from '/lib/xp/portal';
 
 
@@ -14,9 +14,10 @@ export function htmlResponse({
 	title = '',
 	status = 200
 } = {}) {
+	//log.info(toStr({path}));
 	const relPath = path.replace(TOOL_PATH, ''); //log.info(toStr({relPath}));
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
-	const tab = pathParts ? pathParts[0] : ''; log.info(toStr({tab}));
+	const tab = pathParts ? pathParts[0] : ''; //log.info(toStr({tab}));
 	const preTitle = title ? `${title} - ` : '';
 	return {
 		body: `<html>

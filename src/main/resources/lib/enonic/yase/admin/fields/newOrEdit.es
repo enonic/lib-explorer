@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {dlv} from '/lib/enonic/util/object';
 import {
 	BRANCH_ID,
@@ -57,7 +57,7 @@ export function newOrEdit({
 		});
 
 		const values = getFieldValues({field: fieldName}).hits;
-		log.info(toStr({values}));
+		//log.info(toStr({values}));
 
 		const valueForm = fieldValueFormHtml({
 			field: fieldName

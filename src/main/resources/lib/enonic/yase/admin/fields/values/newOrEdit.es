@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {
 	BRANCH_ID,
 	TOOL_PATH,
@@ -10,15 +10,16 @@ import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 
 
 export function newOrEdit({
-	path: reqPath
+	path
 }) {
-	const relPath = reqPath.replace(TOOL_PATH, ''); //log.info(toStr({relPath}));
+	//log.info(toStr({path}));
+	const relPath = path.replace(TOOL_PATH, ''); //log.info(toStr({relPath}));
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
 	const action = pathParts[1];
-	const fieldName = pathParts[2]; //log.info(toStr({fieldName}));
+	const fieldName = pathParts[2];
 	const valueAction = pathParts[3];
 	const valueName = pathParts[4];
-	log.info(toStr({fieldName, action, valueName, valueAction}));
+	//log.info(toStr({action, fieldName, valueAction, valueName}));
 
 	if(valueName) {
 		const connection = connect({
