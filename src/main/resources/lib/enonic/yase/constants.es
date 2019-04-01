@@ -23,6 +23,7 @@ export const NT_FIELD = `${PACKAGE}:field`;
 export const NT_FIELD_VALUE = `${PACKAGE}:field-value`;
 export const NT_FOLDER = `${PACKAGE}:folder`;
 export const NT_INTERFACE = `${PACKAGE}:interface`;
+export const NT_JOURNAL = `${PACKAGE}:journal`;
 export const NT_RESPONSE = `${PACKAGE}:response`;
 export const NT_SYNONYM = `${PACKAGE}:synonym`;
 export const NT_TAG = `${PACKAGE}:tag`;
@@ -52,6 +53,7 @@ export const BRANCH_ID = 'master';
 export const REPO_ID = sanitize(PACKAGE);
 export const COLLECTION_REPO_PREFIX = `${PACKAGE}:collection:`;
 export const RESPONSES_REPO_PREFIX = `${PACKAGE}:responses:`;
+export const JOURNALS_REPO = `${PACKAGE}:journals`;
 
 
 //──────────────────────────────────────────────────────────────────────────────
