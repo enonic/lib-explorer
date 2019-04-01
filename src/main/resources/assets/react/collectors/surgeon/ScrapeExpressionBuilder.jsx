@@ -1,14 +1,14 @@
 import {connect, FieldArray, getIn} from 'formik';
 
-import {InsertButton} from '../buttons/InsertButton';
-import {MoveUpButton} from '../buttons/MoveUpButton';
-import {MoveDownButton} from '../buttons/MoveDownButton';
-import {RemoveButton} from '../buttons/RemoveButton';
-import {SetButton} from '../buttons/SetButton';
+import {InsertButton} from '../../buttons/InsertButton';
+import {MoveUpButton} from '../../buttons/MoveUpButton';
+import {MoveDownButton} from '../../buttons/MoveDownButton';
+import {RemoveButton} from '../../buttons/RemoveButton';
+import {SetButton} from '../../buttons/SetButton';
 
-import {Table} from '../elements/Table';
-import {NumberInput} from '../elements/NumberInput';
-import {TextInput} from '../elements/TextInput';
+import {Table} from '../../elements/Table';
+import {NumberInput} from '../../elements/NumberInput';
+import {TextInput} from '../../elements/TextInput';
 
 import {ScrapeQuantifierSelector} from './ScrapeQuantifierSelector';
 

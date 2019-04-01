@@ -1,31 +1,30 @@
 import {connect, FieldArray} from 'formik';
 
-import {InsertButton} from '../buttons/InsertButton';
-import {MoveUpButton} from '../buttons/MoveUpButton';
-import {MoveDownButton} from '../buttons/MoveDownButton';
-import {RemoveButton} from '../buttons/RemoveButton';
-import {SetButton} from '../buttons/SetButton';
+import {InsertButton} from '../../buttons/InsertButton';
+import {MoveUpButton} from '../../buttons/MoveUpButton';
+import {MoveDownButton} from '../../buttons/MoveDownButton';
+import {RemoveButton} from '../../buttons/RemoveButton';
+import {SetButton} from '../../buttons/SetButton';
 
-import {Checkbox} from '../elements/Checkbox';
-import {Fieldset} from '../elements/Fieldset';
-import {LabeledField} from '../elements/LabeledField';
+import {Checkbox} from '../../elements/Checkbox';
+import {Fieldset} from '../../elements/Fieldset';
+import {LabeledField} from '../../elements/LabeledField';
 
-import {Buttons} from '../semantic-ui/Buttons';
-import {Field} from '../semantic-ui/Field';
-import {Header} from '../semantic-ui/Header';
-import {Icon} from '../semantic-ui/Icon';
+import {Buttons} from '../../semantic-ui/Buttons';
+import {Field} from '../../semantic-ui/Field';
+import {Header} from '../../semantic-ui/Header';
+import {Icon} from '../../semantic-ui/Icon';
 
 //import {toStr} from '../utils/toStr';
 
-//import {DownloadField} from './DownloadField';
-import {ScrapeField} from './ScrapeField';
-//import {ScrapeJson} from './ScrapeJson';
+//import {Download} from './Download';
+import {Scrape} from './Scrape';
 
 import {URL_OPTGROUPS} from './scrapeSubroutineConstants';
 import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
 
 
-export const CrawlField = connect(({
+export const Crawl = connect(({
 	formik: {
 		values
 	},
@@ -76,22 +75,18 @@ export const CrawlField = connect(({
 					name='urlExpression'
 					optgroups={URL_OPTGROUPS}
 				/>
-				{/*<ScrapeJson
-					parentPath={path}
-					fieldsObj={fieldsObj}
-				/>*/}
-				<ScrapeField
+				<Scrape
 					fields={fields}
 					parentPath={key}
 					tags={tags}
 					value={scrape}
 				/>
-				{/*<DownloadField
+				{/*<Download
 					parentPath={key}
 					tags={tags}
 					value={download}
 				/>*/}
-				<CrawlField
+				<Crawl
 					fields={fields}
 					fieldsObj={fieldsObj}
 					parentPath={key}

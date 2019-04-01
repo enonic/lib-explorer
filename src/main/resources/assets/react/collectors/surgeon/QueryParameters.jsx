@@ -1,21 +1,21 @@
 import {FieldArray} from 'formik';
 
-import {InsertButton} from '../buttons/InsertButton';
-import {MoveUpButton} from '../buttons/MoveUpButton';
-import {MoveDownButton} from '../buttons/MoveDownButton';
-import {RemoveButton} from '../buttons/RemoveButton';
-import {SetButton} from '../buttons/SetButton';
+import {InsertButton} from '../../buttons/InsertButton';
+import {MoveUpButton} from '../../buttons/MoveUpButton';
+import {MoveDownButton} from '../../buttons/MoveDownButton';
+import {RemoveButton} from '../../buttons/RemoveButton';
+import {SetButton} from '../../buttons/SetButton';
 
-import {Table} from '../elements/Table';
-import {TextInput} from '../elements/TextInput';
+import {Table} from '../../elements/Table';
+import {TextInput} from '../../elements/TextInput';
 
-import {Buttons} from '../semantic-ui/Buttons';
-import {Field} from '../semantic-ui/Field';
-import {Header} from '../semantic-ui/Header';
-import {Icon} from '../semantic-ui/Icon';
+import {Buttons} from '../../semantic-ui/Buttons';
+import {Field} from '../../semantic-ui/Field';
+import {Header} from '../../semantic-ui/Header';
+import {Icon} from '../../semantic-ui/Icon';
 
 
-import {toStr} from '../utils/toStr';
+import {toStr} from '../../utils/toStr';
 
 
 export const QueryParameters = ({

@@ -1,26 +1,25 @@
 import {connect} from 'formik';
 
 // Elements
-import {Checkbox} from '../elements/Checkbox';
-import {Fieldset} from '../elements/Fieldset';
-import {Label} from '../elements/Label';
-import {LabeledField} from '../elements/LabeledField';
+import {Checkbox} from '../../elements/Checkbox';
+import {Fieldset} from '../../elements/Fieldset';
+import {Label} from '../../elements/Label';
+import {LabeledField} from '../../elements/LabeledField';
 //import {Table} from '../elements/Table';
 
-import {isSet} from '../utils/isSet';
+import {isSet} from '../../utils/isSet';
 //import {toStr} from '../utils/toStr';
 
 // Fields
-import {CrawlField} from './CrawlField';
-import {DelayField} from './DelayField';
-//import {DownloadField} from './DownloadField';
-import {HeadersField} from './HeadersField';
-import {PathRangeField} from './PathRangeField';
+import {Crawl} from './Crawl';
+import {Delay} from './Delay';
+//import {Download} from './Download';
+import {Headers} from './Headers';
+import {PathRange} from './PathRange';
 import {QueryParameters} from './QueryParameters';
-import {QueryRangeField} from './QueryRangeField';
-import {ScrapeField} from './ScrapeField';
-//import {ScrapeJson} from './ScrapeJson';
-import {UrlsField} from './UrlsField';
+import {QueryRange} from './QueryRange';
+import {Scrape} from './Scrape';
+import {Urls} from './Urls';
 
 
 export const Surgeon = connect(({
@@ -34,28 +33,26 @@ export const Surgeon = connect(({
 }) => {
 	const {
 		collector: {
-			name: collectorName,
 			config: {
 				crawl,
-				connectionTimeout,
-				delay,
-				download,
-				dynamic,
+				connectionTimeout = 10000,
+				delay = 1000,
+				download = [],
+				dynamic = false,
 				pathRange,
 				queryParams,
 				queryRange,
 				headers,
-				readTimeout,
-				retries,
+				readTimeout = 10000,
+				retries = 1,
 				scrape,
-				urls
-			}
+				urls = [''] // At least one is required
+			} = {}
 		}
 	} = values;
 	/*console.log(toStr({
 		fields,
 		path,
-		collectorName,
 		crawl/*,
 		delay,
 		dynamic,
@@ -68,34 +65,30 @@ export const Surgeon = connect(({
 		urls
 	}));*/
 	return <>
-	<UrlsField parentPath={path} value={urls}/>
-	<PathRangeField path={`${path}.pathRange`} pathRange={pathRange}/>
-	<QueryRangeField path={`${path}.queryRange`} queryRange={queryRange}/>
+	<Urls parentPath={path} value={urls}/>
+	<PathRange path={`${path}.pathRange`} pathRange={pathRange}/>
+	<QueryRange path={`${path}.queryRange`} queryRange={queryRange}/>
 	<QueryParameters parentPath={path} value={queryParams}/>
-	<HeadersField path={`${path}.headers`} headers={headers}/>
-	<DelayField path={`${path}.delay`} value={delay}/>
+	<Headers path={`${path}.headers`} headers={headers}/>
+	<Delay path={`${path}.delay`} value={delay}/>
 	<LabeledField label="Connection timeout" name={`${path}.connectionTimeout`} value={isSet(connectionTimeout) ? connectionTimeout : 10000}/>
 	<LabeledField label="Read timeout" name={`${path}.readTimeout`} value={isSet(readTimeout) ? readTimeout : 10000}/>
 	<LabeledField label="Retries" name={`${path}.retries`} value={isSet(retries) ? retries : 1}/>
 	<Checkbox checked={dynamic} label="Dynamic" name={`${path}.dynamic`}/>
-	{/*<ScrapeJson
-		parentPath={path}
-		fieldsObj={fieldsObj}
-	/>*/}
-	<ScrapeField
+	<Scrape
 		fields={fields}
 		fieldsObj={fieldsObj}
 		parentPath={path}
 		tags={tags}
 		value={scrape}
 	/>
-	{/*<DownloadField
+	{/*<Download
 		fields={fields}
 		parentPath={path}
 		tags={tags}
 		value={download}
 	/>*/}
-	<CrawlField
+	<Crawl
 		fields={fields}
 		fieldsObj={fieldsObj}
 		parentPath={path}

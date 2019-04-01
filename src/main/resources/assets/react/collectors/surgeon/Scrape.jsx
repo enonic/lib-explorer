@@ -1,28 +1,28 @@
 import {connect, FieldArray, getIn} from 'formik';
 
-import {InsertButton} from '../buttons/InsertButton';
-import {MoveUpButton} from '../buttons/MoveUpButton';
-import {MoveDownButton} from '../buttons/MoveDownButton';
-import {RemoveButton} from '../buttons/RemoveButton';
-import {SetButton} from '../buttons/SetButton';
+import {InsertButton} from '../../buttons/InsertButton';
+import {MoveUpButton} from '../../buttons/MoveUpButton';
+import {MoveDownButton} from '../../buttons/MoveDownButton';
+import {RemoveButton} from '../../buttons/RemoveButton';
+import {SetButton} from '../../buttons/SetButton';
 
-import {Select} from '../elements/Select';
-import {Table} from '../elements/Table';
+import {Select} from '../../elements/Select';
+import {Table} from '../../elements/Table';
 
-import {Buttons} from '../semantic-ui/Buttons';
-import {Field} from '../semantic-ui/Field';
-import {Header} from '../semantic-ui/Header';
-import {Icon} from '../semantic-ui/Icon';
+import {Buttons} from '../../semantic-ui/Buttons';
+import {Field} from '../../semantic-ui/Field';
+import {Header} from '../../semantic-ui/Header';
+import {Icon} from '../../semantic-ui/Icon';
 
-import {FieldSelector} from './FieldSelector';
+import {FieldSelector} from '../../fields/FieldSelector';
 import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
-import {TagSelector} from './TagSelector';
+import {TagSelector} from '../../fields/TagSelector';
 
 
-import {toStr} from '../utils/toStr';
+import {toStr} from '../../utils/toStr';
 
 
-export const ScrapeField = connect(({
+export const Scrape = connect(({
 	formik: {
 		values
 	},
@@ -35,7 +35,7 @@ export const ScrapeField = connect(({
 	value = getIn(values, path) || undefined
 }) => {
 	/*console.debug(toStr({
-		component: 'ScrapeField',
+		component: 'Scrape',
 		parentPath,
 		value//,
 		//values

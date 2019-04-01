@@ -1,5 +1,5 @@
 import {getIn} from 'formik';
-import {Select} from '../elements/Select';
+import {Select} from '../../elements/Select';
 
 import {SCRAPE_SUBROUTINES} from './scrapeSubroutineConstants';
 

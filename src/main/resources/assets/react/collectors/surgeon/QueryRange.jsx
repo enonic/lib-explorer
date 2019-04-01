@@ -1,15 +1,15 @@
-import {SetButton} from '../buttons/SetButton';
+import {SetButton} from '../../buttons/SetButton';
 
-import {NumberInput} from '../elements/NumberInput';
-import {TextInput} from '../elements/TextInput';
+import {NumberInput} from '../../elements/NumberInput';
+import {TextInput} from '../../elements/TextInput';
 
-import {Field} from '../semantic-ui/Field';
-import {Fields} from '../semantic-ui/Fields';
-import {Header} from '../semantic-ui/Header';
-import {Icon} from '../semantic-ui/Icon';
+import {Field} from '../../semantic-ui/Field';
+import {Fields} from '../../semantic-ui/Fields';
+import {Header} from '../../semantic-ui/Header';
+import {Icon} from '../../semantic-ui/Icon';
 
 
-export const QueryRangeField = ({
+export const QueryRange = ({
 	path,
 	queryRange
 }) => queryRange

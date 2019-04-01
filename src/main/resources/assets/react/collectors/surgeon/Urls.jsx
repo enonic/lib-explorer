@@ -1,17 +1,17 @@
 import {connect, FieldArray, getIn} from 'formik';
 
-import {InsertButton} from '../buttons/InsertButton';
-import {MoveUpButton} from '../buttons/MoveUpButton';
-import {MoveDownButton} from '../buttons/MoveDownButton';
-import {RemoveButton} from '../buttons/RemoveButton';
+import {InsertButton} from '../../buttons/InsertButton';
+import {MoveUpButton} from '../../buttons/MoveUpButton';
+import {MoveDownButton} from '../../buttons/MoveDownButton';
+import {RemoveButton} from '../../buttons/RemoveButton';
 
-import {TextInput} from '../elements/TextInput';
+import {TextInput} from '../../elements/TextInput';
 
-import {Buttons} from '../semantic-ui/Buttons';
-import {Table} from '../semantic-ui/Table';
+import {Buttons} from '../../semantic-ui/Buttons';
+import {Table} from '../../semantic-ui/Table';
 
 
-export const UrlsField = connect(({
+export const Urls = connect(({
 	formik: {
 		values
 	},

@@ -1,16 +1,16 @@
-import {SetButton} from '../buttons/SetButton';
+import {SetButton} from '../../buttons/SetButton';
 
-import {Fieldset} from '../elements/Fieldset';
-import {NumberInput} from '../elements/NumberInput';
+import {Fieldset} from '../../elements/Fieldset';
+import {NumberInput} from '../../elements/NumberInput';
 
-import {Field} from '../semantic-ui/Field';
-import {Fields} from '../semantic-ui/Fields';
-import {Header} from '../semantic-ui/Header';
-import {Icon} from '../semantic-ui/Icon';
+import {Field} from '../../semantic-ui/Field';
+import {Fields} from '../../semantic-ui/Fields';
+import {Header} from '../../semantic-ui/Header';
+import {Icon} from '../../semantic-ui/Icon';
 
 
 
-export const PathRangeField = ({
+export const PathRange = ({
 	path,
 	pathRange
 }) => pathRange

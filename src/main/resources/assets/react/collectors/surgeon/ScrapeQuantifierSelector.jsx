@@ -1,5 +1,5 @@
 import {connect, getIn} from 'formik';
-import {Select} from '../elements/Select';
+import {Select} from '../../elements/Select';
 
 
 export const ScrapeQuantifierSelector = connect(({

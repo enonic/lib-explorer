@@ -1,9 +1,10 @@
-import {Form, Formik} from 'formik';
+import {Form, Formik, getIn} from 'formik';
 import {SubmitButton} from './semantic-ui/SubmitButton';
 import {TextInput} from './elements/TextInput';
-import {Surgeon} from './fields/Surgeon';
+import {Surgeon} from './collectors/surgeon/Surgeon';
 //import {toStr} from './utils/toStr';
 
+import {Select} from './elements/Select';
 import {Field} from './semantic-ui/Field';
 
 
@@ -13,18 +14,10 @@ export const Collection = ({
 	fieldsObj = {},
 	tags = [],
 	initialValues = {
-		collector: {
-			config: { // Avoid uncontrolled to controlled warning:
-				connectionTimeout: 10000,
-				delay: 1000,
-				download: [],
-				dynamic: false,
-				readTimeout: 10000,
-				retries: 1,
-				urls: [''] // At least one is required
-			},
+		/*collector: {
 			name: 'surgeon'
-		},
+			config: {}
+		},*/
 		name: ''
 	}
 } = {}) => <Formik
@@ -35,9 +28,9 @@ export const Collection = ({
 	}) => {
 		/*console.log(toStr({
 			//fields,
-			fieldsObj//,
+			//fieldsObj,
 			//tags,
-			//values
+			values
 		}));*/
 		return <Form
 			action={action}
@@ -56,12 +49,20 @@ export const Collection = ({
 				label="Name"
 				name="name"
 			/>
-			<Surgeon
+			<Select
+				path='collector.name'
+				options={[{
+					label: 'Surgeon',
+					value: 'surgeon'
+				}]}
+				placeholder= 'Please select a collector'
+			/>
+			{getIn(values, 'collector.name') === 'surgeon' ? <Surgeon
 				fields={fields}
 				fieldsObj={fieldsObj}
 				path='collector.config'
 				tags={tags}
-			/>
+			/> : null}
 			<Field><SubmitButton className='primary' text="Save collection"/></Field>
 			<input id="json" name="json" type="hidden"/>
 		</Form>}}

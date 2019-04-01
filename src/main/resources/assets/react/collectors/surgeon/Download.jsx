@@ -6,22 +6,22 @@ import {
 } from 'formik';
 import generateUuidv4 from 'uuid/v4';
 
-import {InsertButton} from '../buttons/InsertButton';
-import {MoveUpButton} from '../buttons/MoveUpButton';
-import {MoveDownButton} from '../buttons/MoveDownButton';
-import {RemoveButton} from '../buttons/RemoveButton';
-import {SetButton} from '../buttons/SetButton';
+import {InsertButton} from '../../buttons/InsertButton';
+import {MoveUpButton} from '../../buttons/MoveUpButton';
+import {MoveDownButton} from '../../buttons/MoveDownButton';
+import {RemoveButton} from '../../buttons/RemoveButton';
+import {SetButton} from '../../buttons/SetButton';
 
-import {Fieldset} from '../elements/Fieldset';
-import {Table} from '../elements/Table';
+import {Fieldset} from '../../elements/Fieldset';
+import {Table} from '../../elements/Table';
 
-import {FieldSelector} from './FieldSelector';
-import {TagSelector} from './TagSelector';
+import {FieldSelector} from '../../fields/FieldSelector';
+import {TagSelector} from '../../fields/TagSelector';
 
 //import {toStr} from '../utils/toStr';
 
 
-export const DownloadField = connect(({
+export const Download = connect(({
 	formik: {
 		values
 	},
