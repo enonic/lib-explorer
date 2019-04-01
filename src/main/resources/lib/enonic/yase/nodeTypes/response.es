@@ -9,7 +9,7 @@ export const response = ({
 	...rest // __repoId
 }) => ({
 	_indexConfig: {
-		default: 'none', // none make node invisible in datatoolbox?
+		default: 'none',
 		configs: [{/*
 			path: 'request',
 			config: 'none'
