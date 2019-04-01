@@ -2,10 +2,14 @@ import {Form, Formik, getIn} from 'formik';
 import {SubmitButton} from './semantic-ui/SubmitButton';
 import {TextInput} from './elements/TextInput';
 import {Surgeon} from './collectors/surgeon/Surgeon';
+import {Cron} from './fields/Cron';
 //import {toStr} from './utils/toStr';
 
 import {Select} from './elements/Select';
+
+import {Checkbox} from './semantic-ui/Checkbox';
 import {Field} from './semantic-ui/Field';
+import {Header} from './semantic-ui/Header';
 
 
 export const Collection = ({
@@ -49,6 +53,12 @@ export const Collection = ({
 				label="Name"
 				name="name"
 			/>
+			<Checkbox
+				name='doCollect'
+				label='Collect?'
+			/>
+			<Cron/>
+			<Header h2 dividing text='Collector'/>
 			<Select
 				path='collector.name'
 				options={[{

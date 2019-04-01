@@ -1,6 +1,7 @@
 import traverse from 'traverse';
 
 //import {toStr} from '/lib/enonic/util';
+import {isSet} from '/lib/enonic/util/value';
 import {assetUrl} from '/lib/xp/portal';
 
 import {connect} from '/lib/enonic/yase/repo/connect';
@@ -59,7 +60,7 @@ export function newOrEdit({
 		const node = connection.get(`/collections/${collectionName}`);
 		//log.info(toStr({node}));
 
-		const {displayName, collector} = node;
+		const {displayName, collector, cron, doCollect} = node;
 		convert(collector);
 		if(!collector.config.urls.length) {
 			collector.config.urls.push('');
@@ -68,7 +69,9 @@ export function newOrEdit({
 
 		initialValues = {
 			name: displayName,
-			collector
+			collector,
+			cron,
+			doCollect: isSet(doCollect) ? doCollect : true
 		};
 	}
 	//log.info(toStr({initialValues}));

@@ -17,6 +17,7 @@ export const Header = ({
 	large,
 	medium,
 	small,
+	text,
 	tiny,
 	...rest
 }) => {
@@ -36,5 +37,5 @@ export const Header = ({
 		medium,
 		small,
 		tiny
-	}, 'ui header')} {...rest}>{children}</Tag>;
+	}, 'ui header')} {...rest}>{children || text}</Tag>;
 }

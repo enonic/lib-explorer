@@ -147,7 +147,7 @@ export const Select = connect(({
 			disabled={disabled}
 			key={optionValue}
 			value={optionValue}
-		>{optionLabel}</option>)}
+		>{optionLabel || optionValue}</option>)}
 	</Field>;
 	if(!label) { return select; }
 	return <Label label={label}>
