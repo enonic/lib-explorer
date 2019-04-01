@@ -16,7 +16,7 @@ export function htmlResponse({
 } = {}) {
 	const relPath = path.replace(TOOL_PATH, ''); //log.info(toStr({relPath}));
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
-	const tab = pathParts[0]; log.info(toStr({tab}));
+	const tab = pathParts ? pathParts[0] : ''; log.info(toStr({tab}));
 	const preTitle = title ? `${title} - ` : '';
 	return {
 		body: `<html>
