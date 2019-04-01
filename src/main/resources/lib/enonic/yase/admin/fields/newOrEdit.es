@@ -78,8 +78,8 @@ export function newOrEdit({
 			<td>${value}</td>
 			<td>${vDN}</td>
 			<td>
-				<a class="tiny compact ui button" href="${TOOL_PATH}/fields/${fieldName}/values/${value}/edit"><i class="blue edit icon"></i>Edit</a>
-				<form action="${TOOL_PATH}/fields/${fieldName}/values/${value}/delete" method="post">
+				<a class="tiny compact ui button" href="${TOOL_PATH}/fields/values/${fieldName}/edit/${value}"><i class="blue edit icon"></i>Edit</a>
+				<form action="${TOOL_PATH}/fields/values/${fieldName}/delete/${value}" method="post">
 					<button class="tiny compact ui button" type="submit"><i class="red trash alternate outline icon"></i>Delete</button>
 				</form>
 			</td>
