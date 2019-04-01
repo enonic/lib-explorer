@@ -15,7 +15,7 @@ export const menu = ({
 		<a class="${name ? '' : 'disabled '}item${action === 'edit' ? ' active' : ''}" href="${TOOL_PATH}/collections/edit/${name}"><i class="edit icon"></i> Edit</a>
 		<a class="${name ? '' : 'disabled '}item${action === 'delete' ? ' active' : ''}" href="${TOOL_PATH}/collections/delete/${name}"><i class="trash alternate outline edit icon"></i> Delete</a>
 		<a class="item${action === 'status' ? ' active' : ''}" href="${TOOL_PATH}/collections/status"><i class="cogs icon"></i> Status</a>
-		<a class="item${action === 'history' ? ' active' : ''}" href="${TOOL_PATH}/collections/history"><i class="calendar icon"></i> History</a>
+		<a class="item${action === 'journal' ? ' active' : ''}" href="${TOOL_PATH}/collections/journal"><i class="newspaper outline icon"></i> Journal</a>
 	</div>
 </nav>`;
 }
