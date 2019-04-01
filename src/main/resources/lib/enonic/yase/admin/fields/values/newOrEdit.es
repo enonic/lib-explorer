@@ -35,13 +35,15 @@ export function newOrEdit({
 				//action: `${TOOL_PATH}/fields/values/${fieldName}/update/${valueName}`,
 				displayName,
 				value: valueName
-			})
+			}),
+			path
 		});
 	}
 
 	return htmlResponse({
 		main: fieldValueFormHtml({
 			field: fieldName
-		})
+		}),
+		path
 	});
 } // newOrEdit
