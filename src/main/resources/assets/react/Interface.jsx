@@ -57,36 +57,7 @@ export const Interface = ({
 		name: '',
 		collections: [],
 		thesauri: [],
-		query: {
-			type: 'group',
-			params: {
-				expressions: [{
-					type: 'fulltext',
-					params: {
-						fields: [{
-							field: '',
-							boost: ''
-						}],
-						operator: 'or',
-						searchString: {
-							allowLetters: true,
-							allowUnicodeLetters: true,
-							allowDigits: true,
-							allowUnderscore: true,
-							allowSingleQuotes: true,
-							allowAnd: true,
-							allowOr: false,
-							allowNegate: true,
-							allowPrefix: false,
-							allowPrecedence: false,
-							allowPhrase: true,
-							allowTilde: false
-						}
-					}
-				}], // expressions
-				operator: 'or'
-			} // params
-		}, // query
+		query: {},
 		resultMappings: [{
 			field: '',
 			highlight: false,

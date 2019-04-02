@@ -83,7 +83,7 @@ export const Select = connect(({
 		optionsArr,
 		placeholder
 	}),
-	value = values ? getIn(values, path, defaultValue) : defaultValue,
+	value = values && getIn(values, path) || defaultValue,
 	onChange = ({
 		target: {
 			selectedOptions // HTMLCollection
@@ -106,13 +106,13 @@ export const Select = connect(({
 		//name,
 		path,
 		//optgroups,
-		optgroupsArr,
-		options,
-		optionsArr,
+		//optgroupsArr,
+		//options,
+		//optionsArr,
 		//placeholder,
-		value,
+		value//,
 		//values,
-		rest
+		//rest
 	}));*/
 	const select = <Field
 		className='ui dropdown'

@@ -13,14 +13,15 @@ import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
 
 import {OperatorSelector} from './OperatorSelector';
-import {SearchStringFilter} from './SearchStringFilter';
+//import {SearchStringFilter} from './SearchStringFilter';
 
 
-import {toStr} from '../utils/toStr';
+//import {toStr} from '../utils/toStr';
 
 
 export const Fulltext = connect(({
 	formik: {
+		//setFieldValue,
 		values
 	},
 	fields,
@@ -28,39 +29,19 @@ export const Fulltext = connect(({
 	legend = null,
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	value = values && getIn(values, path) || {
-		fields: [{
-			field: '',
-			boost: ''
-		}],
-		operator: 'or',
-		searchString: {
-			allowLetters: true,
-			allowUnicodeLetters: true,
-			allowDigits: true,
-			allowUnderscore: true,
-			allowSingleQuotes: true,
-			allowAnd: true,
-			allowOr: false,
-			allowNegate: true,
-			allowPrefix: false,
-			allowPrecedence: false,
-			allowPhrase: true,
-			allowTilde: false
-		}
-	}
+	value = values && getIn(values, path)
 }) => {
-	console.debug(toStr({
+	/*console.debug(toStr({
 		component: 'Fulltext',
 		//fields,
 		//parentPath,
 		//name,
 		path,
 		value
-	}));
+	}));*/
 	const fragment = <>
 		<OperatorSelector parentPath={path}/>
-		<SearchStringFilter parentPath={path}/>
+		{/*<SearchStringFilter parentPath={path}/>*/}
 		<Table headers={['Field', 'Boost', `Action${value.fields.length > 1 ? 's' : ''}`]}>
 			<FieldArray
 				name={`${path}.fields`}
@@ -71,14 +52,13 @@ export const Fulltext = connect(({
 						const pathWithIndex = `${path}.fields[${index}]`;
 						const boostPath = `${pathWithIndex}.boost`;
 						const fieldPath = `${pathWithIndex}.field`;
-						const fieldValue = getIn(values, fieldPath, '');
-						const boostValue = getIn(values, boostPath, '');
-						//console.debug(toStr({uuid4, index, fieldPath, field, fieldValue, boostPath, boost, boostValue}));
+						//console.debug(toStr({uuid4, index, fieldPath, field, boostPath, boost}));
 						return <tr key={uuid4}>
 							<td><Select
-								path={fieldPath}
 								options={fields}
+								path={fieldPath}
 								placeholder='Select field'
+								value={field}
 							/></td>
 							<td><NumberInput path={boostPath}/></td>
 							<td>

@@ -1,8 +1,12 @@
 import {connect, getIn} from 'formik';
 
-import {Checkbox} from '../elements/Checkbox';
-import {TextInput} from '../elements/TextInput';
 import {FieldSelector} from '../fields/FieldSelector';
+
+import {TextInput} from '../formik/TextInput';
+
+import {Checkbox} from '../semantic-ui/Checkbox';
+
+//import {toStr} from '../utils/toStr';
 
 
 export const Range = connect(({
@@ -15,6 +19,13 @@ export const Range = connect(({
 	path = parentPath ? `${parentPath}.${name}` : name,
 	value = getIn(values, path)
 }) => {
+	/*console.debug(toStr({
+		component: 'Range',
+		parentPath,
+		name,
+		path,
+		value
+	}));*/
 	return <>
 		<FieldSelector
 			parentPath={path}
@@ -22,13 +33,13 @@ export const Range = connect(({
 		/>
 		<TextInput
 			name='from'
-			placeholder='From'
 			parentPath={path}
+			placeholder='From'
 		/>
 		<TextInput
 			name='to'
-			placeholder='To'
 			parentPath={path}
+			placeholder='To'
 		/>
 		<Checkbox
 			label='Include from?'

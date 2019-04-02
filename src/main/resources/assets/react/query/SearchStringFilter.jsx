@@ -38,7 +38,7 @@ export const SearchStringFilter = connect(({
 		allowTilde//= false
 	} = value;
 	return <>
-		<Fields inline>
+		<Fields grouped>
 			<Field>
 				<Checkbox
 					checked={allowLetters}
@@ -79,14 +79,12 @@ export const SearchStringFilter = connect(({
 					label="Allow single quotes '''"
 				/>
 			</Field>
-		</Fields>
-		<Fields inline>
 			<Field>
 				<Checkbox
 					checked={allowAnd}
 					parentPath={path}
 					name='allowAnd'
-					label='Allow +'
+					label='Allow and +'
 				/>
 			</Field>
 			<Field>
@@ -94,7 +92,7 @@ export const SearchStringFilter = connect(({
 					checked={allowOr}
 					parentPath={path}
 					name='allowOr'
-					label='Allow |'
+					label='Allow or |'
 				/>
 			</Field>
 			<Field>
@@ -102,7 +100,7 @@ export const SearchStringFilter = connect(({
 					checked={allowNegate}
 					parentPath={path}
 					name='allowNegate'
-					label='Allow -'
+					label='Allow negate -'
 				/>
 			</Field>
 			<Field>
@@ -110,7 +108,7 @@ export const SearchStringFilter = connect(({
 					checked={allowPrefix}
 					parentPath={path}
 					name='allowPrefix'
-					label='Allow *'
+					label='Allow prefix *'
 				/>
 			</Field>
 			<Field>
@@ -118,7 +116,7 @@ export const SearchStringFilter = connect(({
 					checked={allowPrecedence}
 					parentPath={path}
 					name='allowPrecedence'
-					label='Allow ()'
+					label='Allow precendence ()'
 				/>
 			</Field>
 			<Field>
@@ -126,7 +124,7 @@ export const SearchStringFilter = connect(({
 					checked={allowPhrase}
 					parentPath={path}
 					name='allowPhrase'
-					label='Allow ""'
+					label='Allow phrase ""'
 				/>
 			</Field>
 			<Field>
@@ -134,7 +132,7 @@ export const SearchStringFilter = connect(({
 					checked={allowTilde}
 					parentPath={path}
 					name='allowTilde'
-					label='Allow ~ (implies digits)'
+					label='Allow tilde ~ (implies digits)'
 				/>
 			</Field>
 		</Fields>

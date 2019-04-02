@@ -1,4 +1,5 @@
 import {connect, getIn} from 'formik';
+import generateUuidv4 from 'uuid/v4';
 
 import {Select} from '../elements/Select';
 
@@ -24,39 +25,16 @@ export const ExpressionSelector = connect(({
 	legend = null,
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	value = values && getIn(values, path) || {
-		type: 'fulltext',
-		params: {
-			fields: [{
-				field: '',
-				boost: ''
-			}],
-			operator: 'or',
-			searchString: {
-				allowLetters: true,
-				allowUnicodeLetters: true,
-				allowDigits: true,
-				allowUnderscore: true,
-				allowSingleQuotes: true,
-				allowAnd: true,
-				allowOr: false,
-				allowNegate: true,
-				allowPrefix: false,
-				allowPrecedence: false,
-				allowPhrase: true,
-				allowTilde: false
-			}
-		}
-	}
+	value = values && getIn(values, path)
 }) => {
-	console.debug(toStr({
+	/*console.debug(toStr({
 		component: 'ExpressionSelector',
 		//parentPath,
 		//name,
 		path,
 		value
-	}));
-	const {params, type} = value;
+	}));*/
+	const {params = {}, type = ''} = value;
 	const selectPath = `${path}.type`;
 	const paramsPath = `${path}.params`;
 	return <>
@@ -68,62 +46,49 @@ export const ExpressionSelector = connect(({
 					selectedOptions // HTMLCollection
 				}
 			}) => {
+				//console.debug(toStr({selectPath, paramsPath}));
 				const htmlCollectionAsArray = [].slice
 					.call(selectedOptions)
 					.map(({value}) => value);
+				//console.debug(toStr({htmlCollectionAsArray}));
 				const newType = htmlCollectionAsArray[0];
-				//console.debug({ selectPath, htmlCollectionAsArray});
+				//console.debug(toStr({newType}));
 				setFieldValue(selectPath, newType);
-				setFieldValue(paramsPath, newType === 'group'
-					? {
-						expressions: [{
-							type: 'fulltext',
-							params: {
-								fields: [{
-									field: '',
-									boost: ''
-								}],
-								operator: 'or',
-								searchString: {
-									allowLetters: true,
-									allowUnicodeLetters: true,
-									allowDigits: true,
-									allowUnderscore: true,
-									allowSingleQuotes: true,
-									allowAnd: true,
-									allowOr: false,
-									allowNegate: true,
-									allowPrefix: false,
-									allowPrecedence: false,
-									allowPhrase: true,
-									allowTilde: false
-								}
-							}
-						}],
+				if(newType === 'group') {
+					setFieldValue(paramsPath, {
+						expressions: [],
 						operator: 'or'
-					}
-					: {
+					});
+				} else if (['fulltext', 'ngram'].includes(newType)) {
+					setFieldValue(paramsPath, {
 						fields: [{
-							field: '',
-							boost: ''
+							field: '_allText',
+							boost: '',
+							uuid4: generateUuidv4()
 						}],
-						operator: 'or',
-						searchString: {
-							allowLetters: true,
-							allowUnicodeLetters: true,
-							allowDigits: true,
-							allowUnderscore: true,
-							allowSingleQuotes: true,
-							allowAnd: true,
-							allowOr: false,
-							allowNegate: true,
-							allowPrefix: false,
-							allowPrecedence: false,
-							allowPhrase: true,
-							allowTilde: false
-						}
-					}
-				);
+						operator: 'and'
+					});
+				} else if (newType === 'compareExpr') {
+					setFieldValue(paramsPath, {
+						field: '',
+						operator: '=',
+						valueExpr: ''
+					});
+				} else if (newType === 'range') {
+					setFieldValue(paramsPath, {
+						field: '',
+						from : '',
+						to: '',
+						includeFrom: false,
+						includeTo: false
+					});
+				} else if (newType === 'pathMatch') {
+					setFieldValue(paramsPath, {
+						field: '',
+						path: '',
+						minMatch: 1
+					});
+				}
 			}}
 			options={[{
 				label: 'Logic',
@@ -144,6 +109,7 @@ export const ExpressionSelector = connect(({
 				label: 'Path match',
 				value: 'pathMatch'
 			}]}
+			placeholder='Please select expression type'
 			value={type}
 		/>
 		{['fulltext', 'ngram'].includes(type)
@@ -162,81 +128,24 @@ export const ExpressionSelector = connect(({
 		}
 		{type === 'compareExpr'
 			? <CompareExpression
-				path={paramsPath}
 				fields={fields}
+				path={paramsPath}
 			/>
 			: null
 		}
 		{type === 'range'
 			? <Range
-				path={paramsPath}
 				fields={fields}
+				path={paramsPath}
 			/>
 			: null
 		}
 		{type === 'pathMatch'
 			? <PathMatch
-				path={paramsPath}
 				fields={fields}
+				path={paramsPath}
 			/>
 			: null
 		}
 	</>;
 });
-
-
-/*
-(
-	fulltext(fields^1, searchString, 'AND')
-	OR ngram(fields^0, searchString, 'AND')
-	OR fulltext(fields^-1, synonyms, 'AND')
-)
-
-const EXAMPLE_QUERY = {
-	type: 'group',
-	params: {
-		operator: 'or',
-		expressions: [
-			{
-				type: 'fulltext',
-				params: {
-					operator: 'and',
-					//searchString: '',
-					fields: [
-						{
-							field: 'title',
-							boost: '1'
-						},
-					]
-				}
-			},
-			{
-				type: 'ngram',
-				params: {
-					operator: 'and',
-					//searchString: '',
-					fields: [
-						{
-							field: 'title',
-							boost: ''
-						}
-					]
-				}
-			},
-			{
-				type: 'fulltext',
-				params: {
-					operator: 'or',
-					//searchString: '...synonyms',
-					fields: [
-						{
-							field: 'title',
-							boost: '-1'
-						},
-					]
-				}
-			}
-		]
-	}
-};
-*/

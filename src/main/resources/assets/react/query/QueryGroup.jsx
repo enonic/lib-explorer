@@ -5,9 +5,12 @@ import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
+import {SetButton} from '../buttons/SetButton';
 
 import {Buttons} from '../semantic-ui/Buttons';
+import {Field} from '../semantic-ui/Field';
 import {Header} from '../semantic-ui/Header';
+import {Icon} from '../semantic-ui/Icon';
 
 import {OperatorSelector} from './OperatorSelector';
 import {ExpressionSelector} from './ExpressionSelector';
@@ -21,30 +24,34 @@ export const QueryGroup = connect(({
 	},
 	fields,
 	name = 'group',
-	legend = null,
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	value = values && getIn(values, path) || {
-		expressions: [{
-			type: 'fulltext',
-			params: {
-				fields: [{
-					field: '',
-					boost: ''
-				}],
-				operator: 'or'
-			}
-		}],
-		operator: 'or'
-	}
+	value = values && getIn(values, path)
 }) => {
 	/*console.debug(toStr({
+		component: 'QueryGroup',
 		//fields,
-		parentPath, path,
-		//values,
+		//parentPath,
+		//name,
+		path,
 		value
 	}));*/
-	const fragment = <>
+	const expressionsPath = `${path}.expressions`;
+	if (!value || !value.expressions || !Array.isArray(value.expressions) || !value.expressions.length) {
+		return <Field>
+			<InsertButton
+				index={0}
+				path={expressionsPath}
+				text={'Add expression'}
+				value={{
+					params: {},
+					type: '',
+					uuid4: generateUuidv4()
+				}}
+			/>
+		</Field>;
+	}
+	return <>
 		<OperatorSelector
 			parentPath={path}
 		/>
@@ -52,36 +59,43 @@ export const QueryGroup = connect(({
 		<FieldArray
 			name={`${path}.expressions`}
 			render={() => value.expressions.map(({uuid4}, index) => {
-				const expressionPath = `${path}.expressions[${index}]`;
 				return <div key={uuid4}>
 					<ExpressionSelector
 						fields={fields}
-						path={expressionPath}
+						path={`${path}.expressions[${index}]`}
 					/>
 					<Buttons icon>
 						<InsertButton
 							index={index}
-							path={path}
+							path={expressionsPath}
 							text={`${index === (value.expressions.length - 1) ? 'Add' : 'Insert'} expression`}
 							value={{
-								type: 'fulltext',
-								params: {
-									fields: [{
-										field: '',
-										boost: ''
-									}],
-									operator: 'or'
-								},
+								params: {},
+								type: '',
 								uuid4: generateUuidv4()
 							}}
 						/>
-						<RemoveButton index={index} path={path} text="Remove expression" visible={value.expressions.length > 1}/>
-						<MoveDownButton disabled={index === value.expressions.length-1} index={index} path={path} visible={value.expressions.length > 1}/>
-						<MoveUpButton index={index} path={path} visible={value.expressions.length > 1}/>
+						<RemoveButton
+							index={index}
+							path={expressionsPath}
+							text="Remove
+							expression"
+							visible={value.expressions.length > 1}
+						/>
+						<MoveDownButton
+							disabled={index === value.expressions.length-1}
+							index={index}
+							path={expressionsPath}
+							visible={value.expressions.length > 1}
+						/>
+						<MoveUpButton
+							index={index}
+							path={expressionsPath}
+							visible={value.expressions.length > 1}
+						/>
 					</Buttons>
 				</div>;
 			})}
 		/>
 	</>;
-	return legend ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
 }); // QueryGroup

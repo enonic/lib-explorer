@@ -46,7 +46,7 @@ export const CompareExpressionOperator = connect(({
 	}],
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	value = values && getIn(values, path) || '=',
+	value = values && getIn(values, path),
 	...rest
 }) => {
 	return <Select
