@@ -5,15 +5,14 @@ import {Checkbox} from '../../elements/Checkbox';
 import {Fieldset} from '../../elements/Fieldset';
 import {Label} from '../../elements/Label';
 import {LabeledField} from '../../elements/LabeledField';
-//import {Table} from '../elements/Table';
 
 import {isSet} from '../../utils/isSet';
 //import {toStr} from '../utils/toStr';
 
-// Fields
 import {Crawl} from './Crawl';
 import {Delay} from './Delay';
 //import {Download} from './Download';
+import {Cookies} from '../../http/Cookies';
 import {Headers} from './Headers';
 import {PathRange} from './PathRange';
 import {QueryParameters} from './QueryParameters';
@@ -69,6 +68,7 @@ export const Surgeon = connect(({
 	<PathRange path={`${path}.pathRange`} pathRange={pathRange}/>
 	<QueryRange path={`${path}.queryRange`} queryRange={queryRange}/>
 	<QueryParameters parentPath={path} value={queryParams}/>
+	<Cookies parentPath={path}/>
 	<Headers path={`${path}.headers`} headers={headers}/>
 	<Delay path={`${path}.delay`} value={delay}/>
 	<LabeledField label="Connection timeout" name={`${path}.connectionTimeout`} value={isSet(connectionTimeout) ? connectionTimeout : 10000}/>
