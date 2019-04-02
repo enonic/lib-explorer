@@ -20,6 +20,7 @@ export function buildPagination({
 	paginationConfig,
 	searchString
 }) {
+	//log.info(toStr({searchString}));
 	if (!paginationConfig) { return []; }
 
 	const postfix = facets ? Object.keys(facets)
@@ -28,6 +29,7 @@ export function buildPagination({
 			.join(''))
 		.join('') : '';
 	const href = `?${name}=${searchString}${postfix}`;
+	//log.info(toStr({href}));
 	const {
 		pagesToShow = 10,
 		first = true,

@@ -153,6 +153,7 @@ export function search(params) {
 	});
 
 	const query = buildQuery({expression: queryConfig, searchString: searchStringWithSynonyms});
+	//log.info(toStr({query}));
 
 	const localizedFacets = localizeFacets({
 		facets: facetConfig,
@@ -185,6 +186,7 @@ export function search(params) {
 		query,
 		start
 	};
+	//log.info(toStr({count}));
 
 	const queryRes = cachedQuery({
 		cache: QUERY_CACHE,
@@ -192,8 +194,10 @@ export function search(params) {
 		params: queryParams
 	});
 	const {hits, total} = queryRes;
+	//log.info(toStr({total}));
 
 	const pages = Math.ceil(total / count);
+	//log.info(toStr({pages}));
 
 	const pagination = buildPagination({
 		facets: facetsParam,
@@ -204,6 +208,7 @@ export function search(params) {
 		paginationConfig,
 		searchString
 	});
+	//log.info(toStr({pagination}));
 
 	const debug = {
 		//queryConfig,

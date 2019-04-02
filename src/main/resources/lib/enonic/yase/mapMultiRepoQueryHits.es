@@ -31,6 +31,7 @@ export function mapMultiRepoQueryHits({
 	resultMappings,
 	searchString
 }) {
+	//log.info(toStr({searchString}));
 	return hits.map(hit => {
 		const {repoId, branch, id} = hit;
 		//log.info(toStr({repoId, branch, id}));
@@ -76,6 +77,7 @@ export function mapMultiRepoQueryHits({
 						lengthLimit || textToHighlight.length,
 						str => `<b>${str}</b>`
 					);
+					//log.info(toStr({mappedValue}));
 				} else {
 					mappedValue = lengthLimit
 						? textToHighlight.substring(0, lengthLimit)
