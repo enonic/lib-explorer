@@ -13,9 +13,10 @@ import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
 
 import {OperatorSelector} from './OperatorSelector';
+import {SearchStringFilter} from './SearchStringFilter';
 
 
-//import {toStr} from '../utils/toStr';
+import {toStr} from '../utils/toStr';
 
 
 export const Fulltext = connect(({
@@ -32,19 +33,34 @@ export const Fulltext = connect(({
 			field: '',
 			boost: ''
 		}],
-		operator: 'or'
+		operator: 'or',
+		searchString: {
+			allowLetters: true,
+			allowUnicodeLetters: true,
+			allowDigits: true,
+			allowUnderscore: true,
+			allowSingleQuotes: true,
+			allowAnd: true,
+			allowOr: false,
+			allowNegate: true,
+			allowPrefix: false,
+			allowPrecedence: false,
+			allowPhrase: true,
+			allowTilde: false
+		}
 	}
 }) => {
-	/*console.debug(toStr({
+	console.debug(toStr({
+		component: 'Fulltext',
 		//fields,
-		//name,
 		//parentPath,
-		//path,
-		//values,
-		//value,
-	}));*/
+		//name,
+		path,
+		value
+	}));
 	const fragment = <>
 		<OperatorSelector parentPath={path}/>
+		<SearchStringFilter parentPath={path}/>
 		<Table headers={['Field', 'Boost', `Action${value.fields.length > 1 ? 's' : ''}`]}>
 			<FieldArray
 				name={`${path}.fields`}

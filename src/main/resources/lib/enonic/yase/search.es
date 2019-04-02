@@ -7,7 +7,7 @@ import traverse from 'traverse';
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {newCache} from '/lib/cache';
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 import {getLocale} from '/lib/xp/admin';
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -28,8 +28,9 @@ import {connect} from '/lib/enonic/yase/repo/connect';
 import {multiConnect} from '/lib/enonic/yase/repo/multiConnect';
 import {localizeFacets} from '/lib/enonic/yase/localizeFacets';
 import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
-import {removeStopWords} from '/lib/enonic/yase/removeStopWords';
-import {replaceNonLetters} from '/lib/enonic/yase/replaceNonLetters';
+
+//import {removeStopWords} from '/lib/enonic/yase/query/removeStopWords';
+import {wash} from '/lib/enonic/yase/query/wash';
 
 import {getInterface} from '/lib/enonic/yase/admin/interfaces/getInterface';
 
@@ -140,13 +141,14 @@ export function search(params) {
 
 	if (!page) { page = Math.floor(start / count) + 1; }
 
-	const washedSearchString = replaceNonLetters({string: searchString});
+	const washedSearchString = wash({string: searchString});
+	log.info(toStr({washedSearchString}));
 
-	const searchStringWithoutStopWords = removeStopWords({string: washedSearchString});
+	//const searchStringWithoutStopWords = removeStopWords({string: washedSearchString});
 
 	const searchStringWithSynonyms = applySynonyms({
 		//expand: true, // default is false
-		searchString: searchStringWithoutStopWords,
+		searchString: washedSearchString,
 		thesauri
 	});
 
@@ -205,7 +207,7 @@ export function search(params) {
 
 	const debug = {
 		//queryConfig,
-		searchStringWithoutStopWords,
+		//searchStringWithoutStopWords,
 		washedSearchString,
 		searchStringWithSynonyms,
 		filters,

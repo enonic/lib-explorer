@@ -11,7 +11,7 @@ import {CompareExpression} from './CompareExpression';
 import {PathMatch} from './PathMatch';
 import {Range} from './Range';
 
-//import {toStr} from '../utils/toStr';
+import {toStr} from '../utils/toStr';
 
 
 export const ExpressionSelector = connect(({
@@ -31,10 +31,31 @@ export const ExpressionSelector = connect(({
 				field: '',
 				boost: ''
 			}],
-			operator: 'or'
+			operator: 'or',
+			searchString: {
+				allowLetters: true,
+				allowUnicodeLetters: true,
+				allowDigits: true,
+				allowUnderscore: true,
+				allowSingleQuotes: true,
+				allowAnd: true,
+				allowOr: false,
+				allowNegate: true,
+				allowPrefix: false,
+				allowPrecedence: false,
+				allowPhrase: true,
+				allowTilde: false
+			}
 		}
 	}
 }) => {
+	console.debug(toStr({
+		component: 'ExpressionSelector',
+		//parentPath,
+		//name,
+		path,
+		value
+	}));
 	const {params, type} = value;
 	const selectPath = `${path}.type`;
 	const paramsPath = `${path}.params`;
@@ -62,7 +83,21 @@ export const ExpressionSelector = connect(({
 									field: '',
 									boost: ''
 								}],
-								operator: 'or'
+								operator: 'or',
+								searchString: {
+									allowLetters: true,
+									allowUnicodeLetters: true,
+									allowDigits: true,
+									allowUnderscore: true,
+									allowSingleQuotes: true,
+									allowAnd: true,
+									allowOr: false,
+									allowNegate: true,
+									allowPrefix: false,
+									allowPrecedence: false,
+									allowPhrase: true,
+									allowTilde: false
+								}
 							}
 						}],
 						operator: 'or'
@@ -72,7 +107,21 @@ export const ExpressionSelector = connect(({
 							field: '',
 							boost: ''
 						}],
-						operator: 'or'
+						operator: 'or',
+						searchString: {
+							allowLetters: true,
+							allowUnicodeLetters: true,
+							allowDigits: true,
+							allowUnderscore: true,
+							allowSingleQuotes: true,
+							allowAnd: true,
+							allowOr: false,
+							allowNegate: true,
+							allowPrefix: false,
+							allowPrecedence: false,
+							allowPhrase: true,
+							allowTilde: false
+						}
 					}
 				);
 			}}
@@ -134,3 +183,60 @@ export const ExpressionSelector = connect(({
 		}
 	</>;
 });
+
+
+/*
+(
+	fulltext(fields^1, searchString, 'AND')
+	OR ngram(fields^0, searchString, 'AND')
+	OR fulltext(fields^-1, synonyms, 'AND')
+)
+
+const EXAMPLE_QUERY = {
+	type: 'group',
+	params: {
+		operator: 'or',
+		expressions: [
+			{
+				type: 'fulltext',
+				params: {
+					operator: 'and',
+					//searchString: '',
+					fields: [
+						{
+							field: 'title',
+							boost: '1'
+						},
+					]
+				}
+			},
+			{
+				type: 'ngram',
+				params: {
+					operator: 'and',
+					//searchString: '',
+					fields: [
+						{
+							field: 'title',
+							boost: ''
+						}
+					]
+				}
+			},
+			{
+				type: 'fulltext',
+				params: {
+					operator: 'or',
+					//searchString: '...synonyms',
+					fields: [
+						{
+							field: 'title',
+							boost: '-1'
+						},
+					]
+				}
+			}
+		]
+	}
+};
+*/

@@ -67,7 +67,21 @@ export const Interface = ({
 							field: '',
 							boost: ''
 						}],
-						operator: 'or'
+						operator: 'or',
+						searchString: {
+							allowLetters: true,
+							allowUnicodeLetters: true,
+							allowDigits: true,
+							allowUnderscore: true,
+							allowSingleQuotes: true,
+							allowAnd: true,
+							allowOr: false,
+							allowNegate: true,
+							allowPrefix: false,
+							allowPrecedence: false,
+							allowPhrase: true,
+							allowTilde: false
+						}
 					}
 				}], // expressions
 				operator: 'or'
