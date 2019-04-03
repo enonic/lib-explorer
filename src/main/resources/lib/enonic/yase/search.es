@@ -153,7 +153,7 @@ export function search(params) {
 		searchString: washedSearchString,
 		thesauri
 	});
-	log.info(toStr({synonyms}));
+	//log.info(toStr({synonyms}));
 
 	const query = buildQuery({expression: queryConfig, searchString: washedSearchString});
 	//log.info(toStr({query}));

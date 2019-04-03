@@ -33,12 +33,20 @@ export function getSynonyms({
 	const hits = querySynonyms(params).hits;
 	//log.info(toStr({hits}));
 
-	let synonyms = [];
+	const synonyms = [];
 	hits.forEach(({from, to}) => {
 		if (expand) {
-			synonyms = synonyms.concat(from); // Should work for string and array.
+			forceArray(from).forEach(f=>{
+				if (!synonyms.includes(f)) {
+					synonyms.push(f);
+				}
+			})
 		}
-		synonyms = synonyms.concat(to); // Should work for string and array.
+		forceArray(to).forEach(t=>{
+			if (!synonyms.includes(t)) {
+				synonyms.push(t);
+			}
+		})
 	});
 	return synonyms;
 } // getSynonyms
