@@ -223,17 +223,18 @@ export function search(params) {
 			searchString,
 			start
 		},
-		pages,
-		pagination,
 		count: queryRes.count,
+		pages,
 		total,
-		facetCategories,
+		synonyms,
 		hits: mapMultiRepoQueryHits({
 			hits,
 			locale,
 			nodeCache: NODE_CACHE,
 			resultMappings,
 			searchString
-		})
+		}),
+		facetCategories,
+		pagination
 	};
 } // function search

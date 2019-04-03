@@ -6,6 +6,9 @@ import {Hits} from './search/Hits';
 
 import {Field} from './semantic-ui/Field';
 import {Fields} from './semantic-ui/Fields';
+import {Header} from './semantic-ui/Header';
+import {Label} from './semantic-ui/Label';
+import {Labels} from './semantic-ui/Labels';
 import {SearchInput} from './semantic-ui/SearchInput';
 
 //import {toStr} from './utils/toStr';
@@ -76,6 +79,7 @@ export class Search extends React.Component {
 		const {cache, searchString} = this.state;
 		const data = searchString && cache[searchString];
 		const hits = data ? data.hits : [];
+		const synonyms = data ? data.synonyms : [];
 		const loading = searchString && !data;
 		/*console.debug(toStr({
 			component: 'Search',
@@ -136,6 +140,10 @@ export class Search extends React.Component {
 							</Field>
 						</Fields>
 					</Form>
+					{synonyms.length ? <>
+						<Header dividing text='Synonyms'/>
+						<Labels mini>{synonyms.map((s, i) => <Label basic key={i} text={s}/>)}</Labels>
+					</> : null}
 					<Hits
 						hits={hits}
 						loading={loading}

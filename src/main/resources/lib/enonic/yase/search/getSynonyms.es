@@ -9,7 +9,7 @@ import {query as querySynonyms} from '/lib/enonic/yase/synonym/query';
 
 
 export function getSynonyms({
-	count = -1,
+	count = 10,
 	expand = false,
 	searchString,
 	thesauri
@@ -23,9 +23,10 @@ export function getSynonyms({
 	//log.info(toStr({query}));
 
 	const params = {
-		count,
+		count: count >= 1 && count <= 10 ? count : 10,
 		filters: addFilter({filter: hasValue('_parentPath', forceArray(thesauri).map(n => `/thesauri/${n}`))}),
-		query
+		query,
+		sort: '_score DESC'
 	};
 	//log.info(toStr({params}));
 
