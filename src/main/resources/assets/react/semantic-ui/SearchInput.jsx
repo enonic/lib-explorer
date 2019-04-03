@@ -26,7 +26,9 @@ export const SearchInput = ({
 	parentPath,
 	name = 'search',
 	path = parentPath ? `${parentPath}.${name}` : name,
-	...rest // ...rest has to be the last parameter
+
+	// ...rest has to be the last parameter
+	...rest // onChange
 }) => {
 	/*console.debug(toStr({
 		component: 'SearchInput',

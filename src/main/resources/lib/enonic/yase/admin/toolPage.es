@@ -18,7 +18,10 @@ export function toolPage({
 			thesauri: []
 		},
 		serviceUrl: serviceUrl({
-			service: 'search'
+			service: 'search',
+			params: {
+				interface: 'helsebiblioteket' // TODO
+			}
 		}),
 		thesaurusOptions: getThesauri().map(({displayName, name}) => ({label: displayName, value: name}))
 	};
