@@ -18,7 +18,7 @@ export function wash({
 	whitelistRegEx = WHITELIST_REGEXP
 }) {
 	if(isSet(string)) {
-		return string.replace(whitelistRegEx, replacement).replace(/\s\s+/g, ' ').trim();
+		return string.replace(whitelistRegEx, replacement).replace(/\s{2,}/g, ' ').trim();
 	}
 	return string;
 }
