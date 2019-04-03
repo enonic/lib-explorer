@@ -99,6 +99,9 @@ export const Interface = ({
 			onSubmit={() => {
 				document.getElementById('json').setAttribute('value', JSON.stringify(values))
 			}}
+			style={{
+				width: '100%'
+			}}
 		>
 			<TextInput
 				label="Name"
