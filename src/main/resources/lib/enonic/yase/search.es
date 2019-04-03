@@ -18,9 +18,11 @@ import {
 	ROLE_YASE_READ,
 	ROLE_YASE_ADMIN
 } from '/lib/enonic/yase/constants';
-import {applySynonyms} from '/lib/enonic/yase/applySynonyms';
 import {buildFacets} from '/lib/enonic/yase/buildFacets';
+
 import {buildFilters} from '/lib/enonic/yase/search/buildFilters';
+import {getSynonyms} from '/lib/enonic/yase/search/getSynonyms';
+
 import {buildPagination} from '/lib/enonic/yase/buildPagination';
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
 import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
@@ -146,13 +148,14 @@ export function search(params) {
 
 	//const searchStringWithoutStopWords = removeStopWords({string: washedSearchString});
 
-	const searchStringWithSynonyms = applySynonyms({
+	const synonyms = getSynonyms({
 		//expand: true, // default is false
 		searchString: washedSearchString,
 		thesauri
 	});
+	log.info(toStr({synonyms}));
 
-	const query = buildQuery({expression: queryConfig, searchString: searchStringWithSynonyms});
+	const query = buildQuery({expression: queryConfig, searchString: washedSearchString});
 	//log.info(toStr({query}));
 
 	const localizedFacets = localizeFacets({
@@ -210,22 +213,6 @@ export function search(params) {
 	});
 	//log.info(toStr({pagination}));
 
-	const debug = {
-		//queryConfig,
-		//searchStringWithoutStopWords,
-		washedSearchString,
-		searchStringWithSynonyms,
-		filters,
-		query//,
-		//collections,
-		//sources,
-		//resultMappings,
-		//facetConfig,
-		//localizedFacets,
-		//hits,
-		//paginationConfig
-	};
-
 	return {
 		params: {
 			count,
@@ -236,7 +223,6 @@ export function search(params) {
 			searchString,
 			start
 		},
-		debug, // WARNING This should be commented out in production mode!
 		pages,
 		pagination,
 		count: queryRes.count,
