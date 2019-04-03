@@ -8,7 +8,7 @@ import {query as queryCollections} from '/lib/enonic/yase/collection/query';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 import {getTags} from '/lib/enonic/yase/admin/tags/getTags';
-import {getThesauri} from '/lib/enonic/yase/admin/thesauri/getThesauri';
+import {query as getThesauri} from '/lib/enonic/yase/thesaurus/query';
 
 
 const ID_REACT_INTERFACE_CONTAINER = 'reactInterfaceContainer';
@@ -93,7 +93,7 @@ export function createOrEditInterfacePage({
 		fields: fieldsArray,
 		fieldsObj,
 		tags,
-		thesauri: getThesauri().map(({displayName, name}) => ({label: displayName, value: name})),
+		thesauri: getThesauri().hits.map(({displayName, name}) => ({label: displayName, value: name})),
 		initialValues
 	};
 

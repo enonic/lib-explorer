@@ -1,6 +1,8 @@
+import {toStr} from '/lib/enonic/util';
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
-import {getThesauri} from '/lib/enonic/yase/admin/thesauri/getThesauri';
+import {query as getThesauri} from '/lib/enonic/yase/thesaurus/query';
+//import {query as querySynonyms} from '/lib/enonic/yase/synonym/query';
 
 
 
@@ -8,7 +10,10 @@ export function listThesauriPage(
 	{path} = {},
 	{messages, status} = {}
 ) {
-	const thesauri = getThesauri();
+	/*const synonyms = querySynonyms({count: 0});
+	log.info(toStr({synonyms}));*/
+
+	const thesauri = getThesauri().hits;
 	return htmlResponse({
 		main: `
 <form
@@ -37,18 +42,19 @@ export function listThesauriPage(
 <table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
-			<th>Name</th>
 			<th>Display name</th>
-			<th>Description</th>
-			<th>Export</th>
+			<th>Synonyms</th>
+			<th>Actions</th>
 		</tr>
 	</thead>
 	<tbody>
 		${thesauri.map(t => `<tr>
-			<td><a href="${TOOL_PATH}/thesauri/${t.name}">${t.name}</a></td>
 			<td>${t.displayName}</td>
-			<td>${t.description}</td>
-			<td><a href="${TOOL_PATH}/thesauri/${t.name}.csv">${t.name}.csv</a></td>
+			<td>${t.synonymsCount}</td>
+			<td>
+				<a class="tiny compact ui button" href="${TOOL_PATH}/thesauri/${t.name}"><i class="blue edit icon"></i> Edit</a>
+				<a class=" tiny compact ui button" href="${TOOL_PATH}/thesauri/${t.name}.csv"><i class="blue download icon"></i> ${t.name}.csv</a>
+			</td>
 		</tr>`).join('\n')}
 	</tbody>
 </table>
@@ -73,7 +79,7 @@ export function listThesauriPage(
 			</select>
 		</div>
 		<div class="field">
-			<button class="ui button" type="submit"><i class="blue download icon"></i> Import csv</button>
+			<button class="ui button" type="submit"><i class="green upload icon"></i> Import csv</button>
 		</div>
 	</div>
 </form>
