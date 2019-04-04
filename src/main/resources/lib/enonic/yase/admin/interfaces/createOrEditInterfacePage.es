@@ -1,4 +1,8 @@
+import traverse from 'traverse';
+import generateUuidv4 from 'uuid/v4';
+
 import {forceArray} from '/lib/enonic/util/data';
+import {isString} from '/lib/enonic/util/value';
 import {assetUrl} from '/lib/xp/portal';
 
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
@@ -12,6 +16,32 @@ import {query as getThesauri} from '/lib/enonic/yase/thesaurus/query';
 
 
 const ID_REACT_INTERFACE_CONTAINER = 'reactInterfaceContainer';
+
+
+function convert({object, fields, recurse = true}) {
+	traverse(object).forEach(function(value) { // Fat arrow destroys this
+		const key = this.key;
+		if (fields.includes(key)) {
+			if (!value) {
+				this.update([]);
+			} else if (!Array.isArray(value)) { // Convert single value to array
+				const array = [value];
+				if (recurse) {
+					convert({array, fields, recurse}); // Recurse
+				}
+				this.update(array);
+			} else if (Array.isArray(value)) {
+				this.update(value.map(entry => {
+					if (!isString(entry) && !entry.uuid4) {
+						entry.uuid4 = generateUuidv4();
+					}
+					return entry;
+				}));
+			} // if isArray
+		} // if key
+	}); // traverse
+	return object;
+} // convert
 
 
 export function createOrEditInterfacePage({
@@ -35,16 +65,28 @@ export function createOrEditInterfacePage({
 			resultMappings,
 			pagination
 		} = node;
-		initialValues = {
-			name,
-			collections,
-			filters,
-			query,
-			resultMappings,
-			facets,
-			pagination,
-			thesauri
-		};
+		initialValues = convert({
+			object: {
+				name,
+				collections,
+				filters,
+				query,
+				resultMappings,
+				facets,
+				pagination,
+				thesauri
+			},
+			fields: [
+				'expressions',
+				'facets',
+				'fields',
+				'must',
+				'mustNot',
+				'resultMappings',
+				'thesauri',
+				'values'
+			]
+		});
 	}
 
 	const tags = {};
@@ -93,7 +135,12 @@ export function createOrEditInterfacePage({
 		fields: fieldsArray,
 		fieldsObj,
 		tags,
-		thesauri: getThesauri().hits.map(({displayName, name}) => ({label: displayName, value: name})),
+		thesauriOptions: getThesauri().hits.map(({displayName, name}) => ({
+			key: name,
+			//label: displayName,
+			text: displayName,
+			value: name
+		})),
 		initialValues
 	};
 

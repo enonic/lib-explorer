@@ -12,7 +12,7 @@ import {CompareExpression} from './CompareExpression';
 import {PathMatch} from './PathMatch';
 import {Range} from './Range';
 
-import {toStr} from '../utils/toStr';
+//import {toStr} from '../utils/toStr';
 
 
 export const ExpressionSelector = connect(({
@@ -25,6 +25,7 @@ export const ExpressionSelector = connect(({
 	legend = null,
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
+	thesauriOptions,
 	value = values && getIn(values, path)
 }) => {
 	/*console.debug(toStr({
@@ -32,7 +33,8 @@ export const ExpressionSelector = connect(({
 		//parentPath,
 		//name,
 		path,
-		value
+		value,
+		thesauriOptions
 	}));*/
 	const {params = {}, type = ''} = value;
 	const selectPath = `${path}.type`;
@@ -66,7 +68,9 @@ export const ExpressionSelector = connect(({
 							boost: '',
 							uuid4: generateUuidv4()
 						}],
-						operator: 'and'
+						operator: 'and',
+						searchString: 'searchString',
+						thesauri: []
 					});
 				} else if (newType === 'compareExpr') {
 					setFieldValue(paramsPath, {
@@ -116,6 +120,7 @@ export const ExpressionSelector = connect(({
 			? <Fulltext
 				fields={fields}
 				path={paramsPath}
+				thesauriOptions={thesauriOptions}
 			/>
 			: null
 		}
@@ -123,6 +128,7 @@ export const ExpressionSelector = connect(({
 			? <QueryGroup
 				fields={fields}
 				path={paramsPath}
+				thesauriOptions={thesauriOptions}
 			/>
 			: null
 		}

@@ -1,10 +1,7 @@
 import {Form, Formik} from 'formik';
-import traverse from 'traverse';
-import generateUuidv4 from 'uuid/v4';
 
 import {SubmitButton} from './semantic-ui/SubmitButton';
 
-// Elements
 import {Select} from './elements/Select';
 import {TextInput} from './elements/TextInput';
 
@@ -14,38 +11,7 @@ import {QueryFiltersBuilder} from './query/filter/QueryFiltersBuilder';
 import {Facets} from './query/Facets';
 import {ResultMappings} from './query/ResultMappings';
 
-import {toStr} from './utils/toStr';
-
-
-function convert(node) {
-	traverse(node).forEach(function(value) { // Fat arrow destroys this
-		const key = this.key;
-		if ([
-			'expressions',
-			'facets',
-			'fields',
-			'must',
-			'mustNot',
-			'resultMappings',
-			'values'
-		].includes(key)) {
-			if (!value) {
-				this.update([]);
-			} else if (!Array.isArray(value)) { // Convert single value to array
-				const array = [value];
-				convert(array); // Recurse
-				this.update(array);
-			} else if (Array.isArray(value)) {
-				this.update(value.map(entry => {
-					if (!entry.uuid4) {
-						entry.uuid4 = generateUuidv4();//seqenceCounter;
-					}
-					return entry;
-				}));
-			} // if isArray
-		} // if key
-	}); // traverse
-} // convert
+//import {toStr} from './utils/toStr';
 
 
 export const Interface = ({
@@ -56,7 +22,7 @@ export const Interface = ({
 	initialValues = {
 		name: '',
 		collections: [],
-		thesauri: [],
+		//thesauri: [],
 		query: {},
 		resultMappings: [{
 			field: '',
@@ -74,22 +40,21 @@ export const Interface = ({
 		}
 	},
 	tags,
-	thesauri
+	thesauriOptions
 } = {}) => <Formik
 	initialValues={initialValues}
 	render={({
 		handleSubmit,
 		values
 	}) => {
-		convert(values);
 		/*console.debug(toStr({
 			component: 'Interface',
 			//collections,
 			//fields,
-			fieldsObj//,
+			//fieldsObj,
 			//tags,
-			//thesauri,
-			//values
+			//thesauriOptions,
+			values
 		}));*/
 		return <Form
 			action={action}
@@ -122,6 +87,7 @@ export const Interface = ({
 				fields={fields}
 				legend='Query'
 				name='query'
+				thesauriOptions={thesauriOptions}
 			/>
 			<ResultMappings
 				fields={fields}
@@ -131,7 +97,7 @@ export const Interface = ({
 				label="Thesauri"
 				multiple={true}
 				name="thesauri"
-				options={thesauri}
+				options={thesauriOptions}
 			/>
 			<Facets
 				fields={fields.map(({label, path: value}) => ({label, value}))}

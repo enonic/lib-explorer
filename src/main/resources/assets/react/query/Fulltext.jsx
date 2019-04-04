@@ -12,6 +12,8 @@ import {Radio} from '../elements/Radio';
 import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
 
+import {Dropdown} from '../semantic-ui/formik/Dropdown';
+
 import {OperatorSelector} from './OperatorSelector';
 //import {SearchStringFilter} from './SearchStringFilter';
 
@@ -21,7 +23,6 @@ import {OperatorSelector} from './OperatorSelector';
 
 export const Fulltext = connect(({
 	formik: {
-		//setFieldValue,
 		values
 	},
 	fields,
@@ -29,6 +30,7 @@ export const Fulltext = connect(({
 	legend = null,
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
+	thesauriOptions,
 	value = values && getIn(values, path)
 }) => {
 	/*console.debug(toStr({
@@ -37,10 +39,15 @@ export const Fulltext = connect(({
 		//parentPath,
 		//name,
 		path,
-		value
+		value//,
+		//thesauriOptions
 	}));*/
+	const searchStringPath = `${path}.searchString`;
+	const searchString = getIn(values, searchStringPath);
+	const thesauriPath = `${path}.thesauri`;
+	const thesauriValue = getIn(values, thesauriPath, []);
+	const showThesauriSelector = searchString === 'synonyms';
 	const fragment = <>
-		<OperatorSelector parentPath={path}/>
 		{/*<SearchStringFilter parentPath={path}/>*/}
 		<Table headers={['Field', 'Boost', `Action${value.fields.length > 1 ? 's' : ''}`]}>
 			<FieldArray
@@ -91,6 +98,37 @@ export const Fulltext = connect(({
 					})}
 			/>
 		</Table>
+		<Select
+			path={searchStringPath}
+			options={[{
+				label: 'Search string',
+				value: 'searchString'
+			},{
+				label: 'Synonyms',
+				value: 'synonyms'
+			}]}
+		/>
+		<div style={{
+			height: showThesauriSelector ? 'auto' : 0,
+			opacity: showThesauriSelector ? 1 : 0,
+			pointerEvents: showThesauriSelector ? 'auto' : 'none',
+			visibility: showThesauriSelector ? 'visible' : 'hidden'
+		}}>
+			<Dropdown
+				fluid
+				multiple={true}
+				options={thesauriOptions}
+				path={thesauriPath}
+				placeholder='Thesauri'
+				search
+				selection
+				value={thesauriValue}
+			/>
+		</div>
+		<OperatorSelector parentPath={path}/>
 	</>;
 	return legend ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
 });
+/*
+
+*/

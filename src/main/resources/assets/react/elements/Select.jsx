@@ -4,8 +4,8 @@ import generateUuidv4 from 'uuid/v4';
 import {Label} from './Label';
 
 import {isSet} from '../utils/isSet';
-import {isString} from '../utils/isString';
 //import {toStr} from '../utils/toStr';
+import {optionsObjToArr} from '../utils/optionsObjToArr';
 
 
 function buildSize({
@@ -24,36 +24,6 @@ function buildSize({
 	return size;
 }
 
-// label value options
-function objToArr(obj) {
-	if (Array.isArray(obj)) { // Array of objects
-		obj.forEach(({options}, index) => {
-			if (options) {
-				obj[index].options = objToArr(options) // Recurse
-			}
-		});
-		return obj;
-	}
-
-	// Assume obj
-	const arr = [];
-	Object.entries(obj).forEach(([k, v]) => {
-		const rObj = {
-			value: k
-		};
-		if (isString(v)) {
-			rObj.label = v;
-		} else { // Assume obj
-			rObj.label = v.label;
-			if (v.options) {
-				rObj.options = objToArr(v.options); // Recurse
-			}
-		}
-		arr.push(rObj);
-	});
-	return arr;
-}
-
 
 export const Select = connect(({
 	component, // So it doesn't end up in rest
@@ -67,9 +37,9 @@ export const Select = connect(({
 	name,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	optgroups = [],
-	optgroupsArr = objToArr(optgroups),
+	optgroupsArr = optionsObjToArr(optgroups),
 	options = [],
-	optionsArr = objToArr(options),
+	optionsArr = optionsObjToArr(options),
 	placeholder = null,
 	defaultValue = placeholder
 		? ''
@@ -107,7 +77,7 @@ export const Select = connect(({
 		path,
 		//optgroups,
 		//optgroupsArr,
-		//options,
+		options,
 		//optionsArr,
 		//placeholder,
 		value//,

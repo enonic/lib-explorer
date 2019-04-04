@@ -26,6 +26,7 @@ export const QueryGroup = connect(({
 	name = 'group',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
+	thesauriOptions,
 	value = values && getIn(values, path)
 }) => {
 	/*console.debug(toStr({
@@ -34,7 +35,8 @@ export const QueryGroup = connect(({
 		//parentPath,
 		//name,
 		path,
-		value
+		value,
+		thesauriOptions
 	}));*/
 	const expressionsPath = `${path}.expressions`;
 	if (!value || !value.expressions || !Array.isArray(value.expressions) || !value.expressions.length) {
@@ -63,6 +65,7 @@ export const QueryGroup = connect(({
 					<ExpressionSelector
 						fields={fields}
 						path={`${path}.expressions[${index}]`}
+						thesauriOptions={thesauriOptions}
 					/>
 					<Buttons icon>
 						<InsertButton
