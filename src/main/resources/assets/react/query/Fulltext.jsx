@@ -17,7 +17,6 @@ import {Dropdown} from '../semantic-ui/formik/Dropdown';
 import {OperatorSelector} from './OperatorSelector';
 //import {SearchStringFilter} from './SearchStringFilter';
 
-
 //import {toStr} from '../utils/toStr';
 
 
@@ -31,24 +30,35 @@ export const Fulltext = connect(({
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 	thesauriOptions,
+	type = 'fulltext', // ngram synonyms
 	value = values && getIn(values, path)
 }) => {
 	/*console.debug(toStr({
 		component: 'Fulltext',
 		//fields,
-		//parentPath,
-		//name,
+		parentPath,
+		name,
 		path,
-		value//,
+		type//,
+		//value,
 		//thesauriOptions
 	}));*/
 	const searchStringPath = `${path}.searchString`;
 	const searchString = getIn(values, searchStringPath);
 	const thesauriPath = `${path}.thesauri`;
 	const thesauriValue = getIn(values, thesauriPath, []);
-	const showThesauriSelector = searchString === 'synonyms';
 	const fragment = <>
 		{/*<SearchStringFilter parentPath={path}/>*/}
+		{type === 'synonyms' ? <Dropdown
+			fluid
+			multiple={true}
+			options={thesauriOptions}
+			path={thesauriPath}
+			placeholder='Thesauri'
+			search
+			selection
+			value={thesauriValue}
+		/> : null}
 		<Table headers={['Field', 'Boost', `Action${value.fields.length > 1 ? 's' : ''}`]}>
 			<FieldArray
 				name={`${path}.fields`}
@@ -98,34 +108,7 @@ export const Fulltext = connect(({
 					})}
 			/>
 		</Table>
-		<Select
-			path={searchStringPath}
-			options={[{
-				label: 'Search string',
-				value: 'searchString'
-			},{
-				label: 'Synonyms',
-				value: 'synonyms'
-			}]}
-		/>
-		<div style={{
-			height: showThesauriSelector ? 'auto' : 0,
-			opacity: showThesauriSelector ? 1 : 0,
-			pointerEvents: showThesauriSelector ? 'auto' : 'none',
-			visibility: showThesauriSelector ? 'visible' : 'hidden'
-		}}>
-			<Dropdown
-				fluid
-				multiple={true}
-				options={thesauriOptions}
-				path={thesauriPath}
-				placeholder='Thesauri'
-				search
-				selection
-				value={thesauriValue}
-			/>
-		</div>
-		<OperatorSelector parentPath={path}/>
+		{type === 'synonyms' ? null : <OperatorSelector parentPath={path}/>}
 	</>;
 	return legend ? <Fieldset legend={legend}>{fragment}</Fieldset> : fragment;
 });

@@ -37,10 +37,19 @@ export function query({
 	//log.info(toStr({queryRes}));
 	queryRes.hits = queryRes.hits.map((hit) => {
 		const {
-			_name, displayName, from, to
+			_name,
+			_path,
+			displayName,
+			from,
+			to
 		} = connection.get(hit.id);
 		return {
-			displayName, from, id: hit.id, name: _name, to
+			displayName,
+			from,
+			id: hit.id,
+			name: _name,
+			thesaurus: _path.match(/[^/]+/g)[1],
+			to
 		};
 	});
 	return queryRes;

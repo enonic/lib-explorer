@@ -37,8 +37,8 @@ export const ExpressionSelector = connect(({
 		thesauriOptions
 	}));*/
 	const {params = {}, type = ''} = value;
-	const selectPath = `${path}.type`;
 	const paramsPath = `${path}.params`;
+	const selectPath = `${path}.type`;
 	return <>
 		<Header dividing>{legend}</Header>
 		<Select
@@ -61,16 +61,16 @@ export const ExpressionSelector = connect(({
 						expressions: [],
 						operator: 'or'
 					});
-				} else if (['fulltext', 'ngram'].includes(newType)) {
+				} else if (['fulltext', 'ngram', 'synonyms'].includes(newType)) {
 					setFieldValue(paramsPath, {
 						fields: [{
 							field: '_allText',
 							boost: '',
 							uuid4: generateUuidv4()
 						}],
-						operator: 'and',
-						searchString: 'searchString',
-						thesauri: []
+						operator: newType === 'synonyms' ? 'or' : 'and',
+						//searchString: newType === 'synonyms' ? 'synonyms' : 'searchString',
+						thesauri: newType === 'synonyms' ? [] : undefined
 					});
 				} else if (newType === 'compareExpr') {
 					setFieldValue(paramsPath, {
@@ -104,6 +104,9 @@ export const ExpressionSelector = connect(({
 				label: 'Ngram',
 				value: 'ngram'
 			}, {
+				label: 'Synonyms', // Fulltext Or
+				value: 'synonyms'
+			}, {
 				label: 'Compare expression',
 				value: 'compareExpr'
 			}, {
@@ -116,10 +119,11 @@ export const ExpressionSelector = connect(({
 			placeholder='Please select expression type'
 			value={type}
 		/>
-		{['fulltext', 'ngram'].includes(type)
+		{['fulltext', 'ngram', 'synonyms'].includes(type)
 			? <Fulltext
 				fields={fields}
 				path={paramsPath}
+				type={type}
 				thesauriOptions={thesauriOptions}
 			/>
 			: null

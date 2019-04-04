@@ -8,6 +8,7 @@ import traverse from 'traverse';
 //──────────────────────────────────────────────────────────────────────────────
 import {newCache} from '/lib/cache';
 import {toStr} from '/lib/enonic/util';
+import {forceArray} from '/lib/enonic/util/data';
 import {getLocale} from '/lib/xp/admin';
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -21,7 +22,6 @@ import {
 import {buildFacets} from '/lib/enonic/yase/buildFacets';
 
 import {buildFilters} from '/lib/enonic/yase/search/buildFilters';
-import {getSynonyms} from '/lib/enonic/yase/search/getSynonyms';
 
 import {buildPagination} from '/lib/enonic/yase/buildPagination';
 import {buildQuery} from '/lib/enonic/yase/buildQuery';
@@ -148,15 +148,28 @@ export function search(params) {
 
 	//const searchStringWithoutStopWords = removeStopWords({string: washedSearchString});
 
-	const synonyms = getSynonyms({
-		//expand: true, // default is false
+	const synonyms = [];
+	const expand = true; // default is false
+	const query = buildQuery({
+		expand,
+		expression: queryConfig,
 		searchString: washedSearchString,
-		thesauri
+		synonyms
 	});
-	//log.info(toStr({synonyms}));
+	log.info(toStr({synonyms}));
+	log.info(toStr({query}));
 
-	const query = buildQuery({expression: queryConfig, searchString: washedSearchString});
-	//log.info(toStr({query}));
+	const synonymsObj = {};
+	synonyms.forEach(({thesaurus, from, to}) => {
+		if(!synonymsObj[thesaurus]) {
+			synonymsObj[thesaurus] = {};
+		}
+		forceArray(from).forEach(f => {
+			if(!synonymsObj[thesaurus][f]) { synonymsObj[thesaurus][f] = to}
+		});
+	});
+	log.info(toStr({synonymsObj}));
+
 
 	const localizedFacets = localizeFacets({
 		facets: facetConfig,
@@ -226,7 +239,8 @@ export function search(params) {
 		count: queryRes.count,
 		pages,
 		total,
-		synonyms,
+		//synonyms,
+		synonymsObj,
 		hits: mapMultiRepoQueryHits({
 			hits,
 			locale,

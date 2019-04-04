@@ -13,6 +13,8 @@ import {SearchInput} from './semantic-ui/SearchInput';
 
 //import {toStr} from './utils/toStr';
 
+const forceArray = data => Array.isArray(data) ? data : [data];
+
 
 export class Search extends React.Component {
 	constructor(props) {
@@ -79,7 +81,7 @@ export class Search extends React.Component {
 		const {cache, searchString} = this.state;
 		const data = searchString && cache[searchString];
 		const hits = data ? data.hits : [];
-		const synonyms = data ? data.synonyms : [];
+		const synonyms = data && data.synonymsObj;
 		const loading = searchString && !data;
 		/*console.debug(toStr({
 			component: 'Search',
@@ -140,9 +142,33 @@ export class Search extends React.Component {
 							</Field>
 						</Fields>
 					</Form>
-					{synonyms.length ? <>
+					{synonyms ? <>
 						<Header dividing text='Synonyms'/>
-						<Labels mini>{synonyms.map((s, i) => <Label basic key={i} text={s}/>)}</Labels>
+						{Object.keys(synonyms).map((thesaurus, i) =>
+							<React.Fragment key={i}>
+								{Object.keys(synonyms[thesaurus]).map((from, j) => <div className="ui fluid mini steps" key={`${i}.${j}`}>
+									<div className="step" key={i}>
+										<div className="content">
+											<div className="title">{thesaurus}</div>
+											<div className="description">Thesaurus</div>
+										</div>
+									</div>
+									<div className="step" key={`${i}.${j}`}>
+										<div className="content">
+											<div className="title">{from}</div>
+											<div className="description">From</div>
+										</div>
+									</div>
+									{
+										forceArray(synonyms[thesaurus][from]).map((to, k) => <div className="step">
+											<div className="content" key={`${i}.${j}.${k}`}>
+												<div className="title">{to}</div>
+												<div className="description">To</div>
+											</div>
+										</div>)
+									}
+								</div>)}
+							</React.Fragment>)}
 					</> : null}
 					<Hits
 						hits={hits}
@@ -153,3 +179,6 @@ export class Search extends React.Component {
 		/>;
 	} // render
 } // Search Component
+
+
+//<Labels mini>{synonyms.map((s, i) => <Label basic key={i} text={s}/>)}</Labels>
