@@ -6,7 +6,7 @@ export const response = ({
 	_name,
 	request,
 	response,
-	...rest // __repoId
+	...rest // __connection
 }) => ({
 	_indexConfig: {
 		default: 'none',
@@ -28,5 +28,5 @@ export const response = ({
 	request,
 	response,
 	type: NT_RESPONSE,
-	...rest // __repoId
+	...rest // __connection
 });

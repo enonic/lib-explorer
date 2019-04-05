@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 import {isString} from '/lib/enonic/util/value';
 
 import {
@@ -6,12 +6,16 @@ import {
 	getMultipartText
 } from '/lib/xp/portal';
 
-import {NT_THESAURUS, TOOL_PATH} from '/lib/enonic/yase/constants';
-import {listThesauriPage} from '/lib/enonic/yase/admin/thesauri/listThesauriPage';
-import {thesaurusPage} from '/lib/enonic/yase/admin/thesauri/thesaurusPage';
+import {
+	NT_THESAURUS,
+	PRINCIPAL_YASE_WRITE,
+	TOOL_PATH
+} from '/lib/enonic/yase/constants';
 import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
+import {create} from '/lib/enonic/yase/node/create';
+import {modify} from '/lib/enonic/yase/node/modify';
 import {parseCsv} from '/lib/enonic/yase/parseCsv';
-
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {synonym} from '/lib/enonic/yase/nodeTypes/synonym';
 
 
@@ -20,60 +24,99 @@ export function handleThesauriPost(req) {
 		params: {
 			description,
 			name,
+			displayName = name,
 			thesaurus
 		},
 		path
 	} = req;
 	//log.info(toStr({req}));
+	const relPath = path.replace(TOOL_PATH, '');
+	const pathParts = relPath.match(/[^/]+/g);
+	const action = pathParts[1];
+	const thesaurusName = pathParts[2];
 
-	if (name && description) {
-		const node = createOrModify({
-			_parentPath: '/thesauri',
-			_name: name,
-			_indexConfig: {
-				default: 'byType'
-			},
-			description,
-			displayName: name,
-			type: NT_THESAURUS
-		});
-		return listThesauriPage({
-			messages: node
-				? [`Saved thesauri named ${name}.`]
-				: [`Something went wrong when trying to save thesauri named ${name}!`],
-			path,
-			status: node ? 200 : 500
-		});
-	}
+	const messages = [];
+	let status = 200;
 
-	//const form = getMultipartForm(); log.info(toStr({form}));
+	const connection = connect({
+		principals: [PRINCIPAL_YASE_WRITE]
+	});
 
-	const text = getMultipartText('file'); //log.info(toStr({text}));
-	parseCsv({
-		csvString: text,
-		columns: ['from', 'to'],
-		start: 1 // Aka skip line 0
-	}).forEach(({from, to}) => {
-		//log.info(toStr({from, to}));
-		if (
-			from // Skip empty cells
-			&& to // Skip empty cells
-			&& isString(from) && from.trim() // Skip cells with just whitespace, emptystring is Falsy
-			&& isString(to) && to.trim() // Skip cells with just whitespace, emptystring is Falsy
-		) { // Skip empty values
-			const fromArr = from.trim().split(',').map(str => str.trim());
-			const toArr = to.trim().split(',').map(str => str.trim());
-			const params = synonym({
-				_parentPath: `/thesauri/${thesaurus}`,
-				from: fromArr.length > 1 ? fromArr : fromArr.join(),
-				to: toArr.length > 1 ? toArr : toArr.join()
-			});
-			//log.info(toStr({params}));
-			createOrModify(params);
+	if (action === 'delete') {
+		const nodePath = `/thesauri/${thesaurusName}`;
+		const deleteRes = connection.delete(nodePath);
+		if(deleteRes) {
+			messages.push(`Thesaurus with path:${nodePath} deleted.`)
+		} else {
+			messages.push(`Something went wrong when trying to delete thesaurus with path:${nodePath}.`)
+			status = 500;
 		}
-	});
-	return thesaurusPage({
-		messages: [`Imported synonyms to ${thesaurus}.`],
-		page: `${TOOL_PATH}/thesauri/${thesaurus}`
-	});
-}
+		return {
+			redirect: `${TOOL_PATH}/thesauri?${
+				messages.map(m => `messages=${m}`).join('&')
+			}&status=${status}`
+		}
+	} // delete
+
+	if (action === 'import') {
+		//const form = getMultipartForm(); log.info(toStr({form}));
+
+		const text = getMultipartText('file'); //log.info(toStr({text}));
+		parseCsv({
+			csvString: text,
+			columns: ['from', 'to'],
+			start: 1 // Aka skip line 0
+		}).forEach(({from, to}) => {
+			//log.info(toStr({from, to}));
+			if (
+				from // Skip empty cells
+				&& to // Skip empty cells
+				&& isString(from) && from.trim() // Skip cells with just whitespace, emptystring is Falsy
+				&& isString(to) && to.trim() // Skip cells with just whitespace, emptystring is Falsy
+			) { // Skip empty values
+				const fromArr = from.trim().split(',').map(str => str.trim());
+				const toArr = to.trim().split(',').map(str => str.trim());
+				const params = synonym({
+					__connection: connection,
+					_parentPath: `/thesauri/${thesaurus}`,
+					from: fromArr.length > 1 ? fromArr : fromArr.join(),
+					to: toArr.length > 1 ? toArr : toArr.join()
+				});
+				//log.info(toStr({params}));
+				createOrModify(params);
+			}
+		});
+		messages.push(`Imported synonyms to ${thesaurus}.`);
+		return {
+			redirect: `${TOOL_PATH}/thesauri?${
+				messages.map(m => `messages=${m}`).join('&')
+			}&status=${status}`
+		}
+	} // import
+
+	// Create or Update
+	const params = {
+		__connection: connection,
+		_parentPath: '/thesauri',
+		_name: action === 'update' ? thesaurusName : name,
+		_indexConfig: {
+			default: 'byType'
+		},
+		description,
+		displayName,
+		type: NT_THESAURUS
+	};
+
+	const node = action === 'update' ? modify(params) : create(params);
+	if (node) {
+		messages.push(`${action === 'update' ? 'Updated' : 'Created'} thesaurus ${displayName}.`);
+	} else {
+		messages.push(`Something went wrong when trying to ${action === 'update' ? 'update' : 'create'} thesauri ${displayName}!`);
+		status = 500;
+	}
+	return {
+		redirect: `${TOOL_PATH}/thesauri/?${
+			messages.map(m => `messages=${m}`).join('&')
+		}&status=${status}`
+	}
+} // handleThesauriPost

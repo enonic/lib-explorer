@@ -18,7 +18,7 @@ export const journal = ({
 	errorCount = errors.length,
 	successes = [],
 	successCount = successes.length,
-	...rest // __repoId
+	...rest // __connection
 }) => {
 	return {
 		__repoId: JOURNALS_REPO,
@@ -60,6 +60,6 @@ export const journal = ({
 		errors,
 		successes,
 		type: NT_JOURNAL,
-		...rest // __repoId
+		...rest // __connection
 	};
 }

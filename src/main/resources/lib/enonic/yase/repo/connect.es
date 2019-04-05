@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 //import {getUser} from '/lib/xp/auth';
 import {get as getContext} from '/lib/xp/context';
 import {connect as libConnect} from '/lib/xp/node';
@@ -49,6 +49,6 @@ export function connect({
 		principals,
 		user
 	};
-	log.info(toStr({connectParams}));
+	//log.info(toStr({connectParams}));
 	return libConnect(connectParams);
 }

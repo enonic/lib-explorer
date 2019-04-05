@@ -8,7 +8,6 @@ export function query({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
 	filters = {},
-	//name,
 	query = '',
 	sort = '_name ASC'
 } = {}) {
@@ -28,7 +27,7 @@ export function query({
 		},*/
 		count,
 		filters,
-		query,//: `_parentPath = '/thesauri/${name}'`,
+		query,
 		sort
 	};
 	//log.info(toStr({queryParams}));
