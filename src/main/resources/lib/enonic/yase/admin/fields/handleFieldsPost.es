@@ -5,6 +5,7 @@ import {
 	BRANCH_ID,
 	NT_FIELD,
 	NT_FIELD_VALUE,
+	PRINCIPAL_YASE_WRITE,
 	REPO_ID,
 	TOOL_PATH
 } from '/lib/enonic/yase/constants';
@@ -26,14 +27,16 @@ export function handleFieldsPost({
 	const valueName = pathParts[4];
 	//log.info(toStr({fieldName, action, valueName, valueAction}));
 
+	const connection = connect({
+		repoId: REPO_ID,
+		branch: BRANCH_ID,
+		principals: [PRINCIPAL_YASE_WRITE]
+	});
+
 	const messages = [];
 	let status = 200;
 	if(action === 'values') {
 		if(valueAction === 'delete') {
-			const connection = connect({
-				repoId: REPO_ID,
-				branch: BRANCH_ID
-			});
 			const nodePath = `/fields/${fieldName}/${valueName}`;
 			const deleteRes = connection.delete(nodePath);
 			messages.push(deleteRes.length
@@ -74,6 +77,7 @@ export function handleFieldsPost({
 		const valueNodePath = `${valueNodeParentPath}/${valueNodeName}`;
 
 		const nodeParams = {
+			__connection: connection,
 			_indexConfig: {default: 'byType'},
 			_parentPath: valueNodeParentPath,
 			_name: valueNodeName,
@@ -97,10 +101,6 @@ export function handleFieldsPost({
 	} // values
 
 	if (action === 'delete') {
-		const connection = connect({
-			repoId: REPO_ID,
-			branch: BRANCH_ID
-		});
 		const path = `/fields/${fieldName}`;
 		const deleteRes = connection.delete(path);
 		//log.info(toStr({deleteRes}));
@@ -157,6 +157,7 @@ export function handleFieldsPost({
 	}));*/
 	const lcKey = key.toLowerCase();
 	const nodeParams = {
+		__connection: connection,
 		_indexConfig: {default: 'byType'},
 		_name: lcKey,
 		_parentPath: '/fields',

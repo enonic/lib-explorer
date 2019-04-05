@@ -1,19 +1,25 @@
 import {toStr} from '/lib/enonic/util';
 
-import {TOOL_PATH} from '/lib/enonic/yase/constants';
+import {
+	PRINCIPAL_YASE_READ,
+	TOOL_PATH
+} from '/lib/enonic/yase/constants';
 import {fieldFormHtml} from '/lib/enonic/yase/admin/fields/fieldFormHtml';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export function list({
+	params: {
+		messages,
+		status
+	},
 	path
-}, {
-	messages,
-	status
-} = {}) {
-	const fieldRows = getFields().hits.map(({
+}) {
+	const connection = connect({principals: PRINCIPAL_YASE_READ});
+	const fieldRows = getFields({connection}).hits.map(({
 		_id: id,
 		_name: name,
 		displayName,
@@ -27,7 +33,10 @@ export function list({
 		<td>${displayName}</td>
 		<td>${fieldType}</td>
 		<!--td>${toStr(indexConfig)}</td-->
-		<td>${getFieldValues({field: name}).hits.map(({displayName: vN}) => vN).join(', ')}</td>
+		<td>${getFieldValues({
+		connection,
+		field: name
+	}).hits.map(({displayName: vN}) => vN).join(', ')}</td>
 		<td>
 			<a class="tiny compact ui button" href="${TOOL_PATH}/fields/edit/${name}"><i class="blue edit icon"></i>Edit</a>
 			<a class="tiny compact ui button" href="${TOOL_PATH}/fields/delete/${name}"><i class="red trash alternate outline icon"></i>Delete</a>

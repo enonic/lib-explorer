@@ -2,6 +2,7 @@
 import {dlv} from '/lib/enonic/util/object';
 import {
 	BRANCH_ID,
+	PRINCIPAL_YASE_READ,
 	TOOL_PATH,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
@@ -30,7 +31,8 @@ export function newOrEdit({
 	if (fieldName) {
 		const connection = connect({
 			repoId: REPO_ID,
-			branch: BRANCH_ID
+			branch: BRANCH_ID,
+			principals: [PRINCIPAL_YASE_READ]
 		});
 		const path = `/fields/${fieldName}`;
 		//log.info(toStr({path}));
@@ -56,7 +58,10 @@ export function newOrEdit({
 			instruction*/
 		});
 
-		const values = getFieldValues({field: fieldName}).hits;
+		const values = getFieldValues({
+			connection,
+			field: fieldName
+		}).hits;
 		//log.info(toStr({values}));
 
 		const valueForm = fieldValueFormHtml({

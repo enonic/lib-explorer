@@ -1,6 +1,7 @@
 //import {toStr} from '/lib/enonic/util';
 import {
 	BRANCH_ID,
+	PRINCIPAL_YASE_READ,
 	TOOL_PATH,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
@@ -24,7 +25,8 @@ export function newOrEdit({
 	if(valueName) {
 		const connection = connect({
 			repoId: REPO_ID,
-			branch: BRANCH_ID
+			branch: BRANCH_ID,
+			principals: [PRINCIPAL_YASE_READ]
 		});
 		const nodePath = `/fields/${fieldName}/${valueName}`;
 		const node = connection.get(nodePath);
