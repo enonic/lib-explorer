@@ -30,6 +30,7 @@ import {connect} from '/lib/enonic/yase/repo/connect';
 import {multiConnect} from '/lib/enonic/yase/repo/multiConnect';
 import {localizeFacets} from '/lib/enonic/yase/localizeFacets';
 import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
+import {query as queryThesauri} from '/lib/enonic/yase/thesaurus/query';
 
 //import {removeStopWords} from '/lib/enonic/yase/query/removeStopWords';
 import {wash} from '/lib/enonic/yase/query/wash';
@@ -144,31 +145,40 @@ export function search(params) {
 	if (!page) { page = Math.floor(start / count) + 1; }
 
 	const washedSearchString = wash({string: searchString});
-	log.info(toStr({washedSearchString}));
+	//log.info(toStr({washedSearchString}));
 
 	//const searchStringWithoutStopWords = removeStopWords({string: washedSearchString});
 
 	const synonyms = [];
-	const expand = true; // default is false
+	const expand = false;
 	const query = buildQuery({
 		expand,
 		expression: queryConfig,
 		searchString: washedSearchString,
 		synonyms
 	});
-	log.info(toStr({synonyms}));
+	//log.info(toStr({synonyms}));
 	log.info(toStr({query}));
 
+	const thesauriMap = {};
+	queryThesauri({
+		getSynonymsCount: false
+	}).hits.forEach(({name, displayName}) => {
+		thesauriMap[name] = displayName;
+	});
+	//log.info(toStr({thesauriMap}));
+
 	const synonymsObj = {};
-	synonyms.forEach(({thesaurus, from, to}) => {
-		if(!synonymsObj[thesaurus]) {
-			synonymsObj[thesaurus] = {};
+	synonyms.forEach(({thesaurus, score, from, to}) => {
+		const thesaurusName = thesauriMap[thesaurus];
+		if(!synonymsObj[thesaurusName]) {
+			synonymsObj[thesaurusName] = {};
 		}
 		forceArray(from).forEach(f => {
-			if(!synonymsObj[thesaurus][f]) { synonymsObj[thesaurus][f] = to}
+			if(!synonymsObj[thesaurusName][f]) { synonymsObj[thesaurusName][f] = {score, to}}
 		});
 	});
-	log.info(toStr({synonymsObj}));
+	//log.info(toStr({synonymsObj}));
 
 
 	const localizedFacets = localizeFacets({
@@ -237,9 +247,9 @@ export function search(params) {
 			start
 		},
 		count: queryRes.count,
+		expand,
 		pages,
 		total,
-		//synonyms,
 		synonymsObj,
 		hits: mapMultiRepoQueryHits({
 			hits,

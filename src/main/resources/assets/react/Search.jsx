@@ -10,6 +10,7 @@ import {Header} from './semantic-ui/Header';
 import {Label} from './semantic-ui/Label';
 import {Labels} from './semantic-ui/Labels';
 import {SearchInput} from './semantic-ui/SearchInput';
+import {Table} from './semantic-ui/Table';
 
 //import {toStr} from './utils/toStr';
 
@@ -144,31 +145,24 @@ export class Search extends React.Component {
 					</Form>
 					{synonyms ? <>
 						<Header dividing text='Synonyms'/>
-						{Object.keys(synonyms).map((thesaurus, i) =>
-							<React.Fragment key={i}>
-								{Object.keys(synonyms[thesaurus]).map((from, j) => <div className="ui fluid mini steps" key={`${i}.${j}`}>
-									<div className="step" key={i}>
-										<div className="content">
-											<div className="title">{thesaurus}</div>
-											<div className="description">Thesaurus</div>
-										</div>
-									</div>
-									<div className="step" key={`${i}.${j}`}>
-										<div className="content">
-											<div className="title">{from}</div>
-											<div className="description">From</div>
-										</div>
-									</div>
-									{
-										forceArray(synonyms[thesaurus][from]).map((to, k) => <div className="step">
-											<div className="content" key={`${i}.${j}.${k}`}>
-												<div className="title">{to}</div>
-												<div className="description">To</div>
-											</div>
-										</div>)
-									}
-								</div>)}
-							</React.Fragment>)}
+						<Table basic collapsing compact small very>
+							<thead>
+								<tr>
+									<th>Thesaurus</th>
+									<th>Score</th>
+									<th>From</th>
+									<th>To</th>
+								</tr>
+							</thead>
+							<tbody>
+								{Object.keys(synonyms).map((thesaurus, i) => Object.keys(synonyms[thesaurus]).map((from, j) => <tr className="middle aligned" key={`${i}.${j}`}>
+									{j === 0 ? <td rowSpan={Object.keys(synonyms[thesaurus]).length}>{thesaurus}</td> : null}
+									<td>{synonyms[thesaurus][from].score}</td>
+									<td>{data.expand ? <Label basic mini text={from}/> : from}</td>
+									<td><Labels mini>{forceArray(synonyms[thesaurus][from].to).map((t, k) => <Label basic key={k} text={t}/>)}</Labels></td>
+								</tr>))}
+							</tbody>
+						</Table>
 					</> : null}
 					<Hits
 						hits={hits}
@@ -179,6 +173,3 @@ export class Search extends React.Component {
 		/>;
 	} // render
 } // Search Component
-
-
-//<Labels mini>{synonyms.map((s, i) => <Label basic key={i} text={s}/>)}</Labels>

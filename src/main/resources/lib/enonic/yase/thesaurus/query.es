@@ -10,6 +10,7 @@ export function query({
 	connection = connect(),
 	count = -1,
 	filters = {},
+	getSynonymsCount = true,
 	query = '', //"_parentPath = '/thesauri'",
 	sort = '_name ASC'
 } = {}) {
@@ -25,12 +26,16 @@ export function query({
 	const queryRes = connection.query(queryParams);
 	queryRes.hits = queryRes.hits.map((hit) => {
 		const {_name: name, description = '', displayName} = connection.get(hit.id);
-		const synonymsRes = querySynonyms({
-			count: 0,
-			query: `_parentPath = '/thesauri/${name}'`
-		});
-		//log.info(toStr({synonymsRes}));
-		return {description, displayName, name, synonymsCount: synonymsRes.total};
+		const rv = {description, displayName, name};
+		if (getSynonymsCount) {
+			const synonymsRes = querySynonyms({
+				count: 0,
+				query: `_parentPath = '/thesauri/${name}'`
+			});
+			//log.info(toStr({synonymsRes}));
+			rv.synonymsCount = synonymsRes.total;
+		}
+		return rv;
 	});
 	return queryRes;
 } // function query

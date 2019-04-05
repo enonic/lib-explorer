@@ -4,18 +4,24 @@ import classNames from 'classnames';
 export const Table = ({
 	children,
 	className,
-	celled = true,
-	collapsing,
-	compact = true,
-	selectable = true,
-	sortable,
-	striped = true,
+	basic = false,
+	celled = false,
+	collapsing = false,
+	compact = false,
+	selectable = false,
+	small = false,
+	sortable = false,
+	striped = false,
+	very = false,
 	...rest
 }) => <table className={classNames(className, {
+	basic,
 	celled,
 	collapsing,
 	compact,
 	selectable,
+	small,
 	sortable,
-	striped
+	striped,
+	very
 }, 'table ui')} {...rest}>{children}</table>;

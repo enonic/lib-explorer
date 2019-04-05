@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 
 import {addFilter} from '/lib/enonic/yase/query/addFilter';
@@ -11,21 +11,21 @@ import {query as querySynonyms} from '/lib/enonic/yase/synonym/query';
 const MAX_COUNT = 100;
 
 export function getSynonyms({
-	count = MAX_COUNT,
 	expand = false,
 	searchString,
-	thesauri
+	thesauri,
+	count = MAX_COUNT//thesauri.length
 }) {
-	log.info(toStr({count, expand, searchString, thesauri}));
+	//log.info(toStr({count, expand, searchString, thesauri}));
 	if (!searchString || !thesauri) { return []; }
 
 	const fields = expand ? 'from,to' : 'from';
 	const cleanSearchString = ws(replaceSyntax({string: searchString}));
-	log.info(toStr({cleanSearchString}));
+	//log.info(toStr({cleanSearchString}));
 
 	// ngram will quickly match a ton of synonyms, so don't use it.
 	const query = `fulltext('${fields}', '${cleanSearchString}', 'OR', 'standard')`; // TODO Remove workaround in Enonic XP 7
-	log.info(toStr({query}));
+	//log.info(toStr({query}));
 
 	const params = {
 		count: count >= 1 && count <= MAX_COUNT ? count : MAX_COUNT,
@@ -33,15 +33,16 @@ export function getSynonyms({
 		query,
 		sort: '_score DESC'
 	};
-	log.info(toStr({params}));
+	//log.info(toStr({params}));
 
 	const hits = querySynonyms(params).hits;
-	log.info(toStr({hits}));
+	//log.info(toStr({hits}));
 
-	return hits.map(({from, thesaurus, to}) => {
-		log.info(toStr({from, thesaurus, to}));
+	return hits.map(({from, score, thesaurus, to}) => {
+		//log.info(toStr({from, score, thesaurus, to}));
 		return {
 			from,
+			score,
 			thesaurus,
 			to
 		};

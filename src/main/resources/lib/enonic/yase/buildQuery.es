@@ -5,10 +5,19 @@ import {toStr} from '/lib/enonic/util';
 
 import {getSynonyms} from '/lib/enonic/yase/search/getSynonyms';
 import {flattenSynonyms} from '/lib/enonic/yase/search/flattenSynonyms';
+//import {partitionOnScore} from '/lib/enonic/yase/search/synonyms/partitionOnScore';
 
 
-const buildFields = (fields) => `'${fields.map(({field, boost = ''}) =>
-	`${field}${boost ? `^${boost}`: ''}`).join(',')}'`;
+const buildFields = (fields/*, score*/) => {
+	return `'${fields.map(({field, boost = 1}) => {
+		/*let floatBoost = parseFloat(boost);
+		if (score) {
+			floatBoost += floatBoost * score / 100;
+		}
+		floatBoost = floatBoost.toFixed();*/
+		return `${field}${boost ? `^${boost}`: ''}`;
+	}).join(',')}'`;
+}
 
 
 export function buildQuery({
@@ -42,15 +51,30 @@ export function buildQuery({
 			searchString,
 			thesauri: params.thesauri
 		});
-		log.info(toStr({localSynonyms}));
+		//log.info(toStr({localSynonyms}));
 		if (!localSynonyms.length) { return null; }
 		localSynonyms.forEach(l => synonyms.push(l)); // Modify passed in array
+
+		/*const partitioned = partitionOnScore(localSynonyms);
+		log.info(toStr({partitioned}));
+
+		const flattened = {};
+		Object.keys(partitioned).map(score => {
+			flattened[score] = flattenSynonyms({
+				expand,
+				synonyms: partitioned[score]
+			}).map(s => `"${s}"`);
+		});
+
+		query = `(${
+			Object.keys(flattened).map(score => `fulltext(${buildFields(params.fields, score)}, '${flattened[score].join(' ')}', 'OR', 'standard')`).join(' OR ')
+		})`;*/
 
 		const flattenedSynonyms = flattenSynonyms({
 			expand,
 			synonyms: localSynonyms
-		});
-		log.info(toStr({flattenedSynonyms}));
+		}).map(s => `"${s}"`);
+		//log.info(toStr({flattenedSynonyms}));
 
 		query = `fulltext(${buildFields(params.fields)}, '${flattenedSynonyms.join(' ')}', 'OR', 'standard')`; // TODO Remove workaround in Enonic XP 7
 		break;

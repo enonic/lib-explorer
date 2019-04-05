@@ -49,6 +49,7 @@ export function query({
 			id: hit.id,
 			name: _name,
 			thesaurus: _path.match(/[^/]+/g)[1],
+			score: hit.score,
 			to
 		};
 	});
