@@ -34,6 +34,7 @@ import {query as queryThesauri} from '/lib/enonic/yase/thesaurus/query';
 
 //import {removeStopWords} from '/lib/enonic/yase/query/removeStopWords';
 import {wash} from '/lib/enonic/yase/query/wash';
+import {flattenSynonyms} from '/lib/enonic/yase/search/flattenSynonyms';
 
 import {getInterface} from '/lib/enonic/yase/admin/interfaces/getInterface';
 
@@ -168,6 +169,13 @@ export function search(params) {
 	});
 	//log.info(toStr({thesauriMap}));
 
+	const flattenedSynonyms = [searchString];
+	flattenSynonyms({
+		array: flattenedSynonyms,
+		expand,
+		synonyms
+	});
+
 	const synonymsObj = {};
 	synonyms.forEach(({thesaurus, score, from, to}) => {
 		const thesaurusName = thesauriMap[thesaurus];
@@ -256,7 +264,7 @@ export function search(params) {
 			locale,
 			nodeCache: NODE_CACHE,
 			resultMappings,
-			searchString
+			searchString: flattenedSynonyms.join(' ')
 		}),
 		facetCategories,
 		pagination

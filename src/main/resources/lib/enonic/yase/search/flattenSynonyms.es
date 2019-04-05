@@ -2,10 +2,10 @@ import {forceArray} from '/lib/enonic/util/data';
 
 
 export function flattenSynonyms({
+	array = [],
 	expand = false,
 	synonyms
 }) {
-	const array = [];
 	synonyms.forEach(({from, to}) => {
 		if(expand) {
 			forceArray(from).forEach(f => {
