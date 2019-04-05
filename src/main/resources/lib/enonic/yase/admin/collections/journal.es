@@ -4,11 +4,13 @@ import {menu} from '/lib/enonic/yase/admin/collections/menu';
 
 import {
 	JOURNALS_REPO,
-	NT_JOURNAL
+	NT_JOURNAL,
+	PRINCIPAL_YASE_READ
 } from '/lib/enonic/yase/constants';
 import {connect} from '/lib/enonic/yase/repo/connect';
 import {addFilter} from '/lib/enonic/yase/query/addFilter';
 import {hasValue} from '/lib/enonic/yase/query/hasValue';
+
 
 const queryJournals = ({
 	count = 10,
@@ -17,7 +19,10 @@ const queryJournals = ({
 	sort = 'startTime DESC',
 	start
 } = {}) => {
-	const connection = connect({repoId: JOURNALS_REPO});
+	const connection = connect({
+		repoId: JOURNALS_REPO,
+		principals: [PRINCIPAL_YASE_READ]
+	});
 	const queryParams = {
 		count,
 		filters: addFilter({
@@ -67,7 +72,7 @@ export const journal = ({
 			</tr>
 		</thead>
 		<tbody>
-			${journals}
+			${journals.join('')}
 		</tbody>
 </table>`,
 		path,

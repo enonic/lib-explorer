@@ -1,11 +1,10 @@
 //import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 import {NT_SYNONYM} from '/lib/enonic/yase/constants';
-import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 function querySynonyms({
-	connection = connect(),
+	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	fields = 'from',
 	searchString,
 	thesauri

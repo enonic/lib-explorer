@@ -11,6 +11,7 @@ import {query as querySynonyms} from '/lib/enonic/yase/synonym/query';
 const MAX_COUNT = 100;
 
 export function getSynonyms({
+	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	expand = false,
 	searchString,
 	thesauri,
@@ -28,6 +29,7 @@ export function getSynonyms({
 	//log.info(toStr({query}));
 
 	const params = {
+		connection,
 		count: count >= 1 && count <= MAX_COUNT ? count : MAX_COUNT,
 		filters: addFilter({filter: hasValue('_parentPath', forceArray(thesauri).map(n => `/thesauri/${n}`))}),
 		query,

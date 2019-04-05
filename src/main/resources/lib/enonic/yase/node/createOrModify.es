@@ -3,7 +3,6 @@ import {toStr} from '/lib/enonic/util';
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-import {BRANCH_ID, REPO_ID} from '/lib/enonic/yase/constants';
 import {create} from '/lib/enonic/yase/node/create';
 import {modify} from '/lib/enonic/yase/node/modify';
 
@@ -15,8 +14,7 @@ const CATCH_CLASS_NAMES = [
 
 
 export function createOrModify({
-	__repoId = REPO_ID,
-	__branch = BRANCH_ID,
+	__connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	_parentPath = '/',
 	//_path = '/',
 	_name,
@@ -25,22 +23,24 @@ export function createOrModify({
 		: _name,
 	...rest
 } = {}) {
-	//log.info(toStr({__repoId}));
 	/*log.info(toStr({
 		_parentPath, _name, displayName, rest
 	}));*/
 	let rv;
 	try {
 		rv = create({
-			__repoId, __branch, _parentPath, _name, displayName, ...rest
+			__connection, _parentPath, _name, displayName, ...rest
 		});
 	} catch (catchedError) {
-		if (CATCH_CLASS_NAMES.includes(catchedError.class.name)) {
+		if (catchedError.class && CATCH_CLASS_NAMES.includes(catchedError.class.name)) {
 			rv = modify({
-				__repoId, __branch, _parentPath, _name, displayName, ...rest
+				__connection, _parentPath, _name, displayName, ...rest
 			});
 		} else {
-			log.error(toStr({catchedErrorClassName: catchedError.class.name}));
+			if (catchedError.class) {
+				log.error(toStr({catchedErrorClassName: catchedError.class.name}));
+			}
+			log.error(toStr({catchedErrorMessage: catchedError.message}));
 			throw catchedError;
 		}
 	}

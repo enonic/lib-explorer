@@ -1,9 +1,8 @@
 import {NT_FIELD} from '/lib/enonic/yase/constants';
-import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export function getFields({
-	connection = connect()
+	connection // Connecting many places leeds to loss of control over principals, so pass a connection around.
 } = {}) {
 	const queryParams = {
 		count: -1,

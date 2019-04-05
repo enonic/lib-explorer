@@ -3,8 +3,12 @@ import {addFilter} from '/lib/enonic/yase/query/addFilter';
 import {hasValue} from '/lib/enonic/yase/query/hasValue';
 
 
-export function usedInInterfaces(name) {
+export function usedInInterfaces({
+	connection,
+	name
+}) {
 	return queryInterfaces({
+		connection,
 		filters: addFilter({
 			filter: hasValue('collections', name)
 		})

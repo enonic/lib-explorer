@@ -6,19 +6,21 @@ import {
 	NT_INTERFACE,
 	PACKAGE,
 	PATH_INTERFACES,
+	PRINCIPAL_YASE_READ,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
 
 
-const CONNECTION = connect({
+const YASE_READ_CONNECTION = connect({
 	repoId: REPO_ID,
-	branch: BRANCH_ID
+	branch: BRANCH_ID,
+	principals: [PRINCIPAL_YASE_READ]
 });
 
 
 function getInterface(key) {
 	//log.info(toStr({key}));
-	const node = CONNECTION.get(key);
+	const node = YASE_READ_CONNECTION.get(key);
 	//log.info(toStr({node}));
 	const {_name: id, displayName, _path: description} = node;
 	return {id, displayName, description};
@@ -72,7 +74,7 @@ export function get({
 			.trim(),
 		start
 	}; //log.info(toStr({queryParams}));
-	const result = CONNECTION.query(queryParams); //log.info(toStr({result}));
+	const result = YASE_READ_CONNECTION.query(queryParams); //log.info(toStr({result}));
 	const body = {
 		count: result.count,
 		total: result.total,

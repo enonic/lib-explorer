@@ -4,17 +4,16 @@ import {forceArray} from '/lib/enonic/util/data';
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {insertAdjacentHTML} from '/lib/enonic/yase/insertAdjacentHTML';
-import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export function editSynonymPage({
 	path
 }, {
+	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	relPath = path.replace(TOOL_PATH, ''),
 	pathParts = relPath.match(/[^/]+/g),
 	thesaurusName = pathParts[1],
-	synonymId = pathParts[2],
-	connection = connect()
+	synonymId = pathParts[2]
 } = {}) {
 	log.info(toStr({
 		path, relPath, pathParts, synonymId

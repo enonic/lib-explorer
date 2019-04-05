@@ -1,6 +1,7 @@
 import {
 	BRANCH_ID,
 	REPO_ID,
+	PRINCIPAL_YASE_WRITE,
 	TOOL_PATH
 } from '/lib/enonic/yase/constants';
 import {connect} from '/lib/enonic/yase/repo/connect';
@@ -27,7 +28,8 @@ export const handleDelete = ({
 	} else {
 		const connection = connect({
 			repoId: REPO_ID,
-			branch: BRANCH_ID
+			branch: BRANCH_ID,
+			principals: [PRINCIPAL_YASE_WRITE]
 		});
 		const nodePath = `/collections/${collectionName}`;
 		const deleteRes = connection.delete(nodePath);
@@ -43,8 +45,4 @@ export const handleDelete = ({
 			messages.map(m => `messages=${m}`).join('&')
 		}&status=${status}`
 	}
-	/*return list({path}, {
-		messages,
-		status
-	});*/
 } // handleDelete

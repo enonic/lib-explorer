@@ -1,5 +1,6 @@
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 //import {toStr} from '/lib/enonic/util';
+import {forceArray} from '/lib/enonic/util/data';
 import {assetUrl} from '/lib/xp/portal';
 
 
@@ -19,6 +20,8 @@ export function htmlResponse({
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
 	const tab = pathParts ? pathParts[0] : ''; //log.info(toStr({tab}));
 	const preTitle = title ? `${title} - ` : '';
+	const messagesArray = forceArray(messages);
+	const statusInt = parseInt(status);
 	return {
 		body: `<html>
 	<head>
@@ -45,7 +48,15 @@ export function htmlResponse({
 		</nav>
 		${bodyBegin.join('\n')}
 		<main class="ui main container">
-			${messages.length ? `<ul class="${status === 200 ? 'success' : 'error'}">${messages.map(m => `<li>${m}</li>`)}</ul>` : ''}
+			${messagesArray.length ? `<div class="ui icon ${statusInt === 200 ? 'positive' : 'negative'} message">
+					<i class="${statusInt === 200 ? 'thumbs up' : 'exclamation triangle'} icon"></i>
+					<div class="content">
+  						<div class="header">${statusInt === 200 ? 'Success' : 'Error'}</div>
+						<ul class="list">
+							${messagesArray.map(m => `<li>${m}</li>`)}
+						</ul>
+					</div>
+				</div>` : ''}
 			${main}
 		</main>
 

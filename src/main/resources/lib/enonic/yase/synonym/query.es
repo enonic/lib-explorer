@@ -1,12 +1,11 @@
 //import {toStr} from '/lib/enonic/util';
 import {NT_SYNONYM} from '/lib/enonic/yase/constants';
-import {connect} from '/lib/enonic/yase/repo/connect';
 import {addFilter} from '/lib/enonic/yase/query/addFilter';
 import {hasValue} from '/lib/enonic/yase/query/hasValue';
 
 
 export function query({
-	connection = connect(),
+	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
 	filters = {},
 	//name,

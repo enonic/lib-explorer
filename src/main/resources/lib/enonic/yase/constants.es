@@ -65,6 +65,14 @@ export const ROLE_YASE_WRITE = sanitize(`${PACKAGE}.write`);
 
 
 //──────────────────────────────────────────────────────────────────────────────
+// Principals
+//──────────────────────────────────────────────────────────────────────────────
+export const PRINCIPAL_SYSTEM_ADMIN = 'role:system.admin';
+export const PRINCIPAL_YASE_READ = `role:${ROLE_YASE_READ}`;
+export const PRINCIPAL_YASE_WRITE = `role:${ROLE_YASE_WRITE}`;
+
+
+//──────────────────────────────────────────────────────────────────────────────
 // User
 //──────────────────────────────────────────────────────────────────────────────
 export const USER_YASE_JOB_RUNNER_NAME = sanitize(`${PACKAGE}.job.runner`);
@@ -76,7 +84,7 @@ export const USER_YASE_JOB_RUNNER_KEY = `user:${USER_YASE_JOB_RUNNER_USERSTORE}:
 // Root Permissions
 //──────────────────────────────────────────────────────────────────────────────
 export const ROOT_PERMISSION_SYSTEM_ADMIN = {
-	principal: 'role:system.admin',
+	principal: PRINCIPAL_SYSTEM_ADMIN,
 	allow: [
 		'READ',
 		'CREATE',
@@ -90,7 +98,7 @@ export const ROOT_PERMISSION_SYSTEM_ADMIN = {
 };
 
 export const ROOT_PERMISSION_YASE_WRITE = {
-	principal: `role:${ROLE_YASE_WRITE}`,
+	principal: PRINCIPAL_YASE_WRITE,
 	allow: [
 		'READ',
 		'CREATE',
@@ -101,7 +109,7 @@ export const ROOT_PERMISSION_YASE_WRITE = {
 };
 
 export const ROOT_PERMISSION_YASE_READ = {
-	principal: `role:${ROLE_YASE_READ}`,
+	principal: PRINCIPAL_YASE_READ,
 	allow: ['READ'],
 	deny: []
 };

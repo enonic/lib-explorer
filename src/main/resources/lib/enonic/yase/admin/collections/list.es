@@ -1,20 +1,26 @@
 //import {toStr} from '/lib/enonic/util';
 
-import {TOOL_PATH} from '/lib/enonic/yase/constants';
+import {
+	PRINCIPAL_YASE_READ,
+	TOOL_PATH
+} from '/lib/enonic/yase/constants';
 import {menu} from '/lib/enonic/yase/admin/collections/menu';
 import {getDocumentCount} from '/lib/enonic/yase/collection/getDocumentCount';
 import {query} from '/lib/enonic/yase/collection/query';
 import {usedInInterfaces} from '/lib/enonic/yase/collection/usedInInterfaces';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 
 
 export const list = ({
+	params: {
+		messages,
+		status
+	},
 	path
-}, {
-	messages,
-	status
-} = {}) => {
-	const collections = query();
+}) => {
+	const readConnection = connect({principals: PRINCIPAL_YASE_READ});
+	const collections = query({connection: readConnection});
 	let totalCount = 0;
 	//log.info(toStr({collections}));
 	return htmlResponse({
@@ -32,7 +38,13 @@ export const list = ({
 		</tr>
 	</thead>
 	<tbody>
-		${collections.hits.map(({_name: name, displayName, collector: {name: collectorName}}) => {
+		${collections.hits.map(({
+		_name: name,
+		displayName,
+		collector: {
+			name: collectorName = ''
+		} = {}
+	}) => {
 		const count = getDocumentCount(name);
 		if (count) {
 			totalCount += count;
@@ -40,7 +52,10 @@ export const list = ({
 		return `<tr>
 			<td>${displayName}</td>
 			<td class="right aligned" data-sort-value="${count}">${count}</td>
-			<td>${usedInInterfaces(name).join(', ')}</td>
+			<td>${usedInInterfaces({
+		connection: readConnection,
+		name
+	}).join(', ')}</td>
 			<!--td>${collectorName}</td-->
 			<td>
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/edit/${name}"><i class="blue edit icon"></i>Edit</a>

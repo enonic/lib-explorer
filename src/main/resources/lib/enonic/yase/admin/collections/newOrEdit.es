@@ -5,7 +5,10 @@ import {isSet} from '/lib/enonic/util/value';
 import {assetUrl} from '/lib/xp/portal';
 
 import {connect} from '/lib/enonic/yase/repo/connect';
-import {TOOL_PATH} from '/lib/enonic/yase/constants';
+import {
+	PRINCIPAL_YASE_READ,
+	TOOL_PATH
+} from '/lib/enonic/yase/constants';
 
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {menu} from '/lib/enonic/yase/admin/collections/menu';
@@ -53,10 +56,12 @@ export function newOrEdit({
 	const action = pathParts[1];
 	const collectionName = pathParts[2];
 	let initialValues;
+	const connection = connect({
+		principals: [PRINCIPAL_YASE_READ]
+	});
 	if (action === 'edit') {
 		//log.info(toStr({collectionName}));
 
-		const connection = connect();
 		const node = connection.get(`/collections/${collectionName}`);
 		//log.info(toStr({node}));
 
@@ -76,7 +81,7 @@ export function newOrEdit({
 	}
 	//log.info(toStr({initialValues}));
 
-	const fieldValuesArray = getFieldValues().hits;
+	const fieldValuesArray = getFieldValues({connection}).hits;
 	const fieldValuesObj = {};
 	fieldValuesArray.forEach(({
 		_name: name,
@@ -91,7 +96,7 @@ export function newOrEdit({
 		};
 	});
 
-	const fieldsArr = getFields().hits.map(({
+	const fieldsArr = getFields({connection}).hits.map(({
 		_path: path,
 		displayName: label,
 		key: value
@@ -107,7 +112,7 @@ export function newOrEdit({
 	//log.info(toStr({fieldsObj}));
 
 	const tags = {};
-	getTags().hits.forEach(({displayName: label, field, _name: value}) => {
+	getTags({connection}).hits.forEach(({displayName: label, field, _name: value}) => {
 		if(tags[field]) {
 			tags[field].push({label, value});
 		} else {

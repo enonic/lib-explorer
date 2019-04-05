@@ -153,6 +153,7 @@ export function search(params) {
 	const synonyms = [];
 	const expand = false;
 	const query = buildQuery({
+		connection: yaseReadConnection,
 		expand,
 		expression: queryConfig,
 		searchString: washedSearchString,

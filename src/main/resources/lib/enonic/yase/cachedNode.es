@@ -1,7 +1,8 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-import {connect} from '/lib/xp/node';
+//import {connect} from '/lib/xp/node';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 //──────────────────────────────────────────────────────────────────────────────

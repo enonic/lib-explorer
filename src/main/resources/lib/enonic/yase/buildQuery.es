@@ -21,6 +21,7 @@ const buildFields = (fields/*, score*/) => {
 
 
 export function buildQuery({
+	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	expand = false,
 	expression: {
 		type,
@@ -47,6 +48,7 @@ export function buildQuery({
 		break;
 	case 'synonyms':
 		const localSynonyms = getSynonyms({
+			connection,
 			expand,
 			searchString,
 			thesauri: params.thesauri

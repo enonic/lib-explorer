@@ -2,17 +2,12 @@ import {toStr} from '/lib/enonic/util';
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {query as getThesauri} from '/lib/enonic/yase/thesaurus/query';
-//import {query as querySynonyms} from '/lib/enonic/yase/synonym/query';
-
 
 
 export function listThesauriPage(
 	{path} = {},
 	{messages, status} = {}
 ) {
-	/*const synonyms = querySynonyms({count: 0});
-	log.info(toStr({synonyms}));*/
-
 	const thesauri = getThesauri().hits;
 	return htmlResponse({
 		main: `

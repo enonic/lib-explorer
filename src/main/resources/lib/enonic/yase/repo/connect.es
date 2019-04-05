@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 //import {getUser} from '/lib/xp/auth';
 import {get as getContext} from '/lib/xp/context';
 import {connect as libConnect} from '/lib/xp/node';
@@ -7,14 +7,18 @@ import {connect as libConnect} from '/lib/xp/node';
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-import {BRANCH_ID, REPO_ID} from '/lib/enonic/yase/constants';
+import {
+	BRANCH_ID,
+	PRINCIPAL_YASE_READ,
+	REPO_ID
+} from '/lib/enonic/yase/constants';
 
 
 export function connect({
 	context = getContext(),
 	repoId = REPO_ID,
 	branch = BRANCH_ID,
-	principals: passedPrincipals,
+	principals: passedPrincipals = [PRINCIPAL_YASE_READ],
 
 	// There might not be a logged in user
 	login = context.authInfo.user && context.authInfo.user.login,
@@ -45,5 +49,6 @@ export function connect({
 		principals,
 		user
 	};
+	log.info(toStr({connectParams}));
 	return libConnect(connectParams);
 }

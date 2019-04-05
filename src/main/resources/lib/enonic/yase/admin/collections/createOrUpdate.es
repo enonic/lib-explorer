@@ -1,10 +1,11 @@
 //import {toStr} from '/lib/enonic/util';
 import {
 	NT_COLLECTION,
+	PRINCIPAL_YASE_WRITE,
 	TOOL_PATH
 } from '/lib/enonic/yase/constants';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
-//import {list} from '/lib/enonic/yase/admin/collections/list';
 
 
 export const createOrUpdate = ({
@@ -22,6 +23,9 @@ export const createOrUpdate = ({
 	const obj = JSON.parse(json);
 	//log.info(toStr({obj}));
 
+	obj.__connection = connect({ // eslint-disable-line no-underscore-dangle
+		principals: [PRINCIPAL_YASE_WRITE]
+	});
 	obj._indexConfig = {default: 'byType'};
 	obj._name = obj.name;
 	obj._parentPath = '/collections';
@@ -32,17 +36,15 @@ export const createOrUpdate = ({
 	let status = 200;
 	const messages = [];
 	const node = createOrModify(obj);
+	if(node) {
+		messages.push(`Collection ${obj.name} saved.`);
+	} else {
+		messages.push(`Something went wrong when saving collection ${obj.name}!`);
+		status = 500;
+	}
 	return {
 		redirect: `${TOOL_PATH}/collections/list?${
 			messages.map(m => `messages=${m}`).join('&')
 		}&status=${status}`
 	}
-	/*return list({
-		path
-	}, {
-		messages: node
-			? [`Collection ${obj.name} saved.`]
-			: [`Something went wrong when saving collection ${obj.name}!`],
-		statue: node ? 200 : 500
-	});*/
 };

@@ -6,9 +6,8 @@ import {list as listTasks, submitNamed} from '/lib/xp/task';
 import {request as httpClientRequest} from '/lib/http-client';
 
 import {
-	BRANCH_ID,
-	TOOL_PATH,
-	REPO_ID
+	PRINCIPAL_YASE_READ,
+	TOOL_PATH
 } from '/lib/enonic/yase/constants';
 import {connect} from '/lib/enonic/yase/repo/connect';
 import {get as getCollection} from '/lib/enonic/yase/collection/get';
@@ -44,7 +43,13 @@ export const collect = ({
 		messages.push(`Already collecting to ${collectionName} under taskId ${alreadyRunningtaskId}!`);
 		//log.info(toStr({alreadyRunningtaskId}));
 	} else {
-		const collectionNode = getCollection({name: collectionName});
+		const connection = connect({
+			principals: [PRINCIPAL_YASE_READ]
+		});
+		const collectionNode = getCollection({
+			connection,
+			name: collectionName
+		});
 		//log.info(toStr({collectionNode}));
 
 		const {

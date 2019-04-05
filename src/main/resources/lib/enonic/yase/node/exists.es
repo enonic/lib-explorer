@@ -15,16 +15,10 @@ import {connect} from '/lib/enonic/yase/repo/connect';
 // Public function
 //──────────────────────────────────────────────────────────────────────────────
 export function exists({
-	repoId,
-	branch = 'master',
+	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	_path = '/',
 	_name
 }) {
-	const connection = connect({
-		repoId,
-		branch
-	});
-	//log.info(toStr({repoId, branch}));
 	const queryParams = {
 		count: 0,
 		query: `_path = '${_path}${sanitize(_name)}'`//, // NOTE May already be sanitized

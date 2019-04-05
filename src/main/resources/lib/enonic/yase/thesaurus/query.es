@@ -1,13 +1,12 @@
 //import {toStr} from '/lib/enonic/util';
 import {NT_THESAURUS} from '/lib/enonic/yase/constants';
-import {connect} from '/lib/enonic/yase/repo/connect';
 import {addFilter} from '/lib/enonic/yase/query/addFilter';
 import {hasValue} from '/lib/enonic/yase/query/hasValue';
 import {query as querySynonyms} from '/lib/enonic/yase/synonym/query';
 
 
 export function query({
-	connection = connect(),
+	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
 	filters = {},
 	getSynonymsCount = true,
@@ -29,6 +28,7 @@ export function query({
 		const rv = {description, displayName, name};
 		if (getSynonymsCount) {
 			const synonymsRes = querySynonyms({
+				connection,
 				count: 0,
 				query: `_parentPath = '/thesauri/${name}'`
 			});
