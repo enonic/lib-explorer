@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 import {
 	NT_SYNONYM,
@@ -40,10 +40,10 @@ export function newOrEdit({
 		principals: [PRINCIPAL_YASE_READ]
 	});
 	const thesaurusNode = connection.get(`/thesauri/${thesaurusName}`);
-	log.info(toStr({thesaurusNode}));
+	//log.info(toStr({thesaurusNode}));
 
 	const {displayName, description} = thesaurusNode;
-	log.info(toStr({displayName, description}));
+	//log.info(toStr({displayName, description}));
 
 	const synonyms = querySynonyms({
 		connection,
@@ -70,7 +70,10 @@ export function newOrEdit({
 			<!--td>${s.displayName}</td-->
 			<td>${forceArray(s.from).join('<br/>')}</td>
 			<td>${forceArray(s.to).join('<br/>')}</td>
-			<td><a class="ui button" href="${TOOL_PATH}/thesauri/synonyms/${thesaurusName}/edit/${s.name}"><i class="blue edit icon"></i> Edit</a></td>
+			<td>
+				<a class="ui button" href="${TOOL_PATH}/thesauri/synonyms/${thesaurusName}/edit/${s.name}"><i class="blue edit icon"></i> Edit</a>
+				<a class="ui button" href="${TOOL_PATH}/thesauri/synonyms/${thesaurusName}/delete/${s.name}"><i class="red trash alternate outline icon"></i> Delete</a>
+			</td>
 		</tr>`).join('\n')}
 			</tbody>
 		</table>`,

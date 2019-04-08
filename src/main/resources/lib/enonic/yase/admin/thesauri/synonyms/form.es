@@ -11,7 +11,7 @@ export function form({
 	synonymName,
 	displayName = '',
 	action = synonymName
-		? `${TOOL_PATH}/thesauri/synonyms/${thesaurusName}/update`
+		? `${TOOL_PATH}/thesauri/synonyms/${thesaurusName}/update/${synonymName}`
 		: `${TOOL_PATH}/thesauri/synonyms/${thesaurusName}/create`
 }) {
 	const fromInput = '<input class="block" name="from" type="text"/>';

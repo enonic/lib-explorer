@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 
 import {
@@ -19,9 +19,9 @@ export function newOrEdit({
 	const thesaurusName = pathParts[2];
 	const secondaryAction = pathParts[3]; // new || edit
 	const synonymName = pathParts[4];
-	log.info(toStr({
+	/*log.info(toStr({
 		path, relPath, pathParts, thesaurusName, secondaryAction, synonymName
-	}));
+	}));*/
 
 	if(secondaryAction === 'new') {
 		return htmlResponse({
@@ -35,10 +35,10 @@ export function newOrEdit({
 		principals: [PRINCIPAL_YASE_READ]
 	});
 	const node = connection.get(`/thesauri/${thesaurusName}/${synonymName}`);
-	log.info(toStr({node}));
+	//log.info(toStr({node}));
 
 	const {displayName, from, to} = node;
-	log.info(toStr({displayName, from, to}));
+	//log.info(toStr({displayName, from, to}));
 
 	return htmlResponse({
 		main: `${form({
