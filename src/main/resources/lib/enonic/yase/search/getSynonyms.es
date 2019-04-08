@@ -6,6 +6,7 @@ import {hasValue} from '/lib/enonic/yase/query/hasValue';
 import {replaceSyntax} from '/lib/enonic/yase/query/replaceSyntax';
 import {ws} from '/lib/enonic/yase/string/ws';
 import {query as querySynonyms} from '/lib/enonic/yase/synonym/query';
+import {wash} from '/lib/enonic/yase/search/synonyms/wash';
 //import {mapSynonyms} from '/lib/enonic/yase/search/mapSynonyms';
 
 const MAX_COUNT = 100;
@@ -43,10 +44,10 @@ export function getSynonyms({
 	return hits.map(({from, score, thesaurus, to}) => {
 		//log.info(toStr({from, score, thesaurus, to}));
 		return {
-			from,
+			from: forceArray(from).map(s => wash(s)),
 			score,
 			thesaurus,
-			to
+			to: forceArray(to).map(s => wash(s))
 		};
 	});
 	/*const obj = mapSynonyms({
