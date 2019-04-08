@@ -8,6 +8,7 @@ import {addMembers, createRole, createUser} from '/lib/xp/auth';
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {
+	JOURNALS_REPO,
 	ROLE_YASE_ADMIN,
 	ROLE_YASE_READ,
 	ROLE_YASE_WRITE,
@@ -60,8 +61,14 @@ export function init() {
 			addMembers(`role:${ROLE_YASE_READ}`, [USER_YASE_JOB_RUNNER_KEY]);
 		});
 
-		//ignoreErrors(() => {
-		initRepo();
-		//});
+		ignoreErrors(() => {
+			initRepo();
+		});
+
+		ignoreErrors(() => {
+			initRepo({
+				repoId: JOURNALS_REPO
+			});
+		});
 	});
 } // function init
