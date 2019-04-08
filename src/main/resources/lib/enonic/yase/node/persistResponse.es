@@ -4,7 +4,7 @@ import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
 
 
 export const persistResponse = ({
-	__repoId,
+	__connection,
 	_parentPath = '/',
 	_name,
 	request,
@@ -13,7 +13,7 @@ export const persistResponse = ({
 	//log.info(toStr({__repoId}));
 	//log.info(toStr({__repoId, _parentPath, _name, request, response}));
 	const params = newResponse({
-		__repoId,
+		__connection,
 		_parentPath,
 		_name,
 		request,
