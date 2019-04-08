@@ -18,7 +18,7 @@ import {sanitize} from '/lib/xp/common';
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
+import {cachedQuery} from '/lib/enonic/yase/search/cachedQuery';
 
 
 //──────────────────────────────────────────────────────────────────────────────

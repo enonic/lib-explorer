@@ -19,7 +19,6 @@ export const Interface = ({
 	action,
 	collections,
 	fields,
-	fieldsObj,
 	initialValues = {
 		name: '',
 		collections: [],
@@ -42,7 +41,6 @@ export const Interface = ({
 			last: true
 		}
 	},
-	tags,
 	thesauriOptions
 } = {}) => <Formik
 	initialValues={initialValues}
@@ -54,8 +52,6 @@ export const Interface = ({
 			component: 'Interface',
 			//collections,
 			//fields,
-			//fieldsObj,
-			//tags,
 			//thesauriOptions,
 			values
 		}));*/
@@ -84,7 +80,6 @@ export const Interface = ({
 			/>
 			<QueryFiltersBuilder
 				fields={fields}
-				tags={tags}
 			/>
 			<ExpressionSelector
 				fields={fields}
@@ -97,9 +92,8 @@ export const Interface = ({
 				legend='Result mapping(s)'
 			/>
 			<Facets
-				fields={fields.map(({label, path: value}) => ({label, value}))}
+				fields={fields}
 				legend='Facet(s)'
-				tags={tags}
 			/>
 			<Pagination
 				legend='Pagination'

@@ -6,29 +6,30 @@ import {
 	//PATH_TAG,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
-import {cachedNode} from '/lib/enonic/yase/cachedNode';
+import {cachedNode} from '/lib/enonic/yase/search/cachedNode';
 
 
 export function localizeTag({
 	//locale = getLocale(),
 	nodeCache,
-	tag: path
+	parentPath,
+	name
 }) {
 	//log.info(toStr({locale, path}));
-	//const nodePath = `${PATH_TAG}/${tag}`;
-	let tagNode = {displayName: path.replace(/.+\//,'')};
+	const nodePath = `${parentPath}/${name}`;
+	let tagNode = {displayName: name.replace(/.+\//,'')};
 	try {
 		tagNode = cachedNode({
 			cache: nodeCache,
 			repoId: REPO_ID,
 			branch: BRANCH_ID,
-			id: path
+			id: nodePath
 		});
 	} catch (e) {
-		log.error(`Could not find node ${REPO_ID}:${BRANCH_ID}:${path}`);
+		log.error(`Could not find node ${REPO_ID}:${BRANCH_ID}:${nodePath}`);
 	}
 	//log.info(toStr({tagNode}));
 	const {displayName} = tagNode;
 	//log.info(toStr({locale, tag, displayName}));
 	return displayName;
-} // function localizeTag
+}

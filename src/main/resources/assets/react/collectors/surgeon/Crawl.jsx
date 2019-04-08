@@ -29,9 +29,7 @@ export const Crawl = connect(({
 		values
 	},
 	fields,
-	fieldsObj,
 	parentPath,
-	tags,
 	value
 }) => {
 	//console.log(toStr({parentPath, value}));
@@ -78,7 +76,6 @@ export const Crawl = connect(({
 				<Scrape
 					fields={fields}
 					parentPath={key}
-					tags={tags}
 					value={scrape}
 				/>
 				{/*<Download
@@ -88,9 +85,7 @@ export const Crawl = connect(({
 				/>*/}
 				<Crawl
 					fields={fields}
-					fieldsObj={fieldsObj}
 					parentPath={key}
-					tags={tags}
 					value={crawl}
 				/>{/*Recursive*/}
 			</React.Fragment>

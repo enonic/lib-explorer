@@ -19,9 +19,8 @@ import {
 	BRANCH_ID,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
-import {cachedNode} from '/lib/enonic/yase/cachedNode';
-//import {localizeTag} from '/lib/enonic/yase/localizeTag';
-import {highlight as highlightSearchResult} from '/lib/enonic/yase/highlight';
+import {cachedNode} from '/lib/enonic/yase/search/cachedNode';
+import {highlight as highlightSearchResult} from '/lib/enonic/yase/search/highlight';
 
 
 export function mapMultiRepoQueryHits({

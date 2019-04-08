@@ -14,7 +14,6 @@ import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {menu} from '/lib/enonic/yase/admin/collections/menu';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
-import {getTags} from '/lib/enonic/yase/admin/tags/getTags';
 
 
 const ID_REACT_COLLECTION_CONTAINER = 'reactCollectionContainer';
@@ -111,22 +110,10 @@ export function newOrEdit({
 	});
 	//log.info(toStr({fieldsObj}));
 
-	const tags = {};
-	getTags({connection}).hits.forEach(({displayName: label, field, _name: value}) => {
-		if(tags[field]) {
-			tags[field].push({label, value});
-		} else {
-			tags[field] = [{label, value}];
-		}
-	});
-	//log.info(toStr({tags}));
-
 	const propsObj = {
 		action: `${TOOL_PATH}/collections/${action === 'edit' ? `update/${collectionName}` : 'create'}`,
-		fields: fieldsArr,
-		fieldsObj,
-		initialValues,
-		tags
+		fields: fieldsObj,
+		initialValues
 	};
 	//log.info(toStr({propsObj}));
 

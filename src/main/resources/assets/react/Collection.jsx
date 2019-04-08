@@ -14,9 +14,7 @@ import {Header} from './semantic-ui/Header';
 
 export const Collection = ({
 	action,
-	fields = [],
-	fieldsObj = {},
-	tags = [],
+	fields = {},
 	initialValues = {
 		/*collector: {
 			name: 'surgeon'
@@ -32,8 +30,6 @@ export const Collection = ({
 	}) => {
 		/*console.log(toStr({
 			//fields,
-			//fieldsObj,
-			//tags,
 			values
 		}));*/
 		return <Form
@@ -69,9 +65,7 @@ export const Collection = ({
 			/>
 			{getIn(values, 'collector.name') === 'surgeon' ? <Surgeon
 				fields={fields}
-				fieldsObj={fieldsObj}
 				path='collector.config'
-				tags={tags}
 			/> : null}
 			<Field><SubmitButton className='primary' text="Save collection"/></Field>
 			<input id="json" name="json" type="hidden"/>

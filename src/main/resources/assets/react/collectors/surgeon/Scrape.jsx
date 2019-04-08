@@ -26,12 +26,10 @@ export const Scrape = connect(({
 	formik: {
 		values
 	},
-	fields = [],
-	fieldsObj, // {}
+	fields = {},
 	name = 'scrape',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	tags = [],
 	value = getIn(values, path) || undefined
 }) => {
 	/*console.debug(toStr({
@@ -94,7 +92,7 @@ export const Scrape = connect(({
 									label=""
 									multiple={true}
 									path={`${path}[${index}].tags`}
-									tags={tags[field]}
+									tags={fields[field].values}
 									value={selectedTags}
 								/>
 								: null

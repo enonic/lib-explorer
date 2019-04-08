@@ -6,17 +6,16 @@ import {QueryFilterClause} from './QueryFilterClause';
 
 
 export const QueryFiltersBuilder = connect(({
-	fields = [],
+	fields = {},
 	formik: {values},
 	parentPath,
 	name = 'filters',
 	path = parentPath ? `${parentPath}.${name}` : name,
-	tags,
 	value = getIn(values, path) || {}
 }) => {
 	//console.debug(toStr({parentPath, name, path, value}));
 	return <>
-		<QueryFilterClause fields={fields} name='must' parentPath={path} tags={tags}/>
-		<QueryFilterClause fields={fields} name='mustNot' parentPath={path} tags={tags}/>
+		<QueryFilterClause fields={fields} name='must' parentPath={path}/>
+		<QueryFilterClause fields={fields} name='mustNot' parentPath={path}/>
 	</>
 });

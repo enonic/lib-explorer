@@ -18,24 +18,26 @@ import {
 	COLLECTION_REPO_PREFIX,
 	PRINCIPAL_YASE_READ
 } from '/lib/enonic/yase/constants';
-import {buildFacets} from '/lib/enonic/yase/buildFacets';
 
-import {buildFilters} from '/lib/enonic/yase/search/buildFilters';
-
-import {buildPagination} from '/lib/enonic/yase/buildPagination';
-import {buildQuery} from '/lib/enonic/yase/buildQuery';
-import {cachedQuery} from '/lib/enonic/yase/cachedQuery';
-import {connect} from '/lib/enonic/yase/repo/connect';
-import {multiConnect} from '/lib/enonic/yase/repo/multiConnect';
-import {localizeFacets} from '/lib/enonic/yase/localizeFacets';
-import {mapMultiRepoQueryHits} from '/lib/enonic/yase/mapMultiRepoQueryHits';
-import {query as queryThesauri} from '/lib/enonic/yase/thesaurus/query';
+import {get as getInterface} from '/lib/enonic/yase/interface/get';
 
 //import {removeStopWords} from '/lib/enonic/yase/query/removeStopWords';
 import {wash} from '/lib/enonic/yase/query/wash';
-import {flattenSynonyms} from '/lib/enonic/yase/search/flattenSynonyms';
 
-import {get as getInterface} from '/lib/enonic/yase/interface/get';
+import {connect} from '/lib/enonic/yase/repo/connect';
+import {multiConnect} from '/lib/enonic/yase/repo/multiConnect';
+
+import {buildFacets} from '/lib/enonic/yase/search/buildFacets';
+import {buildFilters} from '/lib/enonic/yase/search/buildFilters';
+import {buildPagination} from '/lib/enonic/yase/search/buildPagination';
+import {buildQuery} from '/lib/enonic/yase/search/buildQuery';
+import {cachedQuery} from '/lib/enonic/yase/search/cachedQuery';
+import {flattenSynonyms} from '/lib/enonic/yase/search/flattenSynonyms';
+import {localizeFacets} from '/lib/enonic/yase/search/localizeFacets';
+import {mapMultiRepoQueryHits} from '/lib/enonic/yase/search/mapMultiRepoQueryHits';
+
+import {query as queryThesauri} from '/lib/enonic/yase/thesaurus/query';
+
 
 //──────────────────────────────────────────────────────────────────────────────
 // Private constants

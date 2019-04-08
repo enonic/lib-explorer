@@ -1,6 +1,7 @@
 import traverse from 'traverse';
 import generateUuidv4 from 'uuid/v4';
 
+//import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 import {isString} from '/lib/enonic/util/value';
 import {assetUrl} from '/lib/xp/portal';
@@ -14,7 +15,6 @@ import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {query as queryCollections} from '/lib/enonic/yase/collection/query';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
-import {getTags} from '/lib/enonic/yase/admin/tags/getTags';
 import {query as getThesauri} from '/lib/enonic/yase/thesaurus/query';
 
 
@@ -24,15 +24,15 @@ const ID_REACT_INTERFACE_CONTAINER = 'reactInterfaceContainer';
 function convert({object, fields, recurse = true}) {
 	traverse(object).forEach(function(value) { // Fat arrow destroys this
 		const key = this.key;
-		if (fields.includes(key)) {
+		if (fields.includes(key)) { // Fields that should become array
 			if (!value) {
 				this.update([]);
 			} else if (!Array.isArray(value)) { // Convert single value to array
-				const array = [value];
+				value = [value];
 				if (recurse) {
-					convert({array, fields, recurse}); // Recurse
+					convert({object: value, fields, recurse}); // Recurse
 				}
-				this.update(array);
+				this.update(value);
 			} else if (Array.isArray(value)) {
 				this.update(value.map(entry => {
 					if (!isString(entry) && !entry.uuid4) {
@@ -41,10 +41,10 @@ function convert({object, fields, recurse = true}) {
 					return entry;
 				}));
 			} // if isArray
-		} // if key
+		}
 	}); // traverse
 	return object;
-} // convert
+}
 
 
 export function newOrEdit({
@@ -94,18 +94,8 @@ export function newOrEdit({
 				'values'
 			]
 		});
+		//log.info(toStr({initialValues}));
 	} // action === edit
-
-	const tags = {};
-	getTags({connection}).hits.forEach(({displayName: label, field, _path: value}) => {
-		const key = `/fields/${field}`;
-		//const value = _path.replace(/^\/tags\//, '');
-		if(tags[key]) {
-			tags[key].push({label, value});
-		} else {
-			tags[key] = [{label, value}];
-		}
-	});
 
 	const fieldValuesArray = getFieldValues({connection}).hits;
 	const fieldValuesObj = {};
@@ -135,13 +125,12 @@ export function newOrEdit({
 			label, path, values
 		};
 	});
+	//log.info(toStr({fieldsObj}));
 
 	const propsObj = {
 		action: `${TOOL_PATH}/interfaces/${action === 'edit' ? `update/${interfaceName}` : 'create'}`,
 		collections: queryCollections({connection}).hits.map(({displayName: label, _name: value}) => ({label, value})),
-		fields: fieldsArray,
-		fieldsObj,
-		tags,
+		fields: fieldsObj,
 		thesauriOptions: getThesauri({connection}).hits.map(({displayName, name}) => ({
 			key: name,
 			//label: displayName,

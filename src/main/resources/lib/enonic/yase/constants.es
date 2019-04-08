@@ -59,6 +59,7 @@ export const JOURNALS_REPO = `${PACKAGE}:journals`;
 //──────────────────────────────────────────────────────────────────────────────
 // Roles
 //──────────────────────────────────────────────────────────────────────────────
+export const ROLE_SYSTEM_ADMIN = 'system.admin';
 export const ROLE_YASE_ADMIN = sanitize(`${PACKAGE}.admin`);
 export const ROLE_YASE_READ = sanitize(`${PACKAGE}.read`);
 export const ROLE_YASE_WRITE = sanitize(`${PACKAGE}.write`);
@@ -67,7 +68,7 @@ export const ROLE_YASE_WRITE = sanitize(`${PACKAGE}.write`);
 //──────────────────────────────────────────────────────────────────────────────
 // Principals
 //──────────────────────────────────────────────────────────────────────────────
-export const PRINCIPAL_SYSTEM_ADMIN = 'role:system.admin';
+export const PRINCIPAL_SYSTEM_ADMIN = `role:${ROLE_SYSTEM_ADMIN}`;
 export const PRINCIPAL_YASE_READ = `role:${ROLE_YASE_READ}`;
 export const PRINCIPAL_YASE_WRITE = `role:${ROLE_YASE_WRITE}`;
 

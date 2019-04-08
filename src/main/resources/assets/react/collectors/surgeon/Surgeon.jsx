@@ -26,9 +26,7 @@ export const Surgeon = connect(({
 		values
 	},
 	fields,
-	fieldsObj,
-	path,
-	tags
+	path
 }) => {
 	const {
 		collector: {
@@ -77,9 +75,7 @@ export const Surgeon = connect(({
 	<Checkbox checked={dynamic} label="Dynamic" name={`${path}.dynamic`}/>
 	<Scrape
 		fields={fields}
-		fieldsObj={fieldsObj}
 		parentPath={path}
-		tags={tags}
 		value={scrape}
 	/>
 	{/*<Download
@@ -90,9 +86,7 @@ export const Surgeon = connect(({
 	/>*/}
 	<Crawl
 		fields={fields}
-		fieldsObj={fieldsObj}
 		parentPath={path}
-		tags={tags}
 		value={crawl}
 	/>
 </>});

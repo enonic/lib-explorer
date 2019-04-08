@@ -25,7 +25,7 @@ import {QueryFilterSelector} from './QueryFilterSelector';
 
 
 export const QueryFilterClause = connect(({
-	fields = [],
+	fields = {},
 	formik: {
 		values
 	},
@@ -33,7 +33,6 @@ export const QueryFilterClause = connect(({
 	name = 'must',
 	legend = ucFirst(name),
 	path = parentPath ? `${parentPath}.${name}` : name,
-	tags,
 	value = getIn(values, path)
 }) => {
 	//console.debug(toStr({component: 'QueryFilterClause', parentPath, name, path, value}));
@@ -81,7 +80,7 @@ export const QueryFilterClause = connect(({
 							? <TagSelector
 								multiple={true}
 								path={`${key}.params.values`}
-								tags={tags[`/fields/${field}`]}
+								tags={fields[field].values}
 								value={fieldValues}
 							/>
 							: null

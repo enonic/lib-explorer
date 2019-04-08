@@ -1,14 +1,15 @@
 //import {toStr} from '/lib/enonic/util';
 import {getLocale} from '/lib/xp/admin';
 
-import {localizeTag} from '/lib/enonic/yase/localizeTag';
+import {localizeTag} from '/lib/enonic/yase/search/localizeTag';
 
 
 export function localizeFacets({
 	facets,
 	locale = getLocale(),
 	localizedFacets = {}, // Passed by reference and modified recursivly
-	nodeCache
+	nodeCache,
+	parentPath = '/fields'
 }) {
 	//log.info(toStr({facets, locale}));
 	//const {tag, facets: children} = facets[0]; // DEBUG
@@ -16,7 +17,8 @@ export function localizeFacets({
 		const localizedTag = localizeTag({
 			locale,
 			nodeCache,
-			tag
+			parentPath,
+			name: tag
 		});
 		localizedFacets[tag] = localizedTag;
 		//return localizedFacets; // DEBUG
@@ -25,7 +27,8 @@ export function localizeFacets({
 				facets: children,
 				locale,
 				localizedFacets, // Passed by reference and modified recursivly
-				nodeCache
+				nodeCache,
+				parentPath: `${parentPath}/${tag}`
 			});
 		}
 	}); // facets.forEach

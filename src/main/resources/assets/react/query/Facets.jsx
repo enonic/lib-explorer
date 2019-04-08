@@ -32,7 +32,6 @@ export const Facets = connect(({
 	name = 'facets',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	tags = [],
 	value = values && getIn(values, path) || []
 }) => {
 	//console.debug(toStr({component: 'Facets', path, field, value}));
@@ -77,7 +76,7 @@ export const Facets = connect(({
 						/> : (field ? <TagSelector
 							parentPath={pathWithIndex}
 							placeholder='Please select a tag'
-							tags={tags[field]}
+							tags={fields[field].values}
 						/> : null)}
 						{allowChildren ? <Facets
 							field={tag}
@@ -86,7 +85,6 @@ export const Facets = connect(({
 							level={level}
 							levels={levels}
 							parentPath={pathWithIndex}
-							tags={tags}
 						/> : null}
 						<Buttons icon>
 							<InsertButton

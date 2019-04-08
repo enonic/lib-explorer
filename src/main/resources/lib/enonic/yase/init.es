@@ -60,8 +60,8 @@ export function init() {
 			addMembers(`role:${ROLE_YASE_READ}`, [USER_YASE_JOB_RUNNER_KEY]);
 		});
 
-		ignoreErrors(() => {
-			initRepo();
-		});
+		//ignoreErrors(() => {
+		initRepo();
+		//});
 	});
 } // function init
