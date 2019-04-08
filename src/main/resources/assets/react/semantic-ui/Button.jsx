@@ -10,7 +10,7 @@ export const Button = ({
 }) => {
 	//console.debug(toStr({component: 'Button', className, rest}));
 	return <button
-		className={classNames(className, 'ui', 'button')}
+		className={classNames(className, 'ui button')}
 		type={type}
 		{...rest}
 	>{children}</button>;

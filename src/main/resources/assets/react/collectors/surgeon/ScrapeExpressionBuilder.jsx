@@ -10,6 +10,8 @@ import {Table} from '../../elements/Table';
 import {NumberInput} from '../../elements/NumberInput';
 import {TextInput} from '../../elements/TextInput';
 
+import {Buttons} from '../../semantic-ui/Buttons';
+
 import {ScrapeQuantifierSelector} from './ScrapeQuantifierSelector';
 
 import {SCRAPE_OPTGROUPS} from './scrapeSubroutineConstants';
@@ -101,26 +103,28 @@ export const ScrapeExpressionBuilder = connect(({
 					/> : null}
 				</td>
 				{subroutine ? <td style={tdStyle}>
-					<InsertButton
-						index={index}
-						path={path}
-						value={{subroutine: ''}}
-					/>
-					<RemoveButton
-						index={index}
-						path={path}
-					/>
-					<MoveDownButton
-						disabled={index === value.length-1}
-						index={index}
-						path={path}
-						visible={value.length > 1}
-					/>
-					<MoveUpButton
-						index={index}
-						path={path}
-						visible={value.length > 1}
-					/>
+					<Buttons icons>
+						<InsertButton
+							index={index}
+							path={path}
+							value={{subroutine: ''}}
+						/>
+						<RemoveButton
+							index={index}
+							path={path}
+						/>
+						<MoveDownButton
+							disabled={index === value.length-1}
+							index={index}
+							path={path}
+							visible={value.length > 1}
+						/>
+						<MoveUpButton
+							index={index}
+							path={path}
+							visible={value.length > 1}
+						/>
+					</Buttons>
 				</td> : null}
 			</tr>;
 		})}

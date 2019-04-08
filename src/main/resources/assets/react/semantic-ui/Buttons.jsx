@@ -5,5 +5,9 @@ export const Buttons = ({
 	children,
 	className,
 	icon,
+	vertical,
 	...rest
-}) => <div className={classNames(className, {icon}, 'ui buttons')} {...rest}>{children}</div>;
+}) => <div className={classNames(className, {
+	icon,
+	vertical
+}, 'ui buttons')} {...rest}>{children}</div>;

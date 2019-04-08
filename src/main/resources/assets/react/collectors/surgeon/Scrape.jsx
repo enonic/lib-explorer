@@ -57,7 +57,7 @@ export const Scrape = connect(({
 	}
 	return <>
 		<Header dividing>Scrape {level}</Header>
-		<Table headers={['Field', 'Type', 'Options', 'Actions']}>
+		<Table headers={['Fields', 'Actions']}>
 			<FieldArray
 				name={path}
 				render={() => value.map(({
@@ -71,8 +71,6 @@ export const Scrape = connect(({
 							fields={fields}
 							value={field}
 						/>
-					</td>
-					<td>
 						<Select
 							path={`${path}[${index}].option`}
 							options={[{
@@ -84,8 +82,6 @@ export const Scrape = connect(({
 							}]}
 							value={option}
 						/>
-					</td>
-					<td>
 						{option === 'scrape'
 							? <ScrapeExpressionBuilder
 								parentPath={`${path}[${index}]`}
@@ -102,7 +98,7 @@ export const Scrape = connect(({
 						}
 					</td>
 					<td>
-						<Buttons icon>
+						<Buttons icon vertical>
 							<InsertButton index={index} path={path} value={{field: ''}}/>
 							<RemoveButton index={index} path={path}/>
 							<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
