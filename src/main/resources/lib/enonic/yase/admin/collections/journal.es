@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {menu} from '/lib/enonic/yase/admin/collections/menu';
 
@@ -33,11 +33,11 @@ const queryJournals = ({
 		sort,
 		start
 	};
-	log.info(toStr({queryParams}));
+	//log.info(toStr({queryParams}));
 	const queryRes = connection.query(queryParams);
-	log.info(toStr({queryRes}));
+	//log.info(toStr({queryRes}));
 	queryRes.hits = queryRes.hits.map(hit => connection.get(hit.id));
-	log.info(toStr({queryRes}));
+	//log.info(toStr({queryRes}));
 	return queryRes;
 }
 
