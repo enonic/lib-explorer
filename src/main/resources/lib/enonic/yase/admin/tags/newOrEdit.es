@@ -1,5 +1,6 @@
 import {
 	BRANCH_ID,
+	PRINCIPAL_YASE_READ,
 	TOOL_PATH,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
@@ -8,7 +9,7 @@ import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {tagFormHtml} from '/lib/enonic/yase/admin/tags/tagFormHtml';
 
 
-export function createOrEditTagPage({
+export function newOrEdit({
 	path: reqPath,
 	params: {
 		id
@@ -25,7 +26,8 @@ export function createOrEditTagPage({
 	const tagName = pathParts[1]; //log.info(toStr({fieldName}));
 	const connection = connect({
 		repoId: REPO_ID,
-		branch: BRANCH_ID
+		branch: BRANCH_ID,
+		principals: [PRINCIPAL_YASE_READ]
 	});
 
 	const node = connection.get(id);
@@ -36,6 +38,7 @@ export function createOrEditTagPage({
 
 	return htmlResponse({
 		main: tagFormHtml({
+			connection,
 			displayName,
 			field,
 			tag

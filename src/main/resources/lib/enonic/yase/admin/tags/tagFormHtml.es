@@ -3,12 +3,13 @@ import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 
 
 export function tagFormHtml({
+	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	displayName = '',
 	field = '',
 	tag = '',
 	operation = tag ? 'UPDATE' : 'CREATE'
 } = {}) {
-	const fieldsArr = getFields().hits;
+	const fieldsArr = getFields({connection}).hits;
 	const fieldsObj = {};
 	fieldsArr.forEach(({_name, displayName: f}) => {
 		fieldsObj[_name] = f;

@@ -2,27 +2,25 @@
 
 
 import {
-	TOOL_PATH/*,
-	PATH_TAG*/
+	PRINCIPAL_YASE_READ,
+	TOOL_PATH
 } from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {getTags} from '/lib/enonic/yase/admin/tags/getTags';
 import {tagFormHtml} from '/lib/enonic/yase/admin/tags/tagFormHtml';
+import {connect} from '/lib/enonic/yase/repo/connect';
 
 
-export function tagsPage(
-	{
-		params: {
-			_parentPath = '/tags'
-		} = {},
-		path
-	},
-	{
+export function list({
+	params: {
+		_parentPath = '/tags',
 		messages,
 		status
-	} = {}
-) {
-	const tagRows = getTags().hits.map(({
+	} = {},
+	path
+}) {
+	const connection = connect({principals: PRINCIPAL_YASE_READ});
+	const tagRows = getTags({connection}).hits.map(({
 		_id: id,
 		_name: name,
 		//_path,
@@ -50,7 +48,7 @@ export function tagsPage(
 	}).join('\n');
 
 	return htmlResponse({
-		main: `${tagFormHtml()}
+		main: `${tagFormHtml({connection})}
 <table>
 	<thead>
 		<tr>
