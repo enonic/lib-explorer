@@ -28,12 +28,7 @@ export const ResultMappings = connect(({
 	name = 'resultMappings',
 	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
-	value = values && getIn(values, path) || [{
-		field: '',
-		highlight: false,
-		lengthLimit: '',
-		to: ''
-	}]
+	value = values && getIn(values, path)
 }) => {
 	return <>
 		<Header dividing>{legend}</Header>
@@ -48,7 +43,7 @@ export const ResultMappings = connect(({
 						lengthLimit = '',
 						separator = ' ',
 						to = '',
-						uuid4
+						uuid4 = generateUuidv4()
 					}, index) => {
 						const pathWithIndex = `${path}[${index}]`;
 						const typePath = `${pathWithIndex}.type`;

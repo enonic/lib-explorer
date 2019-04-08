@@ -77,11 +77,12 @@ export const QueryFilterClause = connect(({
 							/>
 							: null
 						}</td>
-						<td>{filter === 'hasValue'
+						<td>{field && filter === 'hasValue'
 							? <TagSelector
 								multiple={true}
 								path={`${key}.params.values`}
 								tags={tags[`/fields/${field}`]}
+								value={fieldValues}
 							/>
 							: null
 						}{filter === 'ids'

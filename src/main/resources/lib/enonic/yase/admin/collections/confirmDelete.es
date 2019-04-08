@@ -20,7 +20,7 @@ export const confirmDelete = ({
 		<label>Type in collection name to confirm</label>
 		<input name="typedCollectionName" value=""/>
 	</div>
-	<button class="ui button" type="submit"><i class="red trash alternate outline icon"></i> Confirm delete</button>
+	<button class="ui button" type="submit"><i class="red trash alternate outline icon"></i> Confirm delete collection</button>
 </form>`
 	});
 } // confirmDelete

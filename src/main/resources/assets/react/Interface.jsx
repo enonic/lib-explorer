@@ -1,4 +1,5 @@
 import {Form, Formik} from 'formik';
+import generateUuidv4 from 'uuid/v4';
 
 import {SubmitButton} from './semantic-ui/SubmitButton';
 
@@ -22,13 +23,15 @@ export const Interface = ({
 	initialValues = {
 		name: '',
 		collections: [],
-		//thesauri: [],
 		query: {},
 		resultMappings: [{
 			field: '',
 			highlight: false,
+			join: true,
 			lengthLimit: '',
-			to: ''
+			separator: ' ',
+			to: '',
+			uuid4: generateUuidv4()
 		}],
 		facets: [],
 		pagination: {
@@ -92,12 +95,6 @@ export const Interface = ({
 			<ResultMappings
 				fields={fields}
 				legend='Result mapping(s)'
-			/>
-			<Select
-				label="Thesauri"
-				multiple={true}
-				name="thesauri"
-				options={thesauriOptions}
 			/>
 			<Facets
 				fields={fields.map(({label, path: value}) => ({label, value}))}

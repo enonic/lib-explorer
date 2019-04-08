@@ -5,7 +5,10 @@ import {forceArray} from '/lib/enonic/util/data';
 import {isString} from '/lib/enonic/util/value';
 import {assetUrl} from '/lib/xp/portal';
 
-import {TOOL_PATH} from '/lib/enonic/yase/constants';
+import {
+	PRINCIPAL_YASE_READ,
+	TOOL_PATH
+} from '/lib/enonic/yase/constants';
 import {connect} from '/lib/enonic/yase/repo/connect';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {query as queryCollections} from '/lib/enonic/yase/collection/query';
@@ -44,16 +47,20 @@ function convert({object, fields, recurse = true}) {
 } // convert
 
 
-export function createOrEditInterfacePage({
+export function newOrEdit({
 	path
 }) {
 	const relPath = path.replace(TOOL_PATH, '');
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
+	const action = pathParts[1];
+	const interfaceName = pathParts[2];
+
+	const connection = connect({
+		principals: [PRINCIPAL_YASE_READ]
+	});
 
 	let initialValues;
-	if (pathParts[1] !== 'createform') {
-		const interfaceName = pathParts[1];
-		const connection = connect();
+	if (action === 'edit') {
 		const node = connection.get(`/interfaces/${interfaceName}`)
 		const name = node.name || '';
 		const collections = node.collections ? forceArray(node.collections) : []
@@ -87,10 +94,10 @@ export function createOrEditInterfacePage({
 				'values'
 			]
 		});
-	}
+	} // action === edit
 
 	const tags = {};
-	getTags().hits.forEach(({displayName: label, field, _path: value}) => {
+	getTags({connection}).hits.forEach(({displayName: label, field, _path: value}) => {
 		const key = `/fields/${field}`;
 		//const value = _path.replace(/^\/tags\//, '');
 		if(tags[key]) {
@@ -100,7 +107,7 @@ export function createOrEditInterfacePage({
 		}
 	});
 
-	const fieldValuesArray = getFieldValues().hits;
+	const fieldValuesArray = getFieldValues({connection}).hits;
 	const fieldValuesObj = {};
 	fieldValuesArray.forEach(({_name, _path, displayName, field}) => {
 		/*if (!fieldValuesObj[field]) {fieldValuesObj[field] = []}
@@ -116,7 +123,7 @@ export function createOrEditInterfacePage({
 		};
 	});
 
-	const fieldsArray = getFields().hits.map(({displayName, key, _path}) => ({
+	const fieldsArray = getFields({connection}).hits.map(({displayName, key, _path}) => ({
 		label: displayName,
 		path: _path,
 		value: key,
@@ -130,12 +137,12 @@ export function createOrEditInterfacePage({
 	});
 
 	const propsObj = {
-		action: `${TOOL_PATH}/interfaces`,
-		collections: queryCollections().hits.map(({displayName: label, _name: value}) => ({label, value})),
+		action: `${TOOL_PATH}/interfaces/${action === 'edit' ? `update/${interfaceName}` : 'create'}`,
+		collections: queryCollections({connection}).hits.map(({displayName: label, _name: value}) => ({label, value})),
 		fields: fieldsArray,
 		fieldsObj,
 		tags,
-		thesauriOptions: getThesauri().hits.map(({displayName, name}) => ({
+		thesauriOptions: getThesauri({connection}).hits.map(({displayName, name}) => ({
 			key: name,
 			//label: displayName,
 			text: displayName,
@@ -159,4 +166,4 @@ export function createOrEditInterfacePage({
 		path,
 		title: 'Create or edit interface'
 	});
-} // function createOrEditInterfacePage
+} // function newOrEdit

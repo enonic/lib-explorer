@@ -19,7 +19,7 @@ export function confirmDelete({
 		<label>Type in thesaurus name to confirm</label>
 		<input name="typedThesaurusName" value=""/>
 	</div>
-	<button class="ui button" type="submit"><i class="red trash alternate outline icon"></i> Confirm delete</button>
+	<button class="ui button" type="submit"><i class="red trash alternate outline icon"></i> Confirm delete thesaurus</button>
 	</form>`
 	});
 } // confirmDelete

@@ -19,7 +19,7 @@ export const TagSelector = connect(({
 	value = values && getIn(values, path) || '',
 	...rest // size
 }) => {
-	//console.debug(toStr({component: 'TagSelector', path, value, rest}));
+	//console.debug(toStr({component: 'TagSelector', tags, path, value, rest}));
 	return <Select
 		multiple={multiple}
 		name={path}
