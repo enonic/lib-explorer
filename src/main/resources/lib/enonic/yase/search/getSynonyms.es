@@ -17,7 +17,7 @@ export function getSynonyms({
 	thesauri,
 	count = MAX_COUNT//thesauri.length
 }) {
-	//log.info(toStr({count, expand, searchString, thesauri}));
+	//log.info(toStr({connection, expand, searchString, thesauri, count}));
 	if (!searchString || !thesauri) { return []; }
 
 	const fields = expand ? 'from,to' : 'from';

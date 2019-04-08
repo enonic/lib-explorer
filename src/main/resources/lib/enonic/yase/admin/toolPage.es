@@ -1,7 +1,10 @@
 //import {toStr} from '/lib/enonic/util';
 import {serviceUrl} from '/lib/xp/portal';
+
+import {PRINCIPAL_YASE_READ} from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {query as queryCollections} from '/lib/enonic/yase/collection/query';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {query as getThesauri} from '/lib/enonic/yase/thesaurus/query';
 
 const ID_REACT_SEARCH_CONTAINER = 'reactSearchContainer';
@@ -10,7 +13,8 @@ const ID_REACT_SEARCH_CONTAINER = 'reactSearchContainer';
 export function toolPage({
 	path
 }) {
-	const collectionHits = queryCollections().hits;
+	const connection = connect({principals: PRINCIPAL_YASE_READ});
+	const collectionHits = queryCollections({connection}).hits;
 	const propsObj = {
 		collectionOptions: collectionHits.map(({displayName: label, _name: value}) => ({label, value})),
 		initialValues: {
@@ -23,7 +27,7 @@ export function toolPage({
 				interface: 'helsebiblioteket' // TODO
 			}
 		}),
-		thesaurusOptions: getThesauri().hits.map(({displayName, name}) => ({label: displayName, value: name}))
+		thesaurusOptions: getThesauri({connection}).hits.map(({displayName, name}) => ({label: displayName, value: name}))
 	};
 	//log.info(toStr({propsObj}));
 	const propsJson = JSON.stringify(propsObj);

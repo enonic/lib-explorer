@@ -1,7 +1,7 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/enonic/util';
 
 import {getSynonyms} from '/lib/enonic/yase/search/getSynonyms';
 import {flattenSynonyms} from '/lib/enonic/yase/search/flattenSynonyms';
@@ -31,6 +31,7 @@ export function buildQuery({
 	synonyms // Gets modified
 }) {
 	/*log.info(toStr({
+		connection,
 		expand,
 		type,
 		params,
@@ -83,7 +84,7 @@ export function buildQuery({
 	case 'group':
 		query = `(${params.expressions
 			.map(expression =>
-				buildQuery({expression, searchString, synonyms})
+				buildQuery({connection, expression, searchString, synonyms})
 			)
 			.filter(x => x)
 			.join(` ${operator} `)

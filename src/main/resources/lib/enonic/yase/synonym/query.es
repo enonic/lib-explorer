@@ -11,6 +11,7 @@ export function query({
 	query = '',
 	sort = '_name ASC'
 } = {}) {
+	//log.info(toStr({connection, count, filters, query, sort}));
 	filters = addFilter({
 		filters,
 		filter: hasValue('type', [NT_SYNONYM])

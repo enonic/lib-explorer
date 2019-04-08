@@ -16,8 +16,7 @@ import {getLocale} from '/lib/xp/admin';
 //──────────────────────────────────────────────────────────────────────────────
 import {
 	COLLECTION_REPO_PREFIX,
-	ROLE_YASE_READ,
-	ROLE_YASE_ADMIN
+	PRINCIPAL_YASE_READ
 } from '/lib/enonic/yase/constants';
 import {buildFacets} from '/lib/enonic/yase/buildFacets';
 
@@ -36,7 +35,7 @@ import {query as queryThesauri} from '/lib/enonic/yase/thesaurus/query';
 import {wash} from '/lib/enonic/yase/query/wash';
 import {flattenSynonyms} from '/lib/enonic/yase/search/flattenSynonyms';
 
-import {getInterface} from '/lib/enonic/yase/admin/interfaces/getInterface';
+import {get as getInterface} from '/lib/enonic/yase/interface/get';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Private constants
@@ -104,7 +103,7 @@ export function search(params) {
 
 
 	const yaseReadConnection = connect({
-		principals: [`role:${ROLE_YASE_READ}`]
+		principals: [PRINCIPAL_YASE_READ]
 	})
 	const interfaceNode = getInterface({
 		connection: yaseReadConnection,
@@ -132,7 +131,7 @@ export function search(params) {
 	const sources = collections.map(collection => ({
 		repoId: `${COLLECTION_REPO_PREFIX}${collection}`,
 		branch: 'master', // NOTE Hardcoded
-		principals: [`role:${ROLE_YASE_READ}`] // TODO Remove hardcode?
+		principals: [PRINCIPAL_YASE_READ] // TODO Remove hardcode?
 	}));
 	//log.info(toStr({sources}));
 
@@ -164,6 +163,7 @@ export function search(params) {
 
 	const thesauriMap = {};
 	queryThesauri({
+		connection: yaseReadConnection,
 		getSynonymsCount: false
 	}).hits.forEach(({name, displayName}) => {
 		thesauriMap[name] = displayName;
@@ -201,7 +201,7 @@ export function search(params) {
 	//log.info(toStr({filters}));
 
 	const yaseReadConnections = multiConnect({
-		principals: [`role:${ROLE_YASE_READ}`],
+		principals: [PRINCIPAL_YASE_READ],
 		sources
 	});
 
