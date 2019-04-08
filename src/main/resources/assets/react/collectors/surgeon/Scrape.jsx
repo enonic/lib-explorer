@@ -18,8 +18,10 @@ import {FieldSelector} from '../../fields/FieldSelector';
 import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
 import {TagSelector} from '../../fields/TagSelector';
 
+import {replaceIndexWithDigit} from './replaceIndexWithDigit';
+import {replacePathWithDot} from './replacePathWithDot';
 
-import {toStr} from '../../utils/toStr';
+//import {toStr} from '../../utils/toStr';
 
 
 export const Scrape = connect(({
@@ -44,16 +46,17 @@ export const Scrape = connect(({
 
 	const tagsArray = getIn(values, tagsPath) || [{field: '', tags: []}];
 
+	const level = replaceIndexWithDigit(replacePathWithDot(path).replace('.scrape', '')).replace(/\.$/, '');
 	if(!(value && Array.isArray(value) && value.length)) {
 		return <Field>
 			<SetButton
 				field={path}
 				value={[{field: ''}]}
-			><Icon className='green plus'/> Scrape</SetButton>
+			><Icon className='green plus'/> Add scrape {level}</SetButton>
 		</Field>
 	}
 	return <>
-		<Header dividing>Scrape</Header>
+		<Header dividing>Scrape {level}</Header>
 		<Table headers={['Field', 'Type', 'Options', 'Actions']}>
 			<FieldArray
 				name={path}

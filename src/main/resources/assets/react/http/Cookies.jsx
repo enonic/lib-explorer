@@ -44,7 +44,7 @@ export const Cookies = connect(({
 					name: '',
 					value: ''
 				}]}
-			><Icon className='green plus'/> Add Cookie(s)</SetButton>
+			><Icon className='green plus'/> Add cookie(s)</SetButton>
 		</Field>
 	}
 	return <>

@@ -15,13 +15,16 @@ import {Field} from '../../semantic-ui/Field';
 import {Header} from '../../semantic-ui/Header';
 import {Icon} from '../../semantic-ui/Icon';
 
-//import {toStr} from '../utils/toStr';
+//import {toStr} from '../../utils/toStr';
 
 //import {Download} from './Download';
 import {Scrape} from './Scrape';
 
 import {URL_OPTGROUPS} from './scrapeSubroutineConstants';
 import {ScrapeExpressionBuilder} from './ScrapeExpressionBuilder';
+
+import {replaceIndexWithDigit} from './replaceIndexWithDigit';
+import {replacePathWithDot} from './replacePathWithDot';
 
 
 export const Crawl = connect(({
@@ -38,8 +41,11 @@ export const Crawl = connect(({
 	//console.log(toStr({path}));
 
 	if(!value || !value.length) {
+		//console.log(toStr({path}));
+		const level = replaceIndexWithDigit(replacePathWithDot(path)).replace('.crawl', '1');
+		//console.log(toStr({level}));
 		return <Field>
-			<SetButton className='block' field={path} value={[{dynamic: false, urlExpr: ''}]}><Icon className='green plus'/> Crawl</SetButton>
+			<SetButton className='block' field={path} value={[{dynamic: false, urlExpr: ''}]}><Icon className='green plus'/> Add crawl {level}</SetButton>
 		</Field>;
 	}
 	return <FieldArray
@@ -50,23 +56,10 @@ export const Crawl = connect(({
 			const key = `${path}[${index}]`;
 			//console.log(toStr({key}));
 
+			const level = replaceIndexWithDigit(replacePathWithDot(key));
+
 			return <React.Fragment key={key}>
-				<Header dividing>{`Crawl ${key
-					.replace(/^collector\.config/, '')
-					.replace(/\.crawl\[/g, '')
-					.replace(/\]$/, '')
-					.replace(/\]/g, ', ')
-					.replace(/([^\d]*)(\d+)([^\d]*)/g, (match, before, digits, after/*, offset, string*/) => {
-						//console.log({match, before, digits, after, offset, string});
-						return `${before}${parseInt(digits) + 1}${after}`;
-					})
-				}`}</Header>
-				<Buttons icon>
-					<InsertButton index={index} path={path} value={{dynamic: false, urlExpr: ''}}/>
-					<RemoveButton index={index} path={path}/>
-					<MoveDownButton disabled={index === value.length-1} index={index} path={path} visible={value.length > 1}/>
-					<MoveUpButton index={index} path={path} visible={value.length > 1}/>
-				</Buttons>
+				<Header dividing>{`Crawl ${level}`}</Header>
 				<Checkbox checked={dynamic} label="Dynamic" name={`${key}.dynamic`}/>
 				<ScrapeExpressionBuilder
 					parentPath={key}
@@ -88,7 +81,27 @@ export const Crawl = connect(({
 					parentPath={key}
 					value={crawl}
 				/>{/*Recursive*/}
+				<Buttons>
+					<InsertButton index={index} path={path} text={`Add crawl ${level.replace(/(\d+)$/, (match, digits) => parseInt(digits) + 1)}`} value={{dynamic: false, urlExpr: ''}}/>
+					<RemoveButton index={index} path={path} text={`Remove crawl ${level}`}/>
+					<MoveDownButton disabled={index === value.length-1} index={index} path={path} text={`Move crawl ${level} down`} visible={value.length > 1}/>
+					<MoveUpButton index={index} path={path} text={`Move crawl ${level} up`} visible={value.length > 1}/>
+				</Buttons>
 			</React.Fragment>
 		})}
 	/>;
 });
+
+/*
+When no crawl:
+[Add crawl]
+
+When:
+	1
+
+Then:
+[Add crawl 1.1]
+
+[Remove crawl 1]
+[Add crawl 2]
+*/
