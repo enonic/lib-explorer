@@ -50,7 +50,7 @@ export const Interface = ({
 } = {}) => {
 	const contextRef = createRef();
 	return <Ref innerRef={contextRef}>
-		<Segment>
+		<Segment basic>
 			<Formik
 				initialValues={initialValues}
 				render={({
@@ -118,7 +118,7 @@ export const Interface = ({
 				}}
 			/>
 			<Rail position='right'>
-				<Sticky context={contextRef}>
+				<Sticky context={contextRef} offset={14}>
 					<Scrollspy
 						items={[
 							'top',
