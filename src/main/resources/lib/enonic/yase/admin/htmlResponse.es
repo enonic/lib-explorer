@@ -108,7 +108,7 @@ export function htmlResponse({
 
 		<script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
 
-		<script>
+		<script type="text/javascript">
     		var scroll = new SmoothScroll('a[href*="#"]');
 		</script>
 

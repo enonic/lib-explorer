@@ -1,6 +1,7 @@
 import {Form, Formik} from 'formik';
 import {Menu, Rail, Ref, Segment, Sticky} from 'semantic-ui-react'
 import {createRef} from 'react'
+import Scrollspy from 'react-scrollspy'
 import generateUuidv4 from 'uuid/v4';
 
 import {SubmitButton} from './semantic-ui/SubmitButton';
@@ -118,7 +119,22 @@ export const Interface = ({
 			/>
 			<Rail position='right'>
 				<Sticky context={contextRef}>
-					<Menu vertical>
+					<Scrollspy
+						items={[
+							'top',
+							'name',
+							'collections',
+							'must',
+							'mustnot',
+							'query',
+							'resultmappings',
+							'facets',
+							'pagination',
+							'save',
+						]}
+						currentClassName='active'
+						componentTag={({children}) => <Menu vertical>{children}</Menu>}
+					>
 						<Menu.Item href='#top'>Menu</Menu.Item>
 						<Menu.Item href='#name'>Name</Menu.Item>
 						<Menu.Item href='#collections'>Collections</Menu.Item>
@@ -129,7 +145,7 @@ export const Interface = ({
 						<Menu.Item href='#facets'>Facets</Menu.Item>
 						<Menu.Item href='#pagination'>Pagination</Menu.Item>
 						<Menu.Item href='#save'>Save</Menu.Item>
-					</Menu>
+					</Scrollspy>
 				</Sticky>
 			</Rail>
 		</Segment>

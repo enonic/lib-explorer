@@ -63,6 +63,7 @@
     "pretty-ms": "^4.0.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
+    "react-scrollspy": "^3.4.0",
     "semantic-ui": "^2.4.2",
     "semantic-ui-react": "^0.86.0",
     "traverse": "^0.6.6",
