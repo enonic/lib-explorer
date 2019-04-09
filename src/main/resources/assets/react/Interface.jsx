@@ -1,10 +1,14 @@
 import {Form, Formik} from 'formik';
+import {Menu, Rail, Ref, Segment, Sticky} from 'semantic-ui-react'
+import {createRef} from 'react'
 import generateUuidv4 from 'uuid/v4';
 
 import {SubmitButton} from './semantic-ui/SubmitButton';
 
 import {Select} from './elements/Select';
 import {TextInput} from './elements/TextInput';
+
+import {Header} from './semantic-ui/Header';
 
 import {ExpressionSelector} from './query/ExpressionSelector';
 import {Pagination} from './query/Pagination'
@@ -42,63 +46,92 @@ export const Interface = ({
 		}
 	},
 	thesauriOptions
-} = {}) => <Formik
-	initialValues={initialValues}
-	render={({
-		handleSubmit,
-		values
-	}) => {
-		/*console.debug(toStr({
-			component: 'Interface',
-			//collections,
-			//fields,
-			//thesauriOptions,
-			values
-		}));*/
-		return <Form
-			action={action}
-			autoComplete="off"
-			className='ui form'
-			method="POST"
-			onSubmit={() => {
-				document.getElementById('json').setAttribute('value', JSON.stringify(values))
-			}}
-			style={{
-				width: '100%'
-			}}
-		>
-			<TextInput
-				label="Name"
-				name="name"
+} = {}) => {
+	const contextRef = createRef();
+	return <Ref innerRef={contextRef}>
+		<Segment>
+			<Formik
+				initialValues={initialValues}
+				render={({
+					handleSubmit,
+					values
+				}) => {
+					/*console.debug(toStr({
+						component: 'Interface',
+						//collections,
+						//fields,
+						//thesauriOptions,
+						values
+					}));*/
+					return <Form
+						action={action}
+						autoComplete="off"
+						className='ui form'
+						method="POST"
+						onSubmit={() => {
+							document.getElementById('json').setAttribute('value', JSON.stringify(values))
+						}}
+						style={{
+							width: '100%'
+						}}
+					>
+						<TextInput
+							label="Name"
+							id='name'
+							name="name"
+						/>
+						<Header dividing text='Collection(s)' id='collections'/>
+						<Select
+							multiple={true}
+							name="collections"
+							options={collections}
+							values={values}
+						/>
+						<QueryFiltersBuilder
+							fields={fields}
+						/>
+						<ExpressionSelector
+							fields={fields}
+							id='query'
+							legend='Query'
+							name='query'
+							thesauriOptions={thesauriOptions}
+						/>
+						<ResultMappings
+							fields={fields}
+							id='resultmappings'
+							legend='Result mapping(s)'
+						/>
+						<Facets
+							fields={fields}
+							id='facets'
+							legend='Facet(s)'
+						/>
+						<Pagination
+							id='pagination'
+							legend='Pagination'
+						/>
+						<SubmitButton className='primary' text="Save interface" id='save'/>
+						<input id="json" name="json" type="hidden"/>
+					</Form>;
+				}}
 			/>
-			<Select
-				label="Collection(s)"
-				multiple={true}
-				name="collections"
-				options={collections}
-				values={values}
-			/>
-			<QueryFiltersBuilder
-				fields={fields}
-			/>
-			<ExpressionSelector
-				fields={fields}
-				legend='Query'
-				name='query'
-				thesauriOptions={thesauriOptions}
-			/>
-			<ResultMappings
-				fields={fields}
-				legend='Result mapping(s)'
-			/>
-			<Facets
-				fields={fields}
-				legend='Facet(s)'
-			/>
-			<Pagination
-				legend='Pagination'
-			/>
-			<SubmitButton className='primary' text="Save interface"/>
-			<input id="json" name="json" type="hidden"/>
-		</Form>}}
-/>; // Interface
+			<Rail position='left'>
+				<Sticky context={contextRef}>
+					<Menu vertical>
+						<Menu.Item href='#top'>Menu</Menu.Item>
+						<Menu.Item href='#name'>Name</Menu.Item>
+						<Menu.Item href='#collections'>Collections</Menu.Item>
+						<Menu.Item href='#must'>Must</Menu.Item>
+						<Menu.Item href='#mustnot'>MustNot</Menu.Item>
+						<Menu.Item href='#query'>Query</Menu.Item>
+						<Menu.Item href='#resultmappings'>Result mappings</Menu.Item>
+						<Menu.Item href='#facets'>Facets</Menu.Item>
+						<Menu.Item href='#pagination'>Pagination</Menu.Item>
+						<Menu.Item href='#save'>Save</Menu.Item>
+					</Menu>
+				</Sticky>
+			</Rail>
+		</Segment>
+	</Ref>;
+} // Interface

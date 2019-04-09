@@ -4,18 +4,29 @@ import classNames from 'classnames';
 
 export const Icon = ({
 	className, // loading fitted
-	disabled,
 	children,
-	size, // mini tiny small large big huge massive
+	size = '', // TODO remove
+
+	disabled, link,
+	mini, tiny, small, large, big, huge, massive,
+	red, orange, yellow, olive, green, teal, blue, violet, purple, pink, brown,
+	grey, black,
+
+	window, close,
+	trash, alternate, outline,
 	...rest
 }) => {
 	const classStr = classNames(
-		'icon',
-		`${size}`,
+		className,
 		{
-			disabled
+			disabled, link,
+			mini, tiny, small, large, big, huge, massive,
+			red, orange, yellow, olive, green, teal, blue, violet, purple, pink,
+			brown, grey, black,
+			window, close,
+			trash, alternate, outline
 		},
-		className
+		`${size} icon`,
 	);
 	//console.debug(toStr({component: 'Icon', className, size, classStr, rest}));
 	return <i

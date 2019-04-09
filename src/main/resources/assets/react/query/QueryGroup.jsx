@@ -7,6 +7,7 @@ import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
 import {SetButton} from '../buttons/SetButton';
 
+import {Button} from '../semantic-ui/Button';
 import {Buttons} from '../semantic-ui/Buttons';
 import {Divider} from '../semantic-ui/Divider';
 import {Field} from '../semantic-ui/Field';
@@ -74,6 +75,30 @@ export const QueryGroup = connect(({
 							path={`${path}.expressions[${index}]`}
 							thesauriOptions={thesauriOptions}
 						/>
+						<Buttons right floated>
+							<InsertButton
+								index={index}
+								path={parentPath}
+								text={`${index === (value.expressions.length - 1) ? 'Add' : 'Insert '} expression`}
+								value={{
+									params: {},
+									type: '',
+									uuid4: generateUuidv4()
+								}}
+							/>
+							<MoveDownButton
+								disabled={index === value.expressions.length-1}
+								index={index}
+								path={parentPath}
+								visible={value.expressions.length > 1}
+							/>
+							<MoveUpButton
+								index={index}
+								path={parentPath}
+								visible={value.expressions.length > 1}
+							/>
+						</Buttons>
+						<div style={{clear: 'both'}}/>
 					</Segment>
 				</div>;
 			})}

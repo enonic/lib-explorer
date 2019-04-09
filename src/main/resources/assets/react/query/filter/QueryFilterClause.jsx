@@ -26,6 +26,7 @@ import {QueryFilterSelector} from './QueryFilterSelector';
 
 export const QueryFilterClause = connect(({
 	fields = {},
+	id,
 	formik: {
 		values
 	},
@@ -37,7 +38,7 @@ export const QueryFilterClause = connect(({
 }) => {
 	//console.debug(toStr({component: 'QueryFilterClause', parentPath, name, path, value}));
 	if(!(value && Array.isArray(value) && value.length)) {
-		return <Field>
+		return <Field id={id}>
 			<SetButton
 				path={path}
 				value={[{
@@ -50,7 +51,7 @@ export const QueryFilterClause = connect(({
 		</Field>;
 	}
 	return <>
-		<Header dividing>{legend}</Header>
+		<Header dividing id={id}>{legend}</Header>
 		<Table headers={['Filter', 'Field', 'Values']}>
 			<FieldArray
 				name={path}

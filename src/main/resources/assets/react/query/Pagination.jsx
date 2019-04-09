@@ -17,6 +17,7 @@ export const Pagination = connect(({
 	formik: {
 		values
 	},
+	id,
 	legend = null,
 	name = 'pagination',
 	parentPath,
@@ -24,7 +25,7 @@ export const Pagination = connect(({
 	value = values && getIn(values, path) || false
 }) => {
 	if (!value) {
-		return <Field>
+		return <Field id={id}>
 			<SetButton
 				field={path}
 				value={{
@@ -39,7 +40,7 @@ export const Pagination = connect(({
 	}
 	const {first, prev, next, last} = value;
 	return <>
-		<Header dividing>{legend}</Header>
+		<Header dividing id={id}>{legend}</Header>
 		<Fields grouped>
 			<Field>
 				<NumberInput label="Pages to show" path={`${path}.pagesToShow`} value={value.pagesToShow || 10}/>

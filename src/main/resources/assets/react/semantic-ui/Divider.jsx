@@ -5,14 +5,14 @@ export const Divider = ({
 	className,
 	children,
 
-	hidden,
+	clearing, hidden,
 
 	...rest
 }) => {
 	return <div
 		className={classNames(
 			className,
-			{hidden},
+			{clearing, hidden},
 			'ui divider'
 		)}
 		{...rest}

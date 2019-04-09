@@ -26,6 +26,7 @@ export const Facets = connect(({
 	},
 	field,
 	fields,
+	id,
 	legend = null,
 	level = 0,
 	levels = 2,
@@ -36,7 +37,7 @@ export const Facets = connect(({
 }) => {
 	//console.debug(toStr({component: 'Facets', path, field, value}));
 	if (!(Array.isArray(value) && value.length)) {
-		return <Field>
+		return <Field id={id}>
 			<SetButton
 				field={path}
 				value={[{
@@ -56,7 +57,7 @@ export const Facets = connect(({
 		}));
 	}*/
 	return <>
-		<Header dividing>{legend}</Header>
+		<Header dividing id={id}>{legend}</Header>
 		<FieldArray
 			name={path}
 			render={() => value

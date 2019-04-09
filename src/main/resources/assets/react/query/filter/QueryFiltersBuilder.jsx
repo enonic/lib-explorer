@@ -15,7 +15,7 @@ export const QueryFiltersBuilder = connect(({
 }) => {
 	//console.debug(toStr({parentPath, name, path, value}));
 	return <>
-		<QueryFilterClause fields={fields} name='must' parentPath={path}/>
-		<QueryFilterClause fields={fields} name='mustNot' parentPath={path}/>
+		<QueryFilterClause fields={fields} name='must' id='must' parentPath={path}/>
+		<QueryFilterClause fields={fields} name='mustNot' id='mustnot' parentPath={path}/>
 	</>
 });

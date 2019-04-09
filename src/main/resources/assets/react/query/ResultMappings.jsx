@@ -24,6 +24,7 @@ export const ResultMappings = connect(({
 		values
 	},
 	fields,
+	id,
 	legend = null,
 	name = 'resultMappings',
 	parentPath,
@@ -31,7 +32,7 @@ export const ResultMappings = connect(({
 	value = values && getIn(values, path)
 }) => {
 	return <>
-		<Header dividing>{legend}</Header>
+		<Header dividing id={id}>{legend}</Header>
 		<Table headers={['Field', 'To', 'Type', 'Options', 'Action(s)']}>
 			<FieldArray
 				name={path}

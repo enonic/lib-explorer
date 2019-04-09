@@ -4,14 +4,18 @@ import generateUuidv4 from 'uuid/v4';
 import {InsertButton} from '../buttons/InsertButton';
 import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
-import {RemoveButton} from '../buttons/RemoveButton';
+//import {RemoveButton} from '../buttons/RemoveButton';
 
 import {Dropdown} from '../semantic-ui/react/formik/Dropdown';
 
+import {Button} from '../semantic-ui/Button';
 import {Buttons} from '../semantic-ui/Buttons';
 import {Header} from '../semantic-ui/Header';
+import {Icon} from '../semantic-ui/Icon';
 import {Segment} from '../semantic-ui/Segment';
 import {Segments} from '../semantic-ui/Segments';
+
+import {RemoveButton} from '../semantic-ui/formik/buttons/RemoveButton';
 
 
 import {Fulltext} from './Fulltext';
@@ -30,6 +34,7 @@ export const ExpressionSelector = connect(({
 	},
 	expressions = [],
 	fields,
+	id,
 	name = 'query',
 	legend = null,
 	parentPath,
@@ -50,6 +55,14 @@ export const ExpressionSelector = connect(({
 	const selectPath = `${path}.type`;
 
 	const fragment = <>
+		{parentPath ? <RemoveButton
+			basic compact icon right floated
+			style={{
+				boxShadow: 'none'
+			}}
+			index={name}
+			path={parentPath}
+		><Icon black close/></RemoveButton> : null}
 		<Dropdown
 			path={selectPath}
 			onChange={(event, {value: newType}) => {
@@ -163,7 +176,7 @@ export const ExpressionSelector = connect(({
 			/>
 			: null
 		}
-		{parentPath ? <Buttons>
+		{/*parentPath ? <Buttons>
 			<InsertButton
 				index={name}
 				path={parentPath}
@@ -173,11 +186,6 @@ export const ExpressionSelector = connect(({
 					type: '',
 					uuid4: generateUuidv4()
 				}}
-			/>
-			<RemoveButton
-				index={name}
-				path={parentPath}
-				text={`Remove ${type}`}
 			/>
 			<MoveDownButton
 				disabled={name === expressions.length-1}
@@ -190,13 +198,13 @@ export const ExpressionSelector = connect(({
 				path={parentPath}
 				visible={expressions.length > 1}
 			/>
-		</Buttons>: null}
+		</Buttons>: null*/}
 	</>;
 	if (parentPath) {
 		return fragment;
 	}
 	return <>
-		{legend ? <Header dividing text={legend}/> : null}
+		{legend ? <Header dividing id={id} text={legend}/> : null}
 		<Segment>
 			{fragment}
 		</Segment>
