@@ -2,6 +2,7 @@
 import {dlv} from '/lib/enonic/util/object';
 import {
 	BRANCH_ID,
+	DEFAULT_FIELDS,
 	PRINCIPAL_YASE_READ,
 	TOOL_PATH,
 	REPO_ID
@@ -11,6 +12,7 @@ import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {fieldFormHtml} from '/lib/enonic/yase/admin/fields/fieldFormHtml';
 import {fieldValueFormHtml} from '/lib/enonic/yase/admin/fields/values/fieldValueFormHtml';
 import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
+import {menu} from '/lib/enonic/yase/admin/fields/menu';
 
 
 export function newOrEdit({
@@ -27,6 +29,7 @@ export function newOrEdit({
 	const relPath = reqPath.replace(TOOL_PATH, ''); //log.info(toStr({relPath}));
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
 	const fieldName = pathParts[2]; //log.info(toStr({fieldName}));
+	const defaultFields = DEFAULT_FIELDS.map(({_name})=>_name);
 
 	if (fieldName) {
 		const connection = connect({
@@ -43,7 +46,7 @@ export function newOrEdit({
 		const {description, displayName, indexConfig, key} = node;
 		//log.info(toStr({description, displayName, key, indexConfig}));
 
-		const fieldForm = fieldFormHtml({
+		const fieldForm = defaultFields.includes(fieldName) ? '' : fieldFormHtml({
 			//action: `${TOOL_PATH}/fields/update/${fieldName}`,
 			description,
 			decideByType: dlv(indexConfig, 'decideByType', true),
@@ -69,7 +72,7 @@ export function newOrEdit({
 		});
 
 		return htmlResponse({
-			main: `${fieldForm}
+			main: `${menu({path: reqPath})}${fieldForm}
 <table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
@@ -100,7 +103,7 @@ ${valueForm}`,
 	}
 
 	return htmlResponse({
-		main: fieldFormHtml(),
+		main: `${menu({path: reqPath})}${fieldFormHtml()}`,
 		messages,
 		path: reqPath,
 		status,

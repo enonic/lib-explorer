@@ -5,7 +5,8 @@ import {ucFirst} from '/lib/enonic/yase/ucFirst';
 
 
 export const field = ({
-	_name,
+	key,
+	_name = key,
 	displayName = ucFirst(_name),
 
 	//description,
@@ -28,6 +29,7 @@ export const field = ({
 	_parentPath: '/fields',
 	_name,
 	displayName,
+	key,
 
 	//description,
 	//iconUrl,

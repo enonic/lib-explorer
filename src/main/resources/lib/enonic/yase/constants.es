@@ -36,29 +36,37 @@ export const PATH_INTERFACES = '/interfaces';
 export const TASK_COLLECT = `${YASE_ADMIN}:collect`;
 
 
-export const READONLY_FIELDS = [{
-	_name: '_alltext',
+export const NO_VALUES_FIELDS = [{
+	key: '_alltext',
+	_name: 'alltext',
 	displayName: 'All text'
-},{
+}];
+
+export const READONLY_FIELDS = [{
+	key: 'type',
 	_name: 'type',
 	displayName: 'Type'
 }];
 
 export const READWRITE_FIELDS = [{
+	key: 'title',
 	_name: 'title',
 	displayName: 'Title'
 },{
+	key: 'language',
 	_name: 'language',
 	displayName: 'Language'
 },{
+	key: 'text',
 	_name: 'text',
 	displayName: 'Text'
 },{
+	key: 'uri',
 	_name: 'uri',
 	displayName: 'Uri'
 }];
 
-export const DEFAULT_FIELDS = READONLY_FIELDS.concat(READWRITE_FIELDS);
+export const DEFAULT_FIELDS = NO_VALUES_FIELDS.concat(READONLY_FIELDS, READWRITE_FIELDS);
 
 
 //──────────────────────────────────────────────────────────────────────────────

@@ -72,12 +72,14 @@ export function init() {
 			const connection = connect({principals:[PRINCIPAL_YASE_WRITE]});
 			DEFAULT_FIELDS.forEach(({
 				_name,
-				displayName
+				displayName,
+				key
 			}) => {
 				const params = field({
 					__connection: connection,
 					_name,
-					displayName
+					displayName,
+					key
 				});
 				//log.info(toStr({params}));
 				ignoreErrors(() => {
