@@ -1,6 +1,7 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (included in jar via gradle dependencies)
 //──────────────────────────────────────────────────────────────────────────────
+//import {toStr} from '/lib/enonic/util';
 import {addMembers, createRole, createUser} from '/lib/xp/auth';
 
 
@@ -8,7 +9,9 @@ import {addMembers, createRole, createUser} from '/lib/xp/auth';
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {
+	DEFAULT_FIELDS,
 	JOURNALS_REPO,
+	PRINCIPAL_YASE_WRITE,
 	ROLE_YASE_ADMIN,
 	ROLE_YASE_READ,
 	ROLE_YASE_WRITE,
@@ -18,6 +21,9 @@ import {
 } from '/lib/enonic/yase/constants';
 import {ignoreErrors} from '/lib/enonic/yase/ignoreErrors';
 import {init as initRepo} from '/lib/enonic/yase/repo/init';
+import {connect} from '/lib/enonic/yase/repo/connect';
+import {create} from '/lib/enonic/yase/node/create';
+import {field} from '/lib/enonic/yase/nodeTypes/field';
 import {runAsSu} from '/lib/enonic/yase/runAsSu';
 
 
@@ -63,6 +69,21 @@ export function init() {
 
 		ignoreErrors(() => {
 			initRepo();
+			const connection = connect({principals:[PRINCIPAL_YASE_WRITE]});
+			DEFAULT_FIELDS.forEach(({
+				_name,
+				displayName
+			}) => {
+				const params = field({
+					__connection: connection,
+					_name,
+					displayName
+				});
+				//log.info(toStr({params}));
+				ignoreErrors(() => {
+					create(params);
+				});
+			})
 		});
 
 		ignoreErrors(() => {

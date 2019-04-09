@@ -30,12 +30,35 @@ export const NT_TAG = `${PACKAGE}:tag`;
 export const NT_THESAURUS = `${PACKAGE}:thesaurus`;
 
 //──────────────────────────────────────────────────────────────────────────────
-// Node paths
+// Various
 //──────────────────────────────────────────────────────────────────────────────
 export const PATH_INTERFACES = '/interfaces';
-
-
 export const TASK_COLLECT = `${YASE_ADMIN}:collect`;
+
+
+export const READONLY_FIELDS = [{
+	_name: '_alltext',
+	displayName: 'All text'
+},{
+	_name: 'type',
+	displayName: 'Type'
+}];
+
+export const READWRITE_FIELDS = [{
+	_name: 'title',
+	displayName: 'Title'
+},{
+	_name: 'language',
+	displayName: 'Language'
+},{
+	_name: 'text',
+	displayName: 'Text'
+},{
+	_name: 'uri',
+	displayName: 'Uri'
+}];
+
+export const DEFAULT_FIELDS = READONLY_FIELDS.concat(READWRITE_FIELDS);
 
 
 //──────────────────────────────────────────────────────────────────────────────
