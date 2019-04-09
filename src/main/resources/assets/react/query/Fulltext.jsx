@@ -12,6 +12,7 @@ import {Radio} from '../elements/Radio';
 import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
 
+import {Buttons} from '../semantic-ui/Buttons';
 import {Dropdown} from '../semantic-ui/formik/Dropdown';
 
 import {OperatorSelector} from './OperatorSelector';
@@ -79,30 +80,32 @@ export const Fulltext = connect(({
 							/></td>
 							<td><NumberInput path={boostPath}/></td>
 							<td>
-								<InsertButton
-									index={index}
-									path={`${path}.fields`}
-									value={{
-										field: '',
-										boost: '',
-										uuid4: generateUuidv4()
-									}}
-								/>
-								<RemoveButton
-									index={index}
-									path={`${path}.fields`}
-									visible={value.fields.length > 1}
-								/>
-								<MoveDownButton
-									disabled={index === value.fields.length-1}
-									index={index}
-									path={`${path}.fields`}
-									visible={value.fields.length > 1}/>
-								<MoveUpButton
-									index={index}
-									path={`${path}.fields`}
-									visible={value.fields.length > 1}
-								/>
+								<Buttons icon>
+									<InsertButton
+										index={index}
+										path={`${path}.fields`}
+										value={{
+											field: '',
+											boost: '',
+											uuid4: generateUuidv4()
+										}}
+									/>
+									<RemoveButton
+										index={index}
+										path={`${path}.fields`}
+										visible={value.fields.length > 1}
+									/>
+									<MoveDownButton
+										disabled={index === value.fields.length-1}
+										index={index}
+										path={`${path}.fields`}
+										visible={value.fields.length > 1}/>
+									<MoveUpButton
+										index={index}
+										path={`${path}.fields`}
+										visible={value.fields.length > 1}
+									/>
+								</Buttons>
 							</td>
 						</tr>
 					})}

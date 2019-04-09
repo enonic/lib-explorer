@@ -3,22 +3,18 @@ import classNames from 'classnames';
 
 
 export const Header = ({
-	block,
 	children,
 	className,
-	dividing,
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6,
-	huge,
-	large,
-	medium,
-	small,
 	text,
-	tiny,
+
+	// HTML5 Tag
+	h1, h2,	h3,	h4,	h5,	h6,
+
+	// Semantic-UI classNames
+	block, dividing,
+	bottom, top, attached,
+	huge, large, medium, small, tiny,
+
 	...rest
 }) => {
 	const Tag = classNames({h1})
@@ -30,12 +26,8 @@ export const Header = ({
 		|| 'div';
 	//console.debug(toStr({component: 'Header', className, dividing, Tag, rest}));
 	return <Tag className={classNames(className, {
-		block,
-		dividing,
-		huge,
-		large,
-		medium,
-		small,
-		tiny
+		block, dividing,
+		bottom, top, attached,
+		huge, large, medium, small, tiny
 	}, 'ui header')} {...rest}>{children || text}</Tag>;
 }

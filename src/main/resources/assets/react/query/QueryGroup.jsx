@@ -57,46 +57,28 @@ export const QueryGroup = connect(({
 		<OperatorSelector
 			parentPath={path}
 		/>
-		<Header dividing>Expression{value.expressions.length > 1 && 's'}</Header>
 		<FieldArray
 			name={`${path}.expressions`}
 			render={() => value.expressions.map(({uuid4}, index) => {
 				return <div key={uuid4}>
 					<ExpressionSelector
+						expressions={value.expressions}
 						fields={fields}
+						name={index}
+						parentPath={`${path}.expressions`}
 						path={`${path}.expressions[${index}]`}
 						thesauriOptions={thesauriOptions}
 					/>
-					<Buttons icon>
-						<InsertButton
-							index={index}
-							path={expressionsPath}
-							text={`${index === (value.expressions.length - 1) ? 'Add' : 'Insert'} expression`}
-							value={{
-								params: {},
-								type: '',
-								uuid4: generateUuidv4()
-							}}
-						/>
-						<RemoveButton
-							index={index}
-							path={expressionsPath}
-							text="Remove
-							expression"
-							visible={value.expressions.length > 1}
-						/>
-						<MoveDownButton
-							disabled={index === value.expressions.length-1}
-							index={index}
-							path={expressionsPath}
-							visible={value.expressions.length > 1}
-						/>
-						<MoveUpButton
-							index={index}
-							path={expressionsPath}
-							visible={value.expressions.length > 1}
-						/>
-					</Buttons>
+					{index === (value.expressions.length - 1) ? <InsertButton
+						index={index}
+						path={expressionsPath}
+						text='Add expression'
+						value={{
+							params: {},
+							type: '',
+							uuid4: generateUuidv4()
+						}}
+					/> : null}
 				</div>;
 			})}
 		/>
