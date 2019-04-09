@@ -19,7 +19,10 @@ export function list({
 	const connection = connect({
 		principals: [PRINCIPAL_YASE_READ]
 	});
-	const thesauri = getThesauri({connection}).hits;
+	const {hits: thesauri} = getThesauri({connection});
+	const total = thesauri
+		.map(({synonymsCount}) => synonymsCount)
+		.reduce((accumulator, currentValue) => accumulator + currentValue);
 	return htmlResponse({
 		main: `${menu({path})}
 <table class="collapsing compact ui sortable selectable celled striped table">
@@ -42,6 +45,13 @@ export function list({
 			</td>
 		</tr>`).join('\n')}
 	</tbody>
+	<tfoot>
+		<tr>
+			<th></th>
+			<th>${total}</th>
+			<th></th>
+		</tr>
+	</tfoot>
 </table>
 `,
 		messages,
