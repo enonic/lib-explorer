@@ -3,7 +3,6 @@
 
 import {
 	BRANCH_ID,
-	//PATH_TAG,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
 import {cachedNode} from '/lib/enonic/yase/search/cachedNode';
