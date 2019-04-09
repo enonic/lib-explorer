@@ -86,7 +86,7 @@ export function mapMultiRepoQueryHits({
 			} else if (type === 'tags') {
 				mappedValue = (value ? forceArray(value) : [])
 					.map(name => {
-						const path = `/tags/${field}/${name}`;
+						const path = `/fields/${field}/${name}`;
 						let tagNode = {displayName: name};
 						try {
 							tagNode = cachedNode({

@@ -14,13 +14,14 @@ export function localizeFacets({
 	//log.info(toStr({facets, locale}));
 	//const {tag, facets: children} = facets[0]; // DEBUG
 	facets.forEach(({tag, facets: children}) => {
+		const path = `${parentPath}/${tag}`;
 		const localizedTag = localizeTag({
 			locale,
 			nodeCache,
 			parentPath,
 			name: tag
 		});
-		localizedFacets[tag] = localizedTag;
+		localizedFacets[path] = localizedTag;
 		//return localizedFacets; // DEBUG
 		if (Array.isArray(children) && children.length) {
 			localizeFacets({ // Recurse

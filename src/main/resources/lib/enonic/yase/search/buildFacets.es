@@ -80,8 +80,9 @@ export function buildFacets({
 	//──────────────────────────────────────────────────────────────────────────
 	// First pass: Localize facetName, find active/inactive facets and build links.
 	//──────────────────────────────────────────────────────────────────────────
-	const firstPass = facetConfig.map(({tag: fieldPath, facets: children}) => {
-		const field = fieldPath.replace(/^\/fields\//, '');
+	const firstPass = facetConfig.map(({tag: field, facets: children}) => {
+		//const field = fieldPath.replace(/^\/fields\//, '');
+		const fieldPath = `/fields/${field}`;
 		let activeCount = 0;
 		let inactiveCount = 0;
 
@@ -95,8 +96,9 @@ export function buildFacets({
 
 		const hasValuesInCategory = {};
 
-		const facets = children.map(({tag: tagPath}) => {
-			const tagName = tagPath.replace(`/tags/${field}/`, ''); //log.info(toStr({tagName}));
+		const facets = children.map(({tag: tagName}) => {
+			//const tagName = tagPath.replace(`/fields/${field}/`, ''); //log.info(toStr({tagName}));
+			const tagPath = `/fields/${field}/${tagName}`;
 			facetCategoryUri.addQueryParam(field, tagName); // Add all tags in field
 
 			const facetUri = uriObjFromParams(params);
