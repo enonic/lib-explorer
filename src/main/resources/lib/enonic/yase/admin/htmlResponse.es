@@ -106,6 +106,12 @@ export function htmlResponse({
 		<!-- Append the launcher -->
 		<script type="text/javascript" src="${getLauncherPath()}" async></script>
 
+		<script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+
+		<script>
+    		var scroll = new SmoothScroll('a[href*="#"]');
+		</script>
+
 		${bodyEnd.join('\n')}
 	</body>
 </html>`,

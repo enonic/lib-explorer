@@ -116,7 +116,7 @@ export const Interface = ({
 					</Form>;
 				}}
 			/>
-			<Rail position='left'>
+			<Rail position='right'>
 				<Sticky context={contextRef}>
 					<Menu vertical>
 						<Menu.Item href='#top'>Menu</Menu.Item>
