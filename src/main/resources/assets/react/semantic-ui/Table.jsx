@@ -7,21 +7,25 @@ export const Table = ({
 	basic = false,
 	celled = false,
 	collapsing = false,
+
+	very = false,
 	compact = false,
+
 	selectable = false,
 	small = false,
 	sortable = false,
 	striped = false,
-	very = false,
 	...rest
 }) => <table className={classNames(className, {
 	basic,
 	celled,
 	collapsing,
+
+	very,
 	compact,
+
 	selectable,
 	small,
 	sortable,
-	striped,
-	very
+	striped
 }, 'table ui')} {...rest}>{children}</table>;
