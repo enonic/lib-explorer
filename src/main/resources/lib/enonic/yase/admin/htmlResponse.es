@@ -1,6 +1,11 @@
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 //import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
+import {
+	getBaseUri,
+	getLauncherPath,
+	getLauncherUrl
+} from '/lib/xp/admin';
 import {assetUrl} from '/lib/xp/portal';
 
 
@@ -28,8 +33,16 @@ export function htmlResponse({
 		${headBegin.join('\n')}
 		<title>${preTitle}YASE</title>
 		<link rel="shortcut icon" href="${assetUrl({path: 'favicon.ico'})}">
-		<link rel="stylesheet" type="text/css" href="${assetUrl({path: 'style.css'})}">
+
+		<!--link rel="stylesheet" type="text/css" href="${assetUrl({path: 'style.css'})}"-->
 		<link rel="stylesheet" type="text/css" href="${assetUrl({path: 'semantic-ui/semantic.css'})}">
+
+		<!-- Common style and library used by the Launcher Panel -->
+		<!--link rel="stylesheet" type="text/css" href="${assetUrl({path: '/admin/common/styles/_all.css'})}"-->
+
+		<!-- Append the Admin libraries -->
+		<script type="text/javascript" src="${assetUrl({path: '/admin/common/lib/_all.js'})}"></script>
+
 		${headEnd.join('\n')}
 	</head>
 	<body>
@@ -59,6 +72,14 @@ export function htmlResponse({
 			${main}
 		</main>
 
+		<script type="text/javascript">
+		var CONFIG = {
+			adminUrl: '${getBaseUri()}',
+			appId: '${app.name}',
+			launcherUrl: '${getLauncherUrl()}'
+		};
+		</script>
+
 		<!--script type="text/javascript" src="${assetUrl({path: 'react/react.production.min.js'})}"></script-->
 		<script type="text/javascript" src="${assetUrl({path: 'react/react.development.js'})}"></script>
 
@@ -78,6 +99,13 @@ export function htmlResponse({
 				$('table').tablesort();
 		    });
 		</script>
+
+		<!-- Append the Admin UI -->
+		<script type="text/javascript" src="${assetUrl({path: '/admin/common/js/_all.js'})}"></script>
+
+		<!-- Append the launcher -->
+		<script type="text/javascript" src="${getLauncherPath()}" async></script>
+
 		${bodyEnd.join('\n')}
 	</body>
 </html>`,
