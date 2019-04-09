@@ -6,7 +6,7 @@ import {MoveUpButton} from '../buttons/MoveUpButton';
 import {MoveDownButton} from '../buttons/MoveDownButton';
 import {RemoveButton} from '../buttons/RemoveButton';
 
-import {Select} from '../elements/Select';
+import {Dropdown} from '../semantic-ui/react/formik/Dropdown';
 
 import {Buttons} from '../semantic-ui/Buttons';
 import {Header} from '../semantic-ui/Header';
@@ -52,20 +52,10 @@ export const ExpressionSelector = connect(({
 		{legend ? <Header dividing text={legend}/> : null}
 		<Segments raised>
 			<Segment>
-				<Select
+				<Dropdown
 					path={selectPath}
-					onChange={({
-						target: {
-							selectedOptions // HTMLCollection
-						}
-					}) => {
-						//console.debug(toStr({selectPath, paramsPath}));
-						const htmlCollectionAsArray = [].slice
-							.call(selectedOptions)
-							.map(({value}) => value);
-						//console.debug(toStr({htmlCollectionAsArray}));
-						const newType = htmlCollectionAsArray[0];
-						//console.debug(toStr({newType}));
+					onChange={(event, {value: newType}) => {
+						console.debug({event, newType});
 						setFieldValue(selectPath, newType);
 						if(newType === 'group') {
 							setFieldValue(paramsPath, {
@@ -106,25 +96,32 @@ export const ExpressionSelector = connect(({
 						}
 					}}
 					options={[{
-						label: 'Logic',
+						key: 'group',
+						text: 'Logic',
 						value: 'group'
 					}, {
-						label: 'Fulltext',
+						key: 'fulltext',
+						text: 'Fulltext',
 						value: 'fulltext'
 					}, {
-						label: 'Ngram',
+						key: 'ngram',
+						text: 'Ngram',
 						value: 'ngram'
 					}, {
-						label: 'Synonyms', // Fulltext Or
+						key: 'synonyms',
+						text: 'Synonyms', // Fulltext Or
 						value: 'synonyms'
 					}, {
-						label: 'Compare expression',
+						key: 'compareExpr',
+						text: 'Compare expression',
 						value: 'compareExpr'
 					}, {
-						label: 'Range',
+						key: 'range',
+						text: 'Range',
 						value: 'range'
 					}, {
-						label: 'Path match',
+						key: 'pathMatch',
+						text: 'Path match',
 						value: 'pathMatch'
 					}]}
 					placeholder='Please select expression type'

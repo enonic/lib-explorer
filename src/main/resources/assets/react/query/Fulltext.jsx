@@ -13,7 +13,7 @@ import {Select} from '../elements/Select';
 import {Table} from '../elements/Table';
 
 import {Buttons} from '../semantic-ui/Buttons';
-import {Dropdown} from '../semantic-ui/formik/Dropdown';
+import {Dropdown} from '../semantic-ui/react/formik/Dropdown';
 
 import {OperatorSelector} from './OperatorSelector';
 //import {SearchStringFilter} from './SearchStringFilter';
