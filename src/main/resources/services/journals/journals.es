@@ -18,6 +18,8 @@ export function get({
 	//log.info(toStr({collections}));
 	const intPerPage = parseInt(perPage, 10);
 	const intPage = parseInt(page, 10);
+	const start = (intPage - 1 ) * intPerPage;
+
 	const filters = {};
 
 	if(collections) {
@@ -76,9 +78,11 @@ export function get({
 		filters,
 		query,
 		sort,
-		start: (intPage - 1 ) * intPerPage
+		start
 	});
 	result.page = intPage;
+	result.start = start + 1;
+	result.end = Math.min(start + intPerPage, result.total);
 	result.totalPages = Math.ceil(result.total / intPerPage);
 	result.hits = result.hits.map(({
 		name, startTime, endTime, duration,

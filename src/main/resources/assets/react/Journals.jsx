@@ -103,7 +103,9 @@ export class Journals extends React.Component {
 			result: {
 				aggregations,
 				count,
+				end,
 				page,
+				start,
 				total,
 				totalPages,
 				hits
@@ -154,6 +156,7 @@ export class Journals extends React.Component {
 
 					onPageChange={this.handlePaginationChange}
 				/>
+				<p>Displaying {start}-{end} of {total}</p>
 				<Rail position='left'>
 					<Sticky context={contextRef} offset={14}>
 						<Segment basic>
