@@ -203,6 +203,7 @@ const CLIENT_JS_CONFIG = {
 					compact: false,
 					minified: false,
 					plugins: [
+						'@babel/plugin-proposal-class-properties',
 						'@babel/plugin-proposal-object-rest-spread',
 						'@babel/plugin-transform-object-assign',
 						'array-includes'
