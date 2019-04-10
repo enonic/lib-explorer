@@ -1,8 +1,8 @@
 //import '@babel/runtime';
 import Uri from 'jsuri';
 import {
-	Checkbox, Dropdown, Form, Header, Icon, Label, Pagination, Rail, Ref,
-	Segment, Sticky, Table
+	Checkbox, Divider, Dropdown, Form, Header, Icon, Label, Pagination, Rail,
+	Ref, Segment, Sticky, Table
 } from 'semantic-ui-react'
 import {createRef} from 'react'
 
@@ -21,12 +21,18 @@ export class Journals extends React.Component {
 				successCount: false
 			},
 			params: {
+				collections: [],
 				perPage: 5,
 				page: 1,
 				query: '',
 				sort: 'endTime DESC'
 			},
 			result: {
+				aggregations: {
+					collection: {
+						buckets: []
+					}
+				},
 				count: 0,
 				page: 1,
 				total: 0,
@@ -89,15 +95,13 @@ export class Journals extends React.Component {
 	}
 
 
-	//componentDidUpdate() {}
-
-
 	render() {
 		//console.debug({state: this.state});
 		const {
 			columns,
 			params,
 			result: {
+				aggregations,
 				count,
 				page,
 				total,
@@ -152,25 +156,42 @@ export class Journals extends React.Component {
 				/>
 				<Rail position='left'>
 					<Sticky context={contextRef} offset={14}>
-						<Segment>
-							<Form.Field>
-								<Header as='h4'><Icon name='resize vertical'/> Per page</Header>
-								<Dropdown
-									name='perPage'
-									onChange={this.handleInputChange}
-									options={[5,10,25,50,100].map(key => ({key, text: `${key}`, value: key}))}
-									selection
-									value={params.perPage}
-								/>
-							</Form.Field>
+						<Segment basic>
+							<Form>
+								<Form.Field>
+									<Header as='h4'><Icon name='database'/> Collections</Header>
+									<Dropdown
+										fluid
+										multiple={true}
+										name='collections'
+										onChange={this.handleInputChange}
+										options={aggregations.collection.buckets.map(({key, docCount}) => ({key, text: `${key} (${docCount})`, value: key}))}
+										search
+										selection
+										value={params.collections}
+									/>
+								</Form.Field>
+								<Divider hidden/>
+								<Form.Field>
+									<Header as='h4'><Icon name='resize vertical'/> Per page</Header>
+									<Dropdown
+										fluid
+										name='perPage'
+										onChange={this.handleInputChange}
+										options={[5,10,25,50,100].map(key => ({key, text: `${key}`, value: key}))}
+										selection
+										value={params.perPage}
+									/>
+								</Form.Field>
+							</Form>
 						</Segment>
 					</Sticky>
 				</Rail>
 				<Rail position='right'>
 					<Sticky context={contextRef} offset={14}>
-						<Segment>
+						<Segment basic>
 							<Header as='h4'><Icon name='columns'/> Columns</Header>
-							<Form.Group>
+							<Form>
 								<Form.Field>
 									<Checkbox
 										checked={this.state.columns.name}
@@ -225,7 +246,7 @@ export class Journals extends React.Component {
 										toggle
 									/>
 								</Form.Field>
-							</Form.Group>
+							</Form>
 						</Segment>
 					</Sticky>
 				</Rail>

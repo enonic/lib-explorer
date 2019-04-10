@@ -1,3 +1,5 @@
+//import {toStr} from '/lib/enonic/util';
+//import {forceArray} from '/lib/enonic/util/data';
 import {RT_JSON} from '/lib/enonic/yase/constants';
 import {query as queryJournals} from '/lib/enonic/yase/journal/query';
 import {addFilter} from '/lib/enonic/yase/query/addFilter';
@@ -6,23 +8,27 @@ import {hasValue} from '/lib/enonic/yase/query/hasValue';
 
 export function get({
 	params: {
+		collections,
 		page = 1, // NOTE First index is 1 not 0
 		perPage = 25,
 		query = '',
 		sort = 'endTime DESC'
 	}
 }) {
+	//log.info(toStr({collections}));
 	const intPerPage = parseInt(perPage, 10);
 	const intPage = parseInt(page, 10);
+	const filters = {};
+
+	if(collections) {
+		addFilter({
+			filters,
+			filter: hasValue('name', collections.split(','))
+		});
+	}
+
 	const result = queryJournals({
-		aggregations: {
-			collection: {
-				terms: {
-        			field: 'name',
-        			order: '_count desc',
-        			size: 100
-      			}
-			},
+		/*aggregations: {
 			errorRanges: {
 				range: {
 					field: 'errorCount',
@@ -65,11 +71,9 @@ export function get({
 					}]
 				}
 			}
-		},
+		},*/
 		count: intPerPage,
-		/*filters: addFilter({
-			filter: hasValue('name', ['example'])
-		}),*/
+		filters,
 		query,
 		sort,
 		start: (intPage - 1 ) * intPerPage
@@ -83,6 +87,24 @@ export function get({
 		name, startTime, endTime, duration,
 		errorCount, successCount//, errors, successes
 	}));
+
+	// Separate aggregation query where the collections filter is not included
+	const collectionsAggregationQueryResult = queryJournals({
+		aggregations: {
+			collection: {
+				terms: {
+        			field: 'name',
+        			order: '_count desc',
+        			size: 100
+      			}
+			}
+		},
+		count: 0,
+		filters: {},
+		query
+	});
+	result.aggregations.collection = collectionsAggregationQueryResult.aggregations.collection;
+
 	return {
 		contentType: RT_JSON,
 		body: {
