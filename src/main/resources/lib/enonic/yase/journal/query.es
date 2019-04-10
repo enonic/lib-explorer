@@ -10,10 +10,11 @@ import {hasValue} from '/lib/enonic/yase/query/hasValue';
 
 
 export function query({
+	aggregations = {},
 	count = 25,
 	filters = {},
 	query = '',
-	sort = 'startTime DESC',
+	sort = 'endTime DESC',
 	start
 } = {}) {
 	const connection = connect({
@@ -21,6 +22,7 @@ export function query({
 		principals: [PRINCIPAL_YASE_READ]
 	});
 	const queryParams = {
+		aggregations,
 		count,
 		filters: addFilter({
 			filters,
