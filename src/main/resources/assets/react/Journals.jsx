@@ -1,5 +1,9 @@
+//import '@babel/runtime';
 import Uri from 'jsuri';
-import {Icon, Pagination, Rail, Ref, Segment, Sticky, Table} from 'semantic-ui-react'
+import {
+	Checkbox, Dropdown, Form, Header, Icon, Label, Pagination, Rail, Ref,
+	Segment, Sticky, Table
+} from 'semantic-ui-react'
 import {createRef} from 'react'
 
 
@@ -8,6 +12,14 @@ export class Journals extends React.Component {
     	super(props);
 
     	this.state = {
+			columns: {
+				name: true,
+				startTime: false,
+				endTime: true,
+				duration: false,
+				errorCount: true,
+				successCount: false
+			},
 			params: {
 				perPage: 5,
 				page: 1,
@@ -23,10 +35,12 @@ export class Journals extends React.Component {
 			}
     	};
 
-		this.search();
-	}
+		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handlePaginationChange = this.handlePaginationChange.bind(this);
+	} // constructor
 
-	search = () => {
+
+	search() {
 		const {serviceUrl} = this.props;
 		const uri = new Uri(serviceUrl);
 		Object.entries(this.state.params).forEach(([k, v]) => {
@@ -43,18 +57,46 @@ export class Journals extends React.Component {
 			})
 	}
 
-	//handleCheckboxChange = (e, { checked, name }) => this.setState({ [name]: checked })
 
-  	//handleInputChange = (e, { name, value }) => this.setState({ [name]: value })
-
-	handlePaginationChange = (e, { activePage }) => this.setState(prevState => {
-		prevState.params.page = activePage;
+	componentDidMount() {
 		this.search();
-	})
+	}
+
+
+	handleCheckboxChange = (e, {checked, name}) => this.setState(prevState => {
+		//console.debug({checked, name});
+		prevState.columns[name] = checked;
+		return prevState;
+	});
+
+
+  	async handleInputChange(e, {name, value}) {
+		//console.debug({name, value});
+		await this.setState(prevState => {
+			prevState.params[name] = value;
+			return prevState;
+		});
+		this.search();
+	}
+
+
+	async handlePaginationChange(e, {activePage}) {
+		await this.setState(prevState => {
+			prevState.params.page = activePage;
+			return prevState;
+		});
+		this.search();
+	}
+
+
+	//componentDidUpdate() {}
+
 
 	render() {
 		//console.debug({state: this.state});
 		const {
+			columns,
+			params,
 			result: {
 				count,
 				page,
@@ -68,29 +110,33 @@ export class Journals extends React.Component {
 		const contextRef = createRef();
 		return <Ref innerRef={contextRef}>
 			<Segment basic>
-				<Table celled compact selectable sortable striped>
+				<Table celled compact selectable sortable striped attached='top'>
 					<Table.Header>
       					<Table.Row>
-        					<Table.HeaderCell>Collection</Table.HeaderCell>
-        					<Table.HeaderCell>Start</Table.HeaderCell>
-        					<Table.HeaderCell>End</Table.HeaderCell>
-							<Table.HeaderCell>Duration</Table.HeaderCell>
-							<Table.HeaderCell>Errors</Table.HeaderCell>
-							<Table.HeaderCell>Successes</Table.HeaderCell>
+							{columns.name ? <Table.HeaderCell>Collection</Table.HeaderCell> : null}
+        					{columns.startTime ? <Table.HeaderCell>Start</Table.HeaderCell> : null}
+        					{columns.endTime ? <Table.HeaderCell>End</Table.HeaderCell> : null}
+							{columns.duration ? <Table.HeaderCell>Duration</Table.HeaderCell> : null}
+							{columns.errorCount ? <Table.HeaderCell>Errors</Table.HeaderCell> : null}
+							{columns.successCount ? <Table.HeaderCell>Successes</Table.HeaderCell> : null}
       					</Table.Row>
     				</Table.Header>
 					<Table.Body>
 						{hits.map(({name, startTime, endTime, duration, errorCount, successCount}, i) => <Table.Row key={i}>
-        					<Table.Cell>{name}</Table.Cell>
-							<Table.Cell>{startTime}</Table.Cell>
-							<Table.Cell>{endTime}</Table.Cell>
-							<Table.Cell>{duration}</Table.Cell>
-							<Table.Cell>{errorCount}</Table.Cell>
-							<Table.Cell>{successCount}</Table.Cell>
+        					{columns.name ? <Table.Cell>{name}</Table.Cell> : null}
+							{columns.startTime ? <Table.Cell>{startTime}</Table.Cell> : null}
+							{columns.endTime ? <Table.Cell>{endTime}</Table.Cell> : null}
+							{columns.duration ? <Table.Cell>{duration}</Table.Cell> : null}
+							{columns.errorCount ? <Table.Cell>{errorCount}</Table.Cell> : null}
+							{columns.successCount ? <Table.Cell>{successCount}</Table.Cell> : null}
 						</Table.Row>)}
 					</Table.Body>
 				</Table>
 				<Pagination
+					attached='bottom'
+					fluid
+					size='mini'
+
 					activePage={page}
 					boundaryRange={1}
 				    siblingRange={1}
@@ -101,18 +147,86 @@ export class Journals extends React.Component {
 					prevItem={{content: <Icon name='angle left' />, icon: true}}
 					nextItem={{content: <Icon name='angle right' />, icon: true}}
 				    lastItem={{content: <Icon name='angle double right' />, icon: true}}
-					size='mini'
 
 					onPageChange={this.handlePaginationChange}
 				/>
 				<Rail position='left'>
 					<Sticky context={contextRef} offset={14}>
-						<Segment>Left</Segment>
+						<Segment>
+							<Form.Field>
+								<Header as='h4'><Icon name='resize vertical'/> Per page</Header>
+								<Dropdown
+									name='perPage'
+									onChange={this.handleInputChange}
+									options={[5,10,25,50,100].map(key => ({key, text: `${key}`, value: key}))}
+									selection
+									value={params.perPage}
+								/>
+							</Form.Field>
+						</Segment>
 					</Sticky>
 				</Rail>
 				<Rail position='right'>
 					<Sticky context={contextRef} offset={14}>
-						<Segment>Right</Segment>
+						<Segment>
+							<Header as='h4'><Icon name='columns'/> Columns</Header>
+							<Form.Group>
+								<Form.Field>
+									<Checkbox
+										checked={this.state.columns.name}
+										label='Collection'
+										name='name'
+										onChange={this.handleCheckboxChange}
+										toggle
+									/>
+								</Form.Field>
+								<Form.Field>
+									<Checkbox
+										checked={this.state.columns.startTime}
+										label='Start time'
+										name='startTime'
+										onChange={this.handleCheckboxChange}
+										toggle
+									/>
+								</Form.Field>
+								<Form.Field>
+									<Checkbox
+										checked={this.state.columns.endTime}
+										label='End time'
+										name='endTime'
+										onChange={this.handleCheckboxChange}
+										toggle
+									/>
+								</Form.Field>
+								<Form.Field>
+									<Checkbox
+										checked={this.state.columns.duration}
+										label='Duration'
+										name='duration'
+										onChange={this.handleCheckboxChange}
+										toggle
+									/>
+								</Form.Field>
+								<Form.Field>
+									<Checkbox
+										checked={this.state.columns.errorCount}
+										label='Errors'
+										name='errorCount'
+										onChange={this.handleCheckboxChange}
+										toggle
+									/>
+								</Form.Field>
+								<Form.Field>
+									<Checkbox
+										checked={this.state.columns.successCount}
+										label='Successes'
+										name='successCount'
+										onChange={this.handleCheckboxChange}
+										toggle
+									/>
+								</Form.Field>
+							</Form.Group>
+						</Segment>
 					</Sticky>
 				</Rail>
 			</Segment>

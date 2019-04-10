@@ -206,6 +206,9 @@ const CLIENT_JS_CONFIG = {
 						'@babel/plugin-proposal-class-properties',
 						'@babel/plugin-proposal-object-rest-spread',
 						'@babel/plugin-transform-object-assign',
+						['@babel/plugin-transform-runtime', {
+				      		"regenerator": true
+				    	}],
 						'array-includes'
 					],
 					presets: [
