@@ -85,10 +85,10 @@ export function get({
 	result.end = Math.min(start + intPerPage, result.total);
 	result.totalPages = Math.ceil(result.total / intPerPage);
 	result.hits = result.hits.map(({
-		name, startTime, endTime, duration,
+		name: collection, startTime, endTime, duration,
 		errorCount, successCount//, errors, successes
 	}) => ({
-		name, startTime, endTime, duration,
+		collection, startTime, endTime, duration,
 		errorCount, successCount//, errors, successes
 	}));
 

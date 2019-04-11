@@ -1,31 +1,49 @@
 //import '@babel/runtime';
+//import {hash as fnv} from 'fnv-plus';
 import Uri from 'jsuri';
 import {
-	Checkbox, Divider, Dropdown, Form, Header, Icon, Label, Pagination, Rail,
-	Ref, Segment, Sticky, Table
+	Checkbox, Dimmer, Divider, Dropdown, Form, Header, Icon, Label, Loader,
+	Pagination, Rail, Ref, Segment, Sticky, Table
 } from 'semantic-ui-react'
 import {createRef} from 'react'
 
 
+/*export const hash = (object, bitlength = 128) =>
+	fnv(JSON.stringify(object), bitlength).str();*/
+
+export const hash = (object) =>
+	JSON.stringify(object);
+
+
 export class Journals extends React.Component {
+	contextRef = createRef();
+
 	constructor(props) {
+		//console.debug({function: 'constructor', props});
     	super(props);
 
+
     	this.state = {
+			cache: {},
 			columns: {
-				name: true,
+				collection: true,
 				startTime: false,
 				endTime: true,
 				duration: false,
 				errorCount: true,
 				successCount: false
 			},
+			loading: false,
 			params: {
 				collections: [],
 				perPage: 5,
 				page: 1,
 				query: '',
 				sort: 'endTime DESC'
+			},
+			sort: {
+				column: 'endTime',
+				direction: 'descending'
 			},
 			result: {
 				aggregations: {
@@ -43,13 +61,25 @@ export class Journals extends React.Component {
 
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handlePaginationChange = this.handlePaginationChange.bind(this);
+		this.handleSort = this.handleSort.bind(this);
 	} // constructor
 
 
-	search() {
+	async search() {
+		//console.debug({function: 'search'});
+		const {cache, params} = this.state;
+		const key = hash(params);
+		//await console.debug({key, cache});
+		if (cache[key]) {
+			this.setState({result: cache[key]});
+			return;
+		}
+
+		await this.setState({loading: true});
+
 		const {serviceUrl} = this.props;
 		const uri = new Uri(serviceUrl);
-		Object.entries(this.state.params).forEach(([k, v]) => {
+		Object.entries(params).forEach(([k, v]) => {
 			//console.debug({k, v});
 			uri.replaceQueryParam(k, v);
 		});
@@ -59,17 +89,24 @@ export class Journals extends React.Component {
 			.then(response => response.json())
 			.then(data => {
 				//console.debug({data});
-				this.setState({result: data.result});
+				this.setState(prevState => {
+					prevState.cache[key] = data.result;
+					prevState.loading = false;
+					prevState.result = data.result;
+					return prevState;
+				});
 			})
 	}
 
 
 	componentDidMount() {
+		//console.debug({function: 'componentDidMount'});
 		this.search();
 	}
 
 
 	handleCheckboxChange = (e, {checked, name}) => this.setState(prevState => {
+		//console.debug({function: 'handleCheckboxChange', name, checked});
 		//console.debug({checked, name});
 		prevState.columns[name] = checked;
 		return prevState;
@@ -77,6 +114,7 @@ export class Journals extends React.Component {
 
 
   	async handleInputChange(e, {name, value}) {
+		//console.debug({function: 'handleInputChange', name, value});
 		//console.debug({name, value});
 		await this.setState(prevState => {
 			prevState.params[name] = value;
@@ -87,6 +125,7 @@ export class Journals extends React.Component {
 
 
 	async handlePaginationChange(e, {activePage}) {
+		//console.debug({function: 'handlePaginationChange', activePage});
 		await this.setState(prevState => {
 			prevState.params.page = activePage;
 			return prevState;
@@ -95,11 +134,50 @@ export class Journals extends React.Component {
 	}
 
 
+	async handleSort(syntheticEvent) {
+		//console.debug({function: 'handleSort'});
+		const {target} = syntheticEvent;
+		//console.debug({target});
+
+	    const {column, direction} = this.state.sort;
+		//console.debug({column, direction});
+
+		const clickedColumn = target.getAttribute('name');
+		//console.debug({clickedColumn});
+
+	    if (column !== clickedColumn) {
+			await this.setState(prevState => {
+				prevState.sort = {
+					column: clickedColumn,
+					direction: 'ascending'
+				};
+				prevState.params.page = 1;
+				prevState.params.sort = `${clickedColumn === 'collection' ? 'name' : clickedColumn} ASC`;
+				return prevState;
+			});
+	    } else {
+			await this.setState(prevState => {
+				const newDirection = direction === 'ascending' ? 'descending' : 'ascending';
+				prevState.sort.direction = newDirection;
+				prevState.params.page = 1;
+				prevState.params.sort = `${clickedColumn === 'collection' ? 'name' : clickedColumn} ${newDirection === 'ascending' ? 'ASC' : 'DESC'}`;
+				return prevState;
+			})
+		}
+		this.search();
+	}
+
+
 	render() {
 		//console.debug({state: this.state});
 		const {
 			columns,
+			loading,
 			params,
+			sort: {
+				column,
+				direction
+			},
 			result: {
 				aggregations,
 				count,
@@ -113,52 +191,84 @@ export class Journals extends React.Component {
 		} = this.state;
 		//console.debug({count, page, total, totalPages, hits});
 
-		const contextRef = createRef();
-		return <Ref innerRef={contextRef}>
+		if (loading) {
+			return <Dimmer active inverted><Loader content='Loading' size='massive' style={{display: 'table-row'}}/></Dimmer>;
+		}
+
+		return <Ref innerRef={this.contextRef}>
 			<Segment basic>
-				<Table celled compact selectable sortable striped attached='top'>
-					<Table.Header>
-      					<Table.Row>
-							{columns.name ? <Table.HeaderCell>Collection</Table.HeaderCell> : null}
-        					{columns.startTime ? <Table.HeaderCell>Start</Table.HeaderCell> : null}
-        					{columns.endTime ? <Table.HeaderCell>End</Table.HeaderCell> : null}
-							{columns.duration ? <Table.HeaderCell>Duration</Table.HeaderCell> : null}
-							{columns.errorCount ? <Table.HeaderCell>Errors</Table.HeaderCell> : null}
-							{columns.successCount ? <Table.HeaderCell>Successes</Table.HeaderCell> : null}
-      					</Table.Row>
-    				</Table.Header>
-					<Table.Body>
-						{hits.map(({name, startTime, endTime, duration, errorCount, successCount}, i) => <Table.Row key={i}>
-        					{columns.name ? <Table.Cell>{name}</Table.Cell> : null}
-							{columns.startTime ? <Table.Cell>{startTime}</Table.Cell> : null}
-							{columns.endTime ? <Table.Cell>{endTime}</Table.Cell> : null}
-							{columns.duration ? <Table.Cell>{duration}</Table.Cell> : null}
-							{columns.errorCount ? <Table.Cell>{errorCount}</Table.Cell> : null}
-							{columns.successCount ? <Table.Cell>{successCount}</Table.Cell> : null}
-						</Table.Row>)}
-					</Table.Body>
-				</Table>
-				<Pagination
-					attached='bottom'
-					fluid
-					size='mini'
+				{ loading
+					? <Dimmer active inverted><Loader content='Loading' size='massive' style={{display: 'table-row'}}/></Dimmer>
+					: <>
+						<Table celled compact selectable sortable striped attached='top'>
+							<Table.Header>
+		      					<Table.Row>
+									{columns.collection ? <Table.HeaderCell
+										name='collection'
+										onClick={this.handleSort}
+										sorted={column === 'collection' ? direction : null}
+									>Collection</Table.HeaderCell> : null}
+		        					{columns.startTime ? <Table.HeaderCell
+										name='startTime'
+										onClick={this.handleSort}
+										sorted={column === 'startTime' ? direction : null}
+									>Start</Table.HeaderCell> : null}
+		        					{columns.endTime ? <Table.HeaderCell
+										name='endTime'
+										onClick={this.handleSort}
+										sorted={column === 'endTime' ? direction : null}
+									>End</Table.HeaderCell> : null}
+									{columns.duration ? <Table.HeaderCell
+										name='duration'
+										onClick={this.handleSort}
+										sorted={column === 'duration' ? direction : null}
+									>Duration</Table.HeaderCell> : null}
+									{columns.errorCount ? <Table.HeaderCell
+										name='errorCount'
+										onClick={this.handleSort}
+										sorted={column === 'errorCount' ? direction : null}
+									>Errors</Table.HeaderCell> : null}
+									{columns.successCount ? <Table.HeaderCell
+										name='successCount'
+										onClick={this.handleSort}
+										sorted={column === 'successCount' ? direction : null}
+									>Successes</Table.HeaderCell> : null}
+		      					</Table.Row>
+		    				</Table.Header>
+							<Table.Body>
+								{hits.map(({collection, startTime, endTime, duration, errorCount, successCount}, i) => <Table.Row key={i}>
+		        					{columns.collection ? <Table.Cell>{collection}</Table.Cell> : null}
+									{columns.startTime ? <Table.Cell>{startTime}</Table.Cell> : null}
+									{columns.endTime ? <Table.Cell>{endTime}</Table.Cell> : null}
+									{columns.duration ? <Table.Cell>{duration}</Table.Cell> : null}
+									{columns.errorCount ? <Table.Cell>{errorCount}</Table.Cell> : null}
+									{columns.successCount ? <Table.Cell>{successCount}</Table.Cell> : null}
+								</Table.Row>)}
+							</Table.Body>
+						</Table>
+						<Pagination
+							attached='bottom'
+							fluid
+							size='mini'
 
-					activePage={page}
-					boundaryRange={1}
-				    siblingRange={1}
-					totalPages={totalPages}
+							activePage={page}
+							boundaryRange={1}
+						    siblingRange={1}
+							totalPages={totalPages}
 
-					ellipsisItem={{content: <Icon name='ellipsis horizontal' />, icon: true}}
-				    firstItem={{content: <Icon name='angle double left' />, icon: true}}
-					prevItem={{content: <Icon name='angle left' />, icon: true}}
-					nextItem={{content: <Icon name='angle right' />, icon: true}}
-				    lastItem={{content: <Icon name='angle double right' />, icon: true}}
+							ellipsisItem={{content: <Icon name='ellipsis horizontal' />, icon: true}}
+						    firstItem={{content: <Icon name='angle double left' />, icon: true}}
+							prevItem={{content: <Icon name='angle left' />, icon: true}}
+							nextItem={{content: <Icon name='angle right' />, icon: true}}
+						    lastItem={{content: <Icon name='angle double right' />, icon: true}}
 
-					onPageChange={this.handlePaginationChange}
-				/>
-				<p>Displaying {start}-{end} of {total}</p>
+							onPageChange={this.handlePaginationChange}
+						/>
+						<p>Displaying {start}-{end} of {total}</p>
+					</>
+				}
 				<Rail position='left'>
-					<Sticky context={contextRef} offset={14}>
+					<Sticky context={this.contextRef} offset={14}>
 						<Segment basic>
 							<Form>
 								<Form.Field>
@@ -191,15 +301,15 @@ export class Journals extends React.Component {
 					</Sticky>
 				</Rail>
 				<Rail position='right'>
-					<Sticky context={contextRef} offset={14}>
+					<Sticky context={this.contextRef} offset={14}>
 						<Segment basic>
 							<Header as='h4'><Icon name='columns'/> Columns</Header>
 							<Form>
 								<Form.Field>
 									<Checkbox
-										checked={this.state.columns.name}
+										checked={this.state.columns.collection}
 										label='Collection'
-										name='name'
+										name='collection'
 										onChange={this.handleCheckboxChange}
 										toggle
 									/>
