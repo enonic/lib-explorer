@@ -31,12 +31,13 @@ export class Journals extends React.Component {
 				endTime: true,
 				duration: false,
 				errorCount: true,
-				successCount: false
+				successCount: true
 			},
 			loading: false,
 			params: {
 				collections: [],
-				perPage: 5,
+				showWithoutErrors: false,
+				perPage: 25,
 				page: 1,
 				query: '',
 				sort: 'endTime DESC'
@@ -59,6 +60,7 @@ export class Journals extends React.Component {
 			}
     	};
 
+		this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handlePaginationChange = this.handlePaginationChange.bind(this);
 		this.handleSort = this.handleSort.bind(this);
@@ -105,12 +107,22 @@ export class Journals extends React.Component {
 	}
 
 
-	handleCheckboxChange = (e, {checked, name}) => this.setState(prevState => {
+	async handleCheckboxChange(e, {checked, name}) {
 		//console.debug({function: 'handleCheckboxChange', name, checked});
-		//console.debug({checked, name});
-		prevState.columns[name] = checked;
-		return prevState;
-	});
+		if (name === 'showWithoutErrors') {
+			await this.setState(prevState => {
+				prevState.params.showWithoutErrors = !prevState.params.showWithoutErrors;
+				return prevState;
+			})
+			this.search();
+		} else {
+			await this.setState(prevState => {
+				//console.debug({checked, name});
+				prevState.columns[name] = checked;
+				return prevState;
+			});
+		}
+	}
 
 
   	async handleInputChange(e, {name, value}) {
@@ -294,6 +306,17 @@ export class Journals extends React.Component {
 										options={[5,10,25,50,100].map(key => ({key, text: `${key}`, value: key}))}
 										selection
 										value={params.perPage}
+									/>
+								</Form.Field>
+								<Divider hidden/>
+								<Form.Field>
+									<Header as='h4'><Icon name='filter'/> Filters</Header>
+									<Checkbox
+										checked={this.state.params.showWithoutErrors}
+										label='Show journals without errors'
+										name='showWithoutErrors'
+										onChange={this.handleCheckboxChange}
+										toggle
 									/>
 								</Form.Field>
 							</Form>

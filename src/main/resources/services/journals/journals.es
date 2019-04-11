@@ -9,6 +9,7 @@ import {hasValue} from '/lib/enonic/yase/query/hasValue';
 export function get({
 	params: {
 		collections,
+		showWithoutErrors = false,
 		page = 1, // NOTE First index is 1 not 0
 		perPage = 25,
 		query = '',
@@ -22,11 +23,18 @@ export function get({
 
 	const filters = {};
 
+	const collectionsArr = collections.split(',');
 	if(collections) {
 		addFilter({
 			filters,
-			filter: hasValue('name', collections.split(','))
+			filter: hasValue('name', collectionsArr)
 		});
+	}
+
+	const showWithoutErrorsBool = showWithoutErrors === 'true';
+	//log.info(toStr({showWithoutErrors, showWithoutErrorsBool}));
+	if (!showWithoutErrorsBool) {
+		query = "errorCount > 0"
 	}
 
 	const result = queryJournals({
@@ -113,9 +121,11 @@ export function get({
 		contentType: RT_JSON,
 		body: {
 			params: {
+				collections: collectionsArr,
 				page: intPage,
 				perPage: intPerPage,
 				query,
+				showWithoutErrors: showWithoutErrorsBool,
 				sort
 			},
 			result
