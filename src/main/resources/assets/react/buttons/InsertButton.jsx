@@ -24,7 +24,7 @@ export const InsertButton = connect(({
 	currentValue = values && path && getIn(values, path),
 	...rest
 }) => {
-	//console.debug(toStr({component: 'InsertButton', path, text, currentValue, value}));
+	//console.debug(toStr({component: 'InsertButton', path, text, currentValue, value, values}));
 	const nextIndex = index+1;
 
 	return <Button

@@ -7,7 +7,9 @@ import {
 } from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {connect} from '/lib/enonic/yase/repo/connect';
-import {form} from '/lib/enonic/yase/admin/thesauri/synonyms/form';
+
+
+const ID_REACT_SYNONYM_CONTAINER = 'reactSynonymContainer';
 
 
 export function newOrEdit({
@@ -23,9 +25,20 @@ export function newOrEdit({
 		path, relPath, pathParts, thesaurusName, secondaryAction, synonymName
 	}));*/
 
+	const action = synonymName
+		? `${TOOL_PATH}/thesauri/synonyms/${thesaurusName}/update/${synonymName}`
+		: `${TOOL_PATH}/thesauri/synonyms/${thesaurusName}/create`;
+
 	if(secondaryAction === 'new') {
 		return htmlResponse({
-			main: `${form({thesaurusName})}`,
+			bodyEnd: [
+				`<script type="text/javascript">
+		ReactDOM.render(
+			React.createElement(window.yase.Synonym, ${JSON.stringify({action, secondaryAction})}),
+			document.getElementById('${ID_REACT_SYNONYM_CONTAINER}')
+		);
+		</script>`],
+			main: `<div id="${ID_REACT_SYNONYM_CONTAINER}"/>`,
 			path,
 			title: 'New synonym'
 		});
@@ -41,14 +54,15 @@ export function newOrEdit({
 	//log.info(toStr({displayName, from, to}));
 
 	return htmlResponse({
-		main: `${form({
-			thesaurusName,
-			synonymName,
-			displayName,
-			from,
-			to,
-			path,
-			title: `Edit synonym ${displayName}`
-		})}`
+		bodyEnd: [
+			`<script type="text/javascript">
+	ReactDOM.render(
+		React.createElement(window.yase.Synonym, ${JSON.stringify({action, from: forceArray(from), secondaryAction, to: forceArray(to)})}),
+		document.getElementById('${ID_REACT_SYNONYM_CONTAINER}')
+	);
+	</script>`],
+		main: `<div id="${ID_REACT_SYNONYM_CONTAINER}"/>`,
+		path,
+		title: 'Edit synonym'
 	});
 } // newOrEdit

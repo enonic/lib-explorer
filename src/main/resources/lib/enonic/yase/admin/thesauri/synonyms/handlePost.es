@@ -1,3 +1,5 @@
+import {toStr} from '/lib/enonic/util';
+
 import {
 	PRINCIPAL_YASE_WRITE,
 	TOOL_PATH
@@ -10,13 +12,13 @@ import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 export function handlePost({
+	params,
 	params: {
-		from = '',
-		to = '',
 		typedThesaurusName = ''
 	},
 	path
 }) {
+	//log.info(toStr({params}));
 	const relPath = path.replace(TOOL_PATH, '');
 	const pathParts = relPath.match(/[^/]+/g);
 	//const action = pathParts[1]; // synonyms
@@ -24,7 +26,7 @@ export function handlePost({
 	const secondaryAction = pathParts[3]; // create delete update
 	const synonymName = pathParts[4];
 	/*log.info(toStr({
-		path, relPath, pathParts, thesaurusName, secondaryAction, synonymName, from, to
+		path, relPath, pathParts, thesaurusName, secondaryAction, synonymName
 	}));*/
 
 	const connection = connect({
@@ -35,32 +37,39 @@ export function handlePost({
 	let status = 200;
 
 	if (secondaryAction === 'delete') {
-		if (!typedThesaurusName) {
-			messages.push('Missing required parameter "typedThesaurusName"!');
-			status = 400;
-		} else if (typedThesaurusName !== thesaurusName) {
-			messages.push(`Typed thesaurus name: "${typedThesaurusName}" doesn't match actual thesaurus name: "${thesaurusName}"!`);
-			status = 400;
+		const nodePath = `/thesauri/${thesaurusName}/${synonymName}`;
+		const deleteRes = connection.delete(nodePath);
+		if(deleteRes) {
+			messages.push(`Synonym with path:${nodePath} deleted.`)
 		} else {
-			const nodePath = `/thesauri/${thesaurusName}/${synonymName}`;
-			const deleteRes = connection.delete(nodePath);
-			if(deleteRes) {
-				messages.push(`Synonym with path:${nodePath} deleted.`)
-			} else {
-				messages.push(`Something went wrong when trying to delete synonym with path:${nodePath}.`)
-				status = 500;
-			}
+			messages.push(`Something went wrong when trying to delete synonym with path:${nodePath}.`)
+			status = 500;
 		}
 	} else {
-		const params = synonym({
+
+		let i = 0;
+		const from = [];
+		while(params[`from[${i}]`]) {
+			from.push(params[`from[${i}]`])
+			i++;
+		}
+
+		let j = 0;
+		const to = [];
+		while(params[`to[${j}]`]) {
+			to.push(params[`to[${j}]`])
+			j++;
+		}
+
+		const data = synonym({
 			__connection: connection,
 			_parentPath: `/thesauri/${thesaurusName}`,
 			from,
 			to
 		});
-		//log.info(toStr({params}));
+		//log.info(toStr({data}));
 		if (secondaryAction === 'create') {
-			const node = create(params);
+			const node = create(data);
 			if (node) {
 				messages.push(`Created synonym ${from}.`);
 			} else {
@@ -68,8 +77,8 @@ export function handlePost({
 				status = 500;
 			}
 		} else if (secondaryAction === 'update' && synonymName) {
-			params._name = synonymName;
-			const node = modify(params);
+			data._name = synonymName;
+			const node = modify(data);
 			if (node) {
 				messages.push(`Updated synonym ${from}.`);
 			} else {
