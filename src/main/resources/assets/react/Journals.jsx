@@ -36,7 +36,8 @@ export class Journals extends React.Component {
 			loading: false,
 			params: {
 				collections: [],
-				showWithoutErrors: false,
+				//endTimeRanges: '',
+				showWithoutErrors: true,
 				perPage: 25,
 				page: 1,
 				query: '',
@@ -50,7 +51,13 @@ export class Journals extends React.Component {
 				aggregations: {
 					collection: {
 						buckets: []
-					}
+					}/*,
+					endTime: {
+						buckets: []
+					},
+					startTime: {
+						buckets: []
+					}*/
 				},
 				count: 0,
 				page: 1,
@@ -115,6 +122,28 @@ export class Journals extends React.Component {
 				return prevState;
 			})
 			this.search();
+		/*} else if(name.startsWith('endTimeRange')) {
+			console.debug(name);
+			const range = name.replace(/^endTimeRange\./, '');
+			console.debug(range);
+			await this.setState(prevState => {
+				const endTimeRangesStr = prevState.params.endTimeRanges;
+				const endTimeRangesObj = {};
+				endTimeRangesStr.split(',').forEach(r => {
+					if(r) {
+						endTimeRangesObj[r] = true;
+					}
+				});
+				if(checked) {
+					endTimeRangesObj[range] = true;
+				} else {
+					endTimeRangesObj[range] = undefined;
+				}
+				prevState.params.endTimeRanges = Object.keys(endTimeRangesObj).join(',');
+				console.debug({'prevState.params.endTimeRanges': prevState.params.endTimeRanges});
+				return prevState;
+			});
+			this.search();*/
 		} else {
 			await this.setState(prevState => {
 				//console.debug({checked, name});
@@ -202,6 +231,14 @@ export class Journals extends React.Component {
 			}
 		} = this.state;
 		//console.debug({count, page, total, totalPages, hits});
+
+		/*const endTimeRanges = {}
+		params.endTimeRanges.split(',').forEach(k => {
+			if (k) {
+				endTimeRanges[k] = true;
+			}
+		});
+		console.debug({endTimeRanges});*/
 
 		if (loading) {
 			return <Dimmer active inverted><Loader content='Loading' size='massive' style={{display: 'table-row'}}/></Dimmer>;
@@ -310,7 +347,7 @@ export class Journals extends React.Component {
 								</Form.Field>
 								<Divider hidden/>
 								<Form.Field>
-									<Header as='h4'><Icon name='filter'/> Filters</Header>
+									<Header as='h4'><Icon name='filter'/> Errors</Header>
 									<Checkbox
 										checked={this.state.params.showWithoutErrors}
 										label='Show journals without errors'
@@ -319,6 +356,18 @@ export class Journals extends React.Component {
 										toggle
 									/>
 								</Form.Field>
+								{/*<Divider hidden/>
+								<Form.Field>
+									<Header as='h4'><Icon name='filter'/> Endtime</Header>
+									{aggregations.endTime.buckets.map(({docCount, from = '*', key, to = '*'}, i) => <Checkbox
+										key={i}
+										checked={endTimeRanges[`${from};${to}`]}
+										label={to}
+										name={`endTimeRange.${from};${to}`}
+										onChange={this.handleCheckboxChange}
+										toggle
+									/>)}
+								</Form.Field>*/}
 							</Form>
 						</Segment>
 					</Sticky>

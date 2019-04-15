@@ -8,14 +8,15 @@ import {hasValue} from '/lib/enonic/yase/query/hasValue';
 
 export function get({
 	params: {
-		collections,
-		showWithoutErrors = false,
+		collections = '',
+		//endTimeRanges,
+		showWithoutErrors = 'true',
 		page = 1, // NOTE First index is 1 not 0
 		perPage = 25,
-		query = '',
 		sort = 'endTime DESC'
 	}
 }) {
+	const expressions = [];
 	//log.info(toStr({collections}));
 	const intPerPage = parseInt(perPage, 10);
 	const intPage = parseInt(page, 10);
@@ -31,40 +32,43 @@ export function get({
 		});
 	}
 
+	/*if (endTimeRanges) {
+		const endTimeExpressions = [];
+		endTimeRanges.split(',').forEach(range => {
+			const [from, to] = range.split(';');
+			//log.info(toStr({from, to}));
+			const fromInstant = from === '*' ? "''" : `instant('${from}')`;
+			const toInstant = to === '*' ? "''" : `instant('${to}')`;
+			endTimeExpressions.push(`range('endTime', ${fromInstant}, ${toInstant}, 'true', 'false')`);
+		});
+		//log.info(toStr({endTimeExpressions}));
+		if(endTimeExpressions.length === 1) {
+			expressions.push(endTimeExpressions[0]);
+		} else if (endTimeExpressions.length > 1) {
+			expressions.push(`(${endTimeExpressions.join(' OR ')})`);
+		}
+	}*/
+
 	const showWithoutErrorsBool = showWithoutErrors === 'true';
 	//log.info(toStr({showWithoutErrors, showWithoutErrorsBool}));
 	if (!showWithoutErrorsBool) {
-		query = "errorCount > 0"
+		expressions.push('errorCount > 0');
 	}
+
+	const query = expressions.length > 1
+		? `(${expressions.join(' AND ')})`
+		: expressions.length === 1
+			? expressions[0]
+			: '';
+	//log.info(toStr({query}));
 
 	const result = queryJournals({
 		/*aggregations: {
-			errorRanges: {
-				range: {
-					field: 'errorCount',
-					ranges: [{
-						to: 1
-					}, {
-						from: 1
-					}]
-				}
-			},
-			successRanges: {
-				range: {
-					field: 'successCount',
-					ranges: [{
-						to: 1
-					}, {
-						from: 1
-					}]
-				}
-			},
-			startTime: {
+			endTime: {
 				dateRange: {
 					field: 'startTime',
 					format: 'yyyy-MM-dd', // Does this give the sort order?
 					ranges: [{
-						//from: '',
 						to: 'now-1y'
 					}, {
 						from: 'now-1y',
@@ -99,6 +103,12 @@ export function get({
 		collection, startTime, endTime, duration,
 		errorCount, successCount//, errors, successes
 	}));
+	/*result.aggregations.endTime.buckets = result.aggregations.endTime.buckets.map(({docCount, from, key, to}) => ({
+		docCount,
+		from: from && from.substring(0, 10),
+		key,
+		to: to && to.substring(0, 10)
+	}));*/
 
 	// Separate aggregation query where the collections filter is not included
 	const collectionsAggregationQueryResult = queryJournals({
@@ -122,6 +132,7 @@ export function get({
 		body: {
 			params: {
 				collections: collectionsArr,
+				//endTimeRanges,
 				page: intPage,
 				perPage: intPerPage,
 				query,
