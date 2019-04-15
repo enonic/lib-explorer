@@ -62,7 +62,7 @@ export function handleThesauriPost(req) {
 		}
 		return {
 			redirect: `${TOOL_PATH}/thesauri?${
-				messages.map(m => `messages=${m}`).join('&')
+				messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 			}&status=${status}`
 		}
 	} // delete
@@ -98,7 +98,7 @@ export function handleThesauriPost(req) {
 		messages.push(`Imported synonyms to ${thesaurus}.`);
 		return {
 			redirect: `${TOOL_PATH}/thesauri?${
-				messages.map(m => `messages=${m}`).join('&')
+				messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 			}&status=${status}`
 		}
 	} // import
@@ -125,7 +125,7 @@ export function handleThesauriPost(req) {
 	}
 	return {
 		redirect: `${TOOL_PATH}/thesauri/?${
-			messages.map(m => `messages=${m}`).join('&')
+			messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 		}&status=${status}`
 	}
 } // handleThesauriPost

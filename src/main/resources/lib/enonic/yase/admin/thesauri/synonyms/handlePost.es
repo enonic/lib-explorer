@@ -90,7 +90,7 @@ export function handlePost({
 
 	return {
 		redirect: `${TOOL_PATH}/thesauri/edit/${thesaurusName}?${
-			messages.map(m => `messages=${m}`).join('&')
+			messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 		}&status=${status}`
 	}
 } // handlePost

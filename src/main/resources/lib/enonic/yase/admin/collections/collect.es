@@ -81,7 +81,7 @@ export const collect = ({
 	}
 	return {
 		redirect: `${TOOL_PATH}/collections/list?${
-			messages.map(m => `messages=${m}`).join('&')
+			messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 		}&status=${status}`
 	}
 }; // collect

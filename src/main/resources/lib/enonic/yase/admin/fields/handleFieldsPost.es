@@ -46,7 +46,7 @@ export function handleFieldsPost({
 			if (!deleteRes.length) { status = 500; }
 			return {
 				redirect: `${TOOL_PATH}/fields/edit/${fieldName}?${
-					messages.map(m => `messages=${m}`).join('&')
+					messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 				}&status=${status}`
 			}
 		}
@@ -59,7 +59,7 @@ export function handleFieldsPost({
 				status = 400;
 				return {
 					redirect: `${TOOL_PATH}/fields/edit/${fieldName}?${
-						messages.map(m => `messages=${m}`).join('&')
+						messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 					}&status=${status}`
 				}
 			}
@@ -95,7 +95,7 @@ export function handleFieldsPost({
 
 		return {
 			redirect: `${TOOL_PATH}/fields/edit/${fieldName}?${
-				messages.map(m => `messages=${m}`).join('&')
+				messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 			}&status=${status}`
 		}
 	} // values
@@ -110,7 +110,7 @@ export function handleFieldsPost({
 		if(!deleteRes.length) { status = 500; }
 		return {
 			redirect: `${TOOL_PATH}/fields?${
-				messages.map(m => `messages=${m}`).join('&')
+				messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 			}&status=${status}`
 		}
 	} // if action === 'delete'
@@ -137,7 +137,7 @@ export function handleFieldsPost({
 			status = 400;
 			return {
 				redirect: `${TOOL_PATH}/fields?${
-					messages.map(m => `messages=${m}`).join('&')
+					messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 				}&status=${status}`
 			}
 		}
@@ -184,7 +184,7 @@ export function handleFieldsPost({
 	if (!node) { status = 500;}
 	return {
 		redirect: `${TOOL_PATH}/fields?${
-			messages.map(m => `messages=${m}`).join('&')
+			messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 		}&status=${status}`
 	}
 } // function post
