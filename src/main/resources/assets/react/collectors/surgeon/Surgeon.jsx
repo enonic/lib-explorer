@@ -36,6 +36,7 @@ export const Surgeon = connect(({
 				delay = 1000,
 				download = [],
 				dynamic = false,
+				restrict = true,
 				pathRange,
 				queryParams,
 				queryRange,
@@ -63,6 +64,7 @@ export const Surgeon = connect(({
 	}));*/
 	return <>
 	<Urls parentPath={path} value={urls}/>
+	<Checkbox checked={restrict} label="Restrict to domain?" name={`${path}.restrict`}/>
 	<PathRange path={`${path}.pathRange`} pathRange={pathRange}/>
 	<QueryRange path={`${path}.queryRange`} queryRange={queryRange}/>
 	<QueryParameters parentPath={path} value={queryParams}/>
