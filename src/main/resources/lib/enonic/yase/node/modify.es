@@ -1,6 +1,6 @@
 //import {toStr} from '/lib/enonic/util';
 import {sanitize} from '/lib/xp/common';
-
+import {join} from '/lib/enonic/yase/path/join';
 
 export function modify({
 	__connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
@@ -14,7 +14,7 @@ export function modify({
 } = {}) {
 	//log.info(toStr({key, displayName, rest}));
 	return __connection.modify({
-		key: `${_parentPath}/${sanitize(_name)}`, // TODO Use path join
+		key: join(_parentPath, sanitize(_name)),
 		editor: (node) => {
 			/* eslint-disable no-param-reassign */
 			//node._timestamp = new Date(); // DOES NOT WORK?
