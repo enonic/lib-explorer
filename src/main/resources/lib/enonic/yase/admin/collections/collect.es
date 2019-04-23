@@ -80,7 +80,7 @@ export const collect = ({
 		//log.info(toStr({taskId}));
 	}
 	return {
-		redirect: `${TOOL_PATH}/collections/list?${
+		redirect: `${TOOL_PATH}/collections/status?${
 			messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
 		}&status=${status}`
 	}

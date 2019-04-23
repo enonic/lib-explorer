@@ -7,6 +7,10 @@ const ID_REACT_STATUS_CONTAINER = 'reactStatusContainer';
 
 
 export const status = ({
+	params: {
+		messages,
+		status
+	},
 	path
 }) => {
 	const propsObj = {
@@ -28,7 +32,9 @@ export const status = ({
 </script>`
 		],
 		main: `<div id="${ID_REACT_STATUS_CONTAINER}"/>`,
+		messages,
 		path,
+		status,
 		title: 'Status'
 	})
 } // status
