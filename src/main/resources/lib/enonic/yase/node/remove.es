@@ -6,5 +6,7 @@ export function remove({
 	key = path,
 	keys = [key]
 }) {
-	return connection.delete(keys); // Array
+	const res = connection.delete(keys); // Array
+	connection.refresh();
+	return res;
 }
