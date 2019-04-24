@@ -35,13 +35,17 @@ export function query({
 	const queryRes = connection.query(queryParams);
 	//log.info(toStr({queryRes}));
 	queryRes.hits = queryRes.hits.map((hit) => {
+		const node = connection.get(hit.id);
+		if (!node) { // Handle ghost nodes
+			return null;
+		}
 		const {
 			_name,
 			_path,
 			displayName,
 			from,
 			to
-		} = connection.get(hit.id);
+		} = node;
 		return {
 			displayName,
 			from,
@@ -51,6 +55,6 @@ export function query({
 			score: hit.score,
 			to
 		};
-	});
+	}).filter(x => x);
 	return queryRes;
 } // function query
