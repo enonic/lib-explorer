@@ -172,12 +172,12 @@ export function search(params) {
 	});
 	//log.info(toStr({thesauriMap}));
 
-	const flattenedSynonyms = [searchString];
+	/*const flattenedSynonyms = [searchString];
 	flattenSynonyms({
 		array: flattenedSynonyms,
 		expand,
 		synonyms
-	});
+	});*/
 
 	const synonymsObj = {};
 	synonyms.forEach(({thesaurus, score, from, to}) => {
@@ -267,7 +267,7 @@ export function search(params) {
 			locale,
 			nodeCache: NODE_CACHE,
 			resultMappings,
-			searchString: flattenedSynonyms.join(' ')
+			searchString//: flattenedSynonyms.join(' ') // Synonyms add to much highlighting
 		}),
 		facetCategories,
 		pagination
