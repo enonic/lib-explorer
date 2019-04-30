@@ -75,20 +75,8 @@ export function newOrEdit({
 			displayName,
 			name: thesaurusName
 		})}
-		<div id="${ID_REACT_THESAURI_CONTAINER}"/>
 		<a class="ui button" href="${TOOL_PATH}/thesauri/synonyms/${thesaurusName}/new"><i class="green plus icon"></i> New synonym</a>
-		<table class="collapsing compact ui sortable selectable celled striped table">
-			<thead>
-				<tr>
-					<!--th>Display name</th-->
-					<th>From</th>
-					<th colspan="2">To</th>
-				</tr>
-			</thead>
-			<tbody>
-
-			</tbody>
-		</table>`,
+		<div id="${ID_REACT_THESAURI_CONTAINER}"/>`,
 		messages,
 		path,
 		status,
@@ -97,6 +85,15 @@ export function newOrEdit({
 } // newOrEdit
 
 /*
+<table class="collapsing compact ui sortable selectable celled striped table">
+	<thead>
+		<tr>
+			<!--th>Display name</th-->
+			<th>From</th>
+			<th colspan="2">To</th>
+		</tr>
+	</thead>
+	<tbody>
 ${synonyms.map(s => `<tr>
 <!--td>${s.displayName}</td-->
 <td>${forceArray(s.from).join('<br/>')}</td>
@@ -106,4 +103,6 @@ ${synonyms.map(s => `<tr>
 <a class="ui button" href="${TOOL_PATH}/thesauri/synonyms/${thesaurusName}/delete/${s.name}"><i class="red trash alternate outline icon"></i> Delete</a>
 </td>
 </tr>`).join('\n')}
+</tbody>
+</table>
 */

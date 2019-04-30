@@ -5,6 +5,7 @@ import {hasValue} from '/lib/enonic/yase/query/hasValue';
 
 
 export function query({
+	aggregations = {},
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
 	filters = {},
@@ -18,15 +19,7 @@ export function query({
 		filter: hasValue('type', [NT_SYNONYM])
 	});
 	const queryParams = {
-		/*aggregations: {
-			_parentPath: {
-				terms: {
-					field: '_parentPath', // Doesn't exist by default in the node layer :(
-					order: '_count desc',
-					size: 100
-				}
-			}
-		},*/
+		aggregations,
 		count,
 		filters,
 		query,

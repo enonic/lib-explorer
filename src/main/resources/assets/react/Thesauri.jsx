@@ -15,6 +15,11 @@ export class Thesauri extends React.Component {
 		this.state = {
 			data: {
 				queryResult: {
+					aggregations: {
+						thesaurus: {
+							buckets: []
+						}
+					},
 					count: 0,
 					hits: [],
 					page: 1,
@@ -30,6 +35,7 @@ export class Thesauri extends React.Component {
 				page: 1,
 				query: '',
 				sort: 'from ASC',
+				thesauri: [],
 				to: ''
 			}
 		};
@@ -72,6 +78,7 @@ export class Thesauri extends React.Component {
 		const {
 			data: {
 				queryResult: {
+					aggregations,
 					end,
 					hits,
 					page,
@@ -84,6 +91,7 @@ export class Thesauri extends React.Component {
 				from,
 				perPage,
 				sort,
+				thesauri,
 				to
 			}
 		} = this.state;
@@ -102,8 +110,8 @@ export class Thesauri extends React.Component {
 					</Table.Header>
 					<Table.Body>
 						{hits.map(({from, name, score, thesaurus, to}, i) => <Table.Row key={i}>
-							<Table.Cell>{from}</Table.Cell>
-							<Table.Cell>{to}</Table.Cell>
+							<Table.Cell>{(Array.isArray(from) ? from : [from]).join(', ')}</Table.Cell>
+							<Table.Cell>{(Array.isArray(to) ? to : [to]).join(', ')}</Table.Cell>
 							<Table.Cell>{thesaurus}</Table.Cell>
 							<Table.Cell>{score}</Table.Cell>
 							<Table.Cell>
@@ -165,6 +173,24 @@ export class Thesauri extends React.Component {
 					<Sticky context={this.contextRef} offset={14}>
 						<Segment basic>
 							<Form>
+								<Header as='h4'><Icon name='font'/> Thesauri</Header>
+								<Dropdown
+									fluid
+									multiple={true}
+									name='thesauri'
+									onChange={(e, {value}) => this.changeParam({name: 'thesauri', value})}
+									options={aggregations.thesaurus.buckets.map(({key, docCount}) => {
+										const tName = key.replace('/thesauri/', '');
+										return {
+											key: tName,
+											text: `${tName} (${docCount})`,
+											value: tName
+										};
+									})}
+									search
+									selection
+									value={thesauri}
+								/>
 								<Header as='h4'><Icon name='resize vertical'/> Per page</Header>
 								<Form.Field>
 									<Dropdown

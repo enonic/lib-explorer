@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 
 import {PRINCIPAL_YASE_READ, RT_JSON} from '/lib/enonic/yase/constants';
@@ -17,7 +17,7 @@ export function get({
 		//query = '',
 		//sort = 'from ASC',
 		sort = '_score DESC',
-		thesauri
+		thesauri = ''
 	} = {}
 }) {
 	const intPerPage = parseInt(perPage, 10);
@@ -34,8 +34,9 @@ export function get({
 	const query = queries.length ? `(${queries.join(' OR ')})` : '';
 
 	const filters = {};
+	const thesauriArr = thesauri.split(',');
 	if(thesauri) {
-		forceArray(thesauri).forEach(thesaurus => {
+		thesauriArr.forEach(thesaurus => {
 			addFilter({
 				filters,
 				filter: hasValue('_parentPath', `/thesauri/${thesaurus}`)
@@ -60,6 +61,25 @@ export function get({
 	result.start = start + 1;
 	result.end = Math.min(start + intPerPage, result.total);
 	result.totalPages = Math.ceil(result.total / intPerPage);
+
+	const aggregations = {
+		thesaurus: {
+			terms: {
+				field: '_parentPath',
+				order: '_count desc',
+				size: 100
+			}
+		}
+	};
+	const thesauriAggRes = querySynonyms({
+		connection,
+		aggregations,
+		count: 0,
+		filters: {},
+		query
+	});
+	result.aggregations.thesaurus = thesauriAggRes.aggregations.thesaurus;
+
 	return {
 		contentType: RT_JSON,
 		body: {
@@ -70,6 +90,7 @@ export function get({
 				sort
 			},
 			queryParams: {
+				aggregations,
 				count,
 				filters,
 				query,
