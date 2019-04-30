@@ -4,8 +4,8 @@ import Uri from 'jsuri';
 import {
 	Checkbox, Dimmer, Divider, Dropdown, Form, Header, Icon, Label, Loader,
 	Pagination, Rail, Ref, Segment, Sticky, Table
-} from 'semantic-ui-react'
-import {createRef} from 'react'
+} from 'semantic-ui-react';
+import {createRef} from 'react';
 
 
 /*export const hash = (object, bitlength = 128) =>

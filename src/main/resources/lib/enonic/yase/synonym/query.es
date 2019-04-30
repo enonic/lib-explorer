@@ -9,7 +9,8 @@ export function query({
 	count = -1,
 	filters = {},
 	query = '',
-	sort = '_name ASC'
+	sort = '_name ASC',
+	start = 0
 } = {}) {
 	//log.info(toStr({connection, count, filters, query, sort}));
 	filters = addFilter({
@@ -29,7 +30,8 @@ export function query({
 		count,
 		filters,
 		query,
-		sort
+		sort,
+		start
 	};
 	//log.info(toStr({queryParams}));
 	const queryRes = connection.query(queryParams);

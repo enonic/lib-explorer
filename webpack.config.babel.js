@@ -207,7 +207,7 @@ const CLIENT_JS_CONFIG = {
 						'@babel/plugin-proposal-object-rest-spread',
 						'@babel/plugin-transform-object-assign',
 						['@babel/plugin-transform-runtime', {
-				      		"regenerator": true
+				      		regenerator: true
 				    	}],
 						'array-includes'
 					],
