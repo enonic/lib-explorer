@@ -25,7 +25,6 @@ export const NT_FOLDER = `${PACKAGE}:folder`;
 export const NT_INTERFACE = `${PACKAGE}:interface`;
 export const NT_JOURNAL = `${PACKAGE}:journal`;
 export const NT_RESPONSE = `${PACKAGE}:response`;
-export const NT_STOP_WORD = `${PACKAGE}:stop-word`;
 export const NT_STOP_WORDS = `${PACKAGE}:stop-words`;
 export const NT_SYNONYM = `${PACKAGE}:synonym`;
 export const NT_TAG = `${PACKAGE}:tag`;

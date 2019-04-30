@@ -1,7 +1,11 @@
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 
-import {TOOL_PATH} from '/lib/enonic/yase/constants';
-
+import {
+	PRINCIPAL_YASE_READ,
+	TOOL_PATH
+} from '/lib/enonic/yase/constants';
+import {connect} from '/lib/enonic/yase/repo/connect';
+import {get} from '/lib/enonic/yase/stopWords/get';
 
 const ID_REACT_STOP_WORDS_CONTAINER = 'reactStopWordsContainer';
 
@@ -14,11 +18,14 @@ export function newOrEdit({
 	const action = pathParts[1];
 	const name = action === 'edit' ? pathParts[2] : '';
 
+	const connection = connect({principals: [PRINCIPAL_YASE_READ]});
+	const words = name ? get({connection, name}).words : [];
+
 	const propsObj = {
 		action: `${TOOL_PATH}/stopwords/${name ? `update/${name}` : 'create'}`,
 		initialValues: {
 			name,
-			words: []
+			words
 		},
 		mode: action
 	};
