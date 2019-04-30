@@ -1,7 +1,7 @@
 import {FieldArray, Formik} from 'formik';
 import {
 	 Button, Form, Grid, Header, Icon
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
 
 
 import {InsertButton} from './buttons/InsertButton';
