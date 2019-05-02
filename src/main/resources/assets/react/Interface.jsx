@@ -12,6 +12,7 @@ import {TextInput} from './elements/TextInput';
 import {Header} from './semantic-ui/Header';
 
 import {ExpressionSelector} from './query/ExpressionSelector';
+import {StopWordsSelector} from './query/StopWordsSelector';
 import {Pagination} from './query/Pagination'
 import {QueryFiltersBuilder} from './query/filter/QueryFiltersBuilder';
 import {Facets} from './query/Facets';
@@ -46,6 +47,7 @@ export const Interface = ({
 			last: true
 		}
 	},
+	stopWordOptions,
 	thesauriOptions
 } = {}) => {
 	const contextRef = createRef();
@@ -98,6 +100,9 @@ export const Interface = ({
 							name='query'
 							thesauriOptions={thesauriOptions}
 						/>
+						<StopWordsSelector
+							options={stopWordOptions}
+						/>
 						<ResultMappings
 							fields={fields}
 							id='resultmappings'
@@ -141,6 +146,7 @@ export const Interface = ({
 						<Menu.Item href='#must'>Must</Menu.Item>
 						<Menu.Item href='#mustnot'>MustNot</Menu.Item>
 						<Menu.Item href='#query'>Query</Menu.Item>
+						<Menu.Item href='#stopwords'>Stop words</Menu.Item>
 						<Menu.Item href='#resultmappings'>Result mappings</Menu.Item>
 						<Menu.Item href='#facets'>Facets</Menu.Item>
 						<Menu.Item href='#pagination'>Pagination</Menu.Item>

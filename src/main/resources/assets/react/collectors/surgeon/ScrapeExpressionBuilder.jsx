@@ -103,7 +103,7 @@ export const ScrapeExpressionBuilder = connect(({
 					/> : null}
 				</td>
 				{subroutine ? <td style={tdStyle}>
-					<Buttons icons>
+					<Buttons icon>
 						<InsertButton
 							index={index}
 							path={path}

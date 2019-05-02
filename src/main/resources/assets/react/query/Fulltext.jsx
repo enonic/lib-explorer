@@ -53,6 +53,7 @@ export const Fulltext = connect(({
 	const fragment = <>
 		{/*<SearchStringFilter parentPath={path}/>*/}
 		{type === 'synonyms' ? <Field><Dropdown
+			defaultValue={thesauriValue}
 			fluid
 			multiple={true}
 			options={thesauriOptions}
@@ -60,7 +61,6 @@ export const Fulltext = connect(({
 			placeholder='Thesauri'
 			search
 			selection
-			value={thesauriValue}
 		/></Field> : null}
 		<Table celled collapsing very compact selectable small striped>
 			<thead>

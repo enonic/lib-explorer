@@ -175,6 +175,7 @@ export class Thesauri extends React.Component {
 							<Form>
 								<Header as='h4'><Icon name='font'/> Thesauri</Header>
 								<Dropdown
+									defaultValue={thesauri}
 									fluid
 									multiple={true}
 									name='thesauri'
@@ -189,21 +190,21 @@ export class Thesauri extends React.Component {
 									})}
 									search
 									selection
-									value={thesauri}
 								/>
 								<Header as='h4'><Icon name='resize vertical'/> Per page</Header>
 								<Form.Field>
 									<Dropdown
+										defaultValue={perPage}
 										fluid
 										onChange={(e,{value}) => this.changeParam({name: 'perPage', value})}
 										options={[5,10,25,50,100].map(key => ({key, text: `${key}`, value: key}))}
 										selection
-										value={perPage}
 									/>
 								</Form.Field>
 								<Header as='h4'><Icon name='sort'/> Sort</Header>
 								<Form.Field>
 									<Dropdown
+										defaultValue={sort}
 										fluid
 										onChange={(e,{value}) => this.changeParam({name: 'sort', value})}
 										options={[{
@@ -216,7 +217,6 @@ export class Thesauri extends React.Component {
 											value: 'from ASC'
 										}]}
 										selection
-										value={sort}
 									/>
 								</Form.Field>
 							</Form>

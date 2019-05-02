@@ -323,6 +323,7 @@ export class Journals extends React.Component {
 								<Form.Field>
 									<Header as='h4'><Icon name='database'/> Collections</Header>
 									<Dropdown
+										defaultValue={params.collections}
 										fluid
 										multiple={true}
 										name='collections'
@@ -330,19 +331,18 @@ export class Journals extends React.Component {
 										options={aggregations.collection.buckets.map(({key, docCount}) => ({key, text: `${key} (${docCount})`, value: key}))}
 										search
 										selection
-										value={params.collections}
 									/>
 								</Form.Field>
 								<Divider hidden/>
 								<Form.Field>
 									<Header as='h4'><Icon name='resize vertical'/> Per page</Header>
 									<Dropdown
+										defaultValue={params.perPage}
 										fluid
 										name='perPage'
 										onChange={this.handleInputChange}
 										options={[5,10,25,50,100].map(key => ({key, text: `${key}`, value: key}))}
 										selection
-										value={params.perPage}
 									/>
 								</Form.Field>
 								<Divider hidden/>

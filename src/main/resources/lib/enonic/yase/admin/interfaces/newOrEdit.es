@@ -16,6 +16,7 @@ import {query as queryCollections} from '/lib/enonic/yase/collection/query';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 import {query as getThesauri} from '/lib/enonic/yase/thesaurus/query';
+import {query as getStopWords} from '/lib/enonic/yase/stopWords/query';
 
 
 const ID_REACT_INTERFACE_CONTAINER = 'reactInterfaceContainer';
@@ -69,6 +70,7 @@ export function newOrEdit({
 			facets = [],
 			filters,
 			query,
+			stopWords,
 			resultMappings,
 			pagination
 		} = node;
@@ -78,6 +80,7 @@ export function newOrEdit({
 				collections,
 				filters,
 				query,
+				stopWords,
 				resultMappings,
 				facets,
 				pagination,
@@ -90,6 +93,7 @@ export function newOrEdit({
 				'must',
 				'mustNot',
 				'resultMappings',
+				'stopWords',
 				'thesauri',
 				'values'
 			]
@@ -127,13 +131,20 @@ export function newOrEdit({
 	});
 	//log.info(toStr({fieldsObj}));
 
+	const stopWordOptions = getStopWords({connection}).hits.map(({displayName, name}) => ({
+		key: name,
+		text: displayName,
+		value: name
+	}));
+	//log.info(toStr({stopWordOptions}));
+
 	const propsObj = {
 		action: `${TOOL_PATH}/interfaces/${action === 'edit' ? `update/${interfaceName}` : 'create'}`,
 		collections: queryCollections({connection}).hits.map(({displayName: label, _name: value}) => ({label, value})),
 		fields: fieldsObj,
+		stopWordOptions,
 		thesauriOptions: getThesauri({connection}).hits.map(({displayName, name}) => ({
 			key: name,
-			//label: displayName,
 			text: displayName,
 			value: name
 		})),

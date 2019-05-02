@@ -64,6 +64,7 @@ export const ExpressionSelector = connect(({
 			path={parentPath}
 		><Icon black close/></RemoveButton> : null}
 		<Dropdown
+			defaultValue={type}
 			path={selectPath}
 			onChange={(event, {value: newType}) => {
 				console.debug({event, newType});
@@ -136,7 +137,6 @@ export const ExpressionSelector = connect(({
 				value: 'pathMatch'
 			}]}
 			placeholder='Please select expression type'
-			value={type}
 		/>
 		{['fulltext', 'ngram', 'synonyms'].includes(type)
 			? <Fulltext

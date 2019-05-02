@@ -32,7 +32,7 @@ export const Dropdown = connect(({
 	},
 
 	// Various after formik values
-	value = getIn(values, path, multiple ? [] : ''),
+	defaultValue = getIn(values, path, multiple ? [] : ''),
 
 	...rest // options
 }) => {
@@ -42,11 +42,11 @@ export const Dropdown = connect(({
 			{fluid, search, selection},
 			'ui dropdown'
 		)}
+		defaultValue={defaultValue}
 		multiple={multiple}
 		name={path}
 		onChange={onChange}
 		placeholder={placeholder}
-		value={value}
 		{...rest}
 	/>;
 });
