@@ -17,8 +17,13 @@ export function createOrUpdate({
 	path
 }) {
 	//log.info(toStr({json}));
-	const {name, words} = JSON.parse(json);
-	//log.info(toStr({name, words}));
+	const data = JSON.parse(json);
+	const {name, words} = data;
+	let {displayName = ''} = data;
+	if(displayName === '') {
+		displayName = name;
+	}
+	//log.info(toStr({name, displayName, words}));
 
 	const relPath = path.replace(TOOL_PATH, '');
 	const pathParts = relPath.match(/[^/]+/g);
@@ -37,7 +42,7 @@ export function createOrUpdate({
 			_indexConfig: {default: 'byType'},
 			_parentPath: '/stopwords',
 			_name: nameFromPath,
-			displayName: name,
+			displayName,
 			words,
 			type: NT_STOP_WORDS
 		};

@@ -2,6 +2,6 @@ import {Input} from './Input';
 
 
 export const TextInput = ({
-	type, // So it doesn't end up in rest
+	type = 'text',
 	...rest
-}) => <Input type='text' {...rest}/>;
+}) => <Input type={type} {...rest}/>;

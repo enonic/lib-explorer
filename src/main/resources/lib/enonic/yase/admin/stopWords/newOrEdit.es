@@ -1,3 +1,4 @@
+import {forceArray} from '/lib/enonic/util/data';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 
 import {
@@ -19,13 +20,18 @@ export function newOrEdit({
 	const name = action === 'edit' ? pathParts[2] : '';
 
 	const connection = connect({principals: [PRINCIPAL_YASE_READ]});
-	const words = name ? get({connection, name}).words : [];
+	const node = name ? get({connection, name}) : {
+		displayName: name,
+		words: []
+	};
+	const {displayName = name, words} = node;
 
 	const propsObj = {
 		action: `${TOOL_PATH}/stopwords/${name ? `update/${name}` : 'create'}`,
 		initialValues: {
+			displayName,
 			name,
-			words
+			words: forceArray(words)
 		},
 		mode: action
 	};

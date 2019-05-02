@@ -16,6 +16,7 @@ export const Dropdown = connect(({
 
 	// Various before formik onChange
 	name,
+	parentPath,
 	path = parentPath ? `${parentPath}.${name}` : name,
 
 	// Formik

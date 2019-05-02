@@ -10,7 +10,7 @@ import {MoveDownButton} from './buttons/MoveDownButton';
 import {RemoveButton} from './buttons/RemoveButton';
 import {SetButton} from './buttons/SetButton';
 
-import {TextInput} from './formik/TextInput';
+import {Input} from './semantic-ui/react/formik/Input';
 
 import {SubmitButton} from './semantic-ui/SubmitButton';
 
@@ -27,7 +27,7 @@ export const StopWords = ({
 		render={({
 			values
 		}) => {
-			console.debug(toStr({values}));
+			//console.debug(toStr({values}));
 			const words = values.words || [];
 			return <Form
 				action={action}
@@ -41,11 +41,19 @@ export const StopWords = ({
 					width: '100%'
 				}}
 			>
-				<TextInput
-					label="Name"
-					name="name"
-					readOnly={mode === 'edit'}
-				/>
+				<Form.Field>
+					<Input
+						label={mode === 'edit' ? null : 'Name'}
+						name="name"
+						type={mode === 'edit' ? 'hidden' : 'text'}
+					/>
+				</Form.Field>
+				<Form.Field>
+					<Input
+						label="Display name"
+						name="displayName"
+					/>
+				</Form.Field>
 				<Header as='h2'>Stop words</Header>
 				{words.length
 					? <FieldArray
@@ -54,7 +62,7 @@ export const StopWords = ({
 							const key = `words[${index}]`;
 							return <Form.Group key={key}>
 								<Form.Field>
-									<TextInput path={key}/>
+									<Input path={key}/>
 								</Form.Field>
 								<Form.Field>
 									<Button.Group icon>

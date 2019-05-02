@@ -23,7 +23,7 @@ export const list = ({
 <table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
-			<th class="sorted ascending">Name</th>
+			<th class="sorted ascending">Display name</th>
 			<th>Count</th>
 			<th>Words</th>
 			<th class="no-sort">Actions</th>
