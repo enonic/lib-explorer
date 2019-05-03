@@ -24,15 +24,17 @@ export const InsertButton = connect(({
 	currentValue = values && path && getIn(values, path),
 	...rest
 }) => {
-	//console.debug(toStr({component: 'InsertButton', path, text, currentValue, value, values}));
+	//console.debug(toStr({component: 'InsertButton', path, text, currentValue, index, value, values}));
 	const nextIndex = index+1;
 
 	return <Button
 		className={text ? '' : 'icon'}
-		onClick={() => (path && currentValue)
-			? setFieldValue(path, myInsert(currentValue, nextIndex, value))
-			: insert(nextIndex, value)
-		}
+		onClick={() => {
+			//console.debug(toStr({path, currentValue, nextIndex, value}));
+			return (path && currentValue)
+				? setFieldValue(path, myInsert(currentValue, nextIndex, value))
+				: insert(nextIndex, value)
+		}}
 		{...rest}
 	><Icon className='green plus'/>{text}</Button>;
 });

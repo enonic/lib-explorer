@@ -38,7 +38,7 @@ export const list = ({
 				<a class="tiny compact ui button" href="${TOOL_PATH}/stopwords/edit/${name}"><i class="blue edit icon"></i>Edit</a>
 				<a class="tiny compact ui button" href="${TOOL_PATH}/stopwords/delete/${name}"><i class="red trash alternate outline icon"></i>Delete</a>
 			</td>
-		</tr>`)}
+		</tr>`).join('\n')}
 	</tbody>
 </table>`,
 		messages,

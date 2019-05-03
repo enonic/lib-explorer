@@ -2,6 +2,9 @@ import {connect, getIn} from 'formik';
 import {Input as SemanticUiReactInput} from 'semantic-ui-react';
 
 
+//import {toStr} from '../../../utils/toStr';
+
+
 export const Input = connect(({
 	// React
 	type = 'text',
@@ -24,13 +27,16 @@ export const Input = connect(({
 	},
 
 	// Various after formik values
-	defaultValue = getIn(values, path, ''),
+	value = getIn(values, path, ''),
 
 	...rest
-}) => <SemanticUiReactInput
-	defaultValue={defaultValue}
-	name={path}
-	onChange={onChange}
-	type={type}
-	{...rest}
-/>);
+}) => {
+	//console.debug(toStr({path, value, rest}));
+	return <SemanticUiReactInput
+		name={path}
+		onChange={onChange}
+		type={type}
+		value={value}
+		{...rest}
+	/>;
+});

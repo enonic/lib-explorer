@@ -14,7 +14,7 @@ import {Input} from './semantic-ui/react/formik/Input';
 
 import {SubmitButton} from './semantic-ui/SubmitButton';
 
-import {toStr} from './utils/toStr';
+//import {toStr} from './utils/toStr';
 
 
 export const StopWords = ({
@@ -25,6 +25,7 @@ export const StopWords = ({
 	return <Formik
 		initialValues={initialValues}
 		render={({
+			setFieldValue,
 			values
 		}) => {
 			//console.debug(toStr({values}));
@@ -58,11 +59,15 @@ export const StopWords = ({
 				{words.length
 					? <FieldArray
 						name='words'
-						render={() => words.map((word, index) => {
+						render={() => words.map((word = '', index) => {
+							//console.debug(toStr({index, word}));
 							const key = `words[${index}]`;
 							return <Form.Group key={key}>
 								<Form.Field>
-									<Input path={key}/>
+									<Input
+										path={key}
+										value={word}
+									/>
 								</Form.Field>
 								<Form.Field>
 									<Button.Group icon>
@@ -93,6 +98,7 @@ export const StopWords = ({
 						})}
 					/>
 					: <SetButton field='words' value={['']}><Icon color='green' name='plus'/> Add stop word</SetButton>}
+				{words.length > 1 ? <Button onClick={() => {setFieldValue('words', words.sort())}} type='button'><Icon name='sort'/>Sort</Button> : null}
 				<SubmitButton className='primary' text={mode === 'edit' ? `Update stop words list ${initialValues.name}`: 'Create stop words list'}/>
 				<input id="json" name="json" type="hidden"/>
 			</Form>;
