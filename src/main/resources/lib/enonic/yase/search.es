@@ -20,8 +20,9 @@ import {
 } from '/lib/enonic/yase/constants';
 
 import {get as getInterface} from '/lib/enonic/yase/interface/get';
+import {get as getStopWordsList} from '/lib/enonic/yase/stopWords/get';
 
-//import {removeStopWords} from '/lib/enonic/yase/query/removeStopWords';
+import {removeStopWords} from '/lib/enonic/yase/query/removeStopWords';
 import {wash} from '/lib/enonic/yase/query/wash';
 
 import {connect} from '/lib/enonic/yase/repo/connect';
@@ -64,7 +65,8 @@ function convert(node) {
 			'expressions',
 			'facets',
 			'fields',
-			'resultMappings'
+			'resultMappings',
+			'stopWords'
 		].includes(key)) {
 			if (!value) {
 				this.update([]);
@@ -121,6 +123,7 @@ export function search(params) {
 		pagination: paginationConfig,
 		query: queryConfig,
 		resultMappings,
+		stopWords,
 		thesauri
 	} = interfaceNode;
 	/*log.info(toStr({
@@ -149,7 +152,29 @@ export function search(params) {
 	const washedSearchString = wash({string: searchString});
 	//log.info(toStr({washedSearchString}));
 
-	//const searchStringWithoutStopWords = removeStopWords({string: washedSearchString});
+	const listOfStopWords = [];
+	if (stopWords.length) {
+		stopWords.forEach((name) => {
+			const {words} = getStopWordsList({
+				connection: yaseReadConnection,
+				name
+			});
+			//log.info(toStr({words}));
+			words.forEach((word) => {
+				if (!listOfStopWords.includes(word)) {
+					listOfStopWords.push(word);
+				}
+			})
+		})
+	}
+	//log.info(toStr({listOfStopWords}));
+	const removedStopWords = [];
+	const searchStringWithoutStopWords = removeStopWords({
+		removedStopWords,
+		stopWords: listOfStopWords,
+		string: washedSearchString
+	});
+	//log.info(toStr({removedStopWords}));
 
 	const synonyms = [];
 	const expand = false;
@@ -157,7 +182,7 @@ export function search(params) {
 		connection: yaseReadConnection,
 		expand,
 		expression: queryConfig,
-		searchString: washedSearchString,
+		searchString: searchStringWithoutStopWords,
 		synonyms
 	});
 	//log.info(toStr({synonyms}));
@@ -261,13 +286,15 @@ export function search(params) {
 		expand,
 		pages,
 		total,
+		removedStopWords,
 		synonymsObj,
 		hits: mapMultiRepoQueryHits({
 			hits,
 			locale,
 			nodeCache: NODE_CACHE,
 			resultMappings,
-			searchString//: flattenedSynonyms.join(' ') // Synonyms add to much highlighting
+			searchString: searchStringWithoutStopWords
+			//searchString//: flattenedSynonyms.join(' ') // Synonyms add to much highlighting
 		}),
 		facetCategories,
 		pagination

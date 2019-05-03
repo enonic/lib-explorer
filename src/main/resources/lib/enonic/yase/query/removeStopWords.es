@@ -6,6 +6,7 @@ const UNICODE_WORD_CHARACTERS_REGEXP = /[^\u0041-\u005a\u0061-\u007a\u00b5-\u00b
 */
 
 export function removeStopWords({
+	removedStopWords = [],
 	string,
 	stopWords = [
 		'at', 'av', 'de', 'den', 'der', 'det', 'du', 'en', 'er', 'et', 'for',
@@ -17,7 +18,13 @@ export function removeStopWords({
 	return string
 		.split(wordSplitRegexp)
 		.filter(Boolean)
-		.filter(word => !stopWords.includes(word))
+		.filter(word => {
+			if (stopWords.includes(word)) {
+				removedStopWords.push(word);
+				return false;
+			}
+			return true;
+		})
 		.join(' ')
 		.replace(/\s\s+/g, ' ') // Replace double whitespace with single space
 		.trim(); // Remove whitespace at start or end of searchString
