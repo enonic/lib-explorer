@@ -25,7 +25,6 @@ export function handleThesauriPost(req) {
 			description,
 			name,
 			displayName = name,
-			thesaurus,
 			typedThesaurusName = ''
 		},
 		path
@@ -87,7 +86,7 @@ export function handleThesauriPost(req) {
 				const toArr = to.trim().split(',').map(str => str.trim());
 				const params = synonym({
 					__connection: connection,
-					_parentPath: `/thesauri/${thesaurus}`,
+					_parentPath: `/thesauri/${thesaurusName}`,
 					from: fromArr.length > 1 ? fromArr : fromArr.join(),
 					to: toArr.length > 1 ? toArr : toArr.join()
 				});
@@ -95,7 +94,7 @@ export function handleThesauriPost(req) {
 				createOrModify(params);
 			}
 		});
-		messages.push(`Imported synonyms to ${thesaurus}.`);
+		messages.push(`Imported synonyms to ${thesaurusName}.`);
 		return {
 			redirect: `${TOOL_PATH}/thesauri?${
 				messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
