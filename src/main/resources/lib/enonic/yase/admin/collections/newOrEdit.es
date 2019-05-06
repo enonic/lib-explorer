@@ -1,17 +1,19 @@
 import traverse from 'traverse';
 
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 import {isSet} from '/lib/enonic/util/value';
 import {assetUrl} from '/lib/xp/portal';
 
 import {connect} from '/lib/enonic/yase/repo/connect';
 import {
+	NT_COLLECTOR,
 	PRINCIPAL_YASE_READ,
 	TOOL_PATH
 } from '/lib/enonic/yase/constants';
 
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {menu} from '/lib/enonic/yase/admin/collections/menu';
+import {query as queryCollectors} from '/lib/enonic/yase/collector/query';
 import {getFields} from '/lib/enonic/yase/admin/fields/getFields';
 import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 
@@ -58,6 +60,20 @@ export function newOrEdit({
 	const connection = connect({
 		principals: [PRINCIPAL_YASE_READ]
 	});
+
+	const collectors = queryCollectors({
+		connection
+	}).hits.map(({_name: application, configAssetPath}) => {
+		return {
+			application,
+			uri: assetUrl({
+				application,
+				path: configAssetPath
+			})
+		};
+	});
+	log.info(toStr({collectors}));
+
 	if (action === 'edit') {
 		//log.info(toStr({collectionName}));
 
