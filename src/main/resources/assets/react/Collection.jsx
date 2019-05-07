@@ -1,4 +1,4 @@
-import {Form, Formik, getIn} from 'formik';
+import {connect, Form, Formik, getIn} from 'formik';
 import {SubmitButton} from './semantic-ui/SubmitButton';
 import {TextInput} from './elements/TextInput';
 import {Surgeon} from './collectors/surgeon/Surgeon';
@@ -22,52 +22,69 @@ export const Collection = ({
 		},*/
 		name: ''
 	}
-} = {}) => <Formik
-	initialValues={initialValues}
-	render={({
-		handleSubmit,
-		values
-	}) => {
-		/*console.log(toStr({
-			//fields,
+} = {}) => {
+	const connectedComponentsObj = {};
+	Object.keys(componentsObj).forEach(k => {
+		connectedComponentsObj[k] = connect(componentsObj[k]);
+	});
+	return <Formik
+		initialValues={initialValues}
+		render={({
+			handleSubmit,
 			values
-		}));*/
-		return <Form
-			action={action}
-			autoComplete="off"
-			className='ui form'
-			method="POST"
-			onSubmit={() => {
-				document.getElementById('json').setAttribute('value', JSON.stringify(values))
-			}}
-			style={{
-				width: '100%'
-			}}
-		>
-			<TextInput
-				id='name'
-				label="Name"
-				name="name"
-			/>
-			<Checkbox
-				name='doCollect'
-				label='Collect?'
-			/>
-			<Cron/>
-			<Header h2 dividing text='Collector'/>
-			<Select
-				path='collector.name'
-				options={[{
-					label: 'Surgeon',
-					value: 'surgeon'
-				}]}
-				placeholder= 'Please select a collector'
-			/>
-			{getIn(values, 'collector.name') === 'surgeon' ? <Surgeon
-				fields={fields}
-				path='collector.config'
-			/> : null}
-			<Field><SubmitButton className='primary' text="Save collection"/></Field>
-			<input id="json" name="json" type="hidden"/>
-		</Form>}}
+		}) => {
+			/*console.log(toStr({
+				//fields,
+				values
+			}));*/
+			return <Form
+				action={action}
+				autoComplete="off"
+				className='ui form'
+				method="POST"
+				onSubmit={() => {
+					document.getElementById('json').setAttribute('value', JSON.stringify(values))
+				}}
+				style={{
+					width: '100%'
+				}}
+			>
+				<TextInput
+					id='name'
+					label="Name"
+					name="name"
+				/>
+				<Checkbox
+					name='doCollect'
+					label='Collect?'
+				/>
+				<Cron/>
+				<Header h2 dividing text='Collector'/>
+				<Select
+					path='test'
+					options={Object.keys(componentsObj).map(value => ({
+						label: value,
+						value
+					}))}
+					placeholder='Morra di'
+				/>
+				<div>
+					{values.test ? connectedComponentsObj[values.test]() : null}
+				</div>
+				<Select
+					path='collector.name'
+					options={[{
+						label: 'Surgeon',
+						value: 'surgeon'
+					}]}
+					placeholder='Please select a collector'
+				/>
+				{getIn(values, 'collector.name') === 'surgeon' ? <Surgeon
+					fields={fields}
+					path='collector.config'
+				/> : null}
+				<Field><SubmitButton className='primary' text="Save collection"/></Field>
+				<input id="json" name="json" type="hidden"/>
+			</Form>}}
 />; // Collection
+}

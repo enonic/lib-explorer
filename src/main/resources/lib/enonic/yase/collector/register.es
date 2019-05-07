@@ -10,7 +10,8 @@ import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
 export function register({
 	appName,
 	collectTaskName = 'collect',
-	configAssetPath = 'yase/collectorConfig.js'
+	configAssetPath = 'yase/collectorConfig.js',
+	displayName
 }) {
 	const yaseWriteConnection = connect({
 		principals: [PRINCIPAL_YASE_WRITE]
@@ -24,6 +25,7 @@ export function register({
 		_name: appName,
 		collectTaskName,
 		configAssetPath,
+		displayName,
 		type: NT_COLLECTOR
 	};
 	createOrModify(params);

@@ -1,3 +1,17 @@
+/*
+
+1. Each collector app will provide an asset file.
+	The asset file is a webpack bundle with a unique libraryName.
+	The libraryName can be the app.name
+	The library should export a component named Config.
+
+2. Each collector app will register itself on application start.
+
+3. Each registered collector app library will be loaded into the window object.
+
+4. There must be a object with appName as key and value as reference to react component in library.
+*/
+
 import traverse from 'traverse';
 
 import {toStr} from '/lib/enonic/util';
@@ -63,9 +77,10 @@ export function newOrEdit({
 
 	const collectors = queryCollectors({
 		connection
-	}).hits.map(({_name: application, configAssetPath}) => {
+	}).hits.map(({_name: application, displayName, configAssetPath}) => {
 		return {
 			application,
+			displayName,
 			uri: assetUrl({
 				application,
 				path: configAssetPath
@@ -141,7 +156,13 @@ export function newOrEdit({
 			menu({path})
 		],
 		bodyEnd: [
-			`<script type="text/javascript">
+			`<script type="text/javascript" src="${collectors[0].uri}"></script>
+<script type="text/javascript">
+	var componentsObj = {
+		${collectors.map(c => `${c.displayName}: window['${c.application}'].Config`).join(',')}
+	};
+</script>
+<script type="text/javascript">
 	ReactDOM.render(
 		React.createElement(window.yase.Collection, ${propsJson}),
 		document.getElementById('${ID_REACT_COLLECTION_CONTAINER}')
