@@ -10,7 +10,7 @@ import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
 export function register({
 	appName,
 	collectTaskName = 'collect',
-	configAssetPath = 'yase/collectorConfig.js',
+	configAssetPath = 'yase/Collector.js',
 	displayName
 }) {
 	const yaseWriteConnection = connect({

@@ -30,7 +30,14 @@ export function htmlResponse({
 	return {
 		body: `<html>
 	<head>
+		<!--script type="text/javascript" src="${assetUrl({path: 'react/react.production.min.js'})}"></script-->
+		<script type="text/javascript" src="${assetUrl({path: 'react/react.development.js'})}"></script>
+
+		<!--script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.production.min.js'})}"></script-->
+		<script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.development.js'})}"></script>
+
 		${headBegin.join('\n')}
+
 		<title>${preTitle}YASE</title>
 		<link rel="shortcut icon" href="${assetUrl({path: 'favicon.ico'})}">
 
@@ -80,12 +87,6 @@ export function htmlResponse({
 			launcherUrl: '${getLauncherUrl()}'
 		};
 		</script>
-
-		<!--script type="text/javascript" src="${assetUrl({path: 'react/react.production.min.js'})}"></script-->
-		<script type="text/javascript" src="${assetUrl({path: 'react/react.development.js'})}"></script>
-
-		<!--script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.production.min.js'})}"></script-->
-		<script type="text/javascript" src="${assetUrl({path: 'react-dom/react-dom.development.js'})}"></script>
 
 		<script type="text/javascript" src="${assetUrl({path: 'yase.js'})}"></script>
 		<script type="text/javascript" src="${assetUrl({path: 'jquery/jquery.js'})}"></script>

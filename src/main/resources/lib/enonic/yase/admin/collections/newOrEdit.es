@@ -96,8 +96,8 @@ export function newOrEdit({
 		//log.info(toStr({node}));
 
 		const {displayName, collector, cron, doCollect} = node;
-		convert(collector);
-		if(!collector.config.urls.length) {
+		convert(collector); // TODO Surgeon specific
+		if (collector.name === 'surgeon' && !collector.config.urls.length) {
 			collector.config.urls.push('');
 		}
 		//log.info(toStr({collector}));
@@ -152,26 +152,16 @@ export function newOrEdit({
 	//log.info(toStr({propsJson}));
 
 	return htmlResponse({
+		headBegin: collectors.map(c => `<script type="text/javascript" src="${c.uri}"></script>`),
+		headEnd: [
+			`<script type="text/javascript">
+				window.collectors = {
+					${collectors.map(c => `${c.displayName}: window['${c.application}'].Collector`).join(',\n')}
+				};
+			</script>`
+		],
 		bodyBegin: [
 			menu({path})
-		],
-		bodyEnd: [
-			`<script type="text/javascript" src="${collectors[0].uri}"></script>
-<script type="text/javascript">
-	var componentsObj = {
-		${collectors.map(c => `${c.displayName}: window['${c.application}'].Config`).join(',')}
-	};
-</script>
-<script type="text/javascript">
-	ReactDOM.render(
-		React.createElement(window.yase.Collection, ${propsJson}),
-		document.getElementById('${ID_REACT_COLLECTION_CONTAINER}')
-	);
-	$('.ui.sticky').sticky({
-    context: '#stickyContext'
-  })
-;
-</script>`
 		],
 		main: `<div class="ui segment" id="stickyContext">
 	<div class="ui left very close rail">
@@ -184,6 +174,19 @@ export function newOrEdit({
 	</div>
 	<div id="${ID_REACT_COLLECTION_CONTAINER}"/>
 </div>`,
+		bodyEnd: [
+			`<script type="text/javascript">
+	ReactDOM.render(
+		React.createElement(window.yase.Collection, ${propsJson}),
+		document.getElementById('${ID_REACT_COLLECTION_CONTAINER}')
+	);
+	$('.ui.sticky').sticky({
+    context: '#stickyContext'
+  })
+;
+</script>`
+		],
+
 		path,
 		title: 'Create or edit collection'
 	});

@@ -10,6 +10,7 @@ import {Select} from './elements/Select';
 import {Checkbox} from './semantic-ui/Checkbox';
 import {Field} from './semantic-ui/Field';
 import {Header} from './semantic-ui/Header';
+import {Dropdown} from './semantic-ui/react/formik/Dropdown';
 
 
 export const Collection = ({
@@ -23,17 +24,18 @@ export const Collection = ({
 		name: ''
 	}
 } = {}) => {
-	const connectedComponentsObj = {};
-	Object.keys(componentsObj).forEach(k => {
-		connectedComponentsObj[k] = connect(componentsObj[k]);
+	const collectorsObj = {};
+	Object.keys(window.collectors).forEach(k => {
+		collectorsObj[k] = connect(window.collectors[k]);
 	});
 	return <Formik
 		initialValues={initialValues}
 		render={({
 			handleSubmit,
+			setFieldValue,
 			values
 		}) => {
-			/*console.log(toStr({
+			/*console.debug(toStr({
 				//fields,
 				values
 			}));*/
@@ -60,16 +62,25 @@ export const Collection = ({
 				/>
 				<Cron/>
 				<Header h2 dividing text='Collector'/>
-				<Select
-					path='test'
-					options={Object.keys(componentsObj).map(value => ({
-						label: value,
-						value
+				<Dropdown
+					defaultValue={getIn(values, 'collector.name', '')}
+					path='collector.name'
+					onChange={(event, {value: newType}) => {
+						//console.debug({event, newType});
+						setFieldValue('collector', {
+							name: newType,
+							config: {}
+						})
+					}}
+					options={Object.keys(collectors).map(key => ({
+						key,
+						text: key,
+						value: key
 					}))}
-					placeholder='Morra di'
+					placeholder='Please select a collector'
 				/>
 				<div>
-					{values.test ? connectedComponentsObj[values.test]() : null}
+					{values.collector && values.collector.name ? collectorsObj[values.collector.name]() : null}
 				</div>
 				<Select
 					path='collector.name'
@@ -86,5 +97,5 @@ export const Collection = ({
 				<Field><SubmitButton className='primary' text="Save collection"/></Field>
 				<input id="json" name="json" type="hidden"/>
 			</Form>}}
-/>; // Collection
+	/>; // Collection
 }
