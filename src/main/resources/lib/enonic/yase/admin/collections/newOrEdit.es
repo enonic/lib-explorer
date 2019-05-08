@@ -87,7 +87,7 @@ export function newOrEdit({
 			})
 		};
 	});
-	log.info(toStr({collectors}));
+	//log.info(toStr({collectors}));
 
 	if (action === 'edit') {
 		//log.info(toStr({collectionName}));
