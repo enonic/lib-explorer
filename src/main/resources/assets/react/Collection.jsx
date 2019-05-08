@@ -1,4 +1,7 @@
-import {connect, Form, Formik, getIn} from 'formik';
+import {connect, Formik, getIn} from 'formik';
+import {Form} from 'semantic-ui-react';
+import traverse from 'traverse';
+
 import {SubmitButton} from './semantic-ui/SubmitButton';
 import {TextInput} from './elements/TextInput';
 import {Surgeon} from './collectors/surgeon/Surgeon';
@@ -12,15 +15,40 @@ import {Field} from './semantic-ui/Field';
 import {Header} from './semantic-ui/Header';
 import {Dropdown} from './semantic-ui/react/formik/Dropdown';
 
+function convert(node) {
+	traverse(node).forEach(function(value) { // Fat arrow destroys this
+		const key = this.key;
+		//log.info(toStr({key}));
+		if([
+			'crawl',
+			'download',
+			'fields',
+			'headers',
+			'queryParams',
+			'scrape',
+			'scrapeExpression',
+			'scrapeJson',
+			'tags',
+			'urls',
+			'urlExpression'
+			//'value' // Nope this will destroy headers[index].value
+		].includes(key)) {
+			if (!value) {
+				this.update([]);
+			} else if (!Array.isArray(value)) {
+				const array = [value];
+				convert(array); // Recurse
+				this.update(array);
+			}
+		}
+	});
+}
+
 
 export const Collection = ({
 	action,
 	fields = {},
 	initialValues = {
-		/*collector: {
-			name: 'surgeon'
-			config: {}
-		},*/
 		name: ''
 	}
 } = {}) => {
@@ -28,6 +56,7 @@ export const Collection = ({
 	Object.keys(window.collectors).forEach(k => {
 		collectorsObj[k] = connect(window.collectors[k]);
 	});
+	convert(initialValues);
 	return <Formik
 		initialValues={initialValues}
 		render={({
@@ -42,7 +71,6 @@ export const Collection = ({
 			return <Form
 				action={action}
 				autoComplete="off"
-				className='ui form'
 				method="POST"
 				onSubmit={() => {
 					document.getElementById('json').setAttribute('value', JSON.stringify(values))
@@ -62,25 +90,28 @@ export const Collection = ({
 				/>
 				<Cron/>
 				<Header h2 dividing text='Collector'/>
-				<Dropdown
-					defaultValue={getIn(values, 'collector.name', '')}
-					path='collector.name'
-					onChange={(event, {value: newType}) => {
-						//console.debug({event, newType});
-						setFieldValue('collector', {
-							name: newType,
-							config: {}
-						})
-					}}
-					options={Object.keys(collectors).map(key => ({
-						key,
-						text: key,
-						value: key
-					}))}
-					placeholder='Please select a collector'
-				/>
+				<Form.Field>
+					<Dropdown
+						defaultValue={getIn(values, 'collector.name', '')}
+						path='collector.name'
+						onChange={(event, {value: newType}) => {
+							//console.debug({event, newType});
+							setFieldValue('collector', {
+								name: newType,
+								config: {}
+							})
+						}}
+						options={Object.keys(collectors).map(key => ({
+							key,
+							text: key,
+							value: key
+						}))}
+						placeholder='Please select a collector'
+						selection
+					/>
+				</Form.Field>
 				<div>
-					{values.collector && values.collector.name ? collectorsObj[values.collector.name]() : null}
+					{values.collector && values.collector.name ? collectorsObj[values.collector.name]({fields}) : null}
 				</div>
 				<Select
 					path='collector.name'
