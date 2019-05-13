@@ -5,7 +5,7 @@ import traverse from 'traverse';
 import {SubmitButton} from './semantic-ui/SubmitButton';
 import {Surgeon} from './collectors/surgeon/Surgeon';
 import {Cron} from './fields/Cron';
-//import {toStr} from './utils/toStr';
+import {toStr} from './utils/toStr';
 
 import {Select} from './elements/Select';
 
@@ -45,17 +45,45 @@ function convert(node) {
 }
 
 
+const loadDynamicScript = ({
+	fn,
+	id,
+	src
+}) => {
+	const existingScript = document.getElementById(id);
+
+	if (!existingScript) {
+		const script = document.createElement('script');
+		script.src = src;
+		script.id = id;
+		document.body.appendChild(script);
+
+		script.onload = () => {
+			if (fn) fn();
+		};
+	}
+
+	if (existingScript && fn) fn();
+};
+
+
 export const Collection = ({
 	action,
+	collectorOptions,
+	collectorsAppToUri,
 	fields = {},
 	initialValues = {
 		name: ''
 	}
 } = {}) => {
-	const collectorsObj = {};
+	console.debug(toStr({
+		collectorOptions,
+		collectorsAppToUri
+	}));
+	/*const collectorsObj = {};
 	Object.keys(window.collectors).forEach(k => {
 		collectorsObj[k] = connect(window.collectors[k]);
-	});
+	});*/
 	convert(initialValues);
 	return <Formik
 		initialValues={initialValues}
@@ -103,24 +131,31 @@ export const Collection = ({
 						defaultValue={getIn(values, 'collector.name', '')}
 						formik={formik}
 						path='collector.name'
-						onChange={(event, {value: newType}) => {
-							//console.debug({event, newType});
-							setFieldValue('collector', {
-								name: newType,
-								config: {}
-							})
+						onChange={(event, {value: collectorAppName}) => {
+							//console.debug({event, collectorAppName});
+							loadDynamicScript({
+								id: collectorAppName,
+								src: collectorsAppToUri[collectorAppName],
+								fn: () => {
+									setFieldValue('collector', {
+										name: collectorAppName,
+										config: {}
+									})
+								}
+							});
 						}}
-						options={Object.keys(collectors).map(key => ({
-							key,
-							text: key,
-							value: key
-						}))}
+						options={collectorOptions}
 						placeholder='Please select a collector'
 						selection
 					/>
 				</Form.Field>
 				<div>
-					{values.collector && values.collector.name ? collectorsObj[values.collector.name]({fields, formik}) : null}
+					{values.collector
+						&& values.collector.name
+						&& window[values.collector]
+						&& window[values.collector].Collector
+						? window[values.collector].Collector({fields, formik})
+						: null}
 				</div>
 				<Select
 					path='collector.name'

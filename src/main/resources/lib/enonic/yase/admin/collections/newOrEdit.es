@@ -1,5 +1,20 @@
 /*
 
+Loading modules dynamically:
+
+1. When the Collection component is mounted a list of collectors must be provided.
+
+2. There must also be a map from collector key to collector assetUrl.
+
+3. When a collection is selected in the Dropdown, the corresponding collector
+assetUrl must be loaded dynamically and then the Collector component must be
+instansiated. Either rendering must be blocked until the asset is loaded, or
+render must be called manually after the asset is loaded.
+
+────────────────────────────────────────────────────────────────────────────────
+
+Using the global window object (and UMD modules):
+
 1. Each collector app will provide an asset file.
 	The asset file is a webpack bundle with a unique libraryName.
 	The libraryName can be the app.name
@@ -10,6 +25,11 @@
 3. Each registered collector app library will be loaded into the window object.
 
 4. There must be a object with appName as key and value as reference to react component in library.
+
+────────────────────────────────────────────────────────────────────────────────
+
+Using EcmaScript modules?
+
 */
 
 import traverse from 'traverse';
@@ -75,16 +95,19 @@ export function newOrEdit({
 		principals: [PRINCIPAL_YASE_READ]
 	});
 
-	const collectors = queryCollectors({
+	const collectorsAppToUri = {};
+	const collectorOptions = queryCollectors({
 		connection
 	}).hits.map(({_name: application, displayName, configAssetPath}) => {
-		return {
+		const uri = assetUrl({
 			application,
-			displayName,
-			uri: assetUrl({
-				application,
-				path: configAssetPath
-			})
+			path: configAssetPath
+		});
+		collectorsAppToUri[application] = uri;
+		return {
+			key: application,
+			text: displayName,
+			value: application
 		};
 	});
 	//log.info(toStr({collectors}));
@@ -143,6 +166,8 @@ export function newOrEdit({
 
 	const propsObj = {
 		action: `${TOOL_PATH}/collections/${action === 'edit' ? `update/${collectionName}` : 'create'}`,
+		collectorOptions,
+		collectorsAppToUri,
 		fields: fieldsObj,
 		initialValues
 	};
@@ -152,14 +177,14 @@ export function newOrEdit({
 	//log.info(toStr({propsJson}));
 
 	return htmlResponse({
-		headBegin: collectors.map(c => `<script type="text/javascript" src="${c.uri}"></script>`),
+		/*headBegin: collectors.map(c => `<script type="text/javascript" src="${c.uri}"></script>`),
 		headEnd: [
 			`<script type="text/javascript">
 				window.collectors = {
 					${collectors.map(c => `${c.displayName}: window['${c.application}'].Collector`).join(',\n')}
 				};
 			</script>`
-		],
+		],*/
 		bodyBegin: [
 			menu({path})
 		],
