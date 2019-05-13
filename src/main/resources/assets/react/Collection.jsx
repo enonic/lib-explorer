@@ -1,9 +1,8 @@
 import {connect, Formik, getIn} from 'formik';
-import {Form} from 'semantic-ui-react';
+import {Form, Header} from 'semantic-ui-react';
 import traverse from 'traverse';
 
 import {SubmitButton} from './semantic-ui/SubmitButton';
-import {TextInput} from './elements/TextInput';
 import {Surgeon} from './collectors/surgeon/Surgeon';
 import {Cron} from './fields/Cron';
 //import {toStr} from './utils/toStr';
@@ -11,9 +10,10 @@ import {Cron} from './fields/Cron';
 import {Select} from './elements/Select';
 
 import {Checkbox} from './semantic-ui/Checkbox';
-import {Field} from './semantic-ui/Field';
-import {Header} from './semantic-ui/Header';
-import {Dropdown} from './semantic-ui/react/formik/Dropdown';
+import {
+	Dropdown,
+	Input
+} from '@h3t/semantic-ui-react-formik-functional/dist/index.cjs';
 
 function convert(node) {
 	traverse(node).forEach(function(value) { // Fat arrow destroys this
@@ -59,11 +59,13 @@ export const Collection = ({
 	convert(initialValues);
 	return <Formik
 		initialValues={initialValues}
-		render={({
-			handleSubmit,
-			setFieldValue,
-			values
-		}) => {
+		render={formik => {
+			const {
+				handleSubmit,
+				setFieldValue,
+				values
+			} = formik;
+			//console.debug(formik);
 			/*console.debug(toStr({
 				//fields,
 				values
@@ -79,20 +81,27 @@ export const Collection = ({
 					width: '100%'
 				}}
 			>
-				<TextInput
-					id='name'
-					label="Name"
-					name="name"
-				/>
-				<Checkbox
-					name='doCollect'
-					label='Collect?'
-				/>
+				<Form.Field>
+					<Input
+						id='name'
+						fluid
+						formik={formik}
+						label={{ basic: true, content: 'Name' }}
+						name='name'
+					/>
+				</Form.Field>
+				<Form.Field>
+					<Checkbox
+						name='doCollect'
+						label='Collect?'
+					/>
+				</Form.Field>
 				<Cron/>
-				<Header h2 dividing text='Collector'/>
+				<Header as='h2' dividing content='Collector'/>
 				<Form.Field>
 					<Dropdown
 						defaultValue={getIn(values, 'collector.name', '')}
+						formik={formik}
 						path='collector.name'
 						onChange={(event, {value: newType}) => {
 							//console.debug({event, newType});
@@ -111,7 +120,7 @@ export const Collection = ({
 					/>
 				</Form.Field>
 				<div>
-					{values.collector && values.collector.name ? collectorsObj[values.collector.name]({fields}) : null}
+					{values.collector && values.collector.name ? collectorsObj[values.collector.name]({fields, formik}) : null}
 				</div>
 				<Select
 					path='collector.name'
@@ -125,7 +134,9 @@ export const Collection = ({
 					fields={fields}
 					path='collector.config'
 				/> : null}
-				<Field><SubmitButton className='primary' text="Save collection"/></Field>
+				<Form.Field>
+					<SubmitButton className='primary' text="Save collection"/>
+				</Form.Field>
 				<input id="json" name="json" type="hidden"/>
 			</Form>}}
 	/>; // Collection
