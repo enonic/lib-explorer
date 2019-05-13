@@ -2,20 +2,20 @@
 
 import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
+import {assetUrl} from '/lib/xp/portal';
 import {list as listTasks, submitNamed} from '/lib/xp/task';
 import {request as httpClientRequest} from '/lib/http-client';
-
 import {
 	PRINCIPAL_YASE_READ,
 	TOOL_PATH
 } from '/lib/enonic/yase/constants';
 import {connect} from '/lib/enonic/yase/repo/connect';
 import {get as getCollection} from '/lib/enonic/yase/collection/get';
-//import {list} from '/lib/enonic/yase/admin/collections/list';
+import {query as queryCollectors} from '/lib/enonic/yase/collector/query';
 import {getTasksWithPropertyValue} from '/lib/enonic/yase/task/getTasksWithPropertyValue';
 
 
-import {TASK_COLLECT} from '/lib/enonic/yase/constants';
+//import {TASK_COLLECT} from '/lib/enonic/yase/constants';
 
 
 
@@ -55,10 +55,32 @@ export const collect = ({
 		const {
 			_name: name,
 			collector: {
+				name: collectorName,
 				config
 			}
 		} = collectionNode;
-		//log.info(toStr({name, config}));
+		//log.info(toStr({name, collectorName, config}));
+
+		const collector = queryCollectors({
+			connection
+		}).hits.map(({
+			_name: application,
+			displayName,
+			collectTaskName: taskName,
+			configAssetPath
+		}) => {
+			return {
+				application,
+				displayName,
+				taskName,
+				uri: assetUrl({
+					application,
+					path: configAssetPath
+				})
+			};
+		}).filter(({displayName}) => displayName === collectorName)[0];
+		//log.info(toStr({collector}));
+
 		if (resume === 'true') {
 			config.resume = true;
 		}
@@ -67,13 +89,13 @@ export const collect = ({
 		//log.info(toStr({configJson}));
 
 		const submitNamedParams = {
-			name: TASK_COLLECT,
+			name: `${collector.application}:${collector.taskName}`,
 			config: {
 				name,
 				configJson
 			}
 		};
-		//log.info(toStr({submitNamedParams}));
+		log.info(toStr({submitNamedParams}));
 
 		const taskId = submitNamed(submitNamedParams);
 		messages.push(`Started collecting ${collectionName} with taskId ${taskId}`);
