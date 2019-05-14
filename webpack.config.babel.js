@@ -9,12 +9,12 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import postcssPresetEnv from 'postcss-preset-env';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'; // Supports ECMAScript2015
-
+import EsmWebpackPlugin from '@purtuga/esm-webpack-plugin';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Functions
 //──────────────────────────────────────────────────────────────────────────────
-//const toStr = v => JSON.stringify(v, null, 4);
+const toStr = v => JSON.stringify(v, null, 4);
 const dict = arr => Object.assign(...arr.map(([k, v]) => ({ [k]: v })));
 
 
@@ -23,6 +23,7 @@ const dict = arr => Object.assign(...arr.map(([k, v]) => ({ [k]: v })));
 //──────────────────────────────────────────────────────────────────────────────
 const MODE = 'development';
 //const MODE = 'production';
+
 const EXTENSIONS_GLOB = '{es,js}';
 const SRC_DIR = 'src/main/resources';
 const SRC_DIR_ABS = path.resolve(__dirname, SRC_DIR);
@@ -32,8 +33,12 @@ const DST_DIR = 'build/resources/main';
 const DST_DIR_ABS = path.join(__dirname, DST_DIR);
 const DST_ASSETS_DIR_ABS = path.join(DST_DIR_ABS, 'assets');
 
-const ASSETS_GLOB = `${SRC_DIR}/{site/assets,assets}/**/*.${EXTENSIONS_GLOB}`;
+const ASSETS_PATH_GLOB_BRACE = '{site/assets,assets}';
+const ASSETS_GLOB = `${SRC_DIR}/${ASSETS_PATH_GLOB_BRACE}/**/*.${EXTENSIONS_GLOB}`;
 //console.log(`ASSETS_GLOB:${toStr(ASSETS_GLOB)}`);
+
+//const ALL_JS_ASSETS_FILES = glob.sync(ASSETS_GLOB);
+//console.log(`ALL_JS_ASSETS_FILES:${toStr(ALL_JS_ASSETS_FILES)}`);
 //console.log(`ASSET_FILES:${toStr(glob.sync(ASSETS_GLOB))}`);
 
 const FILES = glob.sync(`${SRC_DIR}/**/*.${EXTENSIONS_GLOB}`, {ignore: ASSETS_GLOB});
@@ -69,6 +74,7 @@ const BABEL_USE = {
 		minified: false,
 		plugins: [
 			'@babel/plugin-proposal-object-rest-spread',
+			//'@babel/plugin-syntax-dynamic-import',
 			'@babel/plugin-transform-object-assign',
 			'array-includes',
 			'transform-es2017-object-entries',
@@ -205,6 +211,7 @@ const CLIENT_JS_CONFIG = {
 					plugins: [
 						'@babel/plugin-proposal-class-properties',
 						'@babel/plugin-proposal-object-rest-spread',
+						'@babel/plugin-syntax-dynamic-import',
 						'@babel/plugin-transform-object-assign',
 						['@babel/plugin-transform-runtime', {
 				      		regenerator: true
@@ -263,10 +270,110 @@ const CLIENT_JS_CONFIG = {
 };
 //console.log(`CLIENT_JS_CONFIG:${toStr(CLIENT_JS_CONFIG)}`); process.exit();
 
+
+//──────────────────────────────────────────────────────────────────────────────
+
+const JSX_ASSETS_GLOB = `${SRC_DIR}/${ASSETS_PATH_GLOB_BRACE}/**/*.jsx`;
+
+//const JSX_ASSETS_FILES = glob.sync(JSX_ASSETS_GLOB);
+const JSX_ASSETS_FILES = ['src/main/resources/assets/react/Collection.jsx'];
+//console.log(`JSX_ASSETS_FILES:${toStr(JSX_ASSETS_FILES)}`);
+
+const ASSETS_ESM_ENTRY = dict(JSX_ASSETS_FILES.map(k => [
+	k.replace(`${SRC_DIR}/assets/`, '').replace(/\.[^.]*$/, ''), // name
+	`.${k.replace(`${SRC_DIR}/assets`, '')}` // source relative to context
+]));
+//console.log(`ASSETS_ESM_ENTRY:${toStr(ASSETS_ESM_ENTRY)}`);
+
+const ASSETS_ESM_CONFIG = {
+	context: path.resolve(__dirname, SRC_DIR, 'assets'),
+	entry: ASSETS_ESM_ENTRY,
+	mode: MODE,
+	module: {
+		rules: [{
+			test: /\.(es6?|m?jsx?)$/, // Will need js for node module depenencies
+			use: [{
+				loader: 'babel-loader',
+				options: {
+					babelrc: false, // The .babelrc file should only be used to transpile config files.
+					comments: false,
+					compact: false,
+					minified: false,
+					plugins: [
+						'@babel/plugin-proposal-class-properties',
+						'@babel/plugin-proposal-object-rest-spread',
+						'@babel/plugin-syntax-dynamic-import',
+						'@babel/plugin-transform-object-assign',
+						/*['@babel/plugin-transform-runtime', { // This destroys esm.
+				      		regenerator: true
+				    	}],*/
+						'array-includes'
+					],
+					presets: [
+						[
+							'@babel/preset-env',
+							{
+								useBuiltIns: false // false means polyfill not required runtime
+							}
+						],
+						'@babel/preset-react'
+					]
+				} // options
+			}]
+		}]
+	}, // module
+	optimization: {
+		minimizer: [
+			new UglifyJsPlugin({
+				parallel: true, // highly recommended
+				sourceMap: false/*,
+				uglifyOptions: {
+					mangle: false, // default is true?
+					keep_fnames: true // default is false?
+				}*/
+			})
+		]
+	},
+	output: {
+		path: path.join(__dirname, DST_DIR, 'assets'),
+
+		//filename: '[name].umd.js',
+		//libraryTarget: 'umd'
+
+		// EsmWebpackPlugin
+		filename: '[name].esm.js',
+		library: 'LIB',
+		libraryTarget: 'var'
+	},
+	plugins: [
+		/*new BabelEsmPlugin({
+			//filename: '[name].es6.js' // orig
+			//filename: '[name].mjs'
+			filename: '[name].bundle.js'
+		})*/
+		new EsmWebpackPlugin() // exports doesn't exist in Browser
+	],
+	resolve: {
+		extensions: [
+			'.es',
+			'.es6',
+			'.mjs',
+			'.jsx',
+			'.js',
+			'.json'
+		]
+	}, // resolve
+	stats: STATS
+}
+//console.log(`ASSETS_ESM_CONFIG:${toStr(ASSETS_ESM_CONFIG)}`);
+
+//──────────────────────────────────────────────────────────────────────────────
+
 const WEBPACK_CONFIG = [
 	SERVER_JS_CONFIG,
 	STYLE_CONFIG,
-	CLIENT_JS_CONFIG
+	CLIENT_JS_CONFIG,
+	ASSETS_ESM_CONFIG
 ];
 //console.log(`WEBPACK_CONFIG:${toStr(WEBPACK_CONFIG)}`);
 //process.exit();

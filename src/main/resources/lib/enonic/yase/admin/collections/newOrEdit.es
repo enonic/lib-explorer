@@ -110,7 +110,7 @@ export function newOrEdit({
 			value: application
 		};
 	});
-	//log.info(toStr({collectors}));
+	//log.info(toStr({collectorsAppToUri}));
 
 	if (action === 'edit') {
 		//log.info(toStr({collectionName}));
@@ -176,6 +176,11 @@ export function newOrEdit({
 	const propsJson = JSON.stringify(propsObj);
 	//log.info(toStr({propsJson}));
 
+	const collectorUri = assetUrl({
+		application: 'com.enonic.app.yase.collector.uptodate',
+		path: 'react/Collector.esm.js'
+	});
+
 	return htmlResponse({
 		/*headBegin: collectors.map(c => `<script type="text/javascript" src="${c.uri}"></script>`),
 		headEnd: [
@@ -200,6 +205,35 @@ export function newOrEdit({
 	<div id="${ID_REACT_COLLECTION_CONTAINER}"/>
 </div>`,
 		bodyEnd: [
+			`<script type='module' defer>
+	import {Collection} from '${assetUrl({path: 'react/Collection.esm.js'})}'
+	//console.debug(Collection);
+
+	const collectorsObj = {};
+	${Object.entries(collectorsAppToUri).map(([a, u], i) => `import {Collector as Collector${i}} from '${u}';
+	collectorsObj['${a}'] = Collector${i};`
+	).join('\n')}
+	console.debug(collectorsObj);
+	const propsObj = JSON.parse('${propsJson}');
+	console.debug(propsObj);
+	propsObj.collectorsObj = collectorsObj;
+	console.debug(propsObj);
+
+	/*import {Collector} from '${collectorUri}'
+	console.debug(Collector);*/
+
+	/*(async () => {
+		const {Collector} = await import('${collectorUri}');
+		console.debug(Collector);
+	})();*/
+
+	ReactDOM.render(
+		Collection(propsObj),
+		document.getElementById('${ID_REACT_COLLECTION_CONTAINER}')
+	);
+</script>`
+		],
+		/*bodyEnd: [
 			`<script type="text/javascript">
 	ReactDOM.render(
 		React.createElement(window.yase.Collection, ${propsJson}),
@@ -210,7 +244,7 @@ export function newOrEdit({
   })
 ;
 </script>`
-		],
+],*/
 
 		path,
 		title: 'Create or edit collection'
