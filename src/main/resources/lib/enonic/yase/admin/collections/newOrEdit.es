@@ -207,26 +207,12 @@ export function newOrEdit({
 		bodyEnd: [
 			`<script type='module' defer>
 	import {Collection} from '${assetUrl({path: 'react/Collection.esm.js'})}'
-	//console.debug(Collection);
-
 	const collectorsObj = {};
 	${Object.entries(collectorsAppToUri).map(([a, u], i) => `import {Collector as Collector${i}} from '${u}';
 	collectorsObj['${a}'] = Collector${i};`
 	).join('\n')}
-	console.debug(collectorsObj);
 	const propsObj = JSON.parse('${propsJson}');
-	console.debug(propsObj);
 	propsObj.collectorsObj = collectorsObj;
-	console.debug(propsObj);
-
-	/*import {Collector} from '${collectorUri}'
-	console.debug(Collector);*/
-
-	/*(async () => {
-		const {Collector} = await import('${collectorUri}');
-		console.debug(Collector);
-	})();*/
-
 	ReactDOM.render(
 		Collection(propsObj),
 		document.getElementById('${ID_REACT_COLLECTION_CONTAINER}')
