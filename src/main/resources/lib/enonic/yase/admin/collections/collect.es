@@ -59,7 +59,7 @@ export const collect = ({
 				config
 			}
 		} = collectionNode;
-		//log.info(toStr({name, collectorName, config}));
+		log.info(toStr({name, collectorName/*, config*/}));
 
 		const collector = queryCollectors({
 			connection
@@ -78,7 +78,7 @@ export const collect = ({
 					path: configAssetPath
 				})
 			};
-		}).filter(({displayName}) => displayName === collectorName)[0];
+		}).filter(({application}) => application === collectorName)[0];
 		//log.info(toStr({collector}));
 
 		if (resume === 'true') {
