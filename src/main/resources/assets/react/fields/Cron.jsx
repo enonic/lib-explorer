@@ -32,7 +32,7 @@ export const Cron = connect(({
 		dayOfWeek = '*' // 0-6 Sunday to Saturday 7 is also Sunday on some systems
 	} = value;
 	return <>
-		<Header h2 dividing text='Cron'/>
+		<Header h2 dividing text='Cron' id='cron'/>
 		<Fields inline>
 			<Field>
 				<Label text='Minute'/>

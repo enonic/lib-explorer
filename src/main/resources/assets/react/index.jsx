@@ -1,4 +1,3 @@
-export {Collection} from './Collection';
 export {Interface} from './Interface';
 export {Journals} from './Journals';
 export {Search} from './Search';

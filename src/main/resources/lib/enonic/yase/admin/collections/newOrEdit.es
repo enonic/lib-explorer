@@ -1,37 +1,3 @@
-/*
-
-Loading modules dynamically:
-
-1. When the Collection component is mounted a list of collectors must be provided.
-
-2. There must also be a map from collector key to collector assetUrl.
-
-3. When a collection is selected in the Dropdown, the corresponding collector
-assetUrl must be loaded dynamically and then the Collector component must be
-instansiated. Either rendering must be blocked until the asset is loaded, or
-render must be called manually after the asset is loaded.
-
-────────────────────────────────────────────────────────────────────────────────
-
-Using the global window object (and UMD modules):
-
-1. Each collector app will provide an asset file.
-	The asset file is a webpack bundle with a unique libraryName.
-	The libraryName can be the app.name
-	The library should export a component named Config.
-
-2. Each collector app will register itself on application start.
-
-3. Each registered collector app library will be loaded into the window object.
-
-4. There must be a object with appName as key and value as reference to react component in library.
-
-────────────────────────────────────────────────────────────────────────────────
-
-Using EcmaScript modules?
-
-*/
-
 import traverse from 'traverse';
 
 import {toStr} from '/lib/enonic/util';
@@ -182,28 +148,10 @@ export function newOrEdit({
 	});
 
 	return htmlResponse({
-		/*headBegin: collectors.map(c => `<script type="text/javascript" src="${c.uri}"></script>`),
-		headEnd: [
-			`<script type="text/javascript">
-				window.collectors = {
-					${collectors.map(c => `${c.displayName}: window['${c.application}'].Collector`).join(',\n')}
-				};
-			</script>`
-		],*/
 		bodyBegin: [
 			menu({path})
 		],
-		main: `<div class="ui segment" id="stickyContext">
-	<div class="ui left very close rail">
-  	<div class="sticky vertical ui menu">
-      <a class="item" href="#top">Menu <i class="angle double up icon"></i></a>
-			<a class="item"href="#name">Name</a>
-			<a class="item" href="#uris">Uris</a>
-			<a class="item" href="#crawl">Crawl</a>
-  	</div>
-	</div>
-	<div id="${ID_REACT_COLLECTION_CONTAINER}"/>
-</div>`,
+		main: `<div id="${ID_REACT_COLLECTION_CONTAINER}"/>`,
 		bodyEnd: [
 			`<script type='module' defer>
 	import {Collection} from '${assetUrl({path: 'react/Collection.esm.js'})}'
@@ -219,19 +167,6 @@ export function newOrEdit({
 	);
 </script>`
 		],
-		/*bodyEnd: [
-			`<script type="text/javascript">
-	ReactDOM.render(
-		React.createElement(window.yase.Collection, ${propsJson}),
-		document.getElementById('${ID_REACT_COLLECTION_CONTAINER}')
-	);
-	$('.ui.sticky').sticky({
-    context: '#stickyContext'
-  })
-;
-</script>`
-],*/
-
 		path,
 		title: 'Create or edit collection'
 	});

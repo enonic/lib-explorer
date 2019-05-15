@@ -1,4 +1,6 @@
-import {
+export const Download = () => null;
+
+/*import {
 	connect,
 	Field,
 	FieldArray,
@@ -32,10 +34,10 @@ export const Download = connect(({
 	tags = [],
 	value = getIn(values, path) || []
 }) => {
-	//console.log(toStr({parentPath, path/*, tags*/, value, values}));
+	//console.log(toStr({parentPath, path/*, tags*, value, values}));
 	/*if(!value || !Array.isArray(value)) {
 		value = [];
-	}*/
+	}*
 	if(!value.length) {
 		return <SetButton
 			className='block'
@@ -146,3 +148,4 @@ export const Download = connect(({
 		</Table>
 	</Fieldset>;
 });
+*/
