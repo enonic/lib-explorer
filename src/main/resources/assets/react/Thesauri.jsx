@@ -35,7 +35,7 @@ export class Thesauri extends React.Component {
 				page: 1,
 				query: '',
 				sort: 'from ASC',
-				thesauri: [],
+				thesauri: props.thesauri || [],
 				to: ''
 			}
 		};
@@ -97,7 +97,7 @@ export class Thesauri extends React.Component {
 		} = this.state;
 		//console.debug(hits);
 		return <Ref innerRef={this.contextRef}>
-			<Segment basic>
+			<Segment basic style={{padding: 0}}>
 				<Table celled compact selectable sortable striped attached='top'>
 					<Table.Header>
 						<Table.Row>

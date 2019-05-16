@@ -1,4 +1,6 @@
 //import {toStr} from '/lib/enonic/util';
+import {serviceUrl} from '/lib/xp/portal';
+
 import {
 	PRINCIPAL_YASE_READ,
 	TOOL_PATH
@@ -7,6 +9,9 @@ import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {menu} from '/lib/enonic/yase/admin/thesauri/menu';
 import {connect} from '/lib/enonic/yase/repo/connect';
 import {query as getThesauri} from '/lib/enonic/yase/thesaurus/query';
+
+
+const ID_REACT_THESAURI_CONTAINER = 'reactThesauriContainer';
 
 
 export function list({
@@ -23,7 +28,23 @@ export function list({
 	const total = thesauri
 		.map(({synonymsCount}) => synonymsCount)
 		.reduce((accumulator, currentValue) => accumulator + currentValue);
+
+	const propsObj = {
+		serviceUrl: serviceUrl({
+			service: 'thesauri'
+		}),
+		TOOL_PATH
+	};
+	const propsJson = JSON.stringify(propsObj);
+
 	return htmlResponse({
+		bodyEnd: [
+			`<script type="text/javascript">
+	ReactDOM.render(
+		React.createElement(window.yase.Thesauri, ${propsJson}),
+		document.getElementById('${ID_REACT_THESAURI_CONTAINER}')
+	);
+</script>`],
 		main: `${menu({path})}
 <table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
@@ -53,7 +74,7 @@ export function list({
 		</tr>
 	</tfoot>
 </table>
-`,
+<div id="${ID_REACT_THESAURI_CONTAINER}"/>`,
 		messages,
 		path,
 		status,

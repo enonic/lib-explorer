@@ -44,6 +44,7 @@ export function newOrEdit({
 		serviceUrl: serviceUrl({
 			service: 'thesauri'
 		}),
+		thesauri: [thesaurusName],
 		TOOL_PATH
 	};
 	const propsJson = JSON.stringify(propsObj);
