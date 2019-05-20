@@ -1,5 +1,5 @@
-import {reschedule as rescheduleJob, unschedule} from '/lib/cron';
-import {toStr} from '/lib/enonic/util';
+import {schedule, unschedule} from '/lib/cron';
+//import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 import {run} from '/lib/xp/context';
 import {submitNamed} from '/lib/xp/task';
@@ -28,7 +28,8 @@ export function getCollectors({
 
 export function reschedule({
 	collectors,
-	node
+	node,
+	oldNode
 }) {
 	//log.info(toStr({collectors, node}));
 	const {
@@ -44,24 +45,20 @@ export function reschedule({
 	} = node;
 	const cronArray = forceArray(cronMaybeArray);
 	//log.info(toStr({id, collectionName, collectorName, cronMaybeArray, cronArray, collectionDisplayName, doCollect}));
-	if (!doCollect) {
-		cronArray.forEach((ignored, i) => {
-			unschedule({name: `${id}:${i}`});
-		});
-	} else {
+
+	const oldCronArray = oldNode ? forceArray(oldNode.cron) : cronArray;
+	oldCronArray.forEach((ignored, i) => {
+		unschedule({name: `${id}:${i}`});
+	});
+
+	if (doCollect) {
 		//log.info(toStr({doCollect}));
 		if (!collectorName) {
 			log.warning(`Collection ${collectionDisplayName} is missing a collector!`);
-			cronArray.forEach((ignored, i) => {
-				unschedule({name: `${id}:${i}`});
-			});
 		} else {
 			//log.info(toStr({collectorName}));
 			if(!collectors[collectorName]) {
 				log.error(`Collection ${collectionDisplayName} is using a non-existant collector ${collectorName}!`);
-				cronArray.forEach((ignored, i) => {
-					unschedule({name: `${id}:${i}`});
-				});
 			} else {
 				const taskName = `${collectorName}:${collectors[collectorName]}`;
 				//log.info(toStr({taskName}));
@@ -82,8 +79,8 @@ export function reschedule({
 				cronArray.forEach(({minute, hour, dayOfMonth, month, dayOfWeek}, i) => {
 					const cron = `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`;
 					const jobName = `${id}:${i}`;
-					log.info(toStr({jobName, cron}));
-					rescheduleJob({
+					//log.info(toStr({jobName, cron}));
+					schedule({
 						name: jobName,
 						cron,
 						callback: () => run({

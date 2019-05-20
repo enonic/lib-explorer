@@ -28,10 +28,13 @@ export const createOrUpdate = ({
 		principals: [PRINCIPAL_YASE_WRITE]
 	});
 
+	const parentPath = '/collections';
+	const oldNode = connection.get(`${parentPath}/${obj.name}`);
+
 	obj.__connection = connection; // eslint-disable-line no-underscore-dangle
 	obj._indexConfig = {default: 'byType'};
 	obj._name = obj.name;
-	obj._parentPath = '/collections';
+	obj._parentPath = parentPath;
 	obj.displayName = obj.name;
 	obj.type = NT_COLLECTION;
 	//log.info(toStr({obj}));
@@ -45,7 +48,8 @@ export const createOrUpdate = ({
 		//log.info(toStr({collectors}));
 		reschedule({
 			collectors,
-			node
+			node,
+			oldNode
 		});
 	} else {
 		messages.push(`Something went wrong when saving collection ${obj.name}!`);
