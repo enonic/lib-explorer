@@ -1,24 +1,21 @@
 import {NT_COLLECTION} from '/lib/enonic/yase/constants';
+import {addFilter} from '/lib/enonic/yase/query/addFilter';
+import {hasValue} from '/lib/enonic/yase/query/hasValue';
 
 
 export function query({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
+	filters = {},
 	query = '', //"_parentPath = '/collections'",
 	sort = '_name ASC'
 } = {}) {
 	const queryParams = {
 		count,
-		filters: {
-			boolean: {
-				must: [{
-					hasValue: {
-						field: 'type',
-						values: [NT_COLLECTION]
-					}
-				}]
-			}
-		},
+		filters: addFilter({
+			filters,
+			filter: hasValue('type', [NT_COLLECTION])
+		}),
 		query,
 		sort
 	};

@@ -33,6 +33,7 @@ export const list = ({
 			<th class="sorted ascending">Name</th>
 			<th>Documents</th>
 			<th class="no-sort">Interfaces</th>
+			<th>Collect</th>
 			<!--th class="no-sort">Collector</th-->
 			<th class="no-sort">Action(s)</th>
 		</tr>
@@ -41,6 +42,7 @@ export const list = ({
 		${collections.hits.map(({
 		_name: name,
 		displayName,
+		doCollect,
 		collector: {
 			name: collectorName = ''
 		} = {}
@@ -52,6 +54,7 @@ export const list = ({
 		return `<tr>
 			<td>${displayName}</td>
 			<td class="right aligned" data-sort-value="${count}">${count}</td>
+			<td>${doCollect}</td>
 			<td>${usedInInterfaces({
 		connection: readConnection,
 		name

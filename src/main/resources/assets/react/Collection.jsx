@@ -20,6 +20,7 @@ function convert(node) {
 		//log.info(toStr({key}));
 		if([
 			'crawl',
+			'cron',
 			'download',
 			'fields',
 			'headers',
@@ -147,7 +148,7 @@ export const Collection = ({
 					>
 						<Menu.Item href='#top'>Menu</Menu.Item>
 						<Menu.Item href='#name'>Name</Menu.Item>
-						<Menu.Item href='#cron'>Cron</Menu.Item>
+						<Menu.Item href='#cron'>Scheduling</Menu.Item>
 						<Menu.Item href='#collector'>Collector</Menu.Item>
 						<Menu.Item href='#save'>Save</Menu.Item>
 					</Scrollspy>

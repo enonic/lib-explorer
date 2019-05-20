@@ -3,7 +3,7 @@
 import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
 import {assetUrl} from '/lib/xp/portal';
-import {list as listTasks, submitNamed} from '/lib/xp/task';
+import {submitNamed} from '/lib/xp/task';
 import {request as httpClientRequest} from '/lib/http-client';
 import {
 	PRINCIPAL_YASE_READ,

@@ -1,4 +1,4 @@
-import traverse from 'traverse';
+//import traverse from 'traverse';
 
 import {toStr} from '/lib/enonic/util';
 import {isSet} from '/lib/enonic/util/value';
@@ -20,7 +20,7 @@ import {getFieldValues} from '/lib/enonic/yase/admin/fields/getFieldValues';
 
 const ID_REACT_COLLECTION_CONTAINER = 'reactCollectionContainer';
 
-function convert(node) {
+/*function convert(node) {
 	traverse(node).forEach(function(value) { // Fat arrow destroys this
 		const key = this.key;
 		//log.info(toStr({key}));
@@ -46,7 +46,7 @@ function convert(node) {
 			}
 		}
 	});
-}
+}*/
 
 
 export function newOrEdit({
@@ -56,7 +56,20 @@ export function newOrEdit({
 	const pathParts = relPath.match(/[^/]+/g); //log.info(toStr({pathParts}));
 	const action = pathParts[1];
 	const collectionName = pathParts[2];
-	let initialValues;
+	let initialValues = {
+		name: '',
+		collector: {
+			config: {},
+			name: ''
+		},
+		cron: [{
+			month: '*',
+			dayOfMonth: '*',
+			dayOfWeek: '*',
+			minute: '*',
+			hour: '*'
+		}]
+	};
 	const connection = connect({
 		principals: [PRINCIPAL_YASE_READ]
 	});
@@ -84,9 +97,15 @@ export function newOrEdit({
 		const node = connection.get(`/collections/${collectionName}`);
 		//log.info(toStr({node}));
 
-		const {displayName, collector, cron, doCollect} = node;
-		convert(collector); // TODO Surgeon specific
-		if (collector.name === 'surgeon' && !collector.config.urls.length) {
+		const {displayName, collector, cron = [{
+			month: '*',
+			dayOfMonth: '*',
+			dayOfWeek: '*',
+			minute: '*',
+			hour: '*'
+		}], doCollect} = node;
+		//convert(collector); // TODO Surgeon specific
+		if (collector.name === 'com.enonic.app.yase.collector.surgeon' && !collector.config.urls.length) {
 			collector.config.urls.push('');
 		}
 		//log.info(toStr({collector}));
