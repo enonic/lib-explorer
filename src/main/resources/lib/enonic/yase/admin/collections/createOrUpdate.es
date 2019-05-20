@@ -6,6 +6,7 @@ import {
 } from '/lib/enonic/yase/constants';
 import {connect} from '/lib/enonic/yase/repo/connect';
 import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
+import {getCollectors, reschedule} from '/lib/enonic/yase/collection/reschedule';
 
 
 export const createOrUpdate = ({
@@ -23,9 +24,11 @@ export const createOrUpdate = ({
 	const obj = JSON.parse(json);
 	//log.info(toStr({obj}));
 
-	obj.__connection = connect({ // eslint-disable-line no-underscore-dangle
+	const connection = connect({
 		principals: [PRINCIPAL_YASE_WRITE]
 	});
+
+	obj.__connection = connection; // eslint-disable-line no-underscore-dangle
 	obj._indexConfig = {default: 'byType'};
 	obj._name = obj.name;
 	obj._parentPath = '/collections';
@@ -38,6 +41,12 @@ export const createOrUpdate = ({
 	const node = createOrModify(obj);
 	if(node) {
 		messages.push(`Collection ${obj.name} saved.`);
+		const collectors = getCollectors({connection});
+		//log.info(toStr({collectors}));
+		reschedule({
+			collectors,
+			node
+		});
 	} else {
 		messages.push(`Something went wrong when saving collection ${obj.name}!`);
 		status = 500;
