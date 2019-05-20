@@ -92,20 +92,23 @@ export function init() {
 				});
 			})
 
-			const collectors = getCollectors({connection});
-			//log.info(toStr({collectors}));
+			const cron = app.config.cron === 'true';
+			if (cron) {
+				const collectors = getCollectors({connection});
+				//log.info(toStr({collectors}));
 
-			const collectionsRes = query({
-				connection,
-				filters: addFilter({
-					filter: hasValue('doCollect', true)
-				})
-			});
-			//log.info(toStr({collectionsRes})); // huge
-			collectionsRes.hits.forEach(node => reschedule({
-				collectors,
-				node
-			}))
+				const collectionsRes = query({
+					connection,
+					filters: addFilter({
+						filter: hasValue('doCollect', true)
+					})
+				});
+				//log.info(toStr({collectionsRes})); // huge
+				collectionsRes.hits.forEach(node => reschedule({
+					collectors,
+					node
+				}))
+			}
 		});
 
 		ignoreErrors(() => {

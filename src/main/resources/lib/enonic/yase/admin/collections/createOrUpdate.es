@@ -29,7 +29,9 @@ export const createOrUpdate = ({
 	});
 
 	const parentPath = '/collections';
-	const oldNode = connection.get(`${parentPath}/${obj.name}`);
+
+	const cron = app.config.cron === 'true';
+	const oldNode = cron ? connection.get(`${parentPath}/${obj.name}`) : null;
 
 	obj.__connection = connection; // eslint-disable-line no-underscore-dangle
 	obj._indexConfig = {default: 'byType'};
@@ -44,13 +46,15 @@ export const createOrUpdate = ({
 	const node = createOrModify(obj);
 	if(node) {
 		messages.push(`Collection ${obj.name} saved.`);
-		const collectors = getCollectors({connection});
-		//log.info(toStr({collectors}));
-		reschedule({
-			collectors,
-			node,
-			oldNode
-		});
+		if (cron) {
+			const collectors = getCollectors({connection});
+			//log.info(toStr({collectors}));
+			reschedule({
+				collectors,
+				node,
+				oldNode
+			});
+		}
 	} else {
 		messages.push(`Something went wrong when saving collection ${obj.name}!`);
 		status = 500;
