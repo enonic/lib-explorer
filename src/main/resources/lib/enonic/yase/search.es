@@ -43,15 +43,26 @@ import {query as queryThesauri} from '/lib/enonic/yase/thesaurus/query';
 //──────────────────────────────────────────────────────────────────────────────
 // Private constants
 //──────────────────────────────────────────────────────────────────────────────
+
+// Used for:
+// * fields
+// * fieldValues
+// * hits
 const NODE_CACHE = newCache({
 	expire: 60 * 60, // 1 hour
 	size: 100
 });
 
+
+// Used for:
+// * aggregation queries
+// * main queries
 const QUERY_CACHE = newCache({
 	expire: 5 * 60, // 5 minutes
 	size: 100
 });
+
+// Stop-words and synonyms are not currently cached :)
 
 
 //──────────────────────────────────────────────────────────────────────────────
