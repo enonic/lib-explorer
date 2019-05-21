@@ -1,7 +1,6 @@
 import {schedule, unschedule} from '/lib/cron';
 //import {toStr} from '/lib/enonic/util';
 import {forceArray} from '/lib/enonic/util/data';
-import {run} from '/lib/xp/context';
 import {submitNamed} from '/lib/xp/task';
 
 import {
@@ -81,9 +80,8 @@ export function reschedule({
 					const jobName = `${id}:${i}`;
 					//log.info(toStr({jobName, cron}));
 					schedule({
-						name: jobName,
-						cron,
-						callback: () => run({
+						callback: () => submitNamed(taskParams),
+						context: {
 							branch: 'master', // Repository to execute the callback in.
 							repository: 'system-repo', // Name of the branch to execute the callback in.
 							user: { // User to execute the callback with.
@@ -94,7 +92,9 @@ export function reschedule({
 								PRINCIPAL_SYSTEM_ADMIN, // Needed for creating repos.
 								PRINCIPAL_YASE_WRITE
 							]
-						}, () => submitNamed(taskParams))
+						},
+						cron,
+						name: jobName
 					});
 				});
 			}
