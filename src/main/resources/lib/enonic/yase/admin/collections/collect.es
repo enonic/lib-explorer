@@ -56,9 +56,12 @@ export const collect = ({
 			_name: name,
 			collector: {
 				name: collectorName,
-				config
+				configJson: incomingConfigJson
 			}
 		} = collectionNode;
+		const config = incomingConfigJson
+			? JSON.parse(incomingConfigJson)
+			: collectionNode.collector.config;
 		log.info(toStr({name, collectorName/*, config*/}));
 
 		const collector = queryCollectors({
@@ -81,7 +84,7 @@ export const collect = ({
 		}).filter(({application}) => application === collectorName)[0];
 		//log.info(toStr({collector}));
 
-		if (resume === 'true') {
+		if (resume === 'true') { // Surgeon specific
 			config.resume = true;
 		}
 
@@ -89,9 +92,9 @@ export const collect = ({
 		//log.info(toStr({configJson}));
 
 		const submitNamedParams = {
-			name: `${collector.application}:${collector.taskName}`,
+			name: `${collector.application}:${collector.taskName}`, // Task name
 			config: {
-				name,
+				name, // Collection name
 				configJson
 			}
 		};

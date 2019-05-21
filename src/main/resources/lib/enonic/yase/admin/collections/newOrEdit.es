@@ -97,13 +97,33 @@ export function newOrEdit({
 		const node = connection.get(`/collections/${collectionName}`);
 		//log.info(toStr({node}));
 
-		const {displayName, collector, cron = [{
-			month: '*',
-			dayOfMonth: '*',
-			dayOfWeek: '*',
-			minute: '*',
-			hour: '*'
-		}], doCollect} = node;
+		const {
+			displayName,
+			collector: {
+				name: collectorName,
+				configJson,
+				config
+			},
+			cron = [{
+				month: '*',
+				dayOfMonth: '*',
+				dayOfWeek: '*',
+				minute: '*',
+				hour: '*'
+			}],
+			doCollect
+		} = node;
+
+		const collector = {
+			name: collectorName,
+			config: configJson ? JSON.parse(configJson) : config
+		};
+
+		// TODO Remove after all collections are resaved.
+		if (collector.name === 'surgeon') {
+			collector.name = 'com.enonic.app.yase.collector.surgeon';
+		}
+
 		//convert(collector); // TODO Surgeon specific
 		if (collector.name === 'com.enonic.app.yase.collector.surgeon' && !collector.config.urls.length) {
 			collector.config.urls.push('');

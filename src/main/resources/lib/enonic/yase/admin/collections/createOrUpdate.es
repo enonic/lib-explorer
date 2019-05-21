@@ -39,6 +39,11 @@ export const createOrUpdate = ({
 	obj._parentPath = parentPath;
 	obj.displayName = obj.name;
 	obj.type = NT_COLLECTION;
+
+	// ForceArray workaround:
+	//obj.json = json;
+	obj.collector.configJson = JSON.stringify(obj.collector.config);
+
 	//log.info(toStr({obj}));
 
 	let status = 200;
