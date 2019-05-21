@@ -54,7 +54,13 @@ export const Collection = ({
 		name: ''
 	}
 } = {}) => {
+	/*console.debug(toStr({
+		initialValues
+	}));*/
 	convert(initialValues);
+	/*console.debug(toStr({
+		initialValues
+	}));*/
 	const contextRef = createRef();
 	return <Ref innerRef={contextRef}>
 		<Segment basic compact style={{padding: 0}}>

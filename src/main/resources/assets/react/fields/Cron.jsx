@@ -8,7 +8,7 @@ import {
 	MoveUpButton,
 	RemoveButton
 } from '@h3t/semantic-ui-react-formik-functional/dist/index.cjs';
-import {toStr} from '../utils/toStr';
+//import {toStr} from '../utils/toStr';
 
 
 export const Cron = connect(({
@@ -24,11 +24,11 @@ export const Cron = connect(({
 		dayOfWeek: '*'
 	}])
 }) => {
-	console.debug(toStr({
+	/*console.debug(toStr({
 		component: 'Cron',
 		path,
 		value
-	}));
+	}));*/
 	return <>
 		<Header as='h2' content='Scheduling' dividing id='cron'/>
 		<Table celled compact selectable striped>
