@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/enonic/util';
 import {sanitize} from '/lib/xp/common';
 
 import {
@@ -13,6 +13,7 @@ import {connect} from '/lib/enonic/yase/repo/connect';
 import {create} from '/lib/enonic/yase/node/create';
 import {modify} from '/lib/enonic/yase/node/modify';
 import {ucFirst} from '/lib/enonic/yase/ucFirst';
+import {FieldValue} from '/lib/enonic/yase/nodeTypes/FieldValue';
 
 
 export function handleFieldsPost({
@@ -76,16 +77,16 @@ export function handleFieldsPost({
 		const valueNodeName = sanitize(value.toLowerCase());
 		const valueNodePath = `${valueNodeParentPath}/${valueNodeName}`;
 
-		const nodeParams = {
+		const fv = new FieldValue({
 			__connection: connection,
-			_indexConfig: {default: 'byType'},
 			_parentPath: valueNodeParentPath,
 			_name: valueNodeName,
 			displayName,
-			field: fieldName,
-			type: NT_FIELD_VALUE
-		};
-		const node = valueName ? modify(nodeParams) : create(nodeParams);
+			field: fieldName
+		});
+		//log.info(toStr({fv}));
+		const node = valueName ? fv.modify() : fv.create();
+
 		if(node) {
 			messages.push(`Field value with path:${valueNodePath} ${valueName ? 'modified' : 'created'}.`);
 		} else {

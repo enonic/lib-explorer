@@ -1,4 +1,8 @@
+//import {toStr} from '/lib/enonic/util';
+
+
 export function join(...paths) {
+	//log.info(toStr({paths}));
 
 	// Split the inputs into a list of path commands.
 	let parts = [];

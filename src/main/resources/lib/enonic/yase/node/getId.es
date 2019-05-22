@@ -1,13 +1,17 @@
 import {join}  from '/lib/enonic/yase/path/join';
 
 
-export const get = ({
+export function getId({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	_parentPath = '/',
-	_name = '',
+	_name,
 	path = join(_parentPath, _name),
 	key = path,
 	keys = [key]
-}) => {
-	return connection.get(...keys);
-} // get
+}) {
+	const res = connection.get(...keys);
+	if (Array.isArray(res)) {
+		return res.map(({_id}) => _id);
+	}
+	return res._id;
+}

@@ -75,6 +75,7 @@ const BABEL_USE = {
 		plugins: [
 			'@babel/plugin-proposal-object-rest-spread',
 			//'@babel/plugin-syntax-dynamic-import',
+			'@babel/plugin-syntax-throw-expressions',
 			'@babel/plugin-transform-object-assign',
 			'array-includes',
 			'transform-es2017-object-entries',
@@ -212,6 +213,7 @@ const CLIENT_JS_CONFIG = {
 						'@babel/plugin-proposal-class-properties',
 						'@babel/plugin-proposal-object-rest-spread',
 						'@babel/plugin-syntax-dynamic-import',
+						'@babel/plugin-syntax-throw-expressions',
 						'@babel/plugin-transform-object-assign',
 						['@babel/plugin-transform-runtime', {
 				      		regenerator: true
@@ -306,6 +308,7 @@ const ASSETS_ESM_CONFIG = {
 						'@babel/plugin-proposal-class-properties',
 						'@babel/plugin-proposal-object-rest-spread',
 						'@babel/plugin-syntax-dynamic-import',
+						'@babel/plugin-syntax-throw-expressions',
 						'@babel/plugin-transform-object-assign',
 						/*['@babel/plugin-transform-runtime', { // This destroys esm.
 				      		regenerator: true
