@@ -1,5 +1,6 @@
 import {
-	PRINCIPAL_YASE_READ
+	PRINCIPAL_YASE_READ,
+	RT_JSON
 } from '/lib/enonic/yase/constants';
 import {exists} from '/lib/enonic/yase/collection/exists';
 import {connect} from '/lib/enonic/yase/repo/connect';
@@ -17,6 +18,6 @@ export function get({
 				name
 			})
 		},
-		contentType: 'text/json; charset=utf-8'
+		contentType: RT_JSON
 	};
 }

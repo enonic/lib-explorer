@@ -276,7 +276,10 @@ const CLIENT_JS_CONFIG = {
 const JSX_ASSETS_GLOB = `${SRC_DIR}/${ASSETS_PATH_GLOB_BRACE}/**/*.jsx`;
 
 //const JSX_ASSETS_FILES = glob.sync(JSX_ASSETS_GLOB);
-const JSX_ASSETS_FILES = ['src/main/resources/assets/react/Collection.jsx'];
+const JSX_ASSETS_FILES = [
+	'src/main/resources/assets/react/Collection.jsx',
+	'src/main/resources/assets/react/Interfaces.jsx'
+];
 //console.log(`JSX_ASSETS_FILES:${toStr(JSX_ASSETS_FILES)}`);
 
 const ASSETS_ESM_ENTRY = dict(JSX_ASSETS_FILES.map(k => [
