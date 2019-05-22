@@ -52,7 +52,6 @@ export class CopyModal extends React.Component {
 					negative
 				/> : <Button
 					onClick={() => {
-						//this.setState({ isLoading: true });
 						fetch(`${servicesBaseUrl}/interfaceCopy?from=${name}&to=${interfaceTo}`)
 							.then(response => {
 								if (response.status === 200) {
@@ -67,6 +66,79 @@ export class CopyModal extends React.Component {
 		</Modal>
 	}
 } // class CopyModal
+
+
+export class DeleteModal extends React.Component {
+	state = {
+		deleteNameMatches: false,
+		open: false,
+		typedInterfaceName: ''
+	}
+
+	open = () => this.setState({ open: true })
+
+	close = () => {
+		this.setState({ open: false });
+		this.props.onClose();
+	}
+
+	render() {
+		const {
+			name,
+			servicesBaseUrl
+		} = this.props;
+		const {
+			deleteNameMatches,
+			typedInterfaceName
+		} = this.state;
+		return <Modal
+			closeIcon
+			onClose={this.close}
+			open={this.state.open}
+			trigger={<Button
+				compact
+				onClick={this.open}
+				size='tiny'
+				type='button'
+			><Icon color='red' name='trash alternate outline'/>Delete</Button>}
+		>
+			<Modal.Header>Delete</Modal.Header>
+			<Modal.Content>
+				<Input
+					error={!deleteNameMatches}
+					onChange={(event, {value}) => {
+						//console.debug({name, value});
+						this.setState({
+							deleteNameMatches: name === value,
+							typedInterfaceName: value
+						});
+					}}
+					placeholder='Please input name'
+					value={typedInterfaceName}
+				/>
+				{deleteNameMatches ? <Button
+					compact
+					onClick={() => {
+						fetch(`${servicesBaseUrl}/interfaceDelete?name=${name}`, {
+							method: 'POST'
+						})
+							.then(response => {
+								if (response.status === 200) {
+									this.close();
+								}
+							})
+					}}
+					type='button'
+				><Icon color='red' name='trash alternate outline'/>Delete</Button> : <Message
+					icon='warning sign'
+					header='Error'
+					content="Name doesn't match!"
+					negative
+				/>}
+			</Modal.Content>
+		</Modal>;
+	}
+} // class DeleteModal
 
 
 export class Interfaces extends React.Component {
@@ -124,7 +196,7 @@ export class Interfaces extends React.Component {
 		//console.debug(hits);
 
 		return <>
-			<Table celled compact selectable singleLine striped>
+			<Table celled collapsing compact selectable singleLine striped>
 				<Table.Header>
 					<Table.Row>
 						<Table.HeaderCell>Name</Table.HeaderCell>
@@ -135,8 +207,8 @@ export class Interfaces extends React.Component {
 					{hits.map(({displayName, name}, index) => {
 						//console.debug({displayName, name, index});
 						return <Table.Row key={index}>
-							<Table.Cell>{displayName}</Table.Cell>
-							<Table.Cell>
+							<Table.Cell collapsing>{displayName}</Table.Cell>
+							<Table.Cell collapsing>
 								<Button.Group>
 									<Button
 										as='a'
@@ -150,13 +222,11 @@ export class Interfaces extends React.Component {
 										updateInterfaces={() => this.updateInterfaces()}
 										servicesBaseUrl={servicesBaseUrl}
 									/>
-									<Button
-										as='a'
-										compact
-										href={`${TOOL_PATH}/interfaces/delete/${name}`}
-										size='tiny'
-										type='button'
-									><Icon color='red' name='trash alternate outline'/>Delete</Button>
+									<DeleteModal
+										name={name}
+										onClose={() => this.updateInterfaces()}
+										servicesBaseUrl={servicesBaseUrl}
+									/>
 								</Button.Group>
 							</Table.Cell>
 						</Table.Row>;

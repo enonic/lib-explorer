@@ -37,6 +37,10 @@ export function copy({
 	node._parentPath = '/interfaces';
 	node._name = to;
 	node.displayName = ucFirst(to);
+	//creator
+	//createdTime
+	//modifiedTime
+
 
 	const newNode = create(node);
 	if(!newNode) {

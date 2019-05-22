@@ -5,8 +5,8 @@ import {
 	TOOL_PATH
 } from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
-import {query} from '/lib/enonic/yase/interface/query';
-import {connect} from '/lib/enonic/yase/repo/connect';
+//import {query} from '/lib/enonic/yase/interface/query';
+//import {connect} from '/lib/enonic/yase/repo/connect';
 
 
 const ID_REACT_INTERFACES_CONTAINER = 'reactInterfacesContainer';
@@ -19,12 +19,12 @@ export function list({
 	},
 	path
 }) {
-	const connection = connect({principals: [PRINCIPAL_YASE_READ]});
+	/*const connection = connect({principals: [PRINCIPAL_YASE_READ]});
 	const interfaces = query({connection});
-	interfaces.hits = interfaces.hits.map(({_name: name, displayName}) => ({displayName, name}));
+	interfaces.hits = interfaces.hits.map(({_name: name, displayName}) => ({displayName, name}));*/
 
 	const propsObj = {
-		interfaces,
+		//interfaces,
 		servicesBaseUrl: serviceUrl({
 			service: 'whatever'
 		}).replace('/whatever', ''),
@@ -42,7 +42,8 @@ export function list({
 		);
 </script>`
 		],
-		main: `<table class="collapsing compact ui sortable selectable celled striped table">
+		main: `<div id="${ID_REACT_INTERFACES_CONTAINER}"/>`,
+		/*main: `<table class="collapsing compact ui sortable selectable celled striped table">
 	<thead>
 		<tr>
 			<th class="sorted ascending">Name</th>
@@ -58,8 +59,7 @@ export function list({
 			</td>
 		</tr>`).join('\n')}
 	</tbody>
-</table><a class="compact ui button" href="${TOOL_PATH}/interfaces/new"><i class="green plus icon"></i>New interface</a>
-<div id="${ID_REACT_INTERFACES_CONTAINER}"/>`,
+</table><a class="compact ui button" href="${TOOL_PATH}/interfaces/new"><i class="green plus icon"></i>New interface</a>`,*/
 		messages,
 		path,
 		status,
