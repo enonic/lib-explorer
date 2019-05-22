@@ -53,7 +53,7 @@ export function htmlResponse({
 		${headEnd.join('\n')}
 	</head>
 	<body>
-		<nav class="stackable tabular ui menu" id="top">
+		<nav class="inverted stackable tabular ui menu" id="top">
 			<div class="ui container">
 				<a class="item ${relPath === '' ? 'active' : ''}" href="${TOOL_PATH}""><i class="search icon"></i> YASE</a>
 				<a class="item ${tab === 'collections' ? 'active' : ''}" href="${TOOL_PATH}/collections"><i class="database icon"></i> Collections</a>
