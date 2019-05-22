@@ -63,8 +63,8 @@ export function buildFacets({
 	localizedFacets,
 	multiRepoConnection,
 	params,
-	query,
-	queryCache
+	queriesObj,
+	query
 }) {
 	//log.info(toStr({params}));
 	const hasValues = {}; // Built in 1st pass, used in 2nd pass.
@@ -225,9 +225,9 @@ export function buildFacets({
 			}; //log.info(toStr({queryParams}));
 
 			const queryRes = cachedQuery({
-				cache: queryCache,
 				connection: multiRepoConnection,
-				params: queryParams
+				params: queryParams,
+				queriesObj
 			});
 			//log.info(toStr({queryRes}));
 

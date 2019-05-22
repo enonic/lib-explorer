@@ -17,8 +17,10 @@ import {dlv as get} from '/lib/enonic/util/object';
 //──────────────────────────────────────────────────────────────────────────────
 import {
 	BRANCH_ID,
+	PRINCIPAL_YASE_READ,
 	REPO_ID
 } from '/lib/enonic/yase/constants';
+import {connect} from '/lib/enonic/yase/repo/connect';
 import {cachedNode} from '/lib/enonic/yase/search/cachedNode';
 import {highlight as highlightSearchResult} from '/lib/enonic/yase/search/highlight';
 
@@ -30,14 +32,26 @@ export function mapMultiRepoQueryHits({
 	resultMappings,
 	searchString
 }) {
+	const connectionsObj = {};
+
 	//log.info(toStr({searchString}));
 	return hits.map(hit => {
 		const {repoId, branch, id} = hit;
 		//log.info(toStr({repoId, branch, id}));
 
-		const node = cachedNode({
-			cache: nodeCache, repoId, branch, id
-		});
+		// Connections aren't really cached
+		const connectionKey = `${repoId}:${branch}`;
+		if (!connectionsObj[connectionKey]) {
+			connectionsObj[connectionKey] = connect({
+				repoId,
+				branch,
+				principals: [PRINCIPAL_YASE_READ]
+			});
+		}
+
+		// Hits vary a lot and as such should not be cached!
+		const node = connectionsObj[connectionKey].get(id);
+		if (!node) { return null; }
 		//log.info(toStr({node}));
 
 		const obj={};
@@ -107,5 +121,5 @@ export function mapMultiRepoQueryHits({
 		}) // resultMappings.forEach
 		//log.info(toStr({obj}));
 		return obj;
-	});
+	}).filter(x => x); // Remove missing nodes
 } // function mapMultiRepoQueryHits

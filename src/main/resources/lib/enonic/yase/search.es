@@ -47,18 +47,8 @@ import {query as queryThesauri} from '/lib/enonic/yase/thesaurus/query';
 // Used for:
 // * fields
 // * fieldValues
-// * hits
 const NODE_CACHE = newCache({
 	expire: 60 * 60, // 1 hour
-	size: 100
-});
-
-
-// Used for:
-// * aggregation queries
-// * main queries
-const QUERY_CACHE = newCache({
-	expire: 5 * 60, // 5 minutes
 	size: 100
 });
 
@@ -95,6 +85,12 @@ function convert(node) {
 // Public function
 //──────────────────────────────────────────────────────────────────────────────
 export function search(params) {
+
+	// There used to be a query cache. There was a problem when the query cache
+	// contained references to nodes that was deleted. There is still a need to
+	// avoid running the same query multiple times within a search due to facets
+	const queriesObj = {};
+
 	const {
 		clearCache = false,
 		facets: facetsParam,
@@ -113,7 +109,6 @@ export function search(params) {
 	if (clearCache) {
 		log.info('Clearing node and query cache.');
 		NODE_CACHE.clear();
-		QUERY_CACHE.clear();
 	}
 
 
@@ -249,8 +244,8 @@ export function search(params) {
 		localizedFacets,
 		multiRepoConnection: yaseReadConnections,
 		params,
-		query,
-		queryCache: QUERY_CACHE
+		queriesObj,
+		query
 	});
 
 	const queryParams = {
@@ -262,9 +257,10 @@ export function search(params) {
 	//log.info(toStr({count}));
 
 	const queryRes = cachedQuery({
-		cache: QUERY_CACHE,
+		//cache: QUERY_CACHE,
 		connection: yaseReadConnections,
-		params: queryParams
+		params: queryParams,
+		queriesObj
 	});
 	const {hits, total} = queryRes;
 	//log.info(toStr({total}));
