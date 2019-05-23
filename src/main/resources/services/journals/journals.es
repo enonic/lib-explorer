@@ -1,9 +1,9 @@
 //import {toStr} from '/lib/util';
 //import {forceArray} from '/lib/util/data';
-import {RT_JSON} from '/lib/enonic/yase/constants';
-import {query as queryJournals} from '/lib/enonic/yase/journal/query';
-import {addFilter} from '/lib/enonic/yase/query/addFilter';
-import {hasValue} from '/lib/enonic/yase/query/hasValue';
+import {RT_JSON} from '/lib/explorer/constants';
+import {query as queryJournals} from '/lib/explorer/journal/query';
+import {addFilter} from '/lib/explorer/query/addFilter';
+import {hasValue} from '/lib/explorer/query/hasValue';
 
 
 export function get({

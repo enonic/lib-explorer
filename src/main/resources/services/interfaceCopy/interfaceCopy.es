@@ -1,9 +1,9 @@
 import {
 	PRINCIPAL_YASE_WRITE,
 	RT_JSON
-} from '/lib/enonic/yase/constants';
-import {connect} from '/lib/enonic/yase/repo/connect';
-import {copy} from '/lib/enonic/yase/interface/copy';
+} from '/lib/explorer/constants';
+import {connect} from '/lib/explorer/repo/connect';
+import {copy} from '/lib/explorer/interface/copy';
 
 
 export function get({

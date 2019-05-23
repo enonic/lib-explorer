@@ -1,7 +1,7 @@
 import {toStr} from '/lib/util';
-import {RT_JSON} from '/lib/enonic/yase/constants';
-import {listCollectors} from '/lib/enonic/yase/collector/listCollectors';
-import {currentTimeMillis} from '/lib/enonic/yase/time/currentTimeMillis';
+import {RT_JSON} from '/lib/explorer/constants';
+import {listCollectors} from '/lib/explorer/collector/listCollectors';
+import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 
 
 export const get = () => ({

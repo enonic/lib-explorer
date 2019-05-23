@@ -1,9 +1,9 @@
 import {
 	PRINCIPAL_YASE_READ,
 	RT_JSON
-} from '/lib/enonic/yase/constants';
-import {exists} from '/lib/enonic/yase/interface/exists';
-import {connect} from '/lib/enonic/yase/repo/connect';
+} from '/lib/explorer/constants';
+import {exists} from '/lib/explorer/interface/exists';
+import {connect} from '/lib/explorer/repo/connect';
 
 
 export function get({

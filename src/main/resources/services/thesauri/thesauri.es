@@ -1,11 +1,11 @@
 import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 
-import {PRINCIPAL_YASE_READ, RT_JSON} from '/lib/enonic/yase/constants';
-import {connect} from '/lib/enonic/yase/repo/connect';
-import {addFilter} from '/lib/enonic/yase/query/addFilter';
-import {hasValue} from '/lib/enonic/yase/query/hasValue';
-import {query as querySynonyms} from '/lib/enonic/yase/synonym/query';
+import {PRINCIPAL_YASE_READ, RT_JSON} from '/lib/explorer/constants';
+import {connect} from '/lib/explorer/repo/connect';
+import {addFilter} from '/lib/explorer/query/addFilter';
+import {hasValue} from '/lib/explorer/query/hasValue';
+import {query as querySynonyms} from '/lib/explorer/synonym/query';
 
 
 export function get({

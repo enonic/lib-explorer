@@ -1,9 +1,9 @@
 import {
 	PRINCIPAL_YASE_READ,
 	RT_JSON
-} from '/lib/enonic/yase/constants';
-import {connect} from '/lib/enonic/yase/repo/connect';
-import {query} from '/lib/enonic/yase/interface/query';
+} from '/lib/explorer/constants';
+import {connect} from '/lib/explorer/repo/connect';
+import {query} from '/lib/explorer/interface/query';
 
 
 export function get() {

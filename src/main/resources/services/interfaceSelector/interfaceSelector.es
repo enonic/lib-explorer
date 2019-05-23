@@ -8,7 +8,7 @@ import {
 	PATH_INTERFACES,
 	PRINCIPAL_YASE_READ,
 	REPO_ID
-} from '/lib/enonic/yase/constants';
+} from '/lib/explorer/constants';
 
 
 const YASE_READ_CONNECTION = connect({

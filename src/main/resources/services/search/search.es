@@ -6,9 +6,9 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-import {search} from '/lib/enonic/yase/search';
-import {jsonError} from '/lib/enonic/yase/jsonError';
-import {jsonResponse} from '/lib/enonic/yase/jsonResponse';
+import {search} from '/lib/explorer/search';
+import {jsonError} from '/lib/explorer/jsonError';
+import {jsonResponse} from '/lib/explorer/jsonResponse';
 
 
 export function get({params}) {
