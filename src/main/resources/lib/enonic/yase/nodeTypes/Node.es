@@ -11,7 +11,7 @@ export class Node {
 		_parentPath = '/',
 		_name = '', //throw new Error('_name is a required parameter'),
 		_indexConfig = {
-			analyzer: 'document_index_default',
+			//analyzer: 'document_index_default',
 			default: 'byType'
 		},
 		displayName = ucFirst(_name),
@@ -21,9 +21,9 @@ export class Node {
 		if (!_name) {
 			throw new Error('_name is a required parameter');
 		}
-		if (!_indexConfig.analyzer) {
+		/*if (!_indexConfig.analyzer) {
 			_indexConfig.analyzer = 'document_index_default';
-		}
+		}*/
 		this.node = {
 			_parentPath,
 			_name,
