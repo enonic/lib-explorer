@@ -1,5 +1,5 @@
-//import {toStr} from '/lib/enonic/util';
-//import {forceArray} from '/lib/enonic/util/data';
+//import {toStr} from '/lib/util';
+//import {forceArray} from '/lib/util/data';
 import {RT_JSON} from '/lib/enonic/yase/constants';
 import {query as queryJournals} from '/lib/enonic/yase/journal/query';
 import {addFilter} from '/lib/enonic/yase/query/addFilter';

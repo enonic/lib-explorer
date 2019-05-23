@@ -1,16 +1,17 @@
 plugins {
 	id 'java' // Needed for assemble and build
-	//id 'maven' // When is this needed?
 	id 'maven-publish' // Provides publishToMavenLocal
-	id 'com.enonic.defaults' version '2.0.0'
-	id 'com.moowork.node' version '1.2.0'
+	id 'com.enonic.xp.base' version '2.0.0'
+	//id 'com.enonic.defaults' version '2.0.1'
+	id 'com.moowork.node' version '1.3.1'
 }
 
 
 repositories {
 	mavenLocal()
 	jcenter()
-	maven {url 'http://repo.enonic.com/public'}
+	xp.enonicRepo() // Not provided by com.enonic.defaults
+	//maven {url 'http://repo.enonic.com/public'}
 }
 
 
@@ -18,6 +19,10 @@ dependencies {
 	//compile "com.enonic.xp:script-api:${xpVersion}" // Only needed if you lib has java code
 	//compile "com.enonic.xp:core-api:${xpVersion}" // Just for apps?
 	//compile "com.enonic.xp:portal-api:${xpVersion}" // Just for apps?
+
+	//──────────────────────────────────────────────────────────────────────────
+	// Core libs (com.enonic.xp)
+	//──────────────────────────────────────────────────────────────────────────
 
 	compile "com.enonic.xp:lib-admin:${xpVersion}"
 	compile "com.enonic.xp:lib-auth:${xpVersion}"
@@ -35,13 +40,17 @@ dependencies {
 	//compile "com.enonic.xp:lib-thymeleaf:${xpVersion}"
 	compile "com.enonic.xp:lib-value:${xpVersion}"
 
-	compile 'com.enonic.lib:lib-cache:1.1.0'
-	compile 'com.enonic.lib:lib-http-client:1.0.1'
+	//──────────────────────────────────────────────────────────────────────────
+	// Other enonic libs (com.enonic.lib)
+	//──────────────────────────────────────────────────────────────────────────
+
+	compile 'com.enonic.lib:lib-cache:2.0.0'
+	compile 'com.enonic.lib:lib-http-client:2.0.0'
 	//compile 'com.enonic.lib:lib-router:1.0.0'
 	//compile 'com.enonic.lib:menu:1.3.3'
 
 	//compile 'com.enonic.lib:text-encoding:1.2.0'
-	compile 'com.enonic.lib:util:1.3.0'
+	compile 'com.enonic.lib:lib-util:2.0.0-RC1'
 
 	//compile files('../lib-cron/build/libs/lib-cron-0.1.0.jar')
 }
@@ -56,7 +65,7 @@ tasks.withType(Copy) {
 // Gradle wrapper
 //──────────────────────────────────────────────────────────────────────────────
 task wrapper(type: Wrapper) {
-	gradleVersion = '4.10.3'
+	gradleVersion = "${gradleVersion}"
 }
 
 
@@ -64,7 +73,7 @@ task wrapper(type: Wrapper) {
 // Gradle node plugin
 //──────────────────────────────────────────────────────────────────────────────
 node {
-	version '10.15.3'
+	version "${nodeVersion}"
 	download true
 }
 

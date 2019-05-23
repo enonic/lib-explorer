@@ -1,5 +1,5 @@
-import {toStr} from '/lib/enonic/util';
-import {forceArray} from '/lib/enonic/util/data';
+import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
 
 import {PRINCIPAL_YASE_READ, RT_JSON} from '/lib/enonic/yase/constants';
 import {connect} from '/lib/enonic/yase/repo/connect';

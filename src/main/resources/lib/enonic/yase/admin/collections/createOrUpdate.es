@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {
 	NT_COLLECTION,
 	PRINCIPAL_YASE_WRITE,

@@ -1,7 +1,7 @@
 //import {parse as parseCookie} from 'cookie';
 
-import {toStr} from '/lib/enonic/util';
-import {forceArray} from '/lib/enonic/util/data';
+import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
 import {assetUrl} from '/lib/xp/portal';
 import {submitNamed} from '/lib/xp/task';
 import {request as httpClientRequest} from '/lib/http-client';

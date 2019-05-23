@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {
 	JOURNALS_REPO,
 	NT_JOURNAL,

@@ -1,7 +1,7 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {hash} from '/lib/enonic/yase/string/hash';
 
 

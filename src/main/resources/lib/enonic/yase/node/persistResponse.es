@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {response as newResponse} from '/lib/enonic/yase/nodeTypes/response';
 import {createOrModify} from '/lib/enonic/yase/node/createOrModify';
 

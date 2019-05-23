@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {NT_THESAURUS} from '/lib/enonic/yase/constants';
 import {addFilter} from '/lib/enonic/yase/query/addFilter';
 import {hasValue} from '/lib/enonic/yase/query/hasValue';

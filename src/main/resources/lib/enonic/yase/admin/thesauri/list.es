@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {serviceUrl} from '/lib/xp/portal';
 
 import {
@@ -25,9 +25,10 @@ export function list({
 		principals: [PRINCIPAL_YASE_READ]
 	});
 	const {hits: thesauri} = getThesauri({connection});
-	const total = thesauri
+	//log.info(toStr({thesauri}));
+	const total = thesauri.length ? thesauri
 		.map(({synonymsCount}) => synonymsCount)
-		.reduce((accumulator, currentValue) => accumulator + currentValue);
+		.reduce((accumulator, currentValue) => accumulator + currentValue) : 0;
 
 	const propsObj = {
 		serviceUrl: serviceUrl({

@@ -7,7 +7,7 @@ import {normalize as n, parse, serialize} from 'uri-js';
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 
 
 //──────────────────────────────────────────────────────────────────────────────

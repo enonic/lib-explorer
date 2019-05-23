@@ -1,5 +1,5 @@
-//import {toStr} from '/lib/enonic/util';
-import {forceArray} from '/lib/enonic/util/data';
+import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
 
 import {addFilter} from '/lib/enonic/yase/query/addFilter';
 import {hasValue} from '/lib/enonic/yase/query/hasValue';
@@ -27,7 +27,7 @@ export function getSynonyms({
 
 	// ngram will quickly match a ton of synonyms, so don't use it.
 	const query = `fulltext('${fields}', '${cleanSearchString}', 'OR', 'standard')`; // TODO Remove workaround in Enonic XP 7
-	//log.info(toStr({query}));
+	log.info(toStr({query}));
 
 	const params = {
 		connection,

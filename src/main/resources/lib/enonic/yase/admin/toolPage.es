@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {serviceUrl} from '/lib/xp/portal';
 
 import {PRINCIPAL_YASE_READ} from '/lib/enonic/yase/constants';

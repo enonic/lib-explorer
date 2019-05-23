@@ -1,5 +1,5 @@
-//import {toStr} from '/lib/enonic/util';
-import {forceArray} from '/lib/enonic/util/data';
+//import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
 import {serviceUrl} from '/lib/xp/portal';
 
 import {

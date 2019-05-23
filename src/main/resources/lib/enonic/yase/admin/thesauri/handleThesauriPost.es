@@ -1,5 +1,5 @@
-//import {toStr} from '/lib/enonic/util';
-import {isString} from '/lib/enonic/util/value';
+//import {toStr} from '/lib/util';
+import {isString} from '/lib/util/value';
 
 import {
 	//getMultipartForm,

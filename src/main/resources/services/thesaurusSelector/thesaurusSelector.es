@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/util';
 import {connect} from '/lib/xp/node';
 
 import {BRANCH_ID, PACKAGE, NT_THESAURUS, REPO_ID} from '/lib/enonic/yase/constants';

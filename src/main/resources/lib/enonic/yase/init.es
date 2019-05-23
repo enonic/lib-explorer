@@ -1,8 +1,8 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (included in jar via gradle dependencies)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/enonic/util';
-import {forceArray} from '/lib/enonic/util/data';
+//import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
 import {addMembers, createRole, createUser} from '/lib/xp/auth';
 import {getCollectors, reschedule} from '/lib/enonic/yase/collection/reschedule';
 

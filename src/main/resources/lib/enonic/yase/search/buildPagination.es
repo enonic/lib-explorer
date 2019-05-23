@@ -1,8 +1,8 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/enonic/util';
-import {forceArray} from '/lib/enonic/util/data';
+//import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
 
 import {localize} from '/lib/xp/i18n';
 

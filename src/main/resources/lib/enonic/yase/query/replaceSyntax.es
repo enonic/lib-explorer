@@ -1,4 +1,4 @@
-//import {isSet} from '/lib/enonic/util/value';
+//import {isSet} from '/lib/util/value';
 
 
 // Inlined to ava tests can run

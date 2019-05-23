@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {
 	BRANCH_ID,
 	PRINCIPAL_YASE_READ,

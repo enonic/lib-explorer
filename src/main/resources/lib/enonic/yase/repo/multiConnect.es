@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/util';
 //import {getUser} from '/lib/xp/auth';
 import {get as getContext} from '/lib/xp/context';
 import {multiRepoConnect} from '/lib/xp/node';

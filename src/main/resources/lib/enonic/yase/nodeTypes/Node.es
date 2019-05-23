@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 
 import {ucFirst} from '/lib/enonic/yase/ucFirst';
 import {create} from '/lib/enonic/yase/node/create';

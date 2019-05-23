@@ -1,5 +1,5 @@
-//import {toStr} from '/lib/enonic/util';
-import {dlv} from '/lib/enonic/util/object';
+//import {toStr} from '/lib/util';
+import {dlv} from '/lib/util/object';
 import {
 	BRANCH_ID,
 	DEFAULT_FIELDS,

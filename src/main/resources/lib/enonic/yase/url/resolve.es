@@ -6,7 +6,7 @@ import {resolve as _resolve} from 'uri-js';
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP imports (included in jar via gradle dependencies)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 
 
 //──────────────────────────────────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {serviceUrl} from '/lib/xp/portal';
 
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';

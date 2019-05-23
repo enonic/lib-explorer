@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/util';
 import {RT_JSON} from '/lib/enonic/yase/constants';
 import {listCollectors} from '/lib/enonic/yase/collector/listCollectors';
 import {currentTimeMillis} from '/lib/enonic/yase/time/currentTimeMillis';

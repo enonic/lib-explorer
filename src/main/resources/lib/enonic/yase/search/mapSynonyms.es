@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/util';
 
 // Inlined so ava tests can run without Enonic XP:
 const forceArray = data => Array.isArray(data) ? data : [data];

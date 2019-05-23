@@ -1,6 +1,6 @@
 import {schedule, unschedule} from '/lib/cron';
-//import {toStr} from '/lib/enonic/util';
-import {forceArray} from '/lib/enonic/util/data';
+//import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
 import {submitNamed} from '/lib/xp/task';
 
 import {

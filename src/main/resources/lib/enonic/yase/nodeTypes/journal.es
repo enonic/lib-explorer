@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/util';
 import {instant} from '/lib/xp/value';
 import {
 	JOURNALS_REPO,

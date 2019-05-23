@@ -1,7 +1,7 @@
 //import traverse from 'traverse';
 
-import {toStr} from '/lib/enonic/util';
-import {isSet} from '/lib/enonic/util/value';
+import {toStr} from '/lib/util';
+import {isSet} from '/lib/util/value';
 import {assetUrl} from '/lib/xp/portal';
 
 import {connect} from '/lib/enonic/yase/repo/connect';

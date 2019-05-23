@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {getUser} from '/lib/xp/auth';
 import {sanitize} from '/lib/xp/common';
 //import {get as getContext} from '/lib/xp/context';

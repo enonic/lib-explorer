@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {request as httpClientRequest} from '/lib/http-client';
 import {sleep} from '/lib/xp/task';
 

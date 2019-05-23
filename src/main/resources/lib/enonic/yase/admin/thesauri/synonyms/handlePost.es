@@ -1,4 +1,4 @@
-import {toStr} from '/lib/enonic/util';
+import {toStr} from '/lib/util';
 
 import {
 	PRINCIPAL_YASE_WRITE,
@@ -6,7 +6,7 @@ import {
 } from '/lib/enonic/yase/constants';
 import {create} from '/lib/enonic/yase/node/create';
 import {modify} from '/lib/enonic/yase/node/modify';
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {synonym} from '/lib/enonic/yase/nodeTypes/synonym';
 import {connect} from '/lib/enonic/yase/repo/connect';
 

@@ -9,9 +9,9 @@ import set from 'set-value';
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/enonic/util';
-import {forceArray} from '/lib/enonic/util/data';
-import {dlv} from '/lib/enonic/util/object';
+//import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
+import {dlv} from '/lib/util/object';
 import {sanitize} from '/lib/xp/common';
 
 

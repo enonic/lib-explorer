@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {list as listTasks} from '/lib/xp/task';
 
 import {PRINCIPAL_YASE_READ/*, TASK_COLLECT*/} from '/lib/enonic/yase/constants';

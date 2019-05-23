@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {TOOL_PATH} from '/lib/enonic/yase/constants';
 import {htmlResponse} from '/lib/enonic/yase/admin/htmlResponse';
 import {menu} from '/lib/enonic/yase/admin/collections/menu';

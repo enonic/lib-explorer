@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 
 import {join} from '/lib/enonic/yase/path/join';
 import {map} from '/lib/enonic/yase/stopWords/map';

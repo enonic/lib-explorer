@@ -1,9 +1,9 @@
 import traverse from 'traverse';
 import generateUuidv4 from 'uuid/v4';
 
-//import {toStr} from '/lib/enonic/util';
-import {forceArray} from '/lib/enonic/util/data';
-import {isString} from '/lib/enonic/util/value';
+//import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
+import {isString} from '/lib/util/value';
 import {assetUrl} from '/lib/xp/portal';
 
 import {

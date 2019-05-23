@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {NT_FIELD_VALUE} from '/lib/enonic/yase/constants';
 import {Node} from '/lib/enonic/yase/nodeTypes/Node';
 import {getReference} from '/lib/enonic/yase/node/getReference';

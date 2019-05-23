@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/enonic/util';
+//import {toStr} from '/lib/util';
 import {reference} from '/lib/xp/value';
 import {join}  from '/lib/enonic/yase/path/join';
 

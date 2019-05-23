@@ -1,4 +1,4 @@
-import {forceArray} from '/lib/enonic/util/data';
+import {forceArray} from '/lib/util/data';
 
 
 export function flattenSynonyms({

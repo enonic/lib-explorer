@@ -1,4 +1,4 @@
-import {isString} from '/lib/enonic/util/value';
+import {isString} from '/lib/util/value';
 
 
 function isFunction(value) {
