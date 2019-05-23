@@ -32,8 +32,8 @@ export const list = ({
 		<tr>
 			<th class="sorted ascending">Name</th>
 			<th>Documents</th>
-			<th class="no-sort">Interfaces</th>
 			<th>Collect</th>
+			<th class="no-sort">Interfaces</th>
 			<!--th class="no-sort">Collector</th-->
 			<th class="no-sort">Action(s)</th>
 		</tr>
@@ -42,7 +42,7 @@ export const list = ({
 		${collections.hits.map(({
 		_name: name,
 		displayName,
-		doCollect,
+		doCollect = false,
 		collector: {
 			name: collectorName = ''
 		} = {}
@@ -58,7 +58,7 @@ export const list = ({
 			<td>${usedInInterfaces({
 		connection: readConnection,
 		name
-	}).join(', ')}</td>
+	}).join(', ')||''}</td>
 			<!--td>${collectorName}</td-->
 			<td>
 				<a class="tiny compact ui button" href="${TOOL_PATH}/collections/edit/${name}"><i class="blue edit icon"></i>Edit</a>
