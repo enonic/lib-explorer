@@ -120,12 +120,15 @@ export function newOrEdit({
 		};
 
 		// TODO Remove after all collections are resaved.
-		if (collector.name === 'surgeon') {
-			collector.name = 'com.enonic.app.yase.collector.surgeon';
+		if (
+			collector.name === 'surgeon'
+			|| collector.name === 'com.enonic.app.yase.collector.surgeon'
+		) {
+			collector.name = 'com.enonic.app.explorer.collector.surgeon';
 		}
 
 		//convert(collector); // TODO Surgeon specific
-		if (collector.name === 'com.enonic.app.yase.collector.surgeon' && !collector.config.urls.length) {
+		if (collector.name === 'com.enonic.app.explorer.collector.surgeon' && !collector.config.urls.length) {
 			collector.config.urls.push('');
 		}
 		//log.info(toStr({collector}));
