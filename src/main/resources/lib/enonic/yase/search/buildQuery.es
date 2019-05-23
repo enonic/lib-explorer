@@ -42,7 +42,7 @@ export function buildQuery({
 	let query = '';
 	switch (type) {
 	case 'fulltext':
-		query = `fulltext(${buildFields(params.fields)}, '${searchString}', '${operator}', 'standard')`; // TODO Remove workaround in Enonic XP 7
+		query = `fulltext(${buildFields(params.fields)}, '${searchString}', '${operator}')`;
 		break;
 	case 'ngram':
 		query = `ngram(${buildFields(params.fields)}, '${searchString}', '${operator}')`;
@@ -70,7 +70,7 @@ export function buildQuery({
 		});
 
 		query = `(${
-			Object.keys(flattened).map(score => `fulltext(${buildFields(params.fields, score)}, '${flattened[score].join(' ')}', 'OR', 'standard')`).join(' OR ')
+			Object.keys(flattened).map(score => `fulltext(${buildFields(params.fields, score)}, '${flattened[score].join(' ')}', 'OR')`).join(' OR ')
 		})`;*/
 
 		const flattenedSynonyms = flattenSynonyms({
@@ -79,7 +79,7 @@ export function buildQuery({
 		}).map(s => `"${s}"`);
 		//log.info(toStr({flattenedSynonyms}));
 
-		query = `fulltext(${buildFields(params.fields)}, '${flattenedSynonyms.join(' ')}', 'OR', 'standard')`; // TODO Remove workaround in Enonic XP 7
+		query = `fulltext(${buildFields(params.fields)}, '${flattenedSynonyms.join(' ')}', 'OR')`;
 		break;
 	case 'group':
 		query = `(${params.expressions
