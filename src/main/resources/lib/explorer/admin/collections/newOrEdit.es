@@ -184,11 +184,6 @@ export function newOrEdit({
 	const propsJson = JSON.stringify(propsObj);
 	//log.info(toStr({propsJson}));
 
-	const collectorUri = assetUrl({
-		application: 'com.enonic.app.yase.collector.uptodate',
-		path: 'react/Collector.esm.js'
-	});
-
 	return htmlResponse({
 		bodyBegin: [
 			menu({path})
