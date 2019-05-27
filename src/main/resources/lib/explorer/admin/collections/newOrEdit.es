@@ -89,7 +89,18 @@ export function newOrEdit({
 			value: application
 		};
 	});
-	//log.info(toStr({collectorsAppToUri}));
+	log.info(toStr({collectorsAppToUri}));
+	let status = 200;
+	const messages = [];
+	if (!collectorOptions.length) {
+		status = 500;
+		messages.push(`There are no collectors installed!`);
+		return {
+			redirect: `${TOOL_PATH}/collections/list?${
+				messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
+			}&status=${status}`
+		}
+	}
 
 	if (action === 'edit') {
 		//log.info(toStr({collectionName}));
@@ -126,6 +137,17 @@ export function newOrEdit({
 		) {
 			collector.name = 'com.enonic.app.explorer.collector.surgeon';
 		}
+
+		if (!collectorsAppToUri[collector.name]) {
+			status = 500;
+			messages.push(`${collector.name} is currently not installed!`);
+			return {
+				redirect: `${TOOL_PATH}/collections/list?${
+					messages.map(m => `messages=${encodeURIComponent(m)}`).join('&')
+				}&status=${status}`
+			}
+		}
+
 
 		//convert(collector); // TODO Surgeon specific
 		if (collector.name === 'com.enonic.app.explorer.collector.surgeon' && !collector.config.urls.length) {
