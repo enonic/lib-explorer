@@ -28,5 +28,5 @@ export function register({
 		displayName,
 		type: NT_COLLECTOR
 	};
-	createOrModify(params);
+	return createOrModify(params);
 }
