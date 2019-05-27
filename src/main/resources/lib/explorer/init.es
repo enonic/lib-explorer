@@ -12,20 +12,24 @@ import {getCollectors, reschedule} from '/lib/explorer/collection/reschedule';
 //──────────────────────────────────────────────────────────────────────────────
 import {
 	DEFAULT_FIELDS,
-	JOURNALS_REPO,
-	PRINCIPAL_YASE_WRITE,
-	ROLE_YASE_ADMIN,
-	ROLE_YASE_READ,
-	ROLE_YASE_WRITE,
-	USER_YASE_JOB_RUNNER_NAME,
-	USER_YASE_JOB_RUNNER_USERSTORE,
-	USER_YASE_JOB_RUNNER_KEY
-} from '/lib/explorer/constants';
+	PRINCIPAL_YASE_WRITE
+} from '/lib/explorer/model/1/constants';
+
+import {
+	ROLES,
+	USERS,
+	REPOSITORIES,
+	field
+} from '/lib/explorer/model/1/index';
+
+//import {field} from '/lib/explorer/nodeTypes/field';
+//import {field} from '/lib/explorer/model/2/nodeTypes/com.enonic.app.explorer.field';
+
+
 import {ignoreErrors} from '/lib/explorer/ignoreErrors';
 import {init as initRepo} from '/lib/explorer/repo/init';
 import {connect} from '/lib/explorer/repo/connect';
 import {create} from '/lib/explorer/node/create';
-import {field} from '/lib/explorer/nodeTypes/field';
 import {runAsSu} from '/lib/explorer/runAsSu';
 import {query} from '/lib/explorer/collection/query';
 import {addFilter} from '/lib/explorer/query/addFilter';
@@ -34,46 +38,31 @@ import {hasValue} from '/lib/explorer/query/hasValue';
 
 export function init() {
 	runAsSu(() => {
-		ignoreErrors(() => {
+		ROLES.forEach(({name, displayName, description}) => ignoreErrors(() => {
 			createRole({
-				name: ROLE_YASE_ADMIN,
-				displayName: 'YASE Administrator',
-				description: 'This role gives permissions to the YASE Admin application.'
+				name,
+				displayName,
+				description
 			});
-		});
+		}));
 
-		ignoreErrors(() => {
-			createRole({
-				name: ROLE_YASE_WRITE,
-				displayName: 'YASE Repos Write Access',
-				description: 'This role gives permissions to READ, CREATE, MODIFY and DELETE in repos created by the YASE Administrator app.'
-			});
-		});
-
-		ignoreErrors(() => {
-			createRole({
-				name: ROLE_YASE_READ,
-				displayName: 'YASE Repos Read Access',
-				description: 'This role gives permissions to READ in repos created by the YASE Administrator app.'
-			});
-		});
-
-		ignoreErrors(() => {
+		USERS.forEach(({name, displayName, userStore, roles = []}) => ignoreErrors(() => {
 			createUser({
-				displayName: 'YASE Job runner',
-				//email: 'yase@example.com', // email is optional
-				name: USER_YASE_JOB_RUNNER_NAME,
-				userStore: USER_YASE_JOB_RUNNER_USERSTORE
+				name,
+				displayName,
+				userStore
 			});
-		});
+			roles.forEach(role => addMembers(`role:${role}`, [`user:${userStore}:${name}`]))
+		}));
+
+		REPOSITORIES.forEach(({id, rootPermissions}) => ignoreErrors(() => {
+			initRepo({
+				repoId: id,
+				rootPermissions
+			});
+		}));
 
 		ignoreErrors(() => {
-			addMembers(`role:${ROLE_YASE_WRITE}`, [USER_YASE_JOB_RUNNER_KEY]);
-			addMembers(`role:${ROLE_YASE_READ}`, [USER_YASE_JOB_RUNNER_KEY]);
-		});
-
-		ignoreErrors(() => {
-			initRepo();
 			const connection = connect({principals:[PRINCIPAL_YASE_WRITE]});
 			DEFAULT_FIELDS.forEach(({
 				_name,
@@ -81,11 +70,11 @@ export function init() {
 				key
 			}) => {
 				const params = field({
-					__connection: connection,
 					_name,
 					displayName,
 					key
 				});
+				params.__connection = connection; // eslint-disable-line no-underscore-dangle
 				//log.info(toStr({params}));
 				ignoreErrors(() => {
 					create(params);
@@ -111,10 +100,5 @@ export function init() {
 			}
 		});
 
-		ignoreErrors(() => {
-			initRepo({
-				repoId: JOURNALS_REPO
-			});
-		});
 	}); // runAsSu
 } // function init

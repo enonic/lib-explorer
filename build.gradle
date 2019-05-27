@@ -62,14 +62,6 @@ tasks.withType(Copy) {
 
 
 //──────────────────────────────────────────────────────────────────────────────
-// Gradle wrapper
-//──────────────────────────────────────────────────────────────────────────────
-task wrapper(type: Wrapper) {
-	gradleVersion = "${gradleVersion}"
-}
-
-
-//──────────────────────────────────────────────────────────────────────────────
 // Gradle node plugin
 //──────────────────────────────────────────────────────────────────────────────
 node {
@@ -110,7 +102,7 @@ processResources.mustRunAfter webpack
 processResources.dependsOn webpack
 
 
-/*publishing {
+publishing {
 	publications {
 		mavenJava( MavenPublication ) {
 			from components.java
@@ -118,7 +110,8 @@ processResources.dependsOn webpack
 	}
 	repositories {
 		maven {
-			url 'http://repo.enonic.net/artifactory/public'
+			//url 'http://repo.enonic.net/artifactory/public'
+			mavenLocal()
 		}
 	}
-}*/
+}

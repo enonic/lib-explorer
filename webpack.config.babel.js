@@ -120,10 +120,10 @@ const SERVER_JS_CONFIG = {
 		libraryTarget: 'commonjs'
 	}, // output
 	resolve: {
-		alias: {
+		/*alias: {
 			'/content-types': path.resolve(__dirname, SRC_DIR, 'site/content-types/index.es'),
 			'/lib': path.resolve(__dirname, SRC_DIR, 'lib')
-		},
+		},*/
 		extensions: ['.es', '.js', '.json']
 	}, // resolve
 	stats: STATS
