@@ -30,7 +30,7 @@ import {runAsSu} from '/lib/explorer/runAsSu';
 import {query} from '/lib/explorer/collection/query';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
-import {migrate} from '/lib/explorer/migrations/2/index';
+//import {migrate} from '/lib/explorer/migrations/2/index';
 
 
 export function init() {
@@ -99,5 +99,5 @@ export function init() {
 		});
 
 	}); // runAsSu
-	migrate();
+	//migrate();
 } // function init

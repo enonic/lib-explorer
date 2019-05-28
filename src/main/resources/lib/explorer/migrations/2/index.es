@@ -45,7 +45,9 @@
 //import {thesauri} from '/lib/explorer/migrations/2/thesauri';
 //import {synonyms} from '/lib/explorer/migrations/2/synonyms';
 //import {fields} from '/lib/explorer/migrations/2/fields';
-import {fieldValues} from '/lib/explorer/migrations/2/fieldValues';
+//import {fieldValues} from '/lib/explorer/migrations/2/fieldValues';
+//import {collections} from '/lib/explorer/migrations/2/collections';
+import {interfaces} from '/lib/explorer/migrations/2/interfaces';
 
 
 export function migrate() {
@@ -53,5 +55,7 @@ export function migrate() {
 	//thesauri();
 	//synonyms();
 	//fields();
-	fieldValues();
+	//fieldValues();
+	//collections();
+	interfaces();
 }
