@@ -37,11 +37,17 @@ export class Status extends React.Component {
 		this.interval = setInterval(() => {
 			this.setState({ isLoading: true });
 			fetch(serviceUrl)
-	      		.then(response => response.json())
-	      		.then(data => this.setState({
-					collectors: data,
-					isLoading: false
-				}));
+	      		.then(response => {
+					//console.debug(response);
+					return response.json()
+				})
+	      		.then(data => {
+					//console.debug(data);
+					return this.setState({
+						collectors: data,
+						isLoading: false
+					});
+				});
 		}, 1000);
   	}
 
