@@ -2,13 +2,13 @@ import {toStr} from '/lib/util';
 import {sanitize} from '/lib/xp/common';
 
 import {
-	BRANCH_ID,
+	BRANCH_ID_EXPLORER,
 	NT_FIELD,
 	NT_FIELD_VALUE,
-	PRINCIPAL_YASE_WRITE,
-	REPO_ID,
+	PRINCIPAL_EXPLORER_WRITE,
+	REPO_ID_EXPLORER,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {create} from '/lib/explorer/node/create';
 import {modify} from '/lib/explorer/node/modify';
@@ -29,9 +29,9 @@ export function handleFieldsPost({
 	//log.info(toStr({fieldName, action, valueName, valueAction}));
 
 	const connection = connect({
-		repoId: REPO_ID,
-		branch: BRANCH_ID,
-		principals: [PRINCIPAL_YASE_WRITE]
+		repoId: REPO_ID_EXPLORER,
+		branch: BRANCH_ID_EXPLORER,
+		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});
 
 	const messages = [];

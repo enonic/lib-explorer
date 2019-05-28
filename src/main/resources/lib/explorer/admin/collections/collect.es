@@ -6,16 +6,16 @@ import {assetUrl} from '/lib/xp/portal';
 import {submitNamed} from '/lib/xp/task';
 import {request as httpClientRequest} from '/lib/http-client';
 import {
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {get as getCollection} from '/lib/explorer/collection/get';
 import {query as queryCollectors} from '/lib/explorer/collector/query';
 import {getTasksWithPropertyValue} from '/lib/explorer/task/getTasksWithPropertyValue';
 
 
-//import {TASK_COLLECT} from '/lib/explorer/constants';
+//import {TASK_COLLECT} from '/lib/explorer/model/2/constants';
 
 
 
@@ -36,7 +36,10 @@ export const collect = ({
 	const messages = [];
 	let status = 200;
 
-	const runningTasksWithName = getTasksWithPropertyValue({value: collectionName, state: 'RUNNING'});
+	const runningTasksWithName = getTasksWithPropertyValue({
+		value: collectionName,
+		state: 'RUNNING'
+	});
 	if (runningTasksWithName.length) {
 		const alreadyRunningtaskId = runningTasksWithName[0].id;
 		status = 500;
@@ -44,7 +47,7 @@ export const collect = ({
 		//log.info(toStr({alreadyRunningtaskId}));
 	} else {
 		const connection = connect({
-			principals: [PRINCIPAL_YASE_READ]
+			principals: [PRINCIPAL_EXPLORER_READ]
 		});
 		const collectionNode = getCollection({
 			connection,

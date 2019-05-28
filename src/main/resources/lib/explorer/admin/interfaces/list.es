@@ -1,9 +1,9 @@
 import {assetUrl, serviceUrl} from '/lib/xp/portal';
 
 import {
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
 //import {query} from '/lib/explorer/interface/query';
 //import {connect} from '/lib/explorer/repo/connect';
@@ -19,7 +19,7 @@ export function list({
 	},
 	path
 }) {
-	/*const connection = connect({principals: [PRINCIPAL_YASE_READ]});
+	/*const connection = connect({principals: [PRINCIPAL_EXPLORER_READ]});
 	const interfaces = query({connection});
 	interfaces.hits = interfaces.hits.map(({_name: name, displayName}) => ({displayName, name}));*/
 

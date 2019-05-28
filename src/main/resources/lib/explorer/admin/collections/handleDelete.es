@@ -1,9 +1,9 @@
 import {
-	BRANCH_ID,
-	REPO_ID,
-	PRINCIPAL_YASE_WRITE,
+	BRANCH_ID_EXPLORER,
+	REPO_ID_EXPLORER,
+	PRINCIPAL_EXPLORER_WRITE,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 
 
@@ -27,9 +27,9 @@ export const handleDelete = ({
 		status = 400;
 	} else {
 		const connection = connect({
-			repoId: REPO_ID,
-			branch: BRANCH_ID,
-			principals: [PRINCIPAL_YASE_WRITE]
+			repoId: REPO_ID_EXPLORER,
+			branch: BRANCH_ID_EXPLORER,
+			principals: [PRINCIPAL_EXPLORER_WRITE]
 		});
 		const nodePath = `/collections/${collectionName}`;
 		const deleteRes = connection.delete(nodePath);

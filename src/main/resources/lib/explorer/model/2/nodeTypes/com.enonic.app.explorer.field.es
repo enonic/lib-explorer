@@ -1,5 +1,5 @@
-import {NT_FIELD} from '../constants';
-import {node} from './node';
+import {NT_FIELD} from '/lib/explorer/model/2/constants';
+import {node} from '/lib/explorer/model/2/nodeTypes/node';
 
 
 export function field({

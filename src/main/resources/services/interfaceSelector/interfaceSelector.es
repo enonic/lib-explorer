@@ -2,19 +2,19 @@ import {toStr} from '/lib/util';
 import {connect} from '/lib/xp/node';
 
 import {
-	BRANCH_ID,
+	BRANCH_ID_EXPLORER,
 	NT_INTERFACE,
 	PACKAGE,
 	PATH_INTERFACES,
-	PRINCIPAL_YASE_READ,
-	REPO_ID
-} from '/lib/explorer/constants';
+	PRINCIPAL_EXPLORER_READ,
+	REPO_ID_EXPLORER
+} from '/lib/explorer/model/2/constants';
 
 
 const YASE_READ_CONNECTION = connect({
-	repoId: REPO_ID,
-	branch: BRANCH_ID,
-	principals: [PRINCIPAL_YASE_READ]
+	repoId: REPO_ID_EXPLORER,
+	branch: BRANCH_ID_EXPLORER,
+	principals: [PRINCIPAL_EXPLORER_READ]
 });
 
 

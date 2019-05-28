@@ -2,9 +2,9 @@
 import {serviceUrl} from '/lib/xp/portal';
 
 import {
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
 import {menu} from '/lib/explorer/admin/thesauri/menu';
 import {connect} from '/lib/explorer/repo/connect';
@@ -22,7 +22,7 @@ export function list({
 	path
 }) {
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_READ]
+		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 	const {hits: thesauri} = getThesauri({connection});
 	//log.info(toStr({thesauri}));

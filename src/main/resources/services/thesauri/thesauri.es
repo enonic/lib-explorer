@@ -1,7 +1,7 @@
 import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 
-import {PRINCIPAL_YASE_READ, RT_JSON} from '/lib/explorer/constants';
+import {PRINCIPAL_EXPLORER_READ, RT_JSON} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
@@ -45,7 +45,7 @@ export function get({
 	}
 
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_READ]
+		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 	const count = intPerPage;
 	const result = querySynonyms({

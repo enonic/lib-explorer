@@ -1,11 +1,11 @@
 //import {toStr} from '/lib/util';
 import {
-	BRANCH_ID,
+	BRANCH_ID_EXPLORER,
 	NT_INTERFACE,
-	PRINCIPAL_YASE_WRITE,
+	PRINCIPAL_EXPLORER_WRITE,
 	TOOL_PATH,
-	REPO_ID
-} from '/lib/explorer/constants';
+	REPO_ID_EXPLORER
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {create} from '/lib/explorer/node/create';
 import {modify} from '/lib/explorer/node/modify';
@@ -22,9 +22,9 @@ export function handlePost({
 	//log.info(toStr({params, path, relPath, pathParts, action, interfaceName}));
 
 	const connection = connect({
-		repoId: REPO_ID,
-		branch: BRANCH_ID,
-		principals: [PRINCIPAL_YASE_WRITE]
+		repoId: REPO_ID_EXPLORER,
+		branch: BRANCH_ID_EXPLORER,
+		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});
 
 	const messages = [];

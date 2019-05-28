@@ -1,6 +1,6 @@
 //import {toStr} from '/lib/util';
 //import {forceArray} from '/lib/util/data';
-import {RT_JSON} from '/lib/explorer/constants';
+import {RT_JSON} from '/lib/explorer/model/2/constants';
 import {query as queryJournals} from '/lib/explorer/journal/query';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';

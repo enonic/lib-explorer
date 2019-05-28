@@ -1,9 +1,9 @@
 import {toStr} from '/lib/util';
 
 import {
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {menu} from '/lib/explorer/admin/collections/menu';
 import {getDocumentCount} from '/lib/explorer/collection/getDocumentCount';
 import {query} from '/lib/explorer/collection/query';
@@ -20,7 +20,7 @@ export const list = ({
 	},
 	path
 }) => {
-	const readConnection = connect({principals: PRINCIPAL_YASE_READ});
+	const readConnection = connect({principals: PRINCIPAL_EXPLORER_READ});
 
 	const collectorsAppObj = {};
 	const collectors = queryCollectors({

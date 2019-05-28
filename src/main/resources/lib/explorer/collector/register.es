@@ -1,8 +1,8 @@
 import {
 	NT_COLLECTOR,
-	PRINCIPAL_YASE_WRITE,
-	USER_YASE_JOB_RUNNER_KEY
-} from '/lib/explorer/constants';
+	PRINCIPAL_EXPLORER_WRITE,
+	USER_EXPLORER_APP_KEY
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {createOrModify} from '/lib/explorer/node/createOrModify';
 
@@ -14,12 +14,12 @@ export function register({
 	displayName
 }) {
 	const yaseWriteConnection = connect({
-		principals: [PRINCIPAL_YASE_WRITE]
+		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});
 	const params = {
 		__connection: yaseWriteConnection,
 		__user: {
-			key: USER_YASE_JOB_RUNNER_KEY
+			key: USER_EXPLORER_APP_KEY
 		},
 		_parentPath: '/collectors',
 		_name: appName,

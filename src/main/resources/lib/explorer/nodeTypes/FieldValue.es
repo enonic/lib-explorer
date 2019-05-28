@@ -1,5 +1,5 @@
 //import {toStr} from '/lib/util';
-import {NT_FIELD_VALUE} from '/lib/explorer/constants';
+import {NT_FIELD_VALUE} from '/lib/explorer/model/2/constants';
 import {Node} from '/lib/explorer/nodeTypes/Node';
 import {getReference} from '/lib/explorer/node/getReference';
 

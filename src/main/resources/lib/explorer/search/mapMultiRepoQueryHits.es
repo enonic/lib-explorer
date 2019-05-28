@@ -16,10 +16,10 @@ import {dlv as get} from '/lib/util/object';
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {
-	BRANCH_ID,
-	PRINCIPAL_YASE_READ,
-	REPO_ID
-} from '/lib/explorer/constants';
+	BRANCH_ID_EXPLORER,
+	PRINCIPAL_EXPLORER_READ,
+	REPO_ID_EXPLORER
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {cachedNode} from '/lib/explorer/search/cachedNode';
 import {highlight as highlightSearchResult} from '/lib/explorer/search/highlight';
@@ -45,7 +45,7 @@ export function mapMultiRepoQueryHits({
 			connectionsObj[connectionKey] = connect({
 				repoId,
 				branch,
-				principals: [PRINCIPAL_YASE_READ]
+				principals: [PRINCIPAL_EXPLORER_READ]
 			});
 		}
 
@@ -104,10 +104,10 @@ export function mapMultiRepoQueryHits({
 						let tagNode = {displayName: name};
 						try {
 							tagNode = cachedNode({
-								cache: nodeCache, repoId: REPO_ID, branch: BRANCH_ID, id: path
+								cache: nodeCache, repoId: REPO_ID_EXPLORER, branch: BRANCH_ID_EXPLORER, id: path
 							});
 						} catch (e) {
-							log.error(`Could not find node ${REPO_ID}:${BRANCH_ID}:${path}`);
+							log.error(`Could not find node ${REPO_ID_EXPLORER}:${BRANCH_ID_EXPLORER}:${path}`);
 						}
 						return {
 							displayName: tagNode.displayName,

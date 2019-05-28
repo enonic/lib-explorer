@@ -1,6 +1,6 @@
 //import {toStr} from '/lib/util';
 
-import {PRINCIPAL_YASE_READ, TOOL_PATH} from '/lib/explorer/constants';
+import {PRINCIPAL_EXPLORER_READ, TOOL_PATH} from '/lib/explorer/model/2/constants';
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
 import {connect} from '/lib/explorer/repo/connect';
 import {query as queryStopWords} from '/lib/explorer/stopWords/query';
@@ -14,7 +14,7 @@ export const list = ({
 	path
 }) => {
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_READ]
+		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 	const stopWords = queryStopWords({connection});
 	//log.info(toStr({stopWords}));

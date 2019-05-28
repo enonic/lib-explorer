@@ -1,7 +1,7 @@
 import {
-	PRINCIPAL_YASE_WRITE,
+	PRINCIPAL_EXPLORER_WRITE,
 	RT_JSON
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {copy} from '/lib/explorer/interface/copy';
 
@@ -15,7 +15,7 @@ export function get({
 	try {
 		copy({
 			connection: connect({
-				principals: [PRINCIPAL_YASE_WRITE]
+				principals: [PRINCIPAL_EXPLORER_WRITE]
 			}),
 			from,
 			to

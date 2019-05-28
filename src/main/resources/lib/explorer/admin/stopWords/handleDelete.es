@@ -1,7 +1,7 @@
 import {
-	PRINCIPAL_YASE_WRITE,
+	PRINCIPAL_EXPLORER_WRITE,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {remove} from '/lib/explorer/node/remove';
 
@@ -14,7 +14,7 @@ export const handleDelete = ({
 	const stopWordsName = pathParts[2];
 
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_WRITE]
+		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});
 	const nodePath = `/stopwords/${stopWordsName}`;
 	const deleteRes = remove({connection, path: nodePath});

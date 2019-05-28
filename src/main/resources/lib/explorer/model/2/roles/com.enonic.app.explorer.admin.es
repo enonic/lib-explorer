@@ -1,4 +1,4 @@
-import {ROLE_EXPLORER_ADMIN} from '../constants.es';
+import {ROLE_EXPLORER_ADMIN} from '/lib/explorer/model/2/constants';
 
 
 export const ROLE = {

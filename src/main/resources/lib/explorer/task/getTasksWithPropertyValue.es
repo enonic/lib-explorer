@@ -1,17 +1,12 @@
 import {list as listTasks} from '/lib/xp/task';
 
 
-import {TASK_COLLECT} from '/lib/explorer/constants';
-
-
 export function getTasksWithPropertyValue({
 	property = 'name',
 	value,
-	name = TASK_COLLECT,
 	state
 }) {
 	const tasks = listTasks({
-		name,
 		state
 	}); //log.info(toStr({rootTasks}));
 

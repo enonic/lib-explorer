@@ -12,19 +12,15 @@ import {getCollectors, reschedule} from '/lib/explorer/collection/reschedule';
 //──────────────────────────────────────────────────────────────────────────────
 import {
 	DEFAULT_FIELDS,
-	PRINCIPAL_YASE_WRITE
-} from '/lib/explorer/model/1/constants';
+	PRINCIPAL_EXPLORER_WRITE
+} from '/lib/explorer/model/2/constants';
 
 import {
 	ROLES,
 	USERS,
 	REPOSITORIES,
 	field
-} from '/lib/explorer/model/1/index';
-
-//import {field} from '/lib/explorer/nodeTypes/field';
-//import {field} from '/lib/explorer/model/2/nodeTypes/com.enonic.app.explorer.field';
-
+} from '/lib/explorer/model/2/index';
 
 import {ignoreErrors} from '/lib/explorer/ignoreErrors';
 import {init as initRepo} from '/lib/explorer/repo/init';
@@ -46,13 +42,14 @@ export function init() {
 			});
 		}));
 
-		USERS.forEach(({name, displayName, userStore, roles = []}) => ignoreErrors(() => {
+		//log.info(toStr({USERS}));
+		USERS.forEach(({name, displayName, idProvider, roles = []}) => ignoreErrors(() => {
 			createUser({
+				idProvider,
 				name,
-				displayName,
-				userStore
+				displayName
 			});
-			roles.forEach(role => addMembers(`role:${role}`, [`user:${userStore}:${name}`]))
+			roles.forEach(role => addMembers(`role:${role}`, [`user:${idProvider}:${name}`]));
 		}));
 
 		REPOSITORIES.forEach(({id, rootPermissions}) => ignoreErrors(() => {
@@ -63,7 +60,7 @@ export function init() {
 		}));
 
 		ignoreErrors(() => {
-			const connection = connect({principals:[PRINCIPAL_YASE_WRITE]});
+			const connection = connect({principals:[PRINCIPAL_EXPLORER_WRITE]});
 			DEFAULT_FIELDS.forEach(({
 				_name,
 				displayName,

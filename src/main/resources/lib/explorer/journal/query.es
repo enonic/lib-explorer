@@ -1,9 +1,9 @@
 //import {toStr} from '/lib/util';
 import {
-	JOURNALS_REPO,
+	REPO_JOURNALS,
 	NT_JOURNAL,
-	PRINCIPAL_YASE_READ
-} from '/lib/explorer/constants';
+	PRINCIPAL_EXPLORER_READ
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
@@ -18,8 +18,8 @@ export function query({
 	start
 } = {}) {
 	const connection = connect({
-		repoId: JOURNALS_REPO,
-		principals: [PRINCIPAL_YASE_READ]
+		repoId: REPO_JOURNALS,
+		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 	const queryParams = {
 		aggregations,

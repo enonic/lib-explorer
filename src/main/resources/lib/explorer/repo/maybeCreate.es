@@ -5,13 +5,13 @@ import {
 } from '/lib/xp/repo';
 
 
-import {ROOT_PERMISSIONS_YASE} from '/lib/explorer/constants';
+import {ROOT_PERMISSIONS_EXPLORER} from '/lib/explorer/model/2/constants';
 
 
 export function maybeCreate({
 	repoId,
 	branchId = 'master',
-	rootPermissions = ROOT_PERMISSIONS_YASE
+	rootPermissions = ROOT_PERMISSIONS_EXPLORER
 }) {
 	let getRepoRes = getRepo(repoId);
 

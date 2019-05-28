@@ -1,4 +1,4 @@
-import {NT_COLLECTION} from '/lib/explorer/constants';
+import {NT_COLLECTION} from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 

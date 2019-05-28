@@ -5,28 +5,23 @@ import {toStr} from '/lib/util';
 import {create as createRepo, createBranch} from '/lib/xp/repo';
 
 //──────────────────────────────────────────────────────────────────────────────
-// Local libs (relative path with extension so it gets webpacked)
-//──────────────────────────────────────────────────────────────────────────────
-//import {BRANCH_ID, REPO_ID} from './constants.es';
-
-//──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {
-	BRANCH_ID,
-	REPO_ID,
-	ROOT_PERMISSIONS_YASE
-} from '/lib/explorer/constants';
+	BRANCH_ID_EXPLORER,
+	REPO_ID_EXPLORER,
+	ROOT_PERMISSIONS_EXPLORER
+} from '/lib/explorer/model/2/constants';
 
 
 export function init({
-	repoId = REPO_ID,
-	branchId = BRANCH_ID
+	repoId = REPO_ID_EXPLORER,
+	branchId = BRANCH_ID_EXPLORER
 } = {}) {
 	//log.info(toStr({repoId, branchId}));
 	const createRepoParams = {
 		id: repoId,
-		rootPermissions: ROOT_PERMISSIONS_YASE
+		rootPermissions: ROOT_PERMISSIONS_EXPLORER
 	}; //log.info(toStr({createRepoParams}));
 	//const context = getContext(); //log.info(toStr({context}));
 	//const user = getUser(); //log.info(toStr({user}));
@@ -52,11 +47,11 @@ export function init({
 			repoId
 		});
 	} catch (e) {
-		if (e.code === 'branchAlreadyExists') {
-			log.warning(`Branch ${branchId} already exist`);
-		} else {
+		if (e.code !== 'branchAlreadyExists') {
 			throw e;
-		}
+		} /*else {
+			log.warning(`Branch ${branchId} already exist`);
+		}*/
 	}
 	//log.info(toStr({createBranchRes}));
 	return createBranchRes;

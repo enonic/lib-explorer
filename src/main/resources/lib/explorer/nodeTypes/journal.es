@@ -1,9 +1,9 @@
 import {toStr} from '/lib/util';
 import {instant} from '/lib/xp/value';
 import {
-	JOURNALS_REPO,
+	REPO_JOURNALS,
 	NT_JOURNAL
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 
 
@@ -21,7 +21,7 @@ export const journal = ({
 	...rest // __connection
 }) => {
 	return {
-		__repoId: JOURNALS_REPO,
+		__repoId: REPO_JOURNALS,
 		_indexConfig: {
 			default: 'none',
 			configs: [{

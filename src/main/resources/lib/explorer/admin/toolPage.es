@@ -1,7 +1,7 @@
 //import {toStr} from '/lib/util';
 import {serviceUrl} from '/lib/xp/portal';
 
-import {PRINCIPAL_YASE_READ} from '/lib/explorer/constants';
+import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
 import {query as queryCollections} from '/lib/explorer/collection/query';
 import {connect} from '/lib/explorer/repo/connect';
@@ -13,7 +13,7 @@ const ID_REACT_SEARCH_CONTAINER = 'reactSearchContainer';
 export function toolPage({
 	path
 }) {
-	const connection = connect({principals: PRINCIPAL_YASE_READ});
+	const connection = connect({principals: PRINCIPAL_EXPLORER_READ});
 	const collectionHits = queryCollections({connection}).hits;
 	const propsObj = {
 		collectionOptions: collectionHits.map(({displayName: label, _name: value}) => ({label, value})),

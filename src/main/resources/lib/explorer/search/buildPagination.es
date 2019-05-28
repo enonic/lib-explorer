@@ -6,7 +6,7 @@ import {forceArray} from '/lib/util/data';
 
 import {localize} from '/lib/xp/i18n';
 
-import {YASE_ADMIN} from '/lib/explorer/constants';
+import {APP_EXPLORER} from '/lib/explorer/model/2/constants';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Public function
@@ -43,7 +43,7 @@ export function buildPagination({
 		pagination.push({
 			href,
 			text: localize({
-				application: YASE_ADMIN,
+				application: APP_EXPLORER,
 				key: 'pagination.first',
 				locale
 			})
@@ -54,7 +54,7 @@ export function buildPagination({
 		pagination.push({
 			href: `${href}&page=${page - 1}`,
 			text: localize({
-				application: YASE_ADMIN,
+				application: APP_EXPLORER,
 				key: 'pagination.prev',
 				locale
 			})
@@ -80,7 +80,7 @@ export function buildPagination({
 			pagination.push({
 				href: `${href}&page=${page + 1}`,
 				text: localize({
-					application: YASE_ADMIN,
+					application: APP_EXPLORER,
 					key: 'pagination.next',
 					locale
 				})
@@ -90,7 +90,7 @@ export function buildPagination({
 			pagination.push({
 				href: `${href}&page=${pages}`,
 				text: localize({
-					application: YASE_ADMIN,
+					application: APP_EXPLORER,
 					key: 'pagination.last',
 					locale
 				})

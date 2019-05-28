@@ -10,7 +10,7 @@ export function runAsSu(fn, {
 		repository,
 		user: {
 			login: 'su',
-			userStore: 'system'
+			idProvider: 'system'
 		},
 		principals: ['role:system.admin']
 	}, () => fn());

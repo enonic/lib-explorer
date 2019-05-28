@@ -1,10 +1,10 @@
 import {
-	REPO_ID,
+	REPO_ID_EXPLORER,
 	ROOT_PERMISSIONS_YASE
-} from '/lib/explorer/model/1/constants.es';
+} from '/lib/explorer/model/1/constants';
 
 
 export const REPO = {
-	id: REPO_ID,
+	id: REPO_ID_EXPLORER,
 	rootPermissions: ROOT_PERMISSIONS_YASE
 };

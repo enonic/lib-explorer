@@ -1,6 +1,6 @@
 //import {toStr} from '/lib/util';
 
-import {NT_STOP_WORDS} from '/lib/explorer/constants';
+import {NT_STOP_WORDS} from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {get} from '/lib/explorer/stopWords/get';

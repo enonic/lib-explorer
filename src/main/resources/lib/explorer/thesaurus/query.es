@@ -1,5 +1,5 @@
 //import {toStr} from '/lib/util';
-import {NT_THESAURUS} from '/lib/explorer/constants';
+import {NT_THESAURUS} from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {query as querySynonyms} from '/lib/explorer/synonym/query';

@@ -3,9 +3,9 @@ import {toStr} from '/lib/util';
 import {
 	DEFAULT_FIELDS,
 	NO_VALUES_FIELDS,
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {fieldFormHtml} from '/lib/explorer/admin/fields/fieldFormHtml';
 import {getFields} from '/lib/explorer/admin/fields/getFields';
 import {getFieldValues} from '/lib/explorer/admin/fields/getFieldValues';
@@ -21,7 +21,7 @@ export function list({
 	},
 	path
 }) {
-	const connection = connect({principals: PRINCIPAL_YASE_READ});
+	const connection = connect({principals: PRINCIPAL_EXPLORER_READ});
 	const defaultFields = DEFAULT_FIELDS.map(({_name})=>_name);
 	const noValuesFields = NO_VALUES_FIELDS.map(({_name})=>_name);
 	const fieldRows = getFields({connection}).hits.map(({

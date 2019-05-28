@@ -1,14 +1,14 @@
 import {
 	NT_SYNONYM,
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 
 
 function getThesaurus({name}) {
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_READ]
+		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 	const queryParams = {
 		count: -1,

@@ -1,7 +1,7 @@
 import {
-	PRINCIPAL_YASE_WRITE,
+	PRINCIPAL_EXPLORER_WRITE,
 	RT_JSON
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {remove} from '/lib/explorer/interface/remove';
 
@@ -11,7 +11,7 @@ export function post({
 		name
 	}
 }) {
-	const connection = connect({ principals: [PRINCIPAL_YASE_WRITE] });
+	const connection = connect({ principals: [PRINCIPAL_EXPLORER_WRITE] });
 
 	const res = remove({
 		connection,

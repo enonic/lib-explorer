@@ -1,7 +1,7 @@
 import {
 	DEFAULT_FIELDS,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 
 
 export const menu = ({

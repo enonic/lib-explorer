@@ -1,7 +1,7 @@
 import {
 	ROLE_YASE_READ,
 	ROLE_YASE_WRITE
-} from '/lib/explorer/model/1/constants.es';
+} from '/lib/explorer/model/1/constants';
 
 
 export const USER = {

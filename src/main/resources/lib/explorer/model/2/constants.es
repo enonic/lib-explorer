@@ -23,11 +23,11 @@ export const NT_FIELD_VALUE = `${APP_EXPLORER}:field-value`;
 export const NT_FOLDER = `${APP_EXPLORER}:folder`;
 export const NT_INTERFACE = `${APP_EXPLORER}:interface`;
 export const NT_JOURNAL = `${APP_EXPLORER}:journal`;
-export const NT_KEYWORD = `${APP_EXPLORER}:keyword`;
+//export const NT_KEYWORD = `${APP_EXPLORER}:keyword`;
 export const NT_RESPONSE = `${APP_EXPLORER}:response`;
 export const NT_STOP_WORDS = `${APP_EXPLORER}:stop-words`;
 export const NT_SYNONYM = `${APP_EXPLORER}:synonym`;
-export const NT_TAG = `${APP_EXPLORER}:tag`;
+//export const NT_TAG = `${APP_EXPLORER}:tag`;
 export const NT_THESAURUS = `${APP_EXPLORER}:thesaurus`;
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -79,9 +79,9 @@ export const RT_HTML = 'text/html;charset=utf-8';
 //──────────────────────────────────────────────────────────────────────────────
 // Repo
 //──────────────────────────────────────────────────────────────────────────────
-export const BRANCH_ID = 'master';
 
-export const REPO_EXPLORER_ID = sanitize(APP_EXPLORER);
+export const REPO_ID_EXPLORER = sanitize(APP_EXPLORER);
+export const BRANCH_ID_EXPLORER = 'master';
 export const REPO_JOURNALS = `${APP_EXPLORER}:journals`;
 
 export const COLLECTION_REPO_PREFIX = `${APP_EXPLORER}:collection:`;
@@ -109,8 +109,8 @@ export const PRINCIPAL_EXPLORER_WRITE = `role:${ROLE_EXPLORER_WRITE}`;
 // User
 //──────────────────────────────────────────────────────────────────────────────
 export const USER_EXPLORER_APP_NAME = sanitize(`${APP_EXPLORER}`);
-export const USER_EXPLORER_APP_USERSTORE = 'system';
-export const USER_EXPLORER_APP_KEY = `user:${USER_EXPLORER_APP_USERSTORE}:${USER_EXPLORER_APP_NAME}`;
+export const USER_EXPLORER_APP_ID_PROVIDER = 'system';
+export const USER_EXPLORER_APP_KEY = `user:${USER_EXPLORER_APP_ID_PROVIDER}:${USER_EXPLORER_APP_NAME}`;
 
 
 //──────────────────────────────────────────────────────────────────────────────

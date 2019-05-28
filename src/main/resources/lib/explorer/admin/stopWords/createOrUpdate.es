@@ -2,9 +2,9 @@
 
 import {
 	NT_STOP_WORDS,
-	PRINCIPAL_YASE_WRITE,
+	PRINCIPAL_EXPLORER_WRITE,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {create} from '/lib/explorer/node/create';
 import {modify} from '/lib/explorer/node/modify';
@@ -38,7 +38,7 @@ export function createOrUpdate({
 		status = 500;
 	} else {
 		const params = {
-			__connection: connect({principals: [PRINCIPAL_YASE_WRITE]}),
+			__connection: connect({principals: [PRINCIPAL_EXPLORER_WRITE]}),
 			_indexConfig: {default: 'byType'},
 			_parentPath: '/stopwords',
 			_name: nameFromPath,

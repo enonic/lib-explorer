@@ -1,6 +1,6 @@
 import {
 	NT_FIELD
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {ucFirst} from '/lib/explorer/ucFirst';
 
 

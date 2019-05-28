@@ -1,12 +1,12 @@
 //import {toStr} from '/lib/util';
 import {dlv} from '/lib/util/object';
 import {
-	BRANCH_ID,
+	BRANCH_ID_EXPLORER,
 	DEFAULT_FIELDS,
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH,
-	REPO_ID
-} from '/lib/explorer/constants';
+	REPO_ID_EXPLORER
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
 import {fieldFormHtml} from '/lib/explorer/admin/fields/fieldFormHtml';
@@ -33,9 +33,9 @@ export function newOrEdit({
 
 	if (fieldName) {
 		const connection = connect({
-			repoId: REPO_ID,
-			branch: BRANCH_ID,
-			principals: [PRINCIPAL_YASE_READ]
+			repoId: REPO_ID_EXPLORER,
+			branch: BRANCH_ID_EXPLORER,
+			principals: [PRINCIPAL_EXPLORER_READ]
 		});
 		const path = `/fields/${fieldName}`;
 		//log.info(toStr({path}));

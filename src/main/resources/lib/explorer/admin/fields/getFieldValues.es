@@ -1,4 +1,4 @@
-import {NT_FIELD_VALUE} from '/lib/explorer/constants';
+import {NT_FIELD_VALUE} from '/lib/explorer/model/2/constants';
 
 
 export function getFieldValues({

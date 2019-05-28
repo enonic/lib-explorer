@@ -1,9 +1,9 @@
 import {toStr} from '/lib/util';
 
 import {
-	PRINCIPAL_YASE_WRITE,
+	PRINCIPAL_EXPLORER_WRITE,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {create} from '/lib/explorer/node/create';
 import {modify} from '/lib/explorer/node/modify';
 //import {toStr} from '/lib/util';
@@ -30,7 +30,7 @@ export function handlePost({
 	}));*/
 
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_WRITE]
+		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});
 
 	const messages = [];

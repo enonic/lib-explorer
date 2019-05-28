@@ -8,9 +8,9 @@ import {
 
 import {
 	NT_THESAURUS,
-	PRINCIPAL_YASE_WRITE,
+	PRINCIPAL_EXPLORER_WRITE,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {createOrModify} from '/lib/explorer/node/createOrModify';
 import {create} from '/lib/explorer/node/create';
 import {modify} from '/lib/explorer/node/modify';
@@ -39,7 +39,7 @@ export function handleThesauriPost(req) {
 	let status = 200;
 
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_WRITE]
+		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});
 
 	if (action === 'delete') {

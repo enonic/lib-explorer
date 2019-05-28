@@ -9,7 +9,7 @@ import {sanitize} from '/lib/xp/common';
 //──────────────────────────────────────────────────────────────────────────────
 import {
 	NT_FOLDER
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 
 
 export function create({

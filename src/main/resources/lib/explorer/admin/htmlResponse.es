@@ -1,4 +1,4 @@
-import {TOOL_PATH} from '/lib/explorer/constants';
+import {TOOL_PATH} from '/lib/explorer/model/2/constants';
 //import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 import {

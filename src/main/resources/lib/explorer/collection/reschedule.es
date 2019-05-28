@@ -5,10 +5,10 @@ import {submitNamed} from '/lib/xp/task';
 
 import {
 	PRINCIPAL_SYSTEM_ADMIN,
-	PRINCIPAL_YASE_WRITE,
-	USER_YASE_JOB_RUNNER_NAME,
-	USER_YASE_JOB_RUNNER_USERSTORE
-} from '/lib/explorer/constants';
+	PRINCIPAL_EXPLORER_WRITE,
+	USER_EXPLORER_APP_NAME,
+	USER_EXPLORER_APP_ID_PROVIDER
+} from '/lib/explorer/model/2/constants';
 import {query as queryCollectors} from '/lib/explorer/collector/query';
 
 
@@ -85,12 +85,12 @@ export function reschedule({
 							branch: 'master', // Repository to execute the callback in.
 							repository: 'system-repo', // Name of the branch to execute the callback in.
 							user: { // User to execute the callback with.
-								login: USER_YASE_JOB_RUNNER_NAME,
-								userStore: USER_YASE_JOB_RUNNER_USERSTORE
+								login: USER_EXPLORER_APP_NAME,
+								idProvider: USER_EXPLORER_APP_ID_PROVIDER
 							},
 							principals: [ // // Additional principals to execute the callback with.
 								PRINCIPAL_SYSTEM_ADMIN, // Needed for creating repos.
-								PRINCIPAL_YASE_WRITE
+								PRINCIPAL_EXPLORER_WRITE
 							]
 						},
 						cron,

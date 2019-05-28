@@ -1,7 +1,7 @@
 import {
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	RT_JSON
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {exists} from '/lib/explorer/collection/exists';
 import {connect} from '/lib/explorer/repo/connect';
 
@@ -14,7 +14,7 @@ export function get({
 	return {
 		body: {
 			exists: exists({
-				connection: connect({principals: [PRINCIPAL_YASE_READ]}),
+				connection: connect({principals: [PRINCIPAL_EXPLORER_READ]}),
 				name
 			})
 		},

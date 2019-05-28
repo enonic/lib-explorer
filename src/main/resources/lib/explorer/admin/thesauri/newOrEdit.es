@@ -4,9 +4,9 @@ import {serviceUrl} from '/lib/xp/portal';
 
 import {
 	NT_SYNONYM,
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
 import {menu} from '/lib/explorer/admin/thesauri/menu';
 import {thesaurusForm} from '/lib/explorer/admin/thesauri/thesaurusForm';
@@ -50,7 +50,7 @@ export function newOrEdit({
 	const propsJson = JSON.stringify(propsObj);
 
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_READ]
+		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 	const thesaurusNode = connection.get(`/thesauri/${thesaurusName}`);
 	//log.info(toStr({thesaurusNode}));

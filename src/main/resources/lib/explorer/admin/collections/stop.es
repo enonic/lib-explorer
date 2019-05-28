@@ -1,9 +1,9 @@
 //import {toStr} from '/lib/util';
 import {
 	COLLECTION_REPO_PREFIX,
-	PRINCIPAL_YASE_WRITE,
+	PRINCIPAL_EXPLORER_WRITE,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {get as getTask} from '/lib/explorer/task/get';
 import {modify as modifyTask} from '/lib/explorer/task/modify';
@@ -21,7 +21,7 @@ export function stop({
 	const connection = connect({
 		repoId,
 		branch: 'master',
-		principals: [PRINCIPAL_YASE_WRITE]
+		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});
 
 	const task = getTask({connection});	//log.info(toStr({task}));

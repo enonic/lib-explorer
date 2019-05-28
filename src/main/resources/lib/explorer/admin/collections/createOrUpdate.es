@@ -1,9 +1,9 @@
 //import {toStr} from '/lib/util';
 import {
 	NT_COLLECTION,
-	PRINCIPAL_YASE_WRITE,
+	PRINCIPAL_EXPLORER_WRITE,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {createOrModify} from '/lib/explorer/node/createOrModify';
 import {getCollectors, reschedule} from '/lib/explorer/collection/reschedule';
@@ -25,7 +25,7 @@ export const createOrUpdate = ({
 	//log.info(toStr({obj}));
 
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_WRITE]
+		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});
 
 	const parentPath = '/collections';

@@ -15,10 +15,10 @@ export function multiConnect({
 
 	// There might not be a logged in user
 	login = context.authInfo.user && context.authInfo.user.login,
-	userStore = context.authInfo.user && context.authInfo.user.userStore,
+	idProvider = context.authInfo.user && context.authInfo.user.idProvider,
 	user = login ? {
 		login,
-		userStore
+		idProvider
 	} : null
 }) {
 	const contextPrincipals = context.authInfo.principals;

@@ -1,10 +1,10 @@
 //import {toStr} from '/lib/util';
 import {
-	BRANCH_ID,
-	PRINCIPAL_YASE_READ,
+	BRANCH_ID_EXPLORER,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH,
-	REPO_ID
-} from '/lib/explorer/constants';
+	REPO_ID_EXPLORER
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {fieldValueFormHtml} from '/lib/explorer/admin/fields/values/fieldValueFormHtml';
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
@@ -24,9 +24,9 @@ export function newOrEdit({
 
 	if(valueName) {
 		const connection = connect({
-			repoId: REPO_ID,
-			branch: BRANCH_ID,
-			principals: [PRINCIPAL_YASE_READ]
+			repoId: REPO_ID_EXPLORER,
+			branch: BRANCH_ID_EXPLORER,
+			principals: [PRINCIPAL_EXPLORER_READ]
 		});
 		const nodePath = `/fields/${fieldName}/${valueName}`;
 		const node = connection.get(nodePath);

@@ -1,12 +1,12 @@
 import {toStr} from '/lib/util';
 import {connect} from '/lib/xp/node';
 
-import {BRANCH_ID, PACKAGE, NT_THESAURUS, REPO_ID} from '/lib/explorer/constants';
+import {BRANCH_ID_EXPLORER, PACKAGE, NT_THESAURUS, REPO_ID_EXPLORER} from '/lib/explorer/model/2/constants';
 
 
 const CONNECTION = connect({
-	repoId: REPO_ID,
-	branch: BRANCH_ID
+	repoId: REPO_ID_EXPLORER,
+	branch: BRANCH_ID_EXPLORER
 });
 
 

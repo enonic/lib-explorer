@@ -7,9 +7,9 @@ import {isString} from '/lib/util/value';
 import {assetUrl} from '/lib/xp/portal';
 
 import {
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
 import {query as queryCollections} from '/lib/explorer/collection/query';
@@ -57,7 +57,7 @@ export function newOrEdit({
 	const interfaceName = pathParts[2];
 
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_READ]
+		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 
 	let initialValues;

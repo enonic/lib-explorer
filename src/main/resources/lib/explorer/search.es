@@ -16,8 +16,8 @@ import {getLocale} from '/lib/xp/admin';
 //──────────────────────────────────────────────────────────────────────────────
 import {
 	COLLECTION_REPO_PREFIX,
-	PRINCIPAL_YASE_READ
-} from '/lib/explorer/constants';
+	PRINCIPAL_EXPLORER_READ
+} from '/lib/explorer/model/2/constants';
 
 import {get as getInterface} from '/lib/explorer/interface/get';
 import {get as getStopWordsList} from '/lib/explorer/stopWords/get';
@@ -113,7 +113,7 @@ export function search(params) {
 
 
 	const yaseReadConnection = connect({
-		principals: [PRINCIPAL_YASE_READ]
+		principals: [PRINCIPAL_EXPLORER_READ]
 	})
 	const interfaceNode = getInterface({
 		connection: yaseReadConnection,
@@ -142,7 +142,7 @@ export function search(params) {
 	const sources = collections.map(collection => ({
 		repoId: `${COLLECTION_REPO_PREFIX}${collection}`,
 		branch: 'master', // NOTE Hardcoded
-		principals: [PRINCIPAL_YASE_READ] // TODO Remove hardcode?
+		principals: [PRINCIPAL_EXPLORER_READ] // TODO Remove hardcode?
 	}));
 	//log.info(toStr({sources}));
 
@@ -234,7 +234,7 @@ export function search(params) {
 	//log.info(toStr({filters}));
 
 	const yaseReadConnections = multiConnect({
-		principals: [PRINCIPAL_YASE_READ],
+		principals: [PRINCIPAL_EXPLORER_READ],
 		sources
 	});
 

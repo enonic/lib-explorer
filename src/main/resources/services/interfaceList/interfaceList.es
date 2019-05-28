@@ -1,13 +1,13 @@
 import {
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	RT_JSON
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {query} from '/lib/explorer/interface/query';
 
 
 export function get() {
-	const connection = connect({ principals: [PRINCIPAL_YASE_READ] });
+	const connection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
 	const interfaces = query({connection});
 	interfaces.hits = interfaces.hits.map(({_name: name, displayName}) => ({displayName, name}));
 	return {

@@ -24,11 +24,11 @@ export const NT_FIELD_VALUE = `${PACKAGE}:field-value`;
 export const NT_FOLDER = `${PACKAGE}:folder`;
 export const NT_INTERFACE = `${PACKAGE}:interface`;
 export const NT_JOURNAL = `${PACKAGE}:journal`;
-export const NT_KEYWORD = `${PACKAGE}:keyword`;
+//export const NT_KEYWORD = `${PACKAGE}:keyword`;
 export const NT_RESPONSE = `${PACKAGE}:response`;
 export const NT_STOP_WORDS = `${PACKAGE}:stop-words`;
 export const NT_SYNONYM = `${PACKAGE}:synonym`;
-export const NT_TAG = `${PACKAGE}:tag`;
+//export const NT_TAG = `${PACKAGE}:tag`;
 export const NT_THESAURUS = `${PACKAGE}:thesaurus`;
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -80,11 +80,11 @@ export const RT_HTML = 'text/html;charset=utf-8';
 //──────────────────────────────────────────────────────────────────────────────
 // Repo
 //──────────────────────────────────────────────────────────────────────────────
-export const BRANCH_ID = 'master';
-export const REPO_ID = sanitize(PACKAGE);
+export const BRANCH_ID_EXPLORER = 'master';
+export const REPO_ID_EXPLORER = sanitize(PACKAGE);
 export const COLLECTION_REPO_PREFIX = `${PACKAGE}:collection:`;
 export const RESPONSES_REPO_PREFIX = `${PACKAGE}:responses:`;
-export const JOURNALS_REPO = `${PACKAGE}:journals`;
+export const REPO_JOURNALS = `${PACKAGE}:journals`;
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -100,8 +100,8 @@ export const ROLE_YASE_WRITE = sanitize(`${PACKAGE}.write`);
 // Principals
 //──────────────────────────────────────────────────────────────────────────────
 export const PRINCIPAL_SYSTEM_ADMIN = `role:${ROLE_SYSTEM_ADMIN}`;
-export const PRINCIPAL_YASE_READ = `role:${ROLE_YASE_READ}`;
-export const PRINCIPAL_YASE_WRITE = `role:${ROLE_YASE_WRITE}`;
+export const PRINCIPAL_EXPLORER_READ = `role:${ROLE_YASE_READ}`;
+export const PRINCIPAL_EXPLORER_WRITE = `role:${ROLE_YASE_WRITE}`;
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -130,7 +130,7 @@ export const ROOT_PERMISSION_SYSTEM_ADMIN = {
 };
 
 export const ROOT_PERMISSION_YASE_WRITE = {
-	principal: PRINCIPAL_YASE_WRITE,
+	principal: PRINCIPAL_EXPLORER_WRITE,
 	allow: [
 		'READ',
 		'CREATE',
@@ -141,7 +141,7 @@ export const ROOT_PERMISSION_YASE_WRITE = {
 };
 
 export const ROOT_PERMISSION_YASE_READ = {
-	principal: PRINCIPAL_YASE_READ,
+	principal: PRINCIPAL_EXPLORER_READ,
 	allow: ['READ'],
 	deny: []
 };

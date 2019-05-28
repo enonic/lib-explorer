@@ -7,9 +7,9 @@ import {assetUrl} from '/lib/xp/portal';
 import {connect} from '/lib/explorer/repo/connect';
 import {
 	NT_COLLECTOR,
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
 import {menu} from '/lib/explorer/admin/collections/menu';
@@ -71,7 +71,7 @@ export function newOrEdit({
 		}]
 	};
 	const connection = connect({
-		principals: [PRINCIPAL_YASE_READ]
+		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 
 	const collectorsAppToUri = {};

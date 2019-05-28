@@ -1,4 +1,4 @@
-import {TOOL_PATH} from '/lib/explorer/constants';
+import {TOOL_PATH} from '/lib/explorer/model/2/constants';
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
 import {menu} from '/lib/explorer/admin/thesauri/menu';
 

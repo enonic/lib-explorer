@@ -1,4 +1,4 @@
-import {ROLE_YASE_WRITE} from '/lib/explorer/model/1/constants.es';
+import {ROLE_YASE_WRITE} from '/lib/explorer/model/1/constants';
 
 
 export const ROLE = {

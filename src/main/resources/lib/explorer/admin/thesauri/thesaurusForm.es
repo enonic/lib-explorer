@@ -1,4 +1,4 @@
-import {TOOL_PATH} from '/lib/explorer/constants';
+import {TOOL_PATH} from '/lib/explorer/model/2/constants';
 
 
 export function thesaurusForm({

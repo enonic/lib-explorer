@@ -100,6 +100,23 @@ const SERVER_JS_CONFIG = {
 	entry: SERVER_JS_ENTRY,
 	externals: [
 		/^\//
+		/*'/lib/cache',
+		'/lib/cron',
+		'/lib/http-client',
+		'/lib/util',
+		'/lib/util/data',
+		'/lib/util/object',
+		'/lib/util/value',
+		'/lib/xp/admin',
+		'/lib/xp/auth',
+		'/lib/xp/common',
+		'/lib/xp/context',
+		'/lib/xp/i18n',
+		'/lib/xp/node',
+		'/lib/xp/portal',
+		'/lib/xp/repo',
+		'/lib/xp/task',
+		'/lib/xp/value'*/
 	],
 	devtool: false, // Don't waste time generating sourceMaps
 	mode: MODE,
@@ -119,10 +136,12 @@ const SERVER_JS_CONFIG = {
 		filename: '[name].js',
 		libraryTarget: 'commonjs'
 	}, // output
+	performance: {
+		hints: false
+	},
 	resolve: {
 		/*alias: {
-			'/content-types': path.resolve(__dirname, SRC_DIR, 'site/content-types/index.es'),
-			'/lib': path.resolve(__dirname, SRC_DIR, 'lib')
+			'/lib/explorer': path.resolve(__dirname, SRC_DIR, 'lib/explorer')
 		},*/
 		extensions: ['.es', '.js', '.json']
 	}, // resolve
@@ -166,6 +185,9 @@ const STYLE_CONFIG = {
 	}, // module
 	output: {
 		path: path.join(__dirname, '.build')
+	},
+	performance: {
+		hints: false
 	},
 	plugins: [
 		new CleanWebpackPlugin(
@@ -246,6 +268,9 @@ const CLIENT_JS_CONFIG = {
 		library: 'yase',
 		libraryTarget: 'umd',
 		path: DST_ASSETS_DIR_ABS
+	},
+	performance: {
+		hints: false
 	},
 	plugins: [
 		new CopyWebpackPlugin([
@@ -350,6 +375,9 @@ const ASSETS_ESM_CONFIG = {
 		filename: '[name].esm.js',
 		library: 'LIB',
 		libraryTarget: 'var'
+	},
+	performance: {
+		hints: false
 	},
 	plugins: [
 		/*new BabelEsmPlugin({

@@ -1,4 +1,4 @@
-import {NT_RESPONSE} from '/lib/explorer/constants';
+import {NT_RESPONSE} from '/lib/explorer/model/2/constants';
 
 
 export const response = ({

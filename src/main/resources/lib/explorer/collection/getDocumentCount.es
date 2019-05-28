@@ -1,6 +1,6 @@
 import {
 	NT_DOCUMENT
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connectToCollection} from '/lib/explorer/repo/connectToCollection';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';

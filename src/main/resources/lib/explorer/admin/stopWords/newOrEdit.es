@@ -2,9 +2,9 @@ import {forceArray} from '/lib/util/data';
 import {htmlResponse} from '/lib/explorer/admin/htmlResponse';
 
 import {
-	PRINCIPAL_YASE_READ,
+	PRINCIPAL_EXPLORER_READ,
 	TOOL_PATH
-} from '/lib/explorer/constants';
+} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {get} from '/lib/explorer/stopWords/get';
 
@@ -19,7 +19,7 @@ export function newOrEdit({
 	const action = pathParts[1];
 	const name = action === 'edit' ? pathParts[2] : '';
 
-	const connection = connect({principals: [PRINCIPAL_YASE_READ]});
+	const connection = connect({principals: [PRINCIPAL_EXPLORER_READ]});
 	const node = name ? get({connection, name}) : {
 		displayName: name,
 		words: []

@@ -8,24 +8,24 @@ import {connect as libConnect} from '/lib/xp/node';
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {
-	BRANCH_ID,
-	PRINCIPAL_YASE_READ,
-	REPO_ID
-} from '/lib/explorer/constants';
+	BRANCH_ID_EXPLORER,
+	PRINCIPAL_EXPLORER_READ,
+	REPO_ID_EXPLORER
+} from '/lib/explorer/model/2/constants';
 
 
 export function connect({
 	context = getContext(),
-	repoId = REPO_ID,
-	branch = BRANCH_ID,
-	principals: passedPrincipals = [PRINCIPAL_YASE_READ],
+	repoId = REPO_ID_EXPLORER,
+	branch = BRANCH_ID_EXPLORER,
+	principals: passedPrincipals = [PRINCIPAL_EXPLORER_READ],
 
 	// There might not be a logged in user
 	login = context.authInfo.user && context.authInfo.user.login,
-	userStore = context.authInfo.user && context.authInfo.user.userStore,
+	idProvider = context.authInfo.user && context.authInfo.user.idProvider,
 	user = login ? {
 		login,
-		userStore
+		idProvider
 	} : null
 } = {}) {
 	//log.info(toStr({repoId}));
