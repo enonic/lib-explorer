@@ -3,6 +3,9 @@ import {node} from '/lib/explorer/model/2/nodeTypes/node';
 
 
 export function field({
+	_id, // avoid from ...rest
+	_permissions, // avoid from ...rest
+	_path, // avoid from ...rest
 	key,
 	_name = key,
 	_parentPath = '/fields',
@@ -15,9 +18,11 @@ export function field({
 	nGram = 'on',
 	fulltext = 'on',
 	includeInAllText = 'on',
-	path
+	path,
+	...rest
 }) {
 	return node({
+		...rest,
 		_parentPath,
 		_name,
 		_indexConfig: {default: 'byType'},
