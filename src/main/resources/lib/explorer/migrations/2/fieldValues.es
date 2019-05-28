@@ -60,8 +60,7 @@ export function fieldValues() {
 	oldRes.hits.forEach(node => {
 		if (!exists({
 			connection: writeToNewConnection,
-			_path: node._path,
-			_name: node._name
+			_path: node._path
 		})) {
 			//log.info(toStr({node}));
 			node.__connection = writeToNewConnection;

@@ -44,14 +44,14 @@
 //import {stopwords} from '/lib/explorer/migrations/2/stopwords';
 //import {thesauri} from '/lib/explorer/migrations/2/thesauri';
 //import {synonyms} from '/lib/explorer/migrations/2/synonyms';
-import {fields} from '/lib/explorer/migrations/2/fields';
-//import {fieldValues} from '/lib/explorer/migrations/2/fieldValues';
+//import {fields} from '/lib/explorer/migrations/2/fields';
+import {fieldValues} from '/lib/explorer/migrations/2/fieldValues';
 
 
 export function migrate() {
 	//stopwords();
 	//thesauri();
 	//synonyms();
-	fields();
-	//fieldValues();
+	//fields();
+	fieldValues();
 }

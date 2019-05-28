@@ -9,6 +9,8 @@ import {sanitize} from '/lib/xp/common';
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {connect} from '/lib/explorer/repo/connect';
+//import {dirname} from '/lib/explorer/path/dirname';
+import {join} from '/lib/explorer/path/join';
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -16,12 +18,23 @@ import {connect} from '/lib/explorer/repo/connect';
 //──────────────────────────────────────────────────────────────────────────────
 export function exists({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
-	_path = '/',
-	_name
+	_name = '',
+	_parentPath = '',// = _path ? dirname(_path) : '/',
+	_path
 }) {
+	if (!_path) {
+		if (!_parentPath) {
+			throw new Error('_path or _parentPath is a required parameter!');
+		}
+		if (!_name) {
+			throw new Error('_path or _name is a required parameter!');
+		}
+		_path = join(_parentPath, sanitize(_name))
+	}
+	//log.info(toStr({_path}));
 	const queryParams = {
 		count: 0,
-		query: `_path = '${_path}${sanitize(_name)}'`//, // NOTE May already be sanitized
+		query: `_path = '${_path}'`
 		//filters:
 	}; //log.info(toStr({queryParams}));
 	const result = connection.query(queryParams); //log.info(toStr({result}));
