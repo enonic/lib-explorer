@@ -28,12 +28,21 @@ export function connect({
 		idProvider
 	} : null
 } = {}) {
-	//log.info(toStr({repoId}));
+	/*log.info(toStr({
+		//context,
+		repoId, branch, passedPrincipals, user
+	}));*/
 	//const maybeUser = getUser(); log.info(toStr({maybeUser}));
-	//log.info(toStr({context}));
 	const contextPrincipals = context.authInfo.principals;
+	//log.info(toStr({contextPrincipals}));
 
-	const principals = [].concat(contextPrincipals);
+	const principals = [];
+	if (contextPrincipals && Array.isArray(contextPrincipals)) {
+		contextPrincipals.forEach(contextPrincipal =>
+			principals.push(contextPrincipal));
+	}
+	//log.info(toStr({principals}));
+
 	if (Array.isArray(passedPrincipals)) {
 		passedPrincipals.forEach(passedPrincipal => {
 			if(!principals.includes(passedPrincipal)) {

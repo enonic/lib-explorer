@@ -65,11 +65,13 @@ module.exports = {
 		'no-tabs': ['off'],
 		'no-underscore-dangle': ['error', {
 			allow: [
-				'_path',
-				'_id',
-				'_indexConfig',
-				'_name',
-				'_parentPath'
+				'__connection', // my own invention
+				'_path', // node property
+				'_id', // node property
+				'_indexConfig', // node property
+				'_name', // node property
+				'_parentPath', // node create property
+				'_permissions' // node property
 			],
 			allowAfterThis: false,
 			allowAfterSuper: false,

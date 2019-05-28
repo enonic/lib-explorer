@@ -30,6 +30,8 @@ export const NT_SYNONYM = `${APP_EXPLORER}:synonym`;
 //export const NT_TAG = `${APP_EXPLORER}:tag`;
 export const NT_THESAURUS = `${APP_EXPLORER}:thesaurus`;
 
+export const INDEX_CONFIG_STOP_WORDS = {default: 'byType'};
+
 //──────────────────────────────────────────────────────────────────────────────
 // Various
 //──────────────────────────────────────────────────────────────────────────────
