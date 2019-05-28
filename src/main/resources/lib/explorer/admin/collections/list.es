@@ -1,4 +1,4 @@
-import {toStr} from '/lib/util';
+//import {toStr} from '/lib/util';
 
 import {
 	PRINCIPAL_EXPLORER_READ,
@@ -29,7 +29,7 @@ export const list = ({
 		collectorsAppObj[application] = true;
 		return {application};
 	});
-	log.info(toStr({collectorsAppObj}));
+	//log.info(toStr({collectorsAppObj}));
 
 	const collections = query({connection: readConnection});
 	let totalCount = 0;
@@ -64,7 +64,7 @@ export const list = ({
 		) {
 			collectorName = 'com.enonic.app.explorer.collector.surgeon';
 		}
-		log.info(toStr({collectorName}));
+		//log.info(toStr({collectorName}));
 		const disabledCssClass = collectorsAppObj[collectorName] ? '' : 'disabled ';
 		const tabIndexAttr = collectorsAppObj[collectorName] ? '' : 'tabIndex="-1"'
 		const count = getDocumentCount(name);

@@ -1,6 +1,6 @@
 //import {parse as parseCookie} from 'cookie';
 
-import {toStr} from '/lib/util';
+//import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 import {assetUrl} from '/lib/xp/portal';
 import {submitNamed} from '/lib/xp/task';
@@ -65,7 +65,7 @@ export const collect = ({
 		const config = incomingConfigJson
 			? JSON.parse(incomingConfigJson)
 			: collectionNode.collector.config;
-		log.info(toStr({name, collectorName/*, config*/}));
+		//log.info(toStr({name, collectorName/*, config*/}));
 
 		const collector = queryCollectors({
 			connection
@@ -101,7 +101,7 @@ export const collect = ({
 				configJson
 			}
 		};
-		log.info(toStr({submitNamedParams}));
+		//log.info(toStr({submitNamedParams}));
 
 		const taskId = submitNamed(submitNamedParams);
 		messages.push(`Started collecting ${collectionName} with taskId ${taskId}`);
