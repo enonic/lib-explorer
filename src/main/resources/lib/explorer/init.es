@@ -1,11 +1,11 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (included in jar via gradle dependencies)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/util';
+//import {get as getJob, list as listJobs} from '/lib/cron';
+import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 import {addMembers, createRole, createUser} from '/lib/xp/auth';
 import {getCollectors, reschedule} from '/lib/explorer/collection/reschedule';
-
 
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
@@ -95,6 +95,12 @@ export function init() {
 					collectors,
 					node
 				}))
+				/*const jobs = listJobs();
+				log.info(toStr({jobs}));
+				jobs.jobs.forEach(({name}) => {
+					const job = getJob({name});
+					log.info(toStr({job}));
+				});*/
 			}
 		});
 

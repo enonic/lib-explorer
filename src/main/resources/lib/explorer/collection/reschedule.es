@@ -75,7 +75,13 @@ export function reschedule({
 				//log.info(toStr({taskParams}));
 
 				//log.info(toStr({cronArray}));
-				cronArray.forEach(({minute, hour, dayOfMonth, month, dayOfWeek}, i) => {
+				cronArray.forEach(({
+					minute = '*',
+					hour = '*',
+					dayOfMonth = '*',
+					month = '*',
+					dayOfWeek = '*'
+				}, i) => {
 					const cron = `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`;
 					const jobName = `${id}:${i}`;
 					//log.info(toStr({jobName, cron}));
@@ -94,7 +100,8 @@ export function reschedule({
 							]
 						},
 						cron,
-						name: jobName
+						name: jobName/*,
+						times: 0*/
 					});
 				});
 			}
