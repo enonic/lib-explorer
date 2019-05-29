@@ -5,7 +5,7 @@
 			<principal>role:cms.cm.app</principal>
 			<principal>role:cms.expert</principal>
 		-->
-		<principal>role:com.enonic.yase.admin</principal>
+		<principal>role:com.enonic.app.explorer.admin</principal>
 		<principal>role:system.admin</principal>
 		<!--
 			<principal>role:system.admin.login</principal>
