@@ -29,6 +29,7 @@ import {thesaurus} from '/lib/explorer/model/2/index';
 
 
 export function thesauri() {
+	log.info('Migrating thesauri...');
 	const readFromOldConnection = connect({
 		repoId: REPO_YASE,
 		branch: REPO_YASE_BRANCH,
@@ -66,4 +67,5 @@ export function thesauri() {
 			create(node);
 		}
 	});
+	log.info('...done migrating thesauri.');
 } // stopwords

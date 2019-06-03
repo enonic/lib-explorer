@@ -29,6 +29,7 @@ import {stopwords as stopwordsModel} from '/lib/explorer/model/2/index';
 
 
 export function stopwords() {
+	log.info('Migrating stopwords...');
 	const readFromOldConnection = connect({
 		repoId: REPO_YASE,
 		branch: REPO_YASE_BRANCH,
@@ -66,4 +67,5 @@ export function stopwords() {
 			create(node);
 		}
 	});
+	log.info('...done migrating stopwords.');
 } // stopwords

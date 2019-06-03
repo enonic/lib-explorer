@@ -47,7 +47,7 @@
 //import {fields} from '/lib/explorer/migrations/2/fields';
 //import {fieldValues} from '/lib/explorer/migrations/2/fieldValues';
 //import {collections} from '/lib/explorer/migrations/2/collections';
-import {interfaces} from '/lib/explorer/migrations/2/interfaces';
+//import {interfaces} from '/lib/explorer/migrations/2/interfaces';
 
 
 export function migrate() {
@@ -57,5 +57,5 @@ export function migrate() {
 	//fields();
 	//fieldValues();
 	//collections();
-	interfaces();
+	//interfaces();
 }
