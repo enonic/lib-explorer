@@ -7,7 +7,7 @@ import {
 	MoveDownButton,
 	MoveUpButton,
 	RemoveButton
-} from '@h3t/semantic-ui-react-formik-functional/dist/index.cjs';
+} from '@enonic/semantic-ui-react-formik-functional/dist/index.cjs';
 //import {toStr} from '../utils/toStr';
 
 

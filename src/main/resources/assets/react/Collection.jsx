@@ -7,7 +7,7 @@ import {
 	Checkbox,
 	Dropdown,
 	Input
-} from '@h3t/semantic-ui-react-formik-functional/dist/index.cjs';
+} from '@enonic/semantic-ui-react-formik-functional/dist/index.cjs';
 
 import {SubmitButton} from './semantic-ui/SubmitButton';
 import {Cron} from './fields/Cron';
