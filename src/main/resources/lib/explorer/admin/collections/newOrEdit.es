@@ -68,7 +68,8 @@ export function newOrEdit({
 			dayOfWeek: '*',
 			minute: '*',
 			hour: '*'
-		}]
+		}],
+		doCollect: false
 	};
 	const connection = connect({
 		principals: [PRINCIPAL_EXPLORER_READ]
