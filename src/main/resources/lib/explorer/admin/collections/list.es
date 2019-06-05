@@ -65,8 +65,8 @@ export const list = ({
 			collectorName = 'com.enonic.app.explorer.collector.surgeon';
 		}
 		//log.info(toStr({collectorName}));
-		const disabledCssClass = collectorsAppObj[collectorName] ? '' : 'disabled ';
-		const tabIndexAttr = collectorsAppObj[collectorName] ? '' : 'tabIndex="-1"'
+		const disabledCssClass = !collectorName || collectorsAppObj[collectorName] ? '' : 'disabled ';
+		const tabIndexAttr = !collectorName || collectorsAppObj[collectorName] ? '' : 'tabIndex="-1"'
 		const count = getDocumentCount(name);
 		if (count) {
 			totalCount += count;
