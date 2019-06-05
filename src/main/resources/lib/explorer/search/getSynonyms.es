@@ -26,7 +26,7 @@ export function getSynonyms({
 	//log.info(toStr({cleanSearchString}));
 
 	// ngram will quickly match a ton of synonyms, so don't use it.
-	const query = `fulltext('${fields}', '${cleanSearchString}', 'OR')`;
+	const query = `fulltext('${fields}', '${cleanSearchString}', 'AND')`;
 	log.info(toStr({query}));
 
 	const params = {
