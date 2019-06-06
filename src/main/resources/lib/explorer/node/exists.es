@@ -8,7 +8,6 @@ import {sanitize} from '/lib/xp/common';
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-import {connect} from '/lib/explorer/repo/connect';
 //import {dirname} from '/lib/explorer/path/dirname';
 import {join} from '/lib/explorer/path/join';
 
