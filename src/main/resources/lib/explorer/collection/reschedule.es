@@ -30,7 +30,7 @@ export function reschedule({
 	node,
 	oldNode
 }) {
-	//log.info(toStr({collectors, node}));
+	//log.info(toStr({collectors, oldNode, node}));
 	const {
 		_id: id,
 		_name: collectionName,
@@ -47,7 +47,9 @@ export function reschedule({
 
 	const oldCronArray = oldNode ? forceArray(oldNode.cron) : cronArray;
 	oldCronArray.forEach((ignored, i) => {
-		unschedule({name: `${id}:${i}`});
+		const jobName = `${id}:${i}`;
+		//log.info(`Unscheduling ${jobName}`);
+		unschedule({name: jobName});
 	});
 
 	if (doCollect) {
@@ -85,6 +87,7 @@ export function reschedule({
 					const cron = `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`;
 					const jobName = `${id}:${i}`;
 					//log.info(toStr({jobName, cron}));
+					//log.info(`Scheduling ${jobName}`);
 					schedule({
 						callback: () => submitNamed(taskParams),
 						context: {
