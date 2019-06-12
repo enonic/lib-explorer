@@ -1,13 +1,14 @@
-import {toStr} from '/lib/util';
+const {currentTimeMillis} = Java.type('java.lang.System');
+
 import {instant} from '/lib/xp/value';
+
 import {
-	REPO_JOURNALS,
 	NT_JOURNAL
 } from '/lib/explorer/model/2/constants';
-import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
+import {node} from '/lib/explorer/model/2/nodeTypes/node';
 
 
-export const journal = ({
+export function journal({
 	_parentPath = '/',
 	name,
 	startTime,
@@ -18,10 +19,14 @@ export const journal = ({
 	errorCount = errors.length,
 	successes = [],
 	successCount = successes.length,
-	...rest // __connection
-}) => {
-	return {
-		__repoId: REPO_JOURNALS,
+	...rest
+}) {
+	delete rest._id;
+	delete rest._path;
+	delete rest._permissions;
+	return node({
+		...rest,
+		_parentPath,
 		_indexConfig: {
 			default: 'none',
 			configs: [{
@@ -47,10 +52,8 @@ export const journal = ({
 				config: 'minimal'
 			}]
 		},
-		//_inheritsPermissions = false
 		_name,
 		_parentPath,
-		//_permissions // TODO Only superadmin and crawler should have access
 		name,
 		errorCount,
 		successCount,
@@ -59,7 +62,6 @@ export const journal = ({
 		duration,
 		errors,
 		successes,
-		type: NT_JOURNAL,
-		...rest // __connection
-	};
-}
+		type: NT_JOURNAL
+	});
+} // journal
