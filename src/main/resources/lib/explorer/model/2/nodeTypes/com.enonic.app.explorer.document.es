@@ -9,6 +9,7 @@ export function Document({
 	_parentPath = '/',
 	uri,
 	_name = hash(uri),
+	collector = app.name,
 	//text,
 	//title,
 	...rest
@@ -22,6 +23,7 @@ export function Document({
 		_parentPath,
 		_indexConfig: {default: 'byType'},
 		_name,
+		collector,
 		//text,
 		//title,
 		type: NT_DOCUMENT,
