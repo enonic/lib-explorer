@@ -87,7 +87,7 @@ export function reschedule({
 					const cron = `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`;
 					const jobName = `${id}:${i}`;
 					//log.info(toStr({jobName, cron}));
-					//log.info(`Scheduling ${jobName}`);
+					//log.info(`Scheduling ${jobName} with taskParams:${toStr(taskParams)}`);
 					schedule({
 						callback: () => submitNamed(taskParams),
 						context: {
