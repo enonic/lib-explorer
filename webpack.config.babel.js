@@ -30,7 +30,10 @@ const WEBPACK_CONFIG = [
 			'/lib/xp/task',
 			'/lib/xp/value'*/
 		],
-		mode: MODE
+		mode: MODE,
+		resolveAlias: {
+			'fnv-plus': path.resolve(__dirname, '../../tjwebb/fnv-plus/index.js')
+		}
 	})
 ];
 //console.log(`WEBPACK_CONFIG:${toStr(WEBPACK_CONFIG)}`);
