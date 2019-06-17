@@ -60,50 +60,23 @@ export function init() {
 			});
 		}));
 
-		ignoreErrors(() => {
-			const connection = connect({principals:[PRINCIPAL_EXPLORER_WRITE]});
-			DEFAULT_FIELDS.forEach(({
+		const connection = connect({principals:[PRINCIPAL_EXPLORER_WRITE]});
+		DEFAULT_FIELDS.forEach(({
+			_name,
+			displayName,
+			key
+		}) => {
+			const params = field({
 				_name,
 				displayName,
 				key
-			}) => {
-				const params = field({
-					_name,
-					displayName,
-					key
-				});
-				params.__connection = connection; // eslint-disable-line no-underscore-dangle
-				//log.info(toStr({params}));
-				ignoreErrors(() => {
-					create(params);
-				});
-			})
-
-			const cron = app.config.cron === 'true';
-			if (cron) {
-				const collectors = getCollectors({connection});
-				//log.info(toStr({collectors}));
-
-				const collectionsRes = query({
-					connection,
-					filters: addFilter({
-						filter: hasValue('doCollect', true)
-					})
-				});
-				//log.info(toStr({collectionsRes})); // huge
-				collectionsRes.hits.forEach(node => reschedule({
-					collectors,
-					node
-				}))
-				/*const jobs = listJobs();
-				log.info(toStr({jobs}));
-				jobs.jobs.forEach(({name}) => {
-					const job = getJob({name});
-					log.info(toStr({job}));
-				});*/
-			}
-		});
-
+			});
+			params.__connection = connection; // eslint-disable-line no-underscore-dangle
+			//log.info(toStr({params}));
+			ignoreErrors(() => {
+				create(params);
+			});
+		})
 	}); // runAsSu
 	//migrate();
 } // function init
