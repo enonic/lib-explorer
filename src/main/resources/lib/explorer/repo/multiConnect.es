@@ -53,9 +53,9 @@ export function multiConnect({
 		}
 	});
 	//log.info(toStr({existingReposWithBranch, missingReposWithBranch}));
-	if (missingReposWithBranch.length) { // TODO log error or throw could be configurable
-		log.error(`Skipping missing sources: ${toStr(missingReposWithBranch)}`);
-	}
+	/*if (missingReposWithBranch.length) { // TODO log warning or throw could be configurable
+		log.warning(`Skipping missing sources: ${toStr(missingReposWithBranch)}`);
+	}*/
 
 	const sourcesWithExtendedPrincipals = existingReposWithBranch.map(({
 		branch,
