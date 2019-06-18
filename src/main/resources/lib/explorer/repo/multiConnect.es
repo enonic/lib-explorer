@@ -1,17 +1,19 @@
-import {toStr} from '/lib/util';
+//import {toStr} from '/lib/util';
+//import {forceArray} from '/lib/util/data';
 //import {getUser} from '/lib/xp/auth';
 import {get as getContext} from '/lib/xp/context';
-import {multiRepoConnect} from '/lib/xp/node';
-import {list as listRepos} from '/lib/xp/repo';
+import {connect, multiRepoConnect} from '/lib/xp/node';
 
 import {runAsSu} from '/lib/explorer/runAsSu';
+import {pad} from '/lib/explorer/string/pad';
+
+//const {currentTimeMillis} = Java.type('java.lang.System');
 
 
 export function multiConnect({
 	sources,
 	context = getContext(),
 	principals: passedPrincipals,
-	repoList = runAsSu(() => listRepos()),
 
 	// There might not be a logged in user
 	login = context.authInfo.user && context.authInfo.user.login,
@@ -21,9 +23,23 @@ export function multiConnect({
 		idProvider
 	} : null
 }) {
+	const existingRepos = {};
+	runAsSu(() => {
+		connect({repoId: 'system-repo', branch: 'master'}).query({
+			count: -1,
+			filters: {
+				ids: {
+        			values: sources.map(({repoId}) => repoId)
+    			}
+			}
+		}).hits.forEach(({id}) => {
+			existingRepos[id] = true;
+		})
+	});
+
 	const contextPrincipals = context.authInfo.principals;
 
-	const basePrincipals = [].concat(contextPrincipals);
+	const basePrincipals = [].concat(contextPrincipals); // Dereference
 	if (Array.isArray(passedPrincipals)) {
 		passedPrincipals.forEach(passedPrincipal => {
 			if(!basePrincipals.includes(passedPrincipal)) {
@@ -32,53 +48,38 @@ export function multiConnect({
 		});
 	}
 	//log.info(toStr({contextPrincipals, passedPrincipals, basePrincipals}));
-	const repos = {};
-	repoList.forEach(({id, branches}) => {
-		repos[id] = branches;
-	});
 	//log.info(toStr({repos}));
 
-	const existingReposWithBranch = [];
-	const missingReposWithBranch = [];
+	const sourcesWithExtendedPrincipals = [];
 	sources.forEach(({
 		branch,
 		principals: sourcePrincipals,
 		repoId
 	}) => {
 		//log.info(toStr({repoId}));
-		if (repos[repoId] && repos[repoId].includes(branch)) {
-			existingReposWithBranch.push({branch, sourcePrincipals, repoId});
-		} else {
-			missingReposWithBranch.push({branch, sourcePrincipals, repoId});
-		}
-	});
-	//log.info(toStr({existingReposWithBranch, missingReposWithBranch}));
-	/*if (missingReposWithBranch.length) { // TODO log warning or throw could be configurable
-		log.warning(`Skipping missing sources: ${toStr(missingReposWithBranch)}`);
-	}*/
-
-	const sourcesWithExtendedPrincipals = existingReposWithBranch.map(({
-		branch,
-		sourcePrincipals,
-		repoId
-	}) => {
-		const principals = [].concat(basePrincipals);
-		if (Array.isArray(sourcePrincipals)) {
-			sourcePrincipals.forEach(sourcePrincipal => {
-				if(!principals.includes(sourcePrincipal)) {
-					principals.push(sourcePrincipal);
-				}
+		if (existingRepos[repoId]) { // WARNING: Assuming 'master' branch!
+			const principals = [].concat(basePrincipals); // Dereference
+			if (Array.isArray(sourcePrincipals)) {
+				sourcePrincipals.forEach(sourcePrincipal => {
+					if(!principals.includes(sourcePrincipal)) {
+						principals.push(sourcePrincipal);
+					}
+				});
+			}
+			//log.info(toStr({basePrincipals, sourcePrincipals, principals}));
+			sourcesWithExtendedPrincipals.push({
+				branch,
+				principals,
+				repoId,
+				user
 			});
-		}
-		//log.info(toStr({basePrincipals, sourcePrincipals, principals}));
-		return {
-			branch,
-			principals,
-			repoId,
-			user
 		}
 	});
 	//log.info(toStr({sourcesWithExtendedPrincipals}));
+	/*times.push({label: 'multiConnect end', time: currentTimeMillis()});
+	for (let i = 0; i < times.length - 1; i += 1) {
+		log.info(`${pad(times[i + 1].time - times[i].time, 4)} ${pad(times[i + 1].time - times[0].time, 4)} ${times[i + 1].label}`);
+	}*/
 
 	return multiRepoConnect({sources: sourcesWithExtendedPrincipals});
 } // function multiConnect
