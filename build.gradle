@@ -2,15 +2,15 @@ plugins {
 	id 'java' // Needed for assemble and build
 	id 'maven-publish' // Provides publishToMavenLocal
 	id 'com.enonic.xp.base' version '2.0.0'
-	//id 'com.enonic.defaults' version '2.0.1'
+	id 'com.enonic.defaults' version '2.0.1' // Publishing
 	id 'com.moowork.node' version '1.3.1'
 }
 
 
 repositories {
+	xp.enonicRepo() // Not provided by com.enonic.defaults
 	mavenLocal()
 	jcenter()
-	xp.enonicRepo() // Not provided by com.enonic.defaults
 	//maven {url 'http://repo.enonic.com/public'}
 }
 
@@ -100,18 +100,3 @@ processResources {
 
 processResources.mustRunAfter webpack
 processResources.dependsOn webpack
-
-
-publishing {
-	publications {
-		mavenJava( MavenPublication ) {
-			from components.java
-		}
-	}
-	repositories {
-		maven {
-			//url 'http://repo.enonic.net/artifactory/public'
-			mavenLocal()
-		}
-	}
-}
