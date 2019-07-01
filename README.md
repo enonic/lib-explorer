@@ -1,11 +1,34 @@
-# enonic-xp-lib-yase
+# Explorer Library
 
-	include 'com.enonic.lib:yase:1.0.0-SNAPSHOT'
+## Getting the source
 
-	<input name="thesauri" type="CustomSelector">
-		<label>Thesauri (synonyms)</label>
-		<occurrences minimum="0" maximum="0"/>
-		<config>
-			<service>thesaurusSelector</service>
-		</config>
-	</input>
+```sh
+$ git clone git@github.com:enonic/lib-explorer.git && cd lib-explorer
+```
+
+or
+
+```sh
+$ git clone https://github.com/enonic/lib-explorer.git && cd lib-explorer
+```
+
+## Buildling
+
+```sh
+$ ./gradlew clean build
+```
+
+## Publishing
+
+```sh
+$ ./gradlew publish
+```
+
+
+## Include in an app
+
+```build.gradle
+dependencies {
+	include 'com.enonic.lib:lib-explorer:1.0.0-SNAPSHOT'
+}
+```
