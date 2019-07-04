@@ -15,13 +15,13 @@ $ git clone https://github.com/enonic/lib-explorer.git && cd lib-explorer
 ## Buildling
 
 ```sh
-$ ./gradlew clean build
+$ enonic project gradle clean build
 ```
 
 ## Publishing
 
 ```sh
-$ ./gradlew publish
+$ enonic project gradle publish
 ```
 
 
