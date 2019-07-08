@@ -22,6 +22,11 @@ export function query({
 	//log.info(`queryRes.hits:${toStr(queryRes.hits)}`);
 
 	queryRes.hits = queryRes.hits.map(hit => connection.get(hit.id));
+	// WARNING Hits may contain null entries if there are ghost nodes.
+	// (nodes that are in the index, that have been deleted)
+	// Not doing the below so count and total stays correct.
+	//.filter(x => x);
+
 	//log.info(`queryRes.hits:${toStr(queryRes.hits)}`);
 
 	return queryRes;
