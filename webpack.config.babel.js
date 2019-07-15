@@ -37,12 +37,12 @@ const WEBPACK_CONFIG = [
 		mode: MODE,
 		optimization: {
 			minimizer: [
-				new TerserPlugin({
+				new TerserPlugin(/*{
 					terserOptions: {
-						compress: {},
-						mangle: true // Note `mangle.properties` is `false` by default.
+						compress: {}
+						//mangle: true // This will DESTROY exports!
 					}
-				})
+				}*/)
 			]
 		},
 		resolveAlias: SS_ALIAS

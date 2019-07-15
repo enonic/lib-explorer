@@ -21,7 +21,7 @@ $ enonic project gradle clean build
 ## Publishing
 
 ```sh
-$ enonic project gradle -- publishToMavenLocal publish --refresh-dependencies
+$ enonic project gradle -- clean build publishToMavenLocal publish --refresh-dependencies
 ```
 
 
