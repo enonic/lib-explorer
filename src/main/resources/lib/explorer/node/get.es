@@ -1,3 +1,5 @@
+//import {toStr} from '/lib/util';
+
 import {join}  from '/lib/explorer/path/join';
 
 
@@ -9,5 +11,12 @@ export const get = ({
 	key = path,
 	keys = [key]
 }) => {
+	/*log.info(toStr({
+		_parentPath,
+		_name,
+		path,
+		key,
+		keys
+	}));*/
 	return connection.get(...keys);
 } // get

@@ -12,19 +12,25 @@ import {getCollectors, reschedule} from '/lib/explorer/collection/reschedule';
 //──────────────────────────────────────────────────────────────────────────────
 import {
 	DEFAULT_FIELDS,
+	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_WRITE
 } from '/lib/explorer/model/2/constants';
 
 import {
+	DEFAULT_INTERFACE,
 	ROLES,
-	USERS,
 	REPOSITORIES,
-	field
+	USERS,
+	field,
+	fieldValue,
+	interfaceModel
 } from '/lib/explorer/model/2/index';
 
 import {ignoreErrors} from '/lib/explorer/ignoreErrors';
+import {logErrors} from '/lib/explorer/logErrors';
 import {init as initRepo} from '/lib/explorer/repo/init';
 import {connect} from '/lib/explorer/repo/connect';
+import {getField} from '/lib/explorer/field/getField';
 import {create} from '/lib/explorer/node/create';
 import {runAsSu} from '/lib/explorer/runAsSu';
 import {query} from '/lib/explorer/collection/query';
@@ -74,9 +80,37 @@ export function init() {
 			params.__connection = connection; // eslint-disable-line no-underscore-dangle
 			//log.info(toStr({params}));
 			ignoreErrors(() => {
-				create(params);
+				const node = create(params);
 			});
 		})
+
+		const node = getField({
+			connection,
+			_name: 'type'
+		});
+		//log.info(`node:${toStr({node})}`);
+		if (node) {
+			const paramsV = fieldValue({
+				displayName: 'Document',
+				field: 'type',
+				fieldReference: node._id,
+				value: NT_DOCUMENT
+			});
+			//log.info(`paramsV:${toStr({paramsV})}`);
+			paramsV.__connection = connection; // eslint-disable-line no-underscore-dangle
+			logErrors(() => {
+				create(paramsV);
+			});
+		} else {
+			log.error(`Field type not found! Cannot create field value ${NT_DOCUMENT}`);
+		}
+
+		const paramsI = interfaceModel(DEFAULT_INTERFACE);
+		paramsI.__connection = connection; // eslint-disable-line no-underscore-dangle
+		ignoreErrors(() => {
+			create(paramsI);
+		});
+
 	}); // runAsSu
 	//migrate();
 } // function init
