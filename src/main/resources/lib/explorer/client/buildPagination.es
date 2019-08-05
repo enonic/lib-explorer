@@ -17,7 +17,17 @@ export function buildPagination({
 	name, // name of url query parameter that contains the searchString
 	page,
 	pages,
-	paginationConfig,
+	paginationConfig = {
+		pagesToShow: 10,
+		first: true,
+		prev: true,
+		next: true,
+		last: true,
+		firstPhrase: 'pagination.first',
+		prevPhrase: 'pagination.prev',
+		nextPhrase: 'pagination.next',
+		lastPhrase: 'pagination.last'
+	},
 	searchString
 }) {
 	//log.info(toStr({searchString}));

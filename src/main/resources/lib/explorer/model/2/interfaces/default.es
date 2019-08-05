@@ -68,7 +68,7 @@ export const DEFAULT_INTERFACE = {
 			type: 'string'
 		}
 	],
-	pagination: {
+	/*pagination: {
 		pagesToShow: 10,
 		first: true,
 		prev: true,
@@ -78,7 +78,7 @@ export const DEFAULT_INTERFACE = {
 		prevPhrase: 'pagination.prev',
 		nextPhrase: 'pagination.next',
 		lastPhrase: 'pagination.last'
-	},
+	},*/
 	filters: {
 		must: [
 			{

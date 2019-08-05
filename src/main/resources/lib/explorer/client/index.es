@@ -93,7 +93,7 @@ export function search(params) {
 
 	const {
 		facets: facetConfig,
-		pagination: paginationConfig,
+		//pagination: paginationConfig,
 		query: queryConfig,
 		resultMappings,
 		stopWords,
@@ -282,7 +282,7 @@ export function search(params) {
 		name,
 		page,
 		pages,
-		paginationConfig,
+		//paginationConfig,
 		searchString
 	});
 	//log.info(toStr({pagination}));
