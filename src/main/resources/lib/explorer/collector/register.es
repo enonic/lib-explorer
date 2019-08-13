@@ -13,11 +13,11 @@ export function register({
 	configAssetPath = 'yase/Collector.js',
 	displayName
 }) {
-	const yaseWriteConnection = connect({
+	const writeConnection = connect({
 		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});
 	const params = {
-		__connection: yaseWriteConnection,
+		__connection: writeConnection,
 		__user: {
 			key: USER_EXPLORER_APP_KEY
 		},

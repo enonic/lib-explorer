@@ -10,11 +10,11 @@ import {remove} from '/lib/explorer/node/remove';
 export function unregister({
 	appName
 }) {
-	const yaseWriteConnection = connect({
+	const writeConnection = connect({
 		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});
 	return remove({
-		connection: yaseWriteConnection,
+		connection: writeConnection,
 		_parentPath: '/collectors',
 		_name: appName
 	});
