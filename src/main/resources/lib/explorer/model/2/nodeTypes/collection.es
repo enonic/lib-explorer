@@ -12,18 +12,6 @@ export function collection({
 	collector,
 	...rest
 }) {
-	if (
-		collector.name === 'surgeon'
-		|| collector.name === 'com.enonic.app.yase.collector.surgeon'
-	) {
-		collector.name = 'com.enonic.app.explorer.collector.surgeon';
-	}
-	if (
-		collector.name === 'uptodate'
-		|| collector.name === 'com.enonic.app.yase.collector.uptodate'
-	) {
-		collector.name = 'com.enonic.app.explorer.collector.uptodate';
-	}
 	return node({
 		...rest,
 		_parentPath,
