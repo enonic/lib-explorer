@@ -13,12 +13,12 @@ export function field({
 	fieldType = 'text',
 
 	instruction = 'type',
-	decideByType = 'on',
-	enabled = 'on',
-	nGram = 'on',
-	fulltext = 'on',
-	includeInAllText = 'on',
-	path,
+	decideByType = true,
+	enabled = true,
+	nGram = true,
+	fulltext = true,
+	includeInAllText = true,
+	path = false,
 	...rest
 }) {
 	return node({
@@ -29,12 +29,12 @@ export function field({
 		key,
 		fieldType,
 		indexConfig: instruction === 'custom' ? {
-			decideByType: decideByType && decideByType === 'on',
-			enabled: enabled && enabled === 'on',
-			nGram: nGram && nGram === 'on',
-			fulltext: fulltext && fulltext === 'on',
-			includeInAllText: includeInAllText && includeInAllText === 'on',
-			path: path && path === 'on'
+			decideByType,
+			enabled,
+			nGram,
+			fulltext,
+			includeInAllText,
+			path
 		} : instruction,
 		type: NT_FIELD
 	});
