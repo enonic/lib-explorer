@@ -24,8 +24,12 @@ export function query({
 	};
 	const queryRes = connection.query(queryParams);
 	queryRes.hits = queryRes.hits.map((hit) => {
-		const {_name: name, description = '', displayName} = connection.get(hit.id);
-		const rv = {description, displayName, name};
+		const {
+			_name: name,
+			description = '',
+			displayName
+		} = connection.get(hit.id);
+		const rv = {description, displayName, id: hit.id, name};
 		if (getSynonymsCount) {
 			const synonymsRes = querySynonyms({
 				connection,

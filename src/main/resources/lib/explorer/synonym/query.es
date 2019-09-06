@@ -1,4 +1,6 @@
 //import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
+
 import {NT_SYNONYM} from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
@@ -39,16 +41,18 @@ export function query({
 			_path,
 			displayName,
 			from,
+			thesaurusReference,
 			to
 		} = node;
 		return {
 			displayName,
-			from,
+			from: forceArray(from),
 			id: hit.id,
 			name: _name,
 			thesaurus: _path.match(/[^/]+/g)[1],
+			thesaurusReference,
 			score: hit.score,
-			to
+			to: forceArray(to)
 		};
 	}).filter(x => x);
 	return queryRes;
