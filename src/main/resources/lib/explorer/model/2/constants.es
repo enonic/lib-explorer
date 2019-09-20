@@ -41,30 +41,43 @@ export const PATH_INTERFACES = '/interfaces';
 export const NO_VALUES_FIELDS = [{
 	key: '_alltext',
 	_name: 'alltext',
+	denyDelete: true,
+	denyValues: true,
 	displayName: 'All text'
 }];
 
 export const READONLY_FIELDS = [{
 	key: 'type',
 	_name: 'type',
-	displayName: 'Type'
+	denyDelete: true,
+	denyValues: false,
+	displayName: 'Type'/*,
+	readonly: true*/
 }];
 
 export const READWRITE_FIELDS = [{
 	key: 'title',
 	_name: 'title',
+	denyDelete: true,
+	denyValues: false,
 	displayName: 'Title'
 },{
 	key: 'language',
 	_name: 'language',
+	denyDelete: true,
+	denyValues: false,
 	displayName: 'Language'
 },{
 	key: 'text',
 	_name: 'text',
+	denyDelete: true,
+	denyValues: false,
 	displayName: 'Text'
 },{
 	key: 'uri',
 	_name: 'uri',
+	denyDelete: true,
+	denyValues: false,
 	displayName: 'Uri'
 }];
 

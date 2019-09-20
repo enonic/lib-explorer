@@ -13,7 +13,9 @@ import {getCollectors, reschedule} from '/lib/explorer/collection/reschedule';
 import {
 	DEFAULT_FIELDS,
 	NT_DOCUMENT,
-	PRINCIPAL_EXPLORER_WRITE
+	PRINCIPAL_EXPLORER_WRITE,
+	ROOT_PERMISSION_SYSTEM_ADMIN,
+	ROOT_PERMISSION_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 
 import {
@@ -69,11 +71,20 @@ export function init() {
 		const connection = connect({principals:[PRINCIPAL_EXPLORER_WRITE]});
 		DEFAULT_FIELDS.forEach(({
 			_name,
+			denyDelete,
+			denyValues,
 			displayName,
 			key
 		}) => {
 			const params = field({
 				_name,
+				_inheritsPermissions: false,
+				_permissions: [
+					ROOT_PERMISSION_SYSTEM_ADMIN,
+					ROOT_PERMISSION_EXPLORER_READ
+				],
+				denyDelete,
+				denyValues,
 				displayName,
 				key
 			});
