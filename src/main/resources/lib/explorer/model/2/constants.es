@@ -43,7 +43,8 @@ export const NO_VALUES_FIELDS = [{
 	_name: '_allText', // sanitize removes _ and makes T small
 	denyDelete: true,
 	denyValues: true,
-	displayName: 'All text'
+	displayName: 'All text',
+	inResults: false
 }];
 
 export const READONLY_FIELDS = [{

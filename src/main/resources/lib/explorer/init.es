@@ -74,7 +74,8 @@ export function init() {
 			denyDelete,
 			denyValues,
 			displayName,
-			key
+			key,
+			inResults = true
 		}) => {
 			const params = field({
 				_name,
@@ -86,7 +87,8 @@ export function init() {
 				denyDelete,
 				denyValues,
 				displayName,
-				key
+				key,
+				inResults
 			});
 			params.__connection = connection; // eslint-disable-line no-underscore-dangle
 			//log.info(toStr({params}));
