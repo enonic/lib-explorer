@@ -24,6 +24,7 @@ import {hash} from '/lib/explorer/string/hash';
 
 import {buildFacets} from '/lib/explorer/client/buildFacets';
 import {buildFiltersFromParams} from '/lib/explorer/client/buildFiltersFromParams';
+import {buildHighlights} from '/lib/explorer/client/buildHighlights';
 import {buildPagination} from '/lib/explorer/client/buildPagination';
 import {buildQuery} from '/lib/explorer/client/buildQuery';
 import {flattenSynonyms} from '/lib/explorer/client/flattenSynonyms';
@@ -190,7 +191,7 @@ export function search(params) {
 	//times.push({label: 'synonyms', time: currentTimeMillis()});
 
 
-  // TODO This could be cached
+	// TODO This could be cached
 	const localizedFacets = {};
 	if (facetConfig) {
 		localizeFacets({
@@ -222,6 +223,9 @@ export function search(params) {
 	const queryParams = {
 		count,
 		filters,
+		highlight: buildHighlights({
+			resultMappings
+		}),
 		query,
 		start
 	};
@@ -231,7 +235,7 @@ export function search(params) {
 	//log.info(toStr({count}));
 
 	const queryRes = yaseReadConnections.query(queryParams);
-	//log.info(toStr({queryRes}));
+	log.info(toStr({queryRes}));
 	const aggregationsCacheObj = {};
 	if (Object.keys(queryRes.aggregations).length) {
 		const aggregationCacheKey = hash(filters, 52);
@@ -271,7 +275,7 @@ export function search(params) {
 		//times
 	});
 	//times.push({label: 'facets', time: currentTimeMillis()});
-  //log.info(toStr({aggregationsCacheObj}));
+	//log.info(toStr({aggregationsCacheObj}));
 
 	const pages = Math.ceil(total / count);
 	//log.info(toStr({pages}));
