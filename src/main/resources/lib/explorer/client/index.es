@@ -15,13 +15,14 @@ import {
 } from '/lib/explorer/model/2/constants';
 
 import {get as getInterface} from '/lib/explorer/interface/get';
-import {removeStopWords} from '/lib/explorer/query/removeStopWords';
+//import {removeStopWords} from '/lib/explorer/query/removeStopWords';
 import {wash} from '/lib/explorer/query/wash';
 import {connect} from '/lib/explorer/repo/connect';
 import {multiConnect} from '/lib/explorer/repo/multiConnect';
 import {get as getStopWordsList} from '/lib/explorer/stopWords/get';
 import {hash} from '/lib/explorer/string/hash';
 
+import {addCommonTermsFilter} from '/lib/explorer/client/addCommonTermsFilter';
 import {buildFacets} from '/lib/explorer/client/buildFacets';
 import {buildFiltersFromParams} from '/lib/explorer/client/buildFiltersFromParams';
 import {buildHighlights} from '/lib/explorer/client/buildHighlights';
@@ -116,7 +117,7 @@ export function search(params) {
 	if (!page) { page = Math.floor(start / count) + 1; }
 
 	const washedSearchString = wash({string: searchString});
-	//log.info(toStr({washedSearchString}));
+	//log.info(toStr({searchString, washedSearchString}));
 
 	//times.push({label: 'various', time: currentTimeMillis()});
 
@@ -138,12 +139,16 @@ export function search(params) {
 	}
 	//log.info(toStr({listOfStopWords}));
 	const removedStopWords = [];
-	const searchStringWithoutStopWords = removeStopWords({
+	/*const searchStringWithoutStopWords = removeStopWords({
 		removedStopWords,
 		stopWords: listOfStopWords,
 		string: washedSearchString
 	});
-	//log.info(toStr({removedStopWords}));
+	log.info(toStr({
+		washedSearchString,
+		searchStringWithoutStopWords,
+		removedStopWords
+	}));*/
 	//times.push({label: 'stopwords', time: currentTimeMillis()});
 
 	const synonyms = [];
@@ -152,7 +157,7 @@ export function search(params) {
 		connection: yaseReadConnection,
 		expand,
 		expression: queryConfig,
-		searchString: searchStringWithoutStopWords,
+		searchString: washedSearchString,
 		synonyms//,
 		//times
 	});
@@ -212,6 +217,13 @@ export function search(params) {
 	//log.info(toStr({filters}));
 	//times.push({label: 'buildFiltersFromParams', time: currentTimeMillis()});
 
+	addCommonTermsFilter({
+		commonWords: listOfStopWords,
+		filtersObjToModify: filters,
+		searchString: washedSearchString
+	});
+	//log.info(toStr({filters}));
+
 	const yaseReadConnections = multiConnect({
 		principals: [PRINCIPAL_EXPLORER_READ],
 		sources: config.sources
@@ -235,7 +247,7 @@ export function search(params) {
 	//log.info(toStr({count}));
 
 	const queryRes = yaseReadConnections.query(queryParams);
-	log.info(toStr({queryRes}));
+	//log.info(toStr({queryRes}));
 	const aggregationsCacheObj = {};
 	if (Object.keys(queryRes.aggregations).length) {
 		const aggregationCacheKey = hash(filters, 52);
@@ -314,7 +326,7 @@ export function search(params) {
 			locale,
 			nodeCache: NODE_CACHE,
 			resultMappings,
-			searchString: searchStringWithoutStopWords//,
+			searchString: washedSearchString//,
 			//searchString//: flattenedSynonyms.join(' ') // Synonyms add to much highlighting
 			//times
 		}),

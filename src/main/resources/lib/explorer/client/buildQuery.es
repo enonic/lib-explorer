@@ -56,7 +56,7 @@ export function buildQuery({
 		const localSynonyms = getSynonyms({
 			connection,
 			expand,
-			searchString,
+			searchString, // TODO Perhaps stopwords needs to be removed here?
 			thesauri: params.thesauri
 		});
 		//times.push({label: 'getSynonyms', time: currentTimeMillis()});

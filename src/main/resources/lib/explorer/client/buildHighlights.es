@@ -14,6 +14,6 @@ export function buildHighlights({resultMappings}) {
 			setIn(highlights, `properties.${field}`, {fragmentSize});
 		}
 	});
-	log.info(toStr({highlights}));
+	//log.info(toStr({highlights}));
 	return highlights;
 } // function buildHighlights
