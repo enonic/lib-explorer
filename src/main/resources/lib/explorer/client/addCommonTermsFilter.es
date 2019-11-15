@@ -26,10 +26,33 @@ export function addCommonTermsFilter({
 	// Find which words in the searchString which are common and which are not.
 	const foundCommonWords = [];
 	const foundUncommonWords = [];
+
+	const uniqWords = [];
 	searchString
 		.split(wordSplitRegexp)
 		.filter(Boolean)
 		.forEach(word => {
+			if (!uniqWords.includes(word)) {
+				uniqWords.push(word);
+			}
+		});
+
+
+	if (uniqWords.length) {
+		if (!dlv(filtersObjToModify, 'boolean.must')) {
+			set(filtersObjToModify, 'boolean.must', []);
+		}
+		uniqWords.forEach(word => {
+			filtersObjToModify.boolean.must.push({
+				// The hasValue filter matches if document contain any of the
+				// values given in the value list
+				hasValue: {
+					field: '_allText',
+					values: [word]
+				}
+			});
+		})
+		/*words.forEach(word => {
 			//log.info(toStr({word}));
 			if (commonWords.includes(word)) {
 				if (!foundCommonWords.includes(word)) {
@@ -40,19 +63,23 @@ export function addCommonTermsFilter({
 					foundUncommonWords.push(word);
 				}
 			}
-		});
+		});*/
+	} // uniqWords.length
+
 	//log.info(toStr({foundCommonWords, foundUncommonWords}));
 
 	// Add the uncommon words as a must filter, and the common words as should.
-	if (foundUncommonWords.length) {
+	/*if (foundUncommonWords.length) {
 		if (!dlv(filtersObjToModify, 'boolean.must')) {
 			set(filtersObjToModify, 'boolean.must', []);
 		}
-		filtersObjToModify.boolean.must.push({
-			hasValue: {
-				field: '_allText',
-				values: foundUncommonWords
-			}
+		foundUncommonWords.forEach(uncommonWord => {
+			filtersObjToModify.boolean.must.push({
+				hasValue: {
+					field: '_allText',
+					values: [uncommonWord]
+				}
+			});
 		});
 	}
 
@@ -60,12 +87,14 @@ export function addCommonTermsFilter({
 		if (!dlv(filtersObjToModify, 'boolean.should')) {
 			set(filtersObjToModify, 'boolean.should', []);
 		}
-		filtersObjToModify.boolean.should.push({
-			hasValue: {
-				field: '_allText',
-				values: foundCommonWords
-			}
+		foundCommonWords.forEach(commonWord => {
+			filtersObjToModify.boolean.should.push({
+				hasValue: {
+					field: '_allText',
+					values: [commonWord]
+				}
+			});
 		});
-	}
+	}*/
 	//log.info(toStr({foundCommonWords, foundUncommonWords, filtersObjToModify}));
 } // addCommonTermsFilter

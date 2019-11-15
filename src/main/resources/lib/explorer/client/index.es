@@ -22,7 +22,7 @@ import {multiConnect} from '/lib/explorer/repo/multiConnect';
 import {get as getStopWordsList} from '/lib/explorer/stopWords/get';
 import {hash} from '/lib/explorer/string/hash';
 
-import {addCommonTermsFilter} from '/lib/explorer/client/addCommonTermsFilter';
+//import {addCommonTermsFilter} from '/lib/explorer/client/addCommonTermsFilter';
 import {buildFacets} from '/lib/explorer/client/buildFacets';
 import {buildFiltersFromParams} from '/lib/explorer/client/buildFiltersFromParams';
 import {buildHighlights} from '/lib/explorer/client/buildHighlights';
@@ -217,12 +217,12 @@ export function search(params) {
 	//log.info(toStr({filters}));
 	//times.push({label: 'buildFiltersFromParams', time: currentTimeMillis()});
 
-	addCommonTermsFilter({
+	/*addCommonTermsFilter({
 		commonWords: listOfStopWords,
 		filtersObjToModify: filters,
 		searchString: washedSearchString
 	});
-	//log.info(toStr({filters}));
+	log.info(toStr({filters}));*/
 
 	const yaseReadConnections = multiConnect({
 		principals: [PRINCIPAL_EXPLORER_READ],
