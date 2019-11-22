@@ -28,6 +28,8 @@ import {
 	interfaceModel
 } from '/lib/explorer/model/2/index';
 
+import {node as Node} from '/lib/explorer/model/2/nodeTypes/node';
+
 import {ignoreErrors} from '/lib/explorer/ignoreErrors';
 import {logErrors} from '/lib/explorer/logErrors';
 import {init as initRepo} from '/lib/explorer/repo/init';
@@ -124,6 +126,16 @@ export function init() {
 			create(paramsI);
 		});
 
+		const notificationsData = Node({
+			__connection: connection,
+			_name: 'notifications',
+			emails:[]
+		});
+		//log.info(toStr({notificationsData}));
+		ignoreErrors(() => {
+			const notificationsNode = create(notificationsData);
+			//log.info(toStr({notificationsNode}));
+		});
 	}); // runAsSu
 	//migrate();
 } // function init
