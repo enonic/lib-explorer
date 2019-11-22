@@ -32,6 +32,7 @@ dependencies {
 	//compile "com.enonic.xp:lib-event:${xpVersion}"
 	//compile "com.enonic.xp:lib-i18n:${xpVersion}"
 	compile "com.enonic.xp:lib-io:${xpVersion}"
+	compile "com.enonic.xp:lib-mail:${xpVersion}"
 	//compile "com.enonic.xp:lib-mustache:${xpVersion}"
 	//compile "com.enonic.xp:lib-node:${xpVersion}"
 	compile "com.enonic.xp:lib-portal:${xpVersion}"

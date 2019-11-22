@@ -2,7 +2,15 @@ const {currentTimeMillis} = Java.type('java.lang.System');
 
 import {toStr} from '/lib/util';
 
+import {send} from '/lib/xp/mail';
+
+import {
+	PRINCIPAL_EXPLORER_READ
+} from '/lib/explorer/model/2/constants';
+
 import {createOrModify} from '/lib/explorer/node/createOrModify';
+import {get as getNode} from '/lib/explorer/node/get';
+import {connect} from '/lib/explorer/repo/connect';
 import {progress} from '/lib/explorer/task/progress';
 import {get as getTask} from '/lib/explorer/task/get';
 import {modify as modifyTask} from '/lib/explorer/task/modify';
@@ -93,6 +101,18 @@ export class Collector {
 		this.taskProgressObj.current = this.taskProgressObj.total; // Make sure it ends at 100%
 		this.taskProgressObj.info.message = `Finished with ${this.journal.errors.length} errors.`;
 		this.progress(); // This also implicitly sets final currentTime and duration
+
+		const node = getNode({
+			connection: connect({
+				principals: [PRINCIPAL_EXPLORER_READ]
+			}),
+			path: '/notifications'
+		}) || {};
+		//log.info(`node:${toStr(node)}`);
+
+		const {emails = []} = node;
+		//log.info(`emails:${toStr(emails)}`);
+
 		if (this.journal.errors.length) {
 			log.error(toStr({failedUris: this.journal.errors}));
 			modifyTask({
@@ -100,6 +120,23 @@ export class Collector {
 				state: 'FAILED',
 				should: 'STOP'
 			});
+
+			// Error Notifications
+			if (emails.length) {
+				try {
+					const emailParams = {
+						from: 'explorer-noreply@enonic.com',
+						to: emails,
+						subject: `Collecting to ${this.name} had ${this.journal.errors.length} errors!`,
+						body: `${toStr(this.journal.errors)}`
+					};
+					log.info(`emailParams:${toStr(emailParams)}`);
+					send(emailParams);
+				} catch (e) {
+					log.error(e.message);
+				}
+			}
+
 			throw new Error(JSON.stringify(this.taskProgressObj.info)); // Throw so task state becomes FAILED.
 			//throw new Error(this.taskProgressObj.info.message); // Throw so task state becomes FAILED.
 		}
@@ -108,6 +145,22 @@ export class Collector {
 			state: 'FINISHED',
 			should: 'STOP'
 		});
+
+		// Success Notifications
+		if (emails.length) {
+			try {
+				const emailParams = {
+					from: 'explorer-noreply@enonic.com',
+					to: emails,
+					subject: `Collecting to ${this.name} successful :)`,
+					body: `:)`
+				};
+				log.info(`emailParams:${toStr(emailParams)}`);
+				send(emailParams);
+			} catch (e) {
+				log.error(e.message);
+			}
+		}
 	} // stop
 
 
