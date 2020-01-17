@@ -15,7 +15,7 @@ import {
 } from '/lib/explorer/model/2/constants';
 
 import {get as getInterface} from '/lib/explorer/interface/get';
-//import {removeStopWords} from '/lib/explorer/query/removeStopWords';
+import {removeStopWords} from '/lib/explorer/query/removeStopWords';
 import {wash} from '/lib/explorer/query/wash';
 import {connect} from '/lib/explorer/repo/connect';
 import {multiConnect} from '/lib/explorer/repo/multiConnect';
@@ -139,12 +139,12 @@ export function search(params) {
 	}
 	//log.info(toStr({listOfStopWords}));
 	const removedStopWords = [];
-	/*const searchStringWithoutStopWords = removeStopWords({
+	const searchStringWithoutStopWords = removeStopWords({
 		removedStopWords,
 		stopWords: listOfStopWords,
 		string: washedSearchString
 	});
-	log.info(toStr({
+	/*log.info(toStr({
 		washedSearchString,
 		searchStringWithoutStopWords,
 		removedStopWords
@@ -157,7 +157,8 @@ export function search(params) {
 		connection: yaseReadConnection,
 		expand,
 		expression: queryConfig,
-		searchString: washedSearchString,
+		//searchString: washedSearchString,
+		searchString: searchStringWithoutStopWords,
 		synonyms//,
 		//times
 	});
@@ -326,7 +327,8 @@ export function search(params) {
 			locale,
 			nodeCache: NODE_CACHE,
 			resultMappings,
-			searchString: washedSearchString//,
+			//searchString: washedSearchString//,
+			searchString: searchStringWithoutStopWords
 			//searchString//: flattenedSynonyms.join(' ') // Synonyms add to much highlighting
 			//times
 		}),
