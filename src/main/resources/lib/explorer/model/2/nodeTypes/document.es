@@ -10,6 +10,7 @@ export function Document({
 	uri,
 	_name = hash(uri),
 	collector = app.name,
+	collectorVersion = app.version,
 	//text,
 	//title,
 	...rest
@@ -24,6 +25,7 @@ export function Document({
 		_indexConfig: {default: 'byType'},
 		_name,
 		collector,
+		collectorVersion,
 		//text,
 		//title,
 		type: NT_DOCUMENT,
