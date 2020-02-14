@@ -15,6 +15,7 @@ import {
 export function create({
 	__connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	__user = getUser(),
+	__sanitize = true,
 
 	// It appears that properties that starts with an undescore are ignored, except the standard ones.
 	// These doesn't work: _displayName _creator _createdTime _type
@@ -67,7 +68,7 @@ export function create({
 	const CREATE_PARAMS = {
 		_indexConfig,
 		_inheritsPermissions,
-		_name: sanitize(_name),
+		_name: __sanitize ? sanitize(_name) : _name,
 		_parentPath,
 		_permissions,
 		creator,

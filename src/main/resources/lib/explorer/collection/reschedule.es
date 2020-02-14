@@ -18,8 +18,10 @@ export function getCollectors({
 	const collectors = {};
 	queryCollectors({
 		connection
-	}).hits.forEach(({_name: application, collectTaskName}) => {
-		collectors[application] = collectTaskName;
+	}).hits.forEach(({
+		_name
+	}) => {
+		collectors[_name] = true;
 	});
 	return collectors;
 }
@@ -35,7 +37,7 @@ export function reschedule({
 		_id: id,
 		_name: collectionName,
 		collector: {
-			name: collectorName,
+			name: collectorId,
 			config: collectorConfig
 		} = {},
 		cron: cronMaybeArray,
@@ -43,7 +45,7 @@ export function reschedule({
 		doCollect = false
 	} = node;
 	const cronArray = forceArray(cronMaybeArray);
-	//log.info(toStr({id, collectionName, collectorName, cronMaybeArray, cronArray, collectionDisplayName, doCollect}));
+	//log.info(toStr({id, collectionName, collectorId, cronMaybeArray, cronArray, collectionDisplayName, doCollect}));
 
 	const oldCronArray = oldNode ? forceArray(oldNode.cron) : cronArray;
 	oldCronArray.forEach((ignored, i) => {
@@ -54,23 +56,21 @@ export function reschedule({
 
 	if (doCollect) {
 		//log.info(toStr({doCollect}));
-		if (!collectorName) {
+		if (!collectorId) {
 			log.warning(`Collection ${collectionDisplayName} is missing a collector!`);
 		} else {
-			//log.info(toStr({collectorName}));
-			if(!collectors[collectorName]) {
-				log.error(`Collection ${collectionDisplayName} is using a non-existant collector ${collectorName}!`);
+			//log.info(toStr({collectorId}));
+			if(!collectors[collectorId]) {
+				log.error(`Collection ${collectionDisplayName} is using a non-existant collector ${collectorId}!`);
 			} else {
-				const taskName = `${collectorName}:${collectors[collectorName]}`;
-				//log.info(toStr({taskName}));
-
 				const configJson = JSON.stringify(collectorConfig);
 				//log.info(toStr({configJson}));
 
 				const taskParams = {
-					name: taskName,
+					name: collectorId,
 					config: {
 						name: collectionName,
+						collectorId,
 						configJson
 					}
 				};

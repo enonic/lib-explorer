@@ -8,7 +8,8 @@ import {remove} from '/lib/explorer/node/remove';
 
 
 export function unregister({
-	appName
+	appName,
+	collectTaskName = 'collect'
 }) {
 	const writeConnection = connect({
 		principals: [PRINCIPAL_EXPLORER_WRITE]
@@ -16,6 +17,6 @@ export function unregister({
 	return remove({
 		connection: writeConnection,
 		_parentPath: '/collectors',
-		_name: appName
+		_name: `${appName}:${collectTaskName}`
 	});
 }

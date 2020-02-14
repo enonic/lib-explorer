@@ -35,6 +35,7 @@ export const INDEX_CONFIG_STOP_WORDS = {default: 'byType'};
 //──────────────────────────────────────────────────────────────────────────────
 // Various
 //──────────────────────────────────────────────────────────────────────────────
+export const PATH_COLLECTORS = '/collectors';
 export const PATH_INTERFACES = '/interfaces';
 
 

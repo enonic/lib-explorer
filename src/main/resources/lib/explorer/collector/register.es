@@ -10,7 +10,7 @@ import {createOrModify} from '/lib/explorer/node/createOrModify';
 export function register({
 	appName,
 	collectTaskName = 'collect',
-	configAssetPath = 'yase/Collector.js',
+	configAssetPath = 'js/react/Collector.esm.js',
 	displayName
 }) {
 	const writeConnection = connect({
@@ -21,8 +21,10 @@ export function register({
 		__user: {
 			key: USER_EXPLORER_APP_KEY
 		},
+		__sanitize: false,
 		_parentPath: '/collectors',
-		_name: appName,
+		_name: `${appName}:${collectTaskName}`,
+		appName,
 		collectTaskName,
 		configAssetPath,
 		displayName,

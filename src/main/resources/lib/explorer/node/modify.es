@@ -4,6 +4,7 @@ import {join} from '/lib/explorer/path/join';
 
 export function modify({
 	__connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
+	__sanitize = true,
 	_id, // So it doesn't end up in rest.
 	_parentPath = '/',
 	_name,
@@ -14,7 +15,7 @@ export function modify({
 } = {}) {
 	//log.info(toStr({key, displayName, rest}));
 	return __connection.modify({
-		key: join(_parentPath, sanitize(_name)),
+		key: join(_parentPath, __sanitize ? sanitize(_name) : _name),
 		editor: (node) => {
 			/* eslint-disable no-param-reassign */
 			//node._timestamp = new Date(); // DOES NOT WORK?

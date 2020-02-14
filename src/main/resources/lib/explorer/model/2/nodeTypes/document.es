@@ -9,7 +9,8 @@ export function Document({
 	_parentPath = '/',
 	uri,
 	_name = hash(uri),
-	collector = app.name,
+	collectorAppName = app.name,
+	collectorId = app.name, // <appname>:<taskname>
 	collectorVersion = app.version,
 	//text,
 	//title,
@@ -24,7 +25,8 @@ export function Document({
 		_parentPath,
 		_indexConfig: {default: 'byType'},
 		_name,
-		collector,
+		collectorAppName,
+		collectorId, // <appname>:<taskname>
 		collectorVersion,
 		//text,
 		//title,

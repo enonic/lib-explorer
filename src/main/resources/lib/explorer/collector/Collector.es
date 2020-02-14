@@ -24,9 +24,12 @@ import {Journal} from '/lib/explorer/collector/Journal';
 export class Collector {
 
 
-	constructor({name, configJson}) {
+	constructor({name, collectorId, configJson}) {
+		//log.info(toStr({name, collectorId, configJson}));
 		if (!name) { throw new Error('Missing required parameter name!'); }
 		this.name = name;
+		if (!collectorId) { throw new Error('Missing required parameter collectorId!'); }
+		this.collectorId = collectorId;
 		if (!configJson) { throw new Error('Missing required parameter configJson!'); }
 		try {
 			this.config = JSON.parse(configJson); //log.info(toStr({config}));
@@ -78,6 +81,8 @@ export class Collector {
 		//log.info(`persistDocument(${toStr(data)})`);
 		if (!data.uri) { throw new Error('persistDocument: Missing required parameter uri!'); }
 		data.__connection = this.collection.connection;
+		data.collectorId = this.collectorId;
+		//log.info(`persistDocument(${toStr(data)})`);
 		const persistedNode = createOrModify(Document(data)); //log.info(toStr({persistedNode}));
 		if (!persistedNode) {
 			throw new Error('Something went wrong when trying to persist a document!');
