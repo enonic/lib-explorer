@@ -12,3 +12,24 @@ export {synonym} from '/lib/explorer/model/2/nodeTypes/synonym';
 export {thesaurus} from '/lib/explorer/model/2/nodeTypes/thesaurus';
 
 export {DEFAULT_INTERFACE} from '/lib/explorer/model/2/interfaces/default';
+
+/*
+
+Everything are stored as nodes.
+Each node has a unique field called _id.
+A node can reference other nodes by using their _id.
+
+An Interface can have:
+* Many Collections
+* Many Stopwordlists
+* Many Fields (Filter, Result Mapping, Facet)
+* Many FieldValues (Filter, Facet)
+
+
+A Field can have:
+* Many FieldValues (currently only referenced by path)
+
+A FieldValue has (no references in UI, but).
+* References Field (by fieldReference, and path)
+
+*/

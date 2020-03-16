@@ -7,15 +7,15 @@ export function modify({
 	__sanitize = true,
 	_id, // So it doesn't end up in rest.
 	_parentPath = '/',
-	_name,
+	_name, // WARNING: Maybe undefined? NO, connection.modify requires it!!!
 	displayName = Array.isArray(_name)
 		? _name.join(', ')
-		: _name,
+		: _name, // Maybe undefined
 	...rest
 } = {}) {
 	//log.info(toStr({key, displayName, rest}));
 	return __connection.modify({
-		key: join(_parentPath, __sanitize ? sanitize(_name) : _name),
+		key: _id || join(_parentPath, __sanitize ? sanitize(_name) : _name),
 		editor: (node) => {
 			/* eslint-disable no-param-reassign */
 			//node._timestamp = new Date(); // DOES NOT WORK?
