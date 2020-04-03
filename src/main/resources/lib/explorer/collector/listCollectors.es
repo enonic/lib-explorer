@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/util';
+import {toStr} from '/lib/util';
 import {list as listTasks} from '/lib/xp/task';
 
 import {PRINCIPAL_EXPLORER_READ/*, TASK_COLLECT*/} from '/lib/explorer/model/2/constants';
@@ -6,19 +6,29 @@ import {connect} from '/lib/explorer/repo/connect';
 import {query as queryCollectors} from '/lib/explorer/collector/query';
 
 
+const TRACE = false;
+const DEBUG = false;
+
+
 export const listCollectors = () => {
-	const connection = connect({
-		principals: [PRINCIPAL_EXPLORER_READ]
+	const collectors = queryCollectors({
+		connection: connect({
+			principals: [PRINCIPAL_EXPLORER_READ]
+		})
 	});
+	TRACE && log.info(`collectors:${toStr(collectors)}`);
+
 	const list = [];
-	queryCollectors({
-		connection
-	}).hits.forEach(({_name: application, collectTaskName}) => {
-		//log.info(toStr({application, collectTaskName}));
+	collectors.hits.forEach(({
+		_name: collectorId/*,
+		appName,
+		collectTaskName*/
+	}) => {
+		DEBUG && log.info(`collectorId:${toStr(collectorId)}`);
 		listTasks({
-			name: `${application}:${collectTaskName}`//TASK_COLLECT
+			name: collectorId
 		}).forEach(item => list.push(item));
 	});
-	//log.info(toStr({list}));
+	DEBUG && log.info(`list:${toStr(list)}`);
 	return list;
 }

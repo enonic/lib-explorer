@@ -1,3 +1,4 @@
+//import {toStr} from '/lib/util';
 import {list as listTasks} from '/lib/xp/task';
 
 
@@ -8,7 +9,8 @@ export function getTasksWithPropertyValue({
 }) {
 	const tasks = listTasks({
 		state
-	}); //log.info(toStr({rootTasks}));
+	});
+	//log.info(`tasks:${toStr(tasks)}`);
 
 	const tasksWithPropertyValue = tasks.map((t) => {
 		if (t.progress.info) {
@@ -17,6 +19,8 @@ export function getTasksWithPropertyValue({
 			t.progress.info = {}; // eslint-disable-line no-param-reassign
 		}*/
 		return t;
-	}).filter(t => t.progress.info && t.progress.info[property] === value); //log.info(toStr({tasksWithPropertyValue}));
+	}).filter(t => t.progress.info && t.progress.info[property] === value);
+	//log.info(`tasksWithPropertyValue:${toStr(tasksWithPropertyValue)}`);
+
 	return tasksWithPropertyValue;
 }
