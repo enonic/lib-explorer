@@ -82,7 +82,8 @@ export function buildQuery({
 		const flattenedSynonyms = flattenSynonyms({
 			expand,
 			synonyms: localSynonyms
-		}).map(s => `"${s}"`);
+		}).map(s => `${s}`); // Removed double quotes https://enonic.zendesk.com/agent/tickets/3714
+
 		//times.push({label: 'flattenSynonyms', time: currentTimeMillis()});
 		//log.info(toStr({flattenedSynonyms}));
 		/*const fields = buildFields(params.fields);
