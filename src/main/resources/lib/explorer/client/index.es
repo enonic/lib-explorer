@@ -71,6 +71,7 @@ export function search(params) {
 		facets: facetsParam = {},
 		interface: interfaceName,
 		locale = getLocale(),
+		logQuery = false,
 		name = 'q',
 		searchString = params[name] || ''
 	} = params;
@@ -246,6 +247,9 @@ export function search(params) {
 		queryParams.aggregations = config.aggregations;
 	}
 	//log.info(toStr({count}));
+	if (logQuery) {
+		log.info(`queryParams:${toStr(queryParams)}`);
+	}
 
 	const queryRes = yaseReadConnections.query(queryParams);
 	//log.info(toStr({queryRes}));
