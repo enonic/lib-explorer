@@ -8,6 +8,11 @@ import {localize} from '/lib/xp/i18n';
 
 import {APP_EXPLORER} from '/lib/explorer/model/2/constants';
 
+const PHRASE_KEY_PAGINATION_FIRST = 'pagination.first';
+const PHRASE_KEY_PAGINATION_PREV = 'pagination.prev';
+const PHRASE_KEY_PAGINATION_NEXT = 'pagination.next';
+const PHRASE_KEY_PAGINATION_LAST = 'pagination.last';
+
 //──────────────────────────────────────────────────────────────────────────────
 // Public function
 //──────────────────────────────────────────────────────────────────────────────
@@ -22,11 +27,11 @@ export function buildPagination({
 		first: true,
 		prev: true,
 		next: true,
-		last: true,
-		firstPhrase: 'pagination.first',
-		prevPhrase: 'pagination.prev',
-		nextPhrase: 'pagination.next',
-		lastPhrase: 'pagination.last'
+		last: true/*,
+		firstPhrase: PHRASE_KEY_PAGINATION_FIRST,
+		prevPhrase: PHRASE_KEY_PAGINATION_PREV,
+		nextPhrase: PHRASE_KEY_PAGINATION_NEXT,
+		lastPhrase: 'pagination.last'*/
 	},
 	searchString
 }) {
@@ -53,9 +58,10 @@ export function buildPagination({
 	if (first && page > 1) {
 		pagination.push({
 			href,
+			phraseKey: PHRASE_KEY_PAGINATION_FIRST,
 			text: localize({
 				application: APP_EXPLORER,
-				key: 'pagination.first',
+				key: PHRASE_KEY_PAGINATION_FIRST,
 				locale
 			})
 		});
@@ -64,9 +70,10 @@ export function buildPagination({
 	if (prev && page > 2) {
 		pagination.push({
 			href: `${href}&page=${page - 1}`,
+			phraseKey: PHRASE_KEY_PAGINATION_PREV,
 			text: localize({
 				application: APP_EXPLORER,
-				key: 'pagination.prev',
+				key: PHRASE_KEY_PAGINATION_PREV,
 				locale
 			})
 		});
@@ -90,9 +97,10 @@ export function buildPagination({
 		if (next && page < (pages - 1)) {
 			pagination.push({
 				href: `${href}&page=${page + 1}`,
+				phraseKey: PHRASE_KEY_PAGINATION_NEXT,
 				text: localize({
 					application: APP_EXPLORER,
-					key: 'pagination.next',
+					key: PHRASE_KEY_PAGINATION_NEXT,
 					locale
 				})
 			});
@@ -100,9 +108,10 @@ export function buildPagination({
 		if (last) {
 			pagination.push({
 				href: `${href}&page=${pages}`,
+				phraseKey: PHRASE_KEY_PAGINATION_LAST,
 				text: localize({
 					application: APP_EXPLORER,
-					key: 'pagination.last',
+					key: PHRASE_KEY_PAGINATION_LAST,
 					locale
 				})
 			});
