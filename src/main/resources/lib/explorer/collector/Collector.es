@@ -1,10 +1,12 @@
 const {currentTimeMillis} = Java.type('java.lang.System');
 
+import {validateLicense} from '/lib/license';
 import {toStr} from '/lib/util';
 
 import {send} from '/lib/xp/mail';
 
 import {
+	APP_EXPLORER,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 
@@ -17,6 +19,8 @@ import {modify as modifyTask} from '/lib/explorer/task/modify';
 
 import {Document} from '/lib/explorer/model/2/nodeTypes/document';
 
+import {getTotalCount} from '/lib/explorer/collection/getTotalCount';
+
 import {Collection} from '/lib/explorer/collector/Collection';
 import {Journal} from '/lib/explorer/collector/Journal';
 
@@ -26,11 +30,33 @@ export class Collector {
 
 	constructor({name, collectorId, configJson}) {
 		//log.info(toStr({name, collectorId, configJson}));
+
 		if (!name) { throw new Error('Missing required parameter name!'); }
 		this.name = name;
 		if (!collectorId) { throw new Error('Missing required parameter collectorId!'); }
 		this.collectorId = collectorId;
 		if (!configJson) { throw new Error('Missing required parameter configJson!'); }
+
+		const explorerRepoReadConnection = connect({
+			principals: [PRINCIPAL_EXPLORER_READ]
+		});
+		const collectionsTotalCount = getTotalCount({ connection: explorerRepoReadConnection });
+		log.info(`collectionsTotalCount:${collectionsTotalCount}`);
+
+		const licenseDetails = validateLicense({appKey: APP_EXPLORER});
+		if (collectionsTotalCount > 3) {
+			if (!licenseDetails) {
+				const errorMsg = 'No license found! Not allowed to have more than 3 collections without a valid license.'
+				log.error(errorMsg);
+				throw new Error(errorMsg);
+			}
+			if (licenseDetails.expired) {
+				const errorMsg = 'License expired! Not allowed to have more than 3 collections without a valid license.'
+				log.error(errorMsg);
+				throw new Error(errorMsg);
+			}
+		}
+
 		try {
 			this.config = JSON.parse(configJson); //log.info(toStr({config}));
 		} catch (e) {

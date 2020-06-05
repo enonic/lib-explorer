@@ -47,6 +47,7 @@ dependencies {
 
 	compile 'com.enonic.lib:lib-cache:2.1.1'
 	compile 'com.enonic.lib:lib-http-client:2.0.0'
+	compile 'com.enonic.lib:lib-license:3.0.0'
 	//compile 'com.enonic.lib:lib-router:1.0.0'
 	//compile 'com.enonic.lib:menu:1.3.3'
 
