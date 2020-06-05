@@ -41,7 +41,7 @@ export class Collector {
 			principals: [PRINCIPAL_EXPLORER_READ]
 		});
 		const collectionsTotalCount = getTotalCount({ connection: explorerRepoReadConnection });
-		log.info(`collectionsTotalCount:${collectionsTotalCount}`);
+		//log.info(`collectionsTotalCount:${collectionsTotalCount}`);
 
 		const licenseDetails = validateLicense({appKey: APP_EXPLORER});
 		if (collectionsTotalCount > 3) {
