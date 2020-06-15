@@ -72,6 +72,7 @@ export function search(params) {
 		interface: interfaceName,
 		locale = getLocale(),
 		logQuery = false,
+		//logSynonyms = false,
 		name = 'q',
 		searchString = params[name] || ''
 	} = params;
@@ -154,16 +155,18 @@ export function search(params) {
 
 	const synonyms = [];
 	const expand = false;
+	//if (logSynonyms) { log.info(`expand:${toStr(expand)}`); }
 	const query = buildQuery({
 		connection: yaseReadConnection,
 		expand,
 		expression: queryConfig,
+		//logSynonyms,
 		//searchString: washedSearchString,
 		searchString: searchStringWithoutStopWords,
 		synonyms//,
 		//times
 	});
-	//log.info(toStr({synonyms}));
+	//if (logSynonyms) { log.info(`synonyms:${toStr(synonyms)}`); }
 	//log.info(toStr({query}));
 	//times.push({label: 'query', time: currentTimeMillis()});
 

@@ -14,6 +14,7 @@ const MAX_COUNT = 100;
 export function getSynonyms({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	expand = false,
+	//logSynonyms = false,
 	searchString,
 	thesauri,
 	count = MAX_COUNT//thesauri.length
@@ -23,11 +24,11 @@ export function getSynonyms({
 
 	const fields = expand ? 'from,to' : 'from';
 	const cleanSearchString = ws(replaceSyntax({string: searchString}));
-	//log.info(toStr({cleanSearchString}));
+	//if (logSynonyms) { log.info(`cleanSearchString:${toStr(cleanSearchString)}`); }
 
 	// ngram will quickly match a ton of synonyms, so don't use it.
 	const query = `fulltext('${fields}', '${cleanSearchString}', 'AND')`;
-	//log.info(toStr({query}));
+	//if (logSynonyms) { log.info(`query:${toStr(query)}`); }
 
 	const params = {
 		connection,
@@ -36,10 +37,10 @@ export function getSynonyms({
 		query,
 		sort: '_score DESC'
 	};
-	//log.info(toStr({params}));
+	//if (logSynonyms) { log.info(`params:${toStr(params)}`); }
 
 	const hits = querySynonyms(params).hits;
-	//log.info(toStr({hits}));
+	//if (logSynonyms) { log.info(`hits:${toStr(hits)}`); }
 
 	return hits.map(({from, score, thesaurus, to}) => {
 		//log.info(toStr({from, score, thesaurus, to}));

@@ -29,6 +29,7 @@ export function buildQuery({
 		type,
 		params
 	},
+	//logSynonyms = false,
 	searchString,
 	synonyms//, // Gets modified
 	//times
@@ -53,11 +54,14 @@ export function buildQuery({
 		//times.push({label: 'ngram', time: currentTimeMillis()});
 		break;
 	case 'synonyms':
+		const thesauri = params.thesauri;
+		//if (logSynonyms) { log.info(`thesauri:${toStr(thesauri)}`); }
 		const localSynonyms = getSynonyms({
 			connection,
 			expand,
+			//logSynonyms,
 			searchString, // TODO Perhaps stopwords needs to be removed here?
-			thesauri: params.thesauri
+			thesauri
 		});
 		//times.push({label: 'getSynonyms', time: currentTimeMillis()});
 		//log.info(toStr({localSynonyms}));
@@ -95,7 +99,13 @@ export function buildQuery({
 	case 'group':
 		query = `(${params.expressions
 			.map(expression =>
-				buildQuery({connection, expression, searchString, synonyms/*, times*/})
+				buildQuery({
+					connection,
+					expression,
+					//logSynonyms,
+					searchString,
+					synonyms/*, times*/
+				})
 			)
 			.filter(x => x)
 			.join(` ${operator} `)
