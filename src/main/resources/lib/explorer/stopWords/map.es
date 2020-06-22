@@ -6,10 +6,13 @@ export const map = ({
 	_name,
 	_path,
 	displayName,
+	type,
 	words
 }) => ({
 	displayName,
 	id: _id,
 	name: _name,
-	words: forceArray(words)
+	_path,
+	type,
+	words: words ? forceArray(words) : [] // No words allowed?
 });
