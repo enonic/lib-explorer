@@ -14,6 +14,7 @@ const SS_EXTERNALS = [
 	'/lib/cache',
 	'/lib/cron',
 	'/lib/http-client',
+	'/lib/license',
 	/^\/lib\/xp\//,
 	// Avoid bundling and transpile library files seperately:
 	/^\/lib\/explorer\//
