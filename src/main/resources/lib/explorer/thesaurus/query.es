@@ -26,10 +26,19 @@ export function query({
 	queryRes.hits = queryRes.hits.map((hit) => {
 		const {
 			_name: name,
+			_path,
 			description = '',
-			displayName
+			displayName,
+			type
 		} = connection.get(hit.id);
-		const rv = {description, displayName, id: hit.id, name};
+		const rv = {
+			_path,
+			description,
+			displayName,
+			id: hit.id,
+			name,
+			type
+		};
 		if (getSynonymsCount) {
 			const synonymsRes = querySynonyms({
 				connection,

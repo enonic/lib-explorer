@@ -42,9 +42,11 @@ export function query({
 			displayName,
 			from,
 			thesaurusReference,
-			to
+			to,
+			type
 		} = node;
 		return {
+			_path,
 			displayName,
 			from: forceArray(from),
 			id: hit.id,
@@ -52,7 +54,8 @@ export function query({
 			thesaurus: _path.match(/[^/]+/g)[1],
 			thesaurusReference,
 			score: hit.score,
-			to: forceArray(to)
+			to: forceArray(to),
+			type
 		};
 	}).filter(x => x);
 	return queryRes;
