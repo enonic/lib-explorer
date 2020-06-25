@@ -35,7 +35,22 @@ export function query({
 	//log.info(toStr({queryParams}));
 	const queryRes = connection.query(queryParams);
 	//log.info(toStr({queryRes}));
-	queryRes.hits = queryRes.hits.map(hit => connection.get(hit.id));
+	queryRes.hits = queryRes.hits.map(hit => {
+		//log.info(toStr({node}));
+		const node = connection.get(hit.id);
+		if (!node.errors) {
+			node.errors = []
+		} else if (!Array.isArray(node.errors)) {
+			node.errors = [node.errors];
+		}
+		if (!node.successes) {
+			node.successes = []
+		} else if (!Array.isArray(node.successes)) {
+			node.successes = [node.successes];
+		}
+		//log.info(toStr({node}));
+		return node;
+	});
 	//log.info(toStr({queryRes}));
 	return queryRes;
 }
