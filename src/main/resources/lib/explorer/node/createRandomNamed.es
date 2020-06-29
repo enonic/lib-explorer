@@ -19,6 +19,7 @@ export function createRandomNamed({
 	//creator = __user.key,
 	...rest
 }) {
+	//log.info(`_name:${_name}`);
 	const pathParts = _parentPath.split('/'); //log.info(toStr({pathParts}));
 	for (let i = 1; i < pathParts.length; i += 1) {
 		const path = pathParts.slice(0, i + 1).join('/'); //log.info(toStr({path}));
@@ -40,6 +41,7 @@ export function createRandomNamed({
 		}
 	}
 
+	// WARNING This might go on forever?
 	while (exists({
 		connection: __connection,
 		_parentPath,
@@ -47,6 +49,7 @@ export function createRandomNamed({
 	})) {
 		_name = sanitize(generateUuidv4());
 	}
+	//log.info(`_name:${_name}`);
 
 	const CREATE_PARAMS = {
 		_indexConfig,
