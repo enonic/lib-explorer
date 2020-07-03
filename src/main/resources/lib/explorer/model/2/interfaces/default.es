@@ -5,7 +5,6 @@ export const DEFAULT_INTERFACE = {
 	_name: 'default',
 	collections: [],
 	displayName: 'Default',
-	name: 'Default',
 	query: {
 		type: 'group',
 		params: {
