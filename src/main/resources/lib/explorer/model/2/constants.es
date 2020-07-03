@@ -11,24 +11,26 @@ import {sanitize} from '/lib/xp/common';
 export const APP_EXPLORER = 'com.enonic.app.explorer';
 export const TOOL_PATH = getToolUrl(APP_EXPLORER, 'explorer');
 
-
+export const COLON_SIGN = ':' // Not good in repo names
+//export const RATIO_SIGN = '∶'; // Not good in repo names
+export const DOT_SIGN = '.';
 //──────────────────────────────────────────────────────────────────────────────
 // Node types
 //──────────────────────────────────────────────────────────────────────────────
-export const NT_COLLECTION = `${APP_EXPLORER}:collection`;
-export const NT_COLLECTOR = `${APP_EXPLORER}:collector`;
-export const NT_DOCUMENT = `${APP_EXPLORER}:document`;
-export const NT_FIELD = `${APP_EXPLORER}:field`;
-export const NT_FIELD_VALUE = `${APP_EXPLORER}:field-value`;
-export const NT_FOLDER = `${APP_EXPLORER}:folder`;
-export const NT_INTERFACE = `${APP_EXPLORER}:interface`;
-export const NT_JOURNAL = `${APP_EXPLORER}:journal`;
-//export const NT_KEYWORD = `${APP_EXPLORER}:keyword`;
-export const NT_RESPONSE = `${APP_EXPLORER}:response`;
-export const NT_STOP_WORDS = `${APP_EXPLORER}:stop-words`;
-export const NT_SYNONYM = `${APP_EXPLORER}:synonym`;
-//export const NT_TAG = `${APP_EXPLORER}:tag`;
-export const NT_THESAURUS = `${APP_EXPLORER}:thesaurus`;
+export const NT_COLLECTION = `${APP_EXPLORER}${COLON_SIGN}collection`;
+export const NT_COLLECTOR = `${APP_EXPLORER}${COLON_SIGN}collector`;
+export const NT_DOCUMENT = `${APP_EXPLORER}${COLON_SIGN}document`;
+export const NT_FIELD = `${APP_EXPLORER}${COLON_SIGN}field`;
+export const NT_FIELD_VALUE = `${APP_EXPLORER}${COLON_SIGN}field-value`;
+export const NT_FOLDER = `${APP_EXPLORER}${COLON_SIGN}folder`;
+export const NT_INTERFACE = `${APP_EXPLORER}${COLON_SIGN}interface`;
+export const NT_JOURNAL = `${APP_EXPLORER}${COLON_SIGN}journal`;
+//export const NT_KEYWORD = `${APP_EXPLORER}${COLON_SIGN}keyword`;
+export const NT_RESPONSE = `${APP_EXPLORER}${COLON_SIGN}response`;
+export const NT_STOP_WORDS = `${APP_EXPLORER}${COLON_SIGN}stop-words`;
+export const NT_SYNONYM = `${APP_EXPLORER}${COLON_SIGN}synonym`;
+//export const NT_TAG = `${APP_EXPLORER}${COLON_SIGN}tag`;
+export const NT_THESAURUS = `${APP_EXPLORER}${COLON_SIGN}thesaurus`;
 
 export const INDEX_CONFIG_STOP_WORDS = {default: 'byType'};
 
@@ -99,10 +101,10 @@ export const RT_HTML = 'text/html;charset=utf-8';
 
 export const REPO_ID_EXPLORER = sanitize(APP_EXPLORER);
 export const BRANCH_ID_EXPLORER = 'master';
-export const REPO_JOURNALS = `${APP_EXPLORER}:journals`;
+export const REPO_JOURNALS = `${APP_EXPLORER}${DOT_SIGN}journals`;
 
-export const COLLECTION_REPO_PREFIX = `${APP_EXPLORER}:collection:`;
-export const RESPONSES_REPO_PREFIX = `${APP_EXPLORER}:responses:`;
+export const COLLECTION_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}collection${DOT_SIGN}`;
+export const RESPONSES_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}responses${DOT_SIGN}`;
 
 
 //──────────────────────────────────────────────────────────────────────────────
