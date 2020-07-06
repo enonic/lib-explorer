@@ -91,6 +91,7 @@ export function reschedule({
 					schedule({
 						callback: () => submitNamed(taskParams),
 						context: {
+							//attributes: {}, // (object) Map of context attributes.
 							branch: 'master', // Repository to execute the callback in.
 							repository: 'system-repo', // Name of the branch to execute the callback in.
 							user: { // User to execute the callback with.
@@ -103,8 +104,10 @@ export function reschedule({
 							]
 						},
 						cron,
+						//delay:, // (number) The time to delay first execution. Can’t be set with (cron).
+						//fixedDelay: , // (number) The delay between the termination of one execution and the commencement of the next. Can’t be set with (cron).
 						name: jobName/*,
-						times: 0*/
+						times: 0*/ // (number) Number of task runs. Leave it empty for infinite calls.
 					});
 				});
 			}
