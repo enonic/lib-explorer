@@ -14,9 +14,12 @@ export function modify({
 	...rest
 } = {}) {
 	//log.info(toStr({key, displayName, rest}));
+	const key = _id || join(_parentPath, __sanitize ? sanitize(_name) : _name);
+	//log.info(`key:${key}`);
 	return __connection.modify({
-		key: _id || join(_parentPath, __sanitize ? sanitize(_name) : _name),
+		key,
 		editor: (node) => {
+			//log.info(`node:${toStr(node)}`);
 			/* eslint-disable no-param-reassign */
 			//node._timestamp = new Date(); // DOES NOT WORK?
 			node.modifiedTime = new Date();
@@ -27,7 +30,7 @@ export function modify({
 				node[property] = value;
 			});
 			/* eslint-enable no-param-reassign */
-			//log.info(toStr({node}));
+			//log.info(`modifiedNode:${toStr(node)}`);
 			return node;
 		}
 	});
