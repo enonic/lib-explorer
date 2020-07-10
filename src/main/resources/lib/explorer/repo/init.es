@@ -18,16 +18,19 @@ export function init({
 	repoId = REPO_ID_EXPLORER,
 	branchId = BRANCH_ID_EXPLORER
 } = {}) {
-	//log.info(toStr({repoId, branchId}));
+	//log.info(`repoId:${repoId} branchId:${branchId}`);
+
 	const createRepoParams = {
 		id: repoId,
-		rootPermissions: ROOT_PERMISSIONS_EXPLORER
-	}; //log.info(toStr({createRepoParams}));
+		rootPermissions: ROOT_PERMISSIONS_EXPLORER,
+    	rootChildOrder: '_ts DESC'
+	};
+	//log.info(`createRepoParams:${toStr(createRepoParams)}`);
 	//const context = getContext(); //log.info(toStr({context}));
 	//const user = getUser(); //log.info(toStr({user}));
-	/*const createRepoRes = */
 	try {
-		createRepo(createRepoParams); //log.info(toStr({createRepoRes}));
+		const createRepoRes = createRepo(createRepoParams);
+		//log.info(`createRepoRes:${toStr(createRepoRes)}`);
 	} catch (e) {
 		if (e.class.name !== 'com.enonic.xp.repo.impl.repository.RepositoryAlreadyExistException') {
 			log.error(toStr({
@@ -46,6 +49,7 @@ export function init({
 			branchId, // NOTE lib.xp.repo.createBranch uses branchId not branch!
 			repoId
 		});
+		//log.info(`createBranchRes:${toStr(createBranchRes)}`);
 	} catch (e) {
 		if (e.code !== 'branchAlreadyExists') {
 			throw e;
