@@ -88,7 +88,7 @@ export function search(params) {
 		NODE_CACHE.clear();
 	}
 
-	const yaseReadConnection = connect({
+	const explorerRepoReadConnection = connect({
 		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 
@@ -128,7 +128,7 @@ export function search(params) {
 	if (stopWords && stopWords.length) {
 		stopWords.forEach((name) => {
 			const {words} = getStopWordsList({
-				connection: yaseReadConnection,
+				connection: explorerRepoReadConnection,
 				name
 			});
 			//log.info(toStr({words}));
@@ -157,7 +157,7 @@ export function search(params) {
 	const expand = false;
 	//if (logSynonyms) { log.info(`expand:${toStr(expand)}`); }
 	const query = buildQuery({
-		connection: yaseReadConnection,
+		connection: explorerRepoReadConnection,
 		expand,
 		expression: queryConfig,
 		//logSynonyms,
@@ -172,7 +172,7 @@ export function search(params) {
 
 	const thesauriMap = {};
 	queryThesauri({
-		connection: yaseReadConnection,
+		connection: explorerRepoReadConnection,
 		getSynonymsCount: false
 	}).hits.forEach(({name, displayName}) => {
 		thesauriMap[name] = displayName;
@@ -229,10 +229,12 @@ export function search(params) {
 	});
 	log.info(toStr({filters}));*/
 
-	const yaseReadConnections = multiConnect({
+	const multiConnectParams = {
 		principals: [PRINCIPAL_EXPLORER_READ],
 		sources: config.sources
-	});
+	};
+	//log.info(`multiConnectParams:${toStr(multiConnectParams)}`);
+	const readConnections = multiConnect(multiConnectParams);
 	//times.push({label: 'multiConnect', time: currentTimeMillis()});
 
 	const numberOfActiveFacetCategories = Object.values(facetsParam).filter(x => x).length;
@@ -254,7 +256,7 @@ export function search(params) {
 		log.info(`queryParams:${toStr(queryParams)}`);
 	}
 
-	const queryRes = yaseReadConnections.query(queryParams);
+	const queryRes = readConnections.query(queryParams);
 	//log.info(toStr({queryRes}));
 	const aggregationsCacheObj = {};
 	if (Object.keys(queryRes.aggregations).length) {
@@ -289,7 +291,7 @@ export function search(params) {
 		facetConfig,
 		filters,
 		localizedFacets,
-		multiRepoConnection: yaseReadConnections,
+		multiRepoConnection: readConnections,
 		params,
 		query//,
 		//times
