@@ -97,7 +97,7 @@ function buildConfig(key) {
 		});
 	}
 	//log.info(toStr({config}));
-  return config;
+	return config;
 }
 
 
@@ -123,7 +123,7 @@ const getCachedConfig = (key) => CONFIG_CACHE.get(key, () => buildConfig(key));
 export function getCachedConfigFromInterface({
 	interfaceName
 }) {
-  const key = `/interfaces/${interfaceName}`;
+	const key = `/interfaces/${interfaceName}`;
 	//log.info(toStr({key}));
 	//const beforeGetTime = getTime();
 	const cachedConfig = getCachedConfig(key);

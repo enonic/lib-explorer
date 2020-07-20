@@ -71,7 +71,8 @@ module.exports = {
 				'_indexConfig', // node property
 				'_name', // node property
 				'_parentPath', // node create property
-				'_permissions' // node property
+				'_permissions', // node property
+				'_versionKey' // node property
 			],
 			allowAfterThis: false,
 			allowAfterSuper: false,
