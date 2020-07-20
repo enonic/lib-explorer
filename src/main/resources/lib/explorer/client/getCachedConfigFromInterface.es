@@ -69,6 +69,14 @@ function buildConfig(key) {
 		interfaceNode.collections = allCollectionNames;
 	}
 
+	if (!interfaceNode.collections) {
+		log.warning(`The interface with key:${key} has no collections!`)
+
+		// Avoid querying ALL REPOS! https://github.com/enonic/xp/issues/8239
+		throw new Error(`The interface with name:${interfaceNode._name} has no collections!`);
+		//interfaceNode.collections = [];
+	}
+
 	const config = {
 		aggregations: {},
 		facetsObj: {},
