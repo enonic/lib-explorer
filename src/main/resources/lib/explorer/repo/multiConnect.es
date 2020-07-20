@@ -36,6 +36,7 @@ export function multiConnect({
 			existingRepos[id] = true;
 		})
 	});
+	//log.info(`existingRepos:${toStr(existingRepos)}`);
 
 	const contextPrincipals = context.authInfo.principals;
 
@@ -75,7 +76,7 @@ export function multiConnect({
 			});
 		}
 	});
-	//log.info(toStr({sourcesWithExtendedPrincipals}));
+	//log.info(`sourcesWithExtendedPrincipals:${toStr({sourcesWithExtendedPrincipals})}`);
 	/*times.push({label: 'multiConnect end', time: currentTimeMillis()});
 	for (let i = 0; i < times.length - 1; i += 1) {
 		log.info(`${pad(times[i + 1].time - times[i].time, 4)} ${pad(times[i + 1].time - times[0].time, 4)} ${times[i + 1].label}`);

@@ -59,6 +59,7 @@ function convert(node) {
 function buildConfig(key) {
 	const interfaceNode = CONNECTION.get(key);
 	convert(interfaceNode);
+	//log.info(`interfaceNode:${toStr(interfaceNode)}`);
 
 	if (interfaceNode._name === 'default') {
 		const allCollectionNames = queryCollections({
