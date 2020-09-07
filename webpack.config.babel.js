@@ -1,14 +1,17 @@
 /* eslint-disable no-console */
 import path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
-import {webpackServerSideJs} from '@enonic/webpack-server-side-js'
+import {webpackServerSideJs} from '@enonic/webpack-server-side-js';
+import webpack from 'webpack';
 
 // const toStr = v => JSON.stringify(v, null, 4);
 
 //const MODE = 'development';
 const MODE = 'production';
 
-const SS_ALIAS = {};
+const SS_ALIAS = {
+	myGlobal: path.resolve(__dirname, 'src/main/resources/lib/nashorn/global')
+};
 
 const SS_EXTERNALS = [
 	'/lib/cache',
@@ -42,6 +45,11 @@ const WEBPACK_CONFIG = [
 				}*/)
 			]
 		},
+		plugins: [
+			new webpack.ProvidePlugin({
+				global: 'myGlobal'
+			})
+		],
 		resolveAlias: SS_ALIAS
 	})
 ];

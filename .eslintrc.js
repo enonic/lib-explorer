@@ -2,11 +2,20 @@ module.exports = {
 
 	// https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/style.js
 	extends: [
-		'plugin:jsx-a11y/recommended',
+		'eslint:recommended',
 		//'airbnb-base',
+		//'plugin:react/recommended',
+		//'plugin:jsx-a11y/recommended'//,
+		//'plugin:react-hooks/recommended'
 	],
 
 	globals: {
+		// Node
+		__dirname: false,
+
+		// CommonJS (CJS) format
+		exports: false,
+		module: false,
 
 		// Nashorn
 		Java: false,
@@ -15,7 +24,7 @@ module.exports = {
 		app: false,
 		log: false,
 		resolve: false,
-		__: false,
+		__: false//,
 
 		// Mocha
 		//describe: false,
@@ -24,19 +33,44 @@ module.exports = {
 		// Client-side js
 		//console: false,
 		//document: false,
+		//fetch: false,
+		//setTimeout: false,
 		//window: false,
 
 		// Jquery
 		//$: false,
 		//jQuery: false,
 
+		// React
+		//React: false
 	},
 
 	parser: 'babel-eslint',
 
+	/*parserOptions: {
+		allowImportExportEverywhere: false,
+
+		codeFrame: true,
+
+		ecmaFeatures: {
+			jsx: true
+		},
+
+		// set to 3, 5 (default), 6, 7, 8, 9, 10 or 11 to specify the version of ECMAScript syntax you want to use.
+		// You can also set to 2015 (same as 6), 2016 (same as 7), 2017 (same as 8), 2018 (same as 9), 2019 (same as 10) or 2020 (same as 11) to use the year-based naming.
+		//ecmaVersion: 2020, // 11
+		//ecmaVersion: 6, // 2015
+
+		impliedStrict: true,
+
+		// set to "script" (default) or "module" if your code is in ECMAScript modules.
+		//sourceType: 'module' // allow import statements
+	},*/
+
 	plugins: [
-		'jsx-a11y',
-		//'react'
+		//'import',
+		//'react',
+		//'jsx-a11y'
 	],
 
 	rules: { // https://eslint.org/docs/rules
@@ -78,8 +112,15 @@ module.exports = {
 			allowAfterSuper: false,
 			enforceInMethodNames: false,
 		}],
+		'no-unexpected-multiline': 'off',
 		'object-curly-newline': ['off'],
 		'object-curly-spacing': ['off'],
-		'spaced-comment': ['off']
+		//'react/jsx-uses-react': 'error',
+		//'react/jsx-uses-vars': 'error',
+		//'react/prop-types': 'off',
+		//'react/react-in-jsx-scope': 'off', // Since React is a global
+		semi: 'error',
+		'spaced-comment': ['off'],
+		strict: 1
 	} // rules
 }; // exports

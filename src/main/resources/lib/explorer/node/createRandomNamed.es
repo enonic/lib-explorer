@@ -1,4 +1,4 @@
-import generateUuidv4 from 'uuid/v4';
+import {v4 as generateUuidv4} from 'uuid';
 
 //import {getUser} from '/lib/xp/auth';
 import {sanitize} from '/lib/xp/common';
