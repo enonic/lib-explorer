@@ -2,7 +2,7 @@
 import path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
 import {webpackServerSideJs} from '@enonic/webpack-server-side-js';
-import webpack from 'webpack';
+//import webpack from 'webpack';
 
 // const toStr = v => JSON.stringify(v, null, 4);
 
@@ -10,7 +10,7 @@ import webpack from 'webpack';
 const MODE = 'production';
 
 const SS_ALIAS = {
-	myGlobal: path.resolve(__dirname, 'src/main/resources/lib/nashorn/global')
+	//myGlobal: path.resolve(__dirname, 'src/main/resources/lib/nashorn/global')
 };
 
 const SS_EXTERNALS = [
@@ -45,11 +45,11 @@ const WEBPACK_CONFIG = [
 				}*/)
 			]
 		},
-		plugins: [
+		/*plugins: [
 			new webpack.ProvidePlugin({
 				global: 'myGlobal'
 			})
-		],
+		],*/
 		resolveAlias: SS_ALIAS
 	})
 ];

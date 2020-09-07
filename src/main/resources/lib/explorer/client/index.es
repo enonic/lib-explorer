@@ -237,7 +237,7 @@ export function search(params) {
 	const readConnections = multiConnect(multiConnectParams);
 	//times.push({label: 'multiConnect', time: currentTimeMillis()});
 
-	const numberOfActiveFacetCategories = Object.values(facetsParam).filter(x => x).length;
+	const numberOfActiveFacetCategories = Object.keys(facetsParam).filter(k => facetsParam[k]).length;
 
 	const queryParams = {
 		count,

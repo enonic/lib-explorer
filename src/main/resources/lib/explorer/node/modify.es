@@ -24,7 +24,6 @@ export function modify({
 			//node._timestamp = new Date(); // DOES NOT WORK?
 			node.modifiedTime = new Date();
 			node.displayName = displayName;
-			//Object.entries(rest).forEach(([property, value]) => {
 			Object.keys(rest).forEach((property) => {
 				const value = rest[property];
 				node[property] = value;

@@ -17,7 +17,8 @@ export function buildFiltersFromParams({
 }) {
 	//log.info(toStr({facetsObj, facetsParam, staticFilters}));
 	const filters = JSON.parse(JSON.stringify(staticFilters)); // Deep clone // {...staticFilters} is shallow
-	Object.entries(facetsParam).forEach(([field, tags]) => {
+	Object.keys(facetsParam).forEach((field) => {
+		const tags = facetsParam[field];
 		if (facetsObj[field]) {
 			const values = [];
 			if (tags) {

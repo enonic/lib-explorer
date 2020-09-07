@@ -15,9 +15,11 @@ import {hash} from '/lib/explorer/string/hash';
 //──────────────────────────────────────────────────────────────────────────────
 function uriObjFromParams(params) {
 	const uri = new Uri();
-	Object.entries(params).forEach(([k, v]) => {
+	Object.keys(params).forEach((k) => {
+		const v = params[k];
 		if(k === 'facets') {
-			Object.entries(v).forEach(([field, tag]) => {
+			Object.keys(v).forEach((field) => {
+				const tag = v[field];
 				Array.isArray(tag)
 				 ? tag.forEach(value => uri.addQueryParam(field, value))
 				 : tag && uri.addQueryParam(field, tag)
@@ -145,7 +147,8 @@ export function buildFacets({
 		const filtersExceptCategory = merge.all([{}, filters]);
 		//log.info(toStr({filtersExceptCategory}));
 		if (hasValuesInCategory) {
-			Object.entries(hasValuesInCategory).forEach(([path, values]) => {
+			Object.keys(hasValuesInCategory).forEach((path) => {
+				const values = hasValuesInCategory[path];
 				//log.info(toStr({path, values}));
 				if (values.length) {
 					filtersExceptCategory.boolean.must.forEach(({hasValue}, i) => {
@@ -174,7 +177,7 @@ export function buildFacets({
 						} // if hasValue
 					}); // forEach filtersExceptCategory.boolean.must
 				} // if values.length
-			}); // entries hasValuesInCategory
+			}); // keys hasValuesInCategory
 
 			const queryParams = {
 				aggregations,
