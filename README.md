@@ -29,6 +29,6 @@ $ enonic project gradle -- clean build publishToMavenLocal publish --refresh-dep
 
 ```build.gradle
 dependencies {
-	include 'com.enonic.lib:lib-explorer:1.0.0-SNAPSHOT'
+	include 'com.enonic.lib:lib-explorer:3.0.4'
 }
 ```
