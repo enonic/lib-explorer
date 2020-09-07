@@ -1,5 +1,5 @@
-import {schedule, unschedule} from '/lib/cron';
-//import {toStr} from '/lib/util';
+import {list, schedule, unschedule} from '/lib/cron';
+import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 import {submitNamed} from '/lib/xp/task';
 
@@ -28,19 +28,23 @@ export function getCollectors({
 
 
 export function reschedule({
-	collectors,
+	collectors = {},
 	node,
 	oldNode
 }) {
-	//log.info(toStr({collectors, oldNode, node}));
+	//log.debug(`collectors:${toStr(collectors)}`);
+	//log.debug(`node:${toStr(node)}`);
+	//log.debug(`oldNode:${toStr(oldNode)}`);
 
 	if (!node && oldNode && oldNode.doCollect && oldNode.cron) {
 		// A collection node (with scheduling) has been deleted, just unschedule and return
 		forceArray(oldNode.cron).forEach((ignored, i) => {
 			const jobName = `${id}:${i}`;
-			//log.info(`Unscheduling ${jobName}`);
+			log.debug(`Unscheduling deleted ${jobName}`);
 			unschedule({name: jobName});
 		});
+		const cronList = list();
+		log.debug(`after delete cronList:${toStr({cronList})}`);
 		return;
 	}
 
@@ -56,18 +60,29 @@ export function reschedule({
 		displayName: collectionDisplayName,
 		doCollect = false
 	} = node;
+	//log.debug(`id:${toStr(id)}`);
+	//log.debug(`collectionName:${toStr(collectionName)}`);
+	//log.debug(`collectorId:${toStr(collectorId)}`);
+	//log.debug(`collectorConfig:${toStr(collectorConfig)}`);
+	//log.debug(`cronMaybeArray:${toStr(cronMaybeArray)}`);
+	//log.debug(`collectionDisplayName:${toStr(collectionDisplayName)}`);
+	//log.debug(`doCollect:${toStr(doCollect)}`);
 	const cronArray = forceArray(cronMaybeArray);
-	//log.info(toStr({id, collectionName, collectorId, cronMaybeArray, cronArray, collectionDisplayName, doCollect}));
+	//log.debug(`cronArray:${toStr(cronArray)}`);
 
 	const oldCronArray = oldNode ? forceArray(oldNode.cron) : cronArray;
+	//log.debug(`oldCronArray:${toStr(oldCronArray)}`);
+
 	oldCronArray.forEach((ignored, i) => {
 		const jobName = `${id}:${i}`;
-		//log.info(`Unscheduling ${jobName}`);
+		log.debug(`Unscheduling old ${jobName}`);
 		unschedule({name: jobName});
 	});
+	const cronList = list();
+	log.debug(`After unscheduling cronList:${toStr({cronList})}`);
 
 	if (doCollect) {
-		//log.info(toStr({doCollect}));
+		//log.debug(`doCollect:${toStr(doCollect)}`);
 		if (!collectorId) {
 			log.warning(`Collection ${collectionDisplayName} is missing a collector!`);
 		} else {
@@ -76,7 +91,7 @@ export function reschedule({
 				log.error(`Collection ${collectionDisplayName} is using a non-existant collector ${collectorId}!`);
 			} else {
 				const configJson = JSON.stringify(collectorConfig);
-				//log.info(toStr({configJson}));
+				//log.debug(`configJson:${toStr(configJson)}`);
 
 				const taskParams = {
 					name: collectorId,
@@ -86,9 +101,9 @@ export function reschedule({
 						configJson
 					}
 				};
-				//log.info(toStr({taskParams}));
+				//log.debug(`taskParams:${toStr(taskParams)}`);
 
-				//log.info(toStr({cronArray}));
+				//log.debug(`cronArray:${toStr(cronArray)}`);
 				cronArray.forEach(({
 					minute = '*',
 					hour = '*',
@@ -98,8 +113,8 @@ export function reschedule({
 				}, i) => {
 					const cron = `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`;
 					const jobName = `${id}:${i}`;
-					//log.info(toStr({jobName, cron}));
-					//log.info(`Scheduling ${jobName} with taskParams:${toStr(taskParams)}`);
+					//log.debug(`jobName:${toStr(jobName)} cron:${toStr(cron)}`);
+					log.debug(`Scheduling ${jobName} with taskParams:${toStr(taskParams)}`);
 					schedule({
 						callback: () => submitNamed(taskParams),
 						context: {
@@ -122,6 +137,8 @@ export function reschedule({
 						times: 0*/ // (number) Number of task runs. Leave it empty for infinite calls.
 					}); // schedule
 				}); // cronArray.forEach
+				const cronList = list();
+				log.debug(`After re-scheduling cronList:${toStr({cronList})}`);
 			} // collectors[collectorId]
 		} // if collectorId
 	} // if doCollect
