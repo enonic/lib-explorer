@@ -1,5 +1,9 @@
-import {list, schedule, unschedule} from '/lib/cron';
-import {toStr} from '/lib/util';
+import {
+	//list,
+	schedule,
+	unschedule
+} from '/lib/cron';
+//import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 import {submitNamed} from '/lib/xp/task';
 
@@ -38,13 +42,16 @@ export function reschedule({
 
 	if (!node && oldNode && oldNode.doCollect && oldNode.cron) {
 		// A collection node (with scheduling) has been deleted, just unschedule and return
+		const {
+			_id: id
+		} = oldNode;
 		forceArray(oldNode.cron).forEach((ignored, i) => {
 			const jobName = `${id}:${i}`;
-			log.debug(`Unscheduling deleted ${jobName}`);
+			//log.debug(`Unscheduling deleted ${jobName}`);
 			unschedule({name: jobName});
 		});
-		const cronList = list();
-		log.debug(`after delete cronList:${toStr({cronList})}`);
+		//const cronList = list();
+		//log.debug(`after delete cronList:${toStr({cronList})}`);
 		return;
 	}
 
@@ -75,11 +82,11 @@ export function reschedule({
 
 	oldCronArray.forEach((ignored, i) => {
 		const jobName = `${id}:${i}`;
-		log.debug(`Unscheduling old ${jobName}`);
+		//log.debug(`Unscheduling old ${jobName}`);
 		unschedule({name: jobName});
 	});
-	const cronList = list();
-	log.debug(`After unscheduling cronList:${toStr({cronList})}`);
+	//const cronList = list();
+	//log.debug(`After unscheduling cronList:${toStr({cronList})}`);
 
 	if (doCollect) {
 		//log.debug(`doCollect:${toStr(doCollect)}`);
@@ -114,7 +121,7 @@ export function reschedule({
 					const cron = `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`;
 					const jobName = `${id}:${i}`;
 					//log.debug(`jobName:${toStr(jobName)} cron:${toStr(cron)}`);
-					log.debug(`Scheduling ${jobName} with taskParams:${toStr(taskParams)}`);
+					//log.debug(`Scheduling ${jobName} with taskParams:${toStr(taskParams)}`);
 					schedule({
 						callback: () => submitNamed(taskParams),
 						context: {
@@ -137,8 +144,8 @@ export function reschedule({
 						times: 0*/ // (number) Number of task runs. Leave it empty for infinite calls.
 					}); // schedule
 				}); // cronArray.forEach
-				const cronList = list();
-				log.debug(`After re-scheduling cronList:${toStr({cronList})}`);
+				//const cronList = list();
+				//log.debug(`After re-scheduling cronList:${toStr({cronList})}`);
 			} // collectors[collectorId]
 		} // if collectorId
 	} // if doCollect
