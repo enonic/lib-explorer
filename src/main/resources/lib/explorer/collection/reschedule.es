@@ -33,6 +33,18 @@ export function reschedule({
 	oldNode
 }) {
 	//log.info(toStr({collectors, oldNode, node}));
+
+	if (!node && oldNode && oldNode.doCollect && oldNode.cron) {
+		// A collection node (with scheduling) has been deleted, just unschedule and return
+		forceArray(oldNode.cron).forEach((ignored, i) => {
+			const jobName = `${id}:${i}`;
+			//log.info(`Unscheduling ${jobName}`);
+			unschedule({name: jobName});
+		});
+		return;
+	}
+
+	// A collection node has been created or modified
 	const {
 		_id: id,
 		_name: collectionName,
@@ -108,9 +120,9 @@ export function reschedule({
 						//fixedDelay: , // (number) The delay between the termination of one execution and the commencement of the next. Can’t be set with (cron).
 						name: jobName/*,
 						times: 0*/ // (number) Number of task runs. Leave it empty for infinite calls.
-					});
-				});
-			}
-		}
-	}
-}
+					}); // schedule
+				}); // cronArray.forEach
+			} // collectors[collectorId]
+		} // if collectorId
+	} // if doCollect
+} // export function reschedule
