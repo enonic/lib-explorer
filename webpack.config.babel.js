@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import path from 'path';
-import TerserPlugin from 'terser-webpack-plugin';
 import {webpackServerSideJs} from '@enonic/webpack-server-side-js';
 //import webpack from 'webpack';
 
@@ -35,16 +34,6 @@ const WEBPACK_CONFIG = [
 		__dirname: __dirname,
 		externals: SS_EXTERNALS,
 		mode: MODE,
-		optimization: {
-			minimizer: [
-				new TerserPlugin(/*{
-					terserOptions: {
-						compress: {}
-						//mangle: true // This will DESTROY exports!
-					}
-				}*/)
-			]
-		},
 		/*plugins: [
 			new webpack.ProvidePlugin({
 				global: 'myGlobal'
