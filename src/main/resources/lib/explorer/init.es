@@ -31,7 +31,6 @@ import {
 import {node as Node} from '/lib/explorer/model/2/nodeTypes/node';
 
 import {ignoreErrors} from '/lib/explorer/ignoreErrors';
-import {logErrors} from '/lib/explorer/logErrors';
 import {init as initRepo} from '/lib/explorer/repo/init';
 import {connect} from '/lib/explorer/repo/connect';
 import {getField} from '/lib/explorer/field/getField';
@@ -113,9 +112,13 @@ export function init() {
 			});
 			//log.info(`paramsV:${toStr({paramsV})}`);
 			paramsV.__connection = connection; // eslint-disable-line no-underscore-dangle
-			logErrors(() => {
+			try {
 				create(paramsV);
-			});
+			} catch (e) {
+				if (e.class.name !== 'com.enonic.xp.node.NodeAlreadyExistAtPathException') {
+					log.error(`${e.class.name} ${e.message}`, e);
+				}
+			}
 		} else {
 			log.error(`Field type not found! Cannot create field value ${NT_DOCUMENT}`);
 		}
