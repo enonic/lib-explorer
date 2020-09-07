@@ -2,7 +2,7 @@ module.exports = {
 
 	// https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/style.js
 	extends: [
-		'eslint:recommended',
+		'eslint:recommended'//,
 		//'airbnb-base',
 		//'plugin:react/recommended',
 		//'plugin:jsx-a11y/recommended'//,
@@ -68,7 +68,7 @@ module.exports = {
 	},*/
 
 	plugins: [
-		//'import',
+		'import'
 		//'react',
 		//'jsx-a11y'
 	],
@@ -92,7 +92,7 @@ module.exports = {
 			ignoreComments: true,
 			ignoreRegExpLiterals: true,
 			ignoreStrings: true,
-			ignoreTemplateLiterals: true,
+			ignoreTemplateLiterals: true
 		}],
 		'no-cond-assign': ['error', 'except-parens'],
 		'no-multi-spaces': ['off'],
@@ -110,7 +110,7 @@ module.exports = {
 			],
 			allowAfterThis: false,
 			allowAfterSuper: false,
-			enforceInMethodNames: false,
+			enforceInMethodNames: false
 		}],
 		'no-unexpected-multiline': 'off',
 		'object-curly-newline': ['off'],
