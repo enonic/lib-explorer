@@ -32,3 +32,16 @@ dependencies {
 	include 'com.enonic.lib:lib-explorer:3.0.4'
 }
 ```
+
+## Compatibility
+
+| App version | XP version |
+| ----------- | ---------- |
+| 3.0.7 | 7.3.1 |
+| 3.0.6 | 7.3.0 |
+
+## Changelog
+
+### 3.0.7
+
+* Require Enonic XP 7.3.1
