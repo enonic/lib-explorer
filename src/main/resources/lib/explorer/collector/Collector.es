@@ -1,12 +1,12 @@
 const {currentTimeMillis} = Java.type('java.lang.System');
 
-import {validateLicense} from '/lib/license';
+//import {validateLicense} from '/lib/license';
 import {toStr} from '/lib/util';
 
 import {send} from '/lib/xp/mail';
 
 import {
-	APP_EXPLORER,
+	//APP_EXPLORER,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 
@@ -19,7 +19,7 @@ import {modify as modifyTask} from '/lib/explorer/task/modify';
 
 import {Document} from '/lib/explorer/model/2/nodeTypes/document';
 
-import {getTotalCount} from '/lib/explorer/collection/getTotalCount';
+//import {getTotalCount} from '/lib/explorer/collection/getTotalCount';
 
 import {Collection} from '/lib/explorer/collector/Collection';
 import {Journal} from '/lib/explorer/collector/Journal';
@@ -37,12 +37,13 @@ export class Collector {
 		this.collectorId = collectorId;
 		if (!configJson) { throw new Error('Missing required parameter configJson!'); }
 
-		const explorerRepoReadConnection = connect({
+		/*const explorerRepoReadConnection = connect({
 			principals: [PRINCIPAL_EXPLORER_READ]
 		});
 		const collectionsTotalCount = getTotalCount({ connection: explorerRepoReadConnection });
 		//log.info(`collectionsTotalCount:${collectionsTotalCount}`);
 
+        // WARNING https://github.com/enonic/lib-license/issues/21
 		const licenseDetails = validateLicense({appKey: APP_EXPLORER});
 		if (collectionsTotalCount > 3) {
 			if (!licenseDetails) {
@@ -55,7 +56,7 @@ export class Collector {
 				log.error(errorMsg);
 				throw new Error(errorMsg);
 			}
-		}
+		}*/
 
 		try {
 			this.config = JSON.parse(configJson); //log.info(toStr({config}));

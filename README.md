@@ -29,7 +29,7 @@ $ enonic project gradle -- clean build publishToMavenLocal publish --refresh-dep
 
 ```build.gradle
 dependencies {
-	include 'com.enonic.lib:lib-explorer:3.0.4'
+	include 'com.enonic.lib:lib-explorer:3.0.7'
 }
 ```
 
@@ -45,3 +45,4 @@ dependencies {
 ### 3.0.7
 
 * Require Enonic XP 7.3.1
+* BUGFIX A collector application can't check the license of app-explorer
