@@ -74,7 +74,7 @@ export function search(params) {
 		logQuery = false,
 		//logSynonyms = false,
 		name = 'q',
-		searchString = params[name] || ''
+		searchString = params[name] || ''
 	} = params;
 	/*log.info(toStr({
 		facetsParam,
@@ -100,8 +100,8 @@ export function search(params) {
 		//pagination: paginationConfig,
 		query: queryConfig,
 		resultMappings,
-		stopWords,
-		thesauri
+		stopWords//,
+		//thesauri
 	} = config.interfaceNode;
 	/*log.info(toStr({
 		//facetConfig,

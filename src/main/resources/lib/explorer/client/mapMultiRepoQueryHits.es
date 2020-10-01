@@ -50,6 +50,7 @@ export function mapMultiRepoQueryHits({
 			highlight: highlightedFields
 		} = hit;
 		//log.info(toStr({repoId, branch, id}));
+		//log.info(`highlightedFields:${toStr({highlightedFields})}`);
 
 		// Connections aren't really cached
 		const connectionKey = `${repoId}:${branch}`;
@@ -85,8 +86,10 @@ export function mapMultiRepoQueryHits({
 				type
 			}));*/
 
+			//log.info(`node:${toStr({node})}`);
+			//log.info(`field:${toStr({field})}`);
 			const value = get(node, field);
-			//log.info(toStr({value}));
+			//log.info(`value:${toStr({value})}`);
 
 			let mappedValue = value;
 			if (type === 'string') {
@@ -95,19 +98,12 @@ export function mapMultiRepoQueryHits({
 					? maybeArray.join(separator)
 					: maybeArray);
 				//log.info(toStr({textToHighlight}));
+				mappedValue = textToHighlight;
 
 				if (highlight) {
-					//times.push({label: 'highlight start', time: currentTimeMillis()});
-					/*mappedValue = highlightSearchResult(
-						textToHighlight,
-						searchString,
-						lengthLimit || textToHighlight.length,
-						str => `<b>${str}</b>`
-					);*/
-					//times.push({label: 'highlight end', time: currentTimeMillis()});
-					//log.info(toStr({mappedValue}));
 
-					if (Array.isArray(highlightedFields[field]) && highlightedFields[field][0]) {
+
+					if (highlightedFields && Array.isArray(highlightedFields[field]) && highlightedFields[field][0]) {
 						mappedValue = highlightedFields[field][0];
 
 						const strippedText = mappedValue.replace(/<b>/g, '').replace(/<\/b>/g, '');
@@ -134,9 +130,22 @@ export function mapMultiRepoQueryHits({
 						if (!strippedText.endsWith(endsWithText)) {
 							mappedValue = `${mappedValue}${ELLIPSIS}`;
 						}
+					} else if (lengthLimit) {
+						if (mappedValue.length > lengthLimit) {
+							mappedValue = `${mappedValue.substring(0, lengthLimit)}${ELLIPSIS}`;
+						}
+						//mappedValue = mappedValue.substring(0, lengthLimit);
+						//times.push({label: 'highlight start', time: currentTimeMillis()});
+						/*mappedValue = highlightSearchResult(
+							textToHighlight,
+							searchString,
+							lengthLimit || textToHighlight.length,
+							str => `<b>${str}</b>`
+						);*/
+						//times.push({label: 'highlight end', time: currentTimeMillis()});
+						//log.info(toStr({mappedValue}));
 					}
 					//log.info(toStr({mappedValue}));
-
 				} else {
 					mappedValue = lengthLimit
 						? textToHighlight.substring(0, lengthLimit)
