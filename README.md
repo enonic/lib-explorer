@@ -45,6 +45,7 @@ dependencies {
 
 ### 3.1.0
 
+* Use highlighter provided by Enonic API
 * Require Enonic XP 7.3.2
 
 ### 3.0.7

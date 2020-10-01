@@ -18,23 +18,24 @@ import {dlv as get} from '/lib/util/object';
 //──────────────────────────────────────────────────────────────────────────────
 import {
 	BRANCH_ID_EXPLORER,
+	ELLIPSIS,
 	PRINCIPAL_EXPLORER_READ,
 	REPO_ID_EXPLORER
 } from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {cachedNode} from '/lib/explorer/client/cachedNode';
-import {highlight as highlightSearchResult} from '/lib/explorer/client/highlight';
+//import {highlight as highlightSearchResult} from '/lib/explorer/client/highlight';
 
-const {currentTimeMillis} = Java.type('java.lang.System');
+//const {currentTimeMillis} = Java.type('java.lang.System');
 
 
 export function mapMultiRepoQueryHits({
 	hits,
-	locale,
+	//locale,
 	nodeCache,
-	resultMappings,
-	searchString,
-	times
+	resultMappings//,
+	//searchString//,
+	//times
 }) {
 	//times.push({label: 'mapMultiRepoQueryHits start', time: currentTimeMillis()});
 	const connectionsObj = {};
@@ -42,7 +43,12 @@ export function mapMultiRepoQueryHits({
 	//log.info(toStr({searchString}));
 	//const res = hits.map(hit => {
 	return hits.map(hit => {
-		const {repoId, branch, id} = hit;
+		const {
+			repoId,
+			branch,
+			id,
+			highlight: highlightedFields
+		} = hit;
 		//log.info(toStr({repoId, branch, id}));
 
 		// Connections aren't really cached
@@ -92,14 +98,45 @@ export function mapMultiRepoQueryHits({
 
 				if (highlight) {
 					//times.push({label: 'highlight start', time: currentTimeMillis()});
-					mappedValue = highlightSearchResult(
+					/*mappedValue = highlightSearchResult(
 						textToHighlight,
 						searchString,
 						lengthLimit || textToHighlight.length,
 						str => `<b>${str}</b>`
-					);
+					);*/
 					//times.push({label: 'highlight end', time: currentTimeMillis()});
 					//log.info(toStr({mappedValue}));
+
+					if (Array.isArray(highlightedFields[field]) && highlightedFields[field][0]) {
+						mappedValue = highlightedFields[field][0];
+
+						const strippedText = mappedValue.replace(/<b>/g, '').replace(/<\/b>/g, '');
+						//log.info(`strippedText:${strippedText}`);
+
+						//log.info(`textToHighlight.length:${textToHighlight.length}`);
+
+						const numCharsFromStartToCheck = Math.min(6,textToHighlight.length);
+						//log.info(`numCharsFromStartToCheck:${numCharsFromStartToCheck}`);
+
+						const startsWithText = textToHighlight.substring(0, numCharsFromStartToCheck);
+						//log.info(`startsWithText:${startsWithText}`);
+
+						if (!strippedText.startsWith(startsWithText)) {
+							mappedValue = `${ELLIPSIS}${mappedValue}`;
+						}
+
+						const numCharsFromEndToCheck = Math.min(6,textToHighlight.length);
+						//log.info(`numCharsFromEndToCheck:${numCharsFromEndToCheck}`);
+
+						const endsWithText = textToHighlight.slice(0-numCharsFromEndToCheck);
+						//log.info(`endsWithText:${endsWithText}`);
+
+						if (!strippedText.endsWith(endsWithText)) {
+							mappedValue = `${mappedValue}${ELLIPSIS}`;
+						}
+					}
+					//log.info(toStr({mappedValue}));
+
 				} else {
 					mappedValue = lengthLimit
 						? textToHighlight.substring(0, lengthLimit)
@@ -124,13 +161,13 @@ export function mapMultiRepoQueryHits({
 							name,
 							path,
 							field
-						}
+						};
 					});
-					//times.push({label: 'tag end', time: currentTimeMillis()});
+				//times.push({label: 'tag end', time: currentTimeMillis()});
 			}
 			set(obj, to, mappedValue);
 			//times.push({label: 'resultMappings end', time: currentTimeMillis()});
-		}) // resultMappings.forEach
+		}); // resultMappings.forEach
 		//log.info(toStr({obj}));
 		return obj;
 	}).filter(x => x); // Remove missing nodes

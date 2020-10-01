@@ -11,9 +11,10 @@ import {sanitize} from '/lib/xp/common';
 export const APP_EXPLORER = 'com.enonic.app.explorer';
 export const TOOL_PATH = getToolUrl(APP_EXPLORER, 'explorer');
 
-export const COLON_SIGN = ':' // Not good in repo names
+export const COLON_SIGN = ':'; // Not good in repo names
 //export const RATIO_SIGN = '∶'; // Not good in repo names
 export const DOT_SIGN = '.';
+export const ELLIPSIS = '…';
 //──────────────────────────────────────────────────────────────────────────────
 // Node types
 //──────────────────────────────────────────────────────────────────────────────

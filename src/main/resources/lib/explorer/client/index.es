@@ -10,11 +10,11 @@ import {getLocale} from '/lib/xp/admin';
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {
-	COLLECTION_REPO_PREFIX,
+	//COLLECTION_REPO_PREFIX,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 
-import {get as getInterface} from '/lib/explorer/interface/get';
+//import {get as getInterface} from '/lib/explorer/interface/get';
 import {removeStopWords} from '/lib/explorer/query/removeStopWords';
 import {wash} from '/lib/explorer/query/wash';
 import {connect} from '/lib/explorer/repo/connect';
@@ -28,15 +28,15 @@ import {buildFiltersFromParams} from '/lib/explorer/client/buildFiltersFromParam
 import {buildHighlights} from '/lib/explorer/client/buildHighlights';
 import {buildPagination} from '/lib/explorer/client/buildPagination';
 import {buildQuery} from '/lib/explorer/client/buildQuery';
-import {flattenSynonyms} from '/lib/explorer/client/flattenSynonyms';
-import {getCachedActiveNode} from '/lib/explorer/client/getCachedActiveNode';
+//import {flattenSynonyms} from '/lib/explorer/client/flattenSynonyms';
+//import {getCachedActiveNode} from '/lib/explorer/client/getCachedActiveNode';
 import {getCachedConfigFromInterface} from '/lib/explorer/client/getCachedConfigFromInterface';
 import {localizeFacets} from '/lib/explorer/client/localizeFacets';
 import {mapMultiRepoQueryHits} from '/lib/explorer/client/mapMultiRepoQueryHits';
 
 import {query as queryThesauri} from '/lib/explorer/thesaurus/query';
 
-import {pad} from '/lib/explorer/string/pad';
+//import {pad} from '/lib/explorer/string/pad';
 
 //const {currentTimeMillis} = Java.type('java.lang.System');
 
@@ -113,6 +113,8 @@ export function search(params) {
 	//log.info(toStr({page}));
 
 	const count = params.count ? parseInt(params.count, 10) : 10;
+	//const count = 1; // DEBUG
+
 	const start = params.start ? parseInt(params.start, 10) : (page - 1) * count; // NOTE First index is 0 not 1
 	//log.info(toStr({start}));
 
@@ -136,8 +138,8 @@ export function search(params) {
 				if (!listOfStopWords.includes(word)) {
 					listOfStopWords.push(word);
 				}
-			})
-		})
+			});
+		});
 	}
 	//log.info(toStr({listOfStopWords}));
 	const removedStopWords = [];
@@ -194,7 +196,9 @@ export function search(params) {
 			synonymsObj[thesaurusName] = {};
 		}
 		forceArray(from).forEach(f => {
-			if(!synonymsObj[thesaurusName][f]) { synonymsObj[thesaurusName][f] = {score, to}}
+			if(!synonymsObj[thesaurusName][f]) {
+				synonymsObj[thesaurusName][f] = {score, to};
+			}
 		});
 	});
 	//log.info(toStr({synonymsObj}));
@@ -257,7 +261,8 @@ export function search(params) {
 	}
 
 	const queryRes = readConnections.query(queryParams);
-	//log.info(toStr({queryRes}));
+	//log.info(toStr({queryRes})); // DEBUG
+
 	const aggregationsCacheObj = {};
 	if (Object.keys(queryRes.aggregations).length) {
 		const aggregationCacheKey = hash(filters, 52);
