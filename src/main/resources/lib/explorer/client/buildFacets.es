@@ -22,7 +22,7 @@ function uriObjFromParams(params) {
 				const tag = v[field];
 				Array.isArray(tag)
 				 ? tag.forEach(value => uri.addQueryParam(field, value))
-				 : tag && uri.addQueryParam(field, tag)
+					: tag && uri.addQueryParam(field, tag);
 			});
 		} else if (![
 			'clearCache', // The enduser should not see this
@@ -102,7 +102,7 @@ export function buildFacets({
 			const facetUri = uriObjFromParams(params);
 
 			facetUri.deleteQueryParam(field, tagName); // Remove the current tag
-			const removeHref = facetUri.toString() || '?';
+			const removeHref = facetUri.toString() || '?';
 			facetUri.addQueryParam(field, tagName); // Re-add the current tag
 
 			const active = facetsObjWithChildBeeingArray[field] && facetsObjWithChildBeeingArray[field].includes(tagName);
@@ -128,7 +128,7 @@ export function buildFacets({
 
 		return {
 			activeCount,
-			clearHref: facetCategoryClearUri.toString() || '?',
+			clearHref: facetCategoryClearUri.toString() || '?',
 			field, // Gets removed in 2nd pass
 			hasValuesInCategory, // Gets removed in 2nd pass
 			href: facetCategoryUri.toString(),
