@@ -21,7 +21,7 @@ function uriObjFromParams(params) {
 			Object.keys(v).forEach((field) => {
 				const tag = v[field];
 				Array.isArray(tag)
-				 ? tag.forEach(value => uri.addQueryParam(field, value))
+					? tag.forEach(value => uri.addQueryParam(field, value))
 					: tag && uri.addQueryParam(field, tag);
 			});
 		} else if (![
@@ -210,10 +210,10 @@ export function buildFacets({
 				} else {
 					firstPass[index].facets[childIndex].count = 0;
 				}
-				delete firstPass[index].facets[childIndex].tag;
+				//delete firstPass[index].facets[childIndex].tag;
 			}); // facets.forEach
 		} // if hasValuesInCategory
-		delete firstPass[index].field;
+		//delete firstPass[index].field;
 		delete firstPass[index].hasValuesInCategory;
 		//times.push({label: 'second pass loop end', time: currentTimeMillis()});
 	}); // firstPass.forEach
