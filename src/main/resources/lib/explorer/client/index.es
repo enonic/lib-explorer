@@ -327,6 +327,7 @@ export function search(params) {
 			interface: interfaceName,
 			locale,
 			name,
+			page,
 			searchString,
 			start
 		},
