@@ -29,6 +29,7 @@ function uriObjFromParams(params) {
 			'count', // The enduser should not provide nor see this
 			'interface', // The enduser should not provide nor see this
 			'locale', // The enduser should not see this
+			'logQuery', // The enduser should not see this
 			'name', // The enduser should not provide nor see this
 			'page', // Adding or removing a facet resets pagination
 			'searchString' // The enduser should not provide nor see this
