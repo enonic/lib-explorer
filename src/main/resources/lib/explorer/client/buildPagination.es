@@ -58,6 +58,7 @@ export function buildPagination({
 	if (first && page > 1) {
 		pagination.push({
 			href,
+			page: 1,
 			phraseKey: PHRASE_KEY_PAGINATION_FIRST,
 			text: localize({
 				application: APP_EXPLORER,
@@ -70,6 +71,7 @@ export function buildPagination({
 	if (prev && page > 2) {
 		pagination.push({
 			href: `${href}&page=${page - 1}`,
+			page: page - 1,
 			phraseKey: PHRASE_KEY_PAGINATION_PREV,
 			text: localize({
 				application: APP_EXPLORER,
@@ -89,6 +91,7 @@ export function buildPagination({
 		//log.info(toStr({i, page}));
 		pagination.push({
 			href: i === page ? null : `${href}${i === 1 ? '' : '&page=' + i}`, // eslint-disable-line prefer-template
+			page: i,
 			text: `${i}`
 		});
 	} // for
@@ -97,6 +100,7 @@ export function buildPagination({
 		if (next && page < (pages - 1)) {
 			pagination.push({
 				href: `${href}&page=${page + 1}`,
+				page: page + 1,
 				phraseKey: PHRASE_KEY_PAGINATION_NEXT,
 				text: localize({
 					application: APP_EXPLORER,
@@ -108,6 +112,7 @@ export function buildPagination({
 		if (last) {
 			pagination.push({
 				href: `${href}&page=${pages}`,
+				page: pages,
 				phraseKey: PHRASE_KEY_PAGINATION_LAST,
 				text: localize({
 					application: APP_EXPLORER,

@@ -37,11 +37,15 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
-| 3.1.0 | 7.3.2 |
+| 3.[12].0 | 7.3.2 |
 | 3.0.7 | 7.3.1 |
 | 3.0.6 | 7.3.0 |
 
 ## Changelog
+
+### 3.2.0
+
+* Expose page in pagination
 
 ### 3.1.0
 
