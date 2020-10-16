@@ -314,7 +314,7 @@ export function search(params) {
 		page,
 		pages,
 		//paginationConfig,
-		searchString
+		searchString: washedSearchString
 	});
 	//log.info(toStr({pagination}));
 	//times.push({label: 'pagination', time: currentTimeMillis()});
@@ -328,7 +328,7 @@ export function search(params) {
 			locale,
 			name,
 			page,
-			searchString,
+			searchString: washedSearchString,
 			start
 		},
 		count: queryRes.count,

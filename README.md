@@ -37,11 +37,15 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
-| 3.[1-4].0 | 7.3.2 |
+| 3.[1-4].x | 7.3.2 |
 | 3.0.7 | 7.3.1 |
 | 3.0.6 | 7.3.0 |
 
 ## Changelog
+
+### 3.4.1
+
+* BUGFIX Use washedSearchString in pagination and params
 
 ### 3.4.0
 
