@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/util';
+import {toStr} from '/lib/util';
 import {NT_THESAURUS} from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
@@ -8,13 +8,17 @@ import {query as querySynonyms} from '/lib/explorer/synonym/query';
 export function query({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
+	explain = false,
+	logQuery = false,
+	logQueryResults = false,
 	filters = {},
 	getSynonymsCount = true,
 	query = '', //"_parentPath = '/thesauri'",
 	sort = '_name ASC'
 } = {}) {
-	const queryParams = {
+	const queryThesauriParams = {
 		count,
+		explain,
 		filters: addFilter({
 			filters,
 			filter: hasValue('type', [NT_THESAURUS])
@@ -22,8 +26,14 @@ export function query({
 		query,
 		sort
 	};
-	const queryRes = connection.query(queryParams);
-	queryRes.hits = queryRes.hits.map((hit) => {
+	if (logQuery) {
+		log.info(`queryThesauriParams:${toStr(queryThesauriParams)}`);
+	}
+	const queryThesauriRes = connection.query(queryThesauriParams);
+	if (logQueryResults) {
+		log.info(`queryThesauriRes:${toStr(queryThesauriRes)}`);
+	}
+	queryThesauriRes.hits = queryThesauriRes.hits.map((hit) => {
 		const {
 			_name: name,
 			_path,
@@ -50,5 +60,5 @@ export function query({
 		}
 		return rv;
 	});
-	return queryRes;
+	return queryThesauriRes;
 } // function query

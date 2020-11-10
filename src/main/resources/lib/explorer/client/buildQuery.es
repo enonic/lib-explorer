@@ -19,16 +19,19 @@ const buildFields = (fields/*, score*/) => {
 		floatBoost = floatBoost.toFixed();*/
 		return `${field}${boost ? `^${boost}`: ''}`;
 	}).join(',')}'`;
-}
+};
 
 
 export function buildQuery({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	expand = false,
+	explain,
 	expression: {
 		type,
 		params
 	},
+	logQuery = false,
+	logQueryResults = false,
 	//logSynonyms = false,
 	searchString,
 	synonyms//, // Gets modified
@@ -53,13 +56,15 @@ export function buildQuery({
 		query = `ngram(${buildFields(params.fields)}, '${searchString}', '${operator}')`;
 		//times.push({label: 'ngram', time: currentTimeMillis()});
 		break;
-	case 'synonyms':
+	case 'synonyms': {
 		const thesauri = params.thesauri;
 		//if (logSynonyms) { log.info(`thesauri:${toStr(thesauri)}`); }
 		const localSynonyms = getSynonyms({
 			connection,
 			expand,
-			//logSynonyms,
+			explain,
+			logQuery,
+			logQueryResults,
 			searchString, // TODO Perhaps stopwords needs to be removed here?
 			thesauri
 		});
@@ -96,12 +101,16 @@ export function buildQuery({
 		query = `fulltext(${buildFields(params.fields)}, '${flattenedSynonyms.join(' ')}', 'OR')`;
 		//times.push({label: 'synonyms', time: currentTimeMillis()});
 		break;
+	}
 	case 'group':
 		query = `(${params.expressions
 			.map(expression =>
 				buildQuery({
 					connection,
 					expression,
+					explain,
+					logQuery,
+					logQueryResults,
 					//logSynonyms,
 					searchString,
 					synonyms/*, times*/

@@ -14,6 +14,9 @@ const MAX_COUNT = 100;
 export function getSynonyms({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	expand = false,
+	explain = false,
+	logQuery = false,
+	logQueryResults = false,
 	//logSynonyms = false,
 	searchString,
 	thesauri,
@@ -30,19 +33,24 @@ export function getSynonyms({
 	const query = `fulltext('${fields}', '${cleanSearchString}', 'AND')`;
 	//if (logSynonyms) { log.info(`query:${toStr(query)}`); }
 
-	const params = {
+	const querySynonymsParams = {
 		connection,
 		count: count >= 1 && count <= MAX_COUNT ? count : MAX_COUNT,
+		explain,
 		filters: addFilter({filter: hasValue('_parentPath', forceArray(thesauri).map(n => `/thesauri/${n}`))}),
 		query,
 		sort: '_score DESC'
 	};
-	//if (logSynonyms) { log.info(`params:${toStr(params)}`); }
+	if (logQuery) {
+		log.info(`querySynonymsParams:${toStr(querySynonymsParams)}`);
+	}
 
-	const hits = querySynonyms(params).hits;
-	//if (logSynonyms) { log.info(`hits:${toStr(hits)}`); }
+	const querySynonymsRes = querySynonyms(querySynonymsParams);
+	if (logQueryResults) {
+		log.info(`querySynonymsRes:${toStr(querySynonymsRes)}`);
+	}
 
-	return hits.map(({from, score, thesaurus, to}) => {
+	return querySynonymsRes.hits.map(({from, score, thesaurus, to}) => {
 		//log.info(toStr({from, score, thesaurus, to}));
 		return {
 			from: forceArray(from).map(s => washSynonyms(s)),

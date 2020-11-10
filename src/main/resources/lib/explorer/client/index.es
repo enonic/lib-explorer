@@ -59,7 +59,7 @@ const NODE_CACHE = newCache({
 // Public function
 //──────────────────────────────────────────────────────────────────────────────
 export function search(params) {
-	//log.info(toStr({params}));
+	log.debug(`params:${toStr({params})}`);
 	//const times = [{label: 'start', time: currentTimeMillis()}];
 
 	if (!params.interface) {
@@ -68,20 +68,25 @@ export function search(params) {
 
 	const {
 		clearCache = false,
+		explain = false,
 		facets: facetsParam = {},
 		interface: interfaceName,
 		locale = getLocale(),
 		logQuery = false,
+		logQueryResults = false,
 		//logSynonyms = false,
 		name = 'q',
 		searchString = params[name] || ''
 	} = params;
-	/*log.info(toStr({
-		facetsParam,
-		interfaceName,
-		name,
-		searchString
-	}));*/
+	log.debug(`clearCache:${toStr({clearCache})}`);
+	log.debug(`explain:${toStr({explain})}`);
+	log.debug(`facetsParam:${toStr({facetsParam})}`);
+	log.debug(`interfaceName:${toStr({interfaceName})}`);
+	log.debug(`locale:${toStr({locale})}`);
+	log.debug(`logQuery:${toStr({logQuery})}`);
+	log.debug(`logQueryResults:${toStr({logQueryResults})}`);
+	log.debug(`name:${toStr({name})}`);
+	log.debug(`searchString:${toStr({searchString})}`);
 
 	if (clearCache) {
 		log.info('Clearing node cache.');
@@ -93,7 +98,7 @@ export function search(params) {
 	});
 
 	const config = getCachedConfigFromInterface({interfaceName});
-	//log.info(toStr({config}));
+	log.debug(`config:${toStr({config})}`);
 
 	const {
 		facets: facetConfig,
@@ -103,25 +108,26 @@ export function search(params) {
 		stopWords//,
 		//thesauri
 	} = config.interfaceNode;
-	/*log.info(toStr({
-		//facetConfig,
-		//queryConfig,
-		//resultMappings
-	}));*/
+	log.debug(`facetConfig:${toStr({facetConfig})}`);
+	log.debug(`queryConfig:${toStr({queryConfig})}`);
+	log.debug(`resultMappings:${toStr({resultMappings})}`);
+	log.debug(`stopWords:${toStr({stopWords})}`);
 
 	let page = params.page ? parseInt(params.page, 10) : 1; // NOTE First index is 1 not 0
-	//log.info(toStr({page}));
+	log.debug(`page:${toStr({page})}`);
 
-	const count = params.count ? parseInt(params.count, 10) : 10;
-	//const count = 1; // DEBUG
+	//const count = params.count ? parseInt(params.count, 10) : 10;
+	const count = 1; // DEBUG
+	log.debug(`count:${toStr({count})}`);
 
 	const start = params.start ? parseInt(params.start, 10) : (page - 1) * count; // NOTE First index is 0 not 1
-	//log.info(toStr({start}));
+	log.debug(`start:${toStr({start})}`);
 
 	if (!page) { page = Math.floor(start / count) + 1; }
+	log.debug(`page:${toStr({page})}`);
 
 	const washedSearchString = wash({string: searchString});
-	//log.info(toStr({searchString, washedSearchString}));
+	log.debug(`washedSearchString:${toStr({washedSearchString})}`);
 
 	//times.push({label: 'various', time: currentTimeMillis()});
 
@@ -129,7 +135,7 @@ export function search(params) {
 	const listOfStopWords = [];
 	if (stopWords && stopWords.length) {
 		stopWords.forEach((name) => {
-			const {words} = getStopWordsList({
+			const {words} = getStopWordsList({ // Not a query
 				connection: explorerRepoReadConnection,
 				name
 			});
@@ -141,16 +147,17 @@ export function search(params) {
 			});
 		});
 	}
-	//log.info(toStr({listOfStopWords}));
+	log.debug(`listOfStopWords:${toStr({listOfStopWords})}`);
+
 	const removedStopWords = [];
 	const searchStringWithoutStopWords = removeStopWords({
 		removedStopWords,
 		stopWords: listOfStopWords,
 		string: washedSearchString
 	});
+	log.debug(`searchStringWithoutStopWords:${toStr({searchStringWithoutStopWords})}`);
 	/*log.info(toStr({
 		washedSearchString,
-		searchStringWithoutStopWords,
 		removedStopWords
 	}));*/
 	//times.push({label: 'stopwords', time: currentTimeMillis()});
@@ -161,13 +168,18 @@ export function search(params) {
 	const query = buildQuery({
 		connection: explorerRepoReadConnection,
 		expand,
+		explain,
 		expression: queryConfig,
+		logQuery,
+		logQueryResults,
 		//logSynonyms,
 		//searchString: washedSearchString,
 		searchString: searchStringWithoutStopWords,
 		synonyms//,
 		//times
 	});
+	log.debug(`query:${toStr({query})}`);
+
 	//if (logSynonyms) { log.info(`synonyms:${toStr(synonyms)}`); }
 	//log.info(toStr({query}));
 	//times.push({label: 'query', time: currentTimeMillis()});
@@ -175,11 +187,14 @@ export function search(params) {
 	const thesauriMap = {};
 	queryThesauri({
 		connection: explorerRepoReadConnection,
+		explain,
+		logQuery,
+		logQueryResults,
 		getSynonymsCount: false
 	}).hits.forEach(({name, displayName}) => {
 		thesauriMap[name] = displayName;
 	});
-	//log.info(toStr({thesauriMap}));
+	log.debug(`thesauriMap:${toStr({thesauriMap})}`);
 	//times.push({label: 'thesauri', time: currentTimeMillis()});
 
 	/*const flattenedSynonyms = [searchString];
@@ -201,7 +216,7 @@ export function search(params) {
 			}
 		});
 	});
-	//log.info(toStr({synonymsObj}));
+	log.debug(`synonymsObj:${toStr({synonymsObj})}`);
 	//times.push({label: 'synonyms', time: currentTimeMillis()});
 
 
@@ -215,7 +230,7 @@ export function search(params) {
 			nodeCache: NODE_CACHE
 		});
 	}
-	//log.info(toStr({localizedFacets}));
+	log.debug(`localizedFacets:${toStr({localizedFacets})}`);
 	//times.push({label: 'localize', time: currentTimeMillis()});
 
 	const filters = buildFiltersFromParams({
@@ -223,7 +238,7 @@ export function search(params) {
 		facetsObj: config.facetsObj,
 		staticFilters: config.filters
 	});
-	//log.info(toStr({filters}));
+	log.debug(`filters:${toStr({filters})}`);
 	//times.push({label: 'buildFiltersFromParams', time: currentTimeMillis()});
 
 	/*addCommonTermsFilter({
@@ -237,18 +252,26 @@ export function search(params) {
 		principals: [PRINCIPAL_EXPLORER_READ],
 		sources: config.sources
 	};
-	//log.info(`multiConnectParams:${toStr(multiConnectParams)}`);
+	if(logQuery) {
+		log.info(`multiConnectParams:${toStr(multiConnectParams)}`);
+	} else {
+		log.debug(`multiConnectParams:${toStr(multiConnectParams)}`);
+	}
+
 	const readConnections = multiConnect(multiConnectParams);
 	//times.push({label: 'multiConnect', time: currentTimeMillis()});
 
 	const numberOfActiveFacetCategories = Object.keys(facetsParam).filter(k => facetsParam[k]).length;
+	log.debug(`numberOfActiveFacetCategories:${toStr({numberOfActiveFacetCategories})}`);
 
 	const queryParams = {
 		count,
+		explain,
 		filters,
-		highlight: buildHighlights({
+		// No point in building highlights when there is nothing to highlight...
+		highlight: searchStringWithoutStopWords ? buildHighlights({
 			resultMappings
-		}),
+		}) : {},
 		query,
 		start
 	};
@@ -258,17 +281,23 @@ export function search(params) {
 	//log.info(toStr({count}));
 	if (logQuery) {
 		log.info(`queryParams:${toStr(queryParams)}`);
+	} else {
+		log.debug(`queryParams:${toStr({queryParams})}`);
 	}
 
 	const queryRes = readConnections.query(queryParams);
-	//log.info(toStr({queryRes})); // DEBUG
+	if (logQueryResults) {
+		log.info(`queryRes:${toStr(queryRes)}`);
+	} else {
+		log.debug(`queryRes:${toStr({queryRes})}`);
+	}
 
 	const aggregationsCacheObj = {};
 	if (Object.keys(queryRes.aggregations).length) {
 		const aggregationCacheKey = hash(filters, 52);
 		aggregationsCacheObj[aggregationCacheKey] = queryRes.aggregations;
 	}
-	//log.info(toStr({aggregationsCacheObj}));
+	log.debug(`aggregationsCacheObj:${toStr({aggregationsCacheObj})}`);
 
 	const {hits, total} = queryRes;
 	//log.info(toStr({total}));
@@ -301,11 +330,12 @@ export function search(params) {
 		query//,
 		//times
 	});
+	log.debug(`facetCategories:${toStr({facetCategories})}`);
 	//times.push({label: 'facets', time: currentTimeMillis()});
 	//log.info(toStr({aggregationsCacheObj}));
 
 	const pages = Math.ceil(total / count);
-	//log.info(toStr({pages}));
+	log.debug(`pages:${toStr({pages})}`);
 
 	const pagination = buildPagination({
 		facets: facetsParam,
@@ -316,7 +346,7 @@ export function search(params) {
 		//paginationConfig,
 		searchString: washedSearchString
 	});
-	//log.info(toStr({pagination}));
+	log.debug(`pagination:${toStr({pagination})}`);
 	//times.push({label: 'pagination', time: currentTimeMillis()});
 
 	//const response = {
