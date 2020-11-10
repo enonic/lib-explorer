@@ -14,7 +14,13 @@ export function interfaceModel({
 	return node({
 		...rest,
 		_parentPath,
-		_indexConfig: {default: 'byType'},
+		_indexConfig: {
+			default: 'byType',
+			configs: [{
+				path: 'resultMappings*',
+				config: 'none'
+			}]
+		},
 		type: NT_INTERFACE
 	});
 } // interfaceModel
