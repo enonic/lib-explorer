@@ -37,11 +37,17 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
-| 3.[1-4].x | 7.3.2 |
+| 3.[1-5].x | 7.3.2 |
 | 3.0.7 | 7.3.1 |
 | 3.0.6 | 7.3.0 |
 
 ## Changelog
+
+### 3.5.0
+
+* Work around nashorn issue with trunc and toInt
+* Improve debugging with explain and logQueryResults parameters
+* Use highlight fragmenter, numberOfFragments, order, postTag and preTag when searching
 
 ### 3.4.1
 
