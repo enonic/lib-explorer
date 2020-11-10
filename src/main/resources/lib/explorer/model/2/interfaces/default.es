@@ -51,18 +51,32 @@ export const DEFAULT_INTERFACE = {
 			field: 'title',
 			to: 'title',
 			highlight: true,
+			fragmenter: 'span',
 			lengthLimit: 255,
+			numberOfFragments: 1,
+			order: 'none',
+			postTag: '</b>',
+			preTag: '<b>',
 			type: 'string'
 		},{
 			field: 'text',
 			highlight: true,
+			fragmenter: 'span',
 			lengthLimit: 255,
+			numberOfFragments: 1,
+			order: 'none',
+			postTag: '</b>',
+			preTag: '<b>',
 			to: 'text',
 			type: 'string'
 		},{
 			field: 'uri',
 			highlight: false,
-			lengthLimit: '',
+			//fragmenter: undefined,
+			//lengthLimit: undefined,
+			//order: undefined,
+			//postTag: undefined,
+			//preTag: undefined,
 			to: 'href',
 			type: 'string'
 		}
@@ -91,7 +105,7 @@ export const DEFAULT_INTERFACE = {
 					field: 'uri'
 				}
 			},{
-        		filter: 'hasValue',
+				filter: 'hasValue',
 				params: {
 					field: 'type',
 					values: NT_DOCUMENT
