@@ -1,6 +1,6 @@
 import setIn from 'set-value';
 
-import {toStr} from '/lib/util';
+//import {toStr} from '/lib/util';
 import {isInt} from '/lib/util/value';
 
 
@@ -11,21 +11,14 @@ const ORDER_DEFAULT = 'none';
 const POST_TAG_DEFAULT = '</b>';
 const PRE_TAG_DEFAULT = '<b>';
 
+const trunc = (number) => ~~number;
+//const trunc = (number) => number|0;
+//const trunc = (number) => number - number % 1;
+const toInt = (value) => trunc(Number(value));
+
 
 export function buildHighlights({resultMappings}) {
 	const highlights = {
-		/*fragmenter: FRAGMENTER_DEFAULT,
-		fragmentSize: FRAGMENT_SIZE_DEFAULT,
-		numberOfFragments: NUMBER_OF_FRAGMENTS_DEFAULT,
-		//numberOfFragments: -1, // No hits???
-
-		// Sorts highlighted fragments by score when set to score.
-		// Defaults to none - will be displayed in the same order in which fragments appear in the property.
-		order: ORDER_DEFAULT,
-		//order: 'score', // NOTE Perhaps slow when lots of text? (example from PDF).
-
-		postTag: POST_TAG_DEFAULT, // Default </em>
-		preTag: PRE_TAG_DEFAULT // Default <em>*/
 	};
 	resultMappings.forEach(({
 		field,
@@ -38,14 +31,18 @@ export function buildHighlights({resultMappings}) {
 		lengthLimit: fragmentSize = FRAGMENT_SIZE_DEFAULT
 	}) => {
 		if (highlight) {
-			const intHighlightNumberOfFragments = parseInt(highlightNumberOfFragments, 10);
-			if (!isInt(highlights.numberOfFragments)) {
+			//Math.round(parseFloat(highlightNumberOfFragments))
+			//const intHighlightNumberOfFragments = Math.trunc(parseInt(highlightNumberOfFragments, 10));
+			const intHighlightNumberOfFragments = toInt(highlightNumberOfFragments);
+			if (!isInt(highlights.numberOfFragments)) { // 0 is falsy
 				highlights.numberOfFragments = intHighlightNumberOfFragments;
 			}
-			const intFragmentSize = parseInt(fragmentSize, 10);
-			if (!isInt(highlights.fragmentSize)) {
+
+			const intFragmentSize = toInt(fragmentSize);
+			if (!isInt(highlights.fragmentSize)) { // 0 is falsy
 				highlights.fragmentSize = intFragmentSize;
 			}
+
 			if(!highlights.fragmenter) {
 				highlights.fragmenter = highlightFragmenter;
 			}
@@ -60,13 +57,8 @@ export function buildHighlights({resultMappings}) {
 			}
 			setIn(highlights, `properties.${field}`, {
 				fragmenter: highlightFragmenter !== highlights.fragmenter ? highlightFragmenter : undefined,
-
-				//fragmentSize : intFragmentSize !== highlights.fragmentSize ? intFragmentSize : undefined,
-				fragmentSize : intFragmentSize,
-
-				//numberOfFragments: intHighlightNumberOfFragments !== highlights.numberOfFragments ? intHighlightNumberOfFragments : undefined,
-				numberOfFragments: intHighlightNumberOfFragments,
-
+				fragmentSize : intFragmentSize !== highlights.fragmentSize ? intFragmentSize : undefined,
+				numberOfFragments: intHighlightNumberOfFragments !== highlights.numberOfFragments ? intHighlightNumberOfFragments : undefined,
 				order: highlightOrder !== highlights.order ? highlightOrder : undefined,
 				postTag: highlightPostTag !== highlights.postTag ? highlightPostTag : undefined,
 				preTag: highlightPreTag !== highlights.preTag ? highlightPreTag : undefined
