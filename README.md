@@ -43,6 +43,10 @@ dependencies {
 
 ## Changelog
 
+### 3.5.2
+
+* Remove explain and logQueryResults from URL query parameters
+
 ### 3.5.1
 
 * Log stacktraces when catching

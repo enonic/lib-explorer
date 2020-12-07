@@ -27,9 +27,11 @@ function uriObjFromParams(params) {
 		} else if (![
 			'clearCache', // The enduser should not see this
 			'count', // The enduser should not provide nor see this
+			'explain', // The enduser should not see this
 			'interface', // The enduser should not provide nor see this
 			'locale', // The enduser should not see this
 			'logQuery', // The enduser should not see this
+			'logQueryResults', // The enduser should not see this
 			'name', // The enduser should not provide nor see this
 			'page', // Adding or removing a facet resets pagination
 			'searchString' // The enduser should not provide nor see this
