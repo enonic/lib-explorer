@@ -38,9 +38,9 @@ export function createOrModify({
 			});
 		} else {
 			if (catchedError.class) {
-				log.error(toStr({catchedErrorClassName: catchedError.class.name}));
+				log.error(toStr({catchedErrorClassName: catchedError.class.name}), catchedError);
 			}
-			log.error(toStr({catchedErrorMessage: catchedError.message}));
+			log.error(toStr({catchedErrorMessage: catchedError.message}), catchedError);
 			throw catchedError;
 		}
 	}

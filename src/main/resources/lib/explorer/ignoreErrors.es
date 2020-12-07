@@ -3,7 +3,7 @@ export function ignoreErrors(fn) {
 	try {
 		rv = fn();
 	} catch (e) {
-		// no-op
+		// no-op we don't want to log anything here
 	}
 	return rv;
 }

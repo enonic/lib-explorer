@@ -43,6 +43,10 @@ dependencies {
 
 ## Changelog
 
+### 3.5.1
+
+* Log stacktraces when catching
+
 ### 3.5.0
 
 * Work around nashorn issue with trunc and toInt

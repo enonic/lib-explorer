@@ -165,7 +165,7 @@ export class Collector {
 					log.info(`emailParams:${toStr(emailParams)}`);
 					send(emailParams);
 				} catch (e) {
-					log.error(e.message);
+					log.error(e.message, e);
 				}
 			}
 
@@ -190,7 +190,7 @@ export class Collector {
 				log.info(`emailParams:${toStr(emailParams)}`);
 				send(emailParams);
 			} catch (e) {
-				log.error(e.message);
+				log.error(e.message, e);
 			}
 		}
 	} // stop

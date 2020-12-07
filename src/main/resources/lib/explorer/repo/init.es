@@ -23,21 +23,21 @@ export function init({
 	const createRepoParams = {
 		id: repoId,
 		rootPermissions: ROOT_PERMISSIONS_EXPLORER,
-    	rootChildOrder: '_ts DESC'
+		rootChildOrder: '_ts DESC'
 	};
 	//log.info(`createRepoParams:${toStr(createRepoParams)}`);
 	//const context = getContext(); //log.info(toStr({context}));
 	//const user = getUser(); //log.info(toStr({user}));
 	try {
-		const createRepoRes = createRepo(createRepoParams);
+		//const createRepoRes =
+		createRepo(createRepoParams);
 		//log.info(`createRepoRes:${toStr(createRepoRes)}`);
 	} catch (e) {
 		if (e.class.name !== 'com.enonic.xp.repo.impl.repository.RepositoryAlreadyExistException') {
 			log.error(toStr({
 				class: e.class,
-				code: e.code,
-				e
-			}));
+				code: e.code
+			}), e);
 			throw e;
 		}
 	}

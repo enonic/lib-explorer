@@ -25,7 +25,7 @@ export function localizeTag({
 			id: nodePath
 		});
 	} catch (e) {
-		log.error(`Could not find node ${REPO_ID_EXPLORER}:${BRANCH_ID_EXPLORER}:${nodePath}`);
+		log.error(`Could not find node ${REPO_ID_EXPLORER}:${BRANCH_ID_EXPLORER}:${nodePath}`, e);
 	}
 	//log.info(toStr({tagNode}));
 	const {displayName} = tagNode;

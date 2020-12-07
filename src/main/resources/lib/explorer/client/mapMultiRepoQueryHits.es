@@ -163,7 +163,7 @@ export function mapMultiRepoQueryHits({
 								cache: nodeCache, repoId: REPO_ID_EXPLORER, branch: BRANCH_ID_EXPLORER, id: path
 							});
 						} catch (e) {
-							log.error(`Could not find node ${REPO_ID_EXPLORER}:${BRANCH_ID_EXPLORER}:${path}`);
+							log.error(`Could not find node ${REPO_ID_EXPLORER}:${BRANCH_ID_EXPLORER}:${path}`, e);
 						}
 						return {
 							displayName: tagNode.displayName,

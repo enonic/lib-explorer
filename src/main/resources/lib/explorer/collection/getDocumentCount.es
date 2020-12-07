@@ -17,7 +17,11 @@ export function getDocumentCount(name) {
 			})
 		});
 	} catch (e) {
-		//noop
+		if (e.class.name === 'com.enonic.xp.repository.RepositoryNotFoundException') {
+			//noop
+		} else {
+			log.error('Does this ever happen?', e);
+		}
 	}
 	return count;
 }

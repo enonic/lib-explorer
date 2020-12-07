@@ -18,6 +18,7 @@ module.exports = {
 		module: false,
 
 		// Nashorn
+		java: false, // Exceptions
 		Java: false,
 
 		// Enonic XP

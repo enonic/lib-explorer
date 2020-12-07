@@ -48,30 +48,28 @@ export function smartRequest({
 			//log.info(toStr({msToSleep}));
 			if (msToSleep) { sleep(msToSleep); }
 		}
-		const sentRequestAtMillis = currentTimeMillis();
+		//const sentRequestAtMillis = currentTimeMillis();
 		response = httpClientRequest(reqParams);
 		stateRef.prevReqFinishedAtMillis = currentTimeMillis();
-		const latency = stateRef.prevReqFinishedAtMillis - sentRequestAtMillis;
+		//const latency = stateRef.prevReqFinishedAtMillis - sentRequestAtMillis;
 		//log.info(toStr({latency}));
 	} catch (e) {
 		stateRef.prevReqFinishedAtMillis = currentTimeMillis();
 		if (e instanceof java.net.ConnectException) {
-			log.error(e.message + ': on url ' + url);
+			log.error(e.message + ': on url:' + url/*, e*/); // Don't want stacktrace
 		} else if (e instanceof java.net.SocketTimeoutException) {
 			if(e.message === 'connect timed out') {
-				log.error(e.message + ': connectionTimeout ' + connectionTimeout + 'ms exceeded on url ' + url);
+				log.error(e.message + ': connectionTimeout ' + connectionTimeout + 'ms exceeded on url ' + url/*, e*/); // Don't want stacktrace
 			} else if (e.message === 'timeout') {
-				log.error(e.message + ': readTimeout ' + readTimeout + 'ms exceeded on url ' + url);
+				log.error(e.message + ': readTimeout ' + readTimeout + 'ms exceeded on url ' + url/*, e*/); // Don't want stacktrace
 			} else {
-				log.error('java.net.SocketTimeoutException with unknown message:' + e.message);
-				log.error(e);
+				log.error('java.net.SocketTimeoutException with unknown message:' + e.message, e);
 			}
 		} else if (e instanceof java.lang.NullPointerException) {
-			log.error('java.lang.NullPointerException with message:' + e.message);
-			log.error(e);
+			log.error('java.lang.NullPointerException with message:' + e.message, e);
 		} else {
 			// TODO java.lang.RuntimeException: SSL peer shut down incorrectly
-			log.error(e.message + ': unhandled error on url ' + url);
+			log.error(e.message + ': unhandled error on url:' + url, e);
 		}
 		if(retries && retryCount < retries) {
 			reqParams.connectionTimeout = connectionTimeout * 2; // Double on each retry
