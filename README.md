@@ -37,6 +37,7 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
+| 3.6.0 | 7.4.1 |
 | 3.[1-5].x | 7.3.2 |
 | 3.0.7 | 7.3.1 |
 | 3.0.6 | 7.3.0 |
@@ -46,6 +47,7 @@ dependencies {
 ### 3.6.0
 
 * Generate href for hit tags
+* Require Enonic XP 7.4.1
 
 ### 3.5.2
 
