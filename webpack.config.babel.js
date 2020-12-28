@@ -15,6 +15,7 @@ const SS_ALIAS = {
 const SS_EXTERNALS = [
 	'/lib/cache',
 	'/lib/cron',
+	'/lib/graphql',
 	'/lib/http-client',
 	'/lib/license',
 	/^\/lib\/xp\//,
