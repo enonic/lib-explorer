@@ -43,6 +43,10 @@ dependencies {
 
 ## Changelog
 
+### 3.6.0
+
+* Generate href for hit tags
+
 ### 3.5.2
 
 * Remove explain and logQueryResults from URL query parameters

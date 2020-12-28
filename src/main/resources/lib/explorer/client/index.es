@@ -368,13 +368,13 @@ export function search(params) {
 		removedStopWords,
 		synonymsObj,
 		hits: mapMultiRepoQueryHits({
+			facets: facetsParam,
 			hits,
 			locale,
+			urlQueryParameterNameContainingSearchString: name,
 			nodeCache: NODE_CACHE,
 			resultMappings,
-			//searchString: washedSearchString//,
-			searchString: searchStringWithoutStopWords
-			//searchString//: flattenedSynonyms.join(' ') // Synonyms add to much highlighting
+			searchString: washedSearchString
 			//times
 		}),
 		facetCategories,

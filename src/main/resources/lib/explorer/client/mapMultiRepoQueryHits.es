@@ -3,6 +3,7 @@
 //──────────────────────────────────────────────────────────────────────────────
 //import highlightSearchResult from 'highlight-search-result';
 //import {get, set} from 'lodash'; // Cannot read property "Array" from undefined
+import getIn from 'get-value';
 import set from 'set-value';
 import striptags from 'striptags';
 
@@ -12,6 +13,7 @@ import striptags from 'striptags';
 //import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 import {dlv as get} from '/lib/util/object';
+//import {isNotSet} from '/lib/util/value';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
@@ -30,11 +32,13 @@ import {cachedNode} from '/lib/explorer/client/cachedNode';
 
 
 export function mapMultiRepoQueryHits({
+	facets,
 	hits,
 	//locale,
+	urlQueryParameterNameContainingSearchString,
 	nodeCache,
-	resultMappings//,
-	//searchString//,
+	resultMappings,
+	searchString//,
 	//times
 }) {
 	//times.push({label: 'mapMultiRepoQueryHits start', time: currentTimeMillis()});
@@ -165,8 +169,26 @@ export function mapMultiRepoQueryHits({
 						} catch (e) {
 							log.error(`Could not find node ${REPO_ID_EXPLORER}:${BRANCH_ID_EXPLORER}:${path}`, e);
 						}
+
+						const activeFilters = {};
+						Object.keys(facets).forEach((category) => {
+							facets[category].forEach((facet) => {
+								set(activeFilters,`${category}.${facet}`, true);
+							});
+						});
+						if (getIn(activeFilters, `${field}.${name}`, false)) {
+							delete(activeFilters[field][name]);
+						} else {
+							set(activeFilters,`${field}.${name}`, true);
+						}
+
 						return {
 							displayName: tagNode.displayName,
+							href: `?${urlQueryParameterNameContainingSearchString}=${searchString}${Object.keys(activeFilters)
+								.map(key => Object.keys(activeFilters[key])
+									.map(value => `&${key}=${value}`)
+									.join(''))
+								.join('')}`,
 							name,
 							path,
 							field
