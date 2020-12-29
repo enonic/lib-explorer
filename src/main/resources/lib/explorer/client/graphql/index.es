@@ -69,7 +69,7 @@ export function buildSchema(/*{} = {}*/) {
 		type: createObjectType({ name: 'SearchResult', fields: {
 			count: { type: nonNull(GraphQLInt) },
 			hits: { type: list(createObjectType({
-				name: 'SearchResultHit',
+				name: 'SearchResultHitField',
 				fields: buildHitFields()
 			}))},
 			params: { type: nonNull(createObjectType({ name: 'SearchResultParams', fields: {

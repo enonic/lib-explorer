@@ -5,6 +5,7 @@ import {getFields} from '/lib/explorer/field/getFields';
 import {camelize} from '/lib/explorer/string/camelize';
 import {
 	createInputObjectType,
+	createObjectType,
 	GraphQLBoolean,
 	GraphQLInt,
 	GraphQLString
@@ -24,8 +25,79 @@ const getCachedFields = () => fieldCache.get('a', () => getFields({
 export function buildHitFields() {
 	const fieldsObj = {};
 	getCachedFields().forEach((field) => {
-		fieldsObj[field] = { type: GraphQLString };
-	});
+		fieldsObj[field] = {
+			args: {
+				highlight: createInputObjectType({name: `SearchResultHitField${field}ArgsHighlight`, fields: {
+					//encoder: { type: GraphQLString }, // default html
+					fragmenter: { type: GraphQLString }, // span simple
+					fragmentSize: { type: GraphQLInt },  // 100
+					numberOfFragments: { type: GraphQLInt }, // 5
+					noMatchSize: { type: GraphQLInt }, // 0
+					order: { type: GraphQLString }, // none score
+					preTag: { type: GraphQLString }, // <em>
+					postTag: { type: GraphQLString }, // </em>
+					requireFieldMatch: { type: GraphQLBoolean }//, // true false
+					//tagsSchema: { type: GraphQLString } // styled
+				}})
+			},
+			resolve: (env) => {
+				//log.info(`env:${toStr(env)}`);
+				const {
+					args = {},
+					source
+				} = env;
+				//log.info(`args:${toStr(args)}`);
+				const {highlight = {}} = args;
+				//log.info(`highlight:${toStr(highlight)}`);
+				const {
+					//encoder = 'default',
+					fragmenter = 'span',
+					fragmentSize = 100,
+					numberOfFragments = 5,
+					noMatchSize = 0,
+					order = 'none',
+					preTag = '<em>',
+					postTag = '</em>',
+					requireFieldMatch = true//,
+					//tagsSchema = 'styled'
+				} = highlight;
+				//log.info(`preTag:${toStr(preTag)}`);
+				//log.info(`postTag:${toStr(postTag)}`);
+				//return source[field];
+				return {
+					args: {
+						highlight: {
+							fragmenter,
+							fragmentSize,
+							numberOfFragments,
+							noMatchSize,
+							order,
+							preTag,
+							postTag,
+							requireFieldMatch
+						}
+					},
+					value: source[field]
+				};
+			},
+			//type: GraphQLString
+			type: createObjectType({ name: `SearchResultHitField${field}Resolved`, fields: {
+				highlight: { type: createObjectType({ name: `SearchResultHitField${field}ResolvedHighlight`, fields: {
+					//encoder: { type: GraphQLString }, // default html
+					fragmenter: { type: GraphQLString }, // span simple
+					fragmentSize: { type: GraphQLInt },  // 100
+					numberOfFragments: { type: GraphQLInt }, // 5
+					noMatchSize: { type: GraphQLInt }, // 0
+					order: { type: GraphQLString }, // none score
+					preTag: { type: GraphQLString }, // <em>
+					postTag: { type: GraphQLString }, // </em>
+					requireFieldMatch: { type: GraphQLBoolean }//, // true false
+					//tagsSchema: { type: GraphQLString } // styled
+				}})},
+				value: { type: GraphQLString }
+			}})
+		}; // fieldsObj[field]
+	}); // forEach
 	return fieldsObj;
 } // buildHitFields
 
@@ -46,7 +118,9 @@ export function buildMustExistFieldsArg() {
 export function buildQueryArg() {
 	const fields = {};
 	getCachedFields().forEach((field) => {
-		fields[field] = { type: GraphQLInt };
+		fields[field] = {
+			type: GraphQLInt
+		};
 	});
 	//log.info(`fields:${toStr(fields)}`);
 	return createInputObjectType({ name: 'SearchQueryArg', fields: {
