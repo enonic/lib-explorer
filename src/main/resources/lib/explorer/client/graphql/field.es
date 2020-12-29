@@ -12,17 +12,88 @@ import {
 } from '/lib/graphql';
 //import {toStr} from '/lib/util';
 
+
 const fieldCache = newCache({
 	size: 1,
 	expire: 3600 // Expire time in number of seconds.
 });
+
 
 const getCachedFields = () => fieldCache.get('a', () => getFields({
 	connection: connect({ principals: [PRINCIPAL_EXPLORER_READ] })
 }).hits.map(({key}) => camelize(key, /-/g)));
 
 
+export function buildHighlightArg() {
+	const fieldsObj = {};
+	getCachedFields().forEach((field) => {
+		fieldsObj[field] = {type: createInputObjectType({name: `SearchHighlightArgProperties${field}`, fields: {
+			fragmenter: { type: GraphQLString }, // span simple
+			fragmentSize: { type: GraphQLInt },  // 100
+			numberOfFragments: { type: GraphQLInt }, // 5
+			noMatchSize: { type: GraphQLInt }, // 0
+			order: { type: GraphQLString }, // none score
+			preTag: { type: GraphQLString }, // <em>
+			postTag: { type: GraphQLString }, // </em>
+			requireFieldMatch: { type: GraphQLBoolean } // true false
+		}})};
+	});
+	return createInputObjectType({ name: 'SearchHighlightArg', fields: {
+		encoder: { type: GraphQLString }, // default html
+		fragmenter: { type: GraphQLString }, // span simple
+		fragmentSize: { type: GraphQLInt },  // 100
+		noMatchSize: { type: GraphQLInt }, // 0
+		numberOfFragments: { type: GraphQLInt }, // 5
+		order: { type: GraphQLString }, // none score
+		postTag: { type: GraphQLString }, // </em>
+		preTag: { type: GraphQLString }, // <em>
+		properties: { type: createInputObjectType({ name: 'SearchHighlightArgProperties', fields: fieldsObj})},
+		requireFieldMatch: { type: GraphQLBoolean }, // true false
+		tagsSchema: { type: GraphQLString } // styled
+	}});
+} // buildHighlightArg
+
+
+export function buildHighlights() {
+	const fieldsObj = {};
+	getCachedFields().forEach((field) => {
+		fieldsObj[field] = {type: createObjectType({name: `HighlightsProperties${field}`, fields: {
+			fragmenter: { type: GraphQLString }, // span simple
+			fragmentSize: { type: GraphQLInt },  // 100
+			numberOfFragments: { type: GraphQLInt }, // 5
+			noMatchSize: { type: GraphQLInt }, // 0
+			order: { type: GraphQLString }, // none score
+			preTag: { type: GraphQLString }, // <em>
+			postTag: { type: GraphQLString }, // </em>
+			requireFieldMatch: { type: GraphQLBoolean } // true false
+		}})};
+	});
+	return {type: createObjectType({ name: 'Highlights', fields: {
+		encoder: { type: GraphQLString }, // default html
+		fragmenter: { type: GraphQLString }, // span simple
+		fragmentSize: { type: GraphQLInt },  // 100
+		noMatchSize: { type: GraphQLInt }, // 0
+		numberOfFragments: { type: GraphQLInt }, // 5
+		order: { type: GraphQLString }, // none score
+		postTag: { type: GraphQLString }, // </em>
+		preTag: { type: GraphQLString }, // <em>
+		properties: { type: createObjectType({ name: 'HighlightsProperties', fields: fieldsObj})},
+		requireFieldMatch: { type: GraphQLBoolean }, // true false
+		tagsSchema: { type: GraphQLString } // styled
+	}})};
+} // buildHighlights
+
+
 export function buildHitFields() {
+	const fieldsObj = {};
+	getCachedFields().forEach((field) => {
+		fieldsObj[field] = { type: GraphQLString };
+	}); // forEach
+	return fieldsObj;
+} // buildHitFields
+
+
+export function buildHitFieldsComplex() {
 	const fieldsObj = {};
 	getCachedFields().forEach((field) => {
 		fieldsObj[field] = {
@@ -99,7 +170,7 @@ export function buildHitFields() {
 		}; // fieldsObj[field]
 	}); // forEach
 	return fieldsObj;
-} // buildHitFields
+} // buildHitFieldsComplex
 
 
 export function buildMustExistFieldsArg() {
