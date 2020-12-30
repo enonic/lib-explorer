@@ -1,3 +1,6 @@
+import {forceArray} from '/lib/util/data';
+
+
 export function hasValue(
 	field,
 	values
@@ -5,7 +8,7 @@ export function hasValue(
 	return {
 		hasValue: {
 			field,
-			values
+			values: forceArray(values)
 		}
 	};
 }

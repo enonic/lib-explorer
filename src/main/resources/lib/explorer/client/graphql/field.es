@@ -93,7 +93,7 @@ export function buildHitFields() {
 } // buildHitFields
 
 
-export function buildHitFieldsComplex() {
+/*export function buildHitFieldsComplex() {
 	const fieldsObj = {};
 	getCachedFields().forEach((field) => {
 		fieldsObj[field] = {
@@ -170,7 +170,7 @@ export function buildHitFieldsComplex() {
 		}; // fieldsObj[field]
 	}); // forEach
 	return fieldsObj;
-} // buildHitFieldsComplex
+} // buildHitFieldsComplex*/
 
 
 export function buildMustExistFieldsArg() {

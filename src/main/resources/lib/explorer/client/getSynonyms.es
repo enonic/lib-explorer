@@ -4,6 +4,7 @@ import {forceArray} from '/lib/util/data';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {replaceSyntax} from '/lib/explorer/query/replaceSyntax';
+//import {toWords} from '/lib/explorer/string/toWords';
 import {ws} from '/lib/explorer/string/ws';
 import {query as querySynonyms} from '/lib/explorer/synonym/query';
 import {washSynonyms} from '/lib/explorer/client/washSynonyms';
@@ -30,7 +31,25 @@ export function getSynonyms({
 	//if (logSynonyms) { log.info(`cleanSearchString:${toStr(cleanSearchString)}`); }
 
 	// ngram will quickly match a ton of synonyms, so don't use it.
+
+	// Match synonyms where ANY word in search string matches ANY word in synonym
+	//const query = `fulltext('${fields}', '${cleanSearchString}', 'OR')`;
+
+	// Match synonyms where ALL words (may only be one word) in search string matches ANY word in synonym
+	// NOTE: Used in prod for a long time...
 	const query = `fulltext('${fields}', '${cleanSearchString}', 'AND')`;
+
+	// Only match synonyms that start with...
+	//const query = `from LIKE "${cleanSearchString}*"`;
+
+	// Only match synonyms where any word in searchString matches WHOLE synonym
+	//const words = toWords(cleanSearchString);
+	//log.info(`words:${toStr(words)}`);
+	//const query = `from IN (${words.map(word => `"${word}"`).join(', ')})`;
+
+	// Only match synonyms EXACTLY
+	//const query = `from = "${cleanSearchString}"`;
+
 	//if (logSynonyms) { log.info(`query:${toStr(query)}`); }
 
 	const querySynonymsParams = {

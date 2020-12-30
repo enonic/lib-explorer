@@ -1,40 +1,32 @@
 import {NT_FIELD_VALUE} from '/lib/explorer/model/2/constants';
+import {addFilter} from '/lib/explorer/query/addFilter';
+import {hasValue} from '/lib/explorer/query/hasValue';
+//import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
 
 
 export function getFieldValues({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	field
 } = {}) {
-	const must = [{
-		hasValue: {
-			field: 'type',
-			values: [NT_FIELD_VALUE]
-		}
-	}];
+	const filters = addFilter({
+		filter: hasValue('type', NT_FIELD_VALUE)
+	});
 	if (field) {
-		must.push({
-			hasValue: {
-				field: '_parentPath',
-				values: [`/fields/${field}`]
-			}
-		}/*{
-			hasValue: {
-				field: 'field',
-				values: [field]
-			}
-		}*/);
+		addFilter({
+			filter: hasValue('_parentPath', forceArray(field).map(f => `/fields/${f}`)),
+			filters // reference gets modified
+		});
 	}
+	//log.info(`filters:${toStr(filters)}`);
 	const queryParams = {
 		count: -1,
-		filters: {
-			boolean: {
-				must
-			}
-		},
+		filters,
 		query: '',
 		sort: '_name ASC'
 	};
 	const queryRes = connection.query(queryParams);
+	//log.info(`queryRes:${toStr(queryRes)}`);
 	queryRes.hits = queryRes.hits.map(hit => connection.get(hit.id));
 	return queryRes;
 }

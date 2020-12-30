@@ -1,4 +1,5 @@
 import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
 import {NT_THESAURUS} from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
@@ -39,6 +40,7 @@ export function query({
 			_path,
 			description = '',
 			displayName,
+			languages,
 			type
 		} = connection.get(hit.id);
 		const rv = {
@@ -46,6 +48,7 @@ export function query({
 			description,
 			displayName,
 			id: hit.id,
+			languages: forceArray(languages),
 			name,
 			type
 		};

@@ -144,7 +144,7 @@ function buildSchema(/**{
 					}); // forEach field
 				} // if highlightObj.properties
 			} // if highlightObj
-			log.info(`highlights:${toStr(highlights)}`);
+			//log.info(`highlights:${toStr(highlights)}`);
 			return {
 				count: 1,
 				hits: [{
