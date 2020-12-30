@@ -46,7 +46,10 @@ dependencies {
 
 ### 3.7.0
 
-*
+* Added languages field to thesaurus
+* getFields({fields}) make it possible to only get some fields
+* getFieldValues({field}) field can now be an array of fields
+* hasValue(field, values) now applies forceArray to its second parameter
 
 ### 3.6.0
 
