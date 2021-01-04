@@ -37,12 +37,16 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
-| 3.[6-7].0 | 7.4.1 |
+| 3.[6-8].x | 7.4.1 |
 | 3.[1-5].x | 7.3.2 |
 | 3.0.7 | 7.3.1 |
 | 3.0.6 | 7.3.0 |
 
 ## Changelog
+
+### 3.8.1
+
+* Force search({facets}) property values to always be arrays
 
 ### 3.8.0
 

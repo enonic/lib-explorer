@@ -4,6 +4,7 @@
 import {newCache} from '/lib/cache';
 import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
+import {isString} from '/lib/util/value';
 import {getLocale} from '/lib/xp/admin';
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -80,7 +81,23 @@ export function search(params) {
 	} = params;
 	log.debug(`clearCache:${toStr({clearCache})}`);
 	log.debug(`explain:${toStr({explain})}`);
+
+	//log.info(`facetsParam:${toStr(facetsParam)}`);
+	Object.keys(facetsParam).forEach((facet) => {
+		// Falsy (false, 0, -0, 0n, "", null, undefined, and NaN)
+		// Truthy !Falsy
+		//log.info(`facetsParam['${facet}']:${toStr(facetsParam[facet])}`); // NOTE For some reason the Object contains properties whose valuse is the special value undefined!
+		if (Array.isArray(facetsParam[facet])) {
+			// no_op
+		} else if (isString(facetsParam[facet]) && facetsParam[facet].length) {
+			facetsParam[facet] = forceArray(facetsParam[facet]);
+		} else {
+			delete facetsParam[facet]; // NOTE This should not be needed, but see the previous NOTE.
+		}
+		//log.info(`facetsParam['${facet}']:${toStr(facetsParam[facet])}`);
+	});
 	log.debug(`facetsParam:${toStr({facetsParam})}`);
+
 	log.debug(`interfaceName:${toStr({interfaceName})}`);
 	log.debug(`locale:${toStr({locale})}`);
 	log.debug(`logQuery:${toStr({logQuery})}`);

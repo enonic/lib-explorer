@@ -72,6 +72,7 @@ export function mapMultiRepoQueryHits({
 		//log.info(toStr({node}));
 
 		const obj={};
+		//log.info(`resultMappings:${toStr(resultMappings)}`);
 		resultMappings.forEach(({
 			field,
 			highlight,
@@ -171,7 +172,12 @@ export function mapMultiRepoQueryHits({
 						}
 
 						const activeFilters = {};
+
+						//log.info(`facets:${toStr(facets)}`); // For some reason this logs {} even though it has properties???
+						//log.info(`Object.keys(facets):${toStr(Object.keys(facets))}`);
 						Object.keys(facets).forEach((category) => {
+							//log.info(`facets['${category}']:${toStr(facets[category])}`);
+							//facets[category] && // NOTE This was only needed when the facets Object contained properties with the special value undefined
 							facets[category].forEach((facet) => {
 								set(activeFilters,`${category}.${facet}`, true);
 							});
