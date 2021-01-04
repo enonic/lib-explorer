@@ -34,7 +34,8 @@ function uriObjFromParams(params) {
 			'logQueryResults', // The enduser should not see this
 			'name', // The enduser should not provide nor see this
 			'page', // Adding or removing a facet resets pagination
-			'searchString' // The enduser should not provide nor see this
+			'searchString', // The enduser should not provide nor see this
+			'showSynonyms' // The enduser should not see this
 		].includes(k)) {
 			if (Array.isArray(v)) {
 				v.forEach((value) => { uri.addQueryParam(k, value); });

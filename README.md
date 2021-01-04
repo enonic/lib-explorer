@@ -44,6 +44,10 @@ dependencies {
 
 ## Changelog
 
+### 3.9.1
+
+* Remove showSynonyms from facet links
+
 ### 3.9.0
 
 * search({showSynonyms:true}) adds synonymsObj with highlight for debugging
