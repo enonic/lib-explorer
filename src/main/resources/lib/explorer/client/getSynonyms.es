@@ -22,6 +22,7 @@ export function getSynonyms({
 	logQueryResults = false,
 	//logSynonyms = false,
 	searchString,
+	showSynonyms = false,
 	thesauri,
 	count = MAX_COUNT//thesauri.length
 }) {
@@ -29,6 +30,7 @@ export function getSynonyms({
 	if (!searchString || !thesauri) { return []; }
 
 	const fields = expand ? 'from,to' : 'from';
+
 	const cleanSearchString = ws(replaceSyntax({string: searchString}));
 	//if (logSynonyms) { log.info(`cleanSearchString:${toStr(cleanSearchString)}`); }
 
@@ -83,6 +85,19 @@ export function getSynonyms({
 		query,
 		sort: '_score DESC'
 	};
+	if (showSynonyms) {
+		querySynonymsParams.highlight = {
+			numberOfFragments: 10,
+			postTag: '</b>',
+			preTag: '<b>',
+			properties: {
+				from: {}
+			}
+		};
+		if (expand) {
+			querySynonymsParams.highlight.properties.to = {};
+		}
+	}
 	if (logQuery) {
 		log.info(`querySynonymsParams:${toStr(querySynonymsParams)}`);
 	}
@@ -92,10 +107,16 @@ export function getSynonyms({
 		log.info(`querySynonymsRes:${toStr(querySynonymsRes)}`);
 	}
 
-	return querySynonymsRes.hits.map(({from, score, thesaurus, to}) => {
+	return querySynonymsRes.hits.map(({
+		from,
+		highlight,
+		score,
+		thesaurus,
+		to}) => {
 		//log.info(toStr({from, score, thesaurus, to}));
 		return {
 			from: forceArray(from).map(s => washSynonyms(s)),
+			highlight,
 			score,
 			thesaurus,
 			to: forceArray(to).map(s => washSynonyms(s))

@@ -11,6 +11,15 @@ export function query({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
 	filters = {},
+	highlight = {
+		/*numberOfFragments: 10,
+		postTag: '</b>',
+		preTag: '<b>',
+		properties: {
+			from: {},
+			to: {}
+		}*/
+	},
 	query = '',
 	sort = '_name ASC',
 	start = 0
@@ -24,13 +33,14 @@ export function query({
 		aggregations,
 		count,
 		filters,
+		highlight,
 		query,
 		sort,
 		start
 	};
 	//log.info(toStr({queryParams}));
 	const queryRes = connection.query(queryParams);
-	//log.info(toStr({queryRes}));
+	//log.info(`queryRes:${toStr(queryRes)}`);
 	queryRes.hits = queryRes.hits.map((hit) => {
 		const node = connection.get(hit.id);
 		if (!node) { // Handle ghost nodes
@@ -49,6 +59,7 @@ export function query({
 			_path,
 			displayName,
 			from: forceArray(from),
+			highlight: hit.highlight,
 			id: hit.id,
 			name: _name,
 			thesaurus: _path.match(/[^/]+/g)[1],
@@ -58,5 +69,6 @@ export function query({
 			type
 		};
 	}).filter(x => x);
+	//log.info(`queryRes:${toStr(queryRes)}`);
 	return queryRes;
 } // function query

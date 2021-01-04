@@ -35,6 +35,7 @@ export function buildQuery({
 	logQueryResults = false,
 	//logSynonyms = false,
 	searchString,
+	showSynonyms = false,
 	synonyms//, // Gets modified
 	//times
 }) {
@@ -69,6 +70,7 @@ export function buildQuery({
 			logQuery,
 			logQueryResults,
 			searchString, // TODO Perhaps stopwords needs to be removed here?
+			showSynonyms,
 			thesauri
 		});
 		//times.push({label: 'getSynonyms', time: currentTimeMillis()});
@@ -117,6 +119,7 @@ export function buildQuery({
 					logQueryResults,
 					//logSynonyms,
 					searchString,
+					showSynonyms,
 					synonyms/*, times*/
 				})
 			)

@@ -77,7 +77,8 @@ export function search(params) {
 		logQueryResults = false,
 		//logSynonyms = false,
 		name = 'q',
-		searchString = params[name] || ''
+		searchString = params[name] || '',
+		showSynonyms = false
 	} = params;
 	log.debug(`clearCache:${toStr({clearCache})}`);
 	log.debug(`explain:${toStr({explain})}`);
@@ -179,7 +180,7 @@ export function search(params) {
 	}));*/
 	//times.push({label: 'stopwords', time: currentTimeMillis()});
 
-	const synonyms = [];
+	const synonyms = []; // Gets modified
 	const expand = false;
 	//if (logSynonyms) { log.info(`expand:${toStr(expand)}`); }
 
@@ -200,7 +201,8 @@ export function search(params) {
 		//logSynonyms,
 		//searchString: washedSearchString,
 		searchString: searchStringWithoutStopWords,
-		synonyms//,
+		showSynonyms,
+		synonyms//, // Gets modified
 		//times
 	});
 	log.debug(`query:${toStr({query})}`);
@@ -230,19 +232,38 @@ export function search(params) {
 	});*/
 
 	const synonymsObj = {};
-	synonyms.forEach(({thesaurus, score, from, to}) => {
-		const thesaurusName = thesauriMap[thesaurus];
-		if(!synonymsObj[thesaurusName]) {
-			synonymsObj[thesaurusName] = {};
-		}
-		forceArray(from).forEach(f => {
-			if(!synonymsObj[thesaurusName][f]) {
-				synonymsObj[thesaurusName][f] = {score, to};
+	if (showSynonyms) {
+		synonyms.forEach(({
+			highlight,
+			thesaurus,
+			score,
+			from,
+			to
+		}) => {
+			const thesaurusName = thesauriMap[thesaurus];
+			if(!synonymsObj[thesaurusName]) {
+				synonymsObj[thesaurusName] = {};
+			}
+			if (highlight && highlight.to) {
+				to = highlight.to;
+			}
+			if (highlight && highlight.from) {
+				synonymsObj[thesaurusName][highlight.from] = {
+					from: highlight.from,
+					score,
+					to
+				};
+			} else {
+				synonymsObj[thesaurusName][forceArray(from)] = {
+					from: forceArray(from),
+					score,
+					to
+				};
 			}
 		});
-	});
-	log.debug(`synonymsObj:${toStr({synonymsObj})}`);
-	//times.push({label: 'synonyms', time: currentTimeMillis()});
+		//log.info(`synonymsObj:${toStr({synonymsObj})}`);
+		//times.push({label: 'synonyms', time: currentTimeMillis()});
+	} // if (showSynonyms)
 
 
 	// TODO This could be cached
