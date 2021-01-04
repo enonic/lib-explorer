@@ -165,11 +165,19 @@ export function search(params) {
 	const synonyms = [];
 	const expand = false;
 	//if (logSynonyms) { log.info(`expand:${toStr(expand)}`); }
+
+	//log.info(`facetsParam:${toStr(facetsParam)}`);
+	// Falsy (false, 0, -0, 0n, "", null, undefined, and NaN)
+	// Truthy !Falsy
+	const languages = facetsParam.language || [];
+	//log.info(`languages:${toStr(languages)}`);
+
 	const query = buildQuery({
 		connection: explorerRepoReadConnection,
 		expand,
 		explain,
 		expression: queryConfig,
+		languages,
 		logQuery,
 		logQueryResults,
 		//logSynonyms,

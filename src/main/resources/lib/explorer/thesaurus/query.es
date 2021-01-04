@@ -15,15 +15,28 @@ export function query({
 	filters = {},
 	getSynonymsCount = true,
 	query = '', //"_parentPath = '/thesauri'",
-	sort = '_name ASC'
+	sort = '_name ASC',
+	thesauri
 } = {}) {
+	addFilter({
+		filters,
+		filter: hasValue('type', [NT_THESAURUS])
+	});
+	if (thesauri) {
+		const thesauriArr = forceArray(thesauri);
+		if (thesauriArr.length) {
+			addFilter({
+				filters,
+				filter: hasValue('_name', thesauriArr)
+				//filter: hasValue('_parentPath', thesauriArr.map(n => `/thesauri/${n}`))
+			});
+		}
+	}
+	//log.info(`filters:${toStr(filters)}`);
 	const queryThesauriParams = {
 		count,
 		explain,
-		filters: addFilter({
-			filters,
-			filter: hasValue('type', [NT_THESAURUS])
-		}),
+		filters,
 		query,
 		sort
 	};

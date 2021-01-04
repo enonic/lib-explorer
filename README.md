@@ -44,6 +44,11 @@ dependencies {
 
 ## Changelog
 
+### 3.8.0
+
+* getSynonyms will now filter on languages
+* thesaurus/query({thesauri}) make it possible to filter on thesaurus name(s)
+
 ### 3.7.0
 
 * Added languages field to thesaurus

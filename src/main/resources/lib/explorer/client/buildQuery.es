@@ -30,6 +30,7 @@ export function buildQuery({
 		type,
 		params
 	},
+	languages = [],
 	logQuery = false,
 	logQueryResults = false,
 	//logSynonyms = false,
@@ -45,6 +46,7 @@ export function buildQuery({
 		searchString,
 		synonyms
 	}));*/
+	//log.info(`languages:${toStr(languages)}`);
 	const operator = params.operator||'AND';
 	let query = '';
 	switch (type) {
@@ -63,6 +65,7 @@ export function buildQuery({
 			connection,
 			expand,
 			explain,
+			languages,
 			logQuery,
 			logQueryResults,
 			searchString, // TODO Perhaps stopwords needs to be removed here?
@@ -109,6 +112,7 @@ export function buildQuery({
 					connection,
 					expression,
 					explain,
+					languages,
 					logQuery,
 					logQueryResults,
 					//logSynonyms,

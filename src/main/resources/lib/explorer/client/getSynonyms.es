@@ -7,6 +7,7 @@ import {replaceSyntax} from '/lib/explorer/query/replaceSyntax';
 //import {toWords} from '/lib/explorer/string/toWords';
 import {ws} from '/lib/explorer/string/ws';
 import {query as querySynonyms} from '/lib/explorer/synonym/query';
+import {query as queryThesauri} from '/lib/explorer/thesaurus/query';
 import {washSynonyms} from '/lib/explorer/client/washSynonyms';
 //import {mapSynonyms} from '/lib/explorer/search/mapSynonyms';
 
@@ -16,6 +17,7 @@ export function getSynonyms({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	expand = false,
 	explain = false,
+	languages = [],
 	logQuery = false,
 	logQueryResults = false,
 	//logSynonyms = false,
@@ -52,11 +54,32 @@ export function getSynonyms({
 
 	//if (logSynonyms) { log.info(`query:${toStr(query)}`); }
 
+	// When languages = [] -> thesauri with languages.includes('_none')
+	// When languages = [norsk] -> thesauri with languages.includes('_any' || 'norsk')
+	//log.info(`languages:${toStr(languages)}`);
+	const queryThesauriFilters = addFilter({
+		//clause: 'should', // One or more of the functions in the should array must evaluate to true for the filter to match
+		filter: hasValue(
+			'languages',
+			languages.length
+				? ['_any'].concat(languages)
+				: ['_none']
+		)
+	});
+	//log.info(`queryThesauriFilters:${toStr(queryThesauriFilters)}`);
+	const activeThesauri = queryThesauri({
+		connection,
+		filters: queryThesauriFilters,
+		getSynonymsCount: false,
+		thesauri
+	}).hits.map(({name}) => name);
+	//log.info(`activeThesauri:${toStr(activeThesauri)}`);
+
 	const querySynonymsParams = {
 		connection,
 		count: count >= 1 && count <= MAX_COUNT ? count : MAX_COUNT,
 		explain,
-		filters: addFilter({filter: hasValue('_parentPath', forceArray(thesauri).map(n => `/thesauri/${n}`))}),
+		filters: addFilter({filter: hasValue('_parentPath', activeThesauri.map(n => `/thesauri/${n}`))}),
 		query,
 		sort: '_score DESC'
 	};
