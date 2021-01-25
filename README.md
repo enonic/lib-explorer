@@ -47,6 +47,7 @@ dependencies {
 ### 3.10.0
 
 * Upgrade to Node 14.15.4
+* Upgrade node modules (patch)
 
 ### 3.9.1
 
