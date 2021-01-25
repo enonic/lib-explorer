@@ -21,7 +21,7 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@enonic/webpack-server-side-js": "0.2.0",
+    "@enonic/webpack-server-side-js": "0.5.0",
     "assert": "2.0.0",
     "ava": "3.15.0",
     "babel-eslint": "10.1.0",
