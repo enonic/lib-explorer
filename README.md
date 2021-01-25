@@ -44,6 +44,10 @@ dependencies {
 
 ## Changelog
 
+### 3.10.0
+
+* Upgrade to Node 14.15.4
+
 ### 3.9.1
 
 * Remove showSynonyms from facet links
