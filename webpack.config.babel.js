@@ -18,6 +18,7 @@ const SS_EXTERNALS = [
 	'/lib/graphql',
 	'/lib/http-client',
 	'/lib/license',
+	'/lib/router',
 	/^\/lib\/xp\//,
 	// Avoid bundling and transpile library files seperately:
 	/^\/lib\/explorer\//
