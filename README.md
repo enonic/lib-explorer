@@ -47,6 +47,7 @@ dependencies {
 
 ### 3.10.0
 
+* Add componentPath to register function
 * Require Enonic XP 7.5.0
 * Upgrade to Node 14.15.5
 * Upgrade node modules

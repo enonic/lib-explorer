@@ -10,6 +10,7 @@ import {createOrModify} from '/lib/explorer/node/createOrModify';
 export function register({
 	appName,
 	collectTaskName = 'collect',
+	componentPath, // window.MyLibraryName.ComponentName
 	configAssetPath = 'js/react/Collector.esm.js',
 	displayName
 }) {
@@ -26,6 +27,7 @@ export function register({
 		_name: `${appName}:${collectTaskName}`,
 		appName,
 		collectTaskName,
+		componentPath,
 		configAssetPath,
 		displayName,
 		type: NT_COLLECTOR
