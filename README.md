@@ -45,6 +45,10 @@ dependencies {
 
 ## Changelog
 
+### 3.10.1
+
+* Webpack 5
+
 ### 3.10.0
 
 * Add componentPath to register function
