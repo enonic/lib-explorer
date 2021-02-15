@@ -29,7 +29,7 @@ $ enonic project gradle -- clean build publishToMavenLocal publish --refresh-dep
 
 ```build.gradle
 dependencies {
-	include 'com.enonic.lib:lib-explorer:3.1.0'
+	include 'com.enonic.lib:lib-explorer:3.10.0'
 }
 ```
 
@@ -37,6 +37,7 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
+| 3.10.x | 7.5.0 |
 | 3.[6-9].x | 7.4.1 |
 | 3.[1-5].x | 7.3.2 |
 | 3.0.7 | 7.3.1 |
@@ -46,8 +47,8 @@ dependencies {
 
 ### 3.10.0
 
-* Upgrade to Node 14.15.4
 * Require Enonic XP 7.5.0
+* Upgrade to Node 14.15.5
 * Upgrade node modules
 
 ### 3.9.1
