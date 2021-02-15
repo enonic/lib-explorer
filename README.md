@@ -47,6 +47,7 @@ dependencies {
 ### 3.10.0
 
 * Upgrade to Node 14.15.4
+* Require Enonic XP 7.5.0
 * Upgrade node modules
 
 ### 3.9.1
