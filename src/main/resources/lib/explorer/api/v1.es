@@ -1,3 +1,10 @@
+/*
+mapping.api.host = localhost
+mapping.api.source = /api
+mapping.api.target = /webapp/com.enonic.app.explorer/api
+mapping.api.idProvider.system = default
+*/
+
 import {
 	ROLE_EXPLORER_ADMIN,
 	ROLE_EXPLORER_WRITE,
@@ -12,7 +19,7 @@ import {toStr} from '/lib/util';
 const router = Router();
 
 
-router.all('/1/documents', (request) => {
+router.all('/api/1/documents', (request) => {
 	//log.info(`request:${toStr(request)}`);
 
 	//const user = getUser();
@@ -59,6 +66,14 @@ router.all('/1/documents', (request) => {
 	<body>
 		<h1>API documentation</h1>
 		<script>
+			function IsJsonString(str) {
+    			try {
+        			JSON.parse(str);
+    			} catch (e) {
+        			return false;
+    			}
+				return true;
+			}
 			function mySubmit(event) {
 				console.log('event', event);
 				event.preventDefault();
@@ -72,15 +87,25 @@ router.all('/1/documents', (request) => {
 				var uriField = document.getElementById('uriField').value;
 				console.log('uriField', uriField);
 
-				var js = document.getElementById('js').value;
-				console.log('js', js);
+				var jsStr = document.getElementById('js').value;
+				console.log('jsStr', jsStr);
 
-				var json = JSON.stringify(js);
-				console.log('json', json);
+				var json = "{}";
+				if (IsJsonString(jsStr)) {
+					json = jsStr;
+				} else {
+					eval('var js = ' + jsStr);
+					console.log('js', js);
+					json = JSON.stringify(js);
+					console.log('json', json);
+				}
 
 				fetch(\`?collection=\${collection}&branch=\${branch}&uriField=\${uriField}\`, {
-					method: 'POST',
-					body: json
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: json,
+					method: 'POST'
 				}).then(data => {
     console.log(data);
   });
@@ -97,12 +122,17 @@ router.all('/1/documents', (request) => {
 				<dt><label for="uriField">Uri field</label></dt>
 				<dd><input id="uriField" name="uriField" placeholder="optionial detected" size="80" type="text" value="${uriField}"/></dd>
 				<dt><label for="js">Javascript object or array of objects, or json of the same</label></dt>
-				<dd><textarea cols="80" id="js" name="js" rows="9">{
+				<dd><textarea cols="173" id="js" name="js" rows="9">[{
 	language: 'english',
 	text: 'This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission.',
 	title: 'Example Domain',
 	url: 'https://www.example.com'
-}</textarea></dd>
+},{
+	language: 'english',
+	text: 'Whatever',
+	title: 'Whatever',
+	url: 'https://www.whatever.com'
+}]</textarea></dd>
 			<input type="submit">
 		</form>
 
@@ -122,9 +152,14 @@ router.all('/1/documents', (request) => {
 				status: 400 // Bad Request
 			};
 		}
+		log.info(`body:${toStr(body)}`);
 		const data = JSON.parse(body);
 		log.info(`data:${toStr(data)}`);
 		// TODO
+		return {
+			body: {},
+			contentType: 'text/json;charset=utf-8'
+		};
 	} // method === 'POST'
 
 	return {
