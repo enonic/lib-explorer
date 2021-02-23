@@ -10,11 +10,12 @@ import {
 	ROLE_EXPLORER_WRITE,
 	ROLE_SYSTEM_ADMIN
 } from '/lib/explorer/model/2/constants';
+import {hash} from '/lib/explorer/string/hash';
 import Router from '/lib/router';
+import {toStr} from '/lib/util';
 import {
 	//getUser,
 	hasRole} from '/lib/xp/auth';
-import {toStr} from '/lib/util';
 
 const router = Router();
 
@@ -40,22 +41,24 @@ router.all('/api/1/documents', (request) => {
 		method,
 		params
 	} = request;
-	log.info(`body:${toStr(body)}`);
+	//log.info(`body:${toStr(body)}`);
 	//log.info(`method:${toStr(method)}`);
-	log.info(`params:${toStr(params)}`);
+	//log.info(`params:${toStr(params)}`);
 
 	//const now = Date.now(); // number of milliseconds elapsed since January 1, 1970 00:00:00 UTC
 	const d = new Date();
 	const branchDefault = `${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}T${d.getHours()}_${d.getMinutes()}_${d.getSeconds()}`;
 
 	const {
+		apiKey = '',
 		branch = branchDefault,
 		collection = '',
 		uriField = ''
 	} = params;
-	log.info(`branch:${toStr(branch)}`);
-	log.info(`collection:${toStr(collection)}`);
-	log.info(`uriField:${toStr(uriField)}`);
+	//log.info(`apiKey:${toStr(apiKey)}`);
+	//log.info(`branch:${toStr(branch)}`);
+	//log.info(`collection:${toStr(collection)}`);
+	//log.info(`uriField:${toStr(uriField)}`);
 
 	if (method === 'GET') {
 		return {
@@ -77,6 +80,9 @@ router.all('/api/1/documents', (request) => {
 			function mySubmit(event) {
 				console.log('event', event);
 				event.preventDefault();
+
+				var apiKey = document.getElementById('apiKey').value;
+				console.log('apiKey', apiKey);
 
 				var collection = document.getElementById('collection').value;
 				console.log('collection', collection);
@@ -100,7 +106,7 @@ router.all('/api/1/documents', (request) => {
 					console.log('json', json);
 				}
 
-				fetch(\`?collection=\${collection}&branch=\${branch}&uriField=\${uriField}\`, {
+				fetch(\`?apiKey=\${apiKey}&collection=\${collection}&branch=\${branch}&uriField=\${uriField}\`, {
 					headers: {
 						'Content-Type': 'application/json'
 					},
@@ -115,6 +121,8 @@ router.all('/api/1/documents', (request) => {
 		</script>
 		<form autocomplete="off" method="POST" novalidate onsubmit="return mySubmit(event)">
 			<dl>
+				<dt><label for="apiKey">API Key</label></dt>
+				<dd><input id="apiKey" name="apiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
 				<dt><label for="collection">Collection</label></dt>
 				<dd><input id="collection" name="collection" placeholder="required" required size="80" type="text" value="${collection}"/></dd>
 				<dt><label for="branch">Branch</label></dt>
@@ -122,7 +130,7 @@ router.all('/api/1/documents', (request) => {
 				<dt><label for="uriField">Uri field</label></dt>
 				<dd><input id="uriField" name="uriField" placeholder="optionial detected" size="80" type="text" value="${uriField}"/></dd>
 				<dt><label for="js">Javascript object or array of objects, or json of the same</label></dt>
-				<dd><textarea cols="173" id="js" name="js" rows="9">[{
+				<dd><textarea cols="173" id="js" name="js" rows="14">[{
 	language: 'english',
 	text: 'This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission.',
 	title: 'Example Domain',
@@ -152,10 +160,16 @@ router.all('/api/1/documents', (request) => {
 				status: 400 // Bad Request
 			};
 		}
-		log.info(`body:${toStr(body)}`);
+		//log.info(`body:${toStr(body)}`);
+
 		const data = JSON.parse(body);
-		log.info(`data:${toStr(data)}`);
+		//log.info(`data:${toStr(data)}`);
+
+		const hashedApiKey = hash(apiKey);
+		log.info(`hashedApiKey:${toStr(hashedApiKey)}`);
+
 		// TODO
+
 		return {
 			body: {},
 			contentType: 'text/json;charset=utf-8'
