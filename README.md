@@ -45,6 +45,10 @@ dependencies {
 
 ## Changelog
 
+### 3.10.2
+
+* Upgrade to Node 14.6.0
+
 ### 3.10.1
 
 * Webpack 5
