@@ -48,6 +48,9 @@ dependencies {
 ### 3.10.2
 
 * Upgrade to Node 14.6.0
+* Babel modules 7.13.8
+* Core-js 3.9.1
+* Webpack 5.24.2
 
 ### 3.10.1
 

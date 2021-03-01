@@ -3,7 +3,7 @@ import glob from 'glob';
 import path from 'path';
 import webpack from 'webpack';
 
-import {print} from 'q-i';
+//import {print} from 'q-i';
 
 //const MODE = 'development';
 const MODE = 'production';
@@ -162,7 +162,7 @@ const WEBPACK_CONFIG = [{
 		version: false
 	}
 }];
-print({WEBPACK_CONFIG}, { maxItems: Infinity });
+//print({WEBPACK_CONFIG}, { maxItems: Infinity });
 //process.exit();
 
 export { WEBPACK_CONFIG as default };
