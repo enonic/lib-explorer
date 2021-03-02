@@ -6,13 +6,22 @@ mapping.api.idProvider.system = default
 */
 
 import {
+	COLLECTION_REPO_PREFIX,
+	PRINCIPAL_EXPLORER_READ,
+	PRINCIPAL_EXPLORER_WRITE,
 	ROLE_EXPLORER_ADMIN,
 	ROLE_EXPLORER_WRITE,
 	ROLE_SYSTEM_ADMIN
 } from '/lib/explorer/model/2/constants';
+import {Document} from '/lib/explorer/model/2/nodeTypes/document';
+import {get as getCollection} from '/lib/explorer/collection/get';
+import {createOrModify} from '/lib/explorer/node/createOrModify';
+import {connect} from '/lib/explorer/repo/connect';
+import {maybeCreate as maybeCreateRepoAndBranch} from '/lib/explorer/repo/maybeCreate';
 import {hash} from '/lib/explorer/string/hash';
 import Router from '/lib/router';
 import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
 import {
 	//getUser,
 	hasRole} from '/lib/xp/auth';
@@ -52,12 +61,12 @@ router.all('/api/1/documents', (request) => {
 	const {
 		apiKey = '',
 		branch = branchDefault,
-		collection = '',
-		uriField = ''
+		collectionName = '',
+		uriField = '' // '' is Falsy
 	} = params;
 	//log.info(`apiKey:${toStr(apiKey)}`);
 	//log.info(`branch:${toStr(branch)}`);
-	//log.info(`collection:${toStr(collection)}`);
+	//log.info(`collectionName:${toStr(collectionName)}`);
 	//log.info(`uriField:${toStr(uriField)}`);
 
 	if (method === 'GET') {
@@ -84,8 +93,8 @@ router.all('/api/1/documents', (request) => {
 				var apiKey = document.getElementById('apiKey').value;
 				console.log('apiKey', apiKey);
 
-				var collection = document.getElementById('collection').value;
-				console.log('collection', collection);
+				var collectionName = document.getElementById('collectionName').value;
+				console.log('collectionName', collectionName);
 
 				var branch = document.getElementById('branch').value;
 				console.log('branch', branch);
@@ -106,7 +115,7 @@ router.all('/api/1/documents', (request) => {
 					console.log('json', json);
 				}
 
-				fetch(\`?apiKey=\${apiKey}&collection=\${collection}&branch=\${branch}&uriField=\${uriField}\`, {
+				fetch(\`?apiKey=\${apiKey}&collectionName=\${collectionName}&branch=\${branch}&uriField=\${uriField}\`, {
 					headers: {
 						'Content-Type': 'application/json'
 					},
@@ -123,8 +132,8 @@ router.all('/api/1/documents', (request) => {
 			<dl>
 				<dt><label for="apiKey">API Key</label></dt>
 				<dd><input id="apiKey" name="apiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
-				<dt><label for="collection">Collection</label></dt>
-				<dd><input id="collection" name="collection" placeholder="required" required size="80" type="text" value="${collection}"/></dd>
+				<dt><label for="collectionName">Collection name</label></dt>
+				<dd><input id="collectionName" name="collectionName" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
 				<dt><label for="branch">Branch</label></dt>
 				<dd><input id="branch" name="branch" placeholder="optionial generated" size="80" type="text" value="${branch}"/></dd>
 				<dt><label for="uriField">Uri field</label></dt>
@@ -150,35 +159,165 @@ router.all('/api/1/documents', (request) => {
 		};
 	} // method === 'GET'
 
-	if (method === 'POST') {
-		if (!collection) {
-			return {
-				body: {
-					message: 'Missing required url query parameter collection!'
-				},
-				contentType: 'text/json;charset=utf-8',
-				status: 400 // Bad Request
-			};
-		}
-		//log.info(`body:${toStr(body)}`);
-
-		const data = JSON.parse(body);
-		//log.info(`data:${toStr(data)}`);
-
-		const hashedApiKey = hash(apiKey);
-		log.info(`hashedApiKey:${toStr(hashedApiKey)}`);
-
-		// TODO
-
+	if (method !== 'POST') {
 		return {
-			body: {},
-			contentType: 'text/json;charset=utf-8'
+			status: 405 // Method not allowed
 		};
-	} // method === 'POST'
+	}
+
+	if (!collectionName) {
+		return {
+			body: {
+				message: 'Missing required url query parameter collection!'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+	if (!apiKey) {
+		return {
+			body: {
+				message: 'Missing required url query parameter apiKey!'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	// Cases:
+	// 1. Collection does not exist, thus no apiKey either.
+	//    So no one can fish for exisiting collections simply respond 400.
+	//
+	// 2. Collection does exist, but no matching apiKey exists.
+	//    So no one can fish for exisiting collections simply respond 400.
+	//
+	// 3. Collection exist and apiKey matches.
+	//    Create or update documents.
+	//    TODO: What about removing old documents?
+	//
+	// 4. apiKey matches in a different collection
+	//    We could have been nice and said, wrong or typo in collection name
+	//    but for same reasons as 2, letting 2 handle this is the best.
+
+	const readConnection = connect({
+		principals: [PRINCIPAL_EXPLORER_READ]
+	});
+
+	const collection = getCollection({
+		connection: readConnection,
+		name: collectionName
+	});
+	log.info(`collection:${toStr(collection)}`);
+
+	if (!collection) {
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+	const {
+		collector: {
+			config: {
+				apiKeys = []
+			} = {}
+		} = {}
+	} = collection;
+
+	const hashedApiKey = hash(apiKey);
+	log.info(`hashedApiKey:${toStr(hashedApiKey)}`);
+
+	const arrApiKeys = forceArray(apiKeys);
+	let keyMatch = false;
+	for (let i = 0; i < arrApiKeys.length; i++) {
+		const {key} = arrApiKeys[i];
+		log.info(`key:${toStr(key)}`);
+		if(key === hashedApiKey) {
+			keyMatch = true;
+			break;
+		}
+	} // for
+
+	if (!keyMatch) {
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
+	log.info(`repoId:${toStr(repoId)}`);
+	log.info(`branchId:${toStr(branch)}`);
+	maybeCreateRepoAndBranch({
+		branchId: branch,
+		repoId
+	});
+
+	const data = JSON.parse(body);
+	log.info(`data:${toStr(data)}`);
+
+	const dataArray = forceArray(data);
+	log.info(`dataArray:${toStr(dataArray)}`);
+
+	const writeToCollectionBranchConnection = connect({
+		branch,
+		principals: [PRINCIPAL_EXPLORER_WRITE],
+		repoId
+	});
+
+	for (let j = 0; j < dataArray.length; j++) {
+		const toPersist = dataArray[j];
+		if (!toPersist.uri) { // TODO Find a uriField on first item, and reuse?
+			if (uriField) {
+				if (toPersist[uriField]) {
+					toPersist.uri = toPersist[uriField];
+					delete toPersist[uriField];
+				} else {
+					throw new Error(`uriField ${uriField} cannot be empty!`);
+				}
+			} else { // Try fallback loop
+				const fallbacks = [
+					'_name',
+					'_path',
+					'urn',
+					'url'
+				];
+				for (let k = 0; k < fallbacks.length; k++) {
+					const fallback = fallbacks[k];
+					if (toPersist[fallback]) {
+						toPersist.uri = toPersist[fallback];
+						delete toPersist[fallback];
+					}
+				}
+				if (!toPersist.uri) {
+					throw new Error('Unable to find value for uri field!');
+				}
+			}
+		}
+		log.info(`toPersist:${toStr(toPersist)}`);
+		toPersist.__connection = writeToCollectionBranchConnection;
+		const persistedNode = createOrModify(Document(toPersist));
+		log.info(`persistedNode:${toStr(persistedNode)}`);
+		if (!persistedNode) {
+			throw new Error('Something went wrong when trying to persist a document!');
+		}
+		/*try {
+
+		} catch (e) {
+
+		}*/
+	}
 
 	return {
-		status: 405 // Method not allowed
+		body: {},
+		contentType: 'text/json;charset=utf-8'
 	};
+
 }); // documents
 
 
