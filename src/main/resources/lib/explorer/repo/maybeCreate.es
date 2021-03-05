@@ -1,12 +1,18 @@
 //import {toStr} from '/lib/util';
+//import {create as createNode}  from '/lib/explorer/node/create';
+//import {get as getNode}  from '/lib/explorer/node/get';
+import {exists as nodeExists}  from '/lib/explorer/node/exists';
+import {connect}  from '/lib/explorer/repo/connect';
 import {
 	get as getRepo,
 	create as createRepo,
 	createBranch as createRepoBranch
 } from '/lib/xp/repo';
 
-
-import {ROOT_PERMISSIONS_EXPLORER} from '/lib/explorer/model/2/constants';
+import {
+	PRINCIPAL_EXPLORER_WRITE,
+	ROOT_PERMISSIONS_EXPLORER
+} from '/lib/explorer/model/2/constants';
 
 
 export function maybeCreate({
@@ -22,7 +28,7 @@ export function maybeCreate({
 		const createRepoParams = {
 			id: repoId,
 			rootPermissions,
-	    	rootChildOrder: '_ts DESC'
+			rootChildOrder: '_ts DESC'
 		};
 		//log.info(`createRepoParams:${toStr(createRepoParams)}`);
 		createRepo(createRepoParams);
@@ -43,5 +49,36 @@ export function maybeCreate({
 		repoId
 	});
 	//log.info(`createdRepoBranch:${toStr(createdRepoBranch)}`);
+
+	// When you create a repo, the master branch is created, with a root node.
+	// NOTE When you create a branch, the root node is not made in the branch!
+	// Let's get the root node from the master branch and "copy" it to the branch.
+	const writeConnection = connect({
+		branch: branchId,
+		principals: [PRINCIPAL_EXPLORER_WRITE],
+		repoId
+	});
+	if (!nodeExists({
+		connection: writeConnection,
+		_path: '/'
+	})) {
+		/*const rootNodeFromMasterBranch = getNode({
+			connection: connect({
+				branch: 'master',
+				repoId
+			}),
+			path: '/'
+		});
+		log.info(`rootNodeFromMasterBranch:${toStr(rootNodeFromMasterBranch)}`);
+		createNode(rootNodeFromMasterBranch);*/
+		//const pushRes =
+		writeConnection.push({
+			keys: ['/'],
+			resolve: false,
+			target: branchId
+		});
+		//log.info(`pushRes:${toStr(pushRes)}`);
+	}
+
 	return createdRepoBranch;
 } // function maybeCreate

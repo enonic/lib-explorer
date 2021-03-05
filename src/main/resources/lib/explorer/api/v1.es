@@ -8,23 +8,26 @@ mapping.api.idProvider.system = default
 import {
 	COLLECTION_REPO_PREFIX,
 	PRINCIPAL_EXPLORER_READ,
-	PRINCIPAL_EXPLORER_WRITE,
+	PRINCIPAL_EXPLORER_WRITE/*,
 	ROLE_EXPLORER_ADMIN,
 	ROLE_EXPLORER_WRITE,
-	ROLE_SYSTEM_ADMIN
+	ROLE_SYSTEM_ADMIN*/
 } from '/lib/explorer/model/2/constants';
+import {USER as EXPLORER_APP_USER} from '/lib/explorer/model/2/users/explorer';
 import {Document} from '/lib/explorer/model/2/nodeTypes/document';
 import {get as getCollection} from '/lib/explorer/collection/get';
 import {createOrModify} from '/lib/explorer/node/createOrModify';
 import {connect} from '/lib/explorer/repo/connect';
 import {maybeCreate as maybeCreateRepoAndBranch} from '/lib/explorer/repo/maybeCreate';
+import {runAsSu} from '/lib/explorer/runAsSu';
 import {hash} from '/lib/explorer/string/hash';
 import Router from '/lib/router';
 import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 import {
-	//getUser,
-	hasRole} from '/lib/xp/auth';
+	getUser/*,
+	hasRole*/
+} from '/lib/xp/auth';
 
 const router = Router();
 
@@ -35,7 +38,7 @@ router.all('/api/1/documents', (request) => {
 	//const user = getUser();
 	//log.info(`user:${toStr(user)}`);
 
-	if (!(
+	/*if (!(
 		hasRole(ROLE_SYSTEM_ADMIN)
 		|| hasRole(ROLE_EXPLORER_ADMIN)
 		|| hasRole(ROLE_EXPLORER_WRITE)
@@ -43,7 +46,7 @@ router.all('/api/1/documents', (request) => {
 		return {
 			status: 403
 		};
-	}
+	}*/
 
 	const {
 		body,
@@ -207,7 +210,7 @@ router.all('/api/1/documents', (request) => {
 		connection: readConnection,
 		name: collectionName
 	});
-	log.info(`collection:${toStr(collection)}`);
+	//log.info(`collection:${toStr(collection)}`);
 
 	if (!collection) {
 		return {
@@ -227,13 +230,13 @@ router.all('/api/1/documents', (request) => {
 	} = collection;
 
 	const hashedApiKey = hash(apiKey);
-	log.info(`hashedApiKey:${toStr(hashedApiKey)}`);
+	//log.info(`hashedApiKey:${toStr(hashedApiKey)}`);
 
 	const arrApiKeys = forceArray(apiKeys);
 	let keyMatch = false;
 	for (let i = 0; i < arrApiKeys.length; i++) {
 		const {key} = arrApiKeys[i];
-		log.info(`key:${toStr(key)}`);
+		//log.info(`key:${toStr(key)}`);
 		if(key === hashedApiKey) {
 			keyMatch = true;
 			break;
@@ -251,24 +254,38 @@ router.all('/api/1/documents', (request) => {
 	}
 
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
-	log.info(`repoId:${toStr(repoId)}`);
-	log.info(`branchId:${toStr(branch)}`);
-	maybeCreateRepoAndBranch({
+	//log.info(`repoId:${toStr(repoId)}`);
+	//log.info(`branchId:${toStr(branch)}`);
+	runAsSu(() => maybeCreateRepoAndBranch({
 		branchId: branch,
 		repoId
-	});
+	}));
 
 	const data = JSON.parse(body);
-	log.info(`data:${toStr(data)}`);
+	//log.info(`data:${toStr(data)}`);
 
 	const dataArray = forceArray(data);
-	log.info(`dataArray:${toStr(dataArray)}`);
+	//log.info(`dataArray:${toStr(dataArray)}`);
 
 	const writeToCollectionBranchConnection = connect({
 		branch,
 		principals: [PRINCIPAL_EXPLORER_WRITE],
 		repoId
 	});
+
+	let user = getUser();
+	if (!user) {
+		// CreateNode tries to set owner, and fails when no user
+		user = {
+			displayName: EXPLORER_APP_USER.displayName,
+			disabled: false,
+			idProvider: EXPLORER_APP_USER.idProvider, // 'system',
+			key: `user:${EXPLORER_APP_USER.idProvider}:${EXPLORER_APP_USER.name}`, // `user:system:${USER_EXPLORER_APP_NAME}`,
+			login: EXPLORER_APP_USER.name, //USER_EXPLORER_APP_NAME,
+			type: 'user'
+		};
+		//log.info(`user:${toStr(user)}`);
+	}
 
 	for (let j = 0; j < dataArray.length; j++) {
 		const toPersist = dataArray[j];
@@ -299,10 +316,14 @@ router.all('/api/1/documents', (request) => {
 				}
 			}
 		}
-		log.info(`toPersist:${toStr(toPersist)}`);
+		// CreateNode tries to set owner, and fails when no user
+		toPersist.__user = user; // eslint-disable-line no-underscore-dangle
+
+		//log.info(`toPersist:${toStr(toPersist)}`);
 		toPersist.__connection = writeToCollectionBranchConnection;
+
 		const persistedNode = createOrModify(Document(toPersist));
-		log.info(`persistedNode:${toStr(persistedNode)}`);
+		//log.info(`persistedNode:${toStr(persistedNode)}`);
 		if (!persistedNode) {
 			throw new Error('Something went wrong when trying to persist a document!');
 		}
