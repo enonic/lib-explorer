@@ -98,7 +98,7 @@ router.all('/api/1/documents', (request) => {
 	const {
 		apiKey = '',
 		branch = branchDefault,
-		collectionName = '',
+		collection: collectionName = '',
 		uriField = '' // '' is Falsy
 	} = params;
 	//log.info(`apiKey:${toStr(apiKey)}`);
@@ -165,7 +165,7 @@ router.all('/api/1/documents', (request) => {
 					<td>The API key (password) for the collection you want to persist documents to.</td>
 				</tr>
 				<tr>
-					<th>collectionName</th>
+					<th>collection</th>
 					<td>required</td>
 					<td>The name of the collection you want to persist documents to.</td>
 				</tr>
@@ -254,8 +254,8 @@ uri: 'https://www.iana.org/'
 				var apiKey = document.getElementById('apiKey').value;
 				console.log('apiKey', apiKey);
 
-				var collectionName = document.getElementById('collectionName').value;
-				console.log('collectionName', collectionName);
+				var collection = document.getElementById('collection').value;
+				console.log('collection', collection);
 
 				var branch = document.getElementById('branch').value;
 				console.log('branch', branch);
@@ -276,7 +276,7 @@ uri: 'https://www.iana.org/'
 					console.log('json', json);
 				}
 
-				fetch(\`?apiKey=\${apiKey}&collectionName=\${collectionName}&branch=\${branch}&uriField=\${uriField}\`, {
+				fetch(\`?apiKey=\${apiKey}&collection=\${collection}&branch=\${branch}&uriField=\${uriField}\`, {
 					headers: {
 						'Content-Type': 'application/json'
 					},
@@ -294,8 +294,8 @@ uri: 'https://www.iana.org/'
 			<dl>
 				<dt><label for="apiKey">API Key</label></dt>
 				<dd><input id="apiKey" name="apiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
-				<dt><label for="collectionName">Collection name</label></dt>
-				<dd><input id="collectionName" name="collectionName" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
+				<dt><label for="collection">Collection name</label></dt>
+				<dd><input id="collection" name="collection" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
 				<dt><label for="branch">Branch</label></dt>
 				<dd><input id="branch" name="branch" placeholder="optionial generated" size="80" type="text" value="${branch}"/></dd>
 				<dt><label for="uriField">Uri field</label></dt>
