@@ -5,6 +5,7 @@ export {collection} from '/lib/explorer/model/2/nodeTypes/collection';
 export {Document} from '/lib/explorer/model/2/nodeTypes/document';
 export {field} from '/lib/explorer/model/2/nodeTypes/field';
 export {fieldValue} from '/lib/explorer/model/2/nodeTypes/fieldValue';
+export {folder} from '/lib/explorer/model/2/nodeTypes/folder';
 export {interfaceModel} from '/lib/explorer/model/2/nodeTypes/interface';
 export {journal} from '/lib/explorer/model/2/nodeTypes/journal';
 export {stopwords} from '/lib/explorer/model/2/nodeTypes/stopwords';
@@ -12,6 +13,16 @@ export {synonym} from '/lib/explorer/model/2/nodeTypes/synonym';
 export {thesaurus} from '/lib/explorer/model/2/nodeTypes/thesaurus';
 
 export {DEFAULT_INTERFACE} from '/lib/explorer/model/2/interfaces/default';
+
+export const FOLDERS = [
+	'collections',
+	'collectors',
+	'fields',
+	'interfaces',
+	'notifications',
+	'stopwords',
+	'thesauri'
+];
 
 /*
 
