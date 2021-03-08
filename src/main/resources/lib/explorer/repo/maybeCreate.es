@@ -71,12 +71,14 @@ export function maybeCreate({
 		});
 		log.info(`rootNodeFromMasterBranch:${toStr(rootNodeFromMasterBranch)}`);
 		createNode(rootNodeFromMasterBranch);*/
-		//const pushRes =
-		writeConnection.push({
+		const pushParams = {
 			keys: ['/'],
 			resolve: false,
 			target: branchId
-		});
+		};
+		//log.info(`pushParams:${toStr(pushParams)}`);
+		//const pushRes =
+		writeConnection.push(pushParams);
 		//log.info(`pushRes:${toStr(pushRes)}`);
 	}
 
