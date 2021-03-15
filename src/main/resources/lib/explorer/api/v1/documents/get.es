@@ -72,6 +72,14 @@ function respondWithHtml({
 			.method-delete span {
 				background-color: red;
 			}
+			samp {
+				background-color: black;
+				color: white;
+				display: block;
+				margin: 6px;
+				padding: 6px;
+				white-space: pre;
+			}
 		</style>
 		<script>
 			function IsJsonString(str) {
@@ -253,6 +261,18 @@ function respondWithHtml({
 				</tbody>
 			</table>
 
+			<h2>Example response</h2>
+			<samp>[{
+	_id: 'existing_id'
+	node: {
+		_id: 'existing_id'
+		field: 'value'
+	}
+},{
+	_id: 'non_existant_id',
+	error: 'Unable to find document with key = non_existant_id!'
+}]</samp>
+
 			<h2>GET Form (XHR)</h2>
 			<form autocomplete="off" method="GET" novalidate onsubmit="return myGet(event)">
 				<dl>
@@ -366,6 +386,30 @@ function respondWithHtml({
 				</tbody>
 			</table>
 
+			<h2>Example responses</h2>
+
+			<h3>When idField unset</h3>
+			<samp>[{
+	_id: 'created_id'
+},{
+	_id: 'modified_id',
+},{
+	error: 'Something went wrong when trying to create the document!'
+},{
+	error: 'Something went wrong when trying to modify the document!'
+}]</samp>
+
+	<h3>When idField set to url</h3>
+	<samp>[{
+	url: 'https://www.example.com'
+},{
+	url: 'https://www.iana.org',
+},{
+	error: 'idField url cannot be empty!'
+},{
+	error: Unable to modify. Multiple documents found where url is value!
+}]</samp>
+
 			<h2>POST Form Create or modify (XHR)</h2>
 			<form autocomplete="off" method="POST" novalidate onsubmit="return myPost(event)">
 				<dl>
@@ -451,6 +495,14 @@ function respondWithHtml({
 					</tr>
 				</tbody>
 			</table>
+
+			<h2>Example response</h2>
+			<samp>[{
+	_id: 'existing_id'
+},{
+	_id: 'non_existant_id',
+	error: 'Unable to find document with key = non_existant_id!'
+}]</samp>
 			<h2>DELETE Form (XHR)</h2>
 			<form autocomplete="off" method="DELETE" novalidate onsubmit="return myDelete(event)">
 				<dl>
