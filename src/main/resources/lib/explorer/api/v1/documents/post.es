@@ -15,7 +15,7 @@ import {connect} from '/lib/explorer/repo/connect';
 import {maybeCreate as maybeCreateRepoAndBranch} from '/lib/explorer/repo/maybeCreate';
 import {runAsSu} from '/lib/explorer/runAsSu';
 import {hash} from '/lib/explorer/string/hash';
-import {toStr} from '/lib/util';
+//import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 import {
 	getUser/*,
@@ -47,9 +47,9 @@ function createDocument({
 	toPersist.createdTime = new Date();
 	toPersist.creator = user.key; // Enforce creator
 	toPersist.type = NT_DOCUMENT; // Enforce type
-	log.info(`nodeToCreated:${toStr(toPersist)}`);
+	//log.info(`nodeToCreated:${toStr(toPersist)}`);
 	const createdNode = connection.create(toPersist);
-	log.info(`createdNode:${toStr(createdNode)}`);
+	//log.info(`createdNode:${toStr(createdNode)}`);
 	if(createdNode) {
 		const responseNode = {};
 		if (idField) {
@@ -91,23 +91,23 @@ function modifyDocument({
 	//toPersist.createdTime = new Date();
 	//toPersist.creator = user.key; // Enforce creator
 	//toPersist.type = NT_DOCUMENT; // Enforce type
-	log.info(`nodeToModify key:${id} modifyWith:${toStr(toPersist)}`);
+	//log.info(`nodeToModify key:${id} modifyWith:${toStr(toPersist)}`);
 	const modifiedNode = connection.modify({
 		key: id,
 		editor: (node) => {
-			log.info(`node:${toStr(node)}`);
+			//log.info(`node:${toStr(node)}`);
 			node.modifiedTime = new Date();
-			log.info(`node:${toStr(node)}`);
+			//log.info(`node:${toStr(node)}`);
 			Object.keys(toPersist).forEach((property) => {
-				const value = toPersist[property];
-				node[property] = value;
-				//node[property] = toPersist[property];
-				log.info(`node:${toStr(node)}`);
+				//const value = toPersist[property];
+				//node[property] = value;
+				node[property] = toPersist[property];
+				//log.info(`node:${toStr(node)}`);
 			});
 			return node;
 		}
 	});
-	log.info(`modifiedNode:${toStr(modifiedNode)}`);
+	//log.info(`modifiedNode:${toStr(modifiedNode)}`);
 	if(modifiedNode) {
 		const responseNode = {};
 		if (idField) {

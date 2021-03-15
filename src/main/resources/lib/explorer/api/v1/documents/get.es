@@ -1,14 +1,20 @@
-export function get(request) {
-	const {
-		//body,
-		//method,
-		params: {
-			apiKey = '',
-			//branch = branchDefault,
-			collection: collectionName = '',
-			idField = '' // '' is Falsy
-		} = {}
-	} = request;
+import {
+	COLLECTION_REPO_PREFIX,
+	PRINCIPAL_EXPLORER_READ
+} from '/lib/explorer/model/2/constants';
+import {get as getCollection} from '/lib/explorer/collection/get';
+import {connect} from '/lib/explorer/repo/connect';
+import {hash} from '/lib/explorer/string/hash';
+//import {toStr} from '/lib/util';
+import {forceArray} from '/lib/util/data';
+
+
+function respondWithHtml({
+	apiKey,
+	collectionName,
+	idField,
+	keysParam
+}) {
 	return {
 		body: `<html>
 	<head>
@@ -174,7 +180,41 @@ export function get(request) {
 			}
 			return true;
 		}
-		function mySubmit(event) {
+
+		function myGet(event) {
+			console.log('event', event);
+			event.preventDefault();
+
+			var apiKey = document.getElementById('apiKey').value;
+			console.log('apiKey', apiKey);
+
+			var collection = document.getElementById('collection').value;
+			console.log('collection', collection);
+
+			//var branch = document.getElementById('branch').value;
+			//console.log('branch', branch);
+
+			var idField = document.getElementById('idField').value;
+			console.log('idField', idField);
+
+			var keys = document.getElementById('keys').value;
+			console.log('keys', keys);
+
+			// &branch=\${branch}
+			fetch(\`?apiKey=\${apiKey}&collection=\${collection}&idField=\${idField}&keys=\${keys}\`, {
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				method: 'GET'
+			}).then(data => {
+				console.log(data);
+			});
+
+			return false;
+		}
+
+		function myPost(event) {
 			console.log('event', event);
 			event.preventDefault();
 
@@ -207,19 +247,20 @@ export function get(request) {
 
 			fetch(\`?apiKey=\${apiKey}&collection=\${collection}&idField=\${idField}\`, {
 				headers: {
+					'Accept': 'application/json',
 					'Content-Type': 'application/json'
 				},
 				body: json,
 				method: 'POST'
 			}).then(data => {
-	console.log(data);
-	});
+				console.log(data);
+			});
 
 			return false;
 		}
 	</script>
-	<h2>Example form</h2>
-	<form autocomplete="off" method="POST" novalidate onsubmit="return mySubmit(event)">
+	<h2>Get</h2>
+	<form autocomplete="off" method="GET" novalidate onsubmit="return myGet(event)">
 		<dl>
 			<dt><label for="apiKey">API Key</label></dt>
 			<dd><input id="apiKey" name="apiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
@@ -228,7 +269,23 @@ export function get(request) {
 			<!--dt><label for="branch">Branch</label></dt>
 			<dd><input id="branch" name="branch" placeholder="optionial generated" size="80" type="text" value=""/></dd-->
 			<dt><label for="idField">Id field</label></dt>
-			<dd><input id="idField" name="idField" placeholder="optionial detected" size="80" type="text" value="${idField}"/></dd>
+			<dd><input id="idField" name="idField" placeholder="optionial" size="80" type="text" value="${idField}"/></dd>
+			<dt><label for="keys">Keys</label></dt>
+			<dd><input id="keys" name="keys" placeholder="required" size="80" type="text" value="${keysParam}"/></dd>
+		</dl>
+		<input type="submit" value="GET">
+	</form>
+	<h2>Create or modify</h2>
+	<form autocomplete="off" method="POST" novalidate onsubmit="return myPost(event)">
+		<dl>
+			<dt><label for="apiKey">API Key</label></dt>
+			<dd><input id="apiKey" name="apiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
+			<dt><label for="collection">Collection name</label></dt>
+			<dd><input id="collection" name="collection" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
+			<!--dt><label for="branch">Branch</label></dt>
+			<dd><input id="branch" name="branch" placeholder="optionial generated" size="80" type="text" value=""/></dd-->
+			<dt><label for="idField">Id field</label></dt>
+			<dd><input id="idField" name="idField" placeholder="optionial" size="80" type="text" value="${idField}"/></dd>
 			<dt><label for="js">Javascript object or array of objects, or json of the same</label></dt>
 			<dd><textarea cols="173" id="js" name="js" rows="14">[{
 	language: 'english',
@@ -241,11 +298,179 @@ export function get(request) {
 	title: 'Whatever',
 	url: 'https://www.whatever.com'
 	}]</textarea></dd>
-		<input type="submit">
+		<input type="submit" value="POST">
 	</form>
 
 	</body>
 	</html>`,
 		contentType: 'text/html;charset=utf-8'
 	};
+} // respondWithHtml
+
+
+function respondWithJson({
+	apiKey,
+	collectionName,
+	idField,
+	keysParam
+}) {
+	if (!collectionName) {
+		return {
+			body: {
+				message: 'Missing required url query parameter collection!'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+	if (!apiKey) {
+		return {
+			body: {
+				message: 'Missing required url query parameter apiKey!'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+	if (!keysParam) {
+		return {
+			body: {
+				message: 'Missing required url query parameter keys!'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	const readConnection = connect({
+		principals: [PRINCIPAL_EXPLORER_READ]
+	});
+
+	const collection = getCollection({
+		connection: readConnection,
+		name: collectionName
+	});
+
+	if (!collection) {
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+	const {
+		collector: {
+			config: {
+				apiKeys = []
+			} = {}
+		} = {}
+	} = collection;
+
+	const hashedApiKey = hash(apiKey);
+	//log.info(`hashedApiKey:${toStr(hashedApiKey)}`);
+
+	const arrApiKeys = forceArray(apiKeys);
+	let keyMatch = false;
+	for (let i = 0; i < arrApiKeys.length; i++) {
+		const {key} = arrApiKeys[i];
+		//log.info(`key:${toStr(key)}`);
+		if(key === hashedApiKey) {
+			keyMatch = true;
+			break;
+		}
+	} // for
+
+	if (!keyMatch) {
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
+	//log.info(`repoId:${toStr(repoId)}`);
+
+	const branchId = 'master'; // Deliberate hardcode
+	const readFromCollectionBranchConnection = connect({
+		branch: branchId,
+		principals: [PRINCIPAL_EXPLORER_READ],
+		repoId
+	});
+
+	let keysArray = keysParam.split(',');
+
+	if (idField) {
+		// TODO use hasValue filter instead?
+		const queryParams = {
+			count: -1,
+			query: `${idField} IN (${keysArray.map((k) => `'${k}'`).join(', ')})`
+		};
+		//log.info(`queryParams:${toStr(queryParams)}`);
+		const queryRes = readFromCollectionBranchConnection.query(queryParams);
+		//log.info(`queryRes:${toStr(queryRes)}`);
+		keysArray = queryRes.hits.map(({id}) => id);
+	}
+	const getRes = readFromCollectionBranchConnection.get(...keysArray);
+	//log.info(`getRes:${toStr(res)}`);
+
+	const strippedRes = forceArray(getRes).map((node) => {
+		// Not allowed to see any underscore fields (except _id, _name, _path)
+		Object.keys(node).forEach((k) => {
+			if (k === '_id' || k === '_name' || k === '_path') {
+				// no-op
+			} else if (k.startsWith('_')) {
+				delete node[k];
+			}
+		});
+		return node;
+	});
+	//log.info(`strippedRes:${toStr(strippedRes)}`);
+
+	return {
+		body: strippedRes,
+		contentType: 'text/json;charset=utf-8'
+	};
+} // respondWithJson
+
+
+export function get(request) {
+	//log.info(`request:${toStr(request)}`);
+	const {
+		//body,
+		headers: {
+			Accept: acceptHeader
+		},
+		//method,
+		params: {
+			apiKey = '',
+			//branch = branchDefault,
+			collection: collectionName = '',
+			idField = '', // '' is Falsy
+			keys: keysParam = ''
+		} = {}
+	} = request;
+
+	if (
+		acceptHeader.startsWith('application/json') ||
+		acceptHeader.startsWith('text/json')
+	) {
+		return respondWithJson({
+			apiKey,
+			collectionName,
+			idField,
+			keysParam
+		});
+	} else {
+		return respondWithHtml({
+			apiKey,
+			collectionName,
+			idField,
+			keysParam
+		});
+	}
 }
