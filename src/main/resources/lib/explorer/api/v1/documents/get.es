@@ -37,7 +37,7 @@ function respondWithHtml({
 			border: 1px solid black;
 			border-radius: 4px;
 		}
-		.method-get, .method-post {
+		.method-get, .method-post, .method-delete {
 			border-radius: 3px;
 			color: white;
 			font-size: 14px;
@@ -51,6 +51,9 @@ function respondWithHtml({
 		}
 		.method-post {
 			background-color: green;
+		}
+		.method-delete {
+			background-color: red;
 		}
 	</style>
 	</head>
@@ -170,6 +173,10 @@ function respondWithHtml({
 		</table>
 	</details>
 
+	<details>
+		<summary><span class="method-delete">DELETE</span> <b>/api/v1/documents</b> Delete Documents</summary>
+		Todo
+	</details>
 
 	<script>
 		function IsJsonString(str) {
@@ -185,23 +192,23 @@ function respondWithHtml({
 			console.log('event', event);
 			event.preventDefault();
 
-			var apiKey = document.getElementById('apiKey').value;
-			console.log('apiKey', apiKey);
+			var getApiKey = document.getElementById('getApiKey').value;
+			console.log('getApiKey', getApiKey);
 
-			var collection = document.getElementById('collection').value;
-			console.log('collection', collection);
+			var getCollection = document.getElementById('getCollection').value;
+			console.log('getCollection', getCollection);
 
-			//var branch = document.getElementById('branch').value;
-			//console.log('branch', branch);
+			//var getBranch = document.getElementById('getBranch').value;
+			//console.log('getBranch', getBranch);
 
-			var idField = document.getElementById('idField').value;
-			console.log('idField', idField);
+			var getIdField = document.getElementById('getIdField').value;
+			console.log('getIdField', getIdField);
 
-			var keys = document.getElementById('keys').value;
-			console.log('keys', keys);
+			var getKeys = document.getElementById('getKeys').value;
+			console.log('getKeys', getKeys);
 
-			// &branch=\${branch}
-			fetch(\`?apiKey=\${apiKey}&collection=\${collection}&idField=\${idField}&keys=\${keys}\`, {
+			// &branch=\${getBranch}
+			fetch(\`?apiKey=\${getApiKey}&collection=\${getCollection}&idField=\${getIdField}&keys=\${getKeys}\`, {
 				headers: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
@@ -258,34 +265,77 @@ function respondWithHtml({
 
 			return false;
 		}
+
+		function myDelete(event) {
+			console.log('event', event);
+			event.preventDefault();
+
+			var deleteApiKey = document.getElementById('deleteApiKey').value;
+			console.log('deleteApiKey', deleteApiKey);
+
+			var deleteCollection = document.getElementById('deleteCollection').value;
+			console.log('deleteCollection', deleteCollection);
+
+			//var deleteBranch = document.getElementById('deleteBranch').value;
+			//console.log('deleteBranch', deleteBranch);
+
+			var deleteIdField = document.getElementById('deleteIdField').value;
+			console.log('deleteIdField', deleteIdField);
+
+			var deleteKeys = document.getElementById('deleteKeys').value;
+			console.log('deleteKeys', deleteKeys);
+
+			// &branch=\${deleteBranch}
+			fetch(\`?apiKey=\${deleteApiKey}&collection=\${deleteCollection}&idField=\${deleteIdField}&keys=\${deleteKeys}\`, {
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				method: 'DELETE'
+			}).then(data => {
+				console.log(data);
+			});
+
+			return false;
+		}
 	</script>
+
 	<h2>Get</h2>
 	<form autocomplete="off" method="GET" novalidate onsubmit="return myGet(event)">
 		<dl>
-			<dt><label for="apiKey">API Key</label></dt>
-			<dd><input id="apiKey" name="apiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
-			<dt><label for="collection">Collection name</label></dt>
-			<dd><input id="collection" name="collection" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
-			<!--dt><label for="branch">Branch</label></dt>
-			<dd><input id="branch" name="branch" placeholder="optionial generated" size="80" type="text" value=""/></dd-->
-			<dt><label for="idField">Id field</label></dt>
-			<dd><input id="idField" name="idField" placeholder="optionial" size="80" type="text" value="${idField}"/></dd>
-			<dt><label for="keys">Keys</label></dt>
-			<dd><input id="keys" name="keys" placeholder="required" size="80" type="text" value="${keysParam}"/></dd>
+			<dt><label for="getApiKey">API Key</label></dt>
+			<dd><input id="getApiKey" name="getApiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
+
+			<dt><label for="getCollection">Collection name</label></dt>
+			<dd><input id="getCollection" name="getCollection" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
+
+			<!--dt><label for="getBranch">Branch</label></dt>
+			<dd><input id="getBranch" name="getBranch" placeholder="optionial generated" size="80" type="text" value=""/></dd-->
+
+			<dt><label for="getIdField">Id field</label></dt>
+			<dd><input id="getIdField" name="getIdField" placeholder="optionial" size="80" type="text" value="${idField}"/></dd>
+
+			<dt><label for="getKeys">Keys</label></dt>
+			<dd><input id="getKeys" name="getKeys" placeholder="required" size="80" type="text" value="${keysParam}"/></dd>
 		</dl>
 		<input type="submit" value="GET">
 	</form>
+
 	<h2>Create or modify</h2>
 	<form autocomplete="off" method="POST" novalidate onsubmit="return myPost(event)">
 		<dl>
 			<dt><label for="apiKey">API Key</label></dt>
 			<dd><input id="apiKey" name="apiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
+
 			<dt><label for="collection">Collection name</label></dt>
 			<dd><input id="collection" name="collection" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
+
 			<!--dt><label for="branch">Branch</label></dt>
 			<dd><input id="branch" name="branch" placeholder="optionial generated" size="80" type="text" value=""/></dd-->
+
 			<dt><label for="idField">Id field</label></dt>
 			<dd><input id="idField" name="idField" placeholder="optionial" size="80" type="text" value="${idField}"/></dd>
+
 			<dt><label for="js">Javascript object or array of objects, or json of the same</label></dt>
 			<dd><textarea cols="173" id="js" name="js" rows="14">[{
 	language: 'english',
@@ -299,6 +349,27 @@ function respondWithHtml({
 	url: 'https://www.whatever.com'
 	}]</textarea></dd>
 		<input type="submit" value="POST">
+	</form>
+
+	<h2>Delete</h2>
+	<form autocomplete="off" method="DELETE" novalidate onsubmit="return myDelete(event)">
+		<dl>
+			<dt><label for="deleteApiKey">API Key</label></dt>
+			<dd><input id="deleteApiKey" name="deleteApiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
+
+			<dt><label for="deleteCollection">Collection name</label></dt>
+			<dd><input id="deleteCollection" name="deleteCollection" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
+
+			<!--dt><label for="deleteBranch">Branch</label></dt>
+			<dd><input id="deleteBranch" name="deleteBranch" placeholder="optionial generated" size="80" type="text" value=""/></dd-->
+
+			<dt><label for="deleteIdField">Id field</label></dt>
+			<dd><input id="deleteIdField" name="deleteIdField" placeholder="optionial" size="80" type="text" value="${idField}"/></dd>
+
+			<dt><label for="deleteKeys">Keys</label></dt>
+			<dd><input id="deleteKeys" name="deleteKeys" placeholder="required" size="80" type="text" value="${keysParam}"/></dd>
+		</dl>
+		<input type="submit" value="DELETE">
 	</form>
 
 	</body>
