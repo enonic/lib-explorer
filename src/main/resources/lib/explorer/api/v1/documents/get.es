@@ -6,7 +6,7 @@ export function get(request) {
 			apiKey = '',
 			//branch = branchDefault,
 			collection: collectionName = '',
-			uriField = '' // '' is Falsy
+			idField = '' // '' is Falsy
 		} = {}
 	} = request;
 	return {
@@ -100,9 +100,9 @@ export function get(request) {
 					<td>The name of the branch you want to persist documents to. Defaults to timestamp of now.</td>
 				</tr-->
 				<tr>
-					<th>uriField</th>
+					<th>idField</th>
 					<td>optional</td>
-					<td>The name of which field in the provided data which is uniq. If not provided falls back through these: uri, _name, _path, urn, url.</td>
+					<td>The name of which field in the provided data which contains the uniq document id. If not provided a new document is created with a generated id.</td>
 				</tr>
 			</tbody>
 		</table>
@@ -187,8 +187,8 @@ export function get(request) {
 			//var branch = document.getElementById('branch').value;
 			//console.log('branch', branch);
 
-			var uriField = document.getElementById('uriField').value;
-			console.log('uriField', uriField);
+			var idField = document.getElementById('idField').value;
+			console.log('idField', idField);
 
 			var jsStr = document.getElementById('js').value;
 			console.log('jsStr', jsStr);
@@ -205,7 +205,7 @@ export function get(request) {
 
 			// &branch=\${branch}
 
-			fetch(\`?apiKey=\${apiKey}&collection=\${collection}&uriField=\${uriField}\`, {
+			fetch(\`?apiKey=\${apiKey}&collection=\${collection}&idField=\${idField}\`, {
 				headers: {
 					'Content-Type': 'application/json'
 				},
@@ -227,8 +227,8 @@ export function get(request) {
 			<dd><input id="collection" name="collection" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
 			<!--dt><label for="branch">Branch</label></dt>
 			<dd><input id="branch" name="branch" placeholder="optionial generated" size="80" type="text" value=""/></dd-->
-			<dt><label for="uriField">Uri field</label></dt>
-			<dd><input id="uriField" name="uriField" placeholder="optionial detected" size="80" type="text" value="${uriField}"/></dd>
+			<dt><label for="idField">Id field</label></dt>
+			<dd><input id="idField" name="idField" placeholder="optionial detected" size="80" type="text" value="${idField}"/></dd>
 			<dt><label for="js">Javascript object or array of objects, or json of the same</label></dt>
 			<dd><textarea cols="173" id="js" name="js" rows="14">[{
 	language: 'english',

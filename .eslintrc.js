@@ -104,6 +104,7 @@ module.exports = {
 				'_path', // node property
 				'_id', // node property
 				'_indexConfig', // node property
+				'_inheritsPermissions', // node property
 				'_name', // node property
 				'_parentPath', // node create property
 				'_permissions', // node property
