@@ -21,7 +21,6 @@ import {connect} from '/lib/explorer/repo/connect';
 import {maybeCreate as maybeCreateRepoAndBranch} from '/lib/explorer/repo/maybeCreate';
 import {runAsSu} from '/lib/explorer/runAsSu';
 import {hash} from '/lib/explorer/string/hash';
-import Router from '/lib/router';
 //import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 import {
@@ -31,44 +30,7 @@ import {
 
 import {get} from '/lib/explorer/api/v1/documents/get';
 
-const router = Router();
-
-
-router.all('/api', (/*request*/) => ({
-	body: `<html>
-	<head>
-		<title>Versions - API documentation</title>
-	</head>
-	<body>
-		<h1>API documentation</h1>
-		<h2>Versions</h2>
-		<ul>
-			<li><a href="/api/v1">v1</a></li>
-		</ul>
-	</body>
-	</html>`,
-	contentType: 'text/html;charset=utf-8'
-}));
-
-
-router.all('/api/v1', (/*request*/) => ({
-	body: `<html>
-	<head>
-		<title>Endpoints - Version 1 - API documentation</title>
-	</head>
-	<body>
-		<h1>API documentation</h1>
-		<h2>Endpoints</h2>
-		<ul>
-			<li><a href="/api/v1/documents">documents</a></li>
-		</ul>
-	</body>
-	</html>`,
-	contentType: 'text/html;charset=utf-8'
-}));
-
-
-router.all('/api/v1/documents', (request) => {
+export function all(request) {
 	//log.info(`request:${toStr(request)}`);
 
 	//const user = getUser();
@@ -288,8 +250,4 @@ router.all('/api/v1/documents', (request) => {
 		body: {},
 		contentType: 'text/json;charset=utf-8'
 	};
-
-}); // documents
-
-
-export const all = (r) => router.dispatch(r);
+}
