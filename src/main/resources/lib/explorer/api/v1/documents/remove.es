@@ -106,29 +106,66 @@ export function remove(request) {
 		principals: [PRINCIPAL_EXPLORER_READ],
 		repoId
 	});
-
-	let keysArray = keysParam.split(',');
-
-	if (idField) {
-		// TODO use hasValue filter instead?
-		const queryParams = {
-			count: -1,
-			query: `${idField} IN (${keysArray.map((k) => `'${k}'`).join(', ')})`
-		};
-		log.info(`queryParams:${toStr(queryParams)}`);
-		const queryRes = readFromCollectionBranchConnection.query(queryParams);
-		log.info(`queryRes:${toStr(queryRes)}`);
-		keysArray = queryRes.hits.map(({id}) => id);
-	}
-
 	const writeToCollectionBranchConnection = connect({
 		branch: branchId,
 		principals: [PRINCIPAL_EXPLORER_WRITE],
 		repoId
 	});
-	const deleteRes = writeToCollectionBranchConnection.delete(...keysArray);
+
+	let keysArray = keysParam.split(',');
+
+	const responseArray = [];
+	keysArray.forEach((k) => {
+		let keys = [k];
+
+		if (idField) {
+			const queryParams = {
+				count: -1,
+				query: `${idField} = '${k}'`
+			};
+			//log.info(`queryParams:${toStr(queryParams)}`);
+			const queryRes = readFromCollectionBranchConnection.query(queryParams);
+			//log.info(`queryRes:${toStr(queryRes)}`);
+			keys = queryRes.hits.map(({id}) => id);
+		}
+		//log.info(`keys:${toStr(keys)}`);
+		const getRes = readFromCollectionBranchConnection.get(...keys);
+		//log.info(`getRes:${toStr(getRes)}`);
+
+		let item = {};
+		if (!getRes) { // getRes === null
+			if (idField) {
+				item.error = `Unable to find document with ${idField} = ${k}!`;
+			} else {
+				item.error = `Unable to find document with key = ${k}!`;
+			}
+		} else if (Array.isArray(getRes)) { // getRes === [{},{}]
+			if (idField) {
+				item.error = `Found multiple documents with ${idField} = ${k}!`;
+			} else {
+				item.error = `Found multiple documents with key = ${k}!`;
+			}
+		} else { // getRes === {}
+			const deleteRes = writeToCollectionBranchConnection.delete(keys[0]);
+			if (deleteRes.length === 1) {
+				if (idField) {
+					item[idField] = k;
+				} else {
+					item._id = getRes._id;
+				}
+			} else {
+				if (idField) {
+					item.error = `Unable to delete documents with ${idField} = ${k}!`;
+				} else {
+					item.error = `Unable to delete documents with key = ${k}!`;
+				}
+			}
+		}
+		responseArray.push(item);
+	}); // forEach key
+
 	return {
-		body: deleteRes,
+		body: responseArray,
 		contentType: 'text/json;charset=utf-8'
 	};
 } // function remove

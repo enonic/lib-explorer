@@ -493,19 +493,19 @@ function respondWithJson({
 		const getRes = readFromCollectionBranchConnection.get(...keys);
 
 		let item = {};
-		if (getRes.length === 0) {
+		if (!getRes) { // getRes === null
 			if (idField) {
 				item.error = `Unable to find document with ${idField} = ${k}`;
 			} else {
 				item.error = `Unable to find document with key = ${k}`;
 			}
-		} else if (getRes.length > 1) {
+		} else if (Array.isArray(getRes)) { // getRes === [{},{}]
 			if (idField) {
 				item.error = `Found multiple documents with ${idField} = ${k}`;
 			} else {
 				item.error = `Found multiple documents with key = ${k}`;
 			}
-		} else if (keys.length === 1) {
+		} else { // getRes === {}
 			const strippedRes = forceArray(getRes).map((node) => {
 				// Not allowed to see any underscore fields (except _id, _name, _path)
 				Object.keys(node).forEach((k) => {
