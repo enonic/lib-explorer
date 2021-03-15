@@ -475,35 +475,61 @@ function respondWithJson({
 
 	let keysArray = keysParam.split(',');
 
-	if (idField) {
-		// TODO use hasValue filter instead?
-		const queryParams = {
-			count: -1,
-			query: `${idField} IN (${keysArray.map((k) => `'${k}'`).join(', ')})`
-		};
-		//log.info(`queryParams:${toStr(queryParams)}`);
-		const queryRes = readFromCollectionBranchConnection.query(queryParams);
-		//log.info(`queryRes:${toStr(queryRes)}`);
-		keysArray = queryRes.hits.map(({id}) => id);
-	}
-	const getRes = readFromCollectionBranchConnection.get(...keysArray);
-	//log.info(`getRes:${toStr(res)}`);
+	const responseArray = [];
+	keysArray.forEach((k) => {
+		let keys = [k];
 
-	const strippedRes = forceArray(getRes).map((node) => {
-		// Not allowed to see any underscore fields (except _id, _name, _path)
-		Object.keys(node).forEach((k) => {
-			if (k === '_id' || k === '_name' || k === '_path') {
-				// no-op
-			} else if (k.startsWith('_')) {
-				delete node[k];
+		if (idField) {
+			const queryParams = {
+				count: -1,
+				query: `${idField} = '${k}'`
+			};
+			//log.info(`queryParams:${toStr(queryParams)}`);
+			const queryRes = readFromCollectionBranchConnection.query(queryParams);
+			//log.info(`queryRes:${toStr(queryRes)}`);
+			keys = queryRes.hits.map(({id}) => id);
+		}
+
+		const getRes = readFromCollectionBranchConnection.get(...keys);
+
+		let item = {};
+		if (getRes.length === 0) {
+			if (idField) {
+				item.error = `Unable to find document with ${idField} = ${k}`;
+			} else {
+				item.error = `Unable to find document with key = ${k}`;
 			}
-		});
-		return node;
-	});
-	//log.info(`strippedRes:${toStr(strippedRes)}`);
+		} else if (getRes.length > 1) {
+			if (idField) {
+				item.error = `Found multiple documents with ${idField} = ${k}`;
+			} else {
+				item.error = `Found multiple documents with key = ${k}`;
+			}
+		} else if (keys.length === 1) {
+			const strippedRes = forceArray(getRes).map((node) => {
+				// Not allowed to see any underscore fields (except _id, _name, _path)
+				Object.keys(node).forEach((k) => {
+					if (k === '_id' || k === '_name' || k === '_path') {
+						// no-op
+					} else if (k.startsWith('_')) {
+						delete node[k];
+					}
+				});
+				return node;
+			});
+			//log.info(`strippedRes:${toStr(strippedRes)}`);
+			if (idField) {
+				item[idField] = strippedRes[0].[idField];
+			} else {
+				item._id = strippedRes[0]._id;
+			}
+			item.node = strippedRes[0];
+		}
+		responseArray.push(item);
+	}); // forEach key
 
 	return {
-		body: strippedRes,
+		body: responseArray,
 		contentType: 'text/json;charset=utf-8'
 	};
 } // respondWithJson
