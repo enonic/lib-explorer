@@ -93,13 +93,12 @@ router.all('/api/v1/documents', (request) => {
 	//log.info(`method:${toStr(method)}`);
 	//log.info(`params:${toStr(params)}`);
 
-	//const now = Date.now(); // number of milliseconds elapsed since January 1, 1970 00:00:00 UTC
-	const d = new Date();
-	const branchDefault = `${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}T${d.getHours()}_${d.getMinutes()}_${d.getSeconds()}`;
+	//const d = new Date();
+	//const branchDefault = `${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}T${d.getHours()}_${d.getMinutes()}_${d.getSeconds()}`;
 
 	const {
 		apiKey = '',
-		branch = branchDefault,
+		//branch = branchDefault,
 		collection: collectionName = '',
 		uriField = '' // '' is Falsy
 	} = params;
@@ -206,8 +205,9 @@ router.all('/api/v1/documents', (request) => {
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
 	//log.info(`repoId:${toStr(repoId)}`);
 	//log.info(`branchId:${toStr(branch)}`);
+	const branchId = 'master'; // Deliberate hardcode
 	runAsSu(() => maybeCreateRepoAndBranch({
-		branchId: branch,
+		branchId,
 		repoId
 	}));
 
@@ -218,7 +218,7 @@ router.all('/api/v1/documents', (request) => {
 	//log.info(`dataArray:${toStr(dataArray)}`);
 
 	const writeToCollectionBranchConnection = connect({
-		branch,
+		branch: branchId,
 		principals: [PRINCIPAL_EXPLORER_WRITE],
 		repoId
 	});
