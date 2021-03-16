@@ -40,7 +40,7 @@ function respondWithHtml({
 			details {
 				border: 1px solid black;
 				border-radius: 4px;
-				maring: 6px;
+				margin: 6px;
 				padding: 6px;
 			}
 			.method-get span,
