@@ -245,7 +245,7 @@ function respondWithHtml({
 		<h1>API documentation</h1>
 
 		<details class="method-get">
-			<summary><span>GET</span> <b>/api/v1/documents</b> Get documents</summary>
+			<summary><span>GET</span> <b>/api/v1/documents</b> Get documents by keys (in idField) or by query</summary>
 			<h2>Headers</h2>
 			<table>
 				<thead>
@@ -523,7 +523,7 @@ function respondWithHtml({
 		</details>
 
 		<details class="method-delete">
-			<summary><span>DELETE</span> <b>/api/v1/documents</b> Delete Documents</summary>
+			<summary><span>DELETE</span> <b>/api/v1/documents</b> Delete documents</summary>
 			<h2>Headers</h2>
 			<table>
 				<thead>
