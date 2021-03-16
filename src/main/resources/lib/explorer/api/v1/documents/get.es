@@ -12,8 +12,12 @@ import {forceArray} from '/lib/util/data';
 function respondWithHtml({
 	apiKey,
 	collectionName,
+	count,
 	idField,
-	keysParam
+	keysParam,
+	query,
+	sort,
+	start
 }) {
 	return {
 		body: `<html>
@@ -92,65 +96,99 @@ function respondWithHtml({
 			}
 
 			function myGet(event) {
-				console.log('event', event);
+				//console.log('event', event);
 				event.preventDefault();
 
+				const params = {};
+
 				var getApiKey = document.getElementById('getApiKey').value;
-				console.log('getApiKey', getApiKey);
+				if (getApiKey) {
+					params.apiKey = getApiKey;
+				}
 
 				var getCollection = document.getElementById('getCollection').value;
-				console.log('getCollection', getCollection);
+				if (getCollection) {
+					params.collection = getCollection;
+				}
 
 				//var getBranch = document.getElementById('getBranch').value;
 				//console.log('getBranch', getBranch);
 
 				var getIdField = document.getElementById('getIdField').value;
-				console.log('getIdField', getIdField);
+				if (getIdField) {
+					params.idField = getIdField;
+				}
+
+				var getCount = document.getElementById('getCount').value;
+				if (getCount) {
+					params.count = getCount;
+				}
+
+				var getStart = document.getElementById('getStart').value;
+				if (getStart) {
+					params.start = getStart;
+				}
+
+				var getQuery = document.getElementById('getQuery').value;
+				if (getQuery) {
+					params.query = getQuery;
+				}
+
+				var getSort = document.getElementById('getSort').value;
+				if (getSort) {
+					params.sort = getSort;
+				}
 
 				var getKeys = document.getElementById('getKeys').value;
-				console.log('getKeys', getKeys);
+				if (getKeys) {
+					params.keys = getKeys;
+				}
 
-				// &branch=\${getBranch}
-				fetch(\`?apiKey=\${getApiKey}&collection=\${getCollection}&idField=\${getIdField}&keys=\${getKeys}\`, {
+				//console.log('params', params);
+
+				const urlQuery = Object.keys(params).map((k) => \`\${k}=\${params[k]}\`).join('&');
+				//console.log('urlQuery', urlQuery);
+
+				fetch(\`?\${urlQuery}\`, {
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
 					},
 					method: 'GET'
-				}).then(data => {
+				});/*.then(data => {
 					console.log(data);
-				});
+				});*/
 
 				return false;
 			}
 
 			function myPost(event) {
-				console.log('event', event);
+				//console.log('event', event);
 				event.preventDefault();
 
 				var apiKey = document.getElementById('apiKey').value;
-				console.log('apiKey', apiKey);
+				//console.log('apiKey', apiKey);
 
 				var collection = document.getElementById('collection').value;
-				console.log('collection', collection);
+				//console.log('collection', collection);
 
 				//var branch = document.getElementById('branch').value;
 				//console.log('branch', branch);
 
 				var idField = document.getElementById('idField').value;
-				console.log('idField', idField);
+				//console.log('idField', idField);
 
 				var jsStr = document.getElementById('js').value;
-				console.log('jsStr', jsStr);
+				//console.log('jsStr', jsStr);
 
 				var json = "{}";
 				if (IsJsonString(jsStr)) {
 					json = jsStr;
 				} else {
 					eval('var js = ' + jsStr);
-					console.log('js', js);
+					//console.log('js', js);
 					json = JSON.stringify(js);
-					console.log('json', json);
+					//console.log('json', json);
 				}
 
 				// &branch=\${branch}
@@ -162,19 +200,19 @@ function respondWithHtml({
 					},
 					body: json,
 					method: 'POST'
-				}).then(data => {
+				});/*.then(data => {
 					console.log(data);
-				});
+				});*/
 
 				return false;
 			}
 
 			function myDelete(event) {
-				console.log('event', event);
+				//console.log('event', event);
 				event.preventDefault();
 
 				var deleteApiKey = document.getElementById('deleteApiKey').value;
-				console.log('deleteApiKey', deleteApiKey);
+				//console.log('deleteApiKey', deleteApiKey);
 
 				var deleteCollection = document.getElementById('deleteCollection').value;
 				console.log('deleteCollection', deleteCollection);
@@ -183,10 +221,10 @@ function respondWithHtml({
 				//console.log('deleteBranch', deleteBranch);
 
 				var deleteIdField = document.getElementById('deleteIdField').value;
-				console.log('deleteIdField', deleteIdField);
+				//console.log('deleteIdField', deleteIdField);
 
 				var deleteKeys = document.getElementById('deleteKeys').value;
-				console.log('deleteKeys', deleteKeys);
+				//console.log('deleteKeys', deleteKeys);
 
 				// &branch=\${deleteBranch}
 				fetch(\`?apiKey=\${deleteApiKey}&collection=\${deleteCollection}&idField=\${deleteIdField}&keys=\${deleteKeys}\`, {
@@ -195,9 +233,9 @@ function respondWithHtml({
 						'Content-Type': 'application/json'
 					},
 					method: 'DELETE'
-				}).then(data => {
+				});/*.then(data => {
 					console.log(data);
-				});
+				});*/
 
 				return false;
 			}
@@ -207,7 +245,7 @@ function respondWithHtml({
 		<h1>API documentation</h1>
 
 		<details class="method-get">
-			<summary><span>GET</span> <b>/api/v1/documents</b> Show documentation</summary>
+			<summary><span>GET</span> <b>/api/v1/documents</b> Get documents</summary>
 			<h2>Headers</h2>
 			<table>
 				<thead>
@@ -253,11 +291,42 @@ function respondWithHtml({
 						<td>optional</td>
 						<td>The name of the branch you want to get documents from. Defaults to timestamp of now.</td>
 					</tr-->
+
+					<tr>
+						<th>keys</th>
+						<td>provide this or query</td>
+						<td>Comma seperated list of keys to get. Use idField to select which field to look for key in.</td>
+					</tr>
 					<tr>
 						<th>idField</th>
-						<td>optional</td>
+						<td>optional (will be ignored if query is provided)</td>
 						<td>The name of which field in the provided data which contains the uniq document id. If not provided falls back to _id.</td>
 					</tr>
+
+					<tr>
+						<th>count</th>
+						<td>optional (defaults to -1 which means all)</td>
+						<td>How many documents to get.</td>
+					</tr>
+
+					<tr>
+						<th>start</th>
+						<td>optional (defaults to 0)</td>
+						<td>Start index (used for paging).</td>
+					</tr>
+
+					<tr>
+						<th>query</th>
+						<td>provide this or keys. When query provided keys and idField will be ignored.</td>
+						<td>Query expression.</td>
+					</tr>
+
+					<tr>
+						<th>sort</th>
+						<td>optional (defaults to score DESC)</td>
+						<td>Sorting expression.</td>
+					</tr>
+
 				</tbody>
 			</table>
 
@@ -289,7 +358,19 @@ function respondWithHtml({
 					<dd><input id="getIdField" name="getIdField" placeholder="optionial" size="80" type="text" value="${idField}"/></dd>
 
 					<dt><label for="getKeys">Keys</label></dt>
-					<dd><input id="getKeys" name="getKeys" placeholder="required" size="80" type="text" value="${keysParam}"/></dd>
+					<dd><input id="getKeys" name="getKeys" placeholder="provide this or query" size="80" type="text" value="${keysParam}"/></dd>
+
+					<dt><label for="getStart">Start</label></dt>
+					<dd><input id="getStart" name="getStart" type="number" value="${start}"/></dd>
+
+					<dt><label for="getCount">Count</label></dt>
+					<dd><input id="getCount" name="getCount" type="number" value="${count}"/></dd>
+
+					<dt><label for="getQuery">Query</label></dt>
+					<dd><input id="getQuery" name="getQuery" placeholder="if provided keys and idField ignored" size="80" type="text" value="${query}"/></dd>
+
+					<dt><label for="getSort">Sort</label></dt>
+					<dd><input id="getSort" name="getSort" placeholder="optionial" size="80" type="text" value="${sort}"/></dd>
 				</dl>
 				<input type="submit" value="GET">
 			</form>
@@ -534,8 +615,12 @@ function respondWithHtml({
 function respondWithJson({
 	apiKey,
 	collectionName,
+	count,
 	idField,
-	keysParam
+	keysParam,
+	query,
+	sort,
+	start
 }) {
 	if (!collectionName) {
 		return {
@@ -555,10 +640,10 @@ function respondWithJson({
 			status: 400 // Bad Request
 		};
 	}
-	if (!keysParam) {
+	if (!keysParam && !query) {
 		return {
 			body: {
-				message: 'Missing required url query parameter keys!'
+				message: 'You have to provide on of keys or query!'
 			},
 			contentType: 'text/json;charset=utf-8',
 			status: 400 // Bad Request
@@ -625,6 +710,43 @@ function respondWithJson({
 		repoId
 	});
 
+	if (query) {
+		const queryParams = {
+			count,
+			query,
+			sort,
+			start
+		};
+		//log.info(`queryParams:${toStr(queryParams)}`);
+
+		const queryRes = readFromCollectionBranchConnection.query(queryParams);
+		//log.info(`queryRes:${toStr(queryRes)}`);
+
+		const keys = queryRes.hits.map(({id}) => id);
+		//log.info(`keys:${toStr(keys)}`);
+
+		const getRes = readFromCollectionBranchConnection.get(keys);
+		//log.info(`getRes:${toStr(getRes)}`);
+
+		const strippedRes = forceArray(getRes).map((node) => {
+			// Not allowed to see any underscore fields (except _id, _name, _path)
+			Object.keys(node).forEach((k) => {
+				if (k === '_id' || k === '_name' || k === '_path') {
+					// no-op
+				} else if (k.startsWith('_')) {
+					delete node[k];
+				}
+			});
+			return node;
+		});
+		//log.info(`strippedRes:${toStr(strippedRes)}`);
+
+		return {
+			body: strippedRes,
+			contentType: 'text/json;charset=utf-8'
+		};
+	} // query
+
 	let keysArray = keysParam.split(',');
 
 	const responseArray = [];
@@ -633,7 +755,7 @@ function respondWithJson({
 
 		if (idField) {
 			const queryParams = {
-				count: -1,
+				count,
 				query: `${idField} = '${k}'`
 			};
 			//log.info(`queryParams:${toStr(queryParams)}`);
@@ -699,10 +821,17 @@ export function get(request) {
 			apiKey = '',
 			//branch = branchDefault,
 			collection: collectionName = '',
+			count: countParam = '-1',
 			idField = '', // '' is Falsy
-			keys: keysParam = ''
+			keys: keysParam = '',
+			query = '',
+			sort = 'score DESC',
+			start: startParam = '0'
 		} = {}
 	} = request;
+
+	const count = parseInt(countParam, 10);
+	const start = parseInt(startParam, 10);
 
 	if (
 		acceptHeader.startsWith('application/json') ||
@@ -710,16 +839,24 @@ export function get(request) {
 	) {
 		return respondWithJson({
 			apiKey,
+			count,
 			collectionName,
 			idField,
-			keysParam
+			keysParam,
+			query,
+			sort,
+			start
 		});
 	} else {
 		return respondWithHtml({
 			apiKey,
+			count,
 			collectionName,
 			idField,
-			keysParam
+			keysParam,
+			query,
+			sort,
+			start
 		});
 	}
 }
