@@ -6,7 +6,7 @@ import {
 import {get as getCollection} from '/lib/explorer/collection/get';
 import {connect} from '/lib/explorer/repo/connect';
 import {hash} from '/lib/explorer/string/hash';
-import {toStr} from '/lib/util';
+//import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 
 export function remove(request) {
@@ -14,15 +14,17 @@ export function remove(request) {
 		params: {
 			apiKey = '',
 			//branch = branchDefault,
-			collection: collectionName = '',
-			idField = '', // '' is Falsy
+			collection: collectionParam = '',
 			keys: keysParam = ''
+		} = {},
+		pathParams: {
+			collection: collectionName = collectionParam
 		} = {}
 	} = request;
 	if (!collectionName) {
 		return {
 			body: {
-				message: 'Missing required url query parameter collection!'
+				message: 'Missing required parameter collection!'
 			},
 			contentType: 'text/json;charset=utf-8',
 			status: 400 // Bad Request
@@ -118,47 +120,21 @@ export function remove(request) {
 	keysArray.forEach((k) => {
 		let keys = [k];
 
-		if (idField) {
-			const queryParams = {
-				count: -1,
-				query: `${idField} = '${k}'`
-			};
-			//log.info(`queryParams:${toStr(queryParams)}`);
-			const queryRes = readFromCollectionBranchConnection.query(queryParams);
-			//log.info(`queryRes:${toStr(queryRes)}`);
-			keys = queryRes.hits.map(({id}) => id);
-		}
 		//log.info(`keys:${toStr(keys)}`);
 		const getRes = readFromCollectionBranchConnection.get(...keys);
 		//log.info(`getRes:${toStr(getRes)}`);
 
 		let item = {};
 		if (!getRes) { // getRes === null
-			if (idField) {
-				item.error = `Unable to find document with ${idField} = ${k}!`;
-			} else {
-				item.error = `Unable to find document with key = ${k}!`;
-			}
+			item.error = `Unable to find document with key = ${k}!`;
 		} else if (Array.isArray(getRes)) { // getRes === [{},{}]
-			if (idField) {
-				item.error = `Found multiple documents with ${idField} = ${k}!`;
-			} else {
-				item.error = `Found multiple documents with key = ${k}!`;
-			}
+			item.error = `Found multiple documents with key = ${k}!`;
 		} else { // getRes === {}
 			const deleteRes = writeToCollectionBranchConnection.delete(keys[0]);
 			if (deleteRes.length === 1) {
-				if (idField) {
-					item[idField] = k;
-				} else {
-					item._id = getRes._id;
-				}
+				item._id = getRes._id;
 			} else {
-				if (idField) {
-					item.error = `Unable to delete documents with ${idField} = ${k}!`;
-				} else {
-					item.error = `Unable to delete documents with key = ${k}!`;
-				}
+				item.error = `Unable to delete documents with key = ${k}!`;
 			}
 		}
 		responseArray.push(item);

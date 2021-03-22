@@ -140,7 +140,14 @@ export function post(request) {
 
 	const {
 		body,
-		params
+		params: {
+			apiKey = '',
+			//branch = branchDefault,
+			collection: collectionParam = '',
+		} = {},
+		pathParams: {
+			collection: collectionName = collectionParam
+		} = {}
 	} = request;
 	//log.info(`body:${toStr(body)}`);
 	//log.info(`params:${toStr(params)}`);
@@ -148,21 +155,14 @@ export function post(request) {
 	//const d = new Date();
 	//const branchDefault = `${d.getFullYear()}_${d.getMonth()+1}_${d.getDate()}T${d.getHours()}_${d.getMinutes()}_${d.getSeconds()}`;
 
-	const {
-		apiKey = '',
-		//branch = branchDefault,
-		collection: collectionName = '',
-		idField = '' // '' is Falsy
-	} = params;
 	//log.info(`apiKey:${toStr(apiKey)}`);
 	//log.info(`branch:${toStr(branch)}`);
 	//log.info(`collectionName:${toStr(collectionName)}`);
-	//log.info(`idField:${toStr(idField)}`);
 
 	if (!collectionName) {
 		return {
 			body: {
-				message: 'Missing required url query parameter collection!'
+				message: 'Missing required parameter collection!'
 			},
 			contentType: 'text/json;charset=utf-8',
 			status: 400 // Bad Request
@@ -283,109 +283,65 @@ export function post(request) {
 	for (let j = 0; j < dataArray.length; j++) {
 		try {
 			const toPersist = dataArray[j];
-			if (idField && !toPersist[idField]) {
-				responseArray.push({
-					error: `idField ${idField} cannot be empty!`
-				});
-			} else {
 
-				// CREATE when idfield, _id, _name, _path not matched
-				// Otherwise MODIFY
+			// CREATE when idfield, _id, _name, _path not matched
+			// Otherwise MODIFY
 
-				if(idField) {
-					// Query for match (get id)
-					const queryParams = {
-						count: 1,
-						query: `${idField} = '${toPersist[idField]}'`
-					};
-					//log.info(`queryParams:${toStr(queryParams)}`);
-					const queryResult = writeToCollectionBranchConnection.query(queryParams);
-					//log.info(`queryResult:${toStr(queryResult)}`);
-					if (queryResult.total === 0) {
-						// TODO Try Create (what if toPersist contains _id, _name or _path, could be trouble)
-						createDocument({
-							connection: writeToCollectionBranchConnection,
-							idField,
-							responseArray,
-							toPersist,
-							user
-						});
-					} else if (queryResult.total === 1) {
-						modifyDocument({
-							connection: writeToCollectionBranchConnection,
-							id: queryResult.hits[0].id,
-							idField,
-							responseArray,
-							toPersist
-						});
-					} else { // aka (result.total > 1)
-						responseArray.push({
-							error: `Unable to modify. Multiple documents found where ${idField} is ${toPersist[idField]}!`
-						});
-					}
-				} else if (toPersist._id) {
-					if (writeToCollectionBranchConnection.exists(toPersist._id)) {
-						modifyDocument({
-							connection: writeToCollectionBranchConnection,
-							id: toPersist._id,
-							idField,
-							responseArray,
-							toPersist
-						});
-					} else {
-						createDocument({
-							connection: writeToCollectionBranchConnection,
-							idField,
-							responseArray,
-							toPersist,
-							user
-						});
-					}
-				} else if (toPersist._name) {
-					if (writeToCollectionBranchConnection.exists(`/${toPersist._name}`)) {
-						modifyDocument({
-							connection: writeToCollectionBranchConnection,
-							id: `/${toPersist._name}`,
-							idField,
-							responseArray,
-							toPersist
-						});
-					} else {
-						createDocument({
-							connection: writeToCollectionBranchConnection,
-							idField,
-							responseArray,
-							toPersist,
-							user
-						});
-					}
-				} else if (toPersist._path) {
-					if (writeToCollectionBranchConnection.exists(toPersist._path)) {
-						modifyDocument({
-							connection: writeToCollectionBranchConnection,
-							id: toPersist._path,
-							idField,
-							responseArray,
-							toPersist
-						});
-					} else {
-						createDocument({
-							connection: writeToCollectionBranchConnection,
-							idField,
-							responseArray,
-							toPersist,
-							user
-						});
-					}
+			if (toPersist._id) {
+				if (writeToCollectionBranchConnection.exists(toPersist._id)) {
+					modifyDocument({
+						connection: writeToCollectionBranchConnection,
+						id: toPersist._id,
+						responseArray,
+						toPersist
+					});
 				} else {
 					createDocument({
 						connection: writeToCollectionBranchConnection,
-						idField,
 						responseArray,
 						toPersist,
 						user
 					});
 				}
+			} else if (toPersist._name) {
+				if (writeToCollectionBranchConnection.exists(`/${toPersist._name}`)) {
+					modifyDocument({
+						connection: writeToCollectionBranchConnection,
+						id: `/${toPersist._name}`,
+						responseArray,
+						toPersist
+					});
+				} else {
+					createDocument({
+						connection: writeToCollectionBranchConnection,
+						responseArray,
+						toPersist,
+						user
+					});
+				}
+			} else if (toPersist._path) {
+				if (writeToCollectionBranchConnection.exists(toPersist._path)) {
+					modifyDocument({
+						connection: writeToCollectionBranchConnection,
+						id: toPersist._path,
+						responseArray,
+						toPersist
+					});
+				} else {
+					createDocument({
+						connection: writeToCollectionBranchConnection,
+						responseArray,
+						toPersist,
+						user
+					});
+				}
+			} else {
+				createDocument({
+					connection: writeToCollectionBranchConnection,
+					responseArray,
+					toPersist,
+					user
+				});
 			}
 		} catch (e) {
 			log.error('Unknown error', e);
