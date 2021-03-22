@@ -15,6 +15,7 @@ export {thesaurus} from '/lib/explorer/model/2/nodeTypes/thesaurus';
 export {DEFAULT_INTERFACE} from '/lib/explorer/model/2/interfaces/default';
 
 export const FOLDERS = [
+	'api-keys',
 	'collections',
 	'collectors',
 	'fields',

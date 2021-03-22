@@ -18,6 +18,7 @@ export const ELLIPSIS = '…';
 //──────────────────────────────────────────────────────────────────────────────
 // Node types
 //──────────────────────────────────────────────────────────────────────────────
+export const NT_API_KEY = `${APP_EXPLORER}${COLON_SIGN}api-key`;
 export const NT_COLLECTION = `${APP_EXPLORER}${COLON_SIGN}collection`;
 export const NT_COLLECTOR = `${APP_EXPLORER}${COLON_SIGN}collector`;
 export const NT_DOCUMENT = `${APP_EXPLORER}${COLON_SIGN}document`;
@@ -38,6 +39,7 @@ export const INDEX_CONFIG_STOP_WORDS = {default: 'byType'};
 //──────────────────────────────────────────────────────────────────────────────
 // Various
 //──────────────────────────────────────────────────────────────────────────────
+export const PATH_API_KEYS = '/api-keys';
 export const PATH_COLLECTORS = '/collectors';
 export const PATH_INTERFACES = '/interfaces';
 
