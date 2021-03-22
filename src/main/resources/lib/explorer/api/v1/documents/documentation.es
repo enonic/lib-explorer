@@ -243,7 +243,7 @@ export function respondWithHtml({
 
 					<tr>
 						<th>count</th>
-						<td>optional (defaults to -1 which means all)</td>
+						<td>optional (defaults to 10, limited form 1 until 100)</td>
 						<td>How many documents to get.</td>
 					</tr>
 

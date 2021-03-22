@@ -195,7 +195,7 @@ export function get(request) {
 			apiKey = '',
 			//branch = branchDefault,
 			collection: collectionParam = '',
-			count: countParam = '-1',
+			count: countParam = '10',
 			keys: keysParam = '',
 			query = '',
 			sort = 'score DESC',
@@ -206,7 +206,12 @@ export function get(request) {
 		} = {}
 	} = request;
 
-	const count = parseInt(countParam, 10);
+	const count = Math.max(1, // Don't allow < 1
+		Math.min(100, // Don't allow > 100
+			parseInt(countParam, 10)
+		)
+	);
+	//log.info(`count:${count}`);
 	const start = parseInt(startParam, 10);
 
 	if (
