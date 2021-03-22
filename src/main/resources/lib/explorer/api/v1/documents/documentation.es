@@ -1,6 +1,5 @@
 export function respondWithHtml({
 	apiKey,
-	collectionName,
 	count,
 	keysParam,
 	query,
@@ -94,14 +93,6 @@ export function respondWithHtml({
 					params.apiKey = getApiKey;
 				}
 
-				var getCollection = document.getElementById('getCollection').value;
-				if (getCollection) {
-					params.collection = getCollection;
-				}
-
-				//var getBranch = document.getElementById('getBranch').value;
-				//console.log('getBranch', getBranch);
-
 				var getCount = document.getElementById('getCount').value;
 				if (getCount) {
 					params.count = getCount;
@@ -152,12 +143,6 @@ export function respondWithHtml({
 				var apiKey = document.getElementById('apiKey').value;
 				//console.log('apiKey', apiKey);
 
-				var collection = document.getElementById('collection').value;
-				//console.log('collection', collection);
-
-				//var branch = document.getElementById('branch').value;
-				//console.log('branch', branch);
-
 				var jsStr = document.getElementById('js').value;
 				//console.log('jsStr', jsStr);
 
@@ -171,9 +156,7 @@ export function respondWithHtml({
 					//console.log('json', json);
 				}
 
-				// &branch=\${branch}
-
-				fetch(\`?apiKey=\${apiKey}&collection=\${collection}\`, {
+				fetch(\`?apiKey=\${apiKey}\`, {
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
@@ -194,17 +177,10 @@ export function respondWithHtml({
 				var deleteApiKey = document.getElementById('deleteApiKey').value;
 				//console.log('deleteApiKey', deleteApiKey);
 
-				var deleteCollection = document.getElementById('deleteCollection').value;
-				console.log('deleteCollection', deleteCollection);
-
-				//var deleteBranch = document.getElementById('deleteBranch').value;
-				//console.log('deleteBranch', deleteBranch);
-
 				var deleteKeys = document.getElementById('deleteKeys').value;
 				//console.log('deleteKeys', deleteKeys);
 
-				// &branch=\${deleteBranch}
-				fetch(\`?apiKey=\${deleteApiKey}&collection=\${deleteCollection}&keys=\${deleteKeys}\`, {
+				fetch(\`?apiKey=\${deleteApiKey}&keys=\${deleteKeys}\`, {
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
@@ -258,16 +234,6 @@ export function respondWithHtml({
 						<td>required</td>
 						<td>The API key (password) for the collection you want to get documents from.</td>
 					</tr>
-					<tr>
-						<th>collection</th>
-						<td>required</td>
-						<td>The name of the collection you want to get documents from.</td>
-					</tr>
-					<!--tr>
-						<th>branch</th>
-						<td>optional</td>
-						<td>The name of the branch you want to get documents from. Defaults to timestamp of now.</td>
-					</tr-->
 
 					<tr>
 						<th>keys</th>
@@ -319,12 +285,6 @@ export function respondWithHtml({
 				<dl>
 					<dt><label for="getApiKey">API Key</label></dt>
 					<dd><input id="getApiKey" name="getApiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
-
-					<dt><label for="getCollection">Collection name</label></dt>
-					<dd><input id="getCollection" name="getCollection" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
-
-					<!--dt><label for="getBranch">Branch</label></dt>
-					<dd><input id="getBranch" name="getBranch" placeholder="optionial generated" size="80" type="text" value=""/></dd-->
 
 					<dt><label for="getKeys">Keys</label></dt>
 					<dd><input id="getKeys" name="getKeys" placeholder="provide this or query" size="80" type="text" value="${keysParam}"/></dd>
@@ -382,16 +342,6 @@ export function respondWithHtml({
 						<td>required</td>
 						<td>The API key (password) for the collection you want to persist documents to.</td>
 					</tr>
-					<tr>
-						<th>collection</th>
-						<td>required</td>
-						<td>The name of the collection you want to persist documents to.</td>
-					</tr>
-					<!--tr>
-						<th>branch</th>
-						<td>optional</td>
-						<td>The name of the branch you want to persist documents to. Defaults to timestamp of now.</td>
-					</tr-->
 				</tbody>
 			</table>
 
@@ -448,12 +398,6 @@ export function respondWithHtml({
 					<dt><label for="apiKey">API Key</label></dt>
 					<dd><input id="apiKey" name="apiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
 
-					<dt><label for="collection">Collection name</label></dt>
-					<dd><input id="collection" name="collection" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
-
-					<!--dt><label for="branch">Branch</label></dt>
-					<dd><input id="branch" name="branch" placeholder="optionial generated" size="80" type="text" value=""/></dd-->
-
 					<dt><label for="js">Javascript object or array of objects, or json of the same</label></dt>
 					<dd><textarea cols="173" id="js" name="js" rows="14">[{
 	language: 'english',
@@ -507,16 +451,6 @@ export function respondWithHtml({
 						<td>required</td>
 						<td>The API key (password) for the collection you want to delete documents from.</td>
 					</tr>
-					<tr>
-						<th>collection</th>
-						<td>required</td>
-						<td>The name of the collection you want to delete documents from.</td>
-					</tr>
-					<!--tr>
-						<th>branch</th>
-						<td>optional</td>
-						<td>The name of the branch you want to delete documents from. Defaults to timestamp of now.</td>
-					</tr-->
 				</tbody>
 			</table>
 
@@ -532,12 +466,6 @@ export function respondWithHtml({
 				<dl>
 					<dt><label for="deleteApiKey">API Key</label></dt>
 					<dd><input id="deleteApiKey" name="deleteApiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
-
-					<dt><label for="deleteCollection">Collection name</label></dt>
-					<dd><input id="deleteCollection" name="deleteCollection" placeholder="required" required size="80" type="text" value="${collectionName}"/></dd>
-
-					<!--dt><label for="deleteBranch">Branch</label></dt>
-					<dd><input id="deleteBranch" name="deleteBranch" placeholder="optionial generated" size="80" type="text" value=""/></dd-->
 
 					<dt><label for="deleteKeys">Keys</label></dt>
 					<dd><input id="deleteKeys" name="deleteKeys" placeholder="required" size="80" type="text" value="${keysParam}"/></dd>

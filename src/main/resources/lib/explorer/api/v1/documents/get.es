@@ -226,7 +226,6 @@ export function get(request) {
 		return respondWithHtml({
 			apiKey,
 			count,
-			collectionName,
 			keysParam,
 			query,
 			sort,
