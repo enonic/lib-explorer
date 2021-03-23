@@ -45,6 +45,10 @@ dependencies {
 
 ## Changelog
 
+### 3.10.3-SNAPSHOT
+
+* Removed displayName from Collections
+
 ### 3.10.2
 
 * Upgrade to Node 14.6.0
