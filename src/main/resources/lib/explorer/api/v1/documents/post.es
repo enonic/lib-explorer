@@ -1,5 +1,6 @@
 import {
 	COLLECTION_REPO_PREFIX,
+	NT_API_KEY,
 	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ,
 	PRINCIPAL_EXPLORER_WRITE/*,
@@ -9,7 +10,7 @@ import {
 } from '/lib/explorer/model/2/constants';
 import {USER as EXPLORER_APP_USER} from '/lib/explorer/model/2/users/explorer';
 //import {Document} from '/lib/explorer/model/2/nodeTypes/document';
-import {get as getCollection} from '/lib/explorer/collection/get';
+//import {get as getCollection} from '/lib/explorer/collection/get';
 //import {createOrModify} from '/lib/explorer/node/createOrModify';
 import {connect} from '/lib/explorer/repo/connect';
 import {maybeCreate as maybeCreateRepoAndBranch} from '/lib/explorer/repo/maybeCreate';
@@ -197,7 +198,7 @@ export function post(request) {
 		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 
-	const collection = getCollection({
+	/*const collection = getCollection({
 		connection: readConnection,
 		name: collectionName
 	});
@@ -211,17 +212,86 @@ export function post(request) {
 			contentType: 'text/json;charset=utf-8',
 			status: 400 // Bad Request
 		};
+	}*/
+
+	const hashedApiKey = hash(apiKey);
+	//log.info(`hashedApiKey:${toStr(hashedApiKey)}`);
+
+
+	const matchingApiKeys = readConnection.query({
+		count: -1,
+		filters: {
+			boolean: {
+				must: [{
+					hasValue: {
+						field: 'type',
+						values: [NT_API_KEY]
+					}
+				},{
+					hasValue: {
+						field: 'key',
+						values: [hashedApiKey]
+					}
+				}]
+			}
+		}
+	});
+	//log.info(`matchingApiKeys:${toStr(matchingApiKeys)}`);
+	if(matchingApiKeys.total !== 1) {
+		log.error(`API key hashedApiKey:${hashedApiKey} not found!`);
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
 	}
-	const {
+
+	const apiKeyNodeId = matchingApiKeys.hits[0].id;
+	const apiKeyNode = readConnection.get(apiKeyNodeId);
+	//log.info(`apiKeyNode:${toStr(apiKeyNode)}`);
+
+	if (!apiKeyNode) { // This should never happen (index out of sync)
+		log.error(`API key hashedApiKey:${hashedApiKey} found, but unable to get id:${apiKeyNodeId}!`);
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	if (!apiKeyNode.collections) {
+		log.error(`API key hashedApiKey:${hashedApiKey} found, but access too no collections!`);
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	if (!forceArray(apiKeyNode.collections).includes(collectionName)) {
+		log.error(`API key hashedApiKey:${hashedApiKey} does not have access to collection:${collectionName}!`);
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	/*const {
 		collector: {
 			config: {
 				apiKeys = []
 			} = {}
 		} = {}
 	} = collection;
-
-	const hashedApiKey = hash(apiKey);
-	//log.info(`hashedApiKey:${toStr(hashedApiKey)}`);
 
 	const arrApiKeys = forceArray(apiKeys);
 	let keyMatch = false;
@@ -242,7 +312,7 @@ export function post(request) {
 			contentType: 'text/json;charset=utf-8',
 			status: 400 // Bad Request
 		};
-	}
+	}*/
 
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
 	//log.info(`repoId:${toStr(repoId)}`);

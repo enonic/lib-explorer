@@ -1,9 +1,10 @@
 import {
 	COLLECTION_REPO_PREFIX,
+	NT_API_KEY,
 	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
-import {get as getCollection} from '/lib/explorer/collection/get';
+//import {get as getCollection} from '/lib/explorer/collection/get';
 import {connect} from '/lib/explorer/repo/connect';
 import {hash} from '/lib/explorer/string/hash';
 //import {toStr} from '/lib/util';
@@ -43,12 +44,83 @@ function respondWithJson({
 		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 
-	const collection = getCollection({
+	const hashedApiKey = hash(apiKey);
+	//log.info(`hashedApiKey:${toStr(hashedApiKey)}`);
+
+	const matchingApiKeys = readConnection.query({
+		count: -1,
+		filters: {
+			boolean: {
+				must: [{
+					hasValue: {
+						field: 'type',
+						values: [NT_API_KEY]
+					}
+				},{
+					hasValue: {
+						field: 'key',
+						values: [hashedApiKey]
+					}
+				}]
+			}
+		}
+	});
+	//log.info(`matchingApiKeys:${toStr(matchingApiKeys)}`);
+	if(matchingApiKeys.total !== 1) {
+		log.error(`API key hashedApiKey:${hashedApiKey} not found!`);
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	const apiKeyNodeId = matchingApiKeys.hits[0].id;
+	const apiKeyNode = readConnection.get(apiKeyNodeId);
+	//log.info(`apiKeyNode:${toStr(apiKeyNode)}`);
+
+	if (!apiKeyNode) { // This should never happen (index out of sync)
+		log.error(`API key hashedApiKey:${hashedApiKey} found, but unable to get id:${apiKeyNodeId}!`);
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	if (!apiKeyNode.collections) {
+		log.error(`API key hashedApiKey:${hashedApiKey} found, but access too no collections!`);
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	if (!forceArray(apiKeyNode.collections).includes(collectionName)) {
+		log.error(`API key hashedApiKey:${hashedApiKey} does not have access to collection:${collectionName}!`);
+		return {
+			body: {
+				message: 'Bad Request'
+			},
+			contentType: 'text/json;charset=utf-8',
+			status: 400 // Bad Request
+		};
+	}
+
+	/*const collection = getCollection({
 		connection: readConnection,
 		name: collectionName
 	});
 
 	if (!collection) {
+		log.error(`Could not get collection:${collectionName}!`);
 		return {
 			body: {
 				message: 'Bad Request'
@@ -64,9 +136,6 @@ function respondWithJson({
 			} = {}
 		} = {}
 	} = collection;
-
-	const hashedApiKey = hash(apiKey);
-	//log.info(`hashedApiKey:${toStr(hashedApiKey)}`);
 
 	const arrApiKeys = forceArray(apiKeys);
 	let keyMatch = false;
@@ -87,7 +156,7 @@ function respondWithJson({
 			contentType: 'text/json;charset=utf-8',
 			status: 400 // Bad Request
 		};
-	}
+	}*/
 
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
 	//log.info(`repoId:${toStr(repoId)}`);
