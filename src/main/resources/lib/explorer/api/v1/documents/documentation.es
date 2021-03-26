@@ -1,7 +1,6 @@
 export function respondWithHtml({
 	apiKey,
 	count,
-	keysParam,
 	query,
 	sort,
 	start
@@ -98,6 +97,21 @@ export function respondWithHtml({
 					params.count = getCount;
 				}
 
+				var getFilters = document.getElementById('getFilters').value;
+
+				if(getFilters) {
+					var filtersJson = "{}";
+					if (IsJsonString(getFilters)) {
+						filtersJson = getFilters;
+					} else {
+						eval('var js = ' + getFilters);
+						//console.log('js', js);
+						filtersJson = JSON.stringify(js);
+						//console.log('filtersJson', filtersJson);
+					}
+					params.filters = filtersJson;
+				}
+
 				var getStart = document.getElementById('getStart').value;
 				if (getStart) {
 					params.start = getStart;
@@ -113,17 +127,29 @@ export function respondWithHtml({
 					params.sort = getSort;
 				}
 
-				var getKeys = document.getElementById('getKeys').value;
-				if (getKeys) {
-					params.keys = getKeys;
+				var nodeList = document.querySelectorAll('[name=getId]'); // Dynamic
+				//console.debug('nodeList', nodeList);
+				//var array = Array.prototype.slice.call(nodeList); // Static
+				var array = Array.from(nodeList); // Static
+				//console.debug('array', array);
+				let ids;
+				if (array.length) {
+					ids = array
+						.filter((el) => el.value)
+						.map((el) => \`id=\${el.value}\`).join('&');
+					//console.debug('ids', ids);
 				}
 
 				//console.log('params', params);
 
-				const urlQuery = Object.keys(params).map((k) => \`\${k}=\${params[k]}\`).join('&');
-				//console.log('urlQuery', urlQuery);
+				let urlQuery = Object.keys(params).map((k) => \`\${k}=\${params[k]}\`).join('&');
+				if (ids) {
+					urlQuery = \`\${urlQuery}&\${ids}\`;
+				}
+				//console.debug('urlQuery', urlQuery);
 
 				fetch(\`?\${urlQuery}\`, {
+					//body: filtersJson, // TypeError: Failed to execute 'fetch' on 'Window': Request with GET/HEAD method cannot have body.
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
@@ -198,7 +224,7 @@ export function respondWithHtml({
 		<h1>API documentation</h1>
 
 		<details class="method-get">
-			<summary><span>GET</span> <b>/api/v1/documents</b> Get documents by keys or by query</summary>
+			<summary><span>GET</span> <b>/api/v1/documents</b> Get documents</summary>
 			<h2>Headers</h2>
 			<table>
 				<thead>
@@ -236,14 +262,14 @@ export function respondWithHtml({
 					</tr>
 
 					<tr>
-						<th>keys</th>
-						<td>provide this or query</td>
-						<td>Comma seperated list of keys to get.</td>
+						<th>id</th>
+						<td>optionial</td>
+						<td>Id of document to get. May supply multiple. Will be converted into a query filter on the serverside.</td>
 					</tr>
 
 					<tr>
 						<th>count</th>
-						<td>optional (defaults to 10, limited form 1 until 100)</td>
+						<td>optional (defaults to 10, limited to between 1 and 100)</td>
 						<td>How many documents to get.</td>
 					</tr>
 
@@ -254,9 +280,15 @@ export function respondWithHtml({
 					</tr>
 
 					<tr>
+						<th>filters</th>
+						<td>optional</td>
+						<td>Query filters. See <a href="https://developer.enonic.com/docs/xp/stable/storage/filters">documentation</a>.</td>
+					</tr>
+
+					<tr>
 						<th>query</th>
-						<td>provide this or keys. When query provided keys will be ignored.</td>
-						<td>Query expression.</td>
+						<td>optional</td>
+						<td>Query expression. Keep in mind that filters are usually more quicker. See <a href="https://developer.enonic.com/docs/xp/stable/storage/noql">documentation</a>.</td>
 					</tr>
 
 					<tr>
@@ -267,17 +299,12 @@ export function respondWithHtml({
 
 				</tbody>
 			</table>
+			<p>If no id, filter or query provided it will simply return a (paginated) list of documents.</p>
 
 			<h2>Example response</h2>
 			<samp>[{
 	_id: 'existing_id'
-	node: {
-		_id: 'existing_id'
-		field: 'value'
-	}
-},{
-	_id: 'non_existant_id',
-	error: 'Unable to find document with key = non_existant_id!'
+	field: 'value'
 }]</samp>
 
 			<h2>GET Form (XHR)</h2>
@@ -286,14 +313,40 @@ export function respondWithHtml({
 					<dt><label for="getApiKey">API Key</label></dt>
 					<dd><input id="getApiKey" name="getApiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
 
-					<dt><label for="getKeys">Keys</label></dt>
-					<dd><input id="getKeys" name="getKeys" placeholder="provide this or query" size="80" type="text" value="${keysParam}"/></dd>
+					<dt><label for="getId">Id</label></dt>
+					<dd><input name="getId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="getId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="getId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="getId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="getId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="getId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="getId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="getId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="getId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="getId" placeholder="" size="80" type="text" value=""/></dd>
 
 					<dt><label for="getStart">Start</label></dt>
 					<dd><input id="getStart" name="getStart" type="number" value="${start}"/></dd>
 
 					<dt><label for="getCount">Count</label></dt>
 					<dd><input id="getCount" name="getCount" type="number" value="${count}"/></dd>
+
+					<dt><label for="getFilters">Filters</label></dt>
+					<dd><textarea cols="173" id="getFilters" name="getFilters" rows="16">{
+	boolean: {
+		must: {
+			exists: {
+				field: 'url'
+			}
+		}
+	},
+	ids: {
+		values: [
+			'fb0abbd1-cd15-4b01-8528-345d0668fa6b',
+			'26ab2ea6-de00-4605-88fc-894c3b4c932d'
+		]
+	}
+}</textarea></dd>
 
 					<dt><label for="getQuery">Query</label></dt>
 					<dd><input id="getQuery" name="getQuery" placeholder="if provided keys ignored" size="80" type="text" value="${query}"/></dd>
@@ -468,7 +521,7 @@ export function respondWithHtml({
 					<dd><input id="deleteApiKey" name="deleteApiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
 
 					<dt><label for="deleteKeys">Keys</label></dt>
-					<dd><input id="deleteKeys" name="deleteKeys" placeholder="required" size="80" type="text" value="${keysParam}"/></dd>
+					<dd><input id="deleteKeys" name="deleteKeys" placeholder="required" size="80" type="text" value=""/></dd>
 				</dl>
 				<input type="submit" value="DELETE">
 			</form>
