@@ -15,7 +15,7 @@ export function remove(request) {
 			apiKey = '',
 			//branch = branchDefault,
 			collection: collectionParam = '',
-			keys: keysParam = ''
+			id: idParam
 		} = {},
 		pathParams: {
 			collection: collectionName = collectionParam
@@ -39,10 +39,10 @@ export function remove(request) {
 			status: 400 // Bad Request
 		};
 	}
-	if (!keysParam) {
+	if (!idParam) {
 		return {
 			body: {
-				message: 'Missing required url query parameter keys!'
+				message: 'Missing required url query parameter id!'
 			},
 			contentType: 'text/json;charset=utf-8',
 			status: 400 // Bad Request
@@ -114,27 +114,25 @@ export function remove(request) {
 		repoId
 	});
 
-	let keysArray = keysParam.split(',');
+	let idsArray = forceArray(idParam);
 
 	const responseArray = [];
-	keysArray.forEach((k) => {
-		let keys = [k];
-
-		//log.info(`keys:${toStr(keys)}`);
-		const getRes = readFromCollectionBranchConnection.get(...keys);
+	idsArray.forEach((id) => {
+		//log.info(`ids:${toStr(ids)}`);
+		const getRes = readFromCollectionBranchConnection.get(id);
 		//log.info(`getRes:${toStr(getRes)}`);
 
 		let item = {};
 		if (!getRes) { // getRes === null
-			item.error = `Unable to find document with key = ${k}!`;
+			item.error = `Unable to find document with _id = ${id}!`;
 		} else if (Array.isArray(getRes)) { // getRes === [{},{}]
-			item.error = `Found multiple documents with key = ${k}!`;
+			item.error = `Found multiple documents with _id = ${id}!`;
 		} else { // getRes === {}
-			const deleteRes = writeToCollectionBranchConnection.delete(keys[0]);
+			const deleteRes = writeToCollectionBranchConnection.delete(id);
 			if (deleteRes.length === 1) {
 				item._id = getRes._id;
 			} else {
-				item.error = `Unable to delete documents with key = ${k}!`;
+				item.error = `Unable to delete documents with _id = ${id}!`;
 			}
 		}
 		responseArray.push(item);

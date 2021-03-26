@@ -143,7 +143,7 @@ export function post(request) {
 		params: {
 			apiKey = '',
 			//branch = branchDefault,
-			collection: collectionParam = '',
+			collection: collectionParam = ''
 		} = {},
 		pathParams: {
 			collection: collectionName = collectionParam

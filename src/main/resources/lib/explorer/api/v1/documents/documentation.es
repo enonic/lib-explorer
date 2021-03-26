@@ -203,10 +203,20 @@ export function respondWithHtml({
 				var deleteApiKey = document.getElementById('deleteApiKey').value;
 				//console.log('deleteApiKey', deleteApiKey);
 
-				var deleteKeys = document.getElementById('deleteKeys').value;
-				//console.log('deleteKeys', deleteKeys);
+				var nodeList = document.querySelectorAll('[name=deleteId]'); // Dynamic
+				//console.debug('nodeList', nodeList);
+				//var array = Array.prototype.slice.call(nodeList); // Static
+				var array = Array.from(nodeList); // Static
+				//console.debug('array', array);
+				let deleteIds;
+				if (array.length) {
+					deleteIds = array
+						.filter((el) => el.value)
+						.map((el) => \`id=\${el.value}\`).join('&');
+					//console.debug('deleteIds', deleteIds);
+				}
 
-				fetch(\`?apiKey=\${deleteApiKey}&keys=\${deleteKeys}\`, {
+				fetch(\`?apiKey=\${deleteApiKey}&\${deleteIds}\`, {
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
@@ -520,8 +530,17 @@ export function respondWithHtml({
 					<dt><label for="deleteApiKey">API Key</label></dt>
 					<dd><input id="deleteApiKey" name="deleteApiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
 
-					<dt><label for="deleteKeys">Keys</label></dt>
-					<dd><input id="deleteKeys" name="deleteKeys" placeholder="required" size="80" type="text" value=""/></dd>
+					<dt><label for="deleteId">Id</label></dt>
+					<dd><input name="deleteId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="deleteId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="deleteId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="deleteId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="deleteId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="deleteId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="deleteId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="deleteId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="deleteId" placeholder="" size="80" type="text" value=""/></dd>
+					<dd><input name="deleteId" placeholder="" size="80" type="text" value=""/></dd>
 				</dl>
 				<input type="submit" value="DELETE">
 			</form>
