@@ -514,6 +514,11 @@ export function respondWithHtml({
 						<td>required</td>
 						<td>The API key (password) for the collection you want to delete documents from.</td>
 					</tr>
+					<tr>
+						<th>id</th>
+						<td>required</td>
+						<td>Id of document to delete. May supply multiple.</td>
+					</tr>
 				</tbody>
 			</table>
 
