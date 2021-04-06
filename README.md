@@ -45,9 +45,12 @@ dependencies {
 
 ## Changelog
 
-### 3.10.3-SNAPSHOT
+### 3.10.3
 
 * Removed displayName from Collections
+* Babel modules 7.13.14
+* Core-js 3.10.0
+* Webpack 5.30.0
 
 ### 3.10.2
 
