@@ -1,7 +1,6 @@
 import {
 	COLLECTION_REPO_PREFIX,
 	NT_API_KEY,
-	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ,
 	PRINCIPAL_EXPLORER_WRITE/*,
 	ROLE_EXPLORER_ADMIN,
@@ -16,41 +15,25 @@ import {connect} from '/lib/explorer/repo/connect';
 import {maybeCreate as maybeCreateRepoAndBranch} from '/lib/explorer/repo/maybeCreate';
 import {runAsSu} from '/lib/explorer/runAsSu';
 import {hash} from '/lib/explorer/string/hash';
+import {create} from '/lib/explorer/document/create';
+import {update} from '/lib/explorer/document/update';
 //import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 import {
 	getUser/*,
 	hasRole*/
 } from '/lib/xp/auth';
+import {run} from '/lib/xp/context';
 
 
 function createDocument({
 	connection,
 	idField,
 	responseArray,
-	toPersist,
-	user
+	toPersist
 }) {
-	// Not allowed to set any underscore fields
-	Object.keys(toPersist).forEach((k) => {
-		if (k.startsWith('_')) {
-			delete toPersist[k];
-		}
-	});
-	//delete toPersist._id; // Checked above, but just in case code change
-	// NOTE if _name is missing, _name becomes same as generated _id
-	//delete toPersist._path; // Enforce flat structure
-	//delete toPersist._permissions; // Not allowed to control permissions
-	toPersist._indexConfig = {default: 'byType'}; // Not allowed to control indexConfig
-	toPersist._inheritsPermissions = true;
-	toPersist._parentPath = '/'; // Enforce flat structure
-	toPersist._permissions = [];
-	toPersist.createdTime = new Date();
-	toPersist.creator = user.key; // Enforce creator
-	toPersist.type = NT_DOCUMENT; // Enforce type
-	//log.info(`nodeToCreated:${toStr(toPersist)}`);
-	const createdNode = connection.create(toPersist);
-	//log.info(`createdNode:${toStr(createdNode)}`);
+	toPersist.__connection = connection;
+	const createdNode = create(toPersist);
 	if(createdNode) {
 		const responseNode = {};
 		if (idField) {
@@ -74,47 +57,16 @@ function modifyDocument({
 	toPersist//,
 	//user
 }) {
-	// Not allowed to modify any underscore fields
-	Object.keys(toPersist).forEach((k) => {
-		if (k.startsWith('_')) {
-			delete toPersist[k];
-		}
-	});
-	// No id found so Create
-	//delete toPersist._id; // Checked above, but just in case code change
-	// NOTE if _name is missing, _name becomes same as generated _id
-	//delete toPersist._path; // Enforce flat structure
-	//delete toPersist._permissions; // Not allowed to control permissions
-	//toPersist._indexConfig = {default: 'byType'}; // Not allowed to control indexConfig
-	//toPersist._inheritsPermissions = true;
-	//toPersist._parentPath = '/'; // Enforce flat structure
-	//toPersist._permissions = [];
-	//toPersist.createdTime = new Date();
-	//toPersist.creator = user.key; // Enforce creator
-	//toPersist.type = NT_DOCUMENT; // Enforce type
-	//log.info(`nodeToModify key:${id} modifyWith:${toStr(toPersist)}`);
-	const modifiedNode = connection.modify({
-		key: id,
-		editor: (node) => {
-			//log.info(`node:${toStr(node)}`);
-			node.modifiedTime = new Date();
-			//log.info(`node:${toStr(node)}`);
-			Object.keys(toPersist).forEach((property) => {
-				//const value = toPersist[property];
-				//node[property] = value;
-				node[property] = toPersist[property];
-				//log.info(`node:${toStr(node)}`);
-			});
-			return node;
-		}
-	});
-	//log.info(`modifiedNode:${toStr(modifiedNode)}`);
-	if(modifiedNode) {
+	toPersist.__connection = connection;
+	toPersist._id = id;
+	const updatedNode = update(toPersist);
+	//log.info(`updatedNode:${toStr(updatedNode)}`);
+	if(updatedNode) {
 		const responseNode = {};
 		if (idField) {
-			responseNode[idField] = modifiedNode[idField];
+			responseNode[idField] = updatedNode[idField];
 		} else {
-			responseNode._id = modifiedNode._id;
+			responseNode._id = updatedNode._id;
 		}
 		responseArray.push(responseNode);
 	} else {
@@ -329,12 +281,6 @@ export function post(request) {
 	const dataArray = forceArray(data);
 	//log.info(`dataArray:${toStr(dataArray)}`);
 
-	const writeToCollectionBranchConnection = connect({
-		branch: branchId,
-		principals: [PRINCIPAL_EXPLORER_WRITE],
-		repoId
-	});
-
 	let user = getUser();
 	if (!user) {
 		// CreateNode tries to set owner, and fails when no user
@@ -349,80 +295,86 @@ export function post(request) {
 		//log.info(`user:${toStr(user)}`);
 	}
 
-	const responseArray = [];
-	for (let j = 0; j < dataArray.length; j++) {
-		try {
-			const toPersist = dataArray[j];
+	return run({
+		//principals: [PRINCIPAL_EXPLORER_WRITE], // This allows any user to write
+		user
+	}, () => {
+		const writeToCollectionBranchConnection = connect({
+			branch: branchId,
+			principals: [PRINCIPAL_EXPLORER_WRITE], // Additional principals to execute the callback with
+			repoId//,
+			//user // Default is the default user
+		});
+		const responseArray = [];
+		for (let j = 0; j < dataArray.length; j++) {
+			try {
+				const toPersist = dataArray[j];
 
-			// CREATE when idfield, _id, _name, _path not matched
-			// Otherwise MODIFY
+				// CREATE when idfield, _id, _name, _path not matched
+				// Otherwise MODIFY
 
-			if (toPersist._id) {
-				if (writeToCollectionBranchConnection.exists(toPersist._id)) {
-					modifyDocument({
-						connection: writeToCollectionBranchConnection,
-						id: toPersist._id,
-						responseArray,
-						toPersist
-					});
+				if (toPersist._id) {
+					if (writeToCollectionBranchConnection.exists(toPersist._id)) {
+						modifyDocument({
+							connection: writeToCollectionBranchConnection,
+							id: toPersist._id,
+							responseArray,
+							toPersist
+						});
+					} else {
+						createDocument({
+							connection: writeToCollectionBranchConnection,
+							responseArray,
+							toPersist
+						});
+					}
+				} else if (toPersist._name) {
+					if (writeToCollectionBranchConnection.exists(`/${toPersist._name}`)) {
+						modifyDocument({
+							connection: writeToCollectionBranchConnection,
+							id: `/${toPersist._name}`,
+							responseArray,
+							toPersist
+						});
+					} else {
+						createDocument({
+							connection: writeToCollectionBranchConnection,
+							responseArray,
+							toPersist
+						});
+					}
+				} else if (toPersist._path) {
+					if (writeToCollectionBranchConnection.exists(toPersist._path)) {
+						modifyDocument({
+							connection: writeToCollectionBranchConnection,
+							id: toPersist._path,
+							responseArray,
+							toPersist
+						});
+					} else {
+						createDocument({
+							connection: writeToCollectionBranchConnection,
+							responseArray,
+							toPersist
+						});
+					}
 				} else {
 					createDocument({
 						connection: writeToCollectionBranchConnection,
 						responseArray,
-						toPersist,
-						user
-					});
-				}
-			} else if (toPersist._name) {
-				if (writeToCollectionBranchConnection.exists(`/${toPersist._name}`)) {
-					modifyDocument({
-						connection: writeToCollectionBranchConnection,
-						id: `/${toPersist._name}`,
-						responseArray,
 						toPersist
 					});
-				} else {
-					createDocument({
-						connection: writeToCollectionBranchConnection,
-						responseArray,
-						toPersist,
-						user
-					});
 				}
-			} else if (toPersist._path) {
-				if (writeToCollectionBranchConnection.exists(toPersist._path)) {
-					modifyDocument({
-						connection: writeToCollectionBranchConnection,
-						id: toPersist._path,
-						responseArray,
-						toPersist
-					});
-				} else {
-					createDocument({
-						connection: writeToCollectionBranchConnection,
-						responseArray,
-						toPersist,
-						user
-					});
-				}
-			} else {
-				createDocument({
-					connection: writeToCollectionBranchConnection,
-					responseArray,
-					toPersist,
-					user
+			} catch (e) {
+				log.error('Unknown error', e);
+				responseArray.push({
+					error: 'Unknown error'
 				});
 			}
-		} catch (e) {
-			log.error('Unknown error', e);
-			responseArray.push({
-				error: 'Unknown error'
-			});
 		}
-	}
-
-	return {
-		body: responseArray,
-		contentType: 'text/json;charset=utf-8'
-	};
-}
+		return {
+			body: responseArray,
+			contentType: 'text/json;charset=utf-8'
+		};
+	}); // libContext.run
+} // export function post
