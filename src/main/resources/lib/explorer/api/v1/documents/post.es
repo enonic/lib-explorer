@@ -32,8 +32,10 @@ function createDocument({
 	responseArray,
 	toPersist
 }) {
-	toPersist.__connection = connection;
-	const createdNode = create(toPersist);
+	const createdNode = create({
+		__connection: connection,
+		...toPersist
+	});
 	if(createdNode) {
 		const responseNode = {};
 		if (idField) {
@@ -57,9 +59,11 @@ function modifyDocument({
 	toPersist//,
 	//user
 }) {
-	toPersist.__connection = connection;
-	toPersist._id = id;
-	const updatedNode = update(toPersist);
+	const updatedNode = update({
+		__connection: connection,
+		_id: id,
+		...toPersist
+	});
 	//log.info(`updatedNode:${toStr(updatedNode)}`);
 	if(updatedNode) {
 		const responseNode = {};
