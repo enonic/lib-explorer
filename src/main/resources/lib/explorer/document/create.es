@@ -18,8 +18,33 @@ import {
 } from '/lib/xp/value';
 
 
+// Any Float number with a zero decimal part are implicitly cast to Integer,
+// so it is not possible to check if they are Float or not.
 function isFloat(n){
-	return Number(n) === n && n % 1 !== 0;
+	return Number(n) === n;
+	//return Number(n) === n && n % 1 !== 0; //
+
+	// Test whether a value is a number primitive value that has no fractional
+	// part and is within the size limits of what can be represented as an exact integer
+	//return n === +n && n !== (n|0);
+}
+
+
+export class ValidationError extends Error {
+	constructor(...params) {
+		//log.info('ValidationError.constructor');
+		//log.info(`ValidationError.constructor params:${toStr(...params)}`);
+		//log.info(`ValidationError.constructor params:${toStr(params)}`);
+		super(...params);
+
+		// Maintains proper stack trace for where our error was thrown (only available on V8)
+		if (Error.captureStackTrace) {
+			Error.captureStackTrace(this, ValidationError);
+		}
+
+		this.name = 'ValidationError';
+		//log.info('ValidationError.constructor end');
+	}
 }
 
 
@@ -30,15 +55,15 @@ export function tryApplyValueType({
 }) {
 	if (fieldTypes[field] === 'boolean') {
 		if (typeof value !== 'boolean') {
-			throw new Error(`Not a boolean: ${value}`);
+			throw new ValidationError(`Not a boolean: ${value}`);
 		}
 	} else if (fieldTypes[field] === 'long') {
 		if (!isInt(value)) {
-			throw new Error(`Not an integer: ${value}`);
+			throw new ValidationError(`Not an integer: ${value}`);
 		}
 	} else if (fieldTypes[field] === 'double') {
 		if (!isFloat(value)) {
-			throw new Error(`Not a floating point number: ${value}`);
+			throw new ValidationError(`Not a number: ${value}`);
 		}
 	} else if (fieldTypes[field] === 'geoPoint') {
 		if (Array.isArray(value)) {

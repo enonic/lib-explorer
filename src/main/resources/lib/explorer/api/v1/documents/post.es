@@ -15,7 +15,7 @@ import {connect} from '/lib/explorer/repo/connect';
 import {maybeCreate as maybeCreateRepoAndBranch} from '/lib/explorer/repo/maybeCreate';
 import {runAsSu} from '/lib/explorer/runAsSu';
 import {hash} from '/lib/explorer/string/hash';
-import {create} from '/lib/explorer/document/create';
+import {create/*, ValidationError*/} from '/lib/explorer/document/create';
 import {update} from '/lib/explorer/document/update';
 //import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
@@ -370,12 +370,34 @@ export function post(request) {
 					});
 				}
 			} catch (e) {
-				log.error('Unknown error', e);
-				responseArray.push({
-					error: 'Unknown error'
-				});
-			}
-		}
+				//log.error(`e:${toStr(e)}`, e);
+				//log.error(`e.message:${toStr(e.message)}`, e.message);
+				//log.error(`e.name:${toStr(e.name)}`, e.name);
+				//log.error(`e.class:${toStr(e.class)}`, e.class); // Undefined
+				if (e.class && e.class.name === 'java.time.format.DateTimeParseException') {
+					log.error(e);
+					responseArray.push({
+						error: e.message
+					});
+				} else if (e.class && e.class.name === 'java.lang.IllegalArgumentException' && e.message.includes('geo-point')) {
+					log.error(e);
+					responseArray.push({
+						error: e.message
+					});
+				//} else if (e instanceof ValidationError) { // TypeError: Cannot read property "name" from undefined
+				} else if (e.name === 'ValidationError') {
+					log.error(e);
+					responseArray.push({
+						error: e.message
+					});
+				} else {
+					log.error('Unknown error', e);
+					responseArray.push({
+						error: 'Unknown error. The stacktrace has been logged.'
+					});
+				}
+			} // try ... catch
+		} // for
 		return {
 			body: responseArray,
 			contentType: 'text/json;charset=utf-8'

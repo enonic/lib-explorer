@@ -45,6 +45,10 @@ dependencies {
 
 ## Changelog
 
+### 3.11.1
+
+* Better ValidationError handling
+
 ### 3.11.0
 
 * Added document/create and document/update

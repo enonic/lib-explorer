@@ -463,11 +463,32 @@ export function respondWithHtml({
 
 					<dt><label for="js">Javascript object or array of objects, or json of the same</label></dt>
 					<dd><textarea cols="173" id="js" name="js" rows="14">[{
+	available: true,
+	count: -999999999999999,
+	date: '2021-01-01',
+	datetime: '2021-01-01T00:00:00',
+	instant: '2021-01-01T00:00:00Z',
+	location: '59.9090442,10.7423389',
+	//price: -9.9999999999999999,
+	price: -999999999999999.9,
+	time: '00:00:00',
 	language: 'english',
 	text: 'This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission.',
 	title: 'Example Domain',
 	url: 'https://www.example.com'
 },{
+	available: false,
+	count: 999999999999999,
+	date: '2021-12-31',
+	datetime: '2021-12-31T23:59:59',
+	instant: '2021-12-31T23:59:59Z',
+	location: [
+		59.9090442,
+		10.7423389
+	],
+	//price: 9.9999999999999999,
+	price: 999999999999999.9,
+	time: '23:59:59',
 	language: 'english',
 	text: 'Whatever',
 	title: 'Whatever',
