@@ -87,6 +87,7 @@ export function tryApplyValueType({
 
 
 export function create({
+	__boolRequireValid = true,
 	__connection,
 	_name, // NOTE if _name is missing, _name becomes same as generated _id
 	...rest
@@ -120,11 +121,19 @@ export function create({
 				'type'
 			].includes(k))
 		.forEach((k) => {
-			nodeToCreate[k] = tryApplyValueType({
-				fieldTypes,
-				field: k,
-				value: rest[k]
-			});
+			try {
+				nodeToCreate[k] = tryApplyValueType({
+					fieldTypes,
+					field: k,
+					value: rest[k]
+				});
+			} catch (e) {
+				if (__boolRequireValid) {
+					throw e;
+				} else {
+					nodeToCreate[k] = rest[k];
+				}
+			}
 		});
 	//log.info(`nodeToCreate:${toStr(nodeToCreate)}`);
 

@@ -47,6 +47,7 @@ dependencies {
 
 ### 3.11.1
 
+* Add requireValid param to document API
 * Better ValidationError handling
 
 ### 3.11.0

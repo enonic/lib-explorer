@@ -27,12 +27,14 @@ import {run} from '/lib/xp/context';
 
 
 function createDocument({
+	boolRequireValid = true,
 	connection,
 	idField,
 	responseArray,
 	toPersist
 }) {
 	const createdNode = create({
+		__boolRequireValid: boolRequireValid,
 		__connection: connection,
 		...toPersist
 	});
@@ -52,6 +54,7 @@ function createDocument({
 }
 
 function modifyDocument({
+	boolRequireValid = true,
 	connection,
 	id,
 	idField,
@@ -60,6 +63,7 @@ function modifyDocument({
 	//user
 }) {
 	const updatedNode = update({
+		__boolRequireValid: boolRequireValid,
 		__connection: connection,
 		_id: id,
 		...toPersist
@@ -100,7 +104,8 @@ export function post(request) {
 		params: {
 			apiKey = '',
 			//branch = branchDefault,
-			collection: collectionParam = ''
+			collection: collectionParam = '',
+			requireValid: requireValidParam = 'true'
 		} = {},
 		pathParams: {
 			collection: collectionName = collectionParam
@@ -115,6 +120,8 @@ export function post(request) {
 	//log.info(`apiKey:${toStr(apiKey)}`);
 	//log.info(`branch:${toStr(branch)}`);
 	//log.info(`collectionName:${toStr(collectionName)}`);
+
+	const boolRequireValid = requireValidParam !== 'false';
 
 	if (!collectionName) {
 		return {
@@ -320,6 +327,7 @@ export function post(request) {
 				if (toPersist._id) {
 					if (writeToCollectionBranchConnection.exists(toPersist._id)) {
 						modifyDocument({
+							boolRequireValid,
 							connection: writeToCollectionBranchConnection,
 							id: toPersist._id,
 							responseArray,
@@ -327,6 +335,7 @@ export function post(request) {
 						});
 					} else {
 						createDocument({
+							boolRequireValid,
 							connection: writeToCollectionBranchConnection,
 							responseArray,
 							toPersist
@@ -335,6 +344,7 @@ export function post(request) {
 				} else if (toPersist._name) {
 					if (writeToCollectionBranchConnection.exists(`/${toPersist._name}`)) {
 						modifyDocument({
+							boolRequireValid,
 							connection: writeToCollectionBranchConnection,
 							id: `/${toPersist._name}`,
 							responseArray,
@@ -342,6 +352,7 @@ export function post(request) {
 						});
 					} else {
 						createDocument({
+							boolRequireValid,
 							connection: writeToCollectionBranchConnection,
 							responseArray,
 							toPersist
@@ -350,6 +361,7 @@ export function post(request) {
 				} else if (toPersist._path) {
 					if (writeToCollectionBranchConnection.exists(toPersist._path)) {
 						modifyDocument({
+							boolRequireValid,
 							connection: writeToCollectionBranchConnection,
 							id: toPersist._path,
 							responseArray,
@@ -357,6 +369,7 @@ export function post(request) {
 						});
 					} else {
 						createDocument({
+							boolRequireValid,
 							connection: writeToCollectionBranchConnection,
 							responseArray,
 							toPersist
@@ -364,6 +377,7 @@ export function post(request) {
 					}
 				} else {
 					createDocument({
+						boolRequireValid,
 						connection: writeToCollectionBranchConnection,
 						responseArray,
 						toPersist

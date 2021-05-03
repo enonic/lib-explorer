@@ -166,8 +166,20 @@ export function respondWithHtml({
 				//console.log('event', event);
 				event.preventDefault();
 
+				const params = {};
 				var apiKey = document.getElementById('apiKey').value;
 				//console.log('apiKey', apiKey);
+				if (apiKey) {
+					params.apiKey = apiKey;
+				}
+
+				var requireValidFalse = document.getElementById('requireValidFalse').checked;
+				//console.log('requireValidFalse', requireValidFalse);
+				if (requireValidFalse) {
+					params.requireValid = 'false';
+				}
+
+				let urlQuery = Object.keys(params).map((k) => \`\${k}=\${params[k]}\`).join('&');
 
 				var jsStr = document.getElementById('js').value;
 				//console.log('jsStr', jsStr);
@@ -182,7 +194,7 @@ export function respondWithHtml({
 					//console.log('json', json);
 				}
 
-				fetch(\`?apiKey=\${apiKey}\`, {
+				fetch(\`?\${urlQuery}\`, {
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
@@ -460,6 +472,14 @@ export function respondWithHtml({
 				<dl>
 					<dt><label for="apiKey">API Key</label></dt>
 					<dd><input id="apiKey" name="apiKey" placeholder="required" required size="80" type="text" value="${apiKey}"/></dd>
+
+					<dt>Require valid</dt>
+					<dd>
+						<input checked="checked" id="requireValidTrue" name="requireValid" type="radio" value="true"/>
+						<label for="requireValidTrue">True</label>
+						<input id="requireValidFalse" name="requireValid" type="radio" value="false"/>
+						<label for="requireValidFalse">False</label>
+					</dd>
 
 					<dt><label for="js">Javascript object or array of objects, or json of the same</label></dt>
 					<dd><textarea cols="173" id="js" name="js" rows="14">[{

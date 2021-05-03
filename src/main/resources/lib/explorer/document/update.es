@@ -17,6 +17,7 @@ import {tryApplyValueType} from '/lib/explorer/document/create';
 
 
 export function update({
+	__boolRequireValid = true,
 	__connection,
 	_id,
 	...fieldsToUpdate
@@ -69,11 +70,19 @@ export function update({
 			} else {
 				forDiff[field] = fieldsToUpdate[field];
 			}
-			withType[field] = tryApplyValueType({ // Twice because this destroys diff
-				fieldTypes,
-				field,
-				value: fieldsToUpdate[field]
-			});
+			try {
+				withType[field] = tryApplyValueType({ // Twice because this destroys diff
+					fieldTypes,
+					field,
+					value: fieldsToUpdate[field]
+				});
+			} catch (e) {
+				if (__boolRequireValid) {
+					throw e;
+				} else {
+					withType[field] = fieldsToUpdate[field];
+				}
+			}
 		}
 	});
 	//log.info(`dereffedNode:${toStr(dereffedNode)}`);
