@@ -417,6 +417,11 @@ export function respondWithHtml({
 						<td>required</td>
 						<td>The API key (password) for the collection you want to persist documents to.</td>
 					</tr>
+					<tr>
+						<th>requireValid</th>
+						<td>optional</td>
+						<td>The data has to be valid, according to the field types, to be created or updated. If requireValid=true and the data is not strictly valid, an error will be returned.</td>
+					</tr>
 				</tbody>
 			</table>
 

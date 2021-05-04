@@ -106,6 +106,7 @@ module.exports = {
 				'_indexConfig', // node property
 				'_inheritsPermissions', // node property
 				'_name', // node property
+				'_nodeType', // node property
 				'_parentPath', // node create property
 				'_permissions', // node property
 				'_versionKey' // node property
