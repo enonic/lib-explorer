@@ -8,7 +8,10 @@
 		"@babel/plugin-transform-object-assign",
 		["@babel/plugin-transform-runtime", {
       		"regenerator": true
-    	}]
+    	}],
+		["module-resolver", {
+			"root": ["./test"]
+		}]
 	],
 	"presets": [
 		[
