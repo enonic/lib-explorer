@@ -158,6 +158,7 @@ export function checkAndApplyTypes({
 						throw e;
 					} else {
 						boolValid = false;
+						log.warning(e.message);
 						setIn(nodeToCreate, this.path, value);
 					}
 				}

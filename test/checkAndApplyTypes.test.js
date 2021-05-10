@@ -24,16 +24,19 @@ global.log = {
 
 
 const FIELDS = {
-	exactlyOneString: {
+	aString: {
 		valueType: 'string'
 	},
-	atLeastTwoBooleans: {
+	twoBooleans: {
 		valueType: 'boolean'
+	},
+	anInteger: {
+		valueType: 'long'
 	}
 };
 
 
-test('Not a string:1 at path:exactlyOneString!', t => {
+test('Not a string:1 at path:aString!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -50,41 +53,15 @@ test('Not a string:1 at path:exactlyOneString!', t => {
 			indexConfig,
 			nodeToCreate, // modified within function
 			rest: {
-				exactlyOneString: 1
+				aString: 1
 			}
 		});
 	}, {instanceOf: ValidationError});
-	t.is(error.message, 'Not a string:1 at path:exactlyOneString!');
+	t.is(error.message, 'Not a string:1 at path:aString!');
 });
 
 
-test('Not a boolean:"one" at path:atLeastTwoBooleans!', t => {
-	const indexConfig = {
-		default: 'byType',
-		configs: [{
-			path: 'document_metadata',
-			config: 'minimal'
-		}]
-	};
-	const nodeToCreate = {_name: 'name'};
-	const error = t.throws(() => {
-		checkAndApplyTypes({
-			__boolRequireValid: true,
-			boolValid: true,
-			fields: FIELDS,
-			indexConfig,
-			nodeToCreate, // modified within function
-			rest: {
-				exactlyOneString: 'one',
-				atLeastTwoBooleans: ['one','two']
-			}
-		});
-	}, {instanceOf: ValidationError});
-	t.is(error.message, 'Not a boolean:"one" at path:atLeastTwoBooleans!');
-});
-
-
-test('Warn Not a boolean:"one" at path:atLeastTwoBooleans!', t => {
+test('WARN Not a string:1 at path:aString!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -102,15 +79,85 @@ test('Warn Not a boolean:"one" at path:atLeastTwoBooleans!', t => {
 		indexConfig,
 		nodeToCreate, // modified within function
 		rest: {
-			exactlyOneString: 'one',
-			atLeastTwoBooleans: ['one','two']
+			aString: 1
 		}
 	});
 	//print({nodeToCreate}, { maxItems: Infinity });
 	t.deepEqual(nodeToCreate, {
 		_name: 'name',
-		exactlyOneString: 'one',
-		atLeastTwoBooleans: [
+		aString: 1,
+		_indexConfig: {
+			default: 'byType',
+			configs: [{
+				path: 'document_metadata',
+				config: 'minimal'
+			}]
+		},
+		_inheritsPermissions: true,
+		_nodeType: 'com.enonic.app.explorer:document',
+		_parentPath: '/',
+		_permissions: [],
+		document_metadata: {
+			createdTime,
+			valid: false
+		}
+	});
+});
+
+
+test('Not a boolean:"one" at path:twoBooleans!', t => {
+	const indexConfig = {
+		default: 'byType',
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	const nodeToCreate = {_name: 'name'};
+	const error = t.throws(() => {
+		checkAndApplyTypes({
+			__boolRequireValid: true,
+			boolValid: true,
+			fields: FIELDS,
+			indexConfig,
+			nodeToCreate, // modified within function
+			rest: {
+				aString: 'one',
+				twoBooleans: ['one','two']
+			}
+		});
+	}, {instanceOf: ValidationError});
+	t.is(error.message, 'Not a boolean:"one" at path:twoBooleans!');
+});
+
+
+test('WARN Not a boolean:"one" at path:twoBooleans!', t => {
+	const indexConfig = {
+		default: 'byType',
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	const createdTime = new Date();
+	const nodeToCreate = {_name: 'name'};
+	checkAndApplyTypes({
+		__boolRequireValid: false,
+		__createdTime: createdTime,
+		boolValid: true,
+		fields: FIELDS,
+		indexConfig,
+		nodeToCreate, // modified within function
+		rest: {
+			aString: 'one',
+			twoBooleans: ['one','two']
+		}
+	});
+	//print({nodeToCreate}, { maxItems: Infinity });
+	t.deepEqual(nodeToCreate, {
+		_name: 'name',
+		aString: 'one',
+		twoBooleans: [
 			'one',
 			'two'
 		],
@@ -133,6 +180,75 @@ test('Warn Not a boolean:"one" at path:atLeastTwoBooleans!', t => {
 });
 
 
+test('Not an integer:"one" at path:anInteger!', t => {
+	const indexConfig = {
+		default: 'byType',
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	const nodeToCreate = {_name: 'name'};
+	const error = t.throws(() => {
+		checkAndApplyTypes({
+			__boolRequireValid: true,
+			boolValid: true,
+			fields: FIELDS,
+			indexConfig,
+			nodeToCreate, // modified within function
+			rest: {
+				anInteger: 'one'
+			}
+		});
+	}, {instanceOf: ValidationError});
+	t.is(error.message, 'Not an integer:"one" at path:anInteger!');
+});
+
+
+test('WARN Not an integer:"one" at path:anInteger!', t => {
+	const indexConfig = {
+		default: 'byType',
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	const createdTime = new Date();
+	const nodeToCreate = {_name: 'name'};
+	checkAndApplyTypes({
+		__boolRequireValid: false,
+		__createdTime: createdTime,
+		boolValid: true,
+		fields: FIELDS,
+		indexConfig,
+		nodeToCreate, // modified within function
+		rest: {
+			anInteger: 'one'
+		}
+	});
+	//print({nodeToCreate}, { maxItems: Infinity });
+	t.deepEqual(nodeToCreate, {
+		_indexConfig: {
+			default: 'byType',
+			configs: [{
+				path: 'document_metadata',
+				config: 'minimal'
+			}]
+		},
+		_inheritsPermissions: true,
+		_name: 'name',
+		_nodeType: 'com.enonic.app.explorer:document',
+		_parentPath: '/',
+		_permissions: [],
+		document_metadata: {
+			createdTime,
+			valid: false
+		},
+		anInteger: 'one'
+	});
+});
+
+
 test('No type errors, build correct nodeToCreate :)', t => {
 	const indexConfig = {
 		default: 'byType',
@@ -151,12 +267,13 @@ test('No type errors, build correct nodeToCreate :)', t => {
 		indexConfig,
 		nodeToCreate, // modified within function
 		rest: {
-			exactlyOneString: 'one',
-			atLeastTwoBooleans: [true,false]
+			aString: 'one',
+			twoBooleans: [true,false],
+			anInteger: -1
 		}
 	});
 
-	//console.debug('nodeToCreate', nodeToCreate);
+	//print({nodeToCreate}, { maxItems: Infinity });
 	t.deepEqual(nodeToCreate, {
 		_indexConfig: {
 			default: 'byType',
@@ -174,7 +291,8 @@ test('No type errors, build correct nodeToCreate :)', t => {
 			createdTime,
 			valid: true
 		},
-		exactlyOneString: 'one',
-		atLeastTwoBooleans: [true,false]
+		aString: 'one',
+		twoBooleans: [true,false],
+		anInteger: -1
 	});
 });
