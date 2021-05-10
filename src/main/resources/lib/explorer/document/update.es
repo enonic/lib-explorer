@@ -7,10 +7,9 @@ import deepEqual from 'fast-deep-equal';
 //const Diff = require('diff');
 
 import {toStr} from '/lib/util';
-import {
-	getFieldsWithIndexConfigAndValueType,
-	tryApplyValueType
-} from '/lib/explorer/document/create';
+import {getFieldsWithIndexConfigAndValueType} from '/lib/explorer/document/create';
+import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig.es';
+import {checkAndApplyTypes, tryApplyValueType} from '/lib/explorer/document/checkAndApplyTypes.es';
 
 /*const { diff: diffDocument } = new HumanDiff({
 	objectName: 'document'
@@ -46,7 +45,62 @@ export function update({
 	const withType = JSON.parse(strigified);
 
 	let boolValid = true;
-	traverse(fieldsToUpdate).forEach(function(value) { // Fat arrow destroys this
+	const indexConfig = {
+		default: 'byType', // TODO Perhaps none?
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	// 1st "pass":
+	// * Check if all required fields have values.
+	// * Check if any field have too many values.
+	// * Skipping type checking, leaving that for 2nd "pass".
+	// * Build indexConfig for any field with a value.
+	try {
+		checkOccurrencesAndBuildIndexConfig({
+			fields,
+			indexConfig,
+			rest: fieldsToUpdate
+		});
+	} catch (e) {
+		if (__boolRequireValid) {
+			throw e;
+		} else {
+			boolValid = false;
+			log.warning(e.message);
+		}
+	}
+	//log.info(`indexConfig:${toStr(indexConfig)}`);
+
+	const now = new Date();
+
+	// 2nd "pass":
+	// Skip checking occurrences, since that was checked in 1st "pass".
+	// Check types, since that was skipped in 1st "pass".
+	checkAndApplyTypes({
+		__boolRequireValid,
+		__mode: 'diff',
+		__now: now,
+		boolValid, // passed as value, not possible to modify, return instead?
+		fields,
+		indexConfig,
+		nodeToCreate: forDiff, // modified within function
+		rest: fieldsToUpdate
+	});
+
+	checkAndApplyTypes({
+		__boolRequireValid,
+		__mode: 'updates',
+		__now: now,
+		boolValid, // passed as value, not possible to modify, return instead?
+		fields,
+		indexConfig,
+		nodeToCreate: withType, // modified within function
+		rest: fieldsToUpdate
+	});
+
+	/*traverse(fieldsToUpdate).forEach(function(value) { // Fat arrow destroys this
 		if (
 			this.isLeaf // This skips arrays... thus Geodata sent as Array
 			&& !this.path[0].startsWith('_')
@@ -82,6 +136,7 @@ export function update({
 			}
 		}
 	}); // traverse
+	*/
 	log.info(`forDiff:${toStr(forDiff)}`);
 	log.info(`withType:${toStr(withType)}`);
 
@@ -91,20 +146,11 @@ export function update({
 	}
 	//log.info(`Changes detected in document with id:${_id}`);
 
-	if (!forDiff.document_metadata) {
-		forDiff.document_metadata = {};
-	}
-	forDiff.document_metadata.modifiedTime = new Date();
-	forDiff.document_metadata.valid = boolValid;
+	forDiff.document_metadata.modifiedTime = now;
 	//log.info(`Changes detected in document with id:${_id} diff:${toStr(Diff.diffJson(existingNode, forDiff))}`);
 	log.debug(`Changes detected in document with id:${_id} diff:${toStr(detailedDiff(existingNode, forDiff))}`);
 	//log.info(`Changes detected in document with id:${_id} diff:${toStr(diffDocument(existingNode, forDiff))}`);
 
-	if (!withType.document_metadata) {
-		withType.document_metadata = {};
-	}
-	withType.document_metadata.modifiedTime = forDiff.document_metadata.modifiedTime;
-	withType.document_metadata.valid = boolValid;
 	const updatedNode = __connection.modify({
 		key: _id,
 		editor: () => {

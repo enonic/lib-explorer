@@ -103,7 +103,8 @@ export function tryApplyValueType({
 
 export function checkAndApplyTypes({
 	__boolRequireValid,
-	__createdTime = new Date(),
+	__mode = 'create', // 'diff' | 'update'
+	__now = new Date(),
 	boolValid, // passed as value, thus local variable
 	fields,
 	indexConfig,
@@ -129,32 +130,38 @@ export function checkAndApplyTypes({
 					setIn(nodeToCreate, this.path, []);
 				}
 				// Check the type of all the array entries
-				value.forEach((item) => {
-					try {
-						tryApplyValueType({ // NOTE: Applied to nodeToCreate later.
-							fields,
-							pathString,
-							value: item
-						});
-					} catch (e) {
-						if (__boolRequireValid) {
-							throw e;
-						} else {
-							boolValid = false;
-							log.warning(e.message);
+				if (__mode !== 'diff') {
+					value.forEach((item) => {
+						try {
+							tryApplyValueType({ // NOTE: Applied to nodeToCreate later.
+								fields,
+								pathString,
+								value: item
+							});
+						} catch (e) {
+							if (__boolRequireValid) {
+								throw e;
+							} else {
+								boolValid = false;
+								log.warning(e.message);
+							}
 						}
-					}
-				});
+					});
+				}
 			}
 			if (this.isLeaf) { // In other words not Array or Set, just a value.
 				try {
-					const valueWithType = tryApplyValueType({
-						fields,
-						pathString,
-						value
-					});
-					//log.debug(`pathString:${pathString} value:${toStr(value)} valueWithType:${toStr(valueWithType)}`);
-					setIn(nodeToCreate, this.path, valueWithType);
+					if (__mode === 'diff') {
+						setIn(nodeToCreate, this.path, value);
+					} else { // create | update
+						const valueWithType = tryApplyValueType({
+							fields,
+							pathString,
+							value
+						});
+						//log.debug(`pathString:${pathString} value:${toStr(value)} valueWithType:${toStr(valueWithType)}`);
+						setIn(nodeToCreate, this.path, valueWithType);
+					}
 					//log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
 				} catch (e) {
 					if (__boolRequireValid) {
@@ -171,14 +178,20 @@ export function checkAndApplyTypes({
 	//log.info(`nodeToCreate:${toStr(nodeToCreate)}`);
 
 	nodeToCreate._indexConfig = indexConfig;  // Not allowed to control indexConfig
-	nodeToCreate._inheritsPermissions = true;
-	nodeToCreate._nodeType = NT_DOCUMENT; // Enforce type
-	nodeToCreate._parentPath = '/'; // Enforce flat structure
-	nodeToCreate._permissions = [];
-	nodeToCreate.document_metadata = {
-		createdTime: __createdTime,
-		//creator: user.key, // Enforce creator
-		valid: boolValid
-	};
+	if (!nodeToCreate.document_metadata) {
+		nodeToCreate.document_metadata = {};
+	}
+	//creator: user.key, // Enforce creator
+	nodeToCreate.document_metadata.valid = boolValid;
+
+	if (__mode === 'create') {
+		nodeToCreate._inheritsPermissions = true;
+		nodeToCreate._nodeType = NT_DOCUMENT; // Enforce type
+		nodeToCreate._parentPath = '/'; // Enforce flat structure
+		//nodeToCreate._permissions = [];
+		nodeToCreate.document_metadata.createdTime = __now;
+	} else if(__mode === 'update') {
+		nodeToCreate.document_metadata.modifiedTime = __now;
+	}
 	//log.info(`nodeToCreate:${toStr(nodeToCreate)}`);
 }
