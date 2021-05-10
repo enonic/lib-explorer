@@ -1,23 +1,25 @@
 import test from 'ava';
 import {blackBright,red,yellow,white} from 'cli-color';
-import {print} from 'q-i';
+//import {print} from 'q-i';
 
 import {checkAndApplyTypes} from '../src/main/resources/lib/explorer/document/checkAndApplyTypes.es';
 import {ValidationError} from '../src/main/resources/lib/explorer/document/ValidationError.es';
 
 
 var global = (1, eval)('this');
-global.global = global;
-global.globalThis = global;
-global.frames = global;
-global.self = global;
-global.window = global;
+//global.global = global;
+//global.globalThis = global;
+//global.frames = global;
+//global.self = global;
+//global.window = global;
 //module.exports = global;
 global.log = {
+	/* eslint-disable no-undef */
 	debug: (a) => console.log(blackBright(`DEBUG ${a}`)),
 	error: (a) => console.log(red(`ERROR ${a}`)),
 	info: (a) => console.log(white(`INFO ${a}`)),
 	warning: (a) => console.log(yellow(`WARN ${a}`))
+	/* eslint-enable no-undef */
 };
 
 
