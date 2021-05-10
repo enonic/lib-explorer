@@ -35,18 +35,20 @@ export const isObject = (value) => Object.prototype.toString.call(value).slice(8
 
 export function tryApplyValueType({
 	fields,
-	path,
+	pathString,
 	value
 }) {
-	//log.debug(`path:${path.join('.')} value:${toStr(value)} fields:${toStr(fields)}`);
-	const field = getIn(fields, path);
+	//log.debug(`pathString:${pathString} value:${toStr(value)} fields:${toStr(fields)}`);
+
+	const field = fields[pathString];
+
 	// Path may contain an array index. So no matching field can be found...
-	//log.debug(`path:${path.join('.')} value:${toStr(value)} field:${toStr(field)}`);
+	//log.debug(`pathString:${pathString} value:${toStr(value)} field:${toStr(field)}`);
 	if(!field) {
 		return value;
 	}
 	const valueType = field.valueType; // Works for 'obj.property', but not 'arr.0'
-	//log.debug(`path:${path.join('.')} value:${toStr(value)} valueType:${valueType}`);
+	//log.debug(`pathString:${pathString} value:${toStr(value)} valueType:${valueType}`);
 	if(!valueType) {
 		return value;
 	}
@@ -60,23 +62,23 @@ export function tryApplyValueType({
 		'xml'*/
 	].includes(valueType)) {
 		if (!isString(value)) {
-			throw new ValidationError(`Not a string:${toStr(value)} at path:${path}!`);
+			throw new ValidationError(`Not a string:${toStr(value)} at pathString:${pathString}!`);
 		}
 	} else if (valueType === 'boolean') {
 		if (typeof value !== 'boolean') {
-			throw new ValidationError(`Not a boolean:${toStr(value)} at path:${path}!`);
+			throw new ValidationError(`Not a boolean:${toStr(value)} at pathString:${pathString}!`);
 		}
 	} else if (valueType === 'long') {
 		if (!isInt(value)) {
-			throw new ValidationError(`Not an integer:${toStr(value)} at path:${path}!`);
+			throw new ValidationError(`Not an integer:${toStr(value)} at pathString:${pathString}!`);
 		}
 	} else if (valueType === 'double') {
 		if (!isFloat(value)) {
-			throw new ValidationError(`Not a number:${toStr(value)} at path:${path}!`);
+			throw new ValidationError(`Not a number:${toStr(value)} at pathString:${pathString}!`);
 		}
 	} else if (valueType === 'set') {
 		if (!isObject(value)) {
-			throw new ValidationError(`Not a set:${toStr(value)} at path:${path}!`);
+			throw new ValidationError(`Not a set:${toStr(value)} at pathString:${pathString}!`);
 		}
 	} else if (valueType === 'geoPoint') {
 		if (Array.isArray(value)) {
@@ -119,6 +121,7 @@ export function checkAndApplyTypes({
 			&& !this.path[0].startsWith('_')
 			&& !this.circular
 		) {
+			const pathString = this.path.join('.');
 			//log.info(`parent.node:${toStr(parent.node)}`); // TypeError: JSON.stringify got a cyclic data structure
 			//log.info(`this.parent.node:${toStr(this.parent.node)}`); // TypeError: JSON.stringify got a cyclic data structure
 			if (Array.isArray(value)) {
@@ -130,7 +133,7 @@ export function checkAndApplyTypes({
 					try {
 						tryApplyValueType({ // NOTE: Applied to nodeToCreate later.
 							fields,
-							path: this.path,
+							pathString,
 							value: item
 						});
 					} catch (e) {
@@ -147,10 +150,10 @@ export function checkAndApplyTypes({
 				try {
 					const valueWithType = tryApplyValueType({
 						fields,
-						path: this.path,
+						pathString,
 						value
 					});
-					//log.debug(`path:${this.path.join('.')} value:${toStr(value)} valueWithType:${toStr(valueWithType)}`);
+					//log.debug(`pathString:${pathString} value:${toStr(value)} valueWithType:${toStr(valueWithType)}`);
 					setIn(nodeToCreate, this.path, valueWithType);
 					//log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
 				} catch (e) {

@@ -36,13 +36,16 @@ const FIELDS = {
 	aFloat: {
 		valueType: 'double'
 	},
-	anObject: {
+	anobject: {
 		valueType: 'set'
+	},
+	'anobject.nestedstring': {
+		valueType: 'string'
 	}
 };
 
 
-test('Not a string:1 at path:aString!', t => {
+test('Not a string:1 at pathString:aString!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -63,11 +66,11 @@ test('Not a string:1 at path:aString!', t => {
 			}
 		});
 	}, {instanceOf: ValidationError});
-	t.is(error.message, 'Not a string:1 at path:aString!');
+	t.is(error.message, 'Not a string:1 at pathString:aString!');
 });
 
 
-test('WARN Not a string:1 at path:aString!', t => {
+test('WARN Not a string:1 at pathString:aString!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -111,7 +114,7 @@ test('WARN Not a string:1 at path:aString!', t => {
 });
 
 
-test('Not a boolean:"one" at path:twoBooleans!', t => {
+test('Not a boolean:"one" at pathString:twoBooleans!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -133,11 +136,11 @@ test('Not a boolean:"one" at path:twoBooleans!', t => {
 			}
 		});
 	}, {instanceOf: ValidationError});
-	t.is(error.message, 'Not a boolean:"one" at path:twoBooleans!');
+	t.is(error.message, 'Not a boolean:"one" at pathString:twoBooleans!');
 });
 
 
-test('WARN Not a boolean:"one" at path:twoBooleans!', t => {
+test('WARN Not a boolean:"one" at pathString:twoBooleans!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -186,7 +189,7 @@ test('WARN Not a boolean:"one" at path:twoBooleans!', t => {
 });
 
 
-test('Not an integer:"one" at path:anInteger!', t => {
+test('Not an integer:"one" at pathString:anInteger!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -209,11 +212,11 @@ test('Not an integer:"one" at path:anInteger!', t => {
 			}
 		});
 	}, {instanceOf: ValidationError});
-	t.is(error.message, 'Not an integer:"one" at path:anInteger!');
+	t.is(error.message, 'Not an integer:"one" at pathString:anInteger!');
 });
 
 
-test('WARN Not an integer:"one" at path:anInteger!', t => {
+test('WARN Not an integer:"one" at pathString:anInteger!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -257,7 +260,7 @@ test('WARN Not an integer:"one" at path:anInteger!', t => {
 });
 
 
-test('Not a number:"one" at path:aFloat!', t => {
+test('Not a number:"one" at pathString:aFloat!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -280,11 +283,11 @@ test('Not a number:"one" at path:aFloat!', t => {
 			}
 		});
 	}, {instanceOf: ValidationError});
-	t.is(error.message, 'Not a number:"one" at path:aFloat!');
+	t.is(error.message, 'Not a number:"one" at pathString:aFloat!');
 });
 
 
-test('WARN Not a number:"one" at path:aFloat!', t => {
+test('WARN Not a number:"one" at pathString:aFloat!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -328,7 +331,7 @@ test('WARN Not a number:"one" at path:aFloat!', t => {
 });
 
 
-test('Not a set:"one" at path:anObject!', t => {
+test('Not a set:"one" at pathString:anobject!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -347,15 +350,15 @@ test('Not a set:"one" at path:anObject!', t => {
 			indexConfig,
 			nodeToCreate, // modified within function
 			rest: {
-				anObject: 'one'
+				anobject: 'one'
 			}
 		});
 	}, {instanceOf: ValidationError});
-	t.is(error.message, 'Not a set:"one" at path:anObject!');
+	t.is(error.message, 'Not a set:"one" at pathString:anobject!');
 });
 
 
-test('WARN Not a set:"one" at path:anObject!', t => {
+test('WARN Not a set:"one" at pathString:anobject!', t => {
 	const indexConfig = {
 		default: 'byType',
 		configs: [{
@@ -373,7 +376,7 @@ test('WARN Not a set:"one" at path:anObject!', t => {
 		indexConfig,
 		nodeToCreate, // modified within function
 		rest: {
-			anObject: 'one'
+			anobject: 'one'
 		}
 	});
 	//print({nodeToCreate}, { maxItems: Infinity });
@@ -394,10 +397,86 @@ test('WARN Not a set:"one" at path:anObject!', t => {
 			createdTime,
 			valid: false
 		},
-		anObject: 'one'
+		anobject: 'one'
 	});
 });
 
+
+test('Not a string:true at pathString:anobject.nestedstring!', t => {
+	const indexConfig = {
+		default: 'byType',
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	const nodeToCreate = {_name: 'name'};
+	const createdTime = new Date();
+	const error = t.throws(() => {
+		checkAndApplyTypes({
+			__boolRequireValid: true,
+			__createdTime: createdTime,
+			boolValid: true,
+			fields: FIELDS,
+			indexConfig,
+			nodeToCreate, // modified within function
+			rest: {
+				anobject: {
+					nestedstring: true
+				}
+			}
+		});
+	}, {instanceOf: ValidationError});
+	t.is(error.message, 'Not a string:true at pathString:anobject.nestedstring!');
+});
+
+
+test('WARN Not a string:true at pathString:anobject.nestedstring!', t => {
+	const indexConfig = {
+		default: 'byType',
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	const nodeToCreate = {_name: 'name'};
+	const createdTime = new Date();
+	checkAndApplyTypes({
+		__boolRequireValid: false,
+		__createdTime: createdTime,
+		boolValid: true,
+		fields: FIELDS,
+		indexConfig,
+		nodeToCreate, // modified within function
+		rest: {
+			anobject: {
+				nestedstring: true
+			}
+		}
+	});
+	//print({nodeToCreate}, { maxItems: Infinity });
+	t.deepEqual(nodeToCreate, {
+		_indexConfig: {
+			default: 'byType',
+			configs: [{
+				path: 'document_metadata',
+				config: 'minimal'
+			}]
+		},
+		_inheritsPermissions: true,
+		_name: 'name',
+		_nodeType: 'com.enonic.app.explorer:document',
+		_parentPath: '/',
+		_permissions: [],
+		document_metadata: {
+			createdTime,
+			valid: false
+		},
+		anobject: {
+			nestedstring: true
+		}
+	});
+});
 
 test('No type errors, build correct nodeToCreate :)', t => {
 	const indexConfig = {
@@ -421,8 +500,8 @@ test('No type errors, build correct nodeToCreate :)', t => {
 			twoBooleans: [true,false],
 			anInteger: -1,
 			aFloat: -1.1,
-			anObject: {
-				nestedString: 'string'
+			anobject: {
+				nestedstring: 'string'
 			}
 		}
 	});
@@ -449,8 +528,8 @@ test('No type errors, build correct nodeToCreate :)', t => {
 		twoBooleans: [true,false],
 		anInteger: -1,
 		aFloat: -1.1,
-		anObject: {
-			nestedString: 'string'
+		anobject: {
+			nestedstring: 'string'
 		}
 	});
 });
