@@ -35,6 +35,9 @@ const FIELDS = {
 	},
 	aFloat: {
 		valueType: 'double'
+	},
+	anObject: {
+		valueType: 'set'
 	}
 };
 
@@ -325,6 +328,77 @@ test('WARN Not a number:"one" at path:aFloat!', t => {
 });
 
 
+test('Not a set:"one" at path:anObject!', t => {
+	const indexConfig = {
+		default: 'byType',
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	const nodeToCreate = {_name: 'name'};
+	const createdTime = new Date();
+	const error = t.throws(() => {
+		checkAndApplyTypes({
+			__boolRequireValid: true,
+			__createdTime: createdTime,
+			boolValid: true,
+			fields: FIELDS,
+			indexConfig,
+			nodeToCreate, // modified within function
+			rest: {
+				anObject: 'one'
+			}
+		});
+	}, {instanceOf: ValidationError});
+	t.is(error.message, 'Not a set:"one" at path:anObject!');
+});
+
+
+test('WARN Not a set:"one" at path:anObject!', t => {
+	const indexConfig = {
+		default: 'byType',
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	const nodeToCreate = {_name: 'name'};
+	const createdTime = new Date();
+	checkAndApplyTypes({
+		__boolRequireValid: false,
+		__createdTime: createdTime,
+		boolValid: true,
+		fields: FIELDS,
+		indexConfig,
+		nodeToCreate, // modified within function
+		rest: {
+			anObject: 'one'
+		}
+	});
+	//print({nodeToCreate}, { maxItems: Infinity });
+	t.deepEqual(nodeToCreate, {
+		_indexConfig: {
+			default: 'byType',
+			configs: [{
+				path: 'document_metadata',
+				config: 'minimal'
+			}]
+		},
+		_inheritsPermissions: true,
+		_name: 'name',
+		_nodeType: 'com.enonic.app.explorer:document',
+		_parentPath: '/',
+		_permissions: [],
+		document_metadata: {
+			createdTime,
+			valid: false
+		},
+		anObject: 'one'
+	});
+});
+
+
 test('No type errors, build correct nodeToCreate :)', t => {
 	const indexConfig = {
 		default: 'byType',
@@ -346,7 +420,10 @@ test('No type errors, build correct nodeToCreate :)', t => {
 			aString: 'one',
 			twoBooleans: [true,false],
 			anInteger: -1,
-			aFloat: -1.1
+			aFloat: -1.1,
+			anObject: {
+				nestedString: 'string'
+			}
 		}
 	});
 
@@ -371,6 +448,9 @@ test('No type errors, build correct nodeToCreate :)', t => {
 		aString: 'one',
 		twoBooleans: [true,false],
 		anInteger: -1,
-		aFloat: -1.1
+		aFloat: -1.1,
+		anObject: {
+			nestedString: 'string'
+		}
 	});
 });
