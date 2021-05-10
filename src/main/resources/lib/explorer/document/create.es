@@ -2,13 +2,15 @@ import getIn from 'get-value';
 import setIn from 'set-value';
 import traverse from 'traverse';
 
+import {ValidationError} from '/lib/explorer/document/ValidationError.es';
+import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/create.es';
 import {
 	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {getFields} from '/lib/explorer/field/getFields';
-import {toStr} from '/lib/util';
+//import {toStr} from '/lib/util';
 import {isInt, isString} from '/lib/util/value';
 //import {getUser} from '/lib/xp/auth';
 import {
@@ -47,35 +49,21 @@ export function getFieldsWithIndexConfigAndValueType() {
 		//_name,
 		fieldType,
 		indexConfig,
-		key
+		key,
+		min,
+		max
 	}) => {
 		if (key !== '_allText') {
 			fields[key] = {
 				indexConfig,
+				min,
+				max,
 				valueType: fieldType
 			};
 		}
 	});
 	//log.info(`fields:${toStr(fields)}`);
 	return fields;
-}
-
-
-export class ValidationError extends Error {
-	constructor(...params) {
-		//log.info('ValidationError.constructor');
-		//log.info(`ValidationError.constructor params:${toStr(...params)}`);
-		//log.info(`ValidationError.constructor params:${toStr(params)}`);
-		super(...params);
-
-		// Maintains proper stack trace for where our error was thrown (only available on V8)
-		if (Error.captureStackTrace) {
-			Error.captureStackTrace(this, ValidationError);
-		}
-
-		this.name = 'ValidationError';
-		//log.info('ValidationError.constructor end');
-	}
 }
 
 
@@ -138,6 +126,67 @@ export function tryApplyValueType({
 }
 
 
+export function checkAndApplyTypes({
+	__boolRequireValid,
+	boolValid, // passed as value, thus local variable
+	fields,
+	indexConfig,
+	nodeToCreate, // modified within function
+	rest
+}) {
+	traverse(rest).forEach(function(value) { // Fat arrow destroys this
+		//log.info(`this:${toStr(this)}`); // TypeError: JSON.stringify got a cyclic data structure
+		//log.info(`this.path:${toStr(this.path)}`);
+		//log.info(`this.isLeaf:${toStr(this.isLeaf)}`);
+		//log.info(`this.circular:${toStr(this.circular)}`);
+		//log.info(`value:${toStr(value)}`);
+		if (
+			this.notRoot
+			&& !this.path[0].startsWith('_')
+			&& !this.circular
+		) {
+			//log.info(`parent.node:${toStr(parent.node)}`); // TypeError: JSON.stringify got a cyclic data structure
+			//log.info(`this.parent.node:${toStr(this.parent.node)}`); // TypeError: JSON.stringify got a cyclic data structure
+			if (
+				Array.isArray(this.node)
+				&& !getIn(nodeToCreate, this.path)
+			) {
+				setIn(nodeToCreate, this.path, []);
+			}
+			if (this.isLeaf) { // In other words not Array or Set.
+				try {
+					setIn(nodeToCreate, this.path, tryApplyValueType({
+						fields,
+						path: this.path,
+						value
+					}));
+				} catch (e) {
+					if (__boolRequireValid) {
+						throw e;
+					} else {
+						boolValid = false;
+						setIn(nodeToCreate, this.path, value);
+					}
+				}
+			}
+		}
+	});
+	//log.info(`nodeToCreate:${toStr(nodeToCreate)}`);
+
+	nodeToCreate._indexConfig = indexConfig;  // Not allowed to control indexConfig
+	nodeToCreate._inheritsPermissions = true;
+	nodeToCreate._nodeType = NT_DOCUMENT; // Enforce type
+	nodeToCreate._parentPath = '/'; // Enforce flat structure
+	nodeToCreate._permissions = [];
+	nodeToCreate.document_metadata = {
+		createdTime: new Date(),
+		//creator: user.key, // Enforce creator
+		valid: boolValid
+	};
+	//log.info(`nodeToCreate:${toStr(nodeToCreate)}`);
+}
+
+
 export function create({
 	__boolRequireValid = true,
 	__connection,
@@ -163,65 +212,40 @@ export function create({
 			config: 'minimal'
 		}]
 	};
-	Object.keys(fields).forEach((path) => {
-		if (getIn(rest, path)) { // NOTE Only add indexConfig for used fields. If fields are added later, one also have to add indexConfig for them...
-			indexConfig.configs.push({
-				path,
-				config: fields[path].indexConfig === 'type' ? 'byType' : fields[path].indexConfig
-			});
-		}
-	});
-	//log.info(`indexConfig:${toStr(indexConfig)}`);
 
 	let boolValid = true;
-	traverse(rest).forEach(function(value) { // Fat arrow destroys this
-		//log.info(`this:${toStr(this)}`); // TypeError: JSON.stringify got a cyclic data structure
-		//log.info(`this.path:${toStr(this.path)}`);
-		//log.info(`this.isLeaf:${toStr(this.isLeaf)}`);
-		//log.info(`this.circular:${toStr(this.circular)}`);
-		//log.info(`value:${toStr(value)}`);
-		if (
-			this.isLeaf
-			&& !this.path[0].startsWith('_')
-			&& !this.circular
-		) {
-			//log.info(`parent.node:${toStr(parent.node)}`); // TypeError: JSON.stringify got a cyclic data structure
-			//log.info(`this.parent.node:${toStr(this.parent.node)}`); // TypeError: JSON.stringify got a cyclic data structure
-			if (
-				Array.isArray(this.parent.node)
-				&& !getIn(nodeToCreate, this.parent.path)
-			) {
-				setIn(nodeToCreate, this.parent.path, []);
-			}
-			try {
-				setIn(nodeToCreate, this.path, tryApplyValueType({
-					fields,
-					path: this.path,
-					value
-				}));
-			} catch (e) {
-				if (__boolRequireValid) {
-					throw e;
-				} else {
-					boolValid = false;
-					setIn(nodeToCreate, this.path, value);
-				}
-			}
+	// 1st "pass":
+	// * Check if all required fields have values.
+	// * Check if any field have too many values.
+	// * Skipping type checking, leaving that for 2nd "pass".
+	// * Build indexConfig for any field with a value.
+	try {
+		checkOccurrencesAndBuildIndexConfig({
+			fields,
+			indexConfig,
+			rest
+		});
+	} catch (e) {
+		if (__boolRequireValid) {
+			throw e;
+		} else {
+			boolValid = false;
+			log.warning(e.message);
 		}
-	});
-	//log.info(`nodeToCreate:${toStr(nodeToCreate)}`);
+	}
+	//log.info(`indexConfig:${toStr(indexConfig)}`);
 
-	nodeToCreate._indexConfig = indexConfig;  // Not allowed to control indexConfig
-	nodeToCreate._inheritsPermissions = true;
-	nodeToCreate._nodeType = NT_DOCUMENT; // Enforce type
-	nodeToCreate._parentPath = '/'; // Enforce flat structure
-	nodeToCreate._permissions = [];
-	nodeToCreate.document_metadata = {
-		createdTime: new Date(),
-		//creator: user.key, // Enforce creator
-		valid: boolValid
-	};
-	//log.info(`nodeToCreate:${toStr(nodeToCreate)}`);
+	// 2nd "pass":
+	// Skip checking occurrences, since that was checked in 1st "pass".
+	// Check types, since that was skipped in 1st "pass".
+	checkAndApplyTypes({
+		__boolRequireValid,
+		boolValid,
+		fields,
+		indexConfig,
+		nodeToCreate, // modified within function
+		rest
+	});
 
 	const createdNode = __connection.create(nodeToCreate);
 	//log.info(`createdNode:${toStr(createdNode)}`);
