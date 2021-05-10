@@ -32,6 +32,9 @@ const FIELDS = {
 	},
 	anInteger: {
 		valueType: 'long'
+	},
+	aFloat: {
+		valueType: 'double'
 	}
 };
 
@@ -189,9 +192,11 @@ test('Not an integer:"one" at path:anInteger!', t => {
 		}]
 	};
 	const nodeToCreate = {_name: 'name'};
+	const createdTime = new Date();
 	const error = t.throws(() => {
 		checkAndApplyTypes({
 			__boolRequireValid: true,
+			__createdTime: createdTime,
 			boolValid: true,
 			fields: FIELDS,
 			indexConfig,
@@ -249,6 +254,77 @@ test('WARN Not an integer:"one" at path:anInteger!', t => {
 });
 
 
+test('Not a number:"one" at path:aFloat!', t => {
+	const indexConfig = {
+		default: 'byType',
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	const nodeToCreate = {_name: 'name'};
+	const createdTime = new Date();
+	const error = t.throws(() => {
+		checkAndApplyTypes({
+			__boolRequireValid: true,
+			__createdTime: createdTime,
+			boolValid: true,
+			fields: FIELDS,
+			indexConfig,
+			nodeToCreate, // modified within function
+			rest: {
+				aFloat: 'one'
+			}
+		});
+	}, {instanceOf: ValidationError});
+	t.is(error.message, 'Not a number:"one" at path:aFloat!');
+});
+
+
+test('WARN Not a number:"one" at path:aFloat!', t => {
+	const indexConfig = {
+		default: 'byType',
+		configs: [{
+			path: 'document_metadata',
+			config: 'minimal'
+		}]
+	};
+	const nodeToCreate = {_name: 'name'};
+	const createdTime = new Date();
+	checkAndApplyTypes({
+		__boolRequireValid: false,
+		__createdTime: createdTime,
+		boolValid: true,
+		fields: FIELDS,
+		indexConfig,
+		nodeToCreate, // modified within function
+		rest: {
+			aFloat: 'one'
+		}
+	});
+	//print({nodeToCreate}, { maxItems: Infinity });
+	t.deepEqual(nodeToCreate, {
+		_indexConfig: {
+			default: 'byType',
+			configs: [{
+				path: 'document_metadata',
+				config: 'minimal'
+			}]
+		},
+		_inheritsPermissions: true,
+		_name: 'name',
+		_nodeType: 'com.enonic.app.explorer:document',
+		_parentPath: '/',
+		_permissions: [],
+		document_metadata: {
+			createdTime,
+			valid: false
+		},
+		aFloat: 'one'
+	});
+});
+
+
 test('No type errors, build correct nodeToCreate :)', t => {
 	const indexConfig = {
 		default: 'byType',
@@ -269,7 +345,8 @@ test('No type errors, build correct nodeToCreate :)', t => {
 		rest: {
 			aString: 'one',
 			twoBooleans: [true,false],
-			anInteger: -1
+			anInteger: -1,
+			aFloat: -1.1
 		}
 	});
 
@@ -293,6 +370,7 @@ test('No type errors, build correct nodeToCreate :)', t => {
 		},
 		aString: 'one',
 		twoBooleans: [true,false],
-		anInteger: -1
+		anInteger: -1,
+		aFloat: -1.1
 	});
 });
