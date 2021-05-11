@@ -54,6 +54,7 @@ function createDocument({
 }
 
 function modifyDocument({
+	boolPartial = false,
 	boolRequireValid = true,
 	connection,
 	id,
@@ -63,6 +64,7 @@ function modifyDocument({
 	//user
 }) {
 	const updatedNode = update({
+		__boolPartial: boolPartial,
 		__boolRequireValid: boolRequireValid,
 		__connection: connection,
 		_id: id,
@@ -105,6 +107,7 @@ export function post(request) {
 			apiKey = '',
 			//branch = branchDefault,
 			collection: collectionParam = '',
+			partial: partialParam = 'false',
 			requireValid: requireValidParam = 'true'
 		} = {},
 		pathParams: {
@@ -121,7 +124,8 @@ export function post(request) {
 	//log.info(`branch:${toStr(branch)}`);
 	//log.info(`collectionName:${toStr(collectionName)}`);
 
-	const boolRequireValid = requireValidParam !== 'false';
+	const boolRequireValid = requireValidParam !== 'false'; // Thus fallsback to true if something invalid provided
+	const boolPartial = partialParam === 'true'; // Thus fallsback to false if something invalid provided
 
 	if (!collectionName) {
 		return {
@@ -327,6 +331,7 @@ export function post(request) {
 				if (toPersist._id) {
 					if (writeToCollectionBranchConnection.exists(toPersist._id)) {
 						modifyDocument({
+							boolPartial,
 							boolRequireValid,
 							connection: writeToCollectionBranchConnection,
 							id: toPersist._id,
@@ -344,6 +349,7 @@ export function post(request) {
 				} else if (toPersist._name) {
 					if (writeToCollectionBranchConnection.exists(`/${toPersist._name}`)) {
 						modifyDocument({
+							boolPartial,
 							boolRequireValid,
 							connection: writeToCollectionBranchConnection,
 							id: `/${toPersist._name}`,
@@ -361,6 +367,7 @@ export function post(request) {
 				} else if (toPersist._path) {
 					if (writeToCollectionBranchConnection.exists(toPersist._path)) {
 						modifyDocument({
+							boolPartial,
 							boolRequireValid,
 							connection: writeToCollectionBranchConnection,
 							id: toPersist._path,

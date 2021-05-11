@@ -1,5 +1,7 @@
 import getIn from 'get-value';
 
+import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
+
 //import {ValidationError} from '/lib/explorer/document/ValidationError.es';
 import {ValidationError} from './ValidationError.es';
 
@@ -35,7 +37,12 @@ export function checkOccurrencesAndBuildIndexConfig({
 		if (fieldValue) { // NOTE Only add indexConfig for used fields. If fields are added later, one also have to add indexConfig for them...
 			indexConfig.configs.push({
 				path,
-				config: fields[path].indexConfig === 'type' ? 'byType' : fields[path].indexConfig
+				config: templateToConfig({
+					template: fields[path].indexConfig === 'type' ? 'byType' : fields[path].indexConfig,
+					indexValueProcessors: [],
+					languages: []
+				})
+
 			});
 		}
 	});

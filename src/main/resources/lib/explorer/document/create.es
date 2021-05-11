@@ -1,5 +1,6 @@
 import {checkAndApplyTypes} from '/lib/explorer/document/checkAndApplyTypes.es';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig.es';
+import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {getFields} from '/lib/explorer/field/getFields';
@@ -57,10 +58,18 @@ export function create({
 
 	const fields = getFieldsWithIndexConfigAndValueType();
 	const indexConfig = {
-		default: 'byType', // TODO Perhaps none?
+		default: templateToConfig({
+			template: 'byType', // TODO Perhaps none?
+			indexValueProcessors: [],
+			languages: []
+		}),
 		configs: [{
 			path: 'document_metadata',
-			config: 'minimal'
+			config: templateToConfig({
+				template: 'minimal',
+				indexValueProcessors: [],
+				languages: []
+			})
 		}]
 	};
 

@@ -1,6 +1,6 @@
-import getIn from 'get-value';
-import setIn from 'set-value';
-import traverse from 'traverse';
+//import getIn from 'get-value';
+//import setIn from 'set-value';
+//import traverse from 'traverse';
 import {detailedDiff} from 'deep-object-diff';
 import deepEqual from 'fast-deep-equal';
 //import HumanDiff from 'human-object-diff';
@@ -9,7 +9,8 @@ import deepEqual from 'fast-deep-equal';
 import {toStr} from '/lib/util';
 import {getFieldsWithIndexConfigAndValueType} from '/lib/explorer/document/create';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig.es';
-import {checkAndApplyTypes, tryApplyValueType} from '/lib/explorer/document/checkAndApplyTypes.es';
+import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/checkAndApplyTypes.es';
+import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 
 /*const { diff: diffDocument } = new HumanDiff({
 	objectName: 'document'
@@ -17,6 +18,7 @@ import {checkAndApplyTypes, tryApplyValueType} from '/lib/explorer/document/chec
 
 
 export function update({
+	__boolPartial = false,
 	__boolRequireValid = true,
 	__connection,
 	_id,
@@ -26,11 +28,13 @@ export function update({
 
 	...fieldsToUpdate
 }) {
+	//log.debug(`__boolPartial:${toStr(__boolPartial)}`);
+	//log.debug(`__boolRequireValid:${toStr(__boolRequireValid)}`);
+	//log.debug(`_id:${toStr(_id)}`);
+	//log.debug(`fieldsToUpdate:${toStr(fieldsToUpdate)}`);
 	if(!_id) {
 		throw new Error('Missing required parameter _id!');
 	}
-	//log.info(`_id:${toStr(_id)}`);
-	//log.info(`fieldsToUpdate:${toStr(fieldsToUpdate)}`);
 	const existingNode = __connection.get(_id);
 	if (!existingNode) {
 		throw new Error(`Can't update document with id:${_id} because it does not exist!`);
@@ -44,12 +48,34 @@ export function update({
 	const forDiff = JSON.parse(strigified);
 	const withType = JSON.parse(strigified);
 
+	// Delete old data if not partial update:
+	if (!__boolPartial) {
+		Object.keys(forDiff).forEach((k) => {
+			log.debug(`k:${k}`);
+			if (!k.startsWith('_') && !['document_metadata'].includes(k)) {
+				log.debug(`deleting key:${k} with value:${toStr(forDiff[k])}`);
+				delete forDiff[k];
+				delete withType[k];
+			}
+		});
+	}
+	log.debug(`forDiff:${toStr(forDiff)}`);
+	//log.debug(`withType:${toStr(withType)}`);
+
 	let boolValid = true;
 	const indexConfig = {
-		default: 'byType', // TODO Perhaps none?
+		default: templateToConfig({
+			template: 'byType', // TODO Perhaps none?
+			indexValueProcessors: [],
+			languages: []
+		}),
 		configs: [{
 			path: 'document_metadata',
-			config: 'minimal'
+			config: templateToConfig({
+				template: 'minimal',
+				indexValueProcessors: [],
+				languages: []
+			})
 		}]
 	};
 	// 1st "pass":
@@ -138,7 +164,7 @@ export function update({
 	}); // traverse
 	*/
 	log.info(`forDiff:${toStr(forDiff)}`);
-	log.info(`withType:${toStr(withType)}`);
+	//log.info(`withType:${toStr(withType)}`);
 
 	if (deepEqual(existingNode, forDiff)) {
 		log.warning(`No changes detected, not updating document with id:${_id}`);

@@ -179,6 +179,12 @@ export function respondWithHtml({
 					params.requireValid = 'false';
 				}
 
+				var partialTrue = document.getElementById('partialTrue').checked;
+				//console.log('partialTrue', partialTrue);
+				if (partialTrue) {
+					params.partial = 'true';
+				}
+
 				let urlQuery = Object.keys(params).map((k) => \`\${k}=\${params[k]}\`).join('&');
 
 				var jsStr = document.getElementById('js').value;
@@ -273,49 +279,57 @@ export function respondWithHtml({
 					<tr>
 						<th>Name</th>
 						<th>Attributes</th>
+						<th>Default</th>
 						<th>Description</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<th>apiKey</th>
-						<td>required</td>
+						<td>&lt;required&gt;</td>
+						<td></td>
 						<td>The API key (password) for the collection you want to get documents from.</td>
 					</tr>
 
 					<tr>
 						<th>id</th>
-						<td>optionial</td>
+						<td>&lt;optional&gt;</td>
+						<td></td>
 						<td>Id of document to get. May supply multiple. Will be converted into a query filter on the serverside.</td>
 					</tr>
 
 					<tr>
 						<th>count</th>
-						<td>optional (defaults to 10, limited to between 1 and 100)</td>
-						<td>How many documents to get.</td>
+						<td>&lt;optional&gt;</td>
+						<td>10</td>
+						<td>How many documents to get. Limited to between 1 and 100.</td>
 					</tr>
 
 					<tr>
 						<th>start</th>
-						<td>optional (defaults to 0)</td>
+						<td>&lt;optional&gt;</td>
+						<td>0</td>
 						<td>Start index (used for paging).</td>
 					</tr>
 
 					<tr>
 						<th>filters</th>
-						<td>optional</td>
+						<td>&lt;optional&gt;</td>
+						<td></td>
 						<td>Query filters. See <a href="https://developer.enonic.com/docs/xp/stable/storage/filters">documentation</a>.</td>
 					</tr>
 
 					<tr>
 						<th>query</th>
-						<td>optional</td>
+						<td>&lt;optional&gt;</td>
+						<td></td>
 						<td>Query expression. Keep in mind that filters are usually more quicker. See <a href="https://developer.enonic.com/docs/xp/stable/storage/noql">documentation</a>.</td>
 					</tr>
 
 					<tr>
 						<th>sort</th>
-						<td>optional (defaults to score DESC)</td>
+						<td>&lt;optional&gt;</td>
+						<td>score DESC</td>
 						<td>Sorting expression.</td>
 					</tr>
 
@@ -408,19 +422,28 @@ export function respondWithHtml({
 					<tr>
 						<th>Name</th>
 						<th>Attributes</th>
+						<th>Default</th>
 						<th>Description</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<th>apiKey</th>
-						<td>required</td>
+						<td>&lt;required&gt;</td>
+						<td></td>
 						<td>The API key (password) for the collection you want to persist documents to.</td>
 					</tr>
 					<tr>
 						<th>requireValid</th>
-						<td>optional</td>
+						<td>&lt;optional&gt;</td>
+						<td>true</td>
 						<td>The data has to be valid, according to the field types, to be created or updated. If requireValid=true and the data is not strictly valid, an error will be returned.</td>
+					</tr>
+					<tr>
+						<th>partial</th>
+						<td>&lt;optional&gt;</td>
+						<td>false</td>
+						<td>When true, values are only added or updated. Unprovided values are not removed.</td>
 					</tr>
 				</tbody>
 			</table>
@@ -484,6 +507,14 @@ export function respondWithHtml({
 						<label for="requireValidTrue">True</label>
 						<input id="requireValidFalse" name="requireValid" type="radio" value="false"/>
 						<label for="requireValidFalse">False</label>
+					</dd>
+
+					<dt>Partial</dt>
+					<dd>
+						<input id="partialTrue" name="partial" type="radio" value="true"/>
+						<label for="partialTrue">True</label>
+						<input checked="checked" id="partialFalse" name="partial" type="radio" value="false"/>
+						<label for="partialFalse">False</label>
 					</dd>
 
 					<dt><label for="js">Javascript object or array of objects, or json of the same</label></dt>
@@ -557,12 +588,12 @@ export function respondWithHtml({
 				<tbody>
 					<tr>
 						<th>apiKey</th>
-						<td>required</td>
+						<td>&lt;required&gt;</td>
 						<td>The API key (password) for the collection you want to delete documents from.</td>
 					</tr>
 					<tr>
 						<th>id</th>
-						<td>required</td>
+						<td>&lt;required&gt;</td>
 						<td>Id of document to delete. May supply multiple.</td>
 					</tr>
 				</tbody>
