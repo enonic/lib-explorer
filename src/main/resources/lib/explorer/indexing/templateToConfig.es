@@ -1,8 +1,15 @@
+const isObject = (value) => Object.prototype.toString.call(value).slice(8,-1) === 'Object';
+
 export function templateToConfig({
 	template,
 	indexValueProcessors,// = [],
 	languages// = []
 }) {
+	if (isObject(template)) {
+		template.indexValueProcessors = indexValueProcessors;
+		template.languages = languages;
+		return template;
+	}
 	if (template === 'none') {
 		return {
 			enabled: false,

@@ -81,6 +81,7 @@ export function create({
 	// * Build indexConfig for any field with a value.
 	try {
 		checkOccurrencesAndBuildIndexConfig({
+			boolRequireValid: __boolRequireValid,
 			fields,
 			indexConfig,
 			rest
@@ -90,7 +91,7 @@ export function create({
 			throw e;
 		} else {
 			boolValid = false;
-			log.warning(e.message);
+			//log.warning(e.message); // Already logged within function
 		}
 	}
 	//log.info(`indexConfig:${toStr(indexConfig)}`);

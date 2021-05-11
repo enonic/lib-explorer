@@ -39,6 +39,16 @@ export function update({
 	if (!existingNode) {
 		throw new Error(`Can't update document with id:${_id} because it does not exist!`);
 	}
+
+	// Sort by path for diff
+	existingNode._indexConfig.configs = existingNode._indexConfig.configs.sort((a,b) => {
+		const pathA = a.path;
+		const pathB = b.path;
+		if (pathA < pathB) {return -1;}
+		if (pathA > pathB) {return 1;}
+		return 0;// equal
+	});
+
 	//log.info(`existingNode:${toStr(existingNode)}`);
 
 	const fields = getFieldsWithIndexConfigAndValueType();
@@ -51,15 +61,15 @@ export function update({
 	// Delete old data if not partial update:
 	if (!__boolPartial) {
 		Object.keys(forDiff).forEach((k) => {
-			log.debug(`k:${k}`);
+			//log.debug(`k:${k}`);
 			if (!k.startsWith('_') && !['document_metadata'].includes(k)) {
-				log.debug(`deleting key:${k} with value:${toStr(forDiff[k])}`);
+				//log.debug(`deleting key:${k} with value:${toStr(forDiff[k])}`);
 				delete forDiff[k];
 				delete withType[k];
 			}
 		});
 	}
-	log.debug(`forDiff:${toStr(forDiff)}`);
+	//log.debug(`forDiff:${toStr(forDiff)}`);
 	//log.debug(`withType:${toStr(withType)}`);
 
 	let boolValid = true;
@@ -85,6 +95,7 @@ export function update({
 	// * Build indexConfig for any field with a value.
 	try {
 		checkOccurrencesAndBuildIndexConfig({
+			boolRequireValid: __boolRequireValid,
 			fields,
 			indexConfig,
 			rest: fieldsToUpdate
@@ -94,7 +105,7 @@ export function update({
 			throw e;
 		} else {
 			boolValid = false;
-			log.warning(e.message);
+			//log.warning(e.message); // Already logged within function
 		}
 	}
 	//log.info(`indexConfig:${toStr(indexConfig)}`);
@@ -163,7 +174,7 @@ export function update({
 		}
 	}); // traverse
 	*/
-	log.info(`forDiff:${toStr(forDiff)}`);
+	//log.info(`forDiff:${toStr(forDiff)}`);
 	//log.info(`withType:${toStr(withType)}`);
 
 	if (deepEqual(existingNode, forDiff)) {
