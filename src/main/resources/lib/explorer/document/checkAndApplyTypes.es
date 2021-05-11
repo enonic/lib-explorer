@@ -49,7 +49,7 @@ export function tryApplyValueType({
 	}
 	const valueType = field.valueType; // Works for 'obj.property', but not 'arr.0'
 	//log.debug(`pathString:${pathString} value:${toStr(value)} valueType:${valueType}`);
-	if(!valueType) {
+	if(!valueType || valueType === 'any') {
 		return value;
 	}
 
