@@ -39,6 +39,7 @@ export function update({
 	if (!existingNode) {
 		throw new Error(`Can't update document with id:${_id} because it does not exist!`);
 	}
+	//log.info(`existingNode:${toStr(existingNode)}`);
 
 	// Sort by path for diff
 	existingNode._indexConfig.configs = existingNode._indexConfig.configs.sort((a,b) => {
@@ -48,8 +49,8 @@ export function update({
 		if (pathA > pathB) {return 1;}
 		return 0;// equal
 	});
+	log.debug(`existingNode._indexConfig.configs:${toStr(existingNode._indexConfig.configs)}`);
 
-	//log.info(`existingNode:${toStr(existingNode)}`);
 
 	const fields = getFieldsWithIndexConfigAndValueType();
 	//log.info(`fields:${toStr(fields)}`);

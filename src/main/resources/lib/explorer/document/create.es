@@ -4,7 +4,7 @@ import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {getFields} from '/lib/explorer/field/getFields';
-//import {toStr} from '/lib/util';
+import {toStr} from '/lib/util';
 //import {getUser} from '/lib/xp/auth';
 
 
@@ -108,6 +108,7 @@ export function create({
 		rest
 	});
 
+	log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
 	const createdNode = __connection.create(nodeToCreate);
 	//log.info(`createdNode:${toStr(createdNode)}`);
 

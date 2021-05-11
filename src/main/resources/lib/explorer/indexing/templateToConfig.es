@@ -8,6 +8,7 @@ export function templateToConfig({
 	if (isObject(template)) {
 		template.indexValueProcessors = indexValueProcessors;
 		template.languages = languages;
+		// TODO path: true becomes false
 		return template;
 	}
 	if (template === 'none') {
