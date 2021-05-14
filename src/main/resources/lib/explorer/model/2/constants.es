@@ -46,7 +46,7 @@ export const PATH_INTERFACES = '/interfaces';
 
 export const NO_VALUES_FIELDS = [{
 	key: '_allText',
-	_name: '_allText', // sanitize removes _ and makes T small
+	_name: 'alltext', // sanitize removes _ and makes T small
 	denyDelete: true,
 	denyValues: true,
 	//displayName: 'All text',
