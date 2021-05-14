@@ -25,9 +25,15 @@ export function query({
 	start = 0
 } = {}) {
 	//log.info(toStr({connection, count, filters, query, sort}));
-	filters = addFilter({
-		filters,
-		filter: hasValue('type', [NT_SYNONYM])
+	addFilter({
+		clause: 'should',
+		filter: hasValue('_nodeType', [NT_SYNONYM]),
+		filters
+	});
+	addFilter({
+		clause: 'should',
+		filter: hasValue('type', [NT_SYNONYM]),
+		filters
 	});
 	const queryParams = {
 		aggregations,

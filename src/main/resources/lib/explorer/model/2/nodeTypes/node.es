@@ -1,4 +1,4 @@
-import {ucFirst} from '/lib/explorer/ucFirst';
+//import {ucFirst} from '/lib/explorer/ucFirst';
 
 
 export function node({
@@ -7,7 +7,7 @@ export function node({
 	_indexConfig = {
 		default: 'byType'
 	},
-	displayName = ucFirst(_name),
+	//displayName = ucFirst(_name), // Removed: Applied for individual nodeTypes instead.
 	...rest
 }) {
 	if (!_name) { throw new Error('_name is a required parameter'); }
@@ -15,7 +15,7 @@ export function node({
 		_parentPath,
 		_name,
 		_indexConfig,
-		displayName,
+		//displayName, // Removed: Applied for individual nodeTypes instead.
 		...rest
 	};
-};
+}

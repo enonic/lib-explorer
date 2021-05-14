@@ -35,12 +35,20 @@ export function query({
 	}
 	//log.info(toStr({count,sort,start}));
 
+	addFilter({
+		clause: 'should',
+		filter: hasValue('_nodeType', [NT_COLLECTION]),
+		filters
+	});
+	addFilter({
+		clause: 'should',
+		filter: hasValue('type', [NT_COLLECTION]),
+		filters
+	});
+
 	const queryParams = {
 		count,
-		filters: addFilter({
-			filters,
-			filter: hasValue('type', [NT_COLLECTION])
-		}),
+		filters,
 		query,
 		sort,
 		start

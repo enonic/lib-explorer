@@ -2,19 +2,23 @@
 
 import {NT_FIELD_VALUE} from '/lib/explorer/model/2/constants';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
-import {dirname} from '/lib/explorer/path/dirname';
+//import {dirname} from '/lib/explorer/path/dirname';
+import {ucFirst} from '/lib/explorer/ucFirst';
 
 
 export function fieldValue({
+	/* eslint-disable no-unused-vars */
 	_id, // avoid from ...rest
 	_permissions, // avoid from ...rest
 	_path, // avoid from ...rest
+	/* eslint-enable no-unused-vars */
 	field,
 	//_parentPath = dirname(_path),
 	_parentPath = `/fields/${field}`,
 	fieldReference,
 	value,
 	_name = value,
+	displayName = ucFirst(_name),
 	...rest
 }) {
 	/*log.info(toStr({
@@ -30,12 +34,13 @@ export function fieldValue({
 	if (!value) { throw new Error('value is a required parameter'); }
 	return node({
 		...rest,
-		_parentPath,
-		_name,
 		_indexConfig: {default: 'byType'},
+		_name,
+		_nodeType: NT_FIELD_VALUE,
+		_parentPath,
+		displayName,
 		field,
 		fieldReference,
-		type: NT_FIELD_VALUE,
 		value
 	});
 } // fieldValue

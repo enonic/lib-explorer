@@ -15,9 +15,15 @@ export function query({
 	sort = '_name ASC',
 	start = 0
 } = {}) {
-	filters = addFilter({
-		filters,
-		filter: hasValue('type', [NT_STOP_WORDS])
+	addFilter({
+		clause: 'should',
+		filter: hasValue('_nodeType', [NT_STOP_WORDS]),
+		filters
+	});
+	addFilter({
+		clause: 'should',
+		filter: hasValue('type', [NT_STOP_WORDS]),
+		filters
 	});
 	const queryParams = {
 		aggregations,

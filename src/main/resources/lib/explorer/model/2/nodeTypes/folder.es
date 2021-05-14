@@ -19,12 +19,12 @@ export function folder({
 }) {
 	return node({
 		...rest,
-		_indexConfig: {default: 'none'},
+		_indexConfig: {default: 'minimal'},
 		_inheritsPermissions: true,
 		_name,
+		_nodeType: NT_FOLDER,
 		_parentPath,
 		creator: __user.key,
-		createdTime: new Date(),
-		type: NT_FOLDER
+		createdTime: new Date()
 	});
 }

@@ -104,14 +104,27 @@ export const DEFAULT_INTERFACE = {
 				params: {
 					field: 'uri'
 				}
-			},{
+			}/*,{
 				filter: 'hasValue',
 				params: {
 					field: 'type',
 					values: NT_DOCUMENT
 				}
-			}
+			}*/
 
-		]
+		],
+		should: [{
+			filter: 'hasValue',
+			params: {
+				field: '_nodeType',
+				values: NT_DOCUMENT
+			}
+		},{
+			filter: 'hasValue',
+			params: {
+				field: 'type',
+				values: NT_DOCUMENT
+			}
+		}]
 	}
 };

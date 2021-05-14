@@ -2,11 +2,14 @@ import {
 	NT_THESAURUS
 } from '/lib/explorer/model/2/constants';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
+import {ucFirst} from '/lib/explorer/ucFirst';
 
 
 export function thesaurus({
+	_name,
 	_parentPath = '/thesauri',
 	description,
+	displayName = ucFirst(_name), // TODO remove?
 	...rest
 }) {
 	delete rest._id;
@@ -14,9 +17,11 @@ export function thesaurus({
 	delete rest._permissions;
 	return node({
 		...rest,
-		_parentPath,
 		_indexConfig: {default: 'byType'},
-		type: NT_THESAURUS,
-		description
+		_name,
+		_nodeType: NT_THESAURUS,
+		_parentPath,
+		description,
+		displayName // TODO remove?
 	});
 } // field

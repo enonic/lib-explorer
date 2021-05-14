@@ -21,13 +21,20 @@ export function query({
 		repoId: REPO_JOURNALS,
 		principals: [PRINCIPAL_EXPLORER_READ]
 	});
+	addFilter({
+		clause: 'should',
+		filters,
+		filter: hasValue('_nodeType', [NT_JOURNAL])
+	});
+	addFilter({
+		clause: 'should',
+		filters,
+		filter: hasValue('type', [NT_JOURNAL])
+	});
 	const queryParams = {
 		aggregations,
 		count,
-		filters: addFilter({
-			filters,
-			filter: hasValue('type', [NT_JOURNAL])
-		}),
+		filters,
 		query,
 		sort,
 		start
@@ -39,12 +46,12 @@ export function query({
 		//log.info(toStr({node}));
 		const node = connection.get(hit.id);
 		if (!node.errors) {
-			node.errors = []
+			node.errors = [];
 		} else if (!Array.isArray(node.errors)) {
 			node.errors = [node.errors];
 		}
 		if (!node.successes) {
-			node.successes = []
+			node.successes = [];
 		} else if (!Array.isArray(node.successes)) {
 			node.successes = [node.successes];
 		}

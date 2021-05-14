@@ -1,6 +1,7 @@
 import {
 	NT_DOCUMENT
 } from '/lib/explorer/model/2/constants';
+import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
 import {hash} from '/lib/explorer/string/hash';
 
@@ -23,14 +24,62 @@ export function Document({
 	return node({
 		...rest,
 		_parentPath,
-		_indexConfig: {default: 'byType'},
+		_indexConfig: {
+			default: templateToConfig({
+				template: 'byType', // TODO Perhaps none?
+				indexValueProcessors: [],
+				languages: []
+			}),
+			configs: [{
+				path: 'collectorAppName',
+				config: templateToConfig({
+					template: 'minimal',
+					indexValueProcessors: [],
+					languages: []
+				})
+			},{
+				path: 'collectorId',
+				config: templateToConfig({
+					template: 'minimal',
+					indexValueProcessors: [],
+					languages: []
+				})
+			},{
+				path: 'collectorVersion',
+				config: templateToConfig({
+					template: 'minimal',
+					indexValueProcessors: [],
+					languages: []
+				})
+			},{
+				path: 'document_metadata',
+				config: templateToConfig({
+					template: 'minimal',
+					indexValueProcessors: [],
+					languages: []
+				})
+			},{
+				path: 'uri',
+				config: templateToConfig({
+					template: 'byType',
+					indexValueProcessors: [],
+					languages: []
+				})
+			}] // TODO indexConfig for ...rest
+		},
+		//_inheritsPermissions: true,
 		_name,
+		_nodeType: NT_DOCUMENT,
 		collectorAppName,
 		collectorId, // <appname>:<taskname>
 		collectorVersion,
+		document_metadata: {
+			createdTime: new Date()//,
+			//modifiedTime: new Date(),
+			//valid: ?, // TODO validation of ...rest
+		},
 		//text,
 		//title,
-		type: NT_DOCUMENT,
 		uri
 	});
 } // Document

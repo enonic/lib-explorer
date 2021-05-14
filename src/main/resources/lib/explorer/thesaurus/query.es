@@ -19,8 +19,14 @@ export function query({
 	thesauri
 } = {}) {
 	addFilter({
-		filters,
-		filter: hasValue('type', [NT_THESAURUS])
+		clause: 'should',
+		filter: hasValue('_nodeType', [NT_THESAURUS]),
+		filters
+	});
+	addFilter({
+		clause: 'should',
+		filter: hasValue('type', [NT_THESAURUS]),
+		filters
 	});
 	if (thesauri) {
 		const thesauriArr = forceArray(thesauri);

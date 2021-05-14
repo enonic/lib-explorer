@@ -10,12 +10,19 @@ export function query({
 	query = '', //"_parentPath = '/interfaces'",
 	sort = '_name ASC'
 } = {}) {
+	addFilter({
+		clause: 'should',
+		filters,
+		filter: hasValue('_nodeType', [NT_INTERFACE])
+	});
+	addFilter({
+		clause: 'should',
+		filters,
+		filter: hasValue('type', [NT_INTERFACE])
+	});
 	const queryParams = {
 		count,
-		filters: addFilter({
-			filters,
-			filter: hasValue('type', [NT_INTERFACE])
-		}),
+		filters,
 		query,
 		sort
 	};

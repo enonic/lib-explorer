@@ -9,6 +9,9 @@ import {node} from '/lib/explorer/model/2/nodeTypes/node';
 
 
 export function journal({
+	/* eslint-disable no-unused-vars */
+	displayName, // avoid from ...rest
+	/* eslint-disable no-unused-vars */
 	_parentPath = '/',
 	name,
 	startTime,
@@ -26,9 +29,8 @@ export function journal({
 	delete rest._permissions;
 	return node({
 		...rest,
-		_parentPath,
 		_indexConfig: {
-			default: 'none',
+			default: 'minimal',
 			configs: [{
 				path: 'name',
 				config: 'minimal'
@@ -53,6 +55,7 @@ export function journal({
 			}]
 		},
 		_name,
+		_nodeType: NT_JOURNAL,
 		_parentPath,
 		name,
 		errorCount,
@@ -61,7 +64,6 @@ export function journal({
 		endTime: instant(new Date(endTime+0.0)),
 		duration,
 		errors,
-		successes,
-		type: NT_JOURNAL
+		successes
 	});
 } // journal

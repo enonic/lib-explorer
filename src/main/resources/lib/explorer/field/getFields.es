@@ -7,10 +7,19 @@ import {hasValue} from '/lib/explorer/query/hasValue';
 
 export function getFields({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
-	fields
+	fields,
+	filters = {},
+	sort = '_name ASC'
 } = {}) {
-	const filters = addFilter({
-		filter: hasValue('type', [NT_FIELD])
+	addFilter({
+		clause: 'should', // One or more of the functions in the should array must evaluate to true for the filter to match
+		filter: hasValue('_nodeType', [NT_FIELD]),
+		filters
+	});
+	addFilter({
+		clause: 'should', // One or more of the functions in the should array must evaluate to true for the filter to match
+		filter: hasValue('type', [NT_FIELD]),
+		filters
 	});
 	if (fields) {
 		addFilter({
@@ -18,12 +27,12 @@ export function getFields({
 			filters // reference gets modified
 		});
 	}
-	//log.info(`filters:${toStr(filters)}`);
+	//log.debug(`filters:${toStr(filters)}`);
 	const queryParams = {
 		count: -1,
 		filters,
 		query: '', //"_parentPath = '/fields'",
-		sort: '_name ASC'
+		sort
 	};
 	const queryRes = connection.query(queryParams);
 	//log.info(`queryRes:${toStr(queryRes)}`);

@@ -191,13 +191,19 @@ export function post(request) {
 			boolean: {
 				must: [{
 					hasValue: {
-						field: 'type',
-						values: [NT_API_KEY]
-					}
-				},{
-					hasValue: {
 						field: 'key',
 						values: [hashedApiKey]
+					}
+				}],
+				should: [{
+					hasValue: {
+						field: '_nodeType',
+						values: [NT_API_KEY]
+					}
+				}, {
+					hasValue: {
+						field: 'type',
+						values: [NT_API_KEY]
 					}
 				}]
 			}

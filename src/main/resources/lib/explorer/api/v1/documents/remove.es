@@ -78,13 +78,19 @@ export function remove(request) {
 			boolean: {
 				must: [{
 					hasValue: {
-						field: 'type',
+						field: 'key',
+						values: [hashedApiKey]
+					}
+				}],
+				should: [{
+					hasValue: {
+						field: '_nodeType',
 						values: [NT_API_KEY]
 					}
 				},{
 					hasValue: {
-						field: 'key',
-						values: [hashedApiKey]
+						field: 'type',
+						values: [NT_API_KEY]
 					}
 				}]
 			}

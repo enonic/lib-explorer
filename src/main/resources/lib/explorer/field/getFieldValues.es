@@ -10,7 +10,13 @@ export function getFieldValues({
 	field
 } = {}) {
 	const filters = addFilter({
-		filter: hasValue('type', NT_FIELD_VALUE)
+		clause: 'should',
+		filter: hasValue('_nodeType', NT_FIELD_VALUE)
+	});
+	addFilter({
+		clause: 'should',
+		filter: hasValue('type', NT_FIELD_VALUE),
+		filters
 	});
 	if (field) {
 		addFilter({

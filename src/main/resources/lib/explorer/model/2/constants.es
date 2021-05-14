@@ -49,7 +49,7 @@ export const NO_VALUES_FIELDS = [{
 	_name: '_allText', // sanitize removes _ and makes T small
 	denyDelete: true,
 	denyValues: true,
-	displayName: 'All text',
+	//displayName: 'All text',
 	inResults: false
 }];
 
@@ -57,8 +57,8 @@ export const READONLY_FIELDS = [{
 	key: 'type',
 	_name: 'type',
 	denyDelete: true,
-	denyValues: false,
-	displayName: 'Type'/*,
+	denyValues: false/*,
+	displayName: 'Type',
 	readonly: true*/
 }];
 
@@ -66,26 +66,26 @@ export const READWRITE_FIELDS = [{
 	key: 'title',
 	_name: 'title',
 	denyDelete: true,
-	denyValues: false,
-	displayName: 'Title'
+	denyValues: false/*,
+	displayName: 'Title'*/
 },{
 	key: 'language',
 	_name: 'language',
 	denyDelete: true,
-	denyValues: false,
-	displayName: 'Language'
+	denyValues: false/*,
+	displayName: 'Language'*/
 },{
 	key: 'text',
 	_name: 'text',
 	denyDelete: true,
-	denyValues: false,
-	displayName: 'Text'
+	denyValues: false/*,
+	displayName: 'Text'*/
 },{
 	key: 'uri',
 	_name: 'uri',
 	denyDelete: true,
-	denyValues: false,
-	displayName: 'Uri'
+	denyValues: false/*,
+	displayName: 'Uri'*/
 }];
 
 export const DEFAULT_FIELDS = NO_VALUES_FIELDS.concat(READONLY_FIELDS, READWRITE_FIELDS);

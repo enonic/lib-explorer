@@ -1,6 +1,6 @@
 import {
-	NT_COLLECTOR,
-	PATH_COLLECTORS
+	NT_COLLECTOR//,
+	//PATH_COLLECTORS
 } from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
@@ -14,12 +14,19 @@ export function query({
 	query = '',
 	sort = '_name ASC'
 } = {}) {
+	addFilter({
+		clause: 'should',
+		filter: hasValue('_nodeType', [NT_COLLECTOR]),
+		filters
+	});
+	addFilter({
+		clause: 'should',
+		filter: hasValue('type', [NT_COLLECTOR]),
+		filters
+	});
 	const queryParams = {
 		count,
-		filters: addFilter({
-			filters,
-			filter: hasValue('type', [NT_COLLECTOR])
-		}),
+		filters,
 		query: query
 			? `_parentPath = '/collectors' AND (${query})`
 			: "_parentPath = '/collectors'",

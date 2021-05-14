@@ -3,9 +3,12 @@ import {node} from '/lib/explorer/model/2/nodeTypes/node';
 
 
 export function field({
+	/* eslint-disable no-unused-vars */
 	_id, // avoid from ...rest
 	_permissions, // avoid from ...rest
 	_path, // avoid from ...rest
+	displayName, // avoid from ...rest
+	/* eslint-enable no-unused-vars */
 	key,
 	_name = key,
 	_parentPath = '/fields',
@@ -23,9 +26,10 @@ export function field({
 }) {
 	return node({
 		...rest,
-		_parentPath,
-		_name,
 		_indexConfig: {default: 'byType'},
+		_name,
+		_nodeType: NT_FIELD,
+		_parentPath,
 		key,
 		fieldType,
 		indexConfig: instruction === 'custom' ? {
@@ -35,7 +39,6 @@ export function field({
 			fulltext,
 			includeInAllText,
 			path
-		} : instruction,
-		type: NT_FIELD
+		} : instruction
 	});
 } // field

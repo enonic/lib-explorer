@@ -53,13 +53,19 @@ function respondWithJson({
 			boolean: {
 				must: [{
 					hasValue: {
-						field: 'type',
+						field: 'key',
+						values: [hashedApiKey]
+					}
+				}],
+				should: [{
+					hasValue: {
+						field: '_nodeType',
 						values: [NT_API_KEY]
 					}
 				},{
 					hasValue: {
-						field: 'key',
-						values: [hashedApiKey]
+						field: 'type',
+						values: [NT_API_KEY]
 					}
 				}]
 			}
@@ -235,12 +241,18 @@ export function get(request) {
 	if (!filters.boolean) {
 		filters.boolean = {};
 	}
-	if (!filters.boolean.must) {
-		filters.boolean.must = [];
-	} else if (!Array.isArray(filters.boolean.must)) {
-		filters.boolean.must = [filters.boolean.must];
+	if (!filters.boolean.should) {
+		filters.boolean.should = [];
+	} else if (!Array.isArray(filters.boolean.should)) {
+		filters.boolean.should = [filters.boolean.should];
 	}
-	filters.boolean.must.push({
+	filters.boolean.should.push({
+		hasValue: {
+			field: '_nodeType',
+			values: [NT_DOCUMENT]
+		}
+	});
+	filters.boolean.should.push({
 		hasValue: {
 			field: 'type',
 			values: [NT_DOCUMENT]
