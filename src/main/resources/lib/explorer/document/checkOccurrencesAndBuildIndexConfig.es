@@ -83,7 +83,7 @@ export function checkOccurrencesAndBuildIndexConfig({
 		if (pathA > pathB) {return 1;}
 		return 0;// equal
 	});
-	log.debug(`indexConfig.configs:${toStr(indexConfig.configs)}`);
+	//log.debug(`indexConfig.configs:${toStr(indexConfig.configs)}`);
 	if (validationErrors.length) {
 		throw new ValidationError(validationErrors.join('/n'));
 	}

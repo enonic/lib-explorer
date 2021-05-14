@@ -33,6 +33,41 @@ function isFloat(n){
 export const isObject = (value) => Object.prototype.toString.call(value).slice(8,-1) === 'Object';
 
 
+function shouldBeType({
+	fields,
+	pathString,
+	type
+}) {
+	if (!type) {
+		throw new Error(`Missing required param type!`);
+	}
+	const field = fields[pathString];
+	if(!field) {
+		return false;
+	}
+	const valueType = field.valueType;
+	if(!valueType) {
+		return false;
+	}
+	if (valueType === type) {
+		return true;
+	}
+	return false;
+}
+
+
+function shouldBeGeoPoint({
+	fields,
+	pathString
+}) {
+	return shouldBeType({
+		fields,
+		pathString,
+		type: 'geoPoint'
+	});
+}
+
+
 export function tryApplyValueType({
 	fields,
 	pathString,
@@ -126,55 +161,98 @@ export function checkAndApplyTypes({
 			//log.info(`parent.node:${toStr(parent.node)}`); // TypeError: JSON.stringify got a cyclic data structure
 			//log.info(`this.parent.node:${toStr(this.parent.node)}`); // TypeError: JSON.stringify got a cyclic data structure
 			if (Array.isArray(value)) {
-				if (!getIn(nodeToCreate, this.path)) {
-					setIn(nodeToCreate, this.path, []);
-				}
+				const boolShouldBeGeoPoint = shouldBeGeoPoint({
+					fields,
+					pathString
+				});
+				//log.debug(`pathString:${pathString} boolShouldBeGeoPoint:${boolShouldBeGeoPoint} value:${toStr(value)}`);
 				// Check the type of all the array entries
-				if (__mode !== 'diff') {
-					value.forEach((item) => {
+				if (boolShouldBeGeoPoint) {
+					if (__mode === 'diff') {
+						const geoPointString = `${value[0]},${value[1]}`;
+						//log.debug(`Setting pathString:${pathString} to geoPointString:${geoPointString}`);
+						setIn(nodeToCreate, this.path, geoPointString);
+					} else {
 						try {
-							tryApplyValueType({ // NOTE: Applied to nodeToCreate later.
+							const valueWithType = tryApplyValueType({ // NOTE: Applied to nodeToCreate later.
 								fields,
 								pathString,
-								value: item
+								value
 							});
+							// If GeoPoint is sent in as an array, it is type checked and applied here.
+							// Values for everything but GeoPoint is set via leaf nodes below.
+							//log.debug(`Setting pathString:${pathString} to valueWithType:${toStr(valueWithType)}`); // NOTE The GeoPoint valueType is correct but is printed as undefined
+							setIn(nodeToCreate, this.path, valueWithType);
 						} catch (e) {
 							if (__boolRequireValid) {
 								throw e;
 							} else {
 								boolValid = false;
 								log.warning(e.message);
+								setIn(nodeToCreate, this.path, value); // Values for everything but GeoPoint is set via leaf nodes below.
 							}
 						}
-					});
+					}
+				} else { // NOT should be GeoPoint
+					if (!getIn(nodeToCreate, this.path)) {
+						setIn(nodeToCreate, this.path, []);
+					}
+					if (__mode !== 'diff') {
+						value.forEach((item) => {
+							try {
+								tryApplyValueType({ // NOTE: Applied to nodeToCreate later.
+									fields,
+									pathString,
+									value: item
+								});
+							} catch (e) {
+								if (__boolRequireValid) {
+									throw e;
+								} else {
+									boolValid = false;
+									log.warning(e.message);
+								}
+							}
+						});
+					} // !diff
 				}
 			}
 			if (this.isLeaf) { // In other words not Array or Set, just a value.
-				try {
-					if (__mode === 'diff') {
-						setIn(nodeToCreate, this.path, value);
-					} else { // create | update
-						const valueWithType = tryApplyValueType({
-							fields,
-							pathString,
-							value
-						});
-						//log.debug(`pathString:${pathString} value:${toStr(value)} valueWithType:${toStr(valueWithType)}`);
-						setIn(nodeToCreate, this.path, valueWithType);
-					}
-					//log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
-				} catch (e) {
-					if (__boolRequireValid) {
-						throw e;
-					} else {
-						boolValid = false;
-						log.warning(e.message);
-						setIn(nodeToCreate, this.path, value);
-					}
-				}
-			}
-		}
-	});
+				const parentPathString = this.parent.path.join('.');
+				const boolParentShouldBeGeoPoint = shouldBeGeoPoint({
+					fields,
+					pathString: parentPathString
+				});
+				//log.debug(`parentPathString:${parentPathString} boolParentShouldBeGeoPoint:${boolParentShouldBeGeoPoint}`);
+
+				// If GeoPoint is sent in as array it is type checked and applied above, thus we have to skip the values here.
+				if (!boolParentShouldBeGeoPoint) {
+					try {
+						if (__mode === 'diff') {
+							setIn(nodeToCreate, this.path, value);
+						} else { // create | update
+							const valueWithType = tryApplyValueType({
+								fields,
+								pathString,
+								value
+							});
+							//log.debug(`pathString:${pathString} value:${toStr(value)} valueWithType:${toStr(valueWithType)}`);
+							setIn(nodeToCreate, this.path, valueWithType);
+						}
+						//log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
+					} catch (e) {
+						if (__boolRequireValid) {
+							throw e;
+						} else {
+							boolValid = false;
+							log.warning(e.message);
+							setIn(nodeToCreate, this.path, value);
+						}
+					} // catch
+				} // !boolParentShouldBeGeoPoint
+			} // isLeaf
+		} // notRoot && !startWith(_) && !circular
+	}); // traverse
 	//log.info(`nodeToCreate:${toStr(nodeToCreate)}`);
 
 	nodeToCreate._indexConfig = indexConfig;  // Not allowed to control indexConfig

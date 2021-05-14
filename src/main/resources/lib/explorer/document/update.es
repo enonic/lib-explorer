@@ -49,7 +49,7 @@ export function update({
 		if (pathA > pathB) {return 1;}
 		return 0;// equal
 	});
-	log.debug(`existingNode._indexConfig.configs:${toStr(existingNode._indexConfig.configs)}`);
+	//log.debug(`existingNode._indexConfig.configs:${toStr(existingNode._indexConfig.configs)}`);
 
 
 	const fields = getFieldsWithIndexConfigAndValueType();
