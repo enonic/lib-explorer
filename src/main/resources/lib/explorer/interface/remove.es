@@ -1,3 +1,4 @@
+import {INTERFACES_FOLDER} from '/lib/explorer/model/2/index';
 import {remove as removeNode} from '/lib/explorer/node/remove';
 
 
@@ -7,7 +8,7 @@ export function remove({
 }) {
 	return removeNode({
 		connection,
-		_parentPath: '/interfaces',
+		_parentPath: `/${INTERFACES_FOLDER}`,
 		_name: name
 	});
 }

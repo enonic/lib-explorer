@@ -48,6 +48,9 @@ dependencies {
 ### 3.12.1
 
 * Sort fields by key
+* DEFAULT_INTERFACE_NAME
+* INTERFACES_FOLDER
+
 ### 3.12.0
 
 * Support should filters in interfaces

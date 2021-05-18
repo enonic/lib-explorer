@@ -7,11 +7,14 @@ import {forceArray} from '/lib/util/data';
 
 export function getFieldValues({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
-	field
+	field,
+	filters = {},
+	sort = '_name ASC'
 } = {}) {
-	const filters = addFilter({
+	addFilter({
 		clause: 'should',
-		filter: hasValue('_nodeType', NT_FIELD_VALUE)
+		filter: hasValue('_nodeType', NT_FIELD_VALUE),
+		filters
 	});
 	addFilter({
 		clause: 'should',
@@ -29,7 +32,7 @@ export function getFieldValues({
 		count: -1,
 		filters,
 		query: '',
-		sort: '_name ASC'
+		sort
 	};
 	const queryRes = connection.query(queryParams);
 	//log.info(`queryRes:${toStr(queryRes)}`);

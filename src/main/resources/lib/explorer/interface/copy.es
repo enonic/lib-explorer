@@ -1,3 +1,4 @@
+import {INTERFACES_FOLDER} from '/lib/explorer/model/2/index';
 import {exists} from '/lib/explorer/interface/exists';
 import {get} from '/lib/explorer/interface/get';
 import {ucFirst} from '/lib/explorer/ucFirst';
@@ -10,11 +11,11 @@ export function copy({
 	to
 }) {
 	if (!from) {
-		throw new Error('Missing required parameter from!')
+		throw new Error('Missing required parameter from!');
 	}
 
 	if (!to) {
-		throw new Error('Missing required parameter to!')
+		throw new Error('Missing required parameter to!');
 	}
 
 	if (exists({
@@ -34,7 +35,7 @@ export function copy({
 
 	node.__connection = connection; // eslint-disable-line no-underscore-dangle
 	node._id = undefined;
-	node._parentPath = '/interfaces';
+	node._parentPath = `/${INTERFACES_FOLDER}`;
 	node._name = to;
 	node.displayName = ucFirst(to);
 	//creator

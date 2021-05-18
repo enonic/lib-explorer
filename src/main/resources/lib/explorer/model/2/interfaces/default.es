@@ -1,9 +1,21 @@
-import {NT_DOCUMENT} from '/lib/explorer/model/2/constants';
+import {
+	//INTERFACES_FOLDER,
+	NT_DOCUMENT
+} from '/lib/explorer/model/2/constants';
+
+
+export const DEFAULT_INTERFACE_NAME = 'default';
 
 
 export const DEFAULT_INTERFACE = {
-	_name: 'default',
-	collections: [],
+	_name: DEFAULT_INTERFACE_NAME,
+
+	// NOTE: _parentPath is a parameter when creating a node, used in _path
+	// Since it is not stored it creates diffing issues...
+	//_parentPath: `/${INTERFACES_FOLDER}`,
+
+	//collections: [], // Enonic XP cannot store empty arrays, avoid diffing issue.
+
 	displayName: 'Default',
 	query: {
 		type: 'group',

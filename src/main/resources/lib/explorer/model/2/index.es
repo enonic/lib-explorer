@@ -12,18 +12,15 @@ export {stopwords} from '/lib/explorer/model/2/nodeTypes/stopwords';
 export {synonym} from '/lib/explorer/model/2/nodeTypes/synonym';
 export {thesaurus} from '/lib/explorer/model/2/nodeTypes/thesaurus';
 
-export {DEFAULT_INTERFACE} from '/lib/explorer/model/2/interfaces/default';
+export {
+	DEFAULT_INTERFACE_NAME,
+	DEFAULT_INTERFACE
+} from '/lib/explorer/model/2/interfaces/default';
 
-export const FOLDERS = [
-	'api-keys',
-	'collections',
-	'collectors',
-	'fields',
-	'interfaces',
-	'notifications',
-	'stopwords',
-	'thesauri'
-];
+export {
+	FOLDERS,
+	INTERFACES_FOLDER
+} from '/lib/explorer/model/2/constants';
 
 /*
 

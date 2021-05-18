@@ -15,6 +15,23 @@ export const COLON_SIGN = ':'; // Not good in repo names
 //export const RATIO_SIGN = '∶'; // Not good in repo names
 export const DOT_SIGN = '.';
 export const ELLIPSIS = '…';
+
+//──────────────────────────────────────────────────────────────────────────────
+// Folders
+//──────────────────────────────────────────────────────────────────────────────
+export const INTERFACES_FOLDER = 'interfaces';
+
+export const FOLDERS = [
+	'api-keys',
+	'collections',
+	'collectors',
+	'fields',
+	INTERFACES_FOLDER,
+	'notifications',
+	'stopwords',
+	'thesauri'
+];
+
 //──────────────────────────────────────────────────────────────────────────────
 // Node types
 //──────────────────────────────────────────────────────────────────────────────
@@ -54,6 +71,13 @@ export const NO_VALUES_FIELDS = [{
 }];
 
 export const READONLY_FIELDS = [{
+	key: '_nodeType',
+	_name: 'underscore-nodetype', // sanitize removes _ and makes T small
+	denyDelete: true,
+	denyValues: false/*,
+	displayName: 'Type',
+	readonly: true*/
+},{
 	key: 'type',
 	_name: 'type',
 	denyDelete: true,

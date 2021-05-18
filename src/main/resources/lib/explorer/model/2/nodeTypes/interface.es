@@ -1,4 +1,5 @@
 import {
+	INTERFACES_FOLDER,
 	NT_INTERFACE
 } from '/lib/explorer/model/2/constants';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
@@ -12,17 +13,39 @@ export function interfaceModel({
 	_permissions, // avoid from ...rest
 	/* eslint-enable no-unused-vars */
 	_name,
-	_parentPath = '/interfaces',
+
+	// NOTE: _parentPath is a parameter when creating a node, used in _path
+	// Since it is not stored it creates diffing issues...
+	_parentPath = `/${INTERFACES_FOLDER}`,
+
 	displayName = ucFirst(_name),
 	...rest
 }) {
 	return node({
 		...rest,
 		_indexConfig: {
-			default: 'byType',
+			default: {
+				decideByType: true,
+				enabled: true,
+				nGram: false,
+				fulltext: false,
+				includeInAllText: false,
+				path: false,
+				indexValueProcessors: [],
+				languages: []
+			},
 			configs: [{
 				path: 'resultMappings*',
-				config: 'none'
+				config: {
+					decideByType: false,
+					enabled: false,
+					nGram: false,
+					fulltext: false,
+					includeInAllText: false,
+					path: false,
+					indexValueProcessors: [],
+					languages: []
+				}
 			}]
 		},
 		_name,
