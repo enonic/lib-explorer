@@ -49,6 +49,9 @@ dependencies {
 
 * Build system upgrades
   * Node 14.17.0
+  * Babel modules 7.14.3
+  * Core-js 3.12.1
+  * Webpack 5.37.0
 
 ### 3.11.1
 
