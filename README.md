@@ -47,6 +47,11 @@ dependencies {
 
 ### 3.12.0
 
+* Support should filters in interfaces
+* Schema change: type -> _nodeType
+* Nested validation
+* Min/max occurrences validation
+* Type validation
 * Build system upgrades
   * Node 14.17.0
   * Babel modules 7.14.3
