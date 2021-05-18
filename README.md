@@ -45,6 +45,9 @@ dependencies {
 
 ## Changelog
 
+### 3.12.1
+
+* Sort fields by key
 ### 3.12.0
 
 * Support should filters in interfaces

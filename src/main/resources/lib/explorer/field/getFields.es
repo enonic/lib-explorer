@@ -9,7 +9,7 @@ export function getFields({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	fields,
 	filters = {},
-	sort = '_name ASC'
+	sort = 'key ASC'
 } = {}) {
 	addFilter({
 		clause: 'should', // One or more of the functions in the should array must evaluate to true for the filter to match
