@@ -45,6 +45,11 @@ dependencies {
 
 ## Changelog
 
+### 3.12.0
+
+* Build system upgrades
+  * Node 14.17.0
+
 ### 3.11.1
 
 * Add requireValid param to document API
