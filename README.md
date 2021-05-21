@@ -45,6 +45,10 @@ dependencies {
 
 ## Changelog
 
+### 3.13.0
+
+* Add application/list function
+
 ### 3.12.1
 
 * Sort fields by key
