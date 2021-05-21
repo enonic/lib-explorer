@@ -45,6 +45,10 @@ dependencies {
 
 ## Changelog
 
+### 3.13.1
+
+* Return application/list key as string
+
 ### 3.13.0
 
 * Add application/list function

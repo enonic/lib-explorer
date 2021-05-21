@@ -24,7 +24,7 @@ export function list({
 	const applicationList = [];
 	const installedApplications = __.toNativeObject(APPLICATION_SERVICE_BEAN.getInstalledApplications());
 	installedApplications.forEach((applicationImpl) => {
-		const key = applicationImpl.getKey();
+		const key = applicationImpl.getKey().toString();
 
 		let item = key;
 		if (
