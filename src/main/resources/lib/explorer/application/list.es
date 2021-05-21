@@ -1,6 +1,12 @@
 const APPLICATION_SERVICE_BEAN = __.newBean('com.enonic.explorer.ApplicationServiceBean');
 
 export function list({
+	// if true ; return only apps where true
+	// if false ; return only apps where false
+	// if not true or false ; return all apps
+	filterOnIsStartedEquals = undefined,
+	filterOnIsSystemEquals = undefined,
+
 	// By default just returns a list of application keys
 	// If any of these are true, returns list of application objects
 	getCapabilities = false,
@@ -13,13 +19,7 @@ export function list({
 	getUrl = false,
 	getVendorName = false,
 	getVendorUrl = false,
-	getVersion = false,
-
-	// if true ; return only apps where true
-	// if false ; return only apps where false
-	// if not true or false ; return all apps
-	filterOnIsStartedEquals = undefined,
-	filterOnIsSystemEquals = undefined
+	getVersion = false
 } = {}) {
 	const applicationList = [];
 	const installedApplications = __.toNativeObject(APPLICATION_SERVICE_BEAN.getInstalledApplications());
