@@ -45,6 +45,10 @@ dependencies {
 
 ## Changelog
 
+### 3.14.0
+
+* Add collector/list function
+
 ### 3.13.1
 
 * Return application/list key as string
