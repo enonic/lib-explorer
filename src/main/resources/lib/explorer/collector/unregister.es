@@ -13,6 +13,7 @@ export function unregister({
 	appName,
 	collectTaskName = 'collect'
 }) {
+	//log.warning(`collector/unregister has been deprecated, please include a src/main/resources/collectors.json instead.`);
 	const event = {
 		type: EVENT_COLLECTOR_UNREGISTER,
 		distributed: false, // See comment at the EOF.

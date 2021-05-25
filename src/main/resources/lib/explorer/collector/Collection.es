@@ -7,20 +7,16 @@ import {connect} from '/lib/explorer/repo/connect';
 
 
 export class Collection {
-
-
-  constructor({
-    name
-  }) {
+	constructor({
+		name
+	}) {
 		if (!name) { throw new Error('Missing required parameter name!'); }
-    this.repoId = `${COLLECTION_REPO_PREFIX}${name}`;
-    maybeCreateRepoAndBranch({repoId: this.repoId});
-    this.connection = connect({
-  		repoId: this.repoId,
-  		branch: 'master',
-  		principals: [PRINCIPAL_EXPLORER_WRITE]
-  	});
-  } // constructor
-
-
+		this.repoId = `${COLLECTION_REPO_PREFIX}${name}`;
+		maybeCreateRepoAndBranch({repoId: this.repoId});
+		this.connection = connect({
+			repoId: this.repoId,
+			branch: 'master',
+			principals: [PRINCIPAL_EXPLORER_WRITE]
+		});
+	} // constructor
 } // class Collection

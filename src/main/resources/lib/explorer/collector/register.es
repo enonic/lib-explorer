@@ -14,6 +14,13 @@ export function register({
 	configAssetPath = 'js/react/Collector.esm.js',
 	displayName
 }) {
+	log.warning(`collector/register has been deprecated, please include a src/main/resources/collectors.json instead.
+Example: [{
+	"componentPath": "${componentPath}",
+	"configAssetPath": "${configAssetPath}",
+	"displayName": "${displayName}",
+	"taskName": "${collectTaskName}"
+}]`);
 	const writeConnection = connect({
 		principals: [PRINCIPAL_EXPLORER_WRITE]
 	});

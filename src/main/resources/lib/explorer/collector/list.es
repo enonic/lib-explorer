@@ -25,6 +25,7 @@ export function list() {
 				const resourceData = JSON.parse(resourceJson);
 				//log.debug(`resourcePath:${resourcePath} resourceData:${toStr(resourceData)}`);
 				resourceData.forEach((item) => {
+					item.appName = appKey;
 					collectors.push(item);
 				});
 

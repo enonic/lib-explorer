@@ -23,9 +23,10 @@ export function getCollectors({
 	queryCollectors({
 		connection
 	}).hits.forEach(({
-		_name
+		appName,
+		collectTaskName
 	}) => {
-		collectors[_name] = true;
+		collectors[`${appName}:${collectTaskName}`] = true;
 	});
 	return collectors;
 }

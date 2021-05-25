@@ -45,6 +45,11 @@ dependencies {
 
 ## Changelog
 
+### 3.14.1
+
+* Temporary support for both old and new collectors
+* Deprecate collector/register in favour of src/main/resources/collectors.json
+
 ### 3.14.0
 
 * Add collector/list function
