@@ -45,6 +45,10 @@ dependencies {
 
 ## Changelog
 
+### 3.14.2
+
+* Fix import paths
+
 ### 3.14.1
 
 * Temporary support for both old and new collectors

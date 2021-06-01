@@ -3,8 +3,7 @@ import setIn from 'set-value';
 import traverse from 'traverse';
 
 import {NT_DOCUMENT} from '/lib/explorer/model/2/constants';
-//import {ValidationError} from '/lib/explorer/document/ValidationError.es';
-import {ValidationError} from './ValidationError.es';
+import {ValidationError} from '/lib/explorer/document/ValidationError';
 import {isInt, isString} from '/lib/util/value.js';
 import {toStr} from '/lib/util';
 import {

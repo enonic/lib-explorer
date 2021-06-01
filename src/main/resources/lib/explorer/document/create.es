@@ -1,5 +1,5 @@
-import {checkAndApplyTypes} from '/lib/explorer/document/checkAndApplyTypes.es';
-import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig.es';
+import {checkAndApplyTypes} from '/lib/explorer/document/checkAndApplyTypes';
+import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';

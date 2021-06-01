@@ -1,4 +1,4 @@
-import {Node} from './Node';
+import {Node} from '/lib/explorer/model/2/nodeTYpes/Node';
 
 export interface FieldMapping {
 	field: string,

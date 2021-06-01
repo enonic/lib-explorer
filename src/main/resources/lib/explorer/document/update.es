@@ -8,8 +8,8 @@ import deepEqual from 'fast-deep-equal';
 
 import {toStr} from '/lib/util';
 import {getFieldsWithIndexConfigAndValueType} from '/lib/explorer/document/create';
-import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig.es';
-import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/checkAndApplyTypes.es';
+import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
+import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/checkAndApplyTypes';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 
 /*const { diff: diffDocument } = new HumanDiff({

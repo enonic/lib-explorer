@@ -1,10 +1,9 @@
 import getIn from 'get-value';
 
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
-//import {ValidationError} from '/lib/explorer/document/ValidationError.es';
-import {ValidationError} from './ValidationError.es';
+import {ValidationError} from '/lib/explorer/document/ValidationError';
 
-import {toStr} from '/lib/util';
+//import {toStr} from '/lib/util';
 import {isSet} from '/lib/util/value';
 
 
