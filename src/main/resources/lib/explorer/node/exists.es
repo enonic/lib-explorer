@@ -28,7 +28,7 @@ export function exists({
 		if (!_name) {
 			throw new Error('_path or _name is a required parameter!');
 		}
-		_path = join(_parentPath, sanitize(_name))
+		_path = join(_parentPath, sanitize(_name));
 	}
 	//log.info(toStr({_path}));
 	const queryParams = {
