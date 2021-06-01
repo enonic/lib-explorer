@@ -1,4 +1,5 @@
-const isObject = (value) => Object.prototype.toString.call(value).slice(8,-1) === 'Object';
+import {isObject} from '/lib/explorer/object/isObject';
+
 
 export function templateToConfig({
 	template,

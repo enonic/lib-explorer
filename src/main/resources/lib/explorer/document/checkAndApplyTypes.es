@@ -4,6 +4,7 @@ import traverse from 'traverse';
 
 import {NT_DOCUMENT} from '/lib/explorer/model/2/constants';
 import {ValidationError} from '/lib/explorer/document/ValidationError';
+import {isObject} from '/lib/explorer/object/isObject';
 import {isInt, isString} from '/lib/util/value.js';
 import {toStr} from '/lib/util';
 import {
@@ -27,9 +28,6 @@ function isFloat(n){
 	// part and is within the size limits of what can be represented as an exact integer
 	//return n === +n && n !== (n|0);
 }
-
-
-export const isObject = (value) => Object.prototype.toString.call(value).slice(8,-1) === 'Object';
 
 
 function shouldBeType({
