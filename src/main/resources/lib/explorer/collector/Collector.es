@@ -2,22 +2,26 @@ const {currentTimeMillis} = Java.type('java.lang.System');
 
 //import {validateLicense} from '/lib/license';
 import {toStr} from '/lib/util';
+//import {isNotSet} from '/lib/util/value';
 
 import {send} from '/lib/xp/mail';
 
 import {
 	//APP_EXPLORER,
+	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 
-import {createOrModify} from '/lib/explorer/node/createOrModify';
+import {createOrUpdate} from '/lib/explorer/document/createOrUpdate';
+import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {get as getNode} from '/lib/explorer/node/get';
 import {connect} from '/lib/explorer/repo/connect';
 import {progress} from '/lib/explorer/task/progress';
 import {get as getTask} from '/lib/explorer/task/get';
+import {hash} from '/lib/explorer/string/hash';
 import {modify as modifyTask} from '/lib/explorer/task/modify';
 
-import {Document} from '/lib/explorer/model/2/nodeTypes/document';
+//import {Document} from '/lib/explorer/model/2/nodeTypes/document';
 
 //import {getTotalCount} from '/lib/explorer/collection/getTotalCount';
 
@@ -97,23 +101,67 @@ export class Collector {
 		const task = getTask({connection: this.collection.connection}); //log.info(toStr({task}));
 		const {should} = task;
 		if (should === 'STOP') {
-			log.warning(`Got message to stop task: ${toStr(collector.taskProgressObj)}`);
+			log.warning(`Got message to stop task: ${toStr(this.taskProgressObj)}`);
 			return true;
 		}
 		return false;
 	} // shouldStop
 
 
-	persistDocument(data) {
-		//log.info(`persistDocument(${toStr(data)})`);
-		if (!data.uri) { throw new Error('persistDocument: Missing required parameter uri!'); }
-		data.__connection = this.collection.connection;
-		data.collectorId = this.collectorId;
-		//log.info(`persistDocument(${toStr(data)})`);
-		const persistedNode = createOrModify(Document(data)); //log.info(toStr({persistedNode}));
+	persistDocument({
+		__boolRequireValid = false,
+		_parentPath = '/',
+		uri,
+		_name = hash(uri),
+		...rest
+	}) {
+		/*log.debug(`persistDocument(${toStr({
+			__boolRequireValid,
+			_parentPath,
+			uri,
+			_name,
+			...rest
+		})})`);*/
+
+		// Even when __boolRequireValid is false, we still require uri for Collectors,
+		// or they can't find _id from _name when updating
+		if (!uri) { throw new Error('persistDocument: Missing required parameter uri!'); }
+
+		const documentToPersist = {
+			...rest,
+			__boolRequireValid,
+			__connection: this.collection.connection,
+			//_indexConfig, // Built automatically
+			_name,
+			_nodeType: NT_DOCUMENT,
+			_parentPath,
+			document_metadata: {
+				collector: {
+					//appName: app.name,
+					id: this.collectorId, // This contains both appName and taskName
+					version: app.version
+				}
+			},
+			uri
+		};
+		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
+
+		const path = `${_parentPath}${_name}`;
+		//log.debug(`path:${path}`);
+
+		const existingNode = this.collection.connection.get(path);
+		//log.debug(`existingNode:${toStr(existingNode)}`);
+
+		if (existingNode) {
+			documentToPersist._id = existingNode._id;
+		}
+		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
+
+		const persistedNode = createOrUpdate(documentToPersist);
 		if (!persistedNode) {
 			throw new Error('Something went wrong when trying to persist a document!');
 		}
+		//log.debug(`persistedNode:${toStr(persistedNode)}`);
 		return persistedNode;
 	} // persistDocument
 

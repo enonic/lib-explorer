@@ -1,7 +1,7 @@
 import getIn from 'get-value';
 
-import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {ValidationError} from '/lib/explorer/document/ValidationError';
+import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 
 //import {toStr} from '/lib/util';
 import {isSet} from '/lib/util/value';
@@ -10,12 +10,12 @@ import {isSet} from '/lib/util/value';
 export function checkOccurrencesAndBuildIndexConfig({
 	boolRequireValid,
 	fields,
-	indexConfig, // modified inside function
-	rest
+	indexConfig, // modified within function
+	inputObject // only read from within function
 }) {
 	const validationErrors = [];
 	Object.keys(fields).forEach((path) => {
-		const fieldValue = getIn(rest, path);
+		const fieldValue = getIn(inputObject, path);
 
 		const {
 			min = 0, // Default is not required

@@ -47,6 +47,7 @@ dependencies {
 
 ### 3.14.3
 
+* Use document/createOrUpdate in Collector.persist
 * Add object/isObject function
 
 ### 3.14.2

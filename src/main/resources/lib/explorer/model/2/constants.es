@@ -68,48 +68,152 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	//displayName: 'All text',
 	inResults: false
+},{
+	_name: 'document_metadata',
+	denyDelete: true,
+	denyValues: true,
+	fieldType: 'set',
+	indexConfig: 'minimal',
+	inResults: false,
+	key: 'document_metadata',
+	max: 1,
+	min: 1
+},{
+	_name: 'document_metadata.collector',
+	denyDelete: true,
+	denyValues: true,
+	fieldType: 'set',
+	indexConfig: 'minimal',
+	inResults: false,
+	key: 'document_metadata.collector',
+	max: 1,
+	min: 0
+},{
+	_name: 'document_metadata.collector.id',
+	denyDelete: true,
+	denyValues: true,
+	fieldType: 'string',
+	indexConfig: 'minimal',
+	inResults: false,
+	key: 'document_metadata.collector.id',
+	max: 1,
+	min: 0
+},{
+	_name: 'document_metadata.collector.version',
+	denyDelete: true,
+	denyValues: true,
+	fieldType: 'string',
+	indexConfig: 'minimal',
+	inResults: false,
+	key: 'document_metadata.collector.version',
+	max: 1,
+	min: 0
+},{
+	_name: 'document_metadata.createdTime',
+	denyDelete: true,
+	denyValues: true,
+	fieldType: 'instant',
+	indexConfig: 'minimal',
+	inResults: false,
+	key: 'document_metadata.createdTime',
+	max: 1,
+	min: 1
+},{
+	_name: 'document_metadata.modifiedTime',
+	denyDelete: true,
+	denyValues: true,
+	fieldType: 'instant',
+	indexConfig: 'type',
+	inResults: false,
+	key: 'document_metadata.modifiedTime',
+	max: 1,
+	min: 0
+},{
+	_name: 'document_metadata.modifiedTime',
+	denyDelete: true,
+	denyValues: true,
+	fieldType: 'instant',
+	indexConfig: 'type',
+	inResults: false,
+	key: 'document_metadata.modifiedTime',
+	max: 1,
+	min: 0
+},{
+	_name: 'document_metadata.valid',
+	denyDelete: true,
+	denyValues: true,
+	fieldType: 'boolean',
+	indexConfig: 'minimal',
+	inResults: false,
+	key: 'document_metadata.valid',
+	max: 1,
+	min: 1
 }];
 
 export const READONLY_FIELDS = [{
 	key: '_nodeType',
 	_name: 'underscore-nodetype', // sanitize removes _ and makes T small
 	denyDelete: true,
-	denyValues: false/*,
-	displayName: 'Type',
-	readonly: true*/
+	denyValues: false,
+	//displayName: 'Type',
+	fieldType: 'string',
+	indexConfig: 'minimal',
+	max: 1,
+	min: 1
+	//readonly: true,
 },{
 	key: 'type',
 	_name: 'type',
 	denyDelete: true,
-	denyValues: false/*,
-	displayName: 'Type',
-	readonly: true*/
+	denyValues: false,
+	fieldType: 'string',
+	indexConfig: 'minimal',
+	max: 1,
+	min: 0
+	//displayName: 'Type',
+	//readonly: true
 }];
 
 export const READWRITE_FIELDS = [{
 	key: 'title',
 	_name: 'title',
 	denyDelete: true,
-	denyValues: false/*,
-	displayName: 'Title'*/
+	denyValues: false,
+	//displayName: 'Title'*/
+	fieldType: 'string',
+	indexConfig: 'type',
+	max: 1,
+	min: 1
 },{
 	key: 'language',
 	_name: 'language',
 	denyDelete: true,
-	denyValues: false/*,
-	displayName: 'Language'*/
+	denyValues: false,
+	//displayName: 'Language'*/
+	fieldType: 'string',
+	indexConfig: 'type',
+	max: 0,
+	min: 0
 },{
 	key: 'text',
 	_name: 'text',
 	denyDelete: true,
-	denyValues: false/*,
-	displayName: 'Text'*/
+	denyValues: false,
+	//displayName: 'Text'
+	fieldType: 'string',
+	indexConfig: 'type',
+	max: 0, // Allow array
+	min: 1
 },{
 	key: 'uri',
 	_name: 'uri',
 	denyDelete: true,
-	denyValues: false/*,
-	displayName: 'Uri'*/
+	denyValues: false,
+	//displayName: 'Uri'
+	fieldType: 'string',
+	indexConfig: 'type',
+	max: 1,
+	min: 1
 }];
 
 export const DEFAULT_FIELDS = NO_VALUES_FIELDS.concat(READONLY_FIELDS, READWRITE_FIELDS);

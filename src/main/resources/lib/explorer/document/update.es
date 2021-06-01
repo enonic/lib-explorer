@@ -7,10 +7,12 @@ import deepEqual from 'fast-deep-equal';
 //const Diff = require('diff');
 
 import {toStr} from '/lib/util';
+import {isNotSet} from '/lib/util/value';
 import {getFieldsWithIndexConfigAndValueType} from '/lib/explorer/document/create';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
 import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/checkAndApplyTypes';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
+import {isObject} from '/lib/explorer/object/isObject';
 
 /*const { diff: diffDocument } = new HumanDiff({
 	objectName: 'document'
@@ -18,24 +20,22 @@ import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 
 
 export function update({
-	__boolPartial = false,
-	__boolRequireValid = true,
-	__connection,
+	__boolPartial: boolPartial = false,
+	__boolRequireValid: boolRequireValid = true,
+	__connection: connection,
 	_id,
-
-	// Remove from ...fieldsToUpdate so it is ignored
-	document_metadata, // eslint-disable-line no-unused-vars
-
-	...fieldsToUpdate
+	...rest
 }) {
 	//log.debug(`__boolPartial:${toStr(__boolPartial)}`);
 	//log.debug(`__boolRequireValid:${toStr(__boolRequireValid)}`);
 	//log.debug(`_id:${toStr(_id)}`);
+
 	//log.debug(`fieldsToUpdate:${toStr(fieldsToUpdate)}`);
+
 	if(!_id) {
 		throw new Error('Missing required parameter _id!');
 	}
-	const existingNode = __connection.get(_id);
+	const existingNode = connection.get(_id);
 	if (!existingNode) {
 		throw new Error(`Can't update document with id:${_id} because it does not exist!`);
 	}
@@ -51,7 +51,6 @@ export function update({
 	});
 	//log.debug(`existingNode._indexConfig.configs:${toStr(existingNode._indexConfig.configs)}`);
 
-
 	const fields = getFieldsWithIndexConfigAndValueType();
 	//log.info(`fields:${toStr(fields)}`);
 
@@ -60,7 +59,7 @@ export function update({
 	const withType = JSON.parse(strigified);
 
 	// Delete old data if not partial update:
-	if (!__boolPartial) {
+	if (!boolPartial) {
 		Object.keys(forDiff).forEach((k) => {
 			//log.debug(`k:${k}`);
 			if (!k.startsWith('_') && !['document_metadata'].includes(k)) {
@@ -74,21 +73,37 @@ export function update({
 	//log.debug(`withType:${toStr(withType)}`);
 
 	let boolValid = true;
+
 	const indexConfig = {
 		default: templateToConfig({
-			template: 'byType', // TODO Perhaps none?
+			template: 'byType', // TODO Perhaps minimal?
 			indexValueProcessors: [],
 			languages: []
 		}),
-		configs: [{
+		configs: [/*{
 			path: 'document_metadata',
 			config: templateToConfig({
 				template: 'minimal',
 				indexValueProcessors: [],
 				languages: []
 			})
-		}]
+		}*/]
 	};
+
+	const inputObject = JSON.parse(JSON.stringify(rest));
+	//delete inputObject._indexConfig;
+	if (isNotSet(inputObject.document_metadata)) {
+		inputObject.document_metadata = {};
+	} else if (!isObject(inputObject.document_metadata)) {
+		log.error(`document_metadata has to be an Object! Overwriting:${toStr(inputObject.document_metadata)}`);
+		inputObject.document_metadata = {};
+	}
+	inputObject.document_metadata.valid = true; // Temporary value so validation doesn't fail on this field.
+	inputObject.document_metadata.createdTime = forDiff.document_metadata.createdTime; // So validation doesn't fail on this field.
+	//inputObject.document_metadata.modifiedTime = new Date(); // Temporary value to checkOccurrencesAndBuildIndexConfig
+
+	const now = new Date();
+
 	// 1st "pass":
 	// * Check if all required fields have values.
 	// * Check if any field have too many values.
@@ -96,13 +111,13 @@ export function update({
 	// * Build indexConfig for any field with a value.
 	try {
 		checkOccurrencesAndBuildIndexConfig({
-			boolRequireValid: __boolRequireValid,
+			boolRequireValid,
 			fields,
-			indexConfig,
-			rest: fieldsToUpdate
+			indexConfig, // modified within function
+			inputObject // only read from within function
 		});
 	} catch (e) {
-		if (__boolRequireValid) {
+		if (boolRequireValid) {
 			throw e;
 		} else {
 			boolValid = false;
@@ -111,31 +126,25 @@ export function update({
 	}
 	//log.info(`indexConfig:${toStr(indexConfig)}`);
 
-	const now = new Date();
-
 	// 2nd "pass":
 	// Skip checking occurrences, since that was checked in 1st "pass".
 	// Check types, since that was skipped in 1st "pass".
 	checkAndApplyTypes({
-		__boolRequireValid,
-		__mode: 'diff',
-		__now: now,
+		boolRequireValid,
 		boolValid, // passed as value, not possible to modify, return instead?
 		fields,
-		indexConfig,
-		nodeToCreate: forDiff, // modified within function
-		rest: fieldsToUpdate
+		mode: 'diff',
+		inputObject, // only traversed within function
+		objToPersist: forDiff // modified within function
 	});
 
 	checkAndApplyTypes({
-		__boolRequireValid,
-		__mode: 'updates',
-		__now: now,
+		boolRequireValid,
 		boolValid, // passed as value, not possible to modify, return instead?
 		fields,
-		indexConfig,
-		nodeToCreate: withType, // modified within function
-		rest: fieldsToUpdate
+		mode: 'update',
+		inputObject, // only traversed within function
+		objToPersist: withType // modified within function
 	});
 
 	/*traverse(fieldsToUpdate).forEach(function(value) { // Fat arrow destroys this
@@ -185,11 +194,13 @@ export function update({
 	//log.info(`Changes detected in document with id:${_id}`);
 
 	forDiff.document_metadata.modifiedTime = now;
+	withType.document_metadata.modifiedTime = now;
+
 	//log.info(`Changes detected in document with id:${_id} diff:${toStr(Diff.diffJson(existingNode, forDiff))}`);
 	log.debug(`Changes detected in document with id:${_id} diff:${toStr(detailedDiff(existingNode, forDiff))}`);
 	//log.info(`Changes detected in document with id:${_id} diff:${toStr(diffDocument(existingNode, forDiff))}`);
 
-	const updatedNode = __connection.modify({
+	const updatedNode = connection.modify({
 		key: _id,
 		editor: () => {
 			return withType;

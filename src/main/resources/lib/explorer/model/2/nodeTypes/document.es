@@ -26,7 +26,7 @@ export function Document({
 		_parentPath,
 		_indexConfig: {
 			default: templateToConfig({
-				template: 'byType', // TODO Perhaps none?
+				template: 'byType', // TODO Perhaps minimal?
 				indexValueProcessors: [],
 				languages: []
 			}),

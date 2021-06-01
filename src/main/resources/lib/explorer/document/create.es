@@ -1,10 +1,15 @@
 import {checkAndApplyTypes} from '/lib/explorer/document/checkAndApplyTypes';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
-import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
-import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
-import {connect} from '/lib/explorer/repo/connect';
 import {getFields} from '/lib/explorer/field/getFields';
+import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
+import {
+	NT_DOCUMENT,
+	PRINCIPAL_EXPLORER_READ
+} from '/lib/explorer/model/2/constants';
+import {isObject} from '/lib/explorer/object/isObject';
+import {connect} from '/lib/explorer/repo/connect';
 import {toStr} from '/lib/util';
+import {isNotSet} from '/lib/util/value';
 //import {getUser} from '/lib/xp/auth';
 
 
@@ -40,37 +45,52 @@ export function getFieldsWithIndexConfigAndValueType() {
 
 
 export function create({
-	__boolRequireValid = true,
-	__connection,
+	__boolRequireValid: boolRequireValid = true,
+	__connection: connection,
 	_name, // NOTE if _name is missing, _name becomes same as generated _id
-
-	// Remove from ...rest so it is ignored
-	document_metadata, // eslint-disable-line no-unused-vars
-
 	...rest // NOTE can have nested properties, both Array and/or Object
 }) {
+	const inputObject = JSON.parse(JSON.stringify(rest));
+	//delete inputObject._indexConfig;
+
+	if (isNotSet(inputObject.document_metadata)) {
+		inputObject.document_metadata = {};
+	} else if (!isObject(inputObject.document_metadata)) {
+		log.error(`document_metadata has to be an Object! Overwriting:${toStr(inputObject.document_metadata)}`);
+		inputObject.document_metadata = {};
+	}
+	inputObject.document_metadata.valid = true; // Temporary value so validation doesn't fail on this field.
+	inputObject.document_metadata.createdTime = new Date(); // So validation doesn't fail on this field.
+
+	const objToPersist = { // Fields starting with underscore are not handeled by checkAndApplyTypes
+		_name,
+		_inheritsPermissions: true,
+		_nodeType: NT_DOCUMENT, // Enforce type
+		_parentPath: '/' // Enforce flat structure
+		//_permissions: []
+	};
+
 	/*const user = getUser();
 	if (!user) { // CreateNode tries to set owner, and fails when no user
 		throw new Error('libAuth.getUser failed, wrap with libContext.run with valid user!');
 	}*/
 
-	const nodeToCreate = { _name };
-
 	const fields = getFieldsWithIndexConfigAndValueType();
+
 	const indexConfig = {
 		default: templateToConfig({
-			template: 'byType', // TODO Perhaps none?
+			template: 'byType', // TODO Perhaps minimal?
 			indexValueProcessors: [],
 			languages: []
 		}),
-		configs: [{
+		configs: [/*{
 			path: 'document_metadata',
 			config: templateToConfig({
 				template: 'minimal',
 				indexValueProcessors: [],
 				languages: []
 			})
-		}]
+		}*/]
 	};
 
 	let boolValid = true;
@@ -81,13 +101,13 @@ export function create({
 	// * Build indexConfig for any field with a value.
 	try {
 		checkOccurrencesAndBuildIndexConfig({
-			boolRequireValid: __boolRequireValid,
+			boolRequireValid,
 			fields,
-			indexConfig,
-			rest
+			indexConfig, // modified within function
+			inputObject // only read from within function
 		});
 	} catch (e) {
-		if (__boolRequireValid) {
+		if (boolRequireValid) {
 			throw e;
 		} else {
 			boolValid = false;
@@ -100,16 +120,18 @@ export function create({
 	// Skip checking occurrences, since that was checked in 1st "pass".
 	// Check types, since that was skipped in 1st "pass".
 	checkAndApplyTypes({
-		__boolRequireValid,
+		boolRequireValid,
 		boolValid,
 		fields,
-		indexConfig,
-		nodeToCreate, // modified within function
-		rest
+		inputObject, // only traversed within function
+		mode: 'create',
+		objToPersist // modified within function
 	});
 
-	log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
-	const createdNode = __connection.create(nodeToCreate);
+	objToPersist._indexConfig = indexConfig;
+
+	//log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
+	const createdNode = connection.create(objToPersist);
 	//log.info(`createdNode:${toStr(createdNode)}`);
 
 	return createdNode;
