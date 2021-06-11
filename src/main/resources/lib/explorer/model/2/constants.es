@@ -123,17 +123,7 @@ export const NO_VALUES_FIELDS = [{
 	denyDelete: true,
 	denyValues: true,
 	fieldType: 'instant',
-	indexConfig: 'type',
-	inResults: false,
-	key: 'document_metadata.modifiedTime',
-	max: 1,
-	min: 0
-},{
-	_name: 'document_metadata.modifiedTime',
-	denyDelete: true,
-	denyValues: true,
-	fieldType: 'instant',
-	indexConfig: 'type',
+	indexConfig: 'minimal',
 	inResults: false,
 	key: 'document_metadata.modifiedTime',
 	max: 1,
