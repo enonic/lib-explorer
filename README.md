@@ -48,6 +48,8 @@ dependencies {
 ### 3.14.4
 
 * Version returned from application/list({getVersion:true}) needed toString()
+* Only show register deprecation warning when installed explorer version >=1.5.0 <2.0.0
+
 ### 3.14.3
 
 * Use document/createOrUpdate in Collector.persist
