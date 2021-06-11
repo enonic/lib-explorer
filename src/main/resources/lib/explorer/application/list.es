@@ -72,7 +72,7 @@ export function list({
 				item.vendorUrl = applicationImpl.getVendorUrl();
 			}
 			if (getVersion) {
-				item.version = applicationImpl.getVersion();
+				item.version = applicationImpl.getVersion().toString();
 			}
 		} // if get...
 

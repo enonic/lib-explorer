@@ -45,6 +45,9 @@ dependencies {
 
 ## Changelog
 
+### 3.14.4
+
+* Version returned from application/list({getVersion:true}) needed toString()
 ### 3.14.3
 
 * Use document/createOrUpdate in Collector.persist
