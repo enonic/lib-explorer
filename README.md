@@ -49,6 +49,8 @@ dependencies {
 
 * lib-http-client:2.3.0 (okhttp/4.9.1)
 * Add getModel and setModel
+* Make system fields ready for removal from explorer repo
+
 ### 3.14.4
 
 * Version returned from application/list({getVersion:true}) needed toString()

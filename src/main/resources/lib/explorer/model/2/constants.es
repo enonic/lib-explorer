@@ -58,6 +58,7 @@ export const INDEX_CONFIG_STOP_WORDS = {default: 'byType'};
 //──────────────────────────────────────────────────────────────────────────────
 export const PATH_API_KEYS = '/api-keys';
 export const PATH_COLLECTORS = '/collectors';
+export const PATH_FIELDS = '/fields';
 export const PATH_INTERFACES = '/interfaces';
 
 
@@ -69,7 +70,7 @@ export const NO_VALUES_FIELDS = [{
 	//displayName: 'All text',
 	inResults: false
 },{
-	_name: 'document_metadata',
+	_name: 'document-metadata', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: 'set',
@@ -79,7 +80,7 @@ export const NO_VALUES_FIELDS = [{
 	max: 1,
 	min: 1
 },{
-	_name: 'document_metadata.collector',
+	_name: 'document-metadata.collector', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: 'set',
@@ -89,7 +90,7 @@ export const NO_VALUES_FIELDS = [{
 	max: 1,
 	min: 0
 },{
-	_name: 'document_metadata.collector.id',
+	_name: 'document-metadata.collector.id', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: 'string',
@@ -99,7 +100,7 @@ export const NO_VALUES_FIELDS = [{
 	max: 1,
 	min: 0
 },{
-	_name: 'document_metadata.collector.version',
+	_name: 'document-metadata.collector.version', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: 'string',
@@ -109,7 +110,7 @@ export const NO_VALUES_FIELDS = [{
 	max: 1,
 	min: 0
 },{
-	_name: 'document_metadata.createdTime',
+	_name: 'document-metadata.createdTime', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: 'instant',
@@ -119,17 +120,17 @@ export const NO_VALUES_FIELDS = [{
 	max: 1,
 	min: 1
 },{
-	_name: 'document_metadata.modifiedTime',
+	_name: 'document-metadata.modifiedTime', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: 'instant',
 	indexConfig: 'minimal',
 	inResults: false,
-	key: 'document_metadata.modifiedTime',
+	key: 'document-metadata.modifiedTime',
 	max: 1,
 	min: 0
 },{
-	_name: 'document_metadata.valid',
+	_name: 'document-metadata.valid', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: 'boolean',
