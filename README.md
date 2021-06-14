@@ -50,6 +50,7 @@ dependencies {
 * lib-http-client:2.3.0 (okhttp/4.9.1)
 * Add getModel and setModel
 * Make system fields ready for removal from explorer repo
+* Remove filters on SYSTEM_FIELDS from interface nodes
 
 ### 3.14.4
 

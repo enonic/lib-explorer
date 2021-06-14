@@ -124,7 +124,7 @@ export const DEFAULT_INTERFACE = {
 				}
 			}*/
 
-		],
+		]/*, // Let's do this in code instead...
 		should: [{
 			filter: 'hasValue',
 			params: {
@@ -137,6 +137,6 @@ export const DEFAULT_INTERFACE = {
 				field: 'type',
 				values: NT_DOCUMENT
 			}
-		}]
+		}]*/
 	}
 };
