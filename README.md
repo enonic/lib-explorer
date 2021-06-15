@@ -45,6 +45,12 @@ dependencies {
 
 ## Changelog
 
+### 4.0.0-SNAPSHOT
+
+* TODO: move should _nodeType filter to must in all queries
+* TODO: remove should type filter from all queries
+* TODO: Move _nodeType = document from should to must in interface code
+
 ### 3.15.0-SNAPSHOT
 
 * Add isModelLessThan
