@@ -53,6 +53,7 @@ dependencies {
 
 ### 3.15.0-SNAPSHOT
 
+* Document API: Skip empty arrays which cause problems during diff
 * Build indexConfig for document_metadata.modifiedTime on document/update()
 * Add isModelLessThan
 * should filter _nodeType/type = document in interface code (not GUI)
