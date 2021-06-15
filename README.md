@@ -50,7 +50,7 @@ dependencies {
 * Add isModelLessThan
 * should filter _nodeType/type = document in interface code (not GUI)
 * Polyfill Number.isInteger
-* Remove filters on SYSTEM_FIELDS from interface nodes
+* Remove filters on SYSTEM_FIELDS from default interface node
 * Make system fields ready for removal from explorer repo
 * Add getModel and setModel
 * lib-http-client:2.3.0 (okhttp/4.9.1)
