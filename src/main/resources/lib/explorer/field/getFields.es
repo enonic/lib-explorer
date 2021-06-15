@@ -1,6 +1,6 @@
 import {
-	NT_FIELD,
-	SYSTEM_FIELDS
+	NT_FIELD//,
+	//SYSTEM_FIELDS
 } from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
@@ -31,14 +31,15 @@ export function getFields({
 	const queryParams = {
 		count: -1, // Always get all fields
 		filters,
-		query: ''//, //"_parentPath = '/fields'",
+		query: '', //"_parentPath = '/fields'",
+		sort: 'key ASC'
 	};
 	const queryRes = connection.query(queryParams);
 	//log.info(`queryRes:${toStr(queryRes)}`);
 	queryRes.hits = queryRes.hits.map(hit => connection.get(hit.id));
 
 	// Add system fields
-	if (fields) {
+	/*if (fields) {
 		SYSTEM_FIELDS.filter(({key}) => fields.includes(key)).forEach((field) => {
 			queryRes.hits.push(field);
 			queryRes.count += 1;
@@ -60,7 +61,7 @@ export function getFields({
 			return 1;
 		}
 		return 0;
-	});
+	});*/
 	//log.debug(`queryRes:${toStr(queryRes)}`);
 
 	return queryRes;
