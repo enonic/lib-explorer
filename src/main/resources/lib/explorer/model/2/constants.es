@@ -126,7 +126,7 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: 'instant',
 	indexConfig: 'minimal',
 	inResults: false,
-	key: 'document-metadata.modifiedTime',
+	key: 'document_metadata.modifiedTime',
 	max: 1,
 	min: 0
 },{
