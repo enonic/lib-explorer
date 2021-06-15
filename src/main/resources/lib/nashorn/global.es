@@ -4,3 +4,9 @@ global.globalThis = global;
 global.frames = global;
 global.self = global;
 global.window = global;
+
+Number.isInteger = Number.isInteger || function(value) {
+	return typeof value === 'number' &&
+	isFinite(value) &&
+	Math.floor(value) === value;
+};

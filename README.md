@@ -47,10 +47,11 @@ dependencies {
 
 ### 3.15.0-SNAPSHOT
 
-* lib-http-client:2.3.0 (okhttp/4.9.1)
-* Add getModel and setModel
-* Make system fields ready for removal from explorer repo
+* Polyfill Number.isInteger
 * Remove filters on SYSTEM_FIELDS from interface nodes
+* Make system fields ready for removal from explorer repo
+* Add getModel and setModel
+* lib-http-client:2.3.0 (okhttp/4.9.1)
 
 ### 3.14.4
 
