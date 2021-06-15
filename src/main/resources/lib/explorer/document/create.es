@@ -4,7 +4,8 @@ import {getFields} from '/lib/explorer/field/getFields';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {
 	NT_DOCUMENT,
-	PRINCIPAL_EXPLORER_READ
+	PRINCIPAL_EXPLORER_READ,
+	SYSTEM_FIELDS
 } from '/lib/explorer/model/2/constants';
 import {isObject} from '/lib/explorer/object/isObject';
 import {connect} from '/lib/explorer/repo/connect';
@@ -20,7 +21,13 @@ export function getFieldsWithIndexConfigAndValueType() {
 			principals: [PRINCIPAL_EXPLORER_READ]
 		})
 	});
-	//log.info(`fieldRes:${toStr(fieldRes)}`);
+	SYSTEM_FIELDS.forEach((field) => {
+		fieldRes.hits.push(field);
+		fieldRes.count += 1;
+		fieldRes.total += 1;
+	});
+	//log.debug(`fieldRes:${toStr(fieldRes)}`);
+
 	const fields = {};
 	fieldRes.hits.forEach(({
 		//_name,

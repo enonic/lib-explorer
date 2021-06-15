@@ -13,6 +13,7 @@ export function checkOccurrencesAndBuildIndexConfig({
 	indexConfig, // modified within function
 	inputObject // only read from within function
 }) {
+	//log.debug(`indexConfig:${toStr(indexConfig)}`);
 	const validationErrors = [];
 	Object.keys(fields).forEach((path) => {
 		const fieldValue = getIn(inputObject, path);

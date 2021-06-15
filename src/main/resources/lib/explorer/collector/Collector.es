@@ -13,7 +13,7 @@ import {
 } from '/lib/explorer/model/2/constants';
 
 import {createOrUpdate} from '/lib/explorer/document/createOrUpdate';
-import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
+//import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {get as getNode} from '/lib/explorer/node/get';
 import {connect} from '/lib/explorer/repo/connect';
 import {progress} from '/lib/explorer/task/progress';

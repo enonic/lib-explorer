@@ -7,13 +7,14 @@ import deepEqual from 'fast-deep-equal';
 //const Diff = require('diff');
 
 import {toStr} from '/lib/util';
+//import {forceArray} from '/lib/util/data';
 import {isNotSet} from '/lib/util/value';
 import {getFieldsWithIndexConfigAndValueType} from '/lib/explorer/document/create';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
 import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/checkAndApplyTypes';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {isObject} from '/lib/explorer/object/isObject';
-
+import {instant} from '/lib/xp/value.js';
 /*const { diff: diffDocument } = new HumanDiff({
 	objectName: 'document'
 });*/
@@ -194,7 +195,24 @@ export function update({
 	//log.info(`Changes detected in document with id:${_id}`);
 
 	forDiff.document_metadata.modifiedTime = now;
-	withType.document_metadata.modifiedTime = now;
+	withType.document_metadata.modifiedTime = instant(now);
+
+	const indexConfigForModifiedTime = {
+		path: 'document_metadata.modifiedTime',
+		config: templateToConfig({
+			template: 'minimal', // TODO import from constants, instead of hardcode?
+			indexValueProcessors: [],
+			languages: []
+		})
+	};
+
+	if (!forDiff._indexConfig.configs.filter(({path}) => path === 'document_metadata.modifiedTime').length) {
+		forDiff._indexConfig.configs.push(indexConfigForModifiedTime);
+	}
+
+	if (!withType._indexConfig.configs.filter(({path}) => path === 'document_metadata.modifiedTime').length) {
+		withType._indexConfig.configs.push(indexConfigForModifiedTime);
+	}
 
 	//log.info(`Changes detected in document with id:${_id} diff:${toStr(Diff.diffJson(existingNode, forDiff))}`);
 	log.debug(`Changes detected in document with id:${_id} diff:${toStr(detailedDiff(existingNode, forDiff))}`);
