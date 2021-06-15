@@ -1,5 +1,5 @@
 import {connect} from '/lib/explorer/repo/connect';
-import {toStr} from '/lib/util';
+//import {toStr} from '/lib/util';
 
 
 export function getModel({
@@ -17,6 +17,6 @@ export function getModel({
 	const rootNode = connection.get('/');
 	//log.debug(`rootNode:${toStr(rootNode)}`);
 	const {model = -1} = rootNode;
-	log.debug(`model:${toStr(model)}`);
+	//log.debug(`model:${toStr(model)}`);
 	return model;
 }

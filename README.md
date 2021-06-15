@@ -47,6 +47,7 @@ dependencies {
 
 ### 3.15.0-SNAPSHOT
 
+* Add isModelLessThan
 * should filter _nodeType/type = document in interface code (not GUI)
 * Polyfill Number.isInteger
 * Remove filters on SYSTEM_FIELDS from interface nodes
