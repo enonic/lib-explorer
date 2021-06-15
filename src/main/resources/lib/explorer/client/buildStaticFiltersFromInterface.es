@@ -1,3 +1,4 @@
+import {NT_DOCUMENT} from '/lib/explorer/model/2/constants';
 //import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
 
@@ -32,12 +33,27 @@ export function buildStaticFiltersFromInterface(filtersConfig) {
 				field: '_name',
 				values: ['']
 			}*/
+			}],
+			should: [{
+				hasValue: { // TODO move to must in lib-explorer-4.0.0 / app-explorer-2.0.0
+					field: '_nodeType',
+					values: [NT_DOCUMENT]
+				}
+			},{ // TODO remove in lib-explorer-4.0.0 / app-explorer-2.0.0
+				hasValue: {
+					field: 'type',
+					values: [NT_DOCUMENT]
+				}
 			}]
 		}
 	};
 	if (!filtersConfig) { return filters; }
 
-	['must', 'mustNot', 'should'].forEach(clause => {
+	[
+		'must',
+		'mustNot'//,
+		//'should' // TODO reenable in lib-explorer-4.0.0 / app-explorer-2.0.0
+	].forEach(clause => {
 		if(filtersConfig[clause]) {
 			forceArray(filtersConfig[clause]).forEach(({
 				filter,

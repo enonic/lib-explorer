@@ -1,15 +1,15 @@
 import traverse from 'traverse';
 
 import {newCache} from '/lib/cache';
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
+import {toStr} from '/lib/util';
+//import {forceArray} from '/lib/util/data';
 
 import {
 	COLLECTION_REPO_PREFIX,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
-import {getCachedActiveNode} from '/lib/explorer/client/getCachedActiveNode';
+//import {getCachedActiveNode} from '/lib/explorer/client/getCachedActiveNode';
 import {buildStaticFiltersFromInterface} from '/lib/explorer/client/buildStaticFiltersFromInterface';
 
 import {query as queryCollections} from '/lib/explorer/collection/query';
@@ -70,7 +70,7 @@ function buildConfig(key) {
 	}
 
 	if (!interfaceNode.collections) {
-		log.warning(`The interface with key:${key} has no collections!`)
+		log.warning(`The interface with key:${key} has no collections!`);
 
 		// Avoid querying ALL REPOS! https://github.com/enonic/xp/issues/8239
 		throw new Error(`The interface with name:${interfaceNode._name} has no collections!`);
@@ -88,7 +88,9 @@ function buildConfig(key) {
 			principals: [PRINCIPAL_EXPLORER_READ]
 		}))
 	};
-	//log.info(toStr({config}));
+	//log.debug(toStr({config}));
+	//log.debug(`config.filters:${toStr(config.filters)}`);
+
 	if (config.interfaceNode.facets) {
 		config.interfaceNode.facets.forEach(({tag: field, facets}) => {
 			const obj = {};
@@ -102,7 +104,7 @@ function buildConfig(key) {
 					order: 'count desc', // '_term asc'
 					size: 100 // We can't use facets.length because there could be documents with values that are not in facetsConfig
 				}
-			}
+			};
 		});
 	}
 	//log.info(toStr({config}));
