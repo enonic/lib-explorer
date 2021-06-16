@@ -189,7 +189,7 @@ export function update({
 	//log.info(`withType:${toStr(withType)}`);
 
 	if (deepEqual(existingNode, forDiff)) {
-		log.warning(`No changes detected, not updating document with id:${_id}`);
+		log.debug(`No changes detected, not updating document with id:${_id}`);
 		return existingNode;
 	}
 	//log.info(`Changes detected in document with id:${_id}`);
