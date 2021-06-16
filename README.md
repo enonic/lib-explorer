@@ -53,6 +53,7 @@ dependencies {
 
 ### 3.15.0-SNAPSHOT
 
+* Only run collector/register on master
 * Document API: Skip empty arrays which cause problems during diff
 * Build indexConfig for document_metadata.modifiedTime on document/update()
 * Add isModelLessThan
