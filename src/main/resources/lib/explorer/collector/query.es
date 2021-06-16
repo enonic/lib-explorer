@@ -30,7 +30,7 @@ export function query({
 
 	const collectorsReq = connection.query(queryParams);
 	collectorsReq.hits = collectorsReq.hits.map(hit => connection.get(hit.id));
-	//log.debug(`collectorsReq:${toStr({collectorsReq})}`);
+	//log.info(`collectorsReq:${toStr({collectorsReq})}`);
 
 	const collectorsObj = {};
 	collectorsReq.hits.forEach(({
@@ -48,9 +48,10 @@ export function query({
 			displayName
 		};
 	});
+	//log.info(`collectorsObj:${toStr({collectorsObj})}`);
 
 	const installedCollectors = getInstalledCollectors();
-	//log.debug(`installedCollectors:${toStr({installedCollectors})}`);
+	//log.info(`installedCollectors:${toStr({installedCollectors})}`);
 
 	installedCollectors.forEach(({
 		componentPath,
@@ -67,11 +68,12 @@ export function query({
 			displayName
 		};
 	});
+	//log.info(`collectorsObj:${toStr({collectorsObj})}`);
 
 	collectorsReq.hits = Object.keys(collectorsObj).sort().map(k => collectorsObj[k]);
 	collectorsReq.count = collectorsReq.hits.length;
 	collectorsReq.total = collectorsReq.hits.length;
 
-	//log.debug(`collectorsReq spliced:${toStr({collectorsReq})}`);
+	//log.info(`collectorsReq spliced:${toStr({collectorsReq})}`);
 	return collectorsReq;
 }
