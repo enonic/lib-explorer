@@ -4,7 +4,7 @@ import traverse from 'traverse';
 
 import {ValidationError} from '/lib/explorer/document/ValidationError';
 import {isObject} from '/lib/explorer/object/isObject';
-import {isInt, isString} from '/lib/util/value.js';
+import {isInt, isString} from '/lib/util/value';
 import {toStr} from '/lib/util';
 import {
 	geoPoint, // [lat, long]
@@ -14,7 +14,7 @@ import {
 	localDateTime,
 	localTime/*,
 	reference*/
-} from '/lib/xp/value.js';
+} from '/lib/xp/value';
 
 
 // Any Float number with a zero decimal part are implicitly cast to Integer,
