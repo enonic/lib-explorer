@@ -51,7 +51,7 @@ dependencies {
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
 
-### 3.15.0-SNAPSHOT
+### 3.15.0
 
 * Move function parameters that start with __ to second argument without __
 * Make collector/register handle different versions of installed app-explorer
@@ -118,9 +118,9 @@ dependencies {
 * Type validation
 * Build system upgrades
   * Node 14.17.0
-	  * Babel modules 7.14.3
-	  * Core-js 3.12.1
-	  * Webpack 5.37.0
+  * Babel modules 7.14.3
+  * Core-js 3.12.1
+  * Webpack 5.37.0
 
 ### 3.11.1
 
