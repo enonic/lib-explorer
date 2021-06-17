@@ -65,6 +65,12 @@ dependencies {
 * Make system fields ready for removal from explorer repo
 * Add getModel and setModel
 * lib-http-client:2.3.0 (okhttp/4.9.1)
+* Build system upgrades
+  * Node 14.17.1
+  * Babel modules 7.14.6
+  * Core-js 3.14.0
+  * Webpack 5.39.1
+
 
 ### 3.14.4
 
