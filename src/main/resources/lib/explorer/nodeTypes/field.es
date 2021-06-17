@@ -22,9 +22,9 @@ export const field = ({
 	includeInAllText = 'on',
 	path,
 
-	...rest // __connection
+	...rest
 }) => ({
-	...rest, // __connection
+	...rest,
 	_indexConfig: {default: 'byType'},
 	_parentPath: '/fields',
 	_name,

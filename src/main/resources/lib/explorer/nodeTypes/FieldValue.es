@@ -1,27 +1,29 @@
 //import {toStr} from '/lib/util';
+import {isSet} from '/lib/util/value';
 import {NT_FIELD_VALUE} from '/lib/explorer/model/2/constants';
 import {Node} from '/lib/explorer/nodeTypes/Node';
 import {getReference} from '/lib/explorer/node/getReference';
 
 
 export class FieldValue extends Node {
-	constructor(params) {
-		//log.info(toStr({params}));
-		const {__connection: connection, _parentPath, _name} = params;
-		/*params._indexConfig = {
-			analyzer: 'document_index_default',
-			default: 'byType'/*,
-			configs: [{
-				path: 'fieldReference',
-				config: 'byType' // There is no reference index config
-			}]*
-		};*/
-		params.fieldReference = getReference({
-			connection,
-			path: _parentPath
+	constructor({
+		__connection,
+		_parentPath
+	}, {
+		connection = __connection
+	} = {}) {
+		if (isSet(__connection)) {
+			log.warning(`Deprecation: Function signature changed. Added second argument for options.
+				Old: new FieldValue({__connection, ...})
+				New: new FieldValue({...}, {connection})`);
+		}
+		super({
+			_parentPath,
+			fieldReference: getReference({
+				connection,
+				path: _parentPath
+			}),
+			type: NT_FIELD_VALUE
 		});
-		params.type = NT_FIELD_VALUE;
-		//log.info(toStr({params}));
-		super(params)
 	}
 }

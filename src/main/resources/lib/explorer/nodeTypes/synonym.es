@@ -6,7 +6,7 @@ export const synonym = ({
 	from,
 	to,
 	displayName = `${Array.isArray(from) ? from.join(', ') : from} => ${Array.isArray(to) ? to.join(', ') : to}`,
-	...rest // __connection
+	...rest
 }) => ({
 	_parentPath,
 	_name: displayName,
@@ -17,5 +17,5 @@ export const synonym = ({
 	from,
 	to,
 	type: NT_SYNONYM,
-	...rest // __connection
+	...rest
 });

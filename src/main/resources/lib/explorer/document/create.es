@@ -52,11 +52,41 @@ export function getFieldsWithIndexConfigAndValueType() {
 
 
 export function create({
-	__boolRequireValid: boolRequireValid = true,
-	__connection: connection,
 	_name, // NOTE if _name is missing, _name becomes same as generated _id
 	...rest // NOTE can have nested properties, both Array and/or Object
-}) {
+}, {
+	boolRequireValid,
+	connection,
+	...ignoredOptions
+} = {}) {
+	Object.keys(rest).forEach((k) => {
+		if (k.startsWith('__')) {
+			log.warning(`Deprecation: Function signature changed. Added second argument for options.
+		Old: document.create({${k}, ...})
+		New: document.create({...}, {${k.substring(2)}})`);
+			if(k === '__boolRequireValid') {
+				if (isNotSet(boolRequireValid)) {
+					boolRequireValid = rest[k];
+				}
+			} else if(k === '__connection') {
+				if (isNotSet(connection)) {
+					connection = rest[k];
+				}
+			} else {
+				log.warning(`document.create: Ignored option:${k} value:${toStr(rest[k])}`);
+			}
+			delete rest[k];
+		}
+	});
+
+	if (isNotSet(boolRequireValid)) {
+		boolRequireValid = true;
+	}
+
+	if (Object.keys(ignoredOptions).length) {
+		log.warning(`document.create: Ignored options:${toStr(ignoredOptions)}`);
+	}
+
 	const inputObject = JSON.parse(JSON.stringify(rest));
 	//delete inputObject._indexConfig;
 

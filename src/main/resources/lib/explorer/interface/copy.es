@@ -33,7 +33,6 @@ export function copy({
 		throw new Error(`Cannot copy interface ${from} to ${to}. From doesn't exist!`);
 	}
 
-	node.__connection = connection; // eslint-disable-line no-underscore-dangle
 	node._id = undefined;
 	node._parentPath = `/${INTERFACES_FOLDER}`;
 	node._name = to;
@@ -43,7 +42,7 @@ export function copy({
 	//modifiedTime
 
 
-	const newNode = create(node);
+	const newNode = create(node, {connection});
 	if(!newNode) {
 		throw new Error(`Something went wrong when trying to copy interface ${from} to ${to}!`);
 	}

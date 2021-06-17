@@ -53,6 +53,7 @@ dependencies {
 
 ### 3.15.0-SNAPSHOT
 
+* Move function parameters that start with __ to second argument without __
 * Make collector/register handle different versions of installed app-explorer
 * Only run collector/register on master
 * Document API: Skip empty arrays which cause problems during diff

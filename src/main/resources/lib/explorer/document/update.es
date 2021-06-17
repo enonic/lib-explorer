@@ -21,14 +21,49 @@ import {instant} from '/lib/xp/value.js';
 
 
 export function update({
-	__boolPartial: boolPartial = false,
-	__boolRequireValid: boolRequireValid = true,
-	__connection: connection,
 	_id,
 	...rest
-}) {
-	//log.debug(`__boolPartial:${toStr(__boolPartial)}`);
-	//log.debug(`__boolRequireValid:${toStr(__boolRequireValid)}`);
+}, {
+	boolPartial,
+	boolRequireValid,
+	connection,
+	...ignoredOptions
+} = {}) {
+	Object.keys(rest).forEach((k) => {
+		if (k.startsWith('__')) {
+			log.warning(`Deprecation: Function signature changed. Added second argument for options.
+		Old: document.update({${k}, ...})
+		New: document.update({...}, {${k.substring(2)}})`);
+			if(k === '__boolPartial') {
+				if (isNotSet(boolPartial)) {
+					boolPartial = rest[k];
+				}
+			} else if(k === '__boolRequireValid') {
+				if (isNotSet(boolRequireValid)) {
+					boolRequireValid = rest[k];
+				}
+			} else if(k === '__connection') {
+				if (isNotSet(connection)) {
+					connection = rest[k];
+				}
+			} else {
+				log.warning(`document.update: Ignored option:${k} value:${toStr(rest[k])}`);
+			}
+			delete rest[k];
+		} // startsWith __
+	});
+
+	if (isNotSet(boolPartial)) {
+		boolPartial = false;
+	}
+
+	if (isNotSet(boolRequireValid)) {
+		boolRequireValid = true;
+	}
+
+	if (Object.keys(ignoredOptions).length) {
+		log.warning(`document.update: Ignored options:${toStr(ignoredOptions)}`);
+	}
 	//log.debug(`_id:${toStr(_id)}`);
 
 	//log.debug(`fieldsToUpdate:${toStr(fieldsToUpdate)}`);

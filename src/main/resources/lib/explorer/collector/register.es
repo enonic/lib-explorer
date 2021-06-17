@@ -128,11 +128,6 @@ export function register({
 				principals: [PRINCIPAL_EXPLORER_WRITE]
 			});
 			const params = {
-				__connection: writeConnection,
-				__user: {
-					key: USER_EXPLORER_APP_KEY
-				},
-				__sanitize: false,
 				_parentPath: '/collectors',
 				_name: `${appName}:${collectTaskName}`,
 				appName,
@@ -142,7 +137,13 @@ export function register({
 				displayName,
 				type: NT_COLLECTOR
 			};
-			return createOrModify(params);
+			return createOrModify(params, {
+				connection: writeConnection,
+				sanitize: false,
+				user: { // NOTE: does not affect modify
+					key: USER_EXPLORER_APP_KEY
+				}
+			});
 		} else if (boolUnregister) {
 			unregister({
 				appName,

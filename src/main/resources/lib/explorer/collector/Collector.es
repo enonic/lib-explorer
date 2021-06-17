@@ -2,7 +2,7 @@ const {currentTimeMillis} = Java.type('java.lang.System');
 
 //import {validateLicense} from '/lib/license';
 import {toStr} from '/lib/util';
-//import {isNotSet} from '/lib/util/value';
+import {isNotSet} from '/lib/util/value';
 
 import {send} from '/lib/xp/mail';
 
@@ -109,28 +109,53 @@ export class Collector {
 
 
 	persistDocument({
-		__boolRequireValid = false,
 		_parentPath = '/',
 		uri,
 		_name = hash(uri),
-		...rest
-	}) {
+		...rest // Slurps properties
+	}, {
+		boolRequireValid,
+		...ignoredOptions
+	} = {}) {
+		Object.keys(rest).forEach((k) => {
+			if (k.startsWith('__')) {
+				log.warning(`Deprecation: Function signature changed. Added second argument for options.
+			Old: collector.persistDocument({${k}, ...})
+			New: collector.persistDocument({...}, {${k.substring(2)}})`);
+				if(k === '__boolRequireValid') {
+					if (isNotSet(boolRequireValid)) {
+						boolRequireValid = rest[k];
+					}
+				} else {
+					log.warning(`collector.persistDocument: Ignored option:${k} value:${toStr(rest[k])}`);
+				}
+				delete rest[k];
+			}
+		});
+
+		if (isNotSet(boolRequireValid)) {
+			boolRequireValid = false;
+		}
+
+		if (Object.keys(ignoredOptions).length) {
+			log.warning(`collector.persistDocument: Ignored options:${toStr(ignoredOptions)}`);
+		}
 		/*log.debug(`persistDocument(${toStr({
-			__boolRequireValid,
 			_parentPath,
 			uri,
 			_name,
 			...rest
+		}, {
+			boolRequireValid,
+			...ignoredOptions
 		})})`);*/
 
-		// Even when __boolRequireValid is false, we still require uri for Collectors,
+		// Even when boolRequireValid is false, we still require uri for Collectors,
 		// or they can't find _id from _name when updating
 		if (!uri) { throw new Error('persistDocument: Missing required parameter uri!'); }
 
 		const documentToPersist = {
 			...rest,
-			__boolRequireValid,
-			__connection: this.collection.connection,
 			//_indexConfig, // Built automatically
 			_name,
 			_nodeType: NT_DOCUMENT,
@@ -157,7 +182,10 @@ export class Collector {
 		}
 		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
 
-		const persistedNode = createOrUpdate(documentToPersist);
+		const persistedNode = createOrUpdate(documentToPersist, {
+			boolRequireValid,
+			connection: this.collection.connection
+		});
 		if (!persistedNode) {
 			throw new Error('Something went wrong when trying to persist a document!');
 		}

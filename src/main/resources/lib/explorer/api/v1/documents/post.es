@@ -33,10 +33,9 @@ function createDocument({
 	responseArray,
 	toPersist
 }) {
-	const createdNode = create({
-		__boolRequireValid: boolRequireValid,
-		__connection: connection,
-		...toPersist
+	const createdNode = create(toPersist, {
+		boolRequireValid,
+		connection
 	});
 	if(createdNode) {
 		const responseNode = {};
@@ -64,11 +63,12 @@ function modifyDocument({
 	//user
 }) {
 	const updatedNode = update({
-		__boolPartial: boolPartial,
-		__boolRequireValid: boolRequireValid,
-		__connection: connection,
 		_id: id,
 		...toPersist
+	}, {
+		boolPartial,
+		boolRequireValid,
+		connection
 	});
 	//log.info(`updatedNode:${toStr(updatedNode)}`);
 	if(updatedNode) {

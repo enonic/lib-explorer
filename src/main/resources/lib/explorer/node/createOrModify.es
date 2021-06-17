@@ -1,4 +1,5 @@
 import {toStr} from '/lib/util';
+import {isNotSet} from '/lib/util/value';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
@@ -14,7 +15,6 @@ const CATCH_CLASS_NAMES = [
 
 
 export function createOrModify({
-	__connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	_parentPath = '/',
 	//_path = '/',
 	_name,
@@ -22,20 +22,43 @@ export function createOrModify({
 		? _name.join(', ')
 		: _name,
 	...rest
+} = {}, {
+	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
+	...ignoredOptions
 } = {}) {
 	/*log.info(toStr({
 		_parentPath, _name, displayName, rest
 	}));*/
+	Object.keys(rest).forEach((k) => {
+		if (k.startsWith('__')) {
+			log.warning(`Deprecation: Function signature changed. Added second argument for options.
+		Old: node.createOrModify({${k}, ...})
+		New: node.createOrModify({...}, {${k.substring(2)}})`);
+			if(k === '__connection') {
+				if (isNotSet(connection)) {
+					connection = rest[k];
+				}
+			} else {
+				log.warning(`node.create: Ignored option:${k} value:${toStr(rest[k])}`);
+			}
+			delete rest[k];
+		}
+	});
+
+	if (Object.keys(ignoredOptions).length) {
+		log.warning(`node.createOrModify: Ignored options:${toStr(ignoredOptions)}`);
+	}
+
 	let rv;
 	try {
 		rv = create({
-			__connection, _parentPath, _name, displayName, ...rest
-		});
+			_parentPath, _name, displayName, ...rest
+		}, {connection});
 	} catch (catchedError) {
 		if (catchedError.class && CATCH_CLASS_NAMES.includes(catchedError.class.name)) {
 			rv = modify({
-				__connection, _parentPath, _name, displayName, ...rest
-			});
+				_parentPath, _name, displayName, ...rest
+			}, {connection});
 		} else {
 			if (catchedError.class) {
 				log.error(toStr({catchedErrorClassName: catchedError.class.name}), catchedError);

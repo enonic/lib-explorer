@@ -7,9 +7,10 @@ export function modify({
 	state = 'RUNNING'
 }) {
 	return modifyNode({
-		__connection: connection,
 		_name: '', // The repo root node
 		should,
 		state
+	}, {
+		connection
 	});
 }

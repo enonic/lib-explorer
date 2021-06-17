@@ -1,10 +1,9 @@
-//import {toStr} from '/lib/util';
-import {sanitize} from '/lib/xp/common';
+import {toStr} from '/lib/util';
+import {isNotSet} from '/lib/util/value';
+import {sanitize as doSanitize} from '/lib/xp/common';
 import {join} from '/lib/explorer/path/join';
 
 export function modify({
-	__connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
-	__sanitize = true,
 	_id, // So it doesn't end up in rest.
 	_parentPath = '/',
 	_name, // WARNING: Maybe undefined? NO, connection.modify requires it!!!
@@ -12,11 +11,44 @@ export function modify({
 		? _name.join(', ')
 		: _name, // Maybe undefined
 	...rest
+} = {}, {
+	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
+	sanitize,
+	...ignoredOptions
 } = {}) {
 	//log.info(toStr({key, displayName, rest}));
-	const key = _id || join(_parentPath, __sanitize ? sanitize(_name) : _name);
+
+	Object.keys(rest).forEach((k) => {
+		if (k.startsWith('__')) {
+			log.warning(`Deprecation: Function signature changed. Added second argument for options.
+		Old: node.modify({${k}, ...})
+		New: node.modify({...}, {${k.substring(2)}})`);
+			if(k === '__connection') {
+				if (isNotSet(connection)) {
+					connection = rest[k];
+				}
+			} else if(k === '__sanitize') {
+				if (isNotSet(sanitize)) {
+					sanitize = rest[k];
+				}
+			} else {
+				log.warning(`node.modify: Ignored option:${k} value:${toStr(rest[k])}`);
+			}
+			delete rest[k];
+		}
+	});
+
+	if (isNotSet(sanitize)) {
+		sanitize = true;
+	}
+
+	if (Object.keys(ignoredOptions).length) {
+		log.warning(`node.modify: Ignored options:${toStr(ignoredOptions)}`);
+	}
+
+	const key = _id || join(_parentPath, sanitize ? doSanitize(_name) : _name);
 	//log.info(`key:${key}`);
-	return __connection.modify({
+	return connection.modify({
 		key,
 		editor: (node) => {
 			//log.info(`node:${toStr(node)}`);
