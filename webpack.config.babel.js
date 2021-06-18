@@ -146,7 +146,8 @@ const WEBPACK_CONFIG = [{
 	},
 	plugins: [
 		new webpack.ProvidePlugin({
-			global: '@enonic/nashorn-polyfills' // Not always polyfilled only when identifier global found
+			// Not always polyfilled only when identifier global found
+			global: path.resolve(__dirname, 'src/main/resources/lib/nashorn/global.es')
 		})
 	],
 	resolve: {

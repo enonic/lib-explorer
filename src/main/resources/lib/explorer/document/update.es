@@ -6,14 +6,16 @@ import deepEqual from 'fast-deep-equal';
 //import HumanDiff from 'human-object-diff';
 //const Diff = require('diff');
 
-import {toStr} from '/lib/util';
-//import {forceArray} from '/lib/util/data';
-import {isNotSet} from '/lib/util/value';
 import {getFieldsWithIndexConfigAndValueType} from '/lib/explorer/document/create';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
 import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/checkAndApplyTypes';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
+import {NT_DOCUMENT} from '/lib/explorer/model/2/constants';
 import {isObject} from '/lib/explorer/object/isObject';
+
+import {toStr} from '/lib/util';
+//import {forceArray} from '/lib/util/data';
+import {isNotSet} from '/lib/util/value';
 import {instant} from '/lib/xp/value.js';
 /*const { diff: diffDocument } = new HumanDiff({
 	objectName: 'document'
@@ -108,8 +110,6 @@ export function update({
 	//log.debug(`forDiff:${toStr(forDiff)}`);
 	//log.debug(`withType:${toStr(withType)}`);
 
-	let boolValid = true;
-
 	const indexConfig = {
 		default: templateToConfig({
 			template: 'byType', // TODO Perhaps minimal?
@@ -140,10 +140,41 @@ export function update({
 
 	const now = new Date();
 
+	// Enforce type
+	inputObject._nodeType = NT_DOCUMENT; // Temporary value so validation doesn't fail on this field.
+	forDiff._nodeType = NT_DOCUMENT;
+	withType._nodeType = NT_DOCUMENT;
+
+	// Enforce type (backwards compatibility) // TODO remove in lib-explorer-4.0.0 (app-explorer-2.0.0)
+	inputObject.type = NT_DOCUMENT; // Temporary value so validation doesn't fail on this field.
+	forDiff.type = NT_DOCUMENT;
+	withType.type = NT_DOCUMENT;
+
 	// 1st "pass":
+	// Skip checking occurrences, since that is checked in 2nd "pass".
+	// Check types, since that is skipped in 2nd "pass".
+	let boolValid = checkAndApplyTypes({
+		boolRequireValid,
+		boolValid: true, // passed as value, not possible to modify, return instead?
+		fields,
+		mode: 'diff',
+		inputObject, // only traversed within function
+		objToPersist: forDiff // modified within function
+	});
+
+	checkAndApplyTypes({
+		boolRequireValid,
+		boolValid: true, // passed as value, not possible to modify, return instead?
+		fields,
+		mode: 'update',
+		inputObject, // only traversed within function
+		objToPersist: withType // modified within function
+	});
+
+	// 2nd "pass":
 	// * Check if all required fields have values.
 	// * Check if any field have too many values.
-	// * Skipping type checking, leaving that for 2nd "pass".
+	// * Skipping type checking, since that is checked in 1st "pass".
 	// * Build indexConfig for any field with a value.
 	try {
 		checkOccurrencesAndBuildIndexConfig({
@@ -162,66 +193,8 @@ export function update({
 	}
 	//log.info(`indexConfig:${toStr(indexConfig)}`);
 
-	// 2nd "pass":
-	// Skip checking occurrences, since that was checked in 1st "pass".
-	// Check types, since that was skipped in 1st "pass".
-	checkAndApplyTypes({
-		boolRequireValid,
-		boolValid, // passed as value, not possible to modify, return instead?
-		fields,
-		mode: 'diff',
-		inputObject, // only traversed within function
-		objToPersist: forDiff // modified within function
-	});
-
-	checkAndApplyTypes({
-		boolRequireValid,
-		boolValid, // passed as value, not possible to modify, return instead?
-		fields,
-		mode: 'update',
-		inputObject, // only traversed within function
-		objToPersist: withType // modified within function
-	});
-
-	/*traverse(fieldsToUpdate).forEach(function(value) { // Fat arrow destroys this
-		if (
-			this.isLeaf // This skips arrays... thus Geodata sent as Array
-			&& !this.path[0].startsWith('_')
-			&& !this.circular
-		) {
-			if (Array.isArray(this.parent.node)) { // Can be GeoPoint or just normal Array
-				if (getIn(fields, [...this.parent.path, 'valueType']) === 'geoPoint') {
-					// XP always returns geoPoint string
-					// But we allow geoPoint input as array
-					// So normalize to string for diff
-					setIn(forDiff, this.parent.path, `${getIn(fieldsToUpdate, this.path)[0]},${getIn(fieldsToUpdate, this.path)[1]}`); // Happens twice
-				} else { // Just normal arrays
-					setIn(forDiff, this.parent.path, getIn(fieldsToUpdate, this.parent.path)); // Happens once per array entry
-					if (!getIn(withType, this.parent.path)) {
-						setIn(withType, this.parent.path, []);
-					}
-				}
-			}
-
-			try {
-				setIn(withType, this.path, tryApplyValueType({
-					fields,
-					path: this.path,
-					value
-				}));
-			} catch (e) {
-				if (__boolRequireValid) {
-					throw e;
-				} else {
-					boolValid = false;
-					setIn(withType, this.path, value);
-				}
-			}
-		}
-	}); // traverse
-	*/
-	//log.info(`forDiff:${toStr(forDiff)}`);
-	//log.info(`withType:${toStr(withType)}`);
+	forDiff.document_metadata.valid = boolValid;
+	withType.document_metadata.valid = boolValid;
 
 	if (deepEqual(existingNode, forDiff)) {
 		log.debug(`No changes detected, not updating document with id:${_id}`);

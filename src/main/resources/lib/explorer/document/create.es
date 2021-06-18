@@ -99,12 +99,15 @@ export function create({
 	inputObject.document_metadata.valid = true; // Temporary value so validation doesn't fail on this field.
 	inputObject.document_metadata.createdTime = new Date(); // So validation doesn't fail on this field.
 
-	const objToPersist = { // Fields starting with underscore are not handeled by checkAndApplyTypes
+	// Fields starting with underscore are not handeled by checkAndApplyTypes,
+	// Because we want full control over them. Same with document_metadata...
+	const objToPersist = {
 		_name,
 		_inheritsPermissions: true,
 		_nodeType: NT_DOCUMENT, // Enforce type
-		_parentPath: '/' // Enforce flat structure
+		_parentPath: '/', // Enforce flat structure
 		//_permissions: []
+		type: NT_DOCUMENT // Enforce type (backwards compatibility) // TODO remove in lib-explorer-4.0.0 (app-explorer-2.0.0)
 	};
 
 	/*const user = getUser();
@@ -130,18 +133,29 @@ export function create({
 		}*/]
 	};
 
-	let boolValid = true;
-	// 1st "pass":
+	// 1nd "pass":
+	// Skip checking occurrences, since that is checked in 2nd "pass".
+	// Check types, since that is skipped in 2nd "pass".
+	let boolValid = checkAndApplyTypes({
+		boolRequireValid,
+		boolValid: true,
+		fields,
+		inputObject, // only traversed within function
+		mode: 'create',
+		objToPersist // modified within function
+	});
+
+	// 2nd "pass":
 	// * Check if all required fields have values.
 	// * Check if any field have too many values.
-	// * Skipping type checking, leaving that for 2nd "pass".
+	// * Skipping type checking, since that was skipped in 1st "pass".
 	// * Build indexConfig for any field with a value.
 	try {
 		checkOccurrencesAndBuildIndexConfig({
 			boolRequireValid,
 			fields,
 			indexConfig, // modified within function
-			inputObject // only read from within function
+			inputObject: objToPersist // only read from within function
 		});
 	} catch (e) {
 		if (boolRequireValid) {
@@ -153,19 +167,8 @@ export function create({
 	}
 	//log.info(`indexConfig:${toStr(indexConfig)}`);
 
-	// 2nd "pass":
-	// Skip checking occurrences, since that was checked in 1st "pass".
-	// Check types, since that was skipped in 1st "pass".
-	checkAndApplyTypes({
-		boolRequireValid,
-		boolValid,
-		fields,
-		inputObject, // only traversed within function
-		mode: 'create',
-		objToPersist // modified within function
-	});
-
 	objToPersist._indexConfig = indexConfig;
+	objToPersist.document_metadata.valid = boolValid;
 
 	//log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
 	const createdNode = connection.create(objToPersist);

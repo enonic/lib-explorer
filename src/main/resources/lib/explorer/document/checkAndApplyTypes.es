@@ -255,6 +255,6 @@ export function checkAndApplyTypes({
 	//log.info(`nodeToCreate:${toStr(nodeToCreate)}`);
 
 	//creator: user.key, // Enforce creator
-	objToPersist.document_metadata.valid = boolValid;
 	//log.info(`nodeToCreate:${toStr(nodeToCreate)}`);
+	return boolValid;
 }

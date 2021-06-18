@@ -47,12 +47,14 @@ dependencies {
 
 ### 4.0.0-SNAPSHOT
 
+* TODO: Require XP-7.6 and use distributable tasks
 * TODO: move should _nodeType filter to must in all queries
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
 
-### 3.15.1-SNAPSHOT
+### 3.15.1
 
+* Colletors/Document API write both _nodeType and type (for backwards compatibility)
 * Polyfill Array.flat
 
 ### 3.15.0
