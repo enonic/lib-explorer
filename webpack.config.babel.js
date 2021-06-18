@@ -14,7 +14,7 @@ const DST_DIR = 'build/resources/main';
 const dict = arr => Object.assign(...arr.map(([k, v]) => ({ [k]: v })));
 
 const SS_ALIAS = {
-	myGlobal: path.resolve(__dirname, 'src/main/resources/lib/nashorn/global')
+	'@enonic/nashorn-polyfills': path.resolve(__dirname, 'src/main/resources/lib/nashorn/index')
 };
 
 const SS_EXTERNALS = [
@@ -146,7 +146,7 @@ const WEBPACK_CONFIG = [{
 	},
 	plugins: [
 		new webpack.ProvidePlugin({
-			global: 'myGlobal'
+			global: '@enonic/nashorn-polyfills' // Not always polyfilled only when identifier global found
 		})
 	],
 	resolve: {

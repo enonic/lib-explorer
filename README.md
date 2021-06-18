@@ -51,6 +51,10 @@ dependencies {
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
 
+### 3.15.1-SNAPSHOT
+
+* Polyfill Array.flat
+
 ### 3.15.0
 
 * Move function parameters that start with __ to second argument without __
