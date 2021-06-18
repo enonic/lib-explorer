@@ -37,7 +37,7 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
-| 3.1[0-4].x | 7.5.0 |
+| 3.1[0-5].x | 7.5.0 |
 | 3.[6-9].x | 7.4.1 |
 | 3.[1-5].x | 7.3.2 |
 | 3.0.7 | 7.3.1 |
@@ -51,6 +51,10 @@ dependencies {
 * TODO: move should _nodeType filter to must in all queries
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
+
+### 3.15.2
+
+* lib-util-3.0.0
 
 ### 3.15.1
 
