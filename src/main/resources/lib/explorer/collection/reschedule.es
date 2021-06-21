@@ -1,19 +1,28 @@
 import {
 	//list,
-	schedule,
+	//schedule,
 	unschedule
 } from '/lib/cron';
-//import {toStr} from '/lib/util';
+import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
-import {submitTask} from '/lib/xp/task';
+/*import {
+	//delete as deleteJob,
+	//get as getJob
+} from '/lib/xp/scheduler';*/
+//import {submitTask} from '/lib/xp/task';
 
 import {
-	PRINCIPAL_SYSTEM_ADMIN,
-	PRINCIPAL_EXPLORER_WRITE,
+	//PRINCIPAL_SYSTEM_ADMIN,
+	//PRINCIPAL_EXPLORER_WRITE,
 	USER_EXPLORER_APP_NAME,
 	USER_EXPLORER_APP_ID_PROVIDER
 } from '/lib/explorer/model/2/constants';
 import {query as queryCollectors} from '/lib/explorer/collector/query';
+import {createOrModifyJob} from '/lib/explorer/scheduler/createOrModifyJob';
+//import {listExplorerJobs} from '/lib/explorer/scheduler/listExplorerJobs';
+
+
+const USER = `user:${USER_EXPLORER_APP_ID_PROVIDER}:${USER_EXPLORER_APP_NAME}`;
 
 
 export function getCollectors({
@@ -37,6 +46,9 @@ export function reschedule({
 	node,
 	oldNode
 }) {
+	//const explorerJobsList = listExplorerJobs();
+	//log.info(`explorerJobsList:${toStr(explorerJobsList)}`);
+
 	//log.debug(`collectors:${toStr(collectors)}`);
 	//log.debug(`node:${toStr(node)}`);
 	//log.debug(`oldNode:${toStr(oldNode)}`);
@@ -44,10 +56,10 @@ export function reschedule({
 	if (!node && oldNode && oldNode.doCollect && oldNode.cron) {
 		// A collection node (with scheduling) has been deleted, just unschedule and return
 		const {
-			_id: id
+			_id: oldCollectionNodeId
 		} = oldNode;
 		forceArray(oldNode.cron).forEach((ignored, i) => {
-			const jobName = `${id}:${i}`;
+			const jobName = `${oldCollectionNodeId}:${i}`;
 			//log.debug(`Unscheduling deleted ${jobName}`);
 			unschedule({name: jobName});
 		});
@@ -58,7 +70,7 @@ export function reschedule({
 
 	// A collection node has been created or modified
 	const {
-		_id: id,
+		_id: collectionNodeId,
 		_name: collectionName,
 		collector: {
 			name: collectorId,
@@ -82,7 +94,7 @@ export function reschedule({
 	//log.debug(`oldCronArray:${toStr(oldCronArray)}`);
 
 	oldCronArray.forEach((ignored, i) => {
-		const jobName = `${id}:${i}`;
+		const jobName = `${collectionNodeId}:${i}`;
 		//log.debug(`Unscheduling old ${jobName}`);
 		unschedule({name: jobName});
 	});
@@ -101,14 +113,14 @@ export function reschedule({
 				const configJson = JSON.stringify(collectorConfig);
 				//log.debug(`configJson:${toStr(configJson)}`);
 
-				const taskParams = {
+				/*const taskParams = {
 					descriptor: collectorId,
 					config: {
 						name: collectionName,
 						collectorId,
 						configJson
 					}
-				};
+				};*/
 				//log.debug(`taskParams:${toStr(taskParams)}`);
 
 				//log.debug(`cronArray:${toStr(cronArray)}`);
@@ -119,11 +131,29 @@ export function reschedule({
 					month = '*',
 					dayOfWeek = '*'
 				}, i) => {
-					const cron = `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`;
-					const jobName = `${id}:${i}`;
+					const createdOrModifiedJob = createOrModifyJob({
+						config: {
+							name: collectionName,
+							collectorId,
+							configJson
+						},
+						descriptor: collectorId,
+						//enabled: true,
+						name: `${collectionNodeId}:${i}`,
+						schedule: {
+							// GMT === UTC
+							timezone: 'GMT+2:00', // CEST (Summer Time)
+							//timezone: 'GMT+1:00', // CET
+							type: 'CRON',
+							value: `${minute} ${hour} ${dayOfMonth} ${month} ${dayOfWeek}`
+						},
+						user: USER
+					});
+					log.info(`createdOrModifiedJob:${toStr(createdOrModifiedJob)}`);
+
 					//log.debug(`jobName:${toStr(jobName)} cron:${toStr(cron)}`);
 					//log.debug(`Scheduling ${jobName} with taskParams:${toStr(taskParams)}`);
-					schedule({
+					/*schedule({
 						callback: () => submitTask(taskParams),
 						context: {
 							//attributes: {}, // (object) Map of context attributes.
@@ -142,9 +172,11 @@ export function reschedule({
 						//delay:, // (number) The time to delay first execution. Can’t be set with (cron).
 						//fixedDelay: , // (number) The delay between the termination of one execution and the commencement of the next. Can’t be set with (cron).
 						name: jobName/*,
-						times: 0*/ // (number) Number of task runs. Leave it empty for infinite calls.
-					}); // schedule
+						times: 0 // (number) Number of task runs. Leave it empty for infinite calls.
+					}); // schedule*/
 				}); // cronArray.forEach
+				//const explorerJobsList = listExplorerJobs();
+				//log.info(`explorerJobsList:${toStr(explorerJobsList)}`);
 				//const cronList = list();
 				//log.debug(`After re-scheduling cronList:${toStr({cronList})}`);
 			} // collectors[collectorId]

@@ -37,7 +37,8 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
-| 3.16.x | 7.6.0 |
+| 3.17.0 | 7.7.0 |
+| 3.16.0 | 7.6.0 |
 | 3.1[0-5].x | 7.5.0 |
 | 3.[6-9].x | 7.4.1 |
 | 3.[1-5].x | 7.3.2 |
@@ -52,6 +53,10 @@ dependencies {
 * TODO: move should _nodeType filter to must in all queries
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
+
+### 3.17.0-SNAPSHOT
+
+* TODO: Require to Enonic XP 7.7 and use internal scheduling instead of lib-cron
 
 ### 3.16.0
 

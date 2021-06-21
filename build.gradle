@@ -37,6 +37,7 @@ dependencies {
 	//compile "com.enonic.xp:lib-node:${xpVersion}"
 	compile "com.enonic.xp:lib-portal:${xpVersion}"
 	//compile "com.enonic.xp:lib-repo:${xpVersion}"
+	compile "com.enonic.xp:lib-scheduler:${xpVersion}"
 	compile "com.enonic.xp:lib-task:${xpVersion}"
 	//compile "com.enonic.xp:lib-thymeleaf:${xpVersion}"
 	compile "com.enonic.xp:lib-value:${xpVersion}"
