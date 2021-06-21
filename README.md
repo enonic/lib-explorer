@@ -37,6 +37,7 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
+| 3.16.x | 7.6.0 |
 | 3.1[0-5].x | 7.5.0 |
 | 3.[6-9].x | 7.4.1 |
 | 3.[1-5].x | 7.3.2 |
@@ -51,6 +52,10 @@ dependencies {
 * TODO: move should _nodeType filter to must in all queries
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
+
+### 3.16.0
+
+* Require Enonic XP 7.6 and use distributed tasks
 
 ### 3.15.2
 

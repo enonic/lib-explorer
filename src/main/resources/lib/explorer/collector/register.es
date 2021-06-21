@@ -48,6 +48,7 @@ export function register({
 	configAssetPath = 'js/react/Collector.esm.js',
 	displayName
 }) {
+	// We only want execute do this once. So it's protected with isMaster.
 	if (isMaster) {
 		let boolRegister = true;
 		let boolUnregister = false;

@@ -5,7 +5,7 @@ import {
 } from '/lib/cron';
 //import {toStr} from '/lib/util';
 import {forceArray} from '/lib/util/data';
-import {submitNamed} from '/lib/xp/task';
+import {submitTask} from '/lib/xp/task';
 
 import {
 	PRINCIPAL_SYSTEM_ADMIN,
@@ -102,7 +102,7 @@ export function reschedule({
 				//log.debug(`configJson:${toStr(configJson)}`);
 
 				const taskParams = {
-					name: collectorId,
+					descriptor: collectorId,
 					config: {
 						name: collectionName,
 						collectorId,
@@ -124,7 +124,7 @@ export function reschedule({
 					//log.debug(`jobName:${toStr(jobName)} cron:${toStr(cron)}`);
 					//log.debug(`Scheduling ${jobName} with taskParams:${toStr(taskParams)}`);
 					schedule({
-						callback: () => submitNamed(taskParams),
+						callback: () => submitTask(taskParams),
 						context: {
 							//attributes: {}, // (object) Map of context attributes.
 							branch: 'master', // Repository to execute the callback in.
