@@ -1,5 +1,6 @@
 import {detailedDiff} from 'deep-object-diff';
 import deepEqual from 'fast-deep-equal';
+//import HumanDiff from 'human-object-diff';
 
 import {
 	USER_EXPLORER_APP_NAME,
@@ -12,6 +13,10 @@ import {
 	modify as modifyJob
 } from '/lib/xp/scheduler';
 
+
+/*const { diff: diffJob } = new HumanDiff({
+objectName: 'job'
+});*/
 
 const USER = `user:${USER_EXPLORER_APP_ID_PROVIDER}:${USER_EXPLORER_APP_NAME}`;
 
@@ -34,10 +39,16 @@ export function createOrModifyJob({
 	};
 	const maybeExisitingJob = getJob({name});
 	if (maybeExisitingJob) {
+
+		// So deepEqual won't compare these:
+		delete maybeExisitingJob.modifier;
+		delete maybeExisitingJob.modifiedTime;
+
 		if (deepEqual(maybeExisitingJob, paramsObj)) {
 			log.debug(`No changes detected, not updating job with name:${name}`);
 		} else {
 			log.info(`Changes detected in job with name:${name} diff:${toStr(detailedDiff(maybeExisitingJob, paramsObj))}`);
+			//log.info(`Changes detected in job with name:${name} diff:${toStr(diffJob(maybeExisitingJob, paramsObj))}`);
 			const modifiedJob = modifyJob({
 				name,
 				editor: (exisitingJob) => {
@@ -47,6 +58,7 @@ export function createOrModifyJob({
 					exisitingJob.enabled = enabled;
 					exisitingJob.schedule = schedule;
 					exisitingJob.user = user;
+					//exisitingJob.modifiedTime = new Date(); // Needed?
 					return exisitingJob;
 				}
 			});

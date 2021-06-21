@@ -57,6 +57,7 @@ dependencies {
 ### 3.17.0-SNAPSHOT
 
 * TODO: Require to Enonic XP 7.7 and use internal scheduling instead of lib-cron
+* TODO: Make sure all previous cronJobs are unscheduled on startup
 
 ### 3.16.0
 
