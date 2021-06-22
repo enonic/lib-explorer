@@ -54,10 +54,9 @@ dependencies {
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
 
-### 3.17.0-SNAPSHOT
+### 3.17.0
 
-* TODO: Require to Enonic XP 7.7 and use internal scheduling instead of lib-cron
-* TODO: Make sure all previous cronJobs are unscheduled on startup
+* Require to Enonic XP 7.7 and use internal scheduling instead of lib-cron
 
 ### 3.16.0
 
