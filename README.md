@@ -53,9 +53,11 @@ dependencies {
 * TODO: move should _nodeType filter to must in all queries
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
+* TODO: Support languages and stemmed queries
 
 ### 3.17.0
 
+* Add getLocales()
 * Require to Enonic XP 7.7 and use internal scheduling instead of lib-cron
 
 ### 3.16.0
