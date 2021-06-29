@@ -20,6 +20,7 @@ export function createOrUpdate({
 	boolPartial,
 	boolRequireValid,
 	connection,
+	language,
 	...ignoredOptions
 } = {}) {
 	Object.keys(rest).forEach((k) => {
@@ -60,10 +61,10 @@ export function createOrUpdate({
 
 	let rv;
 	try {
-		rv = create(rest, {boolRequireValid, connection});
+		rv = create(rest, {boolRequireValid, connection, language});
 	} catch (catchedError) {
 		if (catchedError.class && CATCH_CLASS_NAMES.includes(catchedError.class.name)) {
-			rv = update(rest, {boolPartial, boolRequireValid, connection});
+			rv = update(rest, {boolPartial, boolRequireValid, connection, language});
 		} else {
 			if (catchedError.class) {
 				log.error(toStr({catchedErrorClassName: catchedError.class.name}), catchedError);

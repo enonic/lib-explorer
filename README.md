@@ -55,6 +55,10 @@ dependencies {
 * TODO: Move _nodeType = document from should to must in interface code
 * TODO: Support languages and stemmed queries
 
+### 3.18.0-SNAPSHOT
+
+* IN PROGRESS: Adding language when building to _indexConfig to support stemmed queries
+
 ### 3.17.0
 
 * Add getLocales()

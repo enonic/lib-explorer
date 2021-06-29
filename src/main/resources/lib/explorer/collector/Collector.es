@@ -20,7 +20,7 @@ import {progress} from '/lib/explorer/task/progress';
 import {get as getTask} from '/lib/explorer/task/get';
 import {hash} from '/lib/explorer/string/hash';
 import {modify as modifyTask} from '/lib/explorer/task/modify';
-
+import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
 //import {Document} from '/lib/explorer/model/2/nodeTypes/document';
 
 //import {getTotalCount} from '/lib/explorer/collection/getTotalCount';
@@ -30,9 +30,9 @@ import {Journal} from '/lib/explorer/collector/Journal';
 
 
 export class Collector {
+	#language;
 
-
-	constructor({name, collectorId, configJson}) {
+	constructor({name, collectorId, configJson, language}) {
 		//log.info(toStr({name, collectorId, configJson}));
 
 		if (!name) { throw new Error('Missing required parameter name!'); }
@@ -40,6 +40,10 @@ export class Collector {
 		if (!collectorId) { throw new Error('Missing required parameter collectorId!'); }
 		this.collectorId = collectorId;
 		if (!configJson) { throw new Error('Missing required parameter configJson!'); }
+
+		if (language) {
+			this.#language = javaLocaleToSupportedLanguage(language);
+		}
 
 		/*const explorerRepoReadConnection = connect({
 			principals: [PRINCIPAL_EXPLORER_READ]
@@ -156,7 +160,10 @@ export class Collector {
 
 		const documentToPersist = {
 			...rest,
+
+			// TODO? lib-explorer-4.0.0 Allow advanced collectors to pass their own.
 			//_indexConfig, // Built automatically
+
 			_name,
 			_nodeType: NT_DOCUMENT,
 			_parentPath,
@@ -184,7 +191,8 @@ export class Collector {
 
 		const persistedNode = createOrUpdate(documentToPersist, {
 			boolRequireValid,
-			connection: this.collection.connection
+			connection: this.collection.connection,
+			language: this.#language
 		});
 		if (!persistedNode) {
 			throw new Error('Something went wrong when trying to persist a document!');

@@ -57,6 +57,7 @@ export function create({
 }, {
 	boolRequireValid,
 	connection,
+	language,
 	...ignoredOptions
 } = {}) {
 	Object.keys(rest).forEach((k) => {

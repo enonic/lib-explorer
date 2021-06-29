@@ -29,6 +29,7 @@ export function update({
 	boolPartial,
 	boolRequireValid,
 	connection,
+	language,
 	...ignoredOptions
 } = {}) {
 	Object.keys(rest).forEach((k) => {
