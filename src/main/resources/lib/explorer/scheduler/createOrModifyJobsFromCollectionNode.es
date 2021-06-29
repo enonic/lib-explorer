@@ -51,7 +51,7 @@ export function createOrModifyJobsFromCollectionNode({
 	} = collectionNode;
 
 	const existingJobs = listExplorerJobsThatStartWithName({name: collectionNodeId});
-	log.info(`collection name:${collectionNodeName} existingJobs:${toStr(existingJobs)}`);
+	//log.info(`collection name:${collectionNodeName} existingJobs:${toStr(existingJobs)}`);
 
 	if (!collectorId) {
 		log.error(`Collection with name:${collectionNodeName} is missing a collector!`);
@@ -114,10 +114,10 @@ export function createOrModifyJobsFromCollectionNode({
 			},
 			user: USER
 		}); // createOrModifyJob
-		log.info(`createdOrModifiedJob:${toStr(createdOrModifiedJob)}`);
+		//log.info(`createdOrModifiedJob:${toStr(createdOrModifiedJob)}`);
 		return createdOrModifiedJob;
 	}); // cronArray.forEach
 
-	log.info(`createdOrModifiedJobs:${toStr(createdOrModifiedJobs)}`);
+	//log.info(`createdOrModifiedJobs:${toStr(createdOrModifiedJobs)}`);
 	return createdOrModifiedJobs;
 } // createOrModifyJobsFromCollectionNode
