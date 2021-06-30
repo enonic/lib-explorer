@@ -62,18 +62,29 @@ export const PATH_FIELDS = '/fields';
 export const PATH_INTERFACES = '/interfaces';
 
 
+export const VALUE_TYPE_ANY = 'any';
+export const VALUE_TYPE_BOOLEAN = 'boolean';
+export const VALUE_TYPE_GEO_POINT = 'geoPoint';
+export const VALUE_TYPE_INSTANT = 'instant';
+export const VALUE_TYPE_LOCAL_DATE = 'localDate';
+export const VALUE_TYPE_LOCAL_DATE_TIME = 'localDateTime';
+export const VALUE_TYPE_LOCAL_TIME = 'localTime';
+export const VALUE_TYPE_SET = 'set';
+export const VALUE_TYPE_STRING = 'string';
+
+
 export const NO_VALUES_FIELDS = [{
 	key: '_allText',
 	_name: 'alltext', // sanitize removes _ and makes T small
-	denyDelete: true,
-	denyValues: true,
+	denyDelete: true, // TODO: Only used in Fields.jsx and FieldList.es
+	denyValues: true, // TODO: Only used in Fields.jsx and FieldList.es
 	//displayName: 'All text',
-	inResults: false
+	inResults: false // TODO: Only used in servics/interfaceList.es
 },{
 	_name: 'document-metadata', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
-	fieldType: 'set',
+	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	inResults: false,
 	key: 'document_metadata',
@@ -83,7 +94,7 @@ export const NO_VALUES_FIELDS = [{
 	_name: 'document-metadata.collector', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
-	fieldType: 'set',
+	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	inResults: false,
 	key: 'document_metadata.collector',
@@ -93,7 +104,7 @@ export const NO_VALUES_FIELDS = [{
 	_name: 'document-metadata.collector.id', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
-	fieldType: 'string',
+	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	inResults: false,
 	key: 'document_metadata.collector.id',
@@ -103,7 +114,7 @@ export const NO_VALUES_FIELDS = [{
 	_name: 'document-metadata.collector.version', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
-	fieldType: 'string',
+	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	inResults: false,
 	key: 'document_metadata.collector.version',
@@ -113,7 +124,7 @@ export const NO_VALUES_FIELDS = [{
 	_name: 'document-metadata.createdTime', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
-	fieldType: 'instant',
+	fieldType: VALUE_TYPE_INSTANT,
 	indexConfig: 'minimal',
 	inResults: false,
 	key: 'document_metadata.createdTime',
@@ -123,7 +134,7 @@ export const NO_VALUES_FIELDS = [{
 	_name: 'document-metadata.modifiedTime', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
-	fieldType: 'instant',
+	fieldType: VALUE_TYPE_INSTANT,
 	indexConfig: 'minimal',
 	inResults: false,
 	key: 'document_metadata.modifiedTime',
@@ -133,7 +144,7 @@ export const NO_VALUES_FIELDS = [{
 	_name: 'document-metadata.valid', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
-	fieldType: 'boolean',
+	fieldType: VALUE_TYPE_BOOLEAN,
 	indexConfig: 'minimal',
 	inResults: false,
 	key: 'document_metadata.valid',
@@ -147,22 +158,20 @@ export const READONLY_FIELDS = [{
 	denyDelete: true,
 	denyValues: false,
 	//displayName: 'Type',
-	fieldType: 'string',
+	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	max: 1,
 	min: 1
-	//readonly: true,
-},{
+},{ // TODO This should not be a system field. Remove in lib-explorer-4.0.0?
 	key: 'type',
 	_name: 'type',
 	denyDelete: true,
 	denyValues: false,
-	fieldType: 'string',
+	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	max: 1,
 	min: 0
-	//displayName: 'Type',
-	//readonly: true
+	//displayName: 'Type'
 }];
 
 export const READWRITE_FIELDS = [{
@@ -171,7 +180,7 @@ export const READWRITE_FIELDS = [{
 	denyDelete: true,
 	denyValues: false,
 	//displayName: 'Title'*/
-	fieldType: 'string',
+	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'type',
 	max: 1,
 	min: 1
@@ -181,7 +190,7 @@ export const READWRITE_FIELDS = [{
 	denyDelete: true,
 	denyValues: false,
 	//displayName: 'Language'*/
-	fieldType: 'string',
+	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'type',
 	max: 0,
 	min: 0
@@ -191,7 +200,7 @@ export const READWRITE_FIELDS = [{
 	denyDelete: true,
 	denyValues: false,
 	//displayName: 'Text'
-	fieldType: 'string',
+	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'type',
 	max: 0, // Allow array
 	min: 1
@@ -201,7 +210,7 @@ export const READWRITE_FIELDS = [{
 	denyDelete: true,
 	denyValues: false,
 	//displayName: 'Uri'
-	fieldType: 'string',
+	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'type',
 	max: 1,
 	min: 1

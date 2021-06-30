@@ -53,11 +53,11 @@ dependencies {
 * TODO: move should _nodeType filter to must in all queries
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
-* TODO: Support languages and stemmed queries
+* TODO: Support stemmed queries
 
-### 3.18.0-SNAPSHOT
+### 3.18.0
 
-* IN PROGRESS: Adding language when building to _indexConfig to support stemmed queries
+* Adding language when building _indexConfig to support stemmed queries
 
 ### 3.17.0
 

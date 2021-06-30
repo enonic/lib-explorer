@@ -1,5 +1,9 @@
 import getIn from 'get-value';
 
+import {
+	VALUE_TYPE_ANY,
+	VALUE_TYPE_STRING
+} from '/lib/explorer/model/2/constants';
 import {ValidationError} from '/lib/explorer/document/ValidationError';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 
@@ -11,16 +15,21 @@ export function checkOccurrencesAndBuildIndexConfig({
 	boolRequireValid,
 	fields,
 	indexConfig, // modified within function
-	inputObject // only read from within function
+	inputObject, // only read from within function
+	language
 }) {
-	//log.debug(`indexConfig:${toStr(indexConfig)}`);
+	//log.debug(`checkOccurrencesAndBuildIndexConfig fields:${toStr(fields)}`);
+	//log.debug(`checkOccurrencesAndBuildIndexConfig indexConfig:${toStr(indexConfig)}`);
+	//log.debug(`checkOccurrencesAndBuildIndexConfig inputObject:${toStr(inputObject)}`);
 	const validationErrors = [];
 	Object.keys(fields).forEach((path) => {
 		const fieldValue = getIn(inputObject, path);
 
 		const {
-			min = 0, // Default is not required
-			max = 0 // Default is infinite
+			min,// = 0, // Default is not required, Already set
+			max,// = 0, // Default is infinite, Already set
+			isSystemField,// = false, Already set
+			valueType //= VALUE_TYPE_ANY?
 		} = fields[path];
 		if (min > 0) { // Required
 			if (!fieldValue) {
@@ -62,12 +71,25 @@ export function checkOccurrencesAndBuildIndexConfig({
 			//log.debug(`path:${path} fieldValue:${toStr(fieldValue)}`);
 			const template = fields[path].indexConfig === 'type' ? 'byType' : fields[path].indexConfig;
 			//log.debug(`path:${path} template:${toStr(template)}`);
+			const languages = [];
+			// TODO do not stem system fields?
+			if (language && !isSystemField && [
+				VALUE_TYPE_ANY,
+				VALUE_TYPE_STRING,
+				'html', // TODO Remove in 2.0 ?
+				'tag',
+				'text',
+				'uri'/*,
+				'xml'*/
+			].includes(valueType)) {
+				languages.push(language);
+			}
 			const item = {
 				path,
 				config: templateToConfig({
 					template,
 					indexValueProcessors: [],
-					languages: []
+					languages
 				})
 			};
 			//log.debug(`item:${toStr(item)}`);

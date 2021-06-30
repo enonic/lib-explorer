@@ -4,8 +4,7 @@ import {getFields} from '/lib/explorer/field/getFields';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {
 	NT_DOCUMENT,
-	PRINCIPAL_EXPLORER_READ,
-	SYSTEM_FIELDS
+	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 import {isObject} from '/lib/explorer/object/isObject';
 import {connect} from '/lib/explorer/repo/connect';
@@ -19,12 +18,8 @@ export function getFieldsWithIndexConfigAndValueType() {
 	const fieldRes = getFields({
 		connection: connect({
 			principals: [PRINCIPAL_EXPLORER_READ]
-		})
-	});
-	SYSTEM_FIELDS.forEach((field) => {
-		fieldRes.hits.push(field);
-		fieldRes.count += 1;
-		fieldRes.total += 1;
+		}),
+		includeSystemFields: true
 	});
 	//log.debug(`fieldRes:${toStr(fieldRes)}`);
 
@@ -32,14 +27,16 @@ export function getFieldsWithIndexConfigAndValueType() {
 	fieldRes.hits.forEach(({
 		//_name,
 		fieldType,
-		indexConfig,
+		indexConfig, // can be template or full config
+		isSystemField = false,
 		key,
-		min,
-		max
+		min = 0, // Default is not required,
+		max = 0 // Default is infinite
 	}) => {
 		if (key !== '_allText') {
 			fields[key] = {
-				indexConfig,
+				indexConfig, // can be template or full config
+				isSystemField,
 				min,
 				max,
 				valueType: fieldType
@@ -118,11 +115,15 @@ export function create({
 
 	const fields = getFieldsWithIndexConfigAndValueType();
 
+	const languages = [];
+	if (language) {
+		languages.push(language);
+	}
 	const indexConfig = {
 		default: templateToConfig({
 			template: 'byType', // TODO Perhaps minimal?
 			indexValueProcessors: [],
-			languages: []
+			languages
 		}),
 		configs: [/*{
 			path: 'document_metadata',
@@ -156,7 +157,8 @@ export function create({
 			boolRequireValid,
 			fields,
 			indexConfig, // modified within function
-			inputObject: objToPersist // only read from within function
+			inputObject: objToPersist, // only read from within function
+			language
 		});
 	} catch (e) {
 		if (boolRequireValid) {

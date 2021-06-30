@@ -110,12 +110,15 @@ export function update({
 	}
 	//log.debug(`forDiff:${toStr(forDiff)}`);
 	//log.debug(`withType:${toStr(withType)}`);
-
+	const languages = [];
+	if (language) {
+		languages.push(language);
+	}
 	const indexConfig = {
 		default: templateToConfig({
 			template: 'byType', // TODO Perhaps minimal?
 			indexValueProcessors: [],
-			languages: []
+			languages
 		}),
 		configs: [/*{
 			path: 'document_metadata',
@@ -182,7 +185,8 @@ export function update({
 			boolRequireValid,
 			fields,
 			indexConfig, // modified within function
-			inputObject // only read from within function
+			inputObject, // only read from within function
+			language
 		});
 	} catch (e) {
 		if (boolRequireValid) {

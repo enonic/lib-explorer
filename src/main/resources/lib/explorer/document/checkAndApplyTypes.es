@@ -2,6 +2,17 @@ import getIn from 'get-value';
 import setIn from 'set-value';
 import traverse from 'traverse';
 
+import {
+	VALUE_TYPE_ANY,
+	VALUE_TYPE_BOOLEAN,
+	VALUE_TYPE_GEO_POINT,
+	VALUE_TYPE_INSTANT,
+	VALUE_TYPE_LOCAL_DATE,
+	VALUE_TYPE_LOCAL_DATE_TIME,
+	VALUE_TYPE_LOCAL_TIME,
+	VALUE_TYPE_SET,
+	VALUE_TYPE_STRING
+} from '/lib/explorer/model/2/constants';
 import {ValidationError} from '/lib/explorer/document/ValidationError';
 import {isObject} from '/lib/explorer/object/isObject';
 import {isInt, isString} from '/lib/util/value';
@@ -59,7 +70,7 @@ function shouldBeGeoPoint({
 	return shouldBeType({
 		fields,
 		pathString,
-		type: 'geoPoint'
+		type: VALUE_TYPE_GEO_POINT
 	});
 }
 
@@ -80,13 +91,13 @@ export function tryApplyValueType({
 	}
 	const valueType = field.valueType; // Works for 'obj.property', but not 'arr.0'
 	//log.debug(`pathString:${pathString} value:${toStr(value)} valueType:${valueType}`);
-	if(!valueType || valueType === 'any') {
+	if(!valueType || valueType === VALUE_TYPE_ANY) {
 		return value;
 	}
 
 	if ([
-		'string',
-		'text',
+		VALUE_TYPE_STRING,
+		'text', // TODO Remove in 2.0 ?
 		'uri',
 		'tag',
 		'html'/*,
@@ -95,8 +106,8 @@ export function tryApplyValueType({
 		if (!isString(value)) {
 			throw new ValidationError(`Not a string:${toStr(value)} at pathString:${pathString}!`);
 		}
-	} else if (valueType === 'boolean') {
-		if (typeof value !== 'boolean') {
+	} else if (valueType === VALUE_TYPE_BOOLEAN) {
+		if (typeof value !== VALUE_TYPE_BOOLEAN) {
 			throw new ValidationError(`Not a boolean:${toStr(value)} at pathString:${pathString}!`);
 		}
 	} else if (valueType === 'long') {
@@ -107,23 +118,23 @@ export function tryApplyValueType({
 		if (!isFloat(value)) {
 			throw new ValidationError(`Not a number:${toStr(value)} at pathString:${pathString}!`);
 		}
-	} else if (valueType === 'set') {
+	} else if (valueType === VALUE_TYPE_SET) {
 		if (!isObject(value)) {
 			throw new ValidationError(`Not a set:${toStr(value)} at pathString:${pathString}!`);
 		}
-	} else if (valueType === 'geoPoint') {
+	} else if (valueType === VALUE_TYPE_GEO_POINT) {
 		if (Array.isArray(value)) {
 			return geoPoint(...value); // Doesn't take array, must spread
 		} else { // Assuming string
 			return geoPointString(value);
 		}
-	} else if (valueType === 'instant') {
+	} else if (valueType === VALUE_TYPE_INSTANT) {
 		return instant(value);
-	} else if (valueType === 'localDate') {
+	} else if (valueType === VALUE_TYPE_LOCAL_DATE) {
 		return localDate(value);
-	} else if (valueType === 'localDateTime') {
+	} else if (valueType === VALUE_TYPE_LOCAL_DATE_TIME) {
 		return localDateTime(value);
-	} else if (valueType === 'localTime') {
+	} else if (valueType === VALUE_TYPE_LOCAL_TIME) {
 		return localTime(value);
 	/*} else if (valueType === 'reference') {
 		return reference(value);*/
