@@ -1,15 +1,21 @@
+import {
+	VALUE_TYPE_BOOLEAN,
+	VALUE_TYPE_INSTANT,
+	VALUE_TYPE_SET,
+	VALUE_TYPE_STRING
+} from '@enonic/sdk';
+
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (included in jar via gradle dependencies)
 //──────────────────────────────────────────────────────────────────────────────
-import {getToolUrl} from '/lib/xp/admin';
-import {sanitize} from '/lib/xp/common';
+import {getToolUrl} from '/lib/xp/admin'; // TODO remove in lib-explorer-4.0.0
 
 
 //──────────────────────────────────────────────────────────────────────────────
 // Admin tool
 //──────────────────────────────────────────────────────────────────────────────
 export const APP_EXPLORER = 'com.enonic.app.explorer';
-export const TOOL_PATH = getToolUrl(APP_EXPLORER, 'explorer');
+export const TOOL_PATH = getToolUrl(APP_EXPLORER, 'explorer'); // TODO: Not used anywhere, remove in lib-explorer-4.0.0
 
 export const COLON_SIGN = ':'; // Not good in repo names
 //export const RATIO_SIGN = '∶'; // Not good in repo names
@@ -60,18 +66,6 @@ export const PATH_API_KEYS = '/api-keys';
 export const PATH_COLLECTORS = '/collectors';
 export const PATH_FIELDS = '/fields';
 export const PATH_INTERFACES = '/interfaces';
-
-
-export const VALUE_TYPE_ANY = 'any';
-export const VALUE_TYPE_BOOLEAN = 'boolean';
-export const VALUE_TYPE_GEO_POINT = 'geoPoint';
-export const VALUE_TYPE_INSTANT = 'instant';
-export const VALUE_TYPE_LOCAL_DATE = 'localDate';
-export const VALUE_TYPE_LOCAL_DATE_TIME = 'localDateTime';
-export const VALUE_TYPE_LOCAL_TIME = 'localTime';
-export const VALUE_TYPE_SET = 'set';
-export const VALUE_TYPE_STRING = 'string';
-
 
 export const NO_VALUES_FIELDS = [{
 	key: '_allText',
@@ -231,7 +225,7 @@ export const RT_HTML = 'text/html;charset=utf-8';
 // Repo
 //──────────────────────────────────────────────────────────────────────────────
 
-export const REPO_ID_EXPLORER = sanitize(APP_EXPLORER);
+export const REPO_ID_EXPLORER = APP_EXPLORER;
 export const BRANCH_ID_EXPLORER = 'master';
 export const REPO_JOURNALS = `${APP_EXPLORER}${DOT_SIGN}journals`;
 
@@ -243,9 +237,9 @@ export const RESPONSES_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}responses${DOT_S
 // Roles
 //──────────────────────────────────────────────────────────────────────────────
 export const ROLE_SYSTEM_ADMIN = 'system.admin';
-export const ROLE_EXPLORER_ADMIN = sanitize(`${APP_EXPLORER}.admin`);
-export const ROLE_EXPLORER_READ = sanitize(`${APP_EXPLORER}.read`);
-export const ROLE_EXPLORER_WRITE = sanitize(`${APP_EXPLORER}.write`);
+export const ROLE_EXPLORER_ADMIN = `${APP_EXPLORER}.admin`;
+export const ROLE_EXPLORER_READ = `${APP_EXPLORER}.read`;
+export const ROLE_EXPLORER_WRITE = `${APP_EXPLORER}.write`;
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -259,7 +253,7 @@ export const PRINCIPAL_EXPLORER_WRITE = `role:${ROLE_EXPLORER_WRITE}`;
 //──────────────────────────────────────────────────────────────────────────────
 // User
 //──────────────────────────────────────────────────────────────────────────────
-export const USER_EXPLORER_APP_NAME = sanitize(`${APP_EXPLORER}`);
+export const USER_EXPLORER_APP_NAME = APP_EXPLORER;
 export const USER_EXPLORER_APP_ID_PROVIDER = 'system';
 export const USER_EXPLORER_APP_KEY = `user:${USER_EXPLORER_APP_ID_PROVIDER}:${USER_EXPLORER_APP_NAME}`;
 

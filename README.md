@@ -37,7 +37,7 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
-| 3.17.0 | 7.7.0 |
+| 3.1[7-9].0 | 7.7.0 |
 | 3.16.0 | 7.6.0 |
 | 3.1[0-5].x | 7.5.0 |
 | 3.[6-9].x | 7.4.1 |
@@ -53,7 +53,11 @@ dependencies {
 * TODO: move should _nodeType filter to must in all queries
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
-* TODO: Support stemmed queries
+
+### 3.19.0-SNAPSHOT
+
+* TODO: BUG: Change of language doesn't cause document update
+* Support stemmed queries
 
 ### 3.18.0
 

@@ -3,7 +3,7 @@ import getIn from 'get-value';
 import {
 	VALUE_TYPE_ANY,
 	VALUE_TYPE_STRING
-} from '/lib/explorer/model/2/constants';
+} from '@enonic/sdk';
 import {ValidationError} from '/lib/explorer/document/ValidationError';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 

@@ -8,13 +8,19 @@ import webpack from 'webpack';
 //const MODE = 'development';
 const MODE = 'production';
 
+//const BOOL_LOCAL_SDK = MODE !== 'production';
+const BOOL_LOCAL_SDK = true;
+
 const SRC_DIR = 'src/main/resources';
 const DST_DIR = 'build/resources/main';
 
 const dict = arr => Object.assign(...arr.map(([k, v]) => ({ [k]: v })));
 
 const SS_ALIAS = {
-	'@enonic/nashorn-polyfills': path.resolve(__dirname, 'src/main/resources/lib/nashorn/index')
+	'@enonic/nashorn-polyfills': path.resolve(__dirname, 'src/main/resources/lib/nashorn/index'),
+	'@enonic/sdk': BOOL_LOCAL_SDK
+		? path.resolve(__dirname, '../../comlock/sdk-npm/dist/cjs/index')
+		: path.resolve(__dirname, './node_modules/@enonic/sdk/dist/cjs/index')
 };
 
 const SS_EXTERNALS = [

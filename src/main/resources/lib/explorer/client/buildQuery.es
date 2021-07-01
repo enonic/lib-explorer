@@ -1,3 +1,9 @@
+import {
+	QUERY_FUNCTION_FULLTEXT,
+	QUERY_FUNCTION_NGRAM,
+	QUERY_FUNCTION_STEMMED
+} from '@enonic/sdk';
+
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
@@ -51,11 +57,14 @@ export function buildQuery({
 	const operator = params.operator||'AND';
 	let query = '';
 	switch (type) {
-	case 'fulltext':
+	case QUERY_FUNCTION_STEMMED:
+		query = `stemmed(${buildFields(params.fields)}, '${searchString}', '${operator}', '${params.language||''}')`;
+		break;
+	case QUERY_FUNCTION_FULLTEXT:
 		query = `fulltext(${buildFields(params.fields)}, '${searchString}', '${operator}')`;
 		//times.push({label: 'fulltext', time: currentTimeMillis()});
 		break;
-	case 'ngram':
+	case QUERY_FUNCTION_NGRAM:
 		query = `ngram(${buildFields(params.fields)}, '${searchString}', '${operator}')`;
 		//times.push({label: 'ngram', time: currentTimeMillis()});
 		break;
