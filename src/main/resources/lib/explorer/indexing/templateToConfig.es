@@ -1,76 +1,15 @@
-import {isObject} from '/lib/explorer/object/isObject';
+import {indexTemplateToConfig} from '@enonic/js-utils';
 
 
 export function templateToConfig({
 	template,
-	indexValueProcessors,// = [],
-	languages// = []
+	indexValueProcessors,
+	languages
 }) {
-	if (isObject(template)) {
-		template.indexValueProcessors = indexValueProcessors;
-		template.languages = languages;
-		// TODO path: true becomes false
-		return template;
-	}
-	if (template === 'none') {
-		return {
-			enabled: false,
-			decideByType: false,
-			nGram: false,
-			fulltext: false,
-			includeInAllText: false,
-			path: false,
-			indexValueProcessors,
-			languages
-		};
-	}
-	if (template === 'byType') {
-		return {
-			enabled: true,
-			decideByType: true,
-			nGram: false,
-			fulltext: false,
-			includeInAllText: false,
-			path: false,
-			indexValueProcessors,
-			languages
-		};
-	}
-	if (template === 'fulltext') {
-		return {
-			enabled: true,
-			decideByType: false,
-			nGram: true,
-			fulltext: true,
-			includeInAllText: true,
-			path: false,
-			indexValueProcessors,
-			languages
-		};
-	}
-	if (template === 'path') {
-		return {
-			enabled: true,
-			decideByType: false,
-			nGram: false,
-			fulltext: false,
-			includeInAllText: false,
-			path: true,
-			indexValueProcessors,
-			languages
-		};
-	}
-	if (template === 'minimal') {
-		return {
-			enabled: true,
-			decideByType: false,
-			nGram: false,
-			fulltext: false,
-			includeInAllText: false,
-			path: false,
-			indexValueProcessors,
-			languages
-		};
-	}
-	throw new Error(`Unknown indexing template:${template}!`);
+	log.warning('/lib/explorer/indexing/templateToConfig is DEPRECATED, use @enonic/js-utils/indexTemplateToConfig instead!');
+	return indexTemplateToConfig({
+		template,
+		indexValueProcessors,
+		languages
+	});
 }

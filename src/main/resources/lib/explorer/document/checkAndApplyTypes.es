@@ -12,7 +12,7 @@ import {
 	VALUE_TYPE_LOCAL_TIME,
 	VALUE_TYPE_SET,
 	VALUE_TYPE_STRING
-} from '@enonic/sdk';
+} from '@enonic/js-utils';
 import {ValidationError} from '/lib/explorer/document/ValidationError';
 import {isObject} from '/lib/explorer/object/isObject';
 import {isInt, isString} from '/lib/util/value';

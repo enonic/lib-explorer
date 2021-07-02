@@ -26,6 +26,6 @@ export function join(...paths) {
 	// Preserve the initial slash if there was one.
 	if (parts[0] === '') newParts.unshift('');
 
- 	// Turn back into a single string path.
+	// Turn back into a single string path.
 	return newParts.join('/') || (newParts.length ? '/' : '.');
 }

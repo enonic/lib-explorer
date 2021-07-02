@@ -1,4 +1,4 @@
-import {LANGUAGES} from '@enonic/sdk';
+import {LANGUAGES} from '@enonic/js-utils';
 import {getLocales} from '/lib/explorer/locale/getLocales';
 import {toStr} from '/lib/util';
 

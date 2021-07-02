@@ -2,7 +2,7 @@ import {
 	QUERY_FUNCTION_FULLTEXT,
 	QUERY_FUNCTION_NGRAM,
 	QUERY_FUNCTION_STEMMED
-} from '@enonic/sdk';
+} from '@enonic/js-utils';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)

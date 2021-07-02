@@ -1,9 +1,21 @@
 import {
+	COLON_SIGN,
+	DOT_SIGN,
 	VALUE_TYPE_BOOLEAN,
 	VALUE_TYPE_INSTANT,
 	VALUE_TYPE_SET,
 	VALUE_TYPE_STRING
-} from '@enonic/sdk';
+} from '@enonic/js-utils';
+
+
+// TODO: Remove in lib-explorer-4.0.0
+export {
+	COLON_SIGN,
+	DOT_SIGN,
+	ELLIPSIS,
+	RESPONSE_TYPE_JSON as RT_JSON,
+	RESPONSE_TYPE_HTML as RT_HTML
+} from '@enonic/js-utils';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (included in jar via gradle dependencies)
@@ -16,11 +28,6 @@ import {getToolUrl} from '/lib/xp/admin'; // TODO remove in lib-explorer-4.0.0
 //──────────────────────────────────────────────────────────────────────────────
 export const APP_EXPLORER = 'com.enonic.app.explorer';
 export const TOOL_PATH = getToolUrl(APP_EXPLORER, 'explorer'); // TODO: Not used anywhere, remove in lib-explorer-4.0.0
-
-export const COLON_SIGN = ':'; // Not good in repo names
-//export const RATIO_SIGN = '∶'; // Not good in repo names
-export const DOT_SIGN = '.';
-export const ELLIPSIS = '…';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Folders
@@ -212,14 +219,6 @@ export const READWRITE_FIELDS = [{
 
 export const SYSTEM_FIELDS = NO_VALUES_FIELDS.concat(READONLY_FIELDS);
 export const DEFAULT_FIELDS = NO_VALUES_FIELDS.concat(READONLY_FIELDS, READWRITE_FIELDS);
-
-
-//──────────────────────────────────────────────────────────────────────────────
-// Return types
-//──────────────────────────────────────────────────────────────────────────────
-export const RT_JSON = 'text/json;charset=utf-8';
-export const RT_HTML = 'text/html;charset=utf-8';
-
 
 //──────────────────────────────────────────────────────────────────────────────
 // Repo

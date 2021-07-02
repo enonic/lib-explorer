@@ -1,1 +1,7 @@
-export const isObject = (value) => Object.prototype.toString.call(value).slice(8,-1) === 'Object';
+import {isObject as jsUtilsIsObject} from '@enonic/js-utils';
+
+
+export function isObject(v) {
+	log.warning('/lib/explorer/object/isObject is DEPRECATED, use @enonic/js-utils instead!');
+	return jsUtilsIsObject(v);
+}

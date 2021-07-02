@@ -1,14 +1,7 @@
-import {isString} from '/lib/util/value';
+import {ucFirst as jsUtilsUcFirst} from '@enonic/js-utils';
 
 
-function isFunction(value) {
-	return !!(value && value.constructor && value.call && value.apply); // highly performant from underscore
-}
-
-
-export function ucFirst(string) {
-	if(!isString(string) || !isFunction(string.charAt)) {
-		return string;
-	}
-	return `${string.charAt(0).toUpperCase()}${string.substr(1)}`
+export function ucFirst(s) {
+	log.warning('/lib/explorer/ucFirst is DEPRECATED, use @enonic/js-utils instead!');
+	return jsUtilsUcFirst(s);
 }

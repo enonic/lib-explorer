@@ -3,7 +3,7 @@ import getIn from 'get-value';
 import {
 	VALUE_TYPE_ANY,
 	VALUE_TYPE_STRING
-} from '@enonic/sdk';
+} from '@enonic/js-utils';
 import {ValidationError} from '/lib/explorer/document/ValidationError';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 

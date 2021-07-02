@@ -1,8 +1,6 @@
-export function pad(
-	value,
-	width,
-	padString = ' '
-) {
-  const str = '' + value; // Cast to string
-  return str.length >= width ? str : new Array(width - str.length + 1).join(padString) + str;
+import {lpad} from '@enonic/js-utils';
+
+export function pad(u, w, z) {
+	log.warning('/lib/explorer/string/pad is DEPRECATED, use @enonic/js-utils/lpad instead!');
+	return lpad(u, w, z);
 }
