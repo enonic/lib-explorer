@@ -11,14 +11,8 @@ export function query({
 	sort = '_name ASC'
 } = {}) {
 	addFilter({
-		clause: 'should',
-		filters,
-		filter: hasValue('_nodeType', [NT_INTERFACE])
-	});
-	addFilter({
-		clause: 'should',
-		filters,
-		filter: hasValue('type', [NT_INTERFACE])
+		filter: hasValue('_nodeType', [NT_INTERFACE]),
+		filters
 	});
 	const queryParams = {
 		count,

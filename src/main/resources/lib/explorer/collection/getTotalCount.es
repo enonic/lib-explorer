@@ -12,12 +12,7 @@ export const getTotalCount = ({
 	const {total} = connection.query({
 		count: 0,
 		filters: addFilter({
-			clause: 'should',
-			filter: hasValue('_nodeType', [NT_COLLECTOR]),
-			filters: addFilter({
-				clause: 'should',
-				filter: hasValue('type', [NT_COLLECTOR])
-			})
+			filter: hasValue('_nodeType', [NT_COLLECTOR])
 		}),
 		query: "_parentPath = '/collectors'"
 	});

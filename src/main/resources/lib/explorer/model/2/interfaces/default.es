@@ -1,9 +1,3 @@
-import {
-	//INTERFACES_FOLDER,
-	NT_DOCUMENT
-} from '/lib/explorer/model/2/constants';
-
-
 export const DEFAULT_INTERFACE_NAME = 'default';
 
 
@@ -116,27 +110,7 @@ export const DEFAULT_INTERFACE = {
 				params: {
 					field: 'uri'
 				}
-			}/*,{
-				filter: 'hasValue',
-				params: {
-					field: 'type',
-					values: NT_DOCUMENT
-				}
-			}*/
-
-		]/*, // Let's do this in code instead...
-		should: [{
-			filter: 'hasValue',
-			params: {
-				field: '_nodeType',
-				values: NT_DOCUMENT
 			}
-		},{
-			filter: 'hasValue',
-			params: {
-				field: 'type',
-				values: NT_DOCUMENT
-			}
-		}]*/
+		]
 	}
 };

@@ -19,13 +19,7 @@ export function query({
 	thesauri
 } = {}) {
 	addFilter({
-		clause: 'should',
 		filter: hasValue('_nodeType', [NT_THESAURUS]),
-		filters
-	});
-	addFilter({
-		clause: 'should',
-		filter: hasValue('type', [NT_THESAURUS]),
 		filters
 	});
 	if (thesauri) {

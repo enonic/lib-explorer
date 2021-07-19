@@ -13,13 +13,7 @@ export function query({
 } = {}) {
 	//log.warning(`/lib/explorer/collector/query is deprecated. Use /lib/explorer/collector/list instead.`);
 	const filters = addFilter({
-		clause: 'should',
 		filter: hasValue('_nodeType', [NT_COLLECTOR])
-	});
-	addFilter({
-		clause: 'should',
-		filter: hasValue('type', [NT_COLLECTOR]),
-		filters
 	});
 	const queryParams = {
 		count: -1,

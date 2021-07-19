@@ -7,27 +7,10 @@ import {
 	VALUE_TYPE_STRING
 } from '@enonic/js-utils';
 
-
-// TODO: Remove in lib-explorer-4.0.0
-export {
-	COLON_SIGN,
-	DOT_SIGN,
-	ELLIPSIS,
-	RESPONSE_TYPE_JSON as RT_JSON,
-	RESPONSE_TYPE_HTML as RT_HTML
-} from '@enonic/js-utils';
-
-//──────────────────────────────────────────────────────────────────────────────
-// Enonic XP libs (included in jar via gradle dependencies)
-//──────────────────────────────────────────────────────────────────────────────
-import {getToolUrl} from '/lib/xp/admin'; // TODO remove in lib-explorer-4.0.0
-
-
 //──────────────────────────────────────────────────────────────────────────────
 // Admin tool
 //──────────────────────────────────────────────────────────────────────────────
 export const APP_EXPLORER = 'com.enonic.app.explorer';
-export const TOOL_PATH = getToolUrl(APP_EXPLORER, 'explorer'); // TODO: Not used anywhere, remove in lib-explorer-4.0.0
 
 //──────────────────────────────────────────────────────────────────────────────
 // Folders
@@ -73,6 +56,8 @@ export const PATH_API_KEYS = '/api-keys';
 export const PATH_COLLECTORS = '/collectors';
 export const PATH_FIELDS = '/fields';
 export const PATH_INTERFACES = '/interfaces';
+
+export const FIELD_MODIFIED_TIME_INDEX_CONFIG = 'minimal';
 
 export const NO_VALUES_FIELDS = [{
 	key: '_allText',
@@ -136,7 +121,7 @@ export const NO_VALUES_FIELDS = [{
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_INSTANT,
-	indexConfig: 'minimal',
+	indexConfig: FIELD_MODIFIED_TIME_INDEX_CONFIG,
 	inResults: false,
 	key: 'document_metadata.modifiedTime',
 	max: 1,

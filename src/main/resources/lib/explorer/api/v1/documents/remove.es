@@ -81,15 +81,9 @@ export function remove(request) {
 						field: 'key',
 						values: [hashedApiKey]
 					}
-				}],
-				should: [{
-					hasValue: {
-						field: '_nodeType',
-						values: [NT_API_KEY]
-					}
 				},{
 					hasValue: {
-						field: 'type',
+						field: '_nodeType',
 						values: [NT_API_KEY]
 					}
 				}]

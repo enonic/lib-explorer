@@ -12,13 +12,7 @@ export function getFieldValues({
 	sort = '_name ASC'
 } = {}) {
 	addFilter({
-		clause: 'should',
 		filter: hasValue('_nodeType', NT_FIELD_VALUE),
-		filters
-	});
-	addFilter({
-		clause: 'should',
-		filter: hasValue('type', NT_FIELD_VALUE),
 		filters
 	});
 	if (field) {

@@ -10,7 +10,10 @@ import {getFieldsWithIndexConfigAndValueType} from '/lib/explorer/document/creat
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
 import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/checkAndApplyTypes';
 import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
-import {NT_DOCUMENT} from '/lib/explorer/model/2/constants';
+import {
+	FIELD_MODIFIED_TIME_INDEX_CONFIG,
+	NT_DOCUMENT
+} from '/lib/explorer/model/2/constants';
 import {isObject} from '/lib/explorer/object/isObject';
 
 import {toStr} from '/lib/util';
@@ -149,11 +152,6 @@ export function update({
 	forDiff._nodeType = NT_DOCUMENT;
 	withType._nodeType = NT_DOCUMENT;
 
-	// Enforce type (backwards compatibility) // TODO remove in lib-explorer-4.0.0 (app-explorer-2.0.0)
-	inputObject.type = NT_DOCUMENT; // Temporary value so validation doesn't fail on this field.
-	forDiff.type = NT_DOCUMENT;
-	withType.type = NT_DOCUMENT;
-
 	// 1st "pass":
 	// Skip checking occurrences, since that is checked in 2nd "pass".
 	// Check types, since that is skipped in 2nd "pass".
@@ -213,7 +211,7 @@ export function update({
 	const indexConfigForModifiedTime = {
 		path: 'document_metadata.modifiedTime',
 		config: templateToConfig({
-			template: 'minimal', // TODO import from constants, instead of hardcode?
+			template: FIELD_MODIFIED_TIME_INDEX_CONFIG,
 			indexValueProcessors: [],
 			languages: []
 		})

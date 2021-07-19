@@ -15,13 +15,7 @@ export function getFields({
 	includeSystemFields = false
 } = {}) {
 	const filters = addFilter({
-		clause: 'should', // One or more of the functions in the should array must evaluate to true for the filter to match
 		filter: hasValue('_nodeType', [NT_FIELD])
-	});
-	addFilter({
-		clause: 'should', // One or more of the functions in the should array must evaluate to true for the filter to match
-		filter: hasValue('type', [NT_FIELD]),
-		filters
 	});
 	if (fields) {
 		addFilter({

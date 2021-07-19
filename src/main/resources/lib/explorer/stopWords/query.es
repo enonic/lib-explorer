@@ -16,13 +16,7 @@ export function query({
 	start = 0
 } = {}) {
 	addFilter({
-		clause: 'should',
 		filter: hasValue('_nodeType', [NT_STOP_WORDS]),
-		filters
-	});
-	addFilter({
-		clause: 'should',
-		filter: hasValue('type', [NT_STOP_WORDS]),
 		filters
 	});
 	const queryParams = {

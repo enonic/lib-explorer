@@ -26,13 +26,7 @@ export function query({
 } = {}) {
 	//log.info(toStr({connection, count, filters, query, sort}));
 	addFilter({
-		clause: 'should',
 		filter: hasValue('_nodeType', [NT_SYNONYM]),
-		filters
-	});
-	addFilter({
-		clause: 'should',
-		filter: hasValue('type', [NT_SYNONYM]),
 		filters
 	});
 	const queryParams = {

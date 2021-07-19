@@ -103,9 +103,8 @@ export function create({
 		_name,
 		_inheritsPermissions: true,
 		_nodeType: NT_DOCUMENT, // Enforce type
-		_parentPath: '/', // Enforce flat structure
+		_parentPath: '/'//, // Enforce flat structure
 		//_permissions: []
-		type: NT_DOCUMENT // Enforce type (backwards compatibility) // TODO remove in lib-explorer-4.0.0 (app-explorer-2.0.0)
 	};
 
 	/*const user = getUser();

@@ -97,7 +97,7 @@ export function tryApplyValueType({
 
 	if ([
 		VALUE_TYPE_STRING,
-		'text', // TODO Remove in 2.0 ?
+		'text', // TODO Remove in lib-explorer-4.0.0/app-explorer-2.0.0 ?
 		'uri',
 		'tag',
 		'html'/*,

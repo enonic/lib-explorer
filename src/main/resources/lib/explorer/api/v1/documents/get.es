@@ -56,15 +56,9 @@ function respondWithJson({
 						field: 'key',
 						values: [hashedApiKey]
 					}
-				}],
-				should: [{
-					hasValue: {
-						field: '_nodeType',
-						values: [NT_API_KEY]
-					}
 				},{
 					hasValue: {
-						field: 'type',
+						field: '_nodetype',
 						values: [NT_API_KEY]
 					}
 				}]
@@ -241,20 +235,14 @@ export function get(request) {
 	if (!filters.boolean) {
 		filters.boolean = {};
 	}
-	if (!filters.boolean.should) {
-		filters.boolean.should = [];
-	} else if (!Array.isArray(filters.boolean.should)) {
-		filters.boolean.should = [filters.boolean.should];
+	if (!filters.boolean.must) {
+		filters.boolean.must = [];
+	} else if (!Array.isArray(filters.boolean.must)) {
+		filters.boolean.must = [filters.boolean.must];
 	}
-	filters.boolean.should.push({
+	filters.boolean.must.push({
 		hasValue: {
 			field: '_nodeType',
-			values: [NT_DOCUMENT]
-		}
-	});
-	filters.boolean.should.push({
-		hasValue: {
-			field: 'type',
 			values: [NT_DOCUMENT]
 		}
 	});

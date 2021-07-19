@@ -13,12 +13,7 @@ export function getDocumentCount(name) {
 		count = getTotal({
 			connection: connectToCollection(name),
 			filters: addFilter({
-				clause: 'should',
-				filter: hasValue('_nodeType', [NT_DOCUMENT]),
-				filters: addFilter({
-					clause: 'should',
-					filter: hasValue('type', [NT_DOCUMENT])
-				})
+				filter: hasValue('_nodeType', [NT_DOCUMENT])
 			})
 		});
 	} catch (e) {

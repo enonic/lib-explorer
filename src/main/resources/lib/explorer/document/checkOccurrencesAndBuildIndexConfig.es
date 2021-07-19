@@ -76,7 +76,7 @@ export function checkOccurrencesAndBuildIndexConfig({
 			if (language && !isSystemField && [
 				VALUE_TYPE_ANY,
 				VALUE_TYPE_STRING,
-				'html', // TODO Remove in 2.0 ?
+				'html', // TODO Remove in lib-explorer-4.0.0/app-explorer-2.0.0 ?
 				'tag',
 				'text',
 				'uri'/*,

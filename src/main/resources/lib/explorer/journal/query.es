@@ -22,14 +22,8 @@ export function query({
 		principals: [PRINCIPAL_EXPLORER_READ]
 	});
 	addFilter({
-		clause: 'should',
-		filters,
-		filter: hasValue('_nodeType', [NT_JOURNAL])
-	});
-	addFilter({
-		clause: 'should',
-		filters,
-		filter: hasValue('type', [NT_JOURNAL])
+		filter: hasValue('_nodeType', [NT_JOURNAL]),
+		filters
 	});
 	const queryParams = {
 		aggregations,

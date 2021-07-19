@@ -194,15 +194,9 @@ export function post(request) {
 						field: 'key',
 						values: [hashedApiKey]
 					}
-				}],
-				should: [{
+				},{
 					hasValue: {
 						field: '_nodeType',
-						values: [NT_API_KEY]
-					}
-				}, {
-					hasValue: {
-						field: 'type',
 						values: [NT_API_KEY]
 					}
 				}]

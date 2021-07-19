@@ -48,12 +48,46 @@ dependencies {
 
 ## Changelog
 
+### 6.0.0-SNAPSHOT
+
+* Remove collection/unregister
+
+### 5.0.0-SNAPSHOT
+
+* Remove collection/reschedule
+* Remove collection/register
+* TODO: Change lib-explorer-4 deprecation warnings into thrown errors:
+  * collection/unregister
+
 ### 4.0.0-SNAPSHOT
 
-* TODO: move should _nodeType filter to must in all queries
-* TODO: remove should type filter from all queries
-* TODO: Move _nodeType = document from should to must in interface code
-* Build system upgrades
+* TODO: Allow document REST-API clients to pass their own _indexConfig?
+* TODO: Allow Collectors to pass their own _indexConfig?
+* TODO: Allow document CODE-API importers (such as Collectors and document REST-API) to pass their own _indexConfig?
+* TODO: Change default indexConfig in NT_DOCUMENT to minimal from byType?
+* TODO do not stem in default indexConfig?
+* TODO do not stem system fields?
+* TODO: Remove valueType text, uri, tag, html, xml?
+* TODO: Field type should no longer be a system field?
+* TODO: Remove denyDelete, denyValues and inResults from SYSTEM_FIELDS in constants?
+* TODO: Remove displayName from stopwords
+* TODO: Remove displayName from thesaurus
+
+* Moved from constants to @enonic/js-utils
+  * COLON_SIGN
+  * DOT_SIGN
+  * ELLIPSIS
+  * RT_JSON -> RESPONSE_TYPE_JSON
+  * RT_HTML -> RESPONSE_TYPE_HTML
+* Remove TOOL_PATH from constants
+* Deprecate collection/unregister
+* Change lib-explorer-3 deprecation warnings into thrown errors:
+  * collection/register
+  * collection/reschedule
+* Move _nodeType = document from should to must in interface code
+* Move should _nodeType filter to must in all queries
+* Remove should type filter from all queries
+* Build system upgrades:
   * Gradle 6.4
   * Node 14.17.3
   * Babel modules 7.14.7

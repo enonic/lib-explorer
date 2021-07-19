@@ -24,35 +24,31 @@ function buildFilter({
 export function buildStaticFiltersFromInterface(filtersConfig) {
 	const filters = {
 		boolean: {
+			must: [{
+				hasValue: {
+					field: '_nodeType',
+					values: [NT_DOCUMENT]
+				}
+			}],
 			mustNot: [{
 				hasValue: { // Avoid root node whoos _path is '/'
 					field: '_path',
 					values: ['/']
 				}
-			/*hasValue: { // Avoid root node which has an empty name
-				field: '_name',
-				values: ['']
-			}*/
-			}],
-			should: [{
-				hasValue: { // TODO move to must in lib-explorer-4.0.0 / app-explorer-2.0.0
-					field: '_nodeType',
-					values: [NT_DOCUMENT]
+			}/*, {
+				hasValue: { // Avoid root node which has an empty name
+					field: '_name',
+					values: ['']
 				}
-			},{ // TODO remove in lib-explorer-4.0.0 / app-explorer-2.0.0
-				hasValue: {
-					field: 'type',
-					values: [NT_DOCUMENT]
-				}
-			}]
+			}*/]
 		}
 	};
 	if (!filtersConfig) { return filters; }
 
 	[
 		'must',
-		'mustNot'//,
-		//'should' // TODO reenable in lib-explorer-4.0.0 / app-explorer-2.0.0
+		'mustNot',
+		'should'
 	].forEach(clause => {
 		if(filtersConfig[clause]) {
 			forceArray(filtersConfig[clause]).forEach(({
