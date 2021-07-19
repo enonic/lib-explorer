@@ -37,6 +37,7 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
+| 4.0.0 | 7.7.0 |
 | 3.1[7-9].0 | 7.7.0 |
 | 3.16.0 | 7.6.0 |
 | 3.1[0-5].x | 7.5.0 |
@@ -49,10 +50,15 @@ dependencies {
 
 ### 4.0.0-SNAPSHOT
 
-* TODO: Require XP-7.6 and use distributable tasks
 * TODO: move should _nodeType filter to must in all queries
 * TODO: remove should type filter from all queries
 * TODO: Move _nodeType = document from should to must in interface code
+* Build system upgrades
+  * Gradle 6.4
+  * Node 14.17.3
+  * Babel modules 7.14.7
+  * Core-js 3.15.2
+  * Webpack 5.45.1
 
 ### 3.19.0-SNAPSHOT
 
