@@ -101,7 +101,7 @@ dependencies {
 ### 3.19.0-SNAPSHOT
 
 * TODO: BUG: Change of language doesn't cause document update
-* TODO: Use collection name rather than collection id when scheduling
+* Use collection name rather than collection id when scheduling
 * Require Enonic XP 7.7.1 (because of BUGFIX for main.js exception is swallowed)
 * Support stemmed queries
 
