@@ -1,3 +1,5 @@
+//import {toStr} from '@enonic/js-utils';
+
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {query} from '/lib/explorer/collection/query';
@@ -6,7 +8,7 @@ import {
 	createInputObjectType,
 	GraphQLBoolean
 } from '/lib/graphql';
-//import {toStr} from '/lib/util';
+
 
 export function buildCollectionsArg() {
 	const collectionsRes = query({

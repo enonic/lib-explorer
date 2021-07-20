@@ -1,5 +1,6 @@
 const {forLanguageTag} = Java.type('java.util.Locale');
 
+
 export const getLocales = ({
 	locale = undefined,
 	query = ''

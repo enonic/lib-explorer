@@ -1,10 +1,13 @@
+import {
+	forceArray,
+	isString,
+	toStr
+} from '@enonic/js-utils';
+
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {newCache} from '/lib/cache';
-import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
-import {isString} from '/lib/util/value';
 import {getLocale} from '/lib/xp/admin';
 
 //──────────────────────────────────────────────────────────────────────────────

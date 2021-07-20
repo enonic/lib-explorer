@@ -1,7 +1,10 @@
+import {
+	isNotSet,
+	toStr
+} from '@enonic/js-utils';
+
 import {create} from '/lib/explorer/document/create';
 import {update} from '/lib/explorer/document/update';
-import {toStr} from '/lib/util';
-import {isNotSet} from '/lib/util/value';
 
 
 const CATCH_CLASS_NAMES = [

@@ -1,11 +1,12 @@
-const {currentTimeMillis} = Java.type('java.lang.System');
-
 import {instant} from '/lib/xp/value';
 
 import {
 	NT_JOURNAL
 } from '/lib/explorer/model/2/constants';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
+
+
+const {currentTimeMillis} = Java.type('java.lang.System');
 
 
 export function journal({

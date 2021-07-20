@@ -1,8 +1,6 @@
-const {currentTimeMillis} = Java.type('java.lang.System');
+import {isNotSet, toStr} from '@enonic/js-utils';
 
 //import {validateLicense} from '/lib/license';
-import {toStr} from '/lib/util';
-import {isNotSet} from '/lib/util/value';
 
 import {send} from '/lib/xp/mail';
 
@@ -26,6 +24,9 @@ import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleTo
 
 import {Collection} from '/lib/explorer/collector/Collection';
 import {Journal} from '/lib/explorer/collector/Journal';
+
+
+const {currentTimeMillis} = Java.type('java.lang.System');
 
 
 export class Collector {

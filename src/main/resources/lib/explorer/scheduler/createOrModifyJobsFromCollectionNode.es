@@ -1,5 +1,6 @@
 import {
-	DOT_SIGN//,
+	DOT_SIGN,
+	forceArray//,
 	//toStr
 } from '@enonic/js-utils';
 
@@ -11,7 +12,6 @@ import {
 import {createOrModifyJob} from '/lib/explorer/scheduler/createOrModifyJob';
 import {listExplorerJobsThatStartWithName} from '/lib/explorer/scheduler/listExplorerJobsThatStartWithName';
 
-import {forceArray} from '/lib/util/data';
 import {delete as deleteJob} from '/lib/xp/scheduler';
 
 

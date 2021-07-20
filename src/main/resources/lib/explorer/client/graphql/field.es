@@ -1,3 +1,5 @@
+//import {toStr} from '@enonic/js-utils';
+
 import {newCache} from '/lib/cache';
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
@@ -10,7 +12,6 @@ import {
 	GraphQLInt,
 	GraphQLString
 } from '/lib/graphql';
-//import {toStr} from '/lib/util';
 
 
 const fieldCache = newCache({

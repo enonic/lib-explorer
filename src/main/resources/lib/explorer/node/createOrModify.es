@@ -1,5 +1,7 @@
-import {toStr} from '/lib/util';
-import {isNotSet} from '/lib/util/value';
+import {
+	isNotSet,
+	toStr
+} from '@enonic/js-utils';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)

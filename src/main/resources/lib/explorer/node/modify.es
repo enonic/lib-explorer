@@ -1,7 +1,11 @@
-import {toStr} from '/lib/util';
-import {isNotSet} from '/lib/util/value';
+import {
+	isNotSet,
+	toStr
+} from '@enonic/js-utils';
+
 import {sanitize as doSanitize} from '/lib/xp/common';
 import {join} from '/lib/explorer/path/join';
+
 
 export function modify({
 	_id, // So it doesn't end up in rest.

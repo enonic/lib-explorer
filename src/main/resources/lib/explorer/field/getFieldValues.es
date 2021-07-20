@@ -1,8 +1,11 @@
+import {
+	forceArray//,
+	//toStr
+} from '@enonic/js-utils';
+
 import {NT_FIELD_VALUE} from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
 
 
 export function getFieldValues({

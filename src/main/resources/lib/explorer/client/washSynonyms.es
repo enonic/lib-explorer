@@ -1,5 +1,4 @@
-//import {toStr} from '/lib/util';
-//import {isSet} from '/lib/util/value';
+//import {isSet, toStr} from '@enonic/js-utils';
 
 // Inlined to ava tests can run
 function isSet(value) {

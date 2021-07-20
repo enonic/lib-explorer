@@ -1,5 +1,8 @@
-//import {toStr} from '/lib/util';
-import {isSet} from '/lib/util/value';
+import {
+	isSet//,
+	//toStr
+} from '@enonic/js-utils';
+
 import {NT_FIELD_VALUE} from '/lib/explorer/model/2/constants';
 import {Node} from '/lib/explorer/nodeTypes/Node';
 import {getReference} from '/lib/explorer/node/getReference';

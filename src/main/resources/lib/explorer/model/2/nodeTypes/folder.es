@@ -1,7 +1,9 @@
-import {getUser} from '/lib/xp/auth';
-import {toStr} from '/lib/util';
-import {isNotSet} from '/lib/util/value';
+import {
+	isNotSet,
+	toStr
+} from '@enonic/js-utils';
 
+import {getUser} from '/lib/xp/auth';
 import {
 	NT_FOLDER
 } from '/lib/explorer/model/2/constants';

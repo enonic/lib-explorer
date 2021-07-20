@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/util';
+//import {toStr} from '@enonic/js-utils';
 
 import {join} from '/lib/explorer/path/join';
 import {map} from '/lib/explorer/stopWords/map';

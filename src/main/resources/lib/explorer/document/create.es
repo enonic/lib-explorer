@@ -1,6 +1,7 @@
 import {
 	indexTemplateToConfig,
 	isNotSet,
+	isObject,
 	toStr
 } from '@enonic/js-utils';
 
@@ -11,7 +12,6 @@ import {
 	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
-import {isObject} from '/lib/explorer/object/isObject';
 import {connect} from '/lib/explorer/repo/connect';
 //import {getUser} from '/lib/xp/auth';
 

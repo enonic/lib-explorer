@@ -1,8 +1,9 @@
+import {toStr} from '@enonic/js-utils';
+
 import {
 	EVENT_COLLECTOR_UNREGISTER
 } from '/lib/explorer/model/2/constants';
 
-import {toStr} from '/lib/util';
 import {isMaster} from '/lib/xp/cluster';
 import {send} from '/lib/xp/event';
 

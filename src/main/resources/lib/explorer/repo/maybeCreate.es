@@ -1,4 +1,5 @@
-//import {toStr} from '/lib/util';
+//import {toStr} from '@enonic/js-utils';
+
 //import {create as createNode}  from '/lib/explorer/node/create';
 //import {get as getNode}  from '/lib/explorer/node/get';
 import {exists as nodeExists}  from '/lib/explorer/node/exists';

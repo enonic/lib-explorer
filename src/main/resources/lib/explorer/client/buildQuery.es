@@ -1,14 +1,13 @@
 import {
 	QUERY_FUNCTION_FULLTEXT,
 	QUERY_FUNCTION_NGRAM,
-	QUERY_FUNCTION_STEMMED
+	QUERY_FUNCTION_STEMMED//,
+	//toStr
 } from '@enonic/js-utils';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/util';
-
 import {getSynonyms} from '/lib/explorer/client/getSynonyms';
 import {flattenSynonyms} from '/lib/explorer/client/flattenSynonyms';
 //import {partitionOnScore} from '/lib/explorer/search/synonyms/partitionOnScore';

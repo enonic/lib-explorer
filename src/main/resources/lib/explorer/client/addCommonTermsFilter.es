@@ -1,6 +1,6 @@
+//import {toStr} from '@enonic/js-utils';
 import set from 'set-value';
 
-//import {toStr} from '/lib/util';
 import {dlv} from '/lib/util/object';
 
 
@@ -10,7 +10,7 @@ const UNICODE_WORD_CHARACTERS_REGEXP = new RegExp(UNICODE_WORD_CHARACTERS_PATTER
 
 
 export function addCommonTermsFilter({
-	commonWords =  [],
+	//commonWords =  [],
 	filtersObjToModify = {},
 	searchString,
 	wordSplitRegexp = UNICODE_WORD_CHARACTERS_REGEXP
@@ -24,8 +24,8 @@ export function addCommonTermsFilter({
 	if(!searchString) { return; }
 
 	// Find which words in the searchString which are common and which are not.
-	const foundCommonWords = [];
-	const foundUncommonWords = [];
+	//const foundCommonWords = [];
+	//const foundUncommonWords = [];
 
 	const uniqWords = [];
 	searchString
@@ -51,7 +51,7 @@ export function addCommonTermsFilter({
 					values: [word]
 				}
 			});
-		})
+		});
 		/*words.forEach(word => {
 			//log.info(toStr({word}));
 			if (commonWords.includes(word)) {

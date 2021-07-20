@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/util';
+//import {toStr} from '@enonic/js-utils';
 
 import {join}  from '/lib/explorer/path/join';
 
@@ -19,4 +19,4 @@ export const get = ({
 		keys
 	}));*/
 	return connection.get(...keys);
-} // get
+}; // get

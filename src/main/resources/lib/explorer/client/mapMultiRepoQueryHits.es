@@ -1,6 +1,10 @@
 //──────────────────────────────────────────────────────────────────────────────
 // Node modules (webpacked)
 //──────────────────────────────────────────────────────────────────────────────
+import {
+	forceArray//,
+	//toStr
+} from '@enonic/js-utils';
 //import highlightSearchResult from 'highlight-search-result';
 //import {get, set} from 'lodash'; // Cannot read property "Array" from undefined
 import getIn from 'get-value';
@@ -10,10 +14,7 @@ import striptags from 'striptags';
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
 import {dlv as get} from '/lib/util/object';
-//import {isNotSet} from '/lib/util/value';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)

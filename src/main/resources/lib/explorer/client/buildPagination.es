@@ -1,9 +1,11 @@
+import {
+	forceArray//,
+	//toStr
+} from '@enonic/js-utils';
+
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
-
 import {localize} from '/lib/xp/i18n';
 
 import {APP_EXPLORER} from '/lib/explorer/model/2/constants';
