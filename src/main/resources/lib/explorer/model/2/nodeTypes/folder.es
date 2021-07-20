@@ -21,7 +21,7 @@ export function folder({
 }, {
 	user,
 	...ignoredOptions
-}) {
+}={}) {
 	Object.keys(rest).forEach((k) => {
 		if (k.startsWith('__')) {
 			log.warning(`Deprecation: Function signature changed. Added second argument for options.
