@@ -1,8 +1,8 @@
+//import {toStr} from '@enonic/js-utils';
+
 import traverse from 'traverse';
 
 import {newCache} from '/lib/cache';
-import {toStr} from '/lib/util';
-//import {forceArray} from '/lib/util/data';
 
 import {
 	COLLECTION_REPO_PREFIX,

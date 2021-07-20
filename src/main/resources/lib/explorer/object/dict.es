@@ -1,4 +1,4 @@
-import {toStr} from '/lib/util';
+import {toStr} from '@enonic/js-utils';
 
 // arr[Symbol.iterator] is not a function
 //export const dict = arr => Object.assign(...arr.map(([k, v]) => ({ [k]: v })));

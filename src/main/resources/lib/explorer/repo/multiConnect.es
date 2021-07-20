@@ -1,11 +1,10 @@
-//import {toStr} from '/lib/util';
-//import {forceArray} from '/lib/util/data';
-//import {getUser} from '/lib/xp/auth';
+//import {toStr} from '@enonic/js-utils';
+
 import {get as getContext} from '/lib/xp/context';
 import {connect, multiRepoConnect} from '/lib/xp/node';
 
 import {runAsSu} from '/lib/explorer/runAsSu';
-import {pad} from '/lib/explorer/string/pad';
+
 
 //const {currentTimeMillis} = Java.type('java.lang.System');
 
@@ -29,12 +28,12 @@ export function multiConnect({
 			count: -1,
 			filters: {
 				ids: {
-        			values: sources.map(({repoId}) => repoId)
-    			}
+					values: sources.map(({repoId}) => repoId)
+				}
 			}
 		}).hits.forEach(({id}) => {
 			existingRepos[id] = true;
-		})
+		});
 	});
 	//log.info(`existingRepos:${toStr(existingRepos)}`);
 

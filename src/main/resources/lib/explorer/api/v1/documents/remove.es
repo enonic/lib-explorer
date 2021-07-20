@@ -1,4 +1,9 @@
 import {
+	forceArray//,
+	//toStr
+} from '@enonic/js-utils';
+
+import {
 	COLLECTION_REPO_PREFIX,
 	NT_API_KEY,
 	PRINCIPAL_EXPLORER_READ,
@@ -7,8 +12,7 @@ import {
 //import {get as getCollection} from '/lib/explorer/collection/get';
 import {connect} from '/lib/explorer/repo/connect';
 import {hash} from '/lib/explorer/string/hash';
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
+
 
 export function remove(request) {
 	const {

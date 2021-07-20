@@ -1,9 +1,11 @@
-//import {toStr} from '/lib/util';
+import {
+	//toStr,
+	ucFirst
+} from '@enonic/js-utils';
 
 import {NT_FIELD_VALUE} from '/lib/explorer/model/2/constants';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
 //import {dirname} from '/lib/explorer/path/dirname';
-import {ucFirst} from '/lib/explorer/ucFirst';
 
 
 export function fieldValue({

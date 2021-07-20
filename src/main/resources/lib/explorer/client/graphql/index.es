@@ -1,3 +1,5 @@
+import {toStr} from '@enonic/js-utils';
+
 //import {gqlToObj} from '/lib/explorer/client/graphql/gqlToObj';
 
 import {buildCollectionsArg} from '/lib/explorer/client/graphql/collection';
@@ -25,7 +27,6 @@ import {
 	list,
 	nonNull
 } from '/lib/graphql';
-import {toStr} from '/lib/util';
 
 
 const ELLIPSIS = '…';

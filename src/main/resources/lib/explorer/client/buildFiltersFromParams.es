@@ -1,7 +1,10 @@
+import {
+	forceArray//,
+	//toStr
+} from '@enonic/js-utils';
+
 import set from 'set-value';
 
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
 import {dlv} from '/lib/util/object';
 
 

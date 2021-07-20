@@ -1,7 +1,9 @@
-import setIn from 'set-value';
+import {
+	isInt//,
+	//toStr
+} from '@enonic/js-utils';
 
-//import {toStr} from '/lib/util';
-import {isInt} from '/lib/util/value';
+import setIn from 'set-value';
 
 
 const FRAGMENTER_DEFAULT = 'span';

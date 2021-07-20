@@ -31,7 +31,7 @@ export const filter = ({
 });
 
 /*
-import {toStr} from '/lib/util';
+import {toStr} from '@enonic/js-utils';
 
 export function filter(collectionNode) {
 	log.info(`collectionNode:${toStr(collectionNode)}`);

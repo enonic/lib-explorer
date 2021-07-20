@@ -1,4 +1,9 @@
 import {
+	forceArray//,
+	//toStr
+} from '@enonic/js-utils';
+
+import {
 	COLLECTION_REPO_PREFIX,
 	NT_API_KEY,
 	PRINCIPAL_EXPLORER_READ,
@@ -17,8 +22,6 @@ import {runAsSu} from '/lib/explorer/runAsSu';
 import {hash} from '/lib/explorer/string/hash';
 import {create/*, ValidationError*/} from '/lib/explorer/document/create';
 import {update} from '/lib/explorer/document/update';
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
 import {
 	getUser/*,
 	hasRole*/

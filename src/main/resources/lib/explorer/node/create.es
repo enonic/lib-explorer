@@ -1,5 +1,8 @@
-import {toStr} from '/lib/util';
-import {isNotSet} from '/lib/util/value';
+import {
+	isNotSet,
+	toStr
+} from '@enonic/js-utils';
+
 import {getUser} from '/lib/xp/auth';
 import {sanitize as doSanitize} from '/lib/xp/common';
 //import {get as getContext} from '/lib/xp/context';

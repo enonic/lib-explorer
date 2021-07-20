@@ -1,6 +1,9 @@
+import {
+	forceArray//,
+	//toStr
+} from '@enonic/js-utils';
+
 import {NT_DOCUMENT} from '/lib/explorer/model/2/constants';
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
 
 
 function buildFilter({

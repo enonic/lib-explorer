@@ -1,3 +1,5 @@
+//import {toStr} from '@enonic/js-utils';
+
 import {
 	NT_COLLECTOR//,
 	//PATH_COLLECTORS
@@ -5,7 +7,6 @@ import {
 import {list as getInstalledCollectors} from '/lib/explorer/collector/list';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
-//import {toStr} from '/lib/util';
 
 
 export function query({

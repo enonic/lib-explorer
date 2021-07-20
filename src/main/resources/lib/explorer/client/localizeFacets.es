@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/util';
+//import {toStr} from '@enonic/js-utils';
 import {getLocale} from '/lib/xp/admin';
 
 import {localizeTag} from '/lib/explorer/client/localizeTag';

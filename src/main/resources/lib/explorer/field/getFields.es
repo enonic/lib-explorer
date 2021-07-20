@@ -1,12 +1,11 @@
+//import {toStr} from '@enonic/js-utils';
+
 import {
 	NT_FIELD,
 	SYSTEM_FIELDS
 } from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
-//import {forceArray} from '/lib/util/data';
-//import {toStr} from '/lib/util';
-//import {isNotSet} from '/lib/util/value';
 
 
 export function getFields({

@@ -1,11 +1,14 @@
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
+import {
+	forceArray//,
+	//toStr
+} from '@enonic/js-utils';
+
 import {connect} from '/lib/xp/node';
 
 import {
 	BRANCH_ID_EXPLORER,
 	NT_INTERFACE,
-	PACKAGE,
+	//PACKAGE,
 	PATH_INTERFACES,
 	PRINCIPAL_EXPLORER_READ,
 	REPO_ID_EXPLORER

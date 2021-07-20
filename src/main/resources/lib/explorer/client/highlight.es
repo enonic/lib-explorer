@@ -1,5 +1,6 @@
 'use strict';
-//import {toStr} from '/lib/util';
+//import {toStr} from '@enonic/js-utils';
+
 var ELLIPSIS = '…';
 
 /*function isFunction(value) {

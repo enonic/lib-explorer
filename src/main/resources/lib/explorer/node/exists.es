@@ -1,7 +1,8 @@
+//import {toStr} from '@enonic/js-utils';
+
 //──────────────────────────────────────────────────────────────────────────────
 // Enonic XP libs (externals not webpacked)
 //──────────────────────────────────────────────────────────────────────────────
-//import {toStr} from '/lib/util';
 import {sanitize} from '/lib/xp/common';
 
 

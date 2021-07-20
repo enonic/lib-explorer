@@ -1,3 +1,5 @@
+//import {toStr} from '@enonic/js-utils';
+
 //import {wash} from '/lib/explorer/query/wash';
 import {search} from '/lib/explorer/client';
 import {
@@ -13,7 +15,6 @@ import {
 	list,
 	nonNull
 } from '/lib/graphql';
-import {toStr} from '/lib/util';
 
 
 const COUNT_DEFAULT = 10;

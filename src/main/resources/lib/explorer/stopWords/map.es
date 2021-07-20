@@ -1,4 +1,4 @@
-import {forceArray} from '/lib/util/data';
+import {forceArray} from '@enonic/js-utils';
 
 
 export const map = ({

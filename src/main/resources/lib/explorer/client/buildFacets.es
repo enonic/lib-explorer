@@ -1,8 +1,10 @@
+import {
+	forceArray//,
+	//toStr
+} from '@enonic/js-utils';
 import merge from 'deepmerge';
 import Uri from 'jsuri';
 
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
 import {sanitize} from '/lib/xp/common';
 
 import {hash} from '/lib/explorer/string/hash';

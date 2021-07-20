@@ -1,5 +1,7 @@
-//import {toStr} from '/lib/util';
-import {forceArray} from '/lib/util/data';
+import {
+	forceArray//,
+	//toStr
+} from '@enonic/js-utils';
 
 import {NT_SYNONYM} from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';

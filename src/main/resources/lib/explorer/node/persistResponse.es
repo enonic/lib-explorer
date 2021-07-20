@@ -1,5 +1,8 @@
-import {toStr} from '/lib/util';
-import {isNotSet} from '/lib/util/value';
+import {
+	isNotSet,
+	toStr
+} from '@enonic/js-utils';
+
 import {response as newResponse} from '/lib/explorer/nodeTypes/response';
 import {createOrModify} from '/lib/explorer/node/createOrModify';
 

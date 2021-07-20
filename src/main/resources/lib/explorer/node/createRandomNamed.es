@@ -1,7 +1,9 @@
+import {
+	isNotSet,
+	toStr
+} from '@enonic/js-utils';
 import {v4 as generateUuidv4} from 'uuid';
 
-import {toStr} from '/lib/util';
-import {isNotSet} from '/lib/util/value';
 //import {getUser} from '/lib/xp/auth';
 import {sanitize as doSanitize} from '/lib/xp/common';
 

@@ -1,4 +1,4 @@
-//import {toStr} from '/lib/util';
+//import {toStr} from '@enonic/js-utils';
 
 import {query} from '/lib/explorer/interface/query';
 import {addFilter} from '/lib/explorer/query/addFilter';

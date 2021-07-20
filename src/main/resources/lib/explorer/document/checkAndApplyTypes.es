@@ -1,7 +1,3 @@
-import getIn from 'get-value';
-import setIn from 'set-value';
-import traverse from 'traverse';
-
 import {
 	VALUE_TYPE_ANY,
 	VALUE_TYPE_BOOLEAN,
@@ -11,12 +7,18 @@ import {
 	VALUE_TYPE_LOCAL_DATE_TIME,
 	VALUE_TYPE_LOCAL_TIME,
 	VALUE_TYPE_SET,
-	VALUE_TYPE_STRING
+	VALUE_TYPE_STRING,
+	isInt,
+	isObject,
+	isString,
+	toStr
 } from '@enonic/js-utils';
+
+import getIn from 'get-value';
+import setIn from 'set-value';
+import traverse from 'traverse';
+
 import {ValidationError} from '/lib/explorer/document/ValidationError';
-import {isObject} from '/lib/explorer/object/isObject';
-import {isInt, isString} from '/lib/util/value';
-import {toStr} from '/lib/util';
 import {
 	geoPoint, // [lat, long]
 	geoPointString, // 'lat,long'

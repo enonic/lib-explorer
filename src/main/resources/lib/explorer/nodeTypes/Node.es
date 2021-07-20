@@ -1,5 +1,7 @@
-//import {toStr} from '/lib/util';
-import {isSet} from '/lib/util/value';
+import {
+	isSet//,
+	//toStr
+} from '@enonic/js-utils';
 
 import {ucFirst} from '/lib/explorer/ucFirst';
 import {create as createNode} from '/lib/explorer/node/create';
