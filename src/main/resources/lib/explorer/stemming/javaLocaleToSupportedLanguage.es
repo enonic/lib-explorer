@@ -1,11 +1,11 @@
-import {LANGUAGES} from '@enonic/js-utils';
+import {STEMMING_LANGUAGES} from '@enonic/js-utils';
 import {getLocales} from '/lib/explorer/locale/getLocales';
 import {toStr} from '/lib/util';
 
 
 const CODE_TO_LANG = {};
 const LANG_TO_CODE = {};
-LANGUAGES.forEach(({code, language}) => {
+STEMMING_LANGUAGES.forEach(({code, language}) => {
 	CODE_TO_LANG[code] = language;
 	LANG_TO_CODE[language] = code;
 });
