@@ -1,7 +1,10 @@
-import {toStr} from '/lib/util';
+import {
+	DOT_SIGN//,
+	//toStr
+} from '@enonic/js-utils';
+
 import {query as queryCollectors} from '/lib/explorer/collector/query';
 import {
-	DOT_SIGN,
 	USER_EXPLORER_APP_NAME,
 	USER_EXPLORER_APP_ID_PROVIDER
 } from '/lib/explorer/model/2/constants';
@@ -39,7 +42,7 @@ export function createOrModifyJobsFromCollectionNode({
 	//timeZone = 'GMT+01:00' // CET
 }) {
 	const {
-		_id: collectionNodeId,
+		//_id: collectionNodeId,
 		_name: collectionNodeName,
 		//_path: collectionNodePath,
 		collector: {
@@ -50,7 +53,9 @@ export function createOrModifyJobsFromCollectionNode({
 		doCollect = false
 	} = collectionNode;
 
-	const existingJobs = listExplorerJobsThatStartWithName({name: collectionNodeId});
+	const jobPrefix = `${collectorId.replace(':', DOT_SIGN)}${DOT_SIGN}${collectionNodeName}${DOT_SIGN}`;
+
+	const existingJobs = listExplorerJobsThatStartWithName({name: jobPrefix});
 	//log.info(`collection name:${collectionNodeName} existingJobs:${toStr(existingJobs)}`);
 
 	if (!collectorId) {
@@ -106,7 +111,7 @@ export function createOrModifyJobsFromCollectionNode({
 			},
 			descriptor: collectorId,
 			enabled: doCollect,
-			name: `${collectionNodeId}${DOT_SIGN}${i}`,
+			name: `${jobPrefix}${i}`,
 			schedule: {
 				timeZone,
 				type: 'CRON',
