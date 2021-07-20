@@ -101,6 +101,7 @@ dependencies {
 ### 3.19.0-SNAPSHOT
 
 * TODO: BUG: Change of language doesn't cause document update
+* Add stemmed query expressions to Default interface
 * Update calls to indexTemplateToConfig to avoid deprecation warnings
 * BUGFIX Second argument to folder() should be optional
 * Use collection name rather than collection id when scheduling
