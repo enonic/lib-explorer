@@ -62,17 +62,20 @@ dependencies {
 
 ### 4.0.0-SNAPSHOT
 
-* TODO: Allow document REST-API clients to pass their own _indexConfig?
-* TODO: Allow Collectors to pass their own _indexConfig?
-* TODO: Allow document CODE-API importers (such as Collectors and document REST-API) to pass their own _indexConfig?
-* TODO: Change default indexConfig in NT_DOCUMENT to minimal from byType?
-* TODO do not stem in default indexConfig?
-* TODO do not stem system fields?
-* TODO: Remove valueType text, uri, tag, html, xml?
-* TODO: Field type should no longer be a system field?
-* TODO: Remove denyDelete, denyValues and inResults from SYSTEM_FIELDS in constants?
-* TODO: Remove displayName from stopwords
-* TODO: Remove displayName from thesaurus
+* FEATURE: Allow document REST-API clients to pass their own _indexConfig?
+* FEATURE: Allow Collectors to pass their own _indexConfig?
+* FEATURE: Allow document CODE-API importers (such as Collectors and document REST-API) to pass their own _indexConfig?
+
+* MAYBE: Change default indexConfig in NT_DOCUMENT to minimal from byType?
+* MAYBE: Do not stem in default indexConfig?
+* MAYBE: Do not stem system fields?
+* MAYBE: Remove valueType text, uri, tag, html, xml?
+* MAYBE: Remove denyDelete, denyValues and inResults from SYSTEM_FIELDS in constants?
+* MAYBE: Remove displayName from stopwords?
+* MAYBE: Remove displayName from thesaurus?
+
+* TODO: Field type should no longer be a system field
+* TODO: Remove EVENT_COLLECTOR_UNREGISTER from constants
 
 * Moved from constants to @enonic/js-utils
   * COLON_SIGN
@@ -98,6 +101,7 @@ dependencies {
 ### 3.19.0-SNAPSHOT
 
 * TODO: BUG: Change of language doesn't cause document update
+* TODO: Use collection name rather than collection id when scheduling
 * Require Enonic XP 7.7.1 (because of BUGFIX for main.js exception is swallowed)
 * Support stemmed queries
 

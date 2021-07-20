@@ -285,4 +285,4 @@ export const ROOT_PERMISSIONS_EXPLORER = [
 //──────────────────────────────────────────────────────────────────────────────
 // Events
 //──────────────────────────────────────────────────────────────────────────────
-export const EVENT_COLLECTOR_UNREGISTER = `${APP_EXPLORER}.collector.unregister`;
+export const EVENT_COLLECTOR_UNREGISTER = `${APP_EXPLORER}.collector.unregister`; // TODO Unused in lib-explorer-4.0.0 remove?
