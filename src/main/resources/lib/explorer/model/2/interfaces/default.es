@@ -1,9 +1,3 @@
-import {
-	//INTERFACES_FOLDER,
-	NT_DOCUMENT
-} from '/lib/explorer/model/2/constants';
-
-
 export const DEFAULT_INTERFACE_NAME = 'default';
 
 
@@ -27,6 +21,23 @@ export const DEFAULT_INTERFACE = {
 						fields: [
 							{
 								field: 'title',
+								boost: 4
+							},{
+								field: 'uri',
+								boost: 4
+							},{
+								field: 'text',
+								boost: 4
+							}
+						],
+						operator: 'and'
+					}
+				},{
+					type: 'stemmed',
+					params: {
+						fields: [
+							{
+								field: 'title',
 								boost: 3
 							},{
 								field: 'uri',
@@ -36,22 +47,40 @@ export const DEFAULT_INTERFACE = {
 								boost: 3
 							}
 						],
+						language: 'no',
 						operator: 'and'
 					}
 				},{
-					type: 'ngram',
+					type: 'stemmed',
 					params: {
 						fields: [
 							{
 								field: 'title',
 								boost: 2
 							},{
+								field: 'uri',
+								boost: 2
+							},{
 								field: 'text',
 								boost: 2
 							}
 						],
-						operator: 'and',
-						searchString: 'searchString'
+						language: 'en',
+						operator: 'and'
+					}
+				}, {
+					type: 'ngram',
+					params: {
+						fields: [
+							{
+								field: 'title',
+								boost: 1
+							},{
+								field: 'text',
+								boost: 1
+							}
+						],
+						operator: 'and'
 					}
 				}
 			],
@@ -116,27 +145,7 @@ export const DEFAULT_INTERFACE = {
 				params: {
 					field: 'uri'
 				}
-			}/*,{
-				filter: 'hasValue',
-				params: {
-					field: 'type',
-					values: NT_DOCUMENT
-				}
-			}*/
-
-		]/*, // Let's do this in code instead...
-		should: [{
-			filter: 'hasValue',
-			params: {
-				field: '_nodeType',
-				values: NT_DOCUMENT
 			}
-		},{
-			filter: 'hasValue',
-			params: {
-				field: 'type',
-				values: NT_DOCUMENT
-			}
-		}]*/
+		]
 	}
 };
