@@ -37,8 +37,9 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
-| 4.0.0 | 7.7.0 |
-| 3.1[7-9].0 | 7.7.0 |
+| 4.0.0 | 7.7.1 |
+| 3.19.0 | 7.7.1 |
+| 3.1[7-8].0 | 7.7.0 |
 | 3.16.0 | 7.6.0 |
 | 3.1[0-5].x | 7.5.0 |
 | 3.[6-9].x | 7.4.1 |
@@ -97,6 +98,7 @@ dependencies {
 ### 3.19.0-SNAPSHOT
 
 * TODO: BUG: Change of language doesn't cause document update
+* Require Enonic XP 7.7.1 (because of BUGFIX for main.js exception is swallowed)
 * Support stemmed queries
 
 ### 3.18.0
@@ -106,7 +108,7 @@ dependencies {
 ### 3.17.0
 
 * Add getLocales()
-* Require to Enonic XP 7.7 and use internal scheduling instead of lib-cron
+* Require Enonic XP 7.7 and use internal scheduling instead of lib-cron
 
 ### 3.16.0
 
