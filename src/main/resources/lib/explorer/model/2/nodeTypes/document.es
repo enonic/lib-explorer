@@ -1,7 +1,11 @@
 import {
+	indexTemplateToConfig//,
+	//toStr
+} from '@enonic/js-utils';
+
+import {
 	NT_DOCUMENT
 } from '/lib/explorer/model/2/constants';
-import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
 import {hash} from '/lib/explorer/string/hash';
 
@@ -25,42 +29,42 @@ export function Document({
 		...rest,
 		_parentPath,
 		_indexConfig: {
-			default: templateToConfig({
+			default: indexTemplateToConfig({
 				template: 'byType', // TODO Perhaps minimal?
 				indexValueProcessors: [],
 				languages: []
 			}),
 			configs: [{
 				path: 'collectorAppName',
-				config: templateToConfig({
+				config: indexTemplateToConfig({
 					template: 'minimal',
 					indexValueProcessors: [],
 					languages: []
 				})
 			},{
 				path: 'collectorId',
-				config: templateToConfig({
+				config: indexTemplateToConfig({
 					template: 'minimal',
 					indexValueProcessors: [],
 					languages: []
 				})
 			},{
 				path: 'collectorVersion',
-				config: templateToConfig({
+				config: indexTemplateToConfig({
 					template: 'minimal',
 					indexValueProcessors: [],
 					languages: []
 				})
 			},{
 				path: 'document_metadata',
-				config: templateToConfig({
+				config: indexTemplateToConfig({
 					template: 'minimal',
 					indexValueProcessors: [],
 					languages: []
 				})
 			},{
 				path: 'uri',
-				config: templateToConfig({
+				config: indexTemplateToConfig({
 					template: 'byType',
 					indexValueProcessors: [],
 					languages: []

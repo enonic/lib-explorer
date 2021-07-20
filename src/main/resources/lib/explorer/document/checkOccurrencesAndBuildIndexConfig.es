@@ -1,3 +1,8 @@
+import {
+	indexTemplateToConfig,
+	isSet//,
+	//toStr
+} from '@enonic/js-utils';
 import getIn from 'get-value';
 
 import {
@@ -5,10 +10,6 @@ import {
 	VALUE_TYPE_STRING
 } from '@enonic/js-utils';
 import {ValidationError} from '/lib/explorer/document/ValidationError';
-import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
-
-//import {toStr} from '/lib/util';
-import {isSet} from '/lib/util/value';
 
 
 export function checkOccurrencesAndBuildIndexConfig({
@@ -86,7 +87,7 @@ export function checkOccurrencesAndBuildIndexConfig({
 			}
 			const item = {
 				path,
-				config: templateToConfig({
+				config: indexTemplateToConfig({
 					template,
 					indexValueProcessors: [],
 					languages
