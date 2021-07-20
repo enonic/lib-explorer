@@ -1,7 +1,11 @@
-//import {toStr} from '/lib/util';
-import {isNotSet, isSet} from '/lib/util/value';
+import {
+	addQueryFilter,
+	isNotSet,
+	isSet,
+	toStr
+} from '@enonic/js-utils';
+
 import {NT_COLLECTION} from '/lib/explorer/model/2/constants';
-import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 
 
@@ -35,18 +39,18 @@ export function query({
 	}
 	//log.info(toStr({count,sort,start}));
 
-	addFilter({
-		filter: hasValue('_nodeType', [NT_COLLECTION]),
-		filters
-	});
-
 	const queryParams = {
 		count,
-		filters,
+		filters: addQueryFilter({
+			filter: hasValue('_nodeType', [NT_COLLECTION]),
+			filters
+		}),
 		query,
 		sort,
 		start
 	};
+	//log.debug(`queryParams:${toStr(queryParams)}`);
+
 	const queryRes = connection.query(queryParams);
 	if(isSet(intPage)) {
 		queryRes.page = intPage;
