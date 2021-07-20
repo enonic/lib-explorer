@@ -1,15 +1,18 @@
+import {
+	indexTemplateToConfig,
+	isNotSet,
+	toStr
+} from '@enonic/js-utils';
+
 import {checkAndApplyTypes} from '/lib/explorer/document/checkAndApplyTypes';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
 import {getFields} from '/lib/explorer/field/getFields';
-import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {
 	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 import {isObject} from '/lib/explorer/object/isObject';
 import {connect} from '/lib/explorer/repo/connect';
-import {toStr} from '/lib/util';
-import {isNotSet} from '/lib/util/value';
 //import {getUser} from '/lib/xp/auth';
 
 
@@ -119,14 +122,14 @@ export function create({
 		languages.push(language);
 	}
 	const indexConfig = {
-		default: templateToConfig({
+		default: indexTemplateToConfig({
 			template: 'byType', // TODO Perhaps minimal?
 			indexValueProcessors: [],
 			languages
 		}),
 		configs: [/*{
 			path: 'document_metadata',
-			config: templateToConfig({
+			config: indexTemplateToConfig({
 				template: 'minimal',
 				indexValueProcessors: [],
 				languages: []

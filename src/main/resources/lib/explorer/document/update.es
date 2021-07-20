@@ -1,3 +1,9 @@
+import {
+	indexTemplateToConfig,
+	isNotSet,
+	isObject,
+	toStr
+} from '@enonic/js-utils';
 //import getIn from 'get-value';
 //import setIn from 'set-value';
 //import traverse from 'traverse';
@@ -9,16 +15,11 @@ import deepEqual from 'fast-deep-equal';
 import {getFieldsWithIndexConfigAndValueType} from '/lib/explorer/document/create';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
 import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/checkAndApplyTypes';
-import {templateToConfig} from '/lib/explorer/indexing/templateToConfig';
 import {
 	FIELD_MODIFIED_TIME_INDEX_CONFIG,
 	NT_DOCUMENT
 } from '/lib/explorer/model/2/constants';
-import {isObject} from '/lib/explorer/object/isObject';
 
-import {toStr} from '/lib/util';
-//import {forceArray} from '/lib/util/data';
-import {isNotSet} from '/lib/util/value';
 import {instant} from '/lib/xp/value.js';
 /*const { diff: diffDocument } = new HumanDiff({
 	objectName: 'document'
@@ -118,7 +119,7 @@ export function update({
 		languages.push(language);
 	}
 	const indexConfig = {
-		default: templateToConfig({
+		default: indexTemplateToConfig({
 			template: 'byType', // TODO Perhaps minimal?
 			indexValueProcessors: [],
 			languages
@@ -210,7 +211,7 @@ export function update({
 
 	const indexConfigForModifiedTime = {
 		path: 'document_metadata.modifiedTime',
-		config: templateToConfig({
+		config: indexTemplateToConfig({
 			template: FIELD_MODIFIED_TIME_INDEX_CONFIG,
 			indexValueProcessors: [],
 			languages: []

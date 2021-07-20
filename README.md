@@ -101,6 +101,7 @@ dependencies {
 ### 3.19.0-SNAPSHOT
 
 * TODO: BUG: Change of language doesn't cause document update
+* Update calls to indexTemplateToConfig to avoid deprecation warnings
 * BUGFIX Second argument to folder() should be optional
 * Use collection name rather than collection id when scheduling
 * Require Enonic XP 7.7.1 (because of BUGFIX for main.js exception is swallowed)
