@@ -51,7 +51,7 @@ dependencies {
 
 ### 3.19.0-SNAPSHOT
 
-* TODO: BUG: Change of language doesn't cause document update
+* Fix BUG Change of language doesn't cause document update (by including _indexConfig when diffing)
 * Add stemmed query expressions to Default interface
 * Update calls to indexTemplateToConfig to avoid deprecation warnings
 * BUGFIX Second argument to folder() should be optional
