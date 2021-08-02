@@ -27,15 +27,15 @@ import {get as getStopWordsList} from '/lib/explorer/stopWords/get';
 import {hash} from '/lib/explorer/string/hash';
 
 //import {addCommonTermsFilter} from '/lib/explorer/client/addCommonTermsFilter';
-import {buildFacets} from '/lib/explorer/client/buildFacets';
+//import {buildFacets} from '/lib/explorer/client/buildFacets';
 import {buildFiltersFromParams} from '/lib/explorer/client/buildFiltersFromParams';
-import {buildHighlights} from '/lib/explorer/client/buildHighlights';
+//import {buildHighlights} from '/lib/explorer/client/buildHighlights';
 import {buildPagination} from '/lib/explorer/client/buildPagination';
 import {buildQuery} from '/lib/explorer/client/buildQuery';
 //import {flattenSynonyms} from '/lib/explorer/client/flattenSynonyms';
 //import {getCachedActiveNode} from '/lib/explorer/client/getCachedActiveNode';
 import {getCachedConfigFromInterface} from '/lib/explorer/client/getCachedConfigFromInterface';
-import {localizeFacets} from '/lib/explorer/client/localizeFacets';
+//import {localizeFacets} from '/lib/explorer/client/localizeFacets';
 import {mapMultiRepoQueryHits} from '/lib/explorer/client/mapMultiRepoQueryHits';
 
 import {query as queryThesauri} from '/lib/explorer/thesaurus/query';
@@ -122,16 +122,9 @@ export function search(params) {
 	log.debug(`config:${toStr({config})}`);
 
 	const {
-		facets: facetConfig,
-		//pagination: paginationConfig,
-		query: queryConfig,
-		resultMappings,
 		stopWords//,
 		//thesauri
 	} = config.interfaceNode;
-	log.debug(`facetConfig:${toStr({facetConfig})}`);
-	log.debug(`queryConfig:${toStr({queryConfig})}`);
-	log.debug(`resultMappings:${toStr({resultMappings})}`);
 	log.debug(`stopWords:${toStr({stopWords})}`);
 
 	let page = params.page ? parseInt(params.page, 10) : 1; // NOTE First index is 1 not 0
@@ -197,7 +190,40 @@ export function search(params) {
 		connection: explorerRepoReadConnection,
 		expand,
 		explain,
-		expression: queryConfig,
+		expression: { // TODO Hardcode
+			type: 'group',
+			operator: 'or',
+			params: {
+				expressions: [{
+					type: 'fulltext',
+					operator: 'and',
+					params: {
+						fields: [{
+							field: 'title',
+							boost: 2
+						}, {
+							field: 'uri',
+							boost: 2
+						}, {
+							field: 'text',
+							boost: 2
+						}]
+					}
+				}, {
+					type: 'ngram',
+					operator: 'and',
+					params: {
+						fields: [{
+							field: 'title'//,
+							//boost: 1
+						}, {
+							field: 'text'//,
+							//boost: 1
+						}]
+					}
+				}]
+			}
+		},
 		languages,
 		logQuery,
 		logQueryResults,
@@ -268,20 +294,6 @@ export function search(params) {
 		//times.push({label: 'synonyms', time: currentTimeMillis()});
 	} // if (showSynonyms)
 
-
-	// TODO This could be cached
-	const localizedFacets = {};
-	if (facetConfig) {
-		localizeFacets({
-			facets: facetConfig,
-			locale,
-			localizedFacets,
-			nodeCache: NODE_CACHE
-		});
-	}
-	log.debug(`localizedFacets:${toStr({localizedFacets})}`);
-	//times.push({label: 'localize', time: currentTimeMillis()});
-
 	const filters = buildFiltersFromParams({
 		facetsParam,
 		facetsObj: config.facetsObj,
@@ -317,16 +329,10 @@ export function search(params) {
 		count,
 		explain,
 		filters,
-		// No point in building highlights when there is nothing to highlight...
-		highlight: searchStringWithoutStopWords ? buildHighlights({
-			resultMappings
-		}) : {},
 		query,
 		start
 	};
-	if (!facetConfig || numberOfActiveFacetCategories !== facetConfig.length) {
-		queryParams.aggregations = config.aggregations;
-	}
+	queryParams.aggregations = config.aggregations;
 	//log.info(toStr({count}));
 	if (logQuery) {
 		log.info(`queryParams:${toStr(queryParams)}`);
@@ -368,20 +374,6 @@ export function search(params) {
 	// Numbers for category A can be fetched from a query with filter on B and C.
 	// Numbers for category B can be fetched from a query with filter on A and C.
 	// Numbers for category C can be fetched from a query with filter on A and B.
-	const facetCategories = buildFacets({
-		aggregationsCacheObj,
-		aggregations: config.aggregations,
-		facetConfig,
-		filters,
-		localizedFacets,
-		multiRepoConnection: readConnections,
-		params,
-		query//,
-		//times
-	});
-	log.debug(`facetCategories:${toStr({facetCategories})}`);
-	//times.push({label: 'facets', time: currentTimeMillis()});
-	//log.info(toStr({aggregationsCacheObj}));
 
 	const pages = Math.ceil(total / count);
 	log.debug(`pages:${toStr({pages})}`);
@@ -422,11 +414,9 @@ export function search(params) {
 			locale,
 			urlQueryParameterNameContainingSearchString: name,
 			nodeCache: NODE_CACHE,
-			resultMappings,
 			searchString: washedSearchString
 			//times
 		}),
-		facetCategories,
 		pagination
 	};
 	/*times.push({label: 'mapMultiRepoQueryHits', time: currentTimeMillis()});

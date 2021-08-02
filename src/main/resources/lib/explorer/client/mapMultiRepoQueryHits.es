@@ -38,7 +38,34 @@ export function mapMultiRepoQueryHits({
 	//locale,
 	urlQueryParameterNameContainingSearchString,
 	nodeCache,
-	resultMappings,
+	resultMappings = [{
+		field: 'title',
+		highlight: true,
+		highlightFragmenter: 'span',
+		highlightNumberOfFragments: 1,
+		highlightOrder: 'none',
+		highlightPostTag: '</b>',
+		highlightPreTag: '<b>',
+		lengthLimit: 255,
+		to: 'title',
+		type: 'string'
+	}, {
+		field: 'text',
+		highlight: true,
+		highlightFragmenter: 'span',
+		highlightNumberOfFragments: 1,
+		highlightOrder: 'none',
+		highlightPostTag: '</b>',
+		highlightPreTag: '<b>',
+		lengthLimit: 255,
+		to: 'text',
+		type: 'string'
+	}, {
+		field: 'uri',
+		highlight: false,
+		to: 'href',
+		type: 'string'
+	}],
 	searchString//,
 	//times
 }) {
