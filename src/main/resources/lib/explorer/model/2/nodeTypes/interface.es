@@ -33,20 +33,7 @@ export function interfaceModel({
 				path: false,
 				indexValueProcessors: [],
 				languages: []
-			},
-			configs: [{
-				path: 'resultMappings*',
-				config: {
-					decideByType: false,
-					enabled: false,
-					nGram: false,
-					fulltext: false,
-					includeInAllText: false,
-					path: false,
-					indexValueProcessors: [],
-					languages: []
-				}
-			}]
+			}
 		},
 		_name,
 		_nodeType: NT_INTERFACE,

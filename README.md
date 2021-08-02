@@ -77,6 +77,7 @@ dependencies {
 * TODO: Field type should no longer be a system field
 * TODO: Remove EVENT_COLLECTOR_UNREGISTER from constants
 
+* Remove filters, query, resultMappings and type from interface
 * Moved from constants to @enonic/js-utils
   * COLON_SIGN
   * DOT_SIGN

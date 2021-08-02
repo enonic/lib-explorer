@@ -1,4 +1,4 @@
-import {Node} from '/lib/explorer/model/2/nodeTYpes/Node';
+import {Node} from '/lib/explorer/model/2/nodeTypes/Node';
 
 export interface FieldMapping {
 	field: string,
@@ -15,8 +15,4 @@ export interface FieldMapping {
 
 export interface InterfaceNode extends Node {
 	//displayName
-	//query
-	resultMappings: FieldMapping | Array<FieldMapping>
-	//filters
-	//type
 }
