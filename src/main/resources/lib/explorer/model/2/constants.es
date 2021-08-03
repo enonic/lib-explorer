@@ -167,9 +167,9 @@ export const READWRITE_FIELDS = [{
 	denyValues: false,
 	//displayName: 'Title'*/
 	fieldType: VALUE_TYPE_STRING,
-	indexConfig: 'type',
+	indexConfig: 'fulltext', // includes ngram
 	max: 1,
-	min: 1
+	min: 1 // TODO: There may exist pages without title, should we allow that?
 },{
 	key: 'language',
 	_name: 'language',
@@ -187,7 +187,7 @@ export const READWRITE_FIELDS = [{
 	denyValues: false,
 	//displayName: 'Text'
 	fieldType: VALUE_TYPE_STRING,
-	indexConfig: 'type',
+	indexConfig: 'fulltext', // includes ngram
 	max: 0, // Allow array
 	min: 1
 },{
@@ -197,7 +197,14 @@ export const READWRITE_FIELDS = [{
 	denyValues: false,
 	//displayName: 'Uri'
 	fieldType: VALUE_TYPE_STRING,
-	indexConfig: 'type',
+	indexConfig: {
+		enabled: true,
+		decideByType: false, // Assume text
+		nGram: false, // Don't need ngram for uri
+		fulltext: true, // But fulltext is used by a customer
+		includeInAllText: false, // Nope
+		path: false
+	},
 	max: 1,
 	min: 1
 }];
