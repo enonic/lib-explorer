@@ -192,12 +192,12 @@ export function search(params) {
 		explain,
 		expression: { // TODO Hardcode
 			type: 'group',
-			operator: 'or',
 			params: {
+				operator: 'or',
 				expressions: [{
 					type: 'fulltext',
-					operator: 'and',
 					params: {
+						operator: 'and',
 						fields: [{
 							field: 'title',
 							boost: 2
@@ -211,8 +211,8 @@ export function search(params) {
 					}
 				}, {
 					type: 'ngram',
-					operator: 'and',
 					params: {
+						operator: 'and',
 						fields: [{
 							field: 'title'//,
 							//boost: 1
