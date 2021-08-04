@@ -5,6 +5,10 @@ import webpack from 'webpack';
 
 //import {print} from 'q-i';
 
+// Check which node is used
+//console.log(process.execPath);
+//console.log(process.version);
+
 //const MODE = 'development';
 const MODE = 'production';
 
