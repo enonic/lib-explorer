@@ -77,6 +77,7 @@ dependencies {
 * TODO: Field type should no longer be a system field
 * TODO: Remove EVENT_COLLECTOR_UNREGISTER from constants
 
+* Upgrade to lib-graphql:2.0.0
 * Add collections, fields, stopWords and synonyms to interface/filter
 * Temporarily hardcode interface query and resultMappings and remove facets from search function
 * Remove filters, query, resultMappings and type from interface

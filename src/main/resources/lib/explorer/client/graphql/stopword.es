@@ -6,10 +6,13 @@ import {connect} from '/lib/explorer/repo/connect';
 import {query} from '/lib/explorer/stopWords/query';
 //import {camelize} from '/lib/explorer/string/camelize';
 import {
-	createInputObjectType,
-	GraphQLBoolean//,
-	//GraphQLInt
+	GraphQLBoolean,
+	newSchemaGenerator
 } from '/lib/graphql';
+
+const {
+	createInputObjectType
+} = newSchemaGenerator();
 
 
 export function buildStopwordsArg() {

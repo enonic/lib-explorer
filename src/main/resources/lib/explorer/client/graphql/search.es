@@ -3,18 +3,18 @@
 //import {wash} from '/lib/explorer/query/wash';
 import {search} from '/lib/explorer/client';
 import {
-	createInputObjectType,
-	createObjectType,
-	createSchema,
-	//createUnionType,
-	//execute,
-	//GraphQLBoolean,
-	//GraphQLFloat,
 	GraphQLInt,
 	GraphQLString,
 	list,
+	newSchemaGenerator,
 	nonNull
 } from '/lib/graphql';
+
+const {
+	createInputObjectType,
+	createObjectType,
+	createSchema
+} = newSchemaGenerator();
 
 
 const COUNT_DEFAULT = 10;

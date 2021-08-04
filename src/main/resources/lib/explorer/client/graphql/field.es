@@ -6,12 +6,16 @@ import {connect} from '/lib/explorer/repo/connect';
 import {getFields} from '/lib/explorer/field/getFields';
 import {camelize} from '/lib/explorer/string/camelize';
 import {
-	createInputObjectType,
-	createObjectType,
 	GraphQLBoolean,
 	GraphQLInt,
-	GraphQLString
+	GraphQLString,
+	newSchemaGenerator
 } from '/lib/graphql';
+
+const {
+	createInputObjectType,
+	createObjectType
+} = newSchemaGenerator();
 
 
 const fieldCache = newCache({

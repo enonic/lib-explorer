@@ -14,19 +14,19 @@ import {buildStopwordsArg} from '/lib/explorer/client/graphql/stopword';
 import {wash} from '/lib/explorer/query/wash';
 import {decamelize} from '/lib/explorer/string/decamelize';
 import {
-	createEnumType,
-	//createInputObjectType,
-	createObjectType,
-	createSchema,
-	//createUnionType,
 	execute,
-	//GraphQLBoolean,
-	//GraphQLFloat,
 	GraphQLInt,
 	GraphQLString,
 	list,
+	newSchemaGenerator,
 	nonNull
 } from '/lib/graphql';
+
+const {
+	createEnumType,
+	createObjectType,
+	createSchema
+} = newSchemaGenerator();
 
 
 const ELLIPSIS = '…';

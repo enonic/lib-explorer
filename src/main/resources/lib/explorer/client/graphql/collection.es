@@ -5,9 +5,13 @@ import {connect} from '/lib/explorer/repo/connect';
 import {query} from '/lib/explorer/collection/query';
 import {camelize} from '/lib/explorer/string/camelize';
 import {
-	createInputObjectType,
-	GraphQLBoolean
+	GraphQLBoolean,
+	newSchemaGenerator
 } from '/lib/graphql';
+
+const {
+	createInputObjectType
+} = newSchemaGenerator();
 
 
 export function buildCollectionsArg() {
