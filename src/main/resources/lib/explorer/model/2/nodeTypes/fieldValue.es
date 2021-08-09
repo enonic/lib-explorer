@@ -23,6 +23,7 @@ export function fieldValue({
 	displayName = ucFirst(_name),
 	...rest
 }) {
+	log.warning('model/2/nodeTypes/fieldValue() was deprecated in lib-explorer-4.0.0'); // TODO Throw error in lib-explorer-5.0.0 and remove in lib-explorer-6.0.0
 	/*log.info(toStr({
 		field,
 		fieldReference,

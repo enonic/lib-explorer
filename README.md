@@ -51,14 +51,21 @@ dependencies {
 
 ### 6.0.0-SNAPSHOT
 
-* Remove collection/unregister
+* Remove:
+  * collection/unregister()
+  * field/getFieldValues()
+  * model/2/nodeTypes/fieldValue()
+  * nodeTypes/FieldValue
 
 ### 5.0.0-SNAPSHOT
 
-* Remove collection/reschedule
-* Remove collection/register
+* Remove collection/reschedule()
+* Remove collection/register()
 * TODO: Change lib-explorer-4 deprecation warnings into thrown errors:
-  * collection/unregister
+  * collection/unregister()
+  * field/getFieldValues()
+  * model/2/nodeTypes/fieldValue()
+  * nodeTypes/FieldValue
 
 ### 4.0.0-SNAPSHOT
 
@@ -81,17 +88,23 @@ dependencies {
 * Add collections, fields, stopWords and synonyms to interface/filter
 * Temporarily hardcode interface query and resultMappings and remove facets from search function
 * Remove filters, query, resultMappings and type from interface
-* Moved from constants to @enonic/js-utils
+* Moved from constants to @enonic/js-utils:
   * COLON_SIGN
   * DOT_SIGN
   * ELLIPSIS
   * RT_JSON -> RESPONSE_TYPE_JSON
   * RT_HTML -> RESPONSE_TYPE_HTML
-* Remove TOOL_PATH from constants
-* Deprecate collection/unregister
+* Removed from constants:
+  * NT_FIELD_VALUE
+  * TOOL_PATH
+* Deprecate:
+  * collection/unregister()
+  * field/getFieldValues()
+  * model/2/nodeTypes/fieldValue()
+  * nodeTypes/FieldValue
 * Change lib-explorer-3 deprecation warnings into thrown errors:
-  * collection/register
-  * collection/reschedule
+  * collection/register()
+  * collection/reschedule()
 * Move _nodeType = document from should to must in interface code
 * Move should _nodeType filter to must in all queries
 * Remove should type filter from all queries

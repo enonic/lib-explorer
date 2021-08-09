@@ -1,38 +1,8 @@
-import {
-	forceArray//,
-	//toStr
-} from '@enonic/js-utils';
-
-import {NT_FIELD_VALUE} from '/lib/explorer/model/2/constants';
-import {addFilter} from '/lib/explorer/query/addFilter';
-import {hasValue} from '/lib/explorer/query/hasValue';
-
-
-export function getFieldValues({
-	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
-	field,
-	filters = {},
-	sort = '_name ASC'
-} = {}) {
-	addFilter({
-		filter: hasValue('_nodeType', NT_FIELD_VALUE),
-		filters
-	});
-	if (field) {
-		addFilter({
-			filter: hasValue('_parentPath', forceArray(field).map(f => `/fields/${f}`)),
-			filters // reference gets modified
-		});
-	}
-	//log.info(`filters:${toStr(filters)}`);
-	const queryParams = {
-		count: -1,
-		filters,
-		query: '',
-		sort
+export function getFieldValues() {
+	log.warning('field/getFieldValues was deprecated in lib-explorer-4.0.0'); // TODO Throw error in lib-explorer-5.0.0 and remove in lib-explorer-6.0.0
+	return {
+		count: 0,
+		hits: [],
+		total: 0
 	};
-	const queryRes = connection.query(queryParams);
-	//log.info(`queryRes:${toStr(queryRes)}`);
-	queryRes.hits = queryRes.hits.map(hit => connection.get(hit.id));
-	return queryRes;
 }

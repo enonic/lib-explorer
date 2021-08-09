@@ -15,6 +15,7 @@ export class FieldValue extends Node {
 	}, {
 		connection = __connection
 	} = {}) {
+		log.warning('nodeTypes/FieldValue was deprecated in lib-explorer-4.0.0'); // TODO Throw error in lib-explorer-5.0.0 and remove in lib-explorer-6.0.0
 		if (isSet(__connection)) {
 			log.warning(`Deprecation: Function signature changed. Added second argument for options.
 				Old: new FieldValue({__connection, ...})
