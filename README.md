@@ -84,6 +84,7 @@ dependencies {
 * TODO: Field type should no longer be a system field
 * TODO: Remove EVENT_COLLECTOR_UNREGISTER from constants
 
+* lib/explorer/api moved to app-explorer
 * Add node/semiAtomicUpdate({data, options})
 * Add reference(schemaId) to collection model
 * Upgrade to lib-graphql:2.0.0
