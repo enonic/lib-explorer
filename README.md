@@ -84,6 +84,7 @@ dependencies {
 * TODO: Field type should no longer be a system field
 * TODO: Remove EVENT_COLLECTOR_UNREGISTER from constants
 
+* Add node/semiAtomicUpdate({data, options})
 * Add reference(schemaId) to collection model
 * Upgrade to lib-graphql:2.0.0
 * Add collections, fields, stopWords and synonyms to interface/filter
