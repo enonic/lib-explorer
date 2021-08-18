@@ -84,6 +84,7 @@ dependencies {
 * TODO: Field type should no longer be a system field
 * TODO: Remove EVENT_COLLECTOR_UNREGISTER from constants
 
+* Remove displayName and languages and add language to thesaurus model and query
 * lib/explorer/api moved to app-explorer
 * Add node/semiAtomicUpdate({data, options})
 * Add reference(schemaId) to collection model

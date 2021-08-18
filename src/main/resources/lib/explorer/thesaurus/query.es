@@ -55,16 +55,14 @@ export function query({
 			_name: name,
 			_path,
 			description = '',
-			displayName,
-			languages,
+			language,
 			type
 		} = connection.get(hit.id);
 		const rv = {
 			_path,
 			description,
-			displayName,
 			id: hit.id,
-			languages: forceArray(languages),
+			language,
 			name,
 			type
 		};
