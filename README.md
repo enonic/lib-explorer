@@ -81,8 +81,7 @@ dependencies {
 * MAYBE: Remove displayName from stopwords?
 * MAYBE: Remove displayName from thesaurus?
 
-* TODO: Field type should no longer be a system field
-
+* Field named type is no longer a system field
 * Remove displayName and languages and add language to thesaurus model and query
 * lib/explorer/api moved to app-explorer
 * Add node/semiAtomicUpdate({data, options})

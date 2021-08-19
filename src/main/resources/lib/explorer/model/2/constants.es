@@ -148,16 +148,6 @@ export const READONLY_FIELDS = [{
 	indexConfig: 'minimal',
 	max: 1,
 	min: 1
-},{ // TODO This should not be a system field. Remove in lib-explorer-4.0.0?
-	key: 'type',
-	_name: 'type',
-	denyDelete: true,
-	denyValues: false,
-	fieldType: VALUE_TYPE_STRING,
-	indexConfig: 'minimal',
-	max: 1,
-	min: 0
-	//displayName: 'Type'
 }];
 
 export const READWRITE_FIELDS = [{
