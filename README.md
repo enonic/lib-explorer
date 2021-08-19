@@ -82,7 +82,6 @@ dependencies {
 * MAYBE: Remove displayName from thesaurus?
 
 * TODO: Field type should no longer be a system field
-* TODO: Remove EVENT_COLLECTOR_UNREGISTER from constants
 
 * Remove displayName and languages and add language to thesaurus model and query
 * lib/explorer/api moved to app-explorer
@@ -99,6 +98,7 @@ dependencies {
   * RT_JSON -> RESPONSE_TYPE_JSON
   * RT_HTML -> RESPONSE_TYPE_HTML
 * Removed from constants:
+  * EVENT_COLLECTOR_UNREGISTER
   * NT_FIELD_VALUE
   * TOOL_PATH
 * Deprecate:
