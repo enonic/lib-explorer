@@ -5,7 +5,6 @@ export const filter = ({
 	collector,
 	creator,
 	createdTime,
-	cron,
 	doCollect,
 	//documentCount, // not stored, added by graphql
 	//interfaces, // not stored, added by graphql
@@ -20,7 +19,6 @@ export const filter = ({
 	collector,
 	creator,
 	createdTime,
-	cron,
 	doCollect,
 	//documentCount, // not stored, added by graphql
 	//interfaces, // not stored, added by graphql
