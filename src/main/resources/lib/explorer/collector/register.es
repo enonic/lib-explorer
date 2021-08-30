@@ -8,7 +8,7 @@ import {
 } from 'semver';
 
 import {list as getApplications} from '/lib/explorer/application';
-import {unregister} from '/lib/explorer/collector';
+import {unregister} from '/lib/explorer/collector/unregister';
 import {
 	NT_COLLECTOR,
 	PRINCIPAL_EXPLORER_WRITE,
