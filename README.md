@@ -51,6 +51,7 @@ dependencies {
 
 ### 3.19.0-SNAPSHOT
 
+* Require Enonic XP 7.7.2
 * Start using @enonic/js-utils (0.0.1)
 * Fix BUG Default fields title, text index byType does not include ngram!
 * Fix BUG Change of language doesn't cause document update (by including _indexConfig when diffing)
@@ -58,7 +59,6 @@ dependencies {
 * Update calls to indexTemplateToConfig to avoid deprecation warnings
 * BUGFIX Second argument to folder() should be optional
 * Use collection name rather than collection id when scheduling
-* Require Enonic XP 7.7.1 (because of BUGFIX for main.js exception is swallowed)
 * Support stemmed queries
 
 ### 3.18.0
