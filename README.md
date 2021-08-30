@@ -49,7 +49,7 @@ dependencies {
 ## Changelog
 
 
-### 3.19.0-SNAPSHOT
+### 3.19.0
 
 * Require Enonic XP 7.7.2
 * Start using @enonic/js-utils (0.0.1)
