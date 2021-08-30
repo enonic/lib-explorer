@@ -51,6 +51,7 @@ dependencies {
 
 ### 3.19.0-SNAPSHOT
 
+* Fix BUG Default fields title, text index byType does not include ngram!
 * Fix BUG Change of language doesn't cause document update (by including _indexConfig when diffing)
 * Add stemmed query expressions to Default interface
 * Update calls to indexTemplateToConfig to avoid deprecation warnings
