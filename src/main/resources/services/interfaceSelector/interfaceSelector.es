@@ -63,7 +63,7 @@ export function get({
 			boolean: {
 				must: [{
 					hasValue: {
-						field: 'type',
+						field: '_nodeType',
 						values: [NT_INTERFACE]
 					}
 				}]
