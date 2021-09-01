@@ -37,7 +37,7 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
-| 3.(19|20).0 | 7.7.2 |
+| 3.(19|20).x | 7.7.2 |
 | 3.1[7-8].0 | 7.7.0 |
 | 3.16.0 | 7.6.0 |
 | 3.1[0-5].x | 7.5.0 |
@@ -47,6 +47,10 @@ dependencies {
 | 3.0.6 | 7.3.0 |
 
 ## Changelog
+
+### 3.20.1
+
+* Service interfaceSelector needs should filter on _nodeType
 
 ### 3.20.0
 

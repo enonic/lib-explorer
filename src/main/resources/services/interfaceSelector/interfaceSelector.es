@@ -61,7 +61,12 @@ export function get({
 		count,
 		filters: {
 			boolean: {
-				must: [{
+				should: [{
+					hasValue: {
+						field: '_nodeType',
+						values: [NT_INTERFACE]
+					}
+				},{
 					hasValue: {
 						field: 'type',
 						values: [NT_INTERFACE]
