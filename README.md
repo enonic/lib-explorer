@@ -37,7 +37,7 @@ dependencies {
 
 | App version | XP version |
 | ----------- | ---------- |
-| 3.19.0 | 7.7.1 |
+| 3.(19|20).0 | 7.7.2 |
 | 3.1[7-8].0 | 7.7.0 |
 | 3.16.0 | 7.6.0 |
 | 3.1[0-5].x | 7.5.0 |
@@ -48,6 +48,9 @@ dependencies {
 
 ## Changelog
 
+### 3.20.0
+
+* Use http Authorization header: Explorer-Api-Key XXXX
 
 ### 3.19.0
 
