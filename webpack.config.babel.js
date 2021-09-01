@@ -23,8 +23,8 @@ const dict = arr => Object.assign(...arr.map(([k, v]) => ({ [k]: v })));
 const SS_ALIAS = {
 	'@enonic/nashorn-polyfills': path.resolve(__dirname, 'src/main/resources/lib/nashorn/index'),
 	'@enonic/js-utils': BOOL_LOCAL_JS_UTILS
-		? path.resolve(__dirname, '../../comlock/enonic-js-utils/dist/cjs/index')
-		: path.resolve(__dirname, './node_modules/@enonic/js-utils/dist/cjs/index')
+		? path.resolve(__dirname, '../enonic-js-utils/dist/cjs/index.js')
+		: path.resolve(__dirname, './node_modules/@enonic/js-utils/dist/cjs/index.js')
 };
 
 const SS_EXTERNALS = [
