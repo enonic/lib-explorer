@@ -81,6 +81,7 @@ dependencies {
 * MAYBE: Remove displayName from stopwords?
 * MAYBE: Remove displayName from thesaurus?
 
+* Move DEFAULT_INTERFACE_NAME and DEFAULT_INTERFACE to app-explorer
 * Field named type is no longer a system field
 * Remove displayName and languages and add language to thesaurus model and query
 * lib/explorer/api moved to app-explorer
