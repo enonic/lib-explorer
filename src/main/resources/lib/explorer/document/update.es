@@ -9,7 +9,6 @@ import deepEqual from 'fast-deep-equal';
 
 //import HumanDiff from 'human-object-diff';
 //const Diff = require('diff');
-
 import {getFieldsWithIndexConfigAndValueType} from '/lib/explorer/document/create';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
 import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/checkAndApplyTypes';
@@ -17,6 +16,7 @@ import {
 	FIELD_MODIFIED_TIME_INDEX_CONFIG,
 	NT_DOCUMENT
 } from '/lib/explorer/model/2/constants';
+import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
 
 import {instant} from '/lib/xp/value.js';
 /*const { diff: diffDocument } = new HumanDiff({
@@ -180,11 +180,36 @@ export function update({
 	// _name, _path, _childOrder, _inheritsPermissions, _nodeType, _permissions, _state, _versionKey, _ts
 	// document_metadata
 	// TODO Perhaps allow _indexConfig?
+
+	/*──────────────────────────────────────────────────────────────────────────
+	 Test if _indexconfig is added? SUCCESS :)
+	 Test unwanted properties in document_metadata? SUCCESS :) They are not added.
+	{
+      _id: "...",
+      document_metadata: {
+        createdTime: "2021-01-01T01:01:01.001Z", // should keep current value
+        modifiedTime: "2021-01-01T01:01:01.001Z", // should get new value of now
+        language: "en-US",
+        stemmingLanguage: "should be overwritten",
+        valid: true, // should be result of validation, not what is passed in
+        unwanted: "should not exist"
+      }
+	}
+	──────────────────────────────────────────────────────────────────────────*/
+
 	Object.keys(passedInDataExceptId).forEach((k) => {
-		if (!k.startsWith('_') && k !== 'document_metadata') {
-			// Do not add empty arrays
-			if (!(Array.isArray(passedInDataExceptId[k]) && !passedInDataExceptId[k].length)) {
-				dataToBuildIndexConfigFrom[k] = passedInDataExceptId[k];
+		if (k === 'document_metadata') {
+			const l = passedInDataExceptId['document_metadata'].language;
+			if (l) {
+				dataToBuildIndexConfigFrom.document_metadata.language = l;
+				dataToBuildIndexConfigFrom.document_metadata.stemmingLanguage = javaLocaleToSupportedLanguage(l);
+			}
+		} else { // !document_metadata
+			if (!k.startsWith('_')) {
+				// Do not add empty arrays
+				if (!(Array.isArray(passedInDataExceptId[k]) && !passedInDataExceptId[k].length)) {
+					dataToBuildIndexConfigFrom[k] = passedInDataExceptId[k];
+				}
 			}
 		}
 	});

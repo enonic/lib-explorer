@@ -13,6 +13,7 @@ import {
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
+import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
 //import {getUser} from '/lib/xp/auth';
 
 
@@ -97,6 +98,36 @@ export function create({
 		log.error(`document_metadata has to be an Object! Overwriting:${toStr(inputObject.document_metadata)}`);
 		inputObject.document_metadata = {};
 	}
+
+	/*──────────────────────────────────────────────────────────────────────────
+	 Test if _indexconfig is added? SUCCESS :)
+	 Test unwanted properties in document_metadata? SUCCESS :) They are not added.
+	{
+	  document_metadata: {
+		createdTime: "2021-01-01T01:01:01.001Z", // should keep current value
+		modifiedTime: "2021-01-01T01:01:01.001Z", // should not exist
+		language: "en-US",
+		stemmingLanguage: "should be overwritten",
+		valid: true, // should be result of validation, not what is passed in
+		unwanted: "should not exist"
+	  }
+	}
+	──────────────────────────────────────────────────────────────────────────*/
+
+	// Delete any property under document_metadata except language
+	//log.debug(`inputObject.document_metadata:${toStr(inputObject.document_metadata)}`);
+	Object.keys(inputObject.document_metadata).forEach((k) => {
+		if (k !== 'language') {
+			delete inputObject.document_metadata[k];
+		}
+	});
+	//log.debug(`inputObject.document_metadata:${toStr(inputObject.document_metadata)}`);
+
+	// _indexconfig is added automatically :)
+	if (inputObject.document_metadata.language) {
+		inputObject.document_metadata.stemmingLanguage = javaLocaleToSupportedLanguage(inputObject.document_metadata.language);
+	}
+
 	inputObject.document_metadata.valid = true; // Temporary value so validation doesn't fail on this field.
 	inputObject.document_metadata.createdTime = new Date(); // So validation doesn't fail on this field.
 
