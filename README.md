@@ -81,6 +81,7 @@ dependencies {
 * MAYBE: Remove displayName from stopwords?
 * MAYBE: Remove displayName from thesaurus?
 
+* Remove _name, displayName and type, rename highlight -> _highlight, id -> _id and score -> _score and add _nodeType to synonym/query
 * Add document_metadata.language and document_metadata.stemmingLanguage to SYSTEM_FIELDS
 * Add FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG and FIELD_DOCUMENT_METADATA_STEMMING_LANGUAGE_INDEX_CONFIG constants
 * Move DEFAULT_INTERFACE_NAME and DEFAULT_INTERFACE to app-explorer

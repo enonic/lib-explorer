@@ -49,26 +49,33 @@ export function query({
 			return null;
 		}
 		const {
-			_name,
+			//_id,
+			//_name,
+			_nodeType,
 			_path,
-			displayName,
+			//displayName, // TODO We want to remove displayName
 			from,
 			thesaurusReference,
-			to,
-			type
+			to//,
+			//type
 		} = node;
 		return {
+			_highlight: hit.highlight,
+			_id: hit.id,
+			//_name, // Name is random and useless...
+			_nodeType,
 			_path,
-			displayName,
+			_score: hit.score,
+			//displayName, // TODO We want to remove displayName
 			from: forceArray(from),
-			highlight: hit.highlight,
-			id: hit.id,
-			name: _name,
+			//highlight: hit.highlight,
+			//id: hit.id,
+			//name: _name,
 			thesaurus: _path.match(/[^/]+/g)[1],
 			thesaurusReference,
-			score: hit.score,
-			to: forceArray(to),
-			type
+			//score: hit.score,
+			to: forceArray(to)//,
+			//type
 		};
 	}).filter(x => x);
 	//log.info(`queryRes:${toStr(queryRes)}`);
