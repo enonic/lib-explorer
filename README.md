@@ -81,6 +81,8 @@ dependencies {
 * MAYBE: Remove displayName from stopwords?
 * MAYBE: Remove displayName from thesaurus?
 
+* Add document_metadata.language and document_metadata.stemmingLanguage to SYSTEM_FIELDS
+* Add FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG and FIELD_DOCUMENT_METADATA_STEMMING_LANGUAGE_INDEX_CONFIG constants
 * Move DEFAULT_INTERFACE_NAME and DEFAULT_INTERFACE to app-explorer
 * Field named type is no longer a system field
 * Remove displayName and languages and add language to thesaurus model and query

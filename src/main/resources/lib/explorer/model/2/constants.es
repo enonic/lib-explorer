@@ -59,13 +59,34 @@ export const PATH_INTERFACES = '/interfaces';
 
 export const FIELD_MODIFIED_TIME_INDEX_CONFIG = 'minimal';
 
+export const FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG = {
+	decideByType: false, // Assume it's always VALUE_TYPE_STRING
+	enabled: true, // So it can be used in filters
+	fulltext: false,
+	includeInAllText: false,
+	languages: [],
+	nGram: false,
+	path: false
+};
+
+export const FIELD_DOCUMENT_METADATA_STEMMING_LANGUAGE_INDEX_CONFIG = {
+	decideByType: false, // Assume it's always VALUE_TYPE_STRING
+	enabled: true, // So it can be used in filters
+	fulltext: false,
+	includeInAllText: false,
+	languages: [],
+	nGram: false,
+	path: false
+};
+
+// NO_VALUES_FIELDS are included in SYSTEM_FIELDS which are fields that do not exist as nodes in explorer-repo.
 export const NO_VALUES_FIELDS = [{
 	key: '_allText',
 	_name: 'alltext', // sanitize removes _ and makes T small
 	denyDelete: true, // TODO: Only used in Fields.jsx and FieldList.es
 	denyValues: true, // TODO: Only used in Fields.jsx and FieldList.es
 	//displayName: 'All text',
-	inResults: false // TODO: Only used in servics/interfaceList.es
+	inResults: false // TODO: Only used in services/interfaceList.es
 },{
 	_name: 'document-metadata', // sanitize make _ into -
 	denyDelete: true,
@@ -117,6 +138,16 @@ export const NO_VALUES_FIELDS = [{
 	max: 1,
 	min: 1
 },{
+	_name: 'document-metadata.language', // sanitize make _ into -
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_STRING,
+	indexConfig: FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG,
+	inResults: true,
+	key: 'document_metadata.language',
+	max: 1,
+	min: 0
+},{
 	_name: 'document-metadata.modifiedTime', // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
@@ -124,6 +155,16 @@ export const NO_VALUES_FIELDS = [{
 	indexConfig: FIELD_MODIFIED_TIME_INDEX_CONFIG,
 	inResults: false,
 	key: 'document_metadata.modifiedTime',
+	max: 1,
+	min: 0
+},{
+	_name: 'document-metadata.stemmingLanguage', // sanitize make _ into -
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_STRING,
+	indexConfig: FIELD_DOCUMENT_METADATA_STEMMING_LANGUAGE_INDEX_CONFIG,
+	inResults: true,
+	key: 'document_metadata.stemmingLanguage',
 	max: 1,
 	min: 0
 },{
@@ -138,6 +179,7 @@ export const NO_VALUES_FIELDS = [{
 	min: 1
 }];
 
+// READONLY_FIELDS are included in SYSTEM_FIELDS which are fields that do not exist as nodes in explorer-repo.
 export const READONLY_FIELDS = [{
 	key: '_nodeType',
 	_name: 'underscore-nodetype', // sanitize removes _ and makes T small
@@ -150,6 +192,9 @@ export const READONLY_FIELDS = [{
 	min: 1
 }];
 
+// READWRITE_FIELDS are NOT included in SYSTEM_FIELDS
+// READWRITE_FIELDS are created as nodes during the app-explorer/tasks/init
+// READWRITE_FIELDS are included in DEFAULT_FIELDS
 export const READWRITE_FIELDS = [{
 	key: 'title',
 	_name: 'title',
@@ -199,7 +244,11 @@ export const READWRITE_FIELDS = [{
 	min: 1
 }];
 
+// SYSTEM_FIELDS are fields that do not exist as nodes in explorer-repo.
+// Used in lib-explorer/field/getFields
+// Also used in app-explorer/tasks/init (they used to exist as nodes, now removed during init)
 export const SYSTEM_FIELDS = NO_VALUES_FIELDS.concat(READONLY_FIELDS);
+
 export const DEFAULT_FIELDS = NO_VALUES_FIELDS.concat(READONLY_FIELDS, READWRITE_FIELDS);
 
 //──────────────────────────────────────────────────────────────────────────────
