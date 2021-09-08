@@ -117,11 +117,11 @@ dependencies {
 * Move should _nodeType filter to must in all queries
 * Remove should type filter from all queries
 * Build system upgrades:
-  * Gradle 6.4
-  * Node 14.17.3
-  * Babel modules 7.14.7
-  * Core-js 3.15.2
-  * Webpack 5.45.1
+  * Gradle 6.9
+  * Node 14.17.6
+  * Babel modules 7.15.5
+  * Core-js 3.17.2
+  * Webpack 5.52.0
 
 ### 3.19.0-SNAPSHOT
 
