@@ -12,8 +12,8 @@ import webpack from 'webpack';
 //const MODE = 'development';
 const MODE = 'production';
 
-//const BOOL_LOCAL_JS_UTILS = MODE !== 'production';
-const BOOL_LOCAL_JS_UTILS = true;
+const BOOL_LOCAL_JS_UTILS = MODE !== 'production';
+//const BOOL_LOCAL_JS_UTILS = true;
 
 const SRC_DIR = 'src/main/resources';
 const DST_DIR = 'build/resources/main';
