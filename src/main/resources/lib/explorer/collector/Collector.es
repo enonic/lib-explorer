@@ -17,7 +17,7 @@ import {progress} from '/lib/explorer/task/progress';
 import {get as getTask} from '/lib/explorer/task/get';
 import {hash} from '/lib/explorer/string/hash';
 import {modify as modifyTask} from '/lib/explorer/task/modify';
-import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
+//import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
 //import {Document} from '/lib/explorer/model/2/nodeTypes/document';
 
 //import {getTotalCount} from '/lib/explorer/collection/getTotalCount';
@@ -42,7 +42,8 @@ export class Collector {
 		if (!configJson) { throw new Error('Missing required parameter configJson!'); }
 
 		if (language) {
-			this.#language = javaLocaleToSupportedLanguage(language);
+			//this.#language = javaLocaleToSupportedLanguage(language);
+			this.#language = language; // Reducing to stemmingLanguage happens inside create and update
 		}
 
 		/*const explorerRepoReadConnection = connect({
@@ -114,6 +115,9 @@ export class Collector {
 
 	persistDocument({
 		_parentPath = '/',
+		document_metadata: {
+			...document_metadata_props
+		} = {},
 		uri,
 		_name = hash(uri),
 		...rest // Slurps properties
@@ -121,6 +125,10 @@ export class Collector {
 		boolRequireValid,
 		...ignoredOptions
 	} = {}) {
+		//log.debug(`document_metadata_props:${toStr(document_metadata_props)}`);
+		//log.debug(`rest:${toStr(rest)}`);
+		//log.debug(`ignoredOptions:${toStr(ignoredOptions)}`);
+
 		Object.keys(rest).forEach((k) => {
 			if (k.startsWith('__')) {
 				log.warning(`Deprecation: Function signature changed. Added second argument for options.
@@ -144,15 +152,6 @@ export class Collector {
 		if (Object.keys(ignoredOptions).length) {
 			log.warning(`collector.persistDocument: Ignored options:${toStr(ignoredOptions)}`);
 		}
-		/*log.debug(`persistDocument(${toStr({
-			_parentPath,
-			uri,
-			_name,
-			...rest
-		}, {
-			boolRequireValid,
-			...ignoredOptions
-		})})`);*/
 
 		// Even when boolRequireValid is false, we still require uri for Collectors,
 		// or they can't find _id from _name when updating
@@ -168,6 +167,7 @@ export class Collector {
 			_nodeType: NT_DOCUMENT,
 			_parentPath,
 			document_metadata: {
+				...document_metadata_props, // might contain language
 				collector: {
 					//appName: app.name,
 					id: this.collectorId, // This contains both appName and taskName

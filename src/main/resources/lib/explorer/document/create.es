@@ -104,6 +104,10 @@ export function create({
 	 Test unwanted properties in document_metadata? SUCCESS :) They are not added.
 	{
 	  document_metadata: {
+	    collector: {
+		  id: 'collectorId',
+		  version: '1.2.3'
+	    },
 		createdTime: "2021-01-01T01:01:01.001Z", // should keep current value
 		modifiedTime: "2021-01-01T01:01:01.001Z", // should not exist
 		language: "en-US",
@@ -114,17 +118,30 @@ export function create({
 	}
 	──────────────────────────────────────────────────────────────────────────*/
 
-	// Delete any property under document_metadata except language
+	// Delete any property under document_metadata except collector and language
 	//log.debug(`inputObject.document_metadata:${toStr(inputObject.document_metadata)}`);
 	Object.keys(inputObject.document_metadata).forEach((k) => {
-		if (k !== 'language') {
+		if (!['collector', 'language'].includes(k)) {
 			delete inputObject.document_metadata[k];
 		}
 	});
 	//log.debug(`inputObject.document_metadata:${toStr(inputObject.document_metadata)}`);
 
+	// NOTE: There are now two ways of passing in the language :(
+	//   1. As a option parameter
+	//   2. Via document_metadata.language
+	// We only want to support a single language per node (and reduce that to a single supported stemmingLanguage)
+	// It's possible to select a single language per collection, however some collections use different languages per node.
+	// Currently the option parameter comes from the collectionLanguage,
+	// while the document_metadata is node specific and should override the option one.
+
+	if (!inputObject.document_metadata.language && language) {
+		inputObject.document_metadata.language = language;
+	}
+
 	// _indexconfig is added automatically :)
 	if (inputObject.document_metadata.language) {
+		// TODO We might want to cache language->stemmingLanguage somewhere
 		inputObject.document_metadata.stemmingLanguage = javaLocaleToSupportedLanguage(inputObject.document_metadata.language);
 	}
 
@@ -149,8 +166,8 @@ export function create({
 	const fields = getFieldsWithIndexConfigAndValueType();
 
 	const languages = [];
-	if (language) {
-		languages.push(language);
+	if (inputObject.document_metadata.stemmingLanguage) {
+		languages.push(inputObject.document_metadata.stemmingLanguage);
 	}
 	const indexConfig = {
 		default: indexTemplateToConfig({
@@ -191,7 +208,7 @@ export function create({
 			fields,
 			indexConfig, // modified within function
 			inputObject: objToPersist, // only read from within function
-			language
+			language: inputObject.document_metadata.stemmingLanguage
 		});
 	} catch (e) {
 		if (boolRequireValid) {

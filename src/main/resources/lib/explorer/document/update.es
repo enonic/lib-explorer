@@ -52,7 +52,7 @@ export function update({
 	boolPartial,
 	boolRequireValid,
 	connection,
-	language,
+	language: languageParam,
 	...ignoredOptions
 } = {}) {
 	Object.keys(passedInDataExceptId).forEach((k) => {
@@ -78,7 +78,6 @@ export function update({
 			delete passedInDataExceptId[k];
 		} // startsWith __
 	});
-
 	if (isNotSet(boolPartial)) {
 		boolPartial = false;
 	}
@@ -95,6 +94,10 @@ export function update({
 		throw new Error('Missing required parameter _id!');
 	}
 	//log.debug(`_id:${toStr(_id)}`);
+
+	if (!passedInDataExceptId.document_metadata) {
+		passedInDataExceptId.document_metadata = {};
+	}
 
 	//──────────────────────────────────────────────────────────────────────────
 	// 1. Fetch exisiting document
@@ -158,8 +161,14 @@ export function update({
 	// If full update:
 	// * delete old data
 	// * keep system fields (_id, _name, _path, _childOrder, _inheritsPermissions, _permissions, _state, _nodeType, _versionKey, _ts) (except _indexConfig)
-	// * keep document_metadata (except modifiedTime)
+	// * keep document_metadata? (only createdTime) (not collector, modifiedTime, language, stemmingLanguage and valid)
 	if (!boolPartial) {
+		delete dataToBuildIndexConfigFrom._indexConfig;
+		dataToBuildIndexConfigFrom.document_metadata = dataToBuildIndexConfigFrom.document_metadata.createdTime
+			? {
+				createdTime: dataToBuildIndexConfigFrom.document_metadata.createdTime
+			}
+			: {};
 		Object.keys(dataToBuildIndexConfigFrom).forEach((k) => {
 			//log.debug(`k:${k}`);
 			if (!k.startsWith('_') && k !== 'document_metadata') {
@@ -187,6 +196,10 @@ export function update({
 	{
       _id: "...",
       document_metadata: {
+	    collector: { // Yeah, it should be possible to change the collector on a collection with existing data...
+  		  id: 'collectorId',
+		  version: '1.2.3'
+	    },
         createdTime: "2021-01-01T01:01:01.001Z", // should keep current value
         modifiedTime: "2021-01-01T01:01:01.001Z", // should get new value of now
         language: "en-US",
@@ -197,13 +210,24 @@ export function update({
 	}
 	──────────────────────────────────────────────────────────────────────────*/
 
+	// NOTE Oh, man. We have tree places language can come from:
+	//   1. The existing node (dataToBuildIndexConfigFrom.document_metadata.language)
+	//   2. The collection language (languageParam)
+	//   3. Node specific language (document_metadata.language)
+	// 1 should only be kept if partial update and 2 and 3 is not passed in.
+	// 3 wins(if passed in), fallback to 2(if passed in), fallback to 1.
+
+	const language = passedInDataExceptId.document_metadata.language
+		|| languageParam
+		|| dataToBuildIndexConfigFrom.document_metadata.language; // Full update may have delete this
+
+	// NOTE What if no document_metadata is passed in?
+	// We still have to set language?
 	Object.keys(passedInDataExceptId).forEach((k) => {
 		if (k === 'document_metadata') {
-			const l = passedInDataExceptId['document_metadata'].language;
-			if (l) {
-				dataToBuildIndexConfigFrom.document_metadata.language = l;
-				dataToBuildIndexConfigFrom.document_metadata.stemmingLanguage = javaLocaleToSupportedLanguage(l);
-			}
+			// This will always remove collector unless passed in, but that's ok because collector is always passed in by Collector.persistDocument
+			// And it makes it possible to switch between using collector or document REST api for a collection.
+			dataToBuildIndexConfigFrom.document_metadata.collector = passedInDataExceptId['document_metadata'].collector;
 		} else { // !document_metadata
 			if (!k.startsWith('_')) {
 				// Do not add empty arrays
@@ -213,6 +237,12 @@ export function update({
 			}
 		}
 	});
+	if (language) {
+		dataToBuildIndexConfigFrom.document_metadata.language = language;
+		// TODO We might want to cache language->stemmingLanguage somewhere
+		dataToBuildIndexConfigFrom.document_metadata.stemmingLanguage = javaLocaleToSupportedLanguage(language);
+	}
+
 	// Handle potentially corrupt data
 	dataToBuildIndexConfigFrom._inheritsPermissions = true;
 	dataToBuildIndexConfigFrom._nodeType = NT_DOCUMENT; // Enforce type
@@ -238,9 +268,10 @@ export function update({
 	dataToBuildIndexConfigFrom.document_metadata.valid = boolValid; // Validity before checking occurrences.
 
 	const languages = [];
-	if (language) {
-		languages.push(language);
+	if (dataToBuildIndexConfigFrom.document_metadata.stemmingLanguage) {
+		languages.push(dataToBuildIndexConfigFrom.document_metadata.stemmingLanguage);
 	}
+	//log.debug(`update languages:${toStr(languages)}`);
 
 	// 2nd "pass":
 	// * Check if all required fields have values.
@@ -269,7 +300,7 @@ export function update({
 			fields,
 			indexConfig, // modified within function
 			inputObject: dataToBuildIndexConfigFrom, // only read from within function
-			language
+			language: dataToBuildIndexConfigFrom.document_metadata.stemmingLanguage // may be undefined, especially for full updates
 		});
 	} catch (e) {
 		if (boolRequireValid) {

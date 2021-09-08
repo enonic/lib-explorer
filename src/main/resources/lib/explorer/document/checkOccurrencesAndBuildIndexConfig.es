@@ -22,6 +22,7 @@ export function checkOccurrencesAndBuildIndexConfig({
 	//log.debug(`checkOccurrencesAndBuildIndexConfig fields:${toStr(fields)}`);
 	//log.debug(`checkOccurrencesAndBuildIndexConfig indexConfig:${toStr(indexConfig)}`);
 	//log.debug(`checkOccurrencesAndBuildIndexConfig inputObject:${toStr(inputObject)}`);
+	//log.debug(`checkOccurrencesAndBuildIndexConfig language:${toStr(language)}`);
 	const validationErrors = [];
 	Object.keys(fields).forEach((path) => {
 		const fieldValue = getIn(inputObject, path);
@@ -85,6 +86,7 @@ export function checkOccurrencesAndBuildIndexConfig({
 			].includes(valueType)) {
 				languages.push(language);
 			}
+			//log.debug(`checkOccurrencesAndBuildIndexConfig languages:${toStr(languages)}`);
 			const item = {
 				path,
 				config: indexTemplateToConfig({
