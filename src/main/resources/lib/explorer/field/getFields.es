@@ -31,7 +31,16 @@ export function getFields({
 	};
 	const queryRes = connection.query(queryParams);
 	//log.info(`queryRes:${toStr(queryRes)}`);
-	queryRes.hits = queryRes.hits.map(hit => connection.get(hit.id));
+	queryRes.hits = queryRes.hits.map(hit => {
+		const {
+			fieldType,
+			...allPropertiesExceptFieldType
+		} = connection.get(hit.id);
+		return {
+			valueType: fieldType, // TODO transition to valueType everywhere and remove fieldType
+			...allPropertiesExceptFieldType
+		};
+	});
 
 	if (!includeSystemFields) return queryRes;
 
@@ -43,6 +52,7 @@ export function getFields({
 	queryRes.total += maybeFilteredSystemFields.length;
 	maybeFilteredSystemFields.forEach((field) => {
 		field.isSystemField = true;
+		field.valueType = field.fieldType; // TODO transition to valueType everywhere and remove fieldType
 		queryRes.hits.push(field);
 	});
 

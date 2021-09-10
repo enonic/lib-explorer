@@ -86,7 +86,8 @@ export const NO_VALUES_FIELDS = [{
 	denyDelete: true, // TODO: Only used in Fields.jsx and FieldList.es
 	denyValues: true, // TODO: Only used in Fields.jsx and FieldList.es
 	//displayName: 'All text',
-	inResults: false // TODO: Only used in services/interfaceList.es
+	fieldType: VALUE_TYPE_STRING,
+	inResults: false // Used in interface/GraphQL and services/interfaceList.es
 },{
 	_name: 'document-metadata', // sanitize make _ into -
 	denyDelete: true,
