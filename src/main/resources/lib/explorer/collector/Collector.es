@@ -26,6 +26,9 @@ import {Collection} from '/lib/explorer/collector/Collection';
 import {Journal} from '/lib/explorer/collector/Journal';
 
 
+const DEBUG = false;
+const TRACE = false;
+
 const {currentTimeMillis} = Java.type('java.lang.System');
 
 
@@ -76,6 +79,7 @@ export class Collector {
 
 
 	progress() {
+		TRACE && log.debug(`Collector.progress this.taskProgressObj:${toStr(this.taskProgressObj)}`);
 		progress(this.taskProgressObj);
 	}
 
@@ -91,6 +95,7 @@ export class Collector {
 				startTime: this.startTime
 			}
 		};
+		DEBUG && log.debug(`Collector.start this.taskProgressObj:${toStr(this.taskProgressObj)}`);
 		this.progress();
 		this.collection = new Collection({name: this.name});
 		modifyTask({
@@ -253,6 +258,7 @@ export class Collector {
 				}
 			}
 
+			DEBUG && log.debug(`Collector.stop this.taskProgressObj:${toStr(this.taskProgressObj)}`);
 			throw new Error(JSON.stringify(this.taskProgressObj.info)); // Throw so task state becomes FAILED.
 			//throw new Error(this.taskProgressObj.info.message); // Throw so task state becomes FAILED.
 		}
