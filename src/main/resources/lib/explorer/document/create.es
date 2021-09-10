@@ -89,7 +89,7 @@ export function create({
 		log.warning(`document.create: Ignored options:${toStr(ignoredOptions)}`);
 	}
 
-	const inputObject = JSON.parse(JSON.stringify(rest));
+	const inputObject = JSON.parse(JSON.stringify(rest)); // ERROR JSON.stringify got a cyclic data structure
 	//delete inputObject._indexConfig;
 
 	if (isNotSet(inputObject.document_metadata)) {
