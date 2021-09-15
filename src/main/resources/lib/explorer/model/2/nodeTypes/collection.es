@@ -13,7 +13,7 @@ export function collection({
 	/* eslint-enable no-unused-vars */
 	_parentPath = '/collections',
 	collector,
-	schemaId,
+	documentTypeId,
 	...rest
 }) {
 	const obj = {
@@ -23,8 +23,8 @@ export function collection({
 		_parentPath,
 		collector
 	};
-	if (schemaId) {
-		obj.schemaId = reference(schemaId);
+	if (documentTypeId) {
+		obj.documentTypeId = reference(documentTypeId);
 	}
 	return node(obj);
 } // field
