@@ -58,6 +58,12 @@ export function query({
 		queryRes.pageEnd = Math.min(start + intPerPage, queryRes.total);
 		queryRes.pagesTotal = Math.ceil(queryRes.total / intPerPage);
 	}
-	queryRes.hits = queryRes.hits.map(hit => connection.get(hit.id));
+	queryRes.hits = queryRes.hits.map(({
+		id,
+		score
+	}) => ({
+		...connection.get(id),
+		_score: score
+	}));
 	return queryRes;
 }
