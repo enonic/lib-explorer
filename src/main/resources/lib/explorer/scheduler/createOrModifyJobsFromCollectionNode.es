@@ -41,6 +41,7 @@ export function createOrModifyJobsFromCollectionNode({
 	timeZone = 'GMT+02:00' // CEST (Summer Time)
 	//timeZone = 'GMT+01:00' // CET
 }) {
+	//log.debug(`createOrModifyJobsFromCollectionNode collectionNode:${toStr(collectionNode)}`);
 	const {
 		//_id: collectionNodeId,
 		_name: collectionNodeName,
@@ -56,7 +57,7 @@ export function createOrModifyJobsFromCollectionNode({
 	const jobPrefix = `${collectorId.replace(':', DOT_SIGN)}${DOT_SIGN}${collectionNodeName}${DOT_SIGN}`;
 
 	const existingJobs = listExplorerJobsThatStartWithName({name: jobPrefix});
-	//log.info(`collection name:${collectionNodeName} existingJobs:${toStr(existingJobs)}`);
+	//log.debug(`createOrModifyJobsFromCollectionNode collection name:${collectionNodeName} existingJobs:${toStr(existingJobs)}`);
 
 	if (!collectorId) {
 		log.error(`Collection with name:${collectionNodeName} is missing a collector!`);
