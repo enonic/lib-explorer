@@ -1,4 +1,7 @@
-//import {toStr} from '@enonic/js-utils';
+import {
+	VALUE_TYPE_STRING//,
+	//toStr
+} from '@enonic/js-utils';
 
 import {
 	NT_FIELD,
@@ -33,10 +36,11 @@ export function getFields({
 	//log.info(`queryRes:${toStr(queryRes)}`);
 	queryRes.hits = queryRes.hits.map(hit => {
 		const {
-			fieldType,
+			fieldType = VALUE_TYPE_STRING,
 			...allPropertiesExceptFieldType
 		} = connection.get(hit.id);
 		return {
+			fieldType,
 			valueType: fieldType, // TODO transition to valueType everywhere and remove fieldType
 			...allPropertiesExceptFieldType
 		};
