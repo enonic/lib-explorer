@@ -2,12 +2,14 @@ import {
 	addQueryFilter,
 	enonify,
 	forceArray,
+	isSet,
 	toStr
 } from '@enonic/js-utils';
 //import {detailedDiff} from 'deep-object-diff';
 import deepEqual from 'fast-deep-equal';
 import HumanDiff from 'human-object-diff';
 
+//import {getCachedDocumentType} from '/lib/explorer/documentType/documentTypesCache';
 import {
 	NT_COLLECTION,
 	PRINCIPAL_EXPLORER_WRITE
@@ -15,7 +17,6 @@ import {
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {connect} from '/lib/explorer/repo/connect';
 import {reference} from '/lib/xp/value';
-
 import {reindexCollections} from '../collection/reindexCollections';
 import {coerseDocumentType} from './coerseDocumentType';
 
@@ -31,6 +32,7 @@ export function updateDocumentType({
 	_id: documentTypeId,
 	_name: newDocumentTypeName,
 	_versionKey,
+	addFields = true,
 	fields = [],
 	properties = []
 }) {
@@ -71,11 +73,14 @@ export function updateDocumentType({
 	}
 
 	const oldNodePropertiesForDiff = {
+		addFields: isSet(oldNode.addFields) ? oldNode.addFields : true,
 		fields: oldNode.fields,
 		properties: oldNode.properties
 	};
 
 	const nodePropertiesToUpdate = {
+		addFields,
+
 		fields, // NOTE applying valueType happens after diffing
 
 		// No point in forceArray, since Enonic will "destroy" on store,
@@ -117,6 +122,10 @@ export function updateDocumentType({
 			}
 		});
 		writeConnection.refresh();
+		/*getCachedDocumentType({ WARNING Cache remove is not cluster "safe"
+			_id: documentTypeId,
+			refresh: true
+		});*/
 
 		const collectionsUsingDocumentTypeQueryParams = {
 			count: -1,

@@ -4,7 +4,7 @@ import {
 } from '@enonic/js-utils';
 import {PRINCIPAL_EXPLORER_WRITE} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
-import {getCachedDocumentType} from '/lib/explorer/documentType/documentTypesCache';
+//import {getCachedDocumentType} from '/lib/explorer/documentType/documentTypesCache';
 
 
 export function addPropertiesToDocumentType({
@@ -39,9 +39,9 @@ export function addPropertiesToDocumentType({
 		}
 	});
 	//log.debug(`addPropertiesToDocumentType modifiedDocumentTypeNode:${toStr(modifiedDocumentTypeNode)}`);
-	getCachedDocumentType({
+	/*getCachedDocumentType({ WARNING Cache remove is not cluster "safe"
 		_id: modifiedDocumentTypeNode._id,
 		refresh: true
-	});
+	});*/
 	return modifiedDocumentTypeNode;
 }

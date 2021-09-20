@@ -20,6 +20,7 @@ import {coerseDocumentType} from './coerseDocumentType';
 
 export function createDocumentType({
 	_name,
+	addFields = true,
 	fields = [],
 	properties = []
 }) {
@@ -39,6 +40,7 @@ export function createDocumentType({
 		_name,
 		_nodeType: NT_DOCUMENT_TYPE,
 		_parentPath,
+		addFields,
 
 		// No point in forceArray, since Enonic will "destroy" on store,
 		// but we're using forceArray so map don't throw...
