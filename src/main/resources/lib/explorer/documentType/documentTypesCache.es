@@ -1,6 +1,10 @@
+/*
+
+WARNING Cache remove is not cluster "safe"...
+
 import {
-	forceArray//,
-	//toStr
+	forceArray,
+	toStr
 } from '@enonic/js-utils';
 
 import {newCache} from '/lib/cache';
@@ -26,7 +30,7 @@ export function getCachedDocumentType({
 	_id,
 	refresh = false
 }) {
-	//log.debug(`getCachedDocumentType _id:${toStr(_id)} refresh:${toStr(refresh)}`);
+	log.debug(`getCachedDocumentType _id:${toStr(_id)} refresh:${toStr(refresh)}`);
 	if (refresh) {
 		documentTypesByIdCache.remove(_id);
 	}
@@ -76,3 +80,4 @@ export function getCachedDocumentTypeFromCollectionName({
 	//log.debug(`getCachedDocumentTypeFromCollectionName documentTypeNode mapped:${toStr(documentTypeNode)}`);
 	return documentTypeNode;
 }
+*/

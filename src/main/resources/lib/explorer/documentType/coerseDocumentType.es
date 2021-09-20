@@ -13,6 +13,7 @@ export function coerseDocumentType({
 	_name,
 	_path,
 	_versionKey,
+	addFields = true,
 	fields,
 	properties
 }) {
@@ -21,6 +22,7 @@ export function coerseDocumentType({
 		_name,
 		_path,
 		_versionKey,
+		addFields,
 		fields: forceArray(fields), // GraphQL Schema doesn't ensure array
 		properties: forceArray(properties) // GraphQL Schema doesn't ensure array
 	};

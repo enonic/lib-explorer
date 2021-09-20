@@ -7,7 +7,7 @@ import {
 
 import {checkAndApplyTypes} from '/lib/explorer/document/checkAndApplyTypes';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
-import {getCachedDocumentTypeFromCollectionName} from '/lib/explorer/documentType/documentTypesCache';
+import {getDocumentTypeFromCollectionName} from '/lib/explorer/documentType/getDocumentTypeFromCollectionName';
 import {getFields} from '/lib/explorer/field/getFields';
 import {getPaths} from '/lib/explorer/object/getPaths';
 import {addPropertiesToDocumentType} from '/lib/explorer/documentType/addPropertiesToDocumentType';
@@ -232,36 +232,43 @@ export function create({
 	const createdNode = connection.create(objToPersist);
 	//log.debug(`createdNode:${toStr(createdNode)}`);
 
-	const documentType = getCachedDocumentTypeFromCollectionName({collectionName, refresh: false});
+	const documentType = getDocumentTypeFromCollectionName({collectionName});
 	//log.debug(`document.create documentType:${toStr(documentType)}`);
-	const fieldPaths = {};
-	documentType.fields.forEach(({key}) => {
-		fieldPaths[key] = true;
-	});
-	documentType.properties.forEach(({name}) => {
-		fieldPaths[name] = true;
-	});
-	//log.debug(`document.create fieldPaths:${toStr(fieldPaths)}`);
 
-	const paths = getPaths(createdNode)
-		.filter(arr => arr.length
-			&& !arr[0].startsWith('_')
-			&& arr[0] !== 'document_metadata'
-		)
-		.map(arr => arr.join('.'));
-	//log.debug(`paths:${toStr(paths)}`);
-	const propertiesToAdd = [];
-	paths.forEach((p) => {
-		if (!fieldPaths[p]) {
-			propertiesToAdd.push(p);
-		}
-	});
-	//log.debug(`propertiesToAdd:${toStr(propertiesToAdd)}`);
-	if (propertiesToAdd.length) {
-		addPropertiesToDocumentType({
-			documentTypeId: documentType._id,
-			properties: propertiesToAdd
+	const {addFields = true} = documentType;
+	//log.debug(`document.create addFields:${toStr(addFields)}`);
+
+	if (addFields) {
+		const fieldPaths = {};
+		documentType.fields.forEach(({key}) => {
+			fieldPaths[key] = true;
 		});
-	}
+		documentType.properties.forEach(({name}) => {
+			fieldPaths[name] = true;
+		});
+		//log.debug(`document.create fieldPaths:${toStr(fieldPaths)}`);
+
+		const paths = getPaths(createdNode)
+			.filter(arr => arr.length
+				&& !arr[0].startsWith('_')
+				&& arr[0] !== 'document_metadata'
+			)
+			.map(arr => arr.join('.'));
+		//log.debug(`paths:${toStr(paths)}`);
+		const propertiesToAdd = [];
+		paths.forEach((p) => {
+			if (!fieldPaths[p]) {
+				propertiesToAdd.push(p);
+			}
+		});
+		//log.debug(`propertiesToAdd:${toStr(propertiesToAdd)}`);
+		if (propertiesToAdd.length) {
+			addPropertiesToDocumentType({
+				documentTypeId: documentType._id,
+				properties: propertiesToAdd
+			});
+		}
+	} // if (addFields)
+
 	return createdNode;
 }

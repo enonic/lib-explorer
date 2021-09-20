@@ -1,3 +1,7 @@
+/*
+
+WARNING Cache remove is not cluster "safe"...
+
 //import {toStr} from '@enonic/js-utils';
 
 import {newCache} from '/lib/cache';
@@ -30,3 +34,4 @@ export function getCachedField({
 		return fieldNode;
 	})));
 }
+*/
