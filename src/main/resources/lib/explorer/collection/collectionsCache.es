@@ -7,7 +7,7 @@ import {get} from '/lib/explorer/collection/get';
 
 
 const collectionsByIdCache = newCache({
-	size: 10, // Maximum number of items in the cache before it will evict the oldest.
+	size: 30, // Maximum number of items in the cache before it will evict the oldest.
 	expire: 60 * 60 // Number of seconds the items will be in the cache before it’s evicted.
 });
 
@@ -28,25 +28,27 @@ export function getCachedCollection({
 		if (refresh) {
 			collectionsByIdCache.remove(_id);
 		}
-		return collectionsByIdCache.get(_id, () => {
+		return JSON.parse(JSON.stringify(collectionsByIdCache.get(_id, () => {
+			// NOTE This code doesn't run when in cache...
 			const readConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
 			const collectionNode = get({
 				connection: readConnection,
 				key: _id
 			});
 			return collectionNode;
-		});
+		})));
 	}
 
 	if (refresh) {
 		collectionsByNameCache.remove(_name);
 	}
-	return collectionsByNameCache.get(_name, () => {
+	return JSON.parse(JSON.stringify(collectionsByNameCache.get(_name, () => {
+		// NOTE This code doesn't run when in cache...
 		const readConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
 		const collectionNode = get({
 			connection: readConnection,
 			name: _name
 		});
 		return collectionNode;
-	});
+	})));
 }

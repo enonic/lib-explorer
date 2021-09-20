@@ -7,7 +7,7 @@ import {connect} from '/lib/explorer/repo/connect';
 
 
 const fieldsByIdCache = newCache({
-	size: 10, // Maximum number of items in the cache before it will evict the oldest.
+	size: 100, // Maximum number of items in the cache before it will evict the oldest.
 	expire: 60 * 60 // Number of seconds the items will be in the cache before it’s evicted.
 });
 
@@ -20,7 +20,7 @@ export function getCachedField({
 	if (refresh) {
 		fieldsByIdCache.remove(_id);
 	}
-	return fieldsByIdCache.get(_id, () => {
+	return JSON.parse(JSON.stringify(fieldsByIdCache.get(_id, () => {
 		const readConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
 		const fieldNode = getField({
 			connection: readConnection,
@@ -28,5 +28,5 @@ export function getCachedField({
 		});
 		//log.debug(`getCachedField fieldNode:${toStr(fieldNode)}`);
 		return fieldNode;
-	});
+	})));
 }
