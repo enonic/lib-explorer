@@ -22,6 +22,7 @@ export function createOrUpdate({
 }, {
 	boolPartial,
 	boolRequireValid,
+	collectionName,
 	connection,
 	language,
 	...ignoredOptions
@@ -64,10 +65,10 @@ export function createOrUpdate({
 
 	let rv;
 	try {
-		rv = create(rest, {boolRequireValid, connection, language});
+		rv = create(rest, {boolRequireValid, collectionName, connection, language});
 	} catch (catchedError) {
 		if (catchedError.class && CATCH_CLASS_NAMES.includes(catchedError.class.name)) {
-			rv = update(rest, {boolPartial, boolRequireValid, connection, language});
+			rv = update(rest, {boolPartial, boolRequireValid, collectionName, connection, language});
 		} else {
 			if (catchedError.class) {
 				log.error(toStr({catchedErrorClassName: catchedError.class.name}), catchedError);

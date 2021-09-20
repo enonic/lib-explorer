@@ -7,7 +7,11 @@ import {
 
 import {checkAndApplyTypes} from '/lib/explorer/document/checkAndApplyTypes';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
+import {getCachedDocumentTypeFromCollectionName} from '/lib/explorer/documentType/documentTypesCache';
 import {getFields} from '/lib/explorer/field/getFields';
+import {getPaths} from '/lib/explorer/object/getPaths';
+import {addPropertiesToDocumentType} from '/lib/explorer/documentType/addPropertiesToDocumentType';
+
 import {
 	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ
@@ -47,7 +51,7 @@ export function getFieldsWithIndexConfigAndValueType() {
 			};
 		}
 	});
-	//log.info(`fields:${toStr(fields)}`);
+	//log.debug(`fields:${toStr(fields)}`);
 	return fields;
 }
 
@@ -57,6 +61,7 @@ export function create({
 	...rest // NOTE can have nested properties, both Array and/or Object
 }, {
 	boolRequireValid,
+	collectionName,
 	connection,
 	language,
 	...ignoredOptions
@@ -218,14 +223,45 @@ export function create({
 			//log.warning(e.message); // Already logged within function
 		}
 	}
-	//log.info(`indexConfig:${toStr(indexConfig)}`);
+	//log.debug(`indexConfig:${toStr(indexConfig)}`);
 
 	objToPersist._indexConfig = indexConfig;
 	objToPersist.document_metadata.valid = boolValid;
 
 	//log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
 	const createdNode = connection.create(objToPersist);
-	//log.info(`createdNode:${toStr(createdNode)}`);
+	//log.debug(`createdNode:${toStr(createdNode)}`);
 
+	const documentType = getCachedDocumentTypeFromCollectionName({collectionName, refresh: false});
+	//log.debug(`document.create documentType:${toStr(documentType)}`);
+	const fieldPaths = {};
+	documentType.fields.forEach(({key}) => {
+		fieldPaths[key] = true;
+	});
+	documentType.properties.forEach(({name}) => {
+		fieldPaths[name] = true;
+	});
+	//log.debug(`document.create fieldPaths:${toStr(fieldPaths)}`);
+
+	const paths = getPaths(createdNode)
+		.filter(arr => arr.length
+			&& !arr[0].startsWith('_')
+			&& arr[0] !== 'document_metadata'
+		)
+		.map(arr => arr.join('.'));
+	//log.debug(`paths:${toStr(paths)}`);
+	const propertiesToAdd = [];
+	paths.forEach((p) => {
+		if (!fieldPaths[p]) {
+			propertiesToAdd.push(p);
+		}
+	});
+	//log.debug(`propertiesToAdd:${toStr(propertiesToAdd)}`);
+	if (propertiesToAdd.length) {
+		addPropertiesToDocumentType({
+			documentTypeId: documentType._id,
+			properties: propertiesToAdd
+		});
+	}
 	return createdNode;
 }
