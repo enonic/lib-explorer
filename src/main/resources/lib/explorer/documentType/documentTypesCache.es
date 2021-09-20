@@ -15,6 +15,13 @@ const documentTypesByIdCache = newCache({
 });
 
 
+export function removeDocumentTypeFromCache({
+	_id
+}) {
+	return documentTypesByIdCache.remove(_id);
+}
+
+
 export function getCachedDocumentType({
 	_id,
 	refresh = false
