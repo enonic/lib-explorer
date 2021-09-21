@@ -4,6 +4,7 @@ import {
 } from '@enonic/js-utils';
 
 import {
+	DOCUMENT_METADATA,
 	NT_DOCUMENT
 } from '/lib/explorer/model/2/constants';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
@@ -56,7 +57,7 @@ export function Document({
 					languages: []
 				})
 			},{
-				path: 'document_metadata',
+				path: DOCUMENT_METADATA,
 				config: indexTemplateToConfig({
 					template: 'minimal',
 					indexValueProcessors: [],
@@ -77,7 +78,7 @@ export function Document({
 		collectorAppName,
 		collectorId, // <appname>:<taskname>
 		collectorVersion,
-		document_metadata: {
+		[DOCUMENT_METADATA]: {
 			createdTime: new Date()//,
 			//modifiedTime: new Date(),
 			//valid: ?, // TODO validation of ...rest

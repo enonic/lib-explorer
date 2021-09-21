@@ -57,6 +57,7 @@ export const PATH_COLLECTORS = '/collectors';
 export const PATH_FIELDS = '/fields';
 export const PATH_INTERFACES = '/interfaces';
 
+export const DOCUMENT_METADATA = 'document_metadata';
 export const FIELD_MODIFIED_TIME_INDEX_CONFIG = 'minimal';
 
 export const FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG = {
@@ -95,7 +96,7 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: 'document_metadata',
+	key: DOCUMENT_METADATA,
 	max: 1,
 	min: 1
 },{
@@ -105,7 +106,7 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: 'document_metadata.collector',
+	key: `${DOCUMENT_METADATA}.collector`,
 	max: 1,
 	min: 0
 },{
@@ -115,7 +116,7 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: 'document_metadata.collector.id',
+	key: `${DOCUMENT_METADATA}.collector.id`,
 	max: 1,
 	min: 0
 },{
@@ -125,7 +126,7 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: 'document_metadata.collector.version',
+	key: `${DOCUMENT_METADATA}.collector.version`,
 	max: 1,
 	min: 0
 },{
@@ -135,7 +136,7 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: VALUE_TYPE_INSTANT,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: 'document_metadata.createdTime',
+	key: `${DOCUMENT_METADATA}.createdTime`,
 	max: 1,
 	min: 1
 },{
@@ -145,7 +146,7 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG,
 	inResults: true,
-	key: 'document_metadata.language',
+	key: `${DOCUMENT_METADATA}.language`,
 	max: 1,
 	min: 0
 },{
@@ -155,7 +156,7 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: VALUE_TYPE_INSTANT,
 	indexConfig: FIELD_MODIFIED_TIME_INDEX_CONFIG,
 	inResults: false,
-	key: 'document_metadata.modifiedTime',
+	key: `${DOCUMENT_METADATA}.modifiedTime`,
 	max: 1,
 	min: 0
 },{
@@ -165,7 +166,7 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: FIELD_DOCUMENT_METADATA_STEMMING_LANGUAGE_INDEX_CONFIG,
 	inResults: true,
-	key: 'document_metadata.stemmingLanguage',
+	key: `${DOCUMENT_METADATA}.stemmingLanguage`,
 	max: 1,
 	min: 0
 },{
@@ -175,7 +176,7 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: VALUE_TYPE_BOOLEAN,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: 'document_metadata.valid',
+	key: `${DOCUMENT_METADATA}.valid`,
 	max: 1,
 	min: 1
 }];
