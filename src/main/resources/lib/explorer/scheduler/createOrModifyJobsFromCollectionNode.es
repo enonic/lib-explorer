@@ -1,11 +1,13 @@
 import {
 	DOT_SIGN,
-	forceArray//,
-	//toStr
+	forceArray,
+	//toStr,
+	uniqueId
 } from '@enonic/js-utils';
 
 import {query as queryCollectors} from '/lib/explorer/collector/query';
 import {
+	REPO_ID_EXPLORER,
 	USER_EXPLORER_APP_NAME,
 	USER_EXPLORER_APP_ID_PROVIDER
 } from '/lib/explorer/model/2/constants';
@@ -43,7 +45,7 @@ export function createOrModifyJobsFromCollectionNode({
 }) {
 	//log.debug(`createOrModifyJobsFromCollectionNode collectionNode:${toStr(collectionNode)}`);
 	const {
-		//_id: collectionNodeId,
+		_id: collectionNodeId,
 		_name: collectionNodeName,
 		//_path: collectionNodePath,
 		collector: {
@@ -54,7 +56,10 @@ export function createOrModifyJobsFromCollectionNode({
 		doCollect = false
 	} = collectionNode;
 
-	const jobPrefix = `${collectorId.replace(':', DOT_SIGN)}${DOT_SIGN}${collectionNodeName}${DOT_SIGN}`;
+	const jobPrefix = `${uniqueId({
+		repoId: REPO_ID_EXPLORER,
+		nodeId: collectionNodeId
+	})}${DOT_SIGN}`;
 
 	const existingJobs = listExplorerJobsThatStartWithName({name: jobPrefix});
 	//log.debug(`createOrModifyJobsFromCollectionNode collection name:${collectionNodeName} existingJobs:${toStr(existingJobs)}`);
@@ -106,9 +111,10 @@ export function createOrModifyJobsFromCollectionNode({
 	}, i) => {
 		const createdOrModifiedJob = createOrModifyJob({ // Since I'm deleting all first, create would have sufficed here
 			config: {
-				name: collectionNodeName,
+				collectionId: collectionNodeId,
 				collectorId,
-				configJson
+				configJson,
+				name: collectionNodeName
 			},
 			descriptor: collectorId,
 			enabled: doCollect,
