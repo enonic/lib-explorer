@@ -12,14 +12,13 @@ import deepEqual from 'fast-deep-equal';
 import {getFieldsWithIndexConfigAndValueType} from '/lib/explorer/document/create';
 import {checkOccurrencesAndBuildIndexConfig} from '/lib/explorer/document/checkOccurrencesAndBuildIndexConfig';
 import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/checkAndApplyTypes';
-import {addPropertiesToDocumentType} from '/lib/explorer/documentType/addPropertiesToDocumentType';
+import {maybeAddFields} from '/lib/explorer/document/maybeAddFields';
 import {getDocumentTypeFromCollectionName} from '/lib/explorer/documentType/getDocumentTypeFromCollectionName';
 import {
 	DOCUMENT_METADATA,
 	FIELD_MODIFIED_TIME_INDEX_CONFIG,
 	NT_DOCUMENT
 } from '/lib/explorer/model/2/constants';
-import {getPaths} from '/lib/explorer/object/getPaths';
 import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
 
 import {instant} from '/lib/xp/value.js';
@@ -394,40 +393,10 @@ export function update({
 	const documentType = getDocumentTypeFromCollectionName({collectionName});
 	//log.debug(`document.update documentType:${toStr(documentType)}`);
 
-	const {addFields = true} = documentType;
-	//log.debug(`document.update addFields:${toStr(addFields)}`);
-
-	if (addFields) {
-		const fieldPaths = {};
-		documentType.fields.forEach(({key}) => {
-			fieldPaths[key] = true;
-		});
-		documentType.properties.forEach(({name}) => {
-			fieldPaths[name] = true;
-		});
-		//log.debug(`document.update fieldPaths:${toStr(fieldPaths)}`);
-
-		const paths = getPaths(updatedNode)
-			.filter(arr => arr.length
-				&& !arr[0].startsWith('_')
-				&& arr[0] !== 'document_metadata'
-			)
-			.map(arr => arr.join('.'));
-		//log.debug(`paths:${toStr(paths)}`);
-		const propertiesToAdd = [];
-		paths.forEach((p) => {
-			if (!fieldPaths[p]) {
-				propertiesToAdd.push(p);
-			}
-		});
-		//log.debug(`propertiesToAdd:${toStr(propertiesToAdd)}`);
-		if (propertiesToAdd.length) {
-			addPropertiesToDocumentType({
-				documentTypeId: documentType._id,
-				properties: propertiesToAdd
-			});
-		}
-	} // if (addFields)
+	maybeAddFields({
+		documentType,
+		node: updatedNode
+	});
 
 	return updatedNode;
 }
