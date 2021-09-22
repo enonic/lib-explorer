@@ -23,7 +23,21 @@ export function coerseDocumentType({
 		_path,
 		_versionKey,
 		addFields,
-		fields: forceArray(fields), // GraphQL Schema doesn't ensure array
+		fields: forceArray(fields) // GraphQL Schema doesn't ensure array
+			.map(({
+				active = true,
+				...rest
+			}) => ({
+				...rest,
+				active
+			})),
 		properties: forceArray(properties) // GraphQL Schema doesn't ensure array
+			.map(({
+				active = true,
+				...rest
+			}) => ({
+				...rest,
+				active
+			}))
 	};
 }
