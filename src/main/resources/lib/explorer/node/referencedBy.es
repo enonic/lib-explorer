@@ -9,10 +9,12 @@ export function referencedBy({
 	boolGetNode = false,
 	connection, // Connecting many places leeds to loss of control over principals, so pass in connection
 	count = -1,
+	filters = {},
 	start
 }) {
 	const queryParams = {
 		count,
+		filters,
 		query: `_references = '${_id}'`,
 		start
 	};
