@@ -11,6 +11,7 @@ import {forceArray} from '@enonic/js-utils';
 export function coerseDocumentType({
 	_id,
 	_name,
+	_nodeType,
 	_path,
 	_versionKey,
 	addFields = true,
@@ -20,6 +21,7 @@ export function coerseDocumentType({
 	return {
 		_id,
 		_name,
+		_nodeType,
 		_path,
 		_versionKey,
 		addFields,
