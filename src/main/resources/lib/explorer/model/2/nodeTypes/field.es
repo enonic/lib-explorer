@@ -15,7 +15,6 @@ export function field({
 
 	fieldType = 'text',
 
-	instruction = 'type',
 	decideByType = true,
 	enabled = true,
 	nGram = true,
@@ -32,13 +31,13 @@ export function field({
 		_parentPath,
 		key,
 		fieldType,
-		indexConfig: instruction === 'custom' ? {
+		indexConfig: {
 			decideByType,
 			enabled,
 			nGram,
 			fulltext,
 			includeInAllText,
 			path
-		} : instruction
+		}
 	});
 } // field

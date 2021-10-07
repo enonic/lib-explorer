@@ -19,7 +19,6 @@ export function updateField({
 	fieldType, // TODO valueType
 	fulltext,
 	includeInAllText,
-	instruction,
 	max,
 	min,
 	nGram,
@@ -33,7 +32,6 @@ export function updateField({
 	if (isNotSet(fieldType)) { fieldType = VALUE_TYPE_STRING; }
 	if (isNotSet(fulltext)) { fulltext = true; }
 	if (isNotSet(includeInAllText)) { includeInAllText = true; }
-	if (isNotSet(instruction)) { instruction = 'type'; }
 	if (isNotSet(max)) { max = 0; }
 	if (isNotSet(min)) { min = 0; }
 	if (isNotSet(nGram)) { nGram = true; }
@@ -46,14 +44,14 @@ export function updateField({
 		fieldType,
 		max: parseInt(max,10),
 		min: parseInt(min,10),
-		indexConfig: instruction === 'custom' ? {
+		indexConfig: {
 			decideByType,
 			enabled,
 			nGram,
 			fulltext,
 			includeInAllText,
 			path
-		} : instruction
+		}
 	};
 	//log.debug(`propertiesToUpdate:${toStr(propertiesToUpdate)}`);
 

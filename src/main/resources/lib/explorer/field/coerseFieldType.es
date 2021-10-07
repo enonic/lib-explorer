@@ -6,7 +6,7 @@ import {
 } from '@enonic/js-utils';
 
 
-const INSTRUCTION_CUSTOM = 'custom';
+const INSTRUCTION_CUSTOM = 'custom'; // Keeping this for backwards compatibility
 
 
 export function coerseFieldType({
@@ -16,22 +16,22 @@ export function coerseFieldType({
 	_path,
 	denyDelete,
 	description,
-	indexConfig = INDEX_CONFIG_TEMPLATE_BY_TYPE,
+	indexConfig = INDEX_CONFIG_TEMPLATE_BY_TYPE, // Can be string or object
 	inResults,
 	fieldType,
 	key,
 	max,
 	min
 }) {
-	const instruction = isString(indexConfig)
-		? (indexConfig === 'type'
+	const instruction = isString(indexConfig) // Keeping this for backwards compatibility
+		? (indexConfig === 'type' // type --> byType
 			? INDEX_CONFIG_TEMPLATE_BY_TYPE
 			: indexConfig)
-		: INSTRUCTION_CUSTOM;
-	//log.debug(`key:${key} instruction:${toStr(instruction)}`);
+		: INSTRUCTION_CUSTOM; // Keeping this for backwards compatibility
+	//log.debug(`key:${key} instruction:${toStr(instruction)}`); // Keeping this for backwards compatibility
 
 	const indexConfigObject = isString(indexConfig) ? indexTemplateToConfig({
-		template: instruction
+		template: instruction // Keeping this for backwards compatibility
 	}) : indexConfig;
 	//log.debug(`key:${key} indexConfigObject:${toStr(indexConfigObject)}`);
 
@@ -59,7 +59,6 @@ export function coerseFieldType({
 		min,
 
 		indexConfig: indexConfigObject,
-		instruction,
 
 		decideByType,
 		enabled,
