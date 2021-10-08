@@ -3,7 +3,6 @@ import {
 	NT_INTERFACE
 } from '/lib/explorer/model/2/constants';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
-import {ucFirst} from '/lib/explorer/ucFirst';
 
 
 export function interfaceModel({
@@ -18,7 +17,6 @@ export function interfaceModel({
 	// Since it is not stored it creates diffing issues...
 	_parentPath = `/${INTERFACES_FOLDER}`,
 
-	displayName = ucFirst(_name),
 	...rest
 }) {
 	return node({
@@ -37,7 +35,6 @@ export function interfaceModel({
 		},
 		_name,
 		_nodeType: NT_INTERFACE,
-		_parentPath,
-		displayName
+		_parentPath
 	});
 } // interfaceModel
