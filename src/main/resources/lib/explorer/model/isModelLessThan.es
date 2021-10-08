@@ -18,8 +18,8 @@ export function isModelLessThan({
 	const boolLessThan = currentModel < version;
 	if (boolLessThan) {
 		log.info(`currentModel:${currentModel} < version:${version}`);
-	} else {
+	} /*else {
 		log.debug(`currentModel:${currentModel} >= version:${version}`);
-	}
+	}*/
 	return boolLessThan;
 }
