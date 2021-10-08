@@ -37,12 +37,14 @@ export function getFields({
 	queryRes.hits = queryRes.hits.map(hit => {
 		const {
 			fieldType = VALUE_TYPE_STRING,
-			...allPropertiesExceptFieldType
+			isSystemField = false,
+			...rest
 		} = connection.get(hit.id);
 		return {
+			...rest,
 			fieldType,
-			valueType: fieldType, // TODO transition to valueType everywhere and remove fieldType
-			...allPropertiesExceptFieldType
+			isSystemField,
+			valueType: fieldType // TODO transition to valueType everywhere and remove fieldType
 		};
 	});
 
