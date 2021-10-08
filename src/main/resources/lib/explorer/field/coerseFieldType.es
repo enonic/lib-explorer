@@ -14,6 +14,7 @@ export function coerseFieldType({
 	_name,
 	_nodeType,
 	_path,
+	_versionKey,
 	denyDelete,
 	description,
 	indexConfig = INDEX_CONFIG_TEMPLATE_BY_TYPE, // Can be string or object
@@ -50,6 +51,7 @@ export function coerseFieldType({
 		_name,
 		_nodeType,
 		_path,
+		_versionKey,
 		denyDelete,
 		description,
 		fieldType,

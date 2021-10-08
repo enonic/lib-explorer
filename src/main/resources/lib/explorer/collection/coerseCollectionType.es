@@ -3,13 +3,14 @@ export function coerseCollectionType({
 	_name,
 	_nodeType,
 	_path,
-	_score,
+	_score, // TODO _score -> __score
+	_versionKey,
 	collector,
 	createdTime,
 	creator,
 	documentCount,
 	documentTypeId,
-	interfaces,
+	interfaces,// = [],
 	language,
 	modifiedTime,
 	modifier
@@ -19,7 +20,8 @@ export function coerseCollectionType({
 		_name,
 		_nodeType,
 		_path,
-		_score,
+		_score, // TODO _score -> __score
+		_versionKey,
 		collector,
 		createdTime,
 		creator,
