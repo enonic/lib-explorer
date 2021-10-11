@@ -22,7 +22,7 @@ export function interfaceModel({
 
 	collectionIds = [],
 	//stopWordIds = [],
-	//synonymIds = []
+	synonymIds = [],
 	...rest // _name fields stopWords synonyms
 }) {
 	return node({
@@ -41,8 +41,8 @@ export function interfaceModel({
 		},
 		_nodeType: NT_INTERFACE,
 		_parentPath,
-		collectionIds: forceArray(collectionIds).map((collectionId) => reference(collectionId))//, // empty array allowed,
+		collectionIds: forceArray(collectionIds).map((collectionId) => reference(collectionId)), // empty array allowed,
 		//stopWordIds: forceArray(stopWordIds).map((stopWordId) => reference(stopWordId)), // empty array allowed,
-		//synonymIds: forceArray(synonymIds).map((synonymId) => reference(synonymId)), // empty array allowed,
+		synonymIds: forceArray(synonymIds).map((synonymId) => reference(synonymId)) // empty array allowed,
 	});
 } // interfaceModel

@@ -1,7 +1,6 @@
 import {forceArray} from '@enonic/js-utils';
 
-//import {reference} from '/lib/xp/value';
-
+// Reference doesn't work well when diffing or printing, so let's do that in the model
 
 export const coerseInterfaceType = ({
 	_id,
@@ -13,8 +12,7 @@ export const coerseInterfaceType = ({
 	fields = [],
 	//stopWordIds = [],
 	stopWords = [],
-	//synonymIds = []
-	synonyms = []
+	synonymIds = []
 }) => ({
 	_id,
 	_name,
@@ -22,11 +20,9 @@ export const coerseInterfaceType = ({
 	_path,
 	_versionKey,
 
-	// Reference doesn't work well when diffing or printing, so let's do that in the model
-	collectionIds: forceArray(collectionIds),//.map((collectionId) => reference(collectionId)), // empty array allowed,
+	collectionIds: forceArray(collectionIds),// Applying reference in model // empty array allowed,
 	fields: forceArray(fields),
 	//stopWordIds: forceArray(stopWordIds),//.map((stopWordId) => reference(stopWordId)), // empty array allowed,
 	stopWords: forceArray(stopWords),
-	//synonymIds: forceArray(synonymIds),//.map((synonymId) => reference(synonymId)), // empty array allowed,
-	synonyms: forceArray(synonyms)
+	synonymIds: forceArray(synonymIds)// Applying reference in model // empty array allowed,
 });

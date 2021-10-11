@@ -52,25 +52,27 @@ export function query({
 	}
 	queryThesauriRes.hits = queryThesauriRes.hits.map((hit) => {
 		const {
-			_name: name,
+			_name,
 			_path,
 			description = '',
 			language,
 			type
 		} = connection.get(hit.id);
 		const rv = {
+			_id: hit.id,
+			_name,
 			_path,
 			description,
-			id: hit.id,
+			id: hit.id, // backwards compatibility
 			language,
-			name,
+			name: _name, // backwards compatibility
 			type
 		};
 		if (getSynonymsCount) {
 			const synonymsRes = querySynonyms({
 				connection,
 				count: 0,
-				query: `_parentPath = '/thesauri/${name}'`
+				query: `_parentPath = '/thesauri/${_name}'`
 			});
 			//log.info(toStr({synonymsRes}));
 			rv.synonymsCount = synonymsRes.total;

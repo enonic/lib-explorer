@@ -3,23 +3,23 @@ import {
 	//toStr
 } from '@enonic/js-utils';
 
+// Same as coerseInterfaceType... keeping until checked not in use...
+// Reference doesn't work well when diffing or printing, so let's do that in the model
 
 export const filter = ({
 	_id,
 	_name,
 	_path,
-	displayName,
-	collections,
-	fields,// TODO = DEFAULT_INTERFACE_FIELDS,
-	stopWords,
-	synonyms
+	collectionIds = [],
+	fields = [],// TODO? = DEFAULT_INTERFACE_FIELDS,
+	stopWords = [],
+	synonymIds = []
 } = {}) => ({
 	_id,
 	_name,
 	_path,
-	displayName,
-	collections: forceArray(collections),
+	collectionIds: forceArray(collectionIds),
 	fields: forceArray(fields),
 	stopWords: forceArray(stopWords),
-	synonyms: forceArray(synonyms)
+	synonymsIds: forceArray(synonymIds)
 });

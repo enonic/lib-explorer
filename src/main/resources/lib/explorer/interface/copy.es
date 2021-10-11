@@ -1,7 +1,6 @@
 import {INTERFACES_FOLDER} from '/lib/explorer/model/2/index';
 import {exists} from '/lib/explorer/interface/exists';
 import {get} from '/lib/explorer/interface/get';
-import {ucFirst} from '/lib/explorer/ucFirst';
 import {create} from '/lib/explorer/node/create';
 
 
@@ -36,7 +35,6 @@ export function copy({
 	node._id = undefined;
 	node._parentPath = `/${INTERFACES_FOLDER}`;
 	node._name = to;
-	node.displayName = ucFirst(to);
 	//creator
 	//createdTime
 	//modifiedTime
