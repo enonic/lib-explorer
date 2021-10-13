@@ -48,6 +48,10 @@ dependencies {
 
 ## Changelog
 
+### 3.20.2
+
+* Ticket#4971 Old documents doesn't have the new field document_metadata
+
 ### 3.20.1
 
 * Service interfaceSelector needs should filter on _nodeType
