@@ -10,5 +10,9 @@ export function getDocumentType({
 	_id,
 	connection = connect({ principals: [PRINCIPAL_EXPLORER_READ] })
 }) {
-	return coerseDocumentType(connection.get(_id));
+	const documentTypeNode = connection.get(_id);
+	if (documentTypeNode) {
+		return coerseDocumentType(documentTypeNode);
+	}
+	throw new Error(`Unable to get documentType with _id:${_id}!`);
 }

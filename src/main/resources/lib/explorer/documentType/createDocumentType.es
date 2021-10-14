@@ -1,6 +1,6 @@
 import {
-	forceArray/*,
-	toStr*/
+	forceArray//,
+	//toStr
 } from '@enonic/js-utils';
 import {
 	NT_FOLDER,
@@ -24,6 +24,7 @@ export function createDocumentType({
 	fields = [],
 	properties = []
 }) {
+	//log.debug(`_name:${_name} addFields:${addFields} fields:${toStr(fields)} properties:${toStr(properties)}`);
 	const writeConnection = connect({ principals: [PRINCIPAL_EXPLORER_WRITE] });
 	if (!writeConnection.exists(PATH_DOCUMENT_TYPE_FOLDER)) {
 		writeConnection.create({

@@ -15,8 +15,8 @@ export function coerseDocumentType({
 	_path,
 	_versionKey,
 	addFields = true,
-	fields,
-	properties
+	fields = [],
+	properties = []
 }) {
 	return {
 		_id,
