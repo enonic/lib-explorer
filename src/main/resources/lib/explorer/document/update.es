@@ -112,8 +112,10 @@ export function update({
 	}
 	//log.info(`existingNode:${toStr(existingNode)}`);
 
-	// Not needed for partial update and unwanted when diffing
-	delete existingNode[DOCUMENT_METADATA].modifiedTime;
+	if (existingNode[DOCUMENT_METADATA]) { // Ticket#4971 Old documents doesn't have the new field document_metadata
+		// Not needed for partial update and unwanted when diffing
+		delete existingNode[DOCUMENT_METADATA].modifiedTime;
+	}
 
 	if (isObject(existingNode._indexConfig) && existingNode._indexConfig.configs) {
 		if (!Array.isArray(existingNode._indexConfig.configs)) {
