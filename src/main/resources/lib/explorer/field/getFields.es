@@ -1,6 +1,7 @@
 import {
-	VALUE_TYPE_STRING//,
-	//toStr
+	VALUE_TYPE_STRING,
+	isString,
+	toStr
 } from '@enonic/js-utils';
 
 import {
@@ -13,13 +14,19 @@ import {hasValue} from '/lib/explorer/query/hasValue';
 
 export function getFields({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
-	fields, // Used in GraphQL queryFields
+	fields = [], // Used in GraphQL queryFields
 	includeSystemFields = false
 } = {}) {
 	const filters = addFilter({
 		filter: hasValue('_nodeType', [NT_FIELD])
 	});
 	if (fields) {
+		if (isString(fields)) {
+			fields = [fields];
+		}
+		if (!Array.isArray(fields)) {
+			throw new Error(`Invalid fields parameter! Must be string or Array<string> fields:${toStr(fields)}`);
+		}
 		addFilter({
 			filter: hasValue('key', fields), // _allText
 			filters // reference gets modified
