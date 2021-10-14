@@ -1,6 +1,7 @@
 import {
 	COLON_SIGN,
 	DOT_SIGN,
+	INDEX_CONFIG_N_GRAM,
 	VALUE_TYPE_BOOLEAN,
 	VALUE_TYPE_INSTANT,
 	VALUE_TYPE_SET,
@@ -66,7 +67,7 @@ export const FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG = {
 	fulltext: false,
 	includeInAllText: false,
 	languages: [],
-	nGram: false,
+	[INDEX_CONFIG_N_GRAM]: false,
 	path: false
 };
 
@@ -76,7 +77,7 @@ export const FIELD_DOCUMENT_METADATA_STEMMING_LANGUAGE_INDEX_CONFIG = {
 	fulltext: false,
 	includeInAllText: false,
 	languages: [],
-	nGram: false,
+	[INDEX_CONFIG_N_GRAM]: false,
 	path: false
 };
 
@@ -204,7 +205,7 @@ export const READWRITE_FIELDS = [{
 	denyValues: false,
 	//displayName: 'Title'*/
 	fieldType: VALUE_TYPE_STRING,
-	indexConfig: 'fulltext', // includes ngram
+	indexConfig: 'fulltext', // includes nGram
 	max: 1,
 	min: 1 // TODO: There may exist pages without title, should we allow that?
 },{
@@ -224,7 +225,7 @@ export const READWRITE_FIELDS = [{
 	denyValues: false,
 	//displayName: 'Text'
 	fieldType: VALUE_TYPE_STRING,
-	indexConfig: 'fulltext', // includes ngram
+	indexConfig: 'fulltext', // includes nGram
 	max: 0, // Allow array
 	min: 1
 },{
@@ -237,7 +238,7 @@ export const READWRITE_FIELDS = [{
 	indexConfig: {
 		enabled: true,
 		decideByType: false, // Assume text
-		nGram: false, // Don't need ngram for uri
+		[INDEX_CONFIG_N_GRAM]: false, // Don't need nGram for uri
 		fulltext: true, // But fulltext is used by a customer
 		includeInAllText: false, // Nope
 		path: false

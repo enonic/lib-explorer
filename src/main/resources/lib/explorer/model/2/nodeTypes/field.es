@@ -17,7 +17,7 @@ export function field({
 
 	decideByType = true,
 	enabled = true,
-	nGram = true,
+	nGram = true, // INDEX_CONFIG_N_GRAM
 	fulltext = true,
 	includeInAllText = true,
 	path = false,
@@ -34,7 +34,7 @@ export function field({
 		indexConfig: {
 			decideByType,
 			enabled,
-			nGram,
+			nGram, // INDEX_CONFIG_N_GRAM
 			fulltext,
 			includeInAllText,
 			path

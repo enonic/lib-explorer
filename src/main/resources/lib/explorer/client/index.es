@@ -1,4 +1,5 @@
 import {
+	QUERY_FUNCTION_NGRAM,
 	forceArray,
 	isString,
 	toStr
@@ -210,7 +211,7 @@ export function search(params) {
 						}]
 					}
 				}, {
-					type: 'ngram',
+					type: QUERY_FUNCTION_NGRAM,
 					params: {
 						operator: 'and',
 						fields: [{

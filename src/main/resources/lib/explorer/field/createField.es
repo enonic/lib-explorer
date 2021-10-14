@@ -22,7 +22,7 @@ export function createField({
 	includeInAllText,
 	max,
 	min,
-	nGram,
+	nGram, // INDEX_CONFIG_N_GRAM
 	path
 }) {
 
@@ -35,7 +35,7 @@ export function createField({
 	if (isNotSet(includeInAllText)) { includeInAllText = true; }
 	if (isNotSet(max)) { max = 0; }
 	if (isNotSet(min)) { min = 0; }
-	if (isNotSet(nGram)) { nGram = true; }
+	if (isNotSet(nGram)) { nGram = true; } // INDEX_CONFIG_N_GRAM
 	if (isNotSet(path)) { path = false; }
 
 	const lcKey = key.toLowerCase();
@@ -50,7 +50,7 @@ export function createField({
 		enabled,
 		fulltext,
 		includeInAllText,
-		nGram,
+		nGram, // INDEX_CONFIG_N_GRAM
 		path
 	});
 	//log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);

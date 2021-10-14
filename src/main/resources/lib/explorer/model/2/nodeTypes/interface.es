@@ -1,4 +1,7 @@
-import {forceArray} from '@enonic/js-utils';
+import {
+	INDEX_CONFIG_N_GRAM,
+	forceArray
+} from '@enonic/js-utils';
 import {
 	INTERFACES_FOLDER,
 	NT_INTERFACE
@@ -31,7 +34,7 @@ export function interfaceModel({
 			default: {
 				decideByType: true,
 				enabled: true,
-				nGram: false,
+				[INDEX_CONFIG_N_GRAM]: false,
 				fulltext: false,
 				includeInAllText: false,
 				path: false,

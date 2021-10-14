@@ -1,4 +1,5 @@
 import {
+	INDEX_CONFIG_N_GRAM,
 	VALUE_TYPE_STRING//,
 	//toStr
 } from '@enonic/js-utils';
@@ -30,7 +31,7 @@ export function addPropertiesToDocumentType({
 					max: 0,
 					min: 0,
 					name: propertyName,
-					ngram: true,
+					[INDEX_CONFIG_N_GRAM]: true,
 					valueType: VALUE_TYPE_STRING
 				});
 			});

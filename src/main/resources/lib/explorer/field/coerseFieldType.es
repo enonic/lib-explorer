@@ -41,7 +41,7 @@ export function coerseFieldType({
 		enabled = true,
 		fulltext = true,
 		includeInAllText = true,
-		nGram = true,
+		nGram = true, // INDEX_CONFIG_N_GRAM
 		path = false
 	} = indexConfigObject;
 	//log.debug(`key:${key} fulltext:${toStr(fulltext)}`);
@@ -66,7 +66,7 @@ export function coerseFieldType({
 		enabled,
 		fulltext,
 		includeInAllText,
-		nGram, // node._indexConfig.default.nGram uses uppercase G in nGram
+		nGram, // INDEX_CONFIG_N_GRAM
 		path
 	};
 } // coerseFieldType

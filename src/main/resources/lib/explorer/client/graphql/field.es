@@ -1,4 +1,7 @@
-//import {toStr} from '@enonic/js-utils';
+import {
+	QUERY_FUNCTION_NGRAM//,
+	//toStr
+} from '@enonic/js-utils';
 
 import {newCache} from '/lib/cache';
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
@@ -207,7 +210,7 @@ export function buildQueryArg() {
 			})},
 			operator: { type: GraphQLString } // AND OR
 		}})},
-		ngram: { type: createInputObjectType({ name: 'SearchQueryArgNgram', fields: {
+		[QUERY_FUNCTION_NGRAM]: { type: createInputObjectType({ name: 'SearchQueryArgNgram', fields: {
 			fields: { type: createInputObjectType({
 				name: 'SearchQueryArgNgramFields',
 				fields

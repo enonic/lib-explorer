@@ -1,7 +1,8 @@
 import {
 	QUERY_FUNCTION_FULLTEXT,
 	QUERY_FUNCTION_NGRAM,
-	QUERY_FUNCTION_STEMMED//,
+	QUERY_FUNCTION_STEMMED,
+	ngram//,
 	//toStr
 } from '@enonic/js-utils';
 
@@ -64,7 +65,12 @@ export function buildQuery({
 		//times.push({label: 'fulltext', time: currentTimeMillis()});
 		break;
 	case QUERY_FUNCTION_NGRAM:
-		query = `ngram(${buildFields(params.fields)}, '${searchString}', '${operator}')`;
+		//query = `ngram(${buildFields(params.fields)}, '${searchString}', '${operator}')`;
+		query = ngram(
+			buildFields(params.fields),
+			searchString,
+			operator
+		);
 		//times.push({label: 'ngram', time: currentTimeMillis()});
 		break;
 	case 'synonyms': {

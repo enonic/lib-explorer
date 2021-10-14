@@ -1,4 +1,5 @@
 import {
+	QUERY_FUNCTION_NGRAM,
 	forceArray//,
 	//toStr
 } from '@enonic/js-utils';
@@ -73,7 +74,7 @@ export function get({
 			.split(' ')
 			.map(word => `(
 				fulltext('name^7, _name^5, displayName^3, _allText^1', '${word}', 'OR')
-				OR ngram('name^6, _name^4, displayName^2, _allText', '${word}', 'OR')
+				OR ${QUERY_FUNCTION_NGRAM}('name^6, _name^4, displayName^2, _allText', '${word}', 'OR')
 			)`)
 			.join(' AND ')
 			.replace(/\n\s*/g, ' ')

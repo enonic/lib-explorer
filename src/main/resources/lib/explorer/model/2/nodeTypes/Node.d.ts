@@ -3,7 +3,7 @@ export type IndexConfigTemplate = 'none' | 'byType' | 'fulltext' | 'path' | 'min
 export interface DetailedIndexConfig {
 	enabled: boolean;
 	decideByType: boolean;
-	nGram: boolean;
+	nGram: boolean; // INDEX_CONFIG_N_GRAM
 	fulltext: boolean;
 	includeInAllText: boolean;
 	path: boolean;
