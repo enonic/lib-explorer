@@ -5,7 +5,73 @@
 //import utils from '@enonic/js-utils';
 //const forceArray = utils.forceArray;
 
-import {forceArray} from '@enonic/js-utils';
+import {
+	INDEX_CONFIG_ENABLED_DEFAULT,
+	INDEX_CONFIG_DECIDE_BY_TYPE_DEFAULT,
+	INDEX_CONFIG_FULLTEXT_DEFAULT,
+	INDEX_CONFIG_INCLUDE_IN_ALL_TEXT_DEFAULT,
+	INDEX_CONFIG_N_GRAM,
+	INDEX_CONFIG_N_GRAM_DEFAULT,
+	INDEX_CONFIG_PATH_DEFAULT,
+	VALUE_TYPE_STRING,
+	forceArray,
+	isNotSet,
+	toStr
+} from '@enonic/js-utils';
+
+
+export function coerseDocumentTypeAddFields(addFields) {
+	//log.debug(`resolveAddFields(${addFields})`);
+	return isNotSet(addFields) ? true : addFields;
+}
+
+
+export function coerseDocumentTypeFields(fields) {
+	return (isNotSet(fields) ? [] : forceArray(fields)).map(({
+		active = true,
+		...rest
+	}) => ({
+		active,
+		...rest
+	}));
+}
+
+
+export function coerseDocumentTypeProperties(properties) {
+	//log.debug(`resolveProperties(${toStr(properties)})`);
+	const rv = (isNotSet(properties) ? [] : forceArray(properties)).map(({
+		active,
+		enabled,
+		decideByType,
+		fulltext,
+		includeInAllText,
+		max,
+		min,
+		name, // Required
+		nGram,
+		path,
+		valueType
+	}) => {
+		if (isNotSet(name)) {
+			throw new Error(`Corrupt data! Property without name in properties:${toStr(properties)}`);
+		}
+		return {
+			active: isNotSet(active) ? true : active,
+			enabled: isNotSet(enabled) ? INDEX_CONFIG_ENABLED_DEFAULT : enabled,
+			decideByType: isNotSet(decideByType) ? INDEX_CONFIG_DECIDE_BY_TYPE_DEFAULT : decideByType,
+			fulltext: isNotSet(fulltext) ? INDEX_CONFIG_FULLTEXT_DEFAULT : fulltext,
+			includeInAllText: isNotSet(includeInAllText) ? INDEX_CONFIG_INCLUDE_IN_ALL_TEXT_DEFAULT : includeInAllText,
+			max: isNotSet(max) ? 0 : max,
+			min: isNotSet(min) ? 0 : min,
+			name,
+			[INDEX_CONFIG_N_GRAM]: isNotSet(nGram) ? INDEX_CONFIG_N_GRAM_DEFAULT : nGram,
+			path: isNotSet(path) ? INDEX_CONFIG_PATH_DEFAULT : path,
+			valueType: isNotSet(valueType) ? VALUE_TYPE_STRING : valueType
+		};
+	});
+	//log.debug(`resolveProperties(${toStr(properties)}) --> ${toStr(rv)}`);
+	return rv;
+}
 
 
 export function coerseDocumentType({
@@ -14,32 +80,43 @@ export function coerseDocumentType({
 	_nodeType,
 	_path,
 	_versionKey,
-	addFields = true,
-	fields = [],
-	properties = []
+	addFields,
+	fields,
+	properties
 }) {
-	return {
+	/*log.debug(`coerseDocumentType({
+		_id:${_id},
+		_name:${_name},
+		_nodeType:${_nodeType},
+		_path:${_path},
+		_versionKey:${_versionKey},
+		addFields:${addFields},
+		fields:${toStr(fields)},
+		properties:${toStr(properties)}
+	})`);*/
+	if (isNotSet(fields)) {fields = [];}
+	/*log.debug(`coerseDocumentType({
+		fields:${toStr(fields)},
+	})`);*/
+	const rv = {
 		_id,
 		_name,
 		_nodeType,
 		_path,
 		_versionKey,
-		addFields,
-		fields: forceArray(fields) // GraphQL Schema doesn't ensure array
-			.map(({
-				active = true,
-				...rest
-			}) => ({
-				...rest,
-				active
-			})),
-		properties: forceArray(properties) // GraphQL Schema doesn't ensure array
-			.map(({
-				active = true,
-				...rest
-			}) => ({
-				...rest,
-				active
-			}))
+		addFields: coerseDocumentTypeAddFields(addFields),
+		fields: coerseDocumentTypeFields(fields),
+		properties: coerseDocumentTypeProperties(properties)
 	};
+	/*log.debug(`coerseDocumentType({
+		_id:${_id},
+		_name:${_name},
+		_nodeType:${_nodeType},
+		_path:${_path},
+		_versionKey:${_versionKey},
+		addFields:${addFields},
+		fields:${toStr(fields)},
+		properties:${toStr(properties)}
+	}) --> ${toStr(rv)}`);*/
+	return rv;
 }

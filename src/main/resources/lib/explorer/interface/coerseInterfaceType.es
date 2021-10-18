@@ -1,6 +1,30 @@
-import {forceArray} from '@enonic/js-utils';
+import {
+	forceArray,
+	isNotSet
+} from '@enonic/js-utils';
 
 // Reference doesn't work well when diffing or printing, so let's do that in the model
+
+
+export function coerseInterfaceTypeCollectionIds(collectionIds) {
+	return isNotSet(collectionIds) ? [] : forceArray(collectionIds);
+}
+
+
+export function coerseInterfaceTypeFields(fields) {
+	return isNotSet(fields) ? [] : forceArray(fields);
+}
+
+
+export function coerseInterfaceTypeStopWords(stopWords) {
+	return isNotSet(stopWords) ? [] : forceArray(stopWords);
+}
+
+
+export function coerseInterfaceTypeSynonymIds(synonymIds) {
+	return isNotSet(synonymIds) ? [] : forceArray(synonymIds);
+}
+
 
 export const coerseInterfaceType = ({
 	_id,
@@ -8,21 +32,20 @@ export const coerseInterfaceType = ({
 	_nodeType,
 	_path,
 	_versionKey,
-	collectionIds = [],
+	collectionIds,
 	fields = [],
 	//stopWordIds = [],
-	stopWords = [],
-	synonymIds = []
+	stopWords,
+	synonymIds
 }) => ({
 	_id,
 	_name,
 	_nodeType,
 	_path,
 	_versionKey,
-
-	collectionIds: forceArray(collectionIds),// Applying reference in model // empty array allowed,
-	fields: forceArray(fields),
+	collectionIds: coerseInterfaceTypeCollectionIds(collectionIds),
+	fields: coerseInterfaceTypeFields(fields),
 	//stopWordIds: forceArray(stopWordIds),//.map((stopWordId) => reference(stopWordId)), // empty array allowed,
-	stopWords: forceArray(stopWords),
-	synonymIds: forceArray(synonymIds)// Applying reference in model // empty array allowed,
+	stopWords: coerseInterfaceTypeStopWords(stopWords),
+	synonymIds: coerseInterfaceTypeSynonymIds(synonymIds)
 });
