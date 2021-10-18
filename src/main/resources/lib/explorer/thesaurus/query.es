@@ -53,7 +53,9 @@ export function query({
 	queryThesauriRes.hits = queryThesauriRes.hits.map((hit) => {
 		const {
 			_name,
+			//_nodeType,
 			_path,
+			//_versionKey,
 			description = '',
 			language,
 			type
@@ -61,7 +63,9 @@ export function query({
 		const rv = {
 			_id: hit.id,
 			_name,
+			//_nodeType,
 			_path,
+			//_versionKey,
 			description,
 			id: hit.id, // backwards compatibility
 			language,
