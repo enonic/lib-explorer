@@ -21,7 +21,6 @@ import {coerseDocumentType} from './coerseDocumentType';
 export function createDocumentType({
 	_name,
 	addFields = true,
-	fields = [],
 	properties = []
 }) {
 	//log.debug(`_name:${_name} addFields:${addFields} fields:${toStr(fields)} properties:${toStr(properties)}`);
@@ -42,16 +41,6 @@ export function createDocumentType({
 		_nodeType: NT_DOCUMENT_TYPE,
 		_parentPath,
 		addFields,
-
-		// No point in forceArray, since Enonic will "destroy" on store,
-		// but we're using forceArray so map don't throw...
-		fields: forceArray(fields).map(({
-			active,
-			fieldId
-		}) => ({
-			active,
-			fieldId: reference(fieldId)
-		})),
 
 		// No point in forceArray, since Enonic will "destroy" on store,
 		// but we're using forceArray so sort don't throw...

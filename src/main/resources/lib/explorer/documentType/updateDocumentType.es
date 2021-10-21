@@ -33,7 +33,6 @@ export function updateDocumentType({
 	_name: newDocumentTypeName,
 	_versionKey,
 	addFields = true,
-	fields = [],
 	properties = []
 }) {
 	//log.debug(`fields:${toStr(fields)}`);
@@ -81,8 +80,6 @@ export function updateDocumentType({
 	const nodePropertiesToUpdate = {
 		addFields,
 
-		fields, // NOTE applying valueType happens after diffing
-
 		// No point in forceArray, since Enonic will "destroy" on store,
 		// but we're using forceArray so sort don't throw...
 		properties: forceArray(properties).sort((a, b) => (a.name > b.name) ? 1 : -1)
@@ -100,17 +97,6 @@ export function updateDocumentType({
 
 		// Pretty good. (can crash on complicated data, perhaps circular structures, which we shouldn't have anyway)
 		log.debug(`Changes detected diff:${toStr(diffDocumentTypeProperties(oldNodePropertiesForDiff, enonifiedNodePropertiesToUpdate))}`);
-
-		// No point in forceArray, since Enonic will "destroy" on store,
-		// but we're using forceArray so map don't throw...
-		nodePropertiesToUpdate.fields = forceArray(fields).map(({
-			active = true,
-			fieldId
-		}) => ({
-			active,
-			fieldId: reference(fieldId) // NOTE applying valueType has to happen after diffing
-		}));
-		//log.debug(`nodePropertiesToUpdate:${toStr(nodePropertiesToUpdate)}`);
 
 		const updatedNode = writeConnection.modify({
 			key: documentTypeId,

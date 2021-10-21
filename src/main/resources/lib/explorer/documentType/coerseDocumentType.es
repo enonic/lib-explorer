@@ -26,17 +26,6 @@ export function coerseDocumentTypeAddFields(addFields) {
 }
 
 
-export function coerseDocumentTypeFields(fields) {
-	return (isNotSet(fields) ? [] : forceArray(fields)).map(({
-		active = true,
-		...rest
-	}) => ({
-		active,
-		...rest
-	}));
-}
-
-
 export function coerseDocumentTypeProperties(properties) {
 	//log.debug(`resolveProperties(${toStr(properties)})`);
 	const rv = (isNotSet(properties) ? [] : forceArray(properties)).map(({
@@ -81,7 +70,6 @@ export function coerseDocumentType({
 	_path,
 	_versionKey,
 	addFields,
-	fields,
 	properties
 }) {
 	/*log.debug(`coerseDocumentType({
@@ -91,12 +79,7 @@ export function coerseDocumentType({
 		_path:${_path},
 		_versionKey:${_versionKey},
 		addFields:${addFields},
-		fields:${toStr(fields)},
 		properties:${toStr(properties)}
-	})`);*/
-	if (isNotSet(fields)) {fields = [];}
-	/*log.debug(`coerseDocumentType({
-		fields:${toStr(fields)},
 	})`);*/
 	const rv = {
 		_id,
@@ -105,7 +88,6 @@ export function coerseDocumentType({
 		_path,
 		_versionKey,
 		addFields: coerseDocumentTypeAddFields(addFields),
-		fields: coerseDocumentTypeFields(fields),
 		properties: coerseDocumentTypeProperties(properties)
 	};
 	/*log.debug(`coerseDocumentType({
@@ -115,7 +97,6 @@ export function coerseDocumentType({
 		_path:${_path},
 		_versionKey:${_versionKey},
 		addFields:${addFields},
-		fields:${toStr(fields)},
 		properties:${toStr(properties)}
 	}) --> ${toStr(rv)}`);*/
 	return rv;

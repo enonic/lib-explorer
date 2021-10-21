@@ -1,9 +1,5 @@
-import {
-	forceArray//,
-	//toStr
-} from '@enonic/js-utils';
+//import {toStr} from '@enonic/js-utils';
 import {get as getCollection} from '/lib/explorer/collection/get';
-import {getField} from '/lib/explorer/field/getField';
 import {connect} from '/lib/explorer/repo/connect';
 import {getDocumentType} from '/lib/explorer/documentType/getDocumentType';
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
@@ -29,18 +25,6 @@ export function getDocumentTypeFromCollectionName({collectionName}) {
 		connection: readConnection
 	});
 
-	documentTypeNode.fields = documentTypeNode.fields ? forceArray(documentTypeNode.fields).map(({
-		active,
-		fieldId
-	}) => {
-		return {
-			...getField({
-				key: fieldId,
-				connection: readConnection
-			}),
-			_active: active
-		};
-	}) : [];
 	//log.debug(`getDocumentTypeFromCollectionName documentTypeNode:${toStr(documentTypeNode)}`);
 	return documentTypeNode;
 }
