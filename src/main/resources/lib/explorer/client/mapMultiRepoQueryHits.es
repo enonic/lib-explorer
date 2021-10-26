@@ -1,3 +1,5 @@
+import '@enonic/nashorn-polyfills'; // Quickfix for support #5004 Number.isInteger used in set-value
+
 //──────────────────────────────────────────────────────────────────────────────
 // Node modules (webpacked)
 //──────────────────────────────────────────────────────────────────────────────
