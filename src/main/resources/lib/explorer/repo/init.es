@@ -20,6 +20,8 @@ export function init({
 } = {}) {
 	//log.info(`repoId:${repoId} branchId:${branchId}`);
 
+	// TODO Check format of repoId?
+
 	const createRepoParams = {
 		id: repoId,
 		rootPermissions: ROOT_PERMISSIONS_EXPLORER,

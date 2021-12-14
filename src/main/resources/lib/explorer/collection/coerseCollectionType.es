@@ -17,7 +17,7 @@ export function coerseCollectionType({
 }) {
 	return {
 		_id,
-		_name,
+		_name,// : _name.toLowerCase(), // It should be written in lowercase
 		_nodeType,
 		_path,
 		_score, // TODO _score -> __score

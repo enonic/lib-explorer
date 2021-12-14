@@ -22,6 +22,9 @@ export function maybeCreate({
 	rootPermissions = ROOT_PERMISSIONS_EXPLORER
 }) {
 	//log.info(`repoId:${toStr(repoId)}`);
+
+	// TODO Check format of repoId?
+
 	let getRepoRes = getRepo(repoId);
 	//log.info(`getRepoRes:${toStr(getRepoRes)}`);
 
