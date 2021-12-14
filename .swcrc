@@ -1,0 +1,28 @@
+{
+	"jsc": {
+		"baseUrl": ".",
+		"parser": {
+			"syntax": "typescript",
+			"jsx": false,
+			"dynamicImport": false,
+			"privateMethod": false,
+			"functionBind": false,
+			"exportDefaultFrom": false,
+			"exportNamespaceFrom": false,
+			"decorators": false,
+			"decoratorsBeforeExport": false,
+			"topLevelAwait": false,
+			"importMeta": false
+		},
+		"paths": {
+			"@enonic/js-utils": ["node_modules/@enonic/js-utils/src"],
+			"enonic-types/*": ["node_modules/enonic-types/*"],
+			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
+		},
+		"transform": null,
+		"target": "es5",
+		"loose": false,
+		"externalHelpers": false,
+		"keepClassNames": false
+	}
+}

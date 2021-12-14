@@ -1,3 +1,22 @@
+//──────────────────────────────────────────────────────────────────────────────
+//
+// I want as much of the code as possible to be testable outside Enonic XP.
+// A good way to achieve this is higher order programming.
+// Any time a java lib is required, it must be passed in as a function,
+// so it can be stubbed/mocked during testing.
+//
+//──────────────────────────────────────────────────────────────────────────────
+//
+// createDocument is a function that takes
+//  data (to be cleaned, validated, typeCasted and persisted)
+//  options (how to clean, validate and typeCast, where to persist)
+//
+//──────────────────────────────────────────────────────────────────────────────
+
+
+//──────────────────────────────────────────────────────────────────────────────
+// The old implementation
+//──────────────────────────────────────────────────────────────────────────────
 import {
 	indexTemplateToConfig,
 	isNotSet,
@@ -11,7 +30,7 @@ import {maybeAddFields} from '/lib/explorer/document/maybeAddFields';
 import {getDocumentTypeFromCollectionName} from '/lib/explorer/documentType/getDocumentTypeFromCollectionName';
 import {getFields} from '/lib/explorer/field/getFields';
 import {
-	DOCUMENT_METADATA,
+	FIELD_PATH_META,
 	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
@@ -62,6 +81,7 @@ export function create({
 	boolRequireValid,
 	collectionName,
 	connection,
+	documentTypeObj,
 	language,
 	...ignoredOptions
 } = {}) {
@@ -96,18 +116,18 @@ export function create({
 	const inputObject = JSON.parse(JSON.stringify(rest)); // ERROR JSON.stringify got a cyclic data structure
 	//delete inputObject._indexConfig;
 
-	if (isNotSet(inputObject[DOCUMENT_METADATA])) {
-		inputObject[DOCUMENT_METADATA] = {};
-	} else if (!isObject(inputObject[DOCUMENT_METADATA])) {
-		log.error(`document_metadata has to be an Object! Overwriting:${toStr(inputObject[DOCUMENT_METADATA])}`);
-		inputObject[DOCUMENT_METADATA] = {};
+	if (isNotSet(inputObject[FIELD_PATH_META])) {
+		inputObject[FIELD_PATH_META] = {};
+	} else if (!isObject(inputObject[FIELD_PATH_META])) {
+		log.error(`${FIELD_PATH_META} has to be an Object! Overwriting:${toStr(inputObject[FIELD_PATH_META])}`);
+		inputObject[FIELD_PATH_META] = {};
 	}
 
 	/*──────────────────────────────────────────────────────────────────────────
 	 Test if _indexconfig is added? SUCCESS :)
-	 Test unwanted properties in DOCUMENT_METADATA? SUCCESS :) They are not added.
+	 Test unwanted properties in FIELD_PATH_META? SUCCESS :) They are not added.
 	{
-	  document_metadata: {
+	  [FIELD_PATH_META]: {
 	    collector: {
 		  id: 'collectorId',
 		  version: '1.2.3'
@@ -122,38 +142,38 @@ export function create({
 	}
 	──────────────────────────────────────────────────────────────────────────*/
 
-	// Delete any property under DOCUMENT_METADATA except collector and language
-	//log.debug(`inputObject[DOCUMENT_METADATA]:${toStr(inputObject[DOCUMENT_METADATA])}`);
-	Object.keys(inputObject[DOCUMENT_METADATA]).forEach((k) => {
+	// Delete any property under FIELD_PATH_META except collector and language
+	//log.debug(`inputObject[FIELD_PATH_META]:${toStr(inputObject[FIELD_PATH_META])}`);
+	Object.keys(inputObject[FIELD_PATH_META]).forEach((k) => {
 		if (!['collector', 'language'].includes(k)) {
-			delete inputObject[DOCUMENT_METADATA][k];
+			delete inputObject[FIELD_PATH_META][k];
 		}
 	});
-	//log.debug(`inputObject[DOCUMENT_METADATA]:${toStr(inputObject[DOCUMENT_METADATA])}`);
+	//log.debug(`inputObject[FIELD_PATH_META]:${toStr(inputObject[FIELD_PATH_META])}`);
 
 	// NOTE: There are now two ways of passing in the language :(
 	//   1. As a option parameter
-	//   2. Via DOCUMENT_METADATA.language
+	//   2. Via FIELD_PATH_META.language
 	// We only want to support a single language per node (and reduce that to a single supported stemmingLanguage)
 	// It's possible to select a single language per collection, however some collections use different languages per node.
 	// Currently the option parameter comes from the collectionLanguage,
-	// while the DOCUMENT_METADATA is node specific and should override the option one.
+	// while the FIELD_PATH_META is node specific and should override the option one.
 
-	if (!inputObject[DOCUMENT_METADATA].language && language) {
-		inputObject[DOCUMENT_METADATA].language = language;
+	if (!inputObject[FIELD_PATH_META].language && language) {
+		inputObject[FIELD_PATH_META].language = language;
 	}
 
 	// _indexconfig is added automatically :)
-	if (inputObject[DOCUMENT_METADATA].language) {
+	if (inputObject[FIELD_PATH_META].language) {
 		// TODO We might want to cache language->stemmingLanguage somewhere
-		inputObject[DOCUMENT_METADATA].stemmingLanguage = javaLocaleToSupportedLanguage(inputObject[DOCUMENT_METADATA].language);
+		inputObject[FIELD_PATH_META].stemmingLanguage = javaLocaleToSupportedLanguage(inputObject[FIELD_PATH_META].language);
 	}
 
-	inputObject[DOCUMENT_METADATA].valid = true; // Temporary value so validation doesn't fail on this field.
-	inputObject[DOCUMENT_METADATA].createdTime = new Date(); // So validation doesn't fail on this field.
+	inputObject[FIELD_PATH_META].valid = true; // Temporary value so validation doesn't fail on this field.
+	inputObject[FIELD_PATH_META].createdTime = new Date(); // So validation doesn't fail on this field.
 
 	// Fields starting with underscore are not handeled by checkAndApplyTypes,
-	// Because we want full control over them. Same with document_metadata...
+	// Because we want full control over them. Same with FIELD_PATH_META...
 	const objToPersist = {
 		_name,
 		_inheritsPermissions: true,
@@ -170,8 +190,8 @@ export function create({
 	const fields = getFieldsWithIndexConfigAndValueType();
 
 	const languages = [];
-	if (inputObject[DOCUMENT_METADATA].stemmingLanguage) {
-		languages.push(inputObject[DOCUMENT_METADATA].stemmingLanguage);
+	if (inputObject[FIELD_PATH_META].stemmingLanguage) {
+		languages.push(inputObject[FIELD_PATH_META].stemmingLanguage);
 	}
 	const indexConfig = {
 		default: indexTemplateToConfig({
@@ -180,7 +200,7 @@ export function create({
 			languages
 		}),
 		configs: [/*{
-			path: DOCUMENT_METADATA,
+			path: FIELD_PATH_META,
 			config: indexTemplateToConfig({
 				template: 'minimal',
 				indexValueProcessors: [],
@@ -212,7 +232,7 @@ export function create({
 			fields,
 			indexConfig, // modified within function
 			inputObject: objToPersist, // only read from within function
-			language: inputObject[DOCUMENT_METADATA].stemmingLanguage
+			language: inputObject[FIELD_PATH_META].stemmingLanguage
 		});
 	} catch (e) {
 		if (boolRequireValid) {
@@ -225,17 +245,19 @@ export function create({
 	//log.debug(`indexConfig:${toStr(indexConfig)}`);
 
 	objToPersist._indexConfig = indexConfig;
-	objToPersist[DOCUMENT_METADATA].valid = boolValid;
+	objToPersist[FIELD_PATH_META].valid = boolValid;
 
 	//log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
 	const createdNode = connection.create(objToPersist);
 	//log.debug(`createdNode:${toStr(createdNode)}`);
 
-	const documentType = getDocumentTypeFromCollectionName({collectionName});
-	//log.debug(`document.create documentType:${toStr(documentType)}`);
+	if (!documentTypeObj) {
+		documentTypeObj = getDocumentTypeFromCollectionName({collectionName});
+	}
+	//log.debug(`document.create documentTypeObj:${toStr(documentTypeObj)}`);
 
 	maybeAddFields({
-		documentType,
+		documentType: documentTypeObj,
 		node: createdNode
 	});
 

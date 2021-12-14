@@ -24,6 +24,7 @@ export function createOrUpdate({
 	boolRequireValid,
 	collectionName,
 	connection,
+	documentTypeObj,
 	language,
 	...ignoredOptions
 } = {}) {
@@ -65,10 +66,23 @@ export function createOrUpdate({
 
 	let rv;
 	try {
-		rv = create(rest, {boolRequireValid, collectionName, connection, language});
+		rv = create(rest, {
+			boolRequireValid,
+			collectionName,
+			connection,
+			documentTypeObj,
+			language
+		});
 	} catch (catchedError) {
 		if (catchedError.class && CATCH_CLASS_NAMES.includes(catchedError.class.name)) {
-			rv = update(rest, {boolPartial, boolRequireValid, collectionName, connection, language});
+			rv = update(rest, {
+				boolPartial,
+				boolRequireValid,
+				collectionName,
+				connection,
+				documentTypeObj,
+				language
+			});
 		} else {
 			if (catchedError.class) {
 				log.error(toStr({catchedErrorClassName: catchedError.class.name}), catchedError);
