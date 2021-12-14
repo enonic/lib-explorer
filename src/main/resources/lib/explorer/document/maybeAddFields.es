@@ -13,9 +13,10 @@ export function maybeAddFields({
 	if (!addFields) return;
 
 	const fieldPaths = {};
-	documentType.fields.forEach(({key}) => {
+	// TODO add all globalfields here?
+	/*documentType.fields.forEach(({key}) => {
 		fieldPaths[key] = true;
-	});
+	});*/
 	documentType.properties.forEach(({name}) => {
 		fieldPaths[name] = true;
 	});

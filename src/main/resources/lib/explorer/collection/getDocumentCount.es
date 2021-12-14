@@ -21,6 +21,7 @@ export function getDocumentCount(name) {
 			//noop
 		} else {
 			log.error('Does this ever happen?', e);
+			// Yes: java.lang.IllegalArgumentException: RepositoryId format incorrect: com.enonic.app.explorer.collection.zsfgrH
 		}
 	}
 	return count;
