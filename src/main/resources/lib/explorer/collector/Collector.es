@@ -1,4 +1,9 @@
-import {isNotSet, toStr} from '@enonic/js-utils';
+import {
+	VALUE_TYPE_STRING,
+	isNotSet,
+	toStr,
+	uniqueId
+} from '@enonic/js-utils';
 
 //import {validateLicense} from '/lib/license';
 
@@ -7,9 +12,11 @@ import {send} from '/lib/xp/mail';
 import {
 	//APP_EXPLORER,
 	NT_DOCUMENT,
-	PRINCIPAL_EXPLORER_READ
+	PRINCIPAL_EXPLORER_READ,
+	REPO_ID_EXPLORER
 } from '/lib/explorer/model/2/constants';
 
+import {get as getCollection} from '/lib/explorer/collection/get';
 import {createOrUpdate} from '/lib/explorer/document/createOrUpdate';
 import {get as getNode} from '/lib/explorer/node/get';
 import {connect} from '/lib/explorer/repo/connect';
@@ -33,26 +40,111 @@ const {currentTimeMillis} = Java.type('java.lang.System');
 
 
 export class Collector {
+	//#collectionDefaultDocumentTypeId;
+	#collectionId;
+	#collectionName;
+	#collectorId;
+	#documentTypeObj;
+	//#documentTypesObj;
 	#language;
 
-	constructor({name, collectorId, configJson, language}) {
+	constructor({
+		collectionId,
+		collectorId,
+		configJson,
+		documentTypeObj = {
+			properties: [{
+				enabled: true,
+				fulltext: true,
+				includeInAllText: true,
+				max: 0,
+				min: 0,
+				name: 'text',
+				nGram: true,
+				path: false,
+				valueType: VALUE_TYPE_STRING
+			}, {
+				enabled: true,
+				fulltext: true,
+				includeInAllText: true,
+				max: 0,
+				min: 0,
+				name: 'title',
+				nGram: true,
+				path: false,
+				valueType: VALUE_TYPE_STRING
+			}, {
+				enabled: true,
+				fulltext: true,
+				includeInAllText: true,
+				max: 0,
+				min: 0,
+				name: 'uri',
+				nGram: true,
+				path: false,
+				valueType: VALUE_TYPE_STRING
+			}]
+		},
+		language,
+		name
+	}) {
 		//log.info(toStr({name, collectorId, configJson}));
+		const explorerRepoReadConnection = connect({
+			principals: [PRINCIPAL_EXPLORER_READ]
+		});
 
-		if (!name) { throw new Error('Missing required parameter name!'); }
-		this.name = name;
+		let collectionNode;
+		if (!collectionId) {
+			if (!name) {
+				//throw new Error('Missing required parameter collectionId!'); // TODO lib-explorer-5.0.0
+				throw new Error('You have to provide collectionId (or name)!');
+			} else {
+				this.#collectionName = name;
+				log.warning(`Collector constructor parameter 'name' is deprecated in lib-explorer-4.0.0 and will be removed in lib-explorer-5.0.0, use collectionId instead!`); // TODO
+				collectionNode = getCollection({
+					connection: explorerRepoReadConnection,
+					name
+				});
+				if (!collectionNode) {
+					throw new Error(`Unable to find collection from name:${name}!`);
+				}
+				//log.debug(`collectionNode from name:${toStr(collectionNode)}`);
+				this.#collectionId = collectionNode._id;
+			}
+		} else {
+			collectionNode = explorerRepoReadConnection.get(collectionId);
+			//log.debug(`collectionNode:${toStr(collectionNode)}`);
+			this.#collectionId = collectionId;
+			this.#collectionName = collectionNode._name;
+		}
+		//log.debug(`this.#collectionId:${this.#collectionId}`);
+		//log.debug(`this.#collectionName:${this.#collectionName}`);
+
 		if (!collectorId) { throw new Error('Missing required parameter collectorId!'); }
-		this.collectorId = collectorId;
+		this.#collectorId = collectorId;
+		//log.debug(`this.#collectorId:${this.#collectorId}`);
+
 		if (!configJson) { throw new Error('Missing required parameter configJson!'); }
+
+		this.#documentTypeObj = documentTypeObj;
+		//this.#documentTypesObj = {};
 
 		if (language) {
 			//this.#language = javaLocaleToSupportedLanguage(language);
 			this.#language = language; // Reducing to stemmingLanguage happens inside create and update
 		}
+		//log.debug(`this.#language:${this.#language}`);
 
-		/*const explorerRepoReadConnection = connect({
-			principals: [PRINCIPAL_EXPLORER_READ]
-		});
-		const collectionsTotalCount = getTotalCount({ connection: explorerRepoReadConnection });
+		// Collections created by Collectors doesn't have documentType...
+		/*if (collectionNode.documentTypeId) {
+			throw new Error(`The collection with id:${this.#collectionId} is missing a documentTypeId!`);
+		}
+		this.#collectionDefaultDocumentTypeId = collectionNode.documentTypeId;
+		const documentTypeNode = explorerRepoReadConnection.get(this.#collectionDefaultDocumentTypeId);
+		this.#documentTypesObj[this.#collectionDefaultDocumentTypeId] = documentTypeNode;
+		log.debug(`this.#documentTypesObj:${this.#documentTypesObj}`);*/
+
+		/*const collectionsTotalCount = getTotalCount({ connection: explorerRepoReadConnection });
 		//log.info(`collectionsTotalCount:${collectionsTotalCount}`);
 
         // WARNING https://github.com/enonic/lib-license/issues/21
@@ -90,20 +182,20 @@ export class Collector {
 			current: 0,
 			total: 1, // Or it will appear as there is nothing to do.
 			info: {
-				name: this.name,
+				name: this.#collectionName,
 				message: 'Initializing...',
 				startTime: this.startTime
 			}
 		};
 		DEBUG && log.debug(`Collector.start this.taskProgressObj:${toStr(this.taskProgressObj)}`);
 		this.progress();
-		this.collection = new Collection({name: this.name});
+		this.collection = new Collection({name: this.#collectionName});
 		modifyTask({
 			connection: this.collection.connection,
 			state: 'RUNNING',
 			should: 'RUN'
 		});
-		this.journal = new Journal({name: this.name, startTime: this.startTime});
+		this.journal = new Journal({name: this.#collectionName, startTime: this.startTime});
 	} // start
 
 
@@ -172,11 +264,46 @@ export class Collector {
 			_nodeType: NT_DOCUMENT,
 			_parentPath,
 			document_metadata: {
+				//──────────────────────────────────────────────────────────────
+				// Overrideable
+				//──────────────────────────────────────────────────────────────
+				documentType: {
+					/*id: uniqueId({ // Unique across all repos...
+						repoId: REPO_ID_EXPLORER,
+						//branchId,
+						nodeId: this.#collectionDefaultDocumentTypeId//,
+						//versionKey
+					}),*/
+					//name: this.#documentTypesObj[this.#collectionDefaultDocumentTypeId]._name
+					name: this.#collectorId
+				},
+
+				//──────────────────────────────────────────────────────────────
+				// Passed in (may contain overrides)
+				//──────────────────────────────────────────────────────────────
 				...document_metadata_props, // might contain language
+
+				//──────────────────────────────────────────────────────────────
+				// Non-overrideables:
+				//──────────────────────────────────────────────────────────────
+
+				//branchId: this.collection.branch
 				collector: {
 					//appName: app.name,
-					id: this.collectorId, // This contains both appName and taskName
+					id: this.#collectorId, // This contains both appName and taskName
 					version: app.version
+				},
+				collection: {
+					id: uniqueId({ // Unique across all repos...
+						repoId: REPO_ID_EXPLORER,
+						//branchId,
+						nodeId: this.#collectionId//,
+						//versionKey
+					}),
+					name: this.#collectionName
+				},
+				repo: {
+					name: this.collection.repoId
 				}
 			},
 			uri
@@ -197,6 +324,7 @@ export class Collector {
 		const persistedNode = createOrUpdate(documentToPersist, {
 			boolRequireValid,
 			connection: this.collection.connection,
+			documentTypeObj: this.#documentTypeObj,
 			language: this.#language
 		});
 		if (!persistedNode) {
@@ -248,7 +376,7 @@ export class Collector {
 					const emailParams = {
 						from: 'explorer-noreply@enonic.com',
 						to: emails,
-						subject: `Collecting to ${this.name} had ${this.journal.errors.length} errors!`,
+						subject: `Collecting to ${this.#collectionName} had ${this.journal.errors.length} errors!`,
 						body: `${toStr(this.journal.errors)}`
 					};
 					log.info(`emailParams:${toStr(emailParams)}`);
@@ -274,7 +402,7 @@ export class Collector {
 				const emailParams = {
 					from: 'explorer-noreply@enonic.com',
 					to: emails,
-					subject: `Collecting to ${this.name} successful :)`,
+					subject: `Collecting to ${this.#collectionName} successful :)`,
 					body: `:)`
 				};
 				log.info(`emailParams:${toStr(emailParams)}`);
