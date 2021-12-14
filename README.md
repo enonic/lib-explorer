@@ -12,10 +12,16 @@ or
 $ git clone https://github.com/enonic/lib-explorer.git && cd lib-explorer
 ```
 
-## Buildling
+## Building
 
 ```sh
 $ enonic project gradle clean build
+```
+
+## Testing
+
+```sh
+$ yarn run test
 ```
 
 ## Publishing

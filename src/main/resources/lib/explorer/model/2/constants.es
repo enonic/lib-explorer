@@ -3,10 +3,17 @@ import {
 	DOT_SIGN,
 	INDEX_CONFIG_N_GRAM,
 	VALUE_TYPE_BOOLEAN,
+	//VALUE_TYPE_DOUBLE,
 	VALUE_TYPE_INSTANT,
+	//VALUE_TYPE_REFERENCE,
 	VALUE_TYPE_SET,
 	VALUE_TYPE_STRING
 } from '@enonic/js-utils';
+
+export {
+	FIELD_PATH_GLOBAL,
+	FIELD_PATH_META
+} from '../../constants';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Admin tool
@@ -17,12 +24,15 @@ export const APP_EXPLORER = 'com.enonic.app.explorer';
 // Folders
 //──────────────────────────────────────────────────────────────────────────────
 export const INTERFACES_FOLDER = 'interfaces';
+const FOLDER_API_KEYS = 'api-keys';
+const FOLDER_COLLECTORS = 'collectors';
+const FOLDER_FIELDS = 'fields';
 
 export const FOLDERS = [
-	'api-keys',
+	FOLDER_API_KEYS,
 	'collections',
-	'collectors',
-	'fields',
+	FOLDER_COLLECTORS,
+	FOLDER_FIELDS,
 	INTERFACES_FOLDER,
 	'notifications',
 	'stopwords',
@@ -51,14 +61,22 @@ export const NT_THESAURUS = `${APP_EXPLORER}${COLON_SIGN}thesaurus`;
 export const INDEX_CONFIG_STOP_WORDS = {default: 'byType'};
 
 //──────────────────────────────────────────────────────────────────────────────
-// Various
+// Node paths
 //──────────────────────────────────────────────────────────────────────────────
-export const PATH_API_KEYS = '/api-keys';
-export const PATH_COLLECTORS = '/collectors';
-export const PATH_FIELDS = '/fields';
-export const PATH_INTERFACES = '/interfaces';
+export const PATH_API_KEYS = `/${FOLDER_API_KEYS}`;
+export const PATH_COLLECTORS = `/${FOLDER_COLLECTORS}`;
+export const PATH_FIELDS = `/${FOLDER_FIELDS}`;
+export const PATH_INTERFACES = `/${INTERFACES_FOLDER}`;
 
-export const DOCUMENT_METADATA = 'document_metadata';
+//──────────────────────────────────────────────────────────────────────────────
+// Field paths (Namespaces)
+//──────────────────────────────────────────────────────────────────────────────
+export const DOCUMENT_METADATA = 'document_metadata'; // Deprecated, should not be used anywhere
+const FIELD_PATH_META_SANITIZED = 'document-metadata'; // sanitize make _ into -
+
+//──────────────────────────────────────────────────────────────────────────────
+// Fields / indexConfig
+//──────────────────────────────────────────────────────────────────────────────
 export const FIELD_MODIFIED_TIME_INDEX_CONFIG = 'minimal';
 
 export const FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG = {
@@ -91,109 +109,199 @@ export const NO_VALUES_FIELDS = [{
 	fieldType: VALUE_TYPE_STRING,
 	inResults: false // Used in interface/GraphQL and services/interfaceList.es
 },{
-	_name: 'document-metadata', // sanitize make _ into -
+	_name: FIELD_PATH_META_SANITIZED, // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: DOCUMENT_METADATA,
+	key: FIELD_PATH_META,
 	max: 1,
 	min: 1
 },{
-	_name: 'document-metadata.collector', // sanitize make _ into -
+	_name: `${FIELD_PATH_META_SANITIZED}.collector`, // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: `${DOCUMENT_METADATA}.collector`,
+	key: `${FIELD_PATH_META}.collector`,
 	max: 1,
 	min: 0
 },{
-	_name: 'document-metadata.collector.id', // sanitize make _ into -
+	_name: `${FIELD_PATH_META_SANITIZED}.collector.id`, // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: `${DOCUMENT_METADATA}.collector.id`,
+	key: `${FIELD_PATH_META}.collector.id`,
 	max: 1,
 	min: 0
 },{
-	_name: 'document-metadata.collector.version', // sanitize make _ into -
+	_name: `${FIELD_PATH_META_SANITIZED}.collector.version`, // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: `${DOCUMENT_METADATA}.collector.version`,
+	key: `${FIELD_PATH_META}.collector.version`,
 	max: 1,
 	min: 0
+},/*{
+	_name: `${FIELD_PATH_META_SANITIZED}.collection`, // sanitize make _ into -
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_SET,
+	indexConfig: 'minimal',
+	inResults: false,
+	key: `${FIELD_PATH_META}.collection`,
+	max: 1,
+	min: 1
 },{
-	_name: 'document-metadata.createdTime', // sanitize make _ into -
+	_name: `${FIELD_PATH_META_SANITIZED}.collection.id`, // sanitize make _ into -
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_REFERENCE,
+	indexConfig: 'minimal',
+	inResults: false,
+	key: `${FIELD_PATH_META}.collection.id`,
+	max: 1,
+	min: 1
+},*/{
+	_name: `${FIELD_PATH_META_SANITIZED}.collection`, // sanitize make _ into -
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_STRING,
+	indexConfig: 'minimal',
+	inResults: true,
+	key: `${FIELD_PATH_META}.collection`,
+	max: 1,
+	min: 1
+},{
+	_name: `${FIELD_PATH_META_SANITIZED}.createdTime`, // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_INSTANT,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: `${DOCUMENT_METADATA}.createdTime`,
+	key: `${FIELD_PATH_META}.createdTime`,
+	max: 1,
+	min: 1
+},/*{
+	_name: `${FIELD_PATH_META_SANITIZED}.documentType`, // sanitize make _ into -
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_SET,
+	indexConfig: 'minimal',
+	inResults: false,
+	key: `${FIELD_PATH_META}.documentType`,
 	max: 1,
 	min: 1
 },{
-	_name: 'document-metadata.language', // sanitize make _ into -
+	_name: 'document-metadata.documentType.id', // sanitize make _ into -
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_REFERENCE,
+	indexConfig: 'minimal',
+	inResults: false,
+	key: `${FIELD_PATH_META}.documentType.id`,
+	max: 1,
+	min: 1
+},*/{
+	_name: 'document-metadata.documentType', // sanitize make _ into -
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_STRING,
+	indexConfig: 'minimal',
+	inResults: true,
+	key: `${FIELD_PATH_META}.documentType`,
+	max: 1,
+	min: 1
+},{
+	_name: `${FIELD_PATH_META_SANITIZED}.language`, // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG,
 	inResults: true,
-	key: `${DOCUMENT_METADATA}.language`,
+	key: `${FIELD_PATH_META}.language`,
 	max: 1,
 	min: 0
 },{
-	_name: 'document-metadata.modifiedTime', // sanitize make _ into -
+	_name: `${FIELD_PATH_META_SANITIZED}.modifiedTime`, // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_INSTANT,
 	indexConfig: FIELD_MODIFIED_TIME_INDEX_CONFIG,
 	inResults: false,
-	key: `${DOCUMENT_METADATA}.modifiedTime`,
+	key: `${FIELD_PATH_META}.modifiedTime`,
 	max: 1,
 	min: 0
+},/*{
+	_name: `${FIELD_PATH_META_SANITIZED}.repo`, // sanitize make _ into -
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_SET,
+	indexConfig: 'minimal',
+	inResults: false,
+	key: `${FIELD_PATH_META}.repo`,
+	max: 1,
+	min: 1
 },{
-	_name: 'document-metadata.stemmingLanguage', // sanitize make _ into -
+	_name: `${FIELD_PATH_META_SANITIZED}.repo`, // sanitize make _ into -
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_STRING,
+	indexConfig: 'minimal',
+	inResults: true,
+	key: `${FIELD_PATH_META}.repo`,
+	max: 1,
+	min: 1
+},*/{
+	_name: `${FIELD_PATH_META_SANITIZED}.stemmingLanguage`, // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: FIELD_DOCUMENT_METADATA_STEMMING_LANGUAGE_INDEX_CONFIG,
 	inResults: true,
-	key: `${DOCUMENT_METADATA}.stemmingLanguage`,
+	key: `${FIELD_PATH_META}.stemmingLanguage`,
 	max: 1,
 	min: 0
 },{
-	_name: 'document-metadata.valid', // sanitize make _ into -
+	_name: `${FIELD_PATH_META_SANITIZED}.valid`, // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_BOOLEAN,
 	indexConfig: 'minimal',
 	inResults: false,
-	key: `${DOCUMENT_METADATA}.valid`,
+	key: `${FIELD_PATH_META}.valid`,
 	max: 1,
 	min: 1
 }];
 
 // READONLY_FIELDS are included in SYSTEM_FIELDS which are fields that do not exist as nodes in explorer-repo.
 export const READONLY_FIELDS = [{
-	key: '_nodeType',
 	_name: 'underscore-nodetype', // sanitize removes _ and makes T small
+	key: '_nodeType',
 	denyDelete: true,
 	denyValues: false,
-	//displayName: 'Type',
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
+	//inResults: false,
 	max: 1,
 	min: 1
-}];
+}/*,{
+	_name: 'underscore-score', // sanitize removes _ and makes T small
+	key: '_score',
+	denyDelete: true,
+	denyValues: true,
+	fieldType: VALUE_TYPE_DOUBLE,
+	indexConfig: 'minimal',
+	inResults: true,
+	max: 1,
+	min: 0
+}*/];
 
 // READWRITE_FIELDS are NOT included in SYSTEM_FIELDS
 // READWRITE_FIELDS are created as nodes during the app-explorer/tasks/init

@@ -15,7 +15,7 @@ import {checkAndApplyTypes/*, tryApplyValueType*/} from '/lib/explorer/document/
 import {maybeAddFields} from '/lib/explorer/document/maybeAddFields';
 import {getDocumentTypeFromCollectionName} from '/lib/explorer/documentType/getDocumentTypeFromCollectionName';
 import {
-	DOCUMENT_METADATA,
+	FIELD_PATH_META,
 	FIELD_MODIFIED_TIME_INDEX_CONFIG,
 	NT_DOCUMENT
 } from '/lib/explorer/model/2/constants';
@@ -29,22 +29,22 @@ import {instant} from '/lib/xp/value.js';
 
 //──────────────────────────────────────────────────────────────────────────
 // Goals:
-//  * Build fresh _indexConfig from everything (except NEW DOCUMENT_METADATA.modifiedTime) that gets stored based on the current field configuration.
-//  * Validate everything (except NEW DOCUMENT_METADATA.modifiedTime) that gets stored (checking types, occurrences) against the current field configuration.
-//  * Diff everything (except DOCUMENT_METADATA.modifiedTime)
+//  * Build fresh _indexConfig from everything (except NEW FIELD_PATH_META.modifiedTime) that gets stored based on the current field configuration.
+//  * Validate everything (except NEW FIELD_PATH_META.modifiedTime) that gets stored (checking types, occurrences) against the current field configuration.
+//  * Diff everything (except FIELD_PATH_META.modifiedTime)
 //
 // Thoughts:
 //  * The existing document need to be fetched for diffing, and for partial updates.
 //  * Even the _indexConfig could be validated.
 //
 // Implementation steps:
-//  1. Fetch exisiting document (for multiple possible uses) and remove POTENTIAL OLD DOCUMENT_METADATA.modifiedTime.
+//  1. Fetch exisiting document (for multiple possible uses) and remove POTENTIAL OLD FIELD_PATH_META.modifiedTime.
 //  2. Determine all data to build _indexConfig from
 //   2a. Full update (do not use exisiting document).
 //   2b. Partial update (apply new data upon existing document).
 //  3. Build fresh _indexConfig. NOTE: We are checking occurrences at the same time (but not occurrences within _indexConfig)
 //  4. Validate the document to be stored (only type checking, because occurrences already checked).
-//  5. Diff the document to be stored against exisiting document (even DOCUMENT_METADATA.valid).
+//  5. Diff the document to be stored against exisiting document (even FIELD_PATH_META.valid).
 //   5a. No changes: "quit"
 //   5b. Changes: apply types, apply NEW modifiedTime and _indexConfig for modifiedTime. Finally modify the document node.
 //──────────────────────────────────────────────────────────────────────────
@@ -56,6 +56,7 @@ export function update({
 	boolRequireValid,
 	collectionName,
 	connection,
+	documentTypeObj,
 	language: languageParam,
 	...ignoredOptions
 } = {}) {
@@ -99,8 +100,8 @@ export function update({
 	}
 	//log.debug(`_id:${toStr(_id)}`);
 
-	if (!passedInDataExceptId[DOCUMENT_METADATA]) {
-		passedInDataExceptId[DOCUMENT_METADATA] = {};
+	if (!passedInDataExceptId[FIELD_PATH_META]) {
+		passedInDataExceptId[FIELD_PATH_META] = {};
 	}
 
 	//──────────────────────────────────────────────────────────────────────────
@@ -112,9 +113,9 @@ export function update({
 	}
 	//log.info(`existingNode:${toStr(existingNode)}`);
 
-	if (existingNode[DOCUMENT_METADATA]) { // Ticket#4971 Old documents doesn't have the new field document_metadata
+	if (existingNode[FIELD_PATH_META]) { // Ticket#4971 Old documents doesn't have the new field FIELD_PATH_META
 		// Not needed for partial update and unwanted when diffing
-		delete existingNode[DOCUMENT_METADATA].modifiedTime;
+		delete existingNode[FIELD_PATH_META].modifiedTime;
 	}
 
 	if (isObject(existingNode._indexConfig) && existingNode._indexConfig.configs) {
@@ -123,7 +124,7 @@ export function update({
 		}
 		let indexOfConfigForModifiedTime = -1;
 		existingNode._indexConfig.configs.forEach(({path}, i) => {
-			if (path === 'document_metadata.modifiedTime') {
+			if (path === `${FIELD_PATH_META}.modifiedTime`) {
 				indexOfConfigForModifiedTime = i;
 			}
 		});
@@ -142,42 +143,42 @@ export function update({
 	delete dataToBuildIndexConfigFrom._indexConfig;
 
 	// Handling corruptions in old data
-	if (!dataToBuildIndexConfigFrom[DOCUMENT_METADATA]) {
-		dataToBuildIndexConfigFrom[DOCUMENT_METADATA] = {};
-	} else if (!isObject(dataToBuildIndexConfigFrom[DOCUMENT_METADATA])) {
-		log.error(`_id:${_id} document_metadata has to be an Object! Overwriting:${toStr(dataToBuildIndexConfigFrom[DOCUMENT_METADATA])}`);
-		dataToBuildIndexConfigFrom[DOCUMENT_METADATA] = {};
+	if (!dataToBuildIndexConfigFrom[FIELD_PATH_META]) {
+		dataToBuildIndexConfigFrom[FIELD_PATH_META] = {};
+	} else if (!isObject(dataToBuildIndexConfigFrom[FIELD_PATH_META])) {
+		log.error(`_id:${_id} ${FIELD_PATH_META} has to be an Object! Overwriting:${toStr(dataToBuildIndexConfigFrom[FIELD_PATH_META])}`);
+		dataToBuildIndexConfigFrom[FIELD_PATH_META] = {};
 	}
 
 	const now = new Date();
 
-	if (isNotSet(dataToBuildIndexConfigFrom[DOCUMENT_METADATA].createdTime)) {
-		log.error(`_id:${_id} document_metadata.createdTime missing, setting to now`);
-		dataToBuildIndexConfigFrom[DOCUMENT_METADATA].createdTime = now;
+	if (isNotSet(dataToBuildIndexConfigFrom[FIELD_PATH_META].createdTime)) {
+		log.error(`_id:${_id} ${FIELD_PATH_META}.createdTime missing, setting to now`);
+		dataToBuildIndexConfigFrom[FIELD_PATH_META].createdTime = now;
 	}
 
-	if (isNotSet(dataToBuildIndexConfigFrom[DOCUMENT_METADATA].valid)) {
-		log.error(`_id:${_id} document_metadata.valid missing, setting to false before validation`);
-		dataToBuildIndexConfigFrom[DOCUMENT_METADATA].valid = false;
+	if (isNotSet(dataToBuildIndexConfigFrom[FIELD_PATH_META].valid)) {
+		log.error(`_id:${_id} ${FIELD_PATH_META}.valid missing, setting to false before validation`);
+		dataToBuildIndexConfigFrom[FIELD_PATH_META].valid = false;
 	}
 
-	// Always delete old document_metadata.modifiedTime (if present)
-	delete dataToBuildIndexConfigFrom[DOCUMENT_METADATA].modifiedTime; // We don't want this before after diffing
+	// Always delete old FIELD_PATH_META.modifiedTime (if present)
+	delete dataToBuildIndexConfigFrom[FIELD_PATH_META].modifiedTime; // We don't want this before after diffing
 
 	// If full update:
 	// * delete old data
 	// * keep system fields (_id, _name, _path, _childOrder, _inheritsPermissions, _permissions, _state, _nodeType, _versionKey, _ts) (except _indexConfig)
-	// * keep document_metadata? (only createdTime) (not collector, modifiedTime, language, stemmingLanguage and valid)
+	// * keep FIELD_PATH_META? (only createdTime) (not collector, modifiedTime, language, stemmingLanguage and valid)
 	if (!boolPartial) {
 		delete dataToBuildIndexConfigFrom._indexConfig;
-		dataToBuildIndexConfigFrom[DOCUMENT_METADATA] = dataToBuildIndexConfigFrom[DOCUMENT_METADATA].createdTime
+		dataToBuildIndexConfigFrom[FIELD_PATH_META] = dataToBuildIndexConfigFrom[FIELD_PATH_META].createdTime
 			? {
-				createdTime: dataToBuildIndexConfigFrom[DOCUMENT_METADATA].createdTime
+				createdTime: dataToBuildIndexConfigFrom[FIELD_PATH_META].createdTime
 			}
 			: {};
 		Object.keys(dataToBuildIndexConfigFrom).forEach((k) => {
 			//log.debug(`k:${k}`);
-			if (!k.startsWith('_') && k !== 'document_metadata') {
+			if (!k.startsWith('_') && k !== FIELD_PATH_META) {
 				//log.debug(`deleting key:${k} with value:${toStr(dataToBuildIndexConfigFrom[k])}`);
 				delete dataToBuildIndexConfigFrom[k];
 				//delete withType[k];
@@ -186,22 +187,22 @@ export function update({
 	}
 	//log.debug(`dataToBuildIndexConfigFrom:${toStr(dataToBuildIndexConfigFrom)}`);
 
-	// At this point dataToBuildIndexConfigFrom SHOULD contain "old" system fields, old document_metadata and perhaps some old data (when partial update)
+	// At this point dataToBuildIndexConfigFrom SHOULD contain "old" system fields, old FIELD_PATH_META and perhaps some old data (when partial update)
 	// If the existing document is corrupt, an update should still work.
 	// Full update is easy, simply overwrite all root properties (fields)
 	// What should happen on partial update? Should values be added to previous if array??? Nah, any field mentioned should be overwritten. Or complexity escalates.
 
 	// NOTE: passedInDataExceptId may contain data we don't want the client to control:
 	// _name, _path, _childOrder, _inheritsPermissions, _nodeType, _permissions, _state, _versionKey, _ts
-	// document_metadata
+	// FIELD_PATH_META
 	// TODO Perhaps allow _indexConfig?
 
 	/*──────────────────────────────────────────────────────────────────────────
 	 Test if _indexconfig is added? SUCCESS :)
-	 Test unwanted properties in document_metadata? SUCCESS :) They are not added.
+	 Test unwanted properties in FIELD_PATH_META? SUCCESS :) They are not added.
 	{
       _id: "...",
-      document_metadata: {
+      FIELD_PATH_META: {
 	    collector: { // Yeah, it should be possible to change the collector on a collection with existing data...
   		  id: 'collectorId',
 		  version: '1.2.3'
@@ -217,24 +218,24 @@ export function update({
 	──────────────────────────────────────────────────────────────────────────*/
 
 	// NOTE Oh, man. We have tree places language can come from:
-	//   1. The existing node (dataToBuildIndexConfigFrom[DOCUMENT_METADATA].language)
+	//   1. The existing node (dataToBuildIndexConfigFrom[FIELD_PATH_META].language)
 	//   2. The collection language (languageParam)
-	//   3. Node specific language (document_metadata.language)
+	//   3. Node specific language (FIELD_PATH_META.language)
 	// 1 should only be kept if partial update and 2 and 3 is not passed in.
 	// 3 wins(if passed in), fallback to 2(if passed in), fallback to 1.
 
-	const language = passedInDataExceptId[DOCUMENT_METADATA].language
+	const language = passedInDataExceptId[FIELD_PATH_META].language
 		|| languageParam
-		|| dataToBuildIndexConfigFrom[DOCUMENT_METADATA].language; // Full update may have delete this
+		|| dataToBuildIndexConfigFrom[FIELD_PATH_META].language; // Full update may have delete this
 
-	// NOTE What if no document_metadata is passed in?
+	// NOTE What if no FIELD_PATH_META is passed in?
 	// We still have to set language?
 	Object.keys(passedInDataExceptId).forEach((k) => {
-		if (k === 'document_metadata') {
+		if (k === FIELD_PATH_META) {
 			// This will always remove collector unless passed in, but that's ok because collector is always passed in by Collector.persistDocument
 			// And it makes it possible to switch between using collector or document REST api for a collection.
-			dataToBuildIndexConfigFrom[DOCUMENT_METADATA].collector = passedInDataExceptId['document_metadata'].collector;
-		} else { // !document_metadata
+			dataToBuildIndexConfigFrom[FIELD_PATH_META].collector = passedInDataExceptId[FIELD_PATH_META].collector;
+		} else { // !FIELD_PATH_META
 			if (!k.startsWith('_')) {
 				// Do not add empty arrays
 				if (!(Array.isArray(passedInDataExceptId[k]) && !passedInDataExceptId[k].length)) {
@@ -244,9 +245,9 @@ export function update({
 		}
 	});
 	if (language) {
-		dataToBuildIndexConfigFrom[DOCUMENT_METADATA].language = language;
+		dataToBuildIndexConfigFrom[FIELD_PATH_META].language = language;
 		// TODO We might want to cache language->stemmingLanguage somewhere
-		dataToBuildIndexConfigFrom[DOCUMENT_METADATA].stemmingLanguage = javaLocaleToSupportedLanguage(language);
+		dataToBuildIndexConfigFrom[FIELD_PATH_META].stemmingLanguage = javaLocaleToSupportedLanguage(language);
 	}
 
 	// Handle potentially corrupt data
@@ -271,11 +272,11 @@ export function update({
 		inputObject: JSON.parse(JSON.stringify(dataToBuildIndexConfigFrom)), // only traversed within function
 		objToPersist: dataToBuildIndexConfigFrom // modified within function
 	});
-	dataToBuildIndexConfigFrom[DOCUMENT_METADATA].valid = boolValid; // Validity before checking occurrences.
+	dataToBuildIndexConfigFrom[FIELD_PATH_META].valid = boolValid; // Validity before checking occurrences.
 
 	const languages = [];
-	if (dataToBuildIndexConfigFrom[DOCUMENT_METADATA].stemmingLanguage) {
-		languages.push(dataToBuildIndexConfigFrom[DOCUMENT_METADATA].stemmingLanguage);
+	if (dataToBuildIndexConfigFrom[FIELD_PATH_META].stemmingLanguage) {
+		languages.push(dataToBuildIndexConfigFrom[FIELD_PATH_META].stemmingLanguage);
 	}
 	//log.debug(`update languages:${toStr(languages)}`);
 
@@ -291,7 +292,7 @@ export function update({
 			languages
 		}),
 		configs: [/*{
-			path: 'document_metadata',
+			path: 'FIELD_PATH_META',
 			config: templateToConfig({
 				template: 'minimal',
 				indexValueProcessors: [],
@@ -306,7 +307,7 @@ export function update({
 			fields,
 			indexConfig, // modified within function
 			inputObject: dataToBuildIndexConfigFrom, // only read from within function
-			language: dataToBuildIndexConfigFrom[DOCUMENT_METADATA].stemmingLanguage // may be undefined, especially for full updates
+			language: dataToBuildIndexConfigFrom[FIELD_PATH_META].stemmingLanguage // may be undefined, especially for full updates
 		});
 	} catch (e) {
 		if (boolRequireValid) {
@@ -333,7 +334,7 @@ export function update({
 	//log.debug(`existingNode._indexConfig.configs:${toStr(existingNode._indexConfig.configs)}`);
 
 	const documentToDiff = dataToBuildIndexConfigFrom; // No need to deref since we're not using dataToBuildIndexConfigFrom after this point...
-	documentToDiff[DOCUMENT_METADATA].valid = boolValid; // Final validity
+	documentToDiff[FIELD_PATH_META].valid = boolValid; // Final validity
 
 	documentToDiff._indexConfig = indexConfig;
 
@@ -368,10 +369,10 @@ export function update({
 	//──────────────────────────────────────────────────────────────────────────
 	// 5b. apply NEW modifiedTime and _indexConfig for modifiedTime
 	//──────────────────────────────────────────────────────────────────────────
-	documentWithType[DOCUMENT_METADATA].modifiedTime = instant(now);
+	documentWithType[FIELD_PATH_META].modifiedTime = instant(now);
 
 	const indexConfigForModifiedTime = {
-		path: 'document_metadata.modifiedTime',
+		path: `${FIELD_PATH_META}.modifiedTime`,
 		config: indexTemplateToConfig({
 			template: FIELD_MODIFIED_TIME_INDEX_CONFIG,
 			indexValueProcessors: [],
@@ -379,8 +380,8 @@ export function update({
 		})
 	};
 
-	// Since document_metadata.modifiedTime is deleted earlier this if should not be necessary
-	if (!documentWithType._indexConfig.configs.filter(({path}) => path === 'document_metadata.modifiedTime').length) {
+	// Since FIELD_PATH_META.modifiedTime is deleted earlier this if should not be necessary
+	if (!documentWithType._indexConfig.configs.filter(({path}) => path === `${FIELD_PATH_META}.modifiedTime`).length) {
 		documentWithType._indexConfig.configs.push(indexConfigForModifiedTime);
 	}
 
@@ -392,11 +393,13 @@ export function update({
 	});
 	//log.info(`updatedNode:${toStr(updatedNode)}`);
 
-	const documentType = getDocumentTypeFromCollectionName({collectionName});
-	//log.debug(`document.update documentType:${toStr(documentType)}`);
+	if (!documentTypeObj) {
+		documentTypeObj = getDocumentTypeFromCollectionName({collectionName});
+	}
+	//log.debug(`document.update documentTypeObj:${toStr(documentTypeObj)}`);
 
 	maybeAddFields({
-		documentType,
+		documentType: documentTypeObj,
 		node: updatedNode
 	});
 
