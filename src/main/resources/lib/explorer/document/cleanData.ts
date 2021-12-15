@@ -3,7 +3,6 @@ import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META
 } from '/lib/explorer/constants';
-//} from '../constants'; // So that mocha can resolve it?
 
 
 interface LooseObject {
@@ -17,7 +16,9 @@ interface CleanDataParameters {
 }
 
 const DEFAULT_LOG = {
-	warning: () => {/**/}
+	warning: (s: string) /*:void*/ => {
+		return s;
+	}
 };
 
 export function cleanData(
