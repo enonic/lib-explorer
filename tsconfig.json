@@ -43,7 +43,6 @@
 		"strictNullChecks": false,
 		"target": "esnext",
 		"types": [
-			"enonic-types",
 			"mocha",
 			"node"
 		]
