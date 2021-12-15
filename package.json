@@ -108,7 +108,7 @@
     "url": "git+https://github.com/enonic/lib-explorer"
   },
   "scripts": {
-    "build": "yarn build:ts",
+    "build": "yarn build:swc",
     "build:es:specs:cjsOld": "find src/main/resources/lib/explorer -name '*.spec.ts' | NODE_PATH=src/main/resources xargs npx esbuild --bundle --format=cjs --outbase=src/main/resources --outdir=build/esbuild/cjs --platform=node --target=node6.4.0 --tsconfig=tsconfig.specs.json",
     "build:es:specs:cjs": "find src/main/resources/lib/explorer -name '*.spec.ts' | NODE_PATH=src/main/resources xargs npx esbuild --bundle --format=cjs --main-fields=module,main --outbase=src/main/resources --outdir=build/esbuild/cjs --platform=neutral --target=es2015 --tsconfig=tsconfig.specs.json",
     "build:es:specs:esm": "find src/main/resources/lib/explorer -name '*.spec.ts' | NODE_PATH=src/main/resources xargs npx esbuild --bundle --format=esm --main-fields=module,main --outbase=src/main/resources --outdir=build/esbuild/esm --out-extension:.js=.mjs --platform=neutral --target=es2015 --tsconfig=tsconfig.specs.json",
@@ -117,10 +117,7 @@
     "build:ts": "npx tsc",
     "build:ts:specs": "npx tsc -p tsconfig.specs.json",
     "build:webpack:specs": "npx webpack -c webpack.config.specs.ts",
-    "bundle": "yarn bundle:rollup:esm",
-    "bundle:rollup:cjs": "rollup -f cjs -o build/rollup/index.cjs  -- build/tsc/lib/explorer/index.js",
-    "bundle:rollup:esm": "rollup -f esm -o build/rollup/index.mjs -- build/tsc/lib/explorer/index.js",
-    "bundle:rollup:umd": "rollup -f umd -o build/rollup/index.umd.js -- build/tsc/lib/explorer/index.js",
+    "bundle": "npx rollup -c",
     "clean": "rm -r build dist 2>/dev/null;true",
     "prebuild": "yarn clean",
     "prebundle": "yarn build",
