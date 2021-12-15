@@ -1,10 +1,19 @@
 import {deepStrictEqual} from 'assert';
 
+//import {VALUE_TYPE_STRING} from '@enonic/js-utils';
+//import {VALUE_TYPE_STRING} from '../../../../build/swc/main/resources/lib/explorer/index.js';
+//import libExplorer from '../../../../build/swc/main/resources/lib/explorer/index.js';
+
 import {
 	document
 } from '../../../../build/rollup/index.mjs';
 
-const {validateOccurrences} = document;
+//const {VALUE_TYPE_STRING} = libExplorer;
+const {validateTypes} = document;
+
+
+const VALUE_TYPE_BOOLEAN = 'boolean';
+const VALUE_TYPE_STRING = 'string';
 
 
 const log = { //console.log console.trace
@@ -27,9 +36,10 @@ const TESTS_VALID = [{
 	fields: []
 },{
 	data: {
-		text: null
+		text: ''
 	},
 	fields: [{
+		//valueType: VALUE_TYPE_STRING,
 		name: 'text'
 	}]
 },{
@@ -37,124 +47,98 @@ const TESTS_VALID = [{
 		text: 'a'
 	},
 	fields: [{
-		min: 1,
+		//valueType: VALUE_TYPE_STRING,
 		name: 'text'
 	}]
 },{
 	data: {
-		text: ['a','b']
+		text: 'a'
 	},
 	fields: [{
-		min: 2,
+		valueType: VALUE_TYPE_STRING,
 		name: 'text'
+	}]
+},{
+	data: {
+		boolean: false
+	},
+	fields: [{
+		valueType: VALUE_TYPE_BOOLEAN,
+		name: 'boolean'
+	}]
+},{
+	data: {
+		boolean: true
+	},
+	fields: [{
+		valueType: VALUE_TYPE_BOOLEAN,
+		name: 'boolean'
 	}]
 }];
 
 
 const TESTS_INVALID = [{
-	data: {},
+	data: {
+		text: true
+	},
 	fields: [{
-		min: 1,
+		valueType: VALUE_TYPE_STRING,
 		name: 'text'
 	}]
 },{
 	data: {
-		text: ''
+		text: false
 	},
 	fields: [{
-		min: 1,
-		name: 'text'
-	}]
-},/*{
-	data: {
-		text: {} // Enonified away?
-	},
-	fields: [{
-		min: 1,
-		name: 'text'
-	}]
-},*/{
-	data: {
-		text: []
-	},
-	fields: [{
-		min: 1,
+		valueType: VALUE_TYPE_STRING,
 		name: 'text'
 	}]
 },{
 	data: {
-		text: [[]] // Enonified away
+		text: {}
 	},
 	fields: [{
-		min: 1,
+		valueType: VALUE_TYPE_STRING,
 		name: 'text'
 	}]
 },{
 	data: {
-		text: [''] // Enonified away
+		text: new Date() // Oh no, enonify stringifies dates!
 	},
 	fields: [{
-		min: 1,
-		name: 'text'
-	}]
-},{
-	// No data param
-	fields: [{
-		min: 2,
-		name: 'text'
-	}]
-},{
-	data: {},
-	fields: [{
-		min: 2,
+		valueType: VALUE_TYPE_STRING,
 		name: 'text'
 	}]
 },{
 	data: {
-		text: 'a'
+		text: 1
 	},
 	fields: [{
-		min: 2,
+		valueType: VALUE_TYPE_STRING,
 		name: 'text'
 	}]
 },{
 	data: {
-		text: []
+		boolean: 'string'
 	},
 	fields: [{
-		min: 2,
-		name: 'text'
+		valueType: VALUE_TYPE_BOOLEAN,
+		name: 'boolean'
 	}]
-},{
-	data: {
-		text: ['a']
-	},
-	fields: [{
-		min: 2,
-		name: 'text'
-	}]
-}/*,{
-	data: {
-		text: ['a', ''] // Enonify doesn't remove empty string from array?
-	},
-	fields: [{
-		min: 2,
-		name: 'text'
-	}]
-}*/];
+}];
 
 
 function toStr(v) { return JSON.stringify(v); }
 
 
 describe('document', () => {
-	describe('validateOccurrences()', () => {
+	describe('validateTypes()', () => {
 		describe('--> true', () => {
 			TESTS_VALID.forEach((params) => {
 				it(`${toStr(params)}`, () => {
 					deepStrictEqual(
 						true,
-						validateOccurrences(params/*, {log}*/)
+						validateTypes(params/*, {log}*/)
 					);
 				});
 			});
@@ -164,7 +148,7 @@ describe('document', () => {
 				it(`${toStr(params)}`, () => {
 					deepStrictEqual(
 						false,
-						validateOccurrences(params/*, {log}*/)
+						validateTypes(params/*, {log}*/)
 					);
 				});
 			});

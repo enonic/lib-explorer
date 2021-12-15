@@ -10,8 +10,12 @@
 //
 //──────────────────────────────────────────────────────────────────────────────
 import {
-	enonify,
-	isSet,
+	VALUE_TYPE_ANY,
+	VALUE_TYPE_BOOLEAN,
+	VALUE_TYPE_STRING,
+	//enonify,
+	isNotSet,
+	//isSet,
 	isString,
 	toStr
 } from '@enonic/js-utils/dist/esm/index.mjs';
@@ -25,15 +29,15 @@ interface Field {
 	//readonly enabled :boolean
 	//readonly fulltext :boolean
 	//readonly includeInAllText :boolean
-	readonly max? :number
-	readonly min? :number
+	//readonly max? :number
+	//readonly min? :number
 	readonly name :string
 	//readonly nGram :boolean
 	//readonly path :boolean
-	//readonly valueType? :string
+	readonly valueType? :string
 }
 
-interface ValidateOccurrencesParameters {
+interface ValidateTypesParameters {
 	readonly data? :LooseObject
 	readonly fields? :Field[]
 }
@@ -43,64 +47,61 @@ const DEFAULT_LOG = {
 	debug: (s: string) /*:void*/ => {
 		return s;
 	},
+	error: (s: string) /*:void*/ => {
+		return s;
+	},
 	warning: (s: string) /*:void*/ => {
 		return s;
 	}
 };
 
 
-export function validateOccurrences({
+export function validateTypes({
 	data = {},
 	fields = []
-} :ValidateOccurrencesParameters = {} , {
+} :ValidateTypesParameters = {} , {
 	log = DEFAULT_LOG
 } = {}) {
-	//log.debug(`validateOccurrences data:${toStr(data)}`);
-	//log.debug(`validateOccurrences fields:${toStr(fields)}`);
+	//log.debug(`validateTypes data:${toStr(data)}`);
+	//log.debug(`validateTypes fields:${toStr(fields)}`);
 
-	const enonifiedData = enonify(data);
-	log.debug(`validateOccurrences enonifiedData:${toStr(enonifiedData)}`);
+	/*const enonifiedData = enonify(data); // NOTE enonify stringifies new Date(), etc
+	log.debug(`validateOccurrences enonifiedData:${toStr(enonifiedData)}`);*/
 
 	for (var i = 0; i < fields.length; i++) {
 		const {
-			max = 0,
-			min = 0,
+			valueType = VALUE_TYPE_STRING,
 			name
 		} = fields[i];
-		log.debug(`name:${name} min:${min} max:${max}`);
-		if (min === 0 && max === 0) {
+		log.debug(`validateTypes name:${name} valueType:${valueType}`);
+
+		const value = getIn(data, name);
+		if (isNotSet(value) || valueType === VALUE_TYPE_ANY) {
 			break;
 		}
 
-		const value = getIn(enonifiedData, name);
-		if (min > 0) { // Check required fields
-			// false is a valid value but NOT Truthy!
-			// [] is not a valid value but Truthy!
-			if (
-				!isSet(value)
-				|| (isString(value) && value === '')
-				|| (Array.isArray(value) && value.length === 0)
-			) {
-				log.warning(`Field ${name} is required! No value found in ${toStr(data)}`);
+		switch (valueType) {
+		case VALUE_TYPE_STRING:
+		case 'text': // TODO Remove in lib-explorer-4.0.0/app-explorer-2.0.0 ?
+		case 'html':
+		case 'tag':
+		case 'uri':
+		//case 'xml':
+			if (!isString(value)) {
+				const msg = `validateTypes: Not a string:${toStr(value)} at path:${name} in data:${toStr(data)}!`
+				log.debug(msg);
 				return false;
 			}
-			if (min > 1) {
-				if (!Array.isArray(value) || value.length < 2) {
-					const msg = `Expected at least ${min} values at path:${name}!`;
-					log.warning(msg);
-					return false;
-				}
+			break;
+		case VALUE_TYPE_BOOLEAN:
+			if (typeof value !== VALUE_TYPE_BOOLEAN) {
+				const msg = `validateTypes: Not a boolean:${toStr(value)} at path:${name} in data:${toStr(data)}!`
+				log.debug(msg);
+				return false;
 			}
-		}
-		// At this point fields is either not required, or required with at least one value
-		if (
-			max > 0 // Not infinite
-			&& Array.isArray(value) // and value an array
-			&& value.length > max // and array count larger than limit
-		) {
-			const msg = `Value occurrences:${value.length} exceeds max:${max} at path:${name}!`;
-			log.warning(msg);
-			return false;
+			break;
+		default:
+			throw new Error(`Unhandeled valueType:${valueType}!`);
 		}
 	} // for
 	return true;
