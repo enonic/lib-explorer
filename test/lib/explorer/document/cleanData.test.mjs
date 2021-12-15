@@ -6,9 +6,9 @@ import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META,
 	document
-} from '../../../../build/esbuild/esm/lib/explorer/index.mjs';
+//} from '../../../../build/esbuild/esm/lib/explorer/index.mjs';
 //} from '../../../../build/tsc/lib/explorer/index.js';
-//} from '../../../../build/rollup/index.mjs';
+} from '../../../../build/rollup/index.mjs';
 //} from '../../../../build/rollup/index.umd.js';
 //} from '../../../../build/rollup/index.cjs';
 
