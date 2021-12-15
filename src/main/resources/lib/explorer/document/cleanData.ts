@@ -1,8 +1,11 @@
-import {toStr} from '@enonic/js-utils';
+//import {toStr} from '@enonic/js-utils';
+import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
+
 import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META
-} from '/lib/explorer/constants';
+//} from '/lib/explorer/constants';
+} from '../constants';
 
 
 interface LooseObject {

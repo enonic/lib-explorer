@@ -12,7 +12,7 @@
 		"inlineSources": false,
 		"listEmittedFiles": true,
 		"listFiles": false,
-		"module": "commonjs",
+		"module": "es6",
 		"moduleResolution": "node",
 		"noEmitOnError": false,
 		"noErrorTruncation": true,
