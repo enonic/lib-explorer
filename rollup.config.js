@@ -3,9 +3,11 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 
 export default {
-	input: 'build/tsc/lib/explorer/index.js',
+	//input: 'build/tsc/lib/explorer/index.js',
+	input: 'build/swc/main/resources/lib/explorer/index.js',
 	output: {
-		dir: 'build/rollup',
+		//dir: '',
+		file: 'build/rollup/index.mjs',
 		format: 'esm'
 	},
 	plugins: [
