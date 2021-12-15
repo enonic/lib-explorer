@@ -2,7 +2,7 @@
 //
 // I want as much of the code as possible to be testable outside Enonic XP.
 // A good way to achieve this is higher order programming.
-// Any time a java lib is required, it must be passed in as a function,
+// Any time a java lib or global is required, it must be passed in as a function,
 // so it can be stubbed/mocked during testing.
 //
 //──────────────────────────────────────────────────────────────────────────────
@@ -12,6 +12,25 @@
 //  options (how to clean, validate and typeCast, where to persist)
 //
 //──────────────────────────────────────────────────────────────────────────────
+import {cleanData} from './cleanData';
+import {validate} from './validate';
+
+/*interface CreateOptions {
+	readonly validateOccurences? :boolean
+	readonly validateTypes? :boolean
+}*/
+
+export function create(data, {
+	validateOccurences = false,
+	validateTypes = true
+}) {
+	const cleanedData = cleanData({data}, {log});
+	const isValid = validate({
+		data: cleanedData,
+		validateOccurences,
+		validateTypes
+	}, {log});
+}
 
 
 //──────────────────────────────────────────────────────────────────────────────
