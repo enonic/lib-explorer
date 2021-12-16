@@ -28,6 +28,7 @@ import {
 	isGeoPoint,
 	isInstantString,
 	isInt,
+	isLocalDateString,
 	isNotSet,
 	isObject,
 	//isSet,
@@ -165,7 +166,7 @@ export function validateTypes({
 			}
 			break;
 		case VALUE_TYPE_LOCAL_DATE:
-			if (!(isDate(value) || isDateString(value))) {
+			if (!(isDate(value) || isLocalDateString(value))) {
 				const msg = `Not a LocalDate:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 				log.debug(msg);
 				return false;
