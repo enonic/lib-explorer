@@ -86,6 +86,50 @@ const INVALID_INSTANT_STRINGS = [
 	'2000-01-01T00:00:60Z',
 ];
 
+const LOCAL_DATE_STRINGS_VALID = [
+	'2011-12-03',
+	'0000-01-01',
+	'9999-12-31',
+	//new Date(),
+];
+
+const LOCAL_DATE_STRINGS_INVALID = [
+	// Invalid format
+	'0000-1-01', // Text '0000-1-01' could not be parsed at index 5 java.time.format.DateTimeParseException
+	'0000-01-01T', // Text '0000-01-01T' could not be parsed, unparsed text found at index 10 java.time.format.DateTimeParseException
+	// Valid format, but invalid date
+	'0000-00-01', // Text '0000-00-01' could not be parsed: Invalid value for MonthOfYear (valid values 1 - 12): 0 java.time.format.DateTimeParseException
+	'0000-01-00', // Text '0000-01-00' could not be parsed: Invalid value for DayOfMonth (valid values 1 - 28/31): 0 java.time.format.DateTimeParseException
+	'0000-13-01', // Text '0000-13-01' could not be parsed: Invalid value for MonthOfYear (valid values 1 - 12): 13 java.time.format.DateTimeParseException
+	'0000-01-32', // Text '0000-01-32' could not be parsed: Invalid value for DayOfMonth (valid values 1 - 28/31): 32 java.time.format.DateTimeParseException
+	// localDateString related, but not an actual localDateString
+	new Date().toDateString(),
+	new Date().toGMTString(),
+	new Date().toJSON(),
+	new Date().toLocaleDateString(),
+	new Date().toLocaleString(),
+	new Date().toLocaleTimeString(),
+	new Date().toISOString(),
+	//new Date().toSource(), // Deprecated
+	new Date().toString(),
+	new Date().toTimeString(),
+	new Date().toUTCString(),
+	Date.now(),
+	Date.parse('2011-12-03T10:15:30Z'),
+	Date.UTC(),
+	// Invalid input
+	'',
+	'a',
+	true,
+	false,
+	[],
+	{},
+	-1,
+	1,
+	-Infinity,
+	Infinity
+];
+
 const TIME_STRINGS = [
 	'00:00',
 	'00:00:00',
@@ -100,6 +144,7 @@ const TIME_STRINGS = [
 	'00:00:00.12345678',
 	'00:00:00.123456789'
 ];
+
 
 const GEOPOINTS = GEOPOINT_ARRAYS.concat(GEOPOINT_STRINGS);
 
@@ -214,14 +259,6 @@ const TESTS_VALID = [{
 	}]
 },{
 	data: {
-		localDate: '2011-12-03'
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LOCAL_DATE,
-		name: 'localDate'
-	}]
-},{
-	data: {
 		localDate: new Date()
 	},
 	fields: [{
@@ -259,6 +296,14 @@ const TESTS_VALID = [{
 	fields: [{
 		valueType: VALUE_TYPE_LOCAL_TIME,
 		name: 'localTime'
+	}]
+}))).concat(LOCAL_DATE_STRINGS_VALID.map(ld => ({
+	data: {
+		localDate: ld
+	},
+	fields: [{
+		valueType: VALUE_TYPE_LOCAL_DATE,
+		name: 'localDate'
 	}]
 })));
 
@@ -343,7 +388,15 @@ const TESTS_INVALID = [{
 		valueType: VALUE_TYPE_INSTANT,
 		name: 'instant'
 	}]
-})));
+}))).concat(LOCAL_DATE_STRINGS_INVALID.map(ld => ({
+	data: {
+		localDate: ld
+	},
+	fields: [{
+		valueType: VALUE_TYPE_LOCAL_DATE,
+		name: 'localDate'
+	}]
+})));;
 
 
 function toStr(v) { return JSON.stringify(v); }

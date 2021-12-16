@@ -1277,10 +1277,10 @@
   resolved "https://registry.yarnpkg.com/@enonic/fnv-plus/-/fnv-plus-1.3.0.tgz#be65a7b128a3b544f60aea3ef978d938e85869f3"
   integrity sha512-BCN9uNWH8AmiP7BXBJqEinUY9KXalmRzo+L0cB/mQsmFfzODxwQrbvxCHXUNH2iP+qKkWYtB4vyy8N62PViMFw==
 
-"@enonic/js-utils@0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@enonic/js-utils/-/js-utils-0.11.0.tgz#b2a724687ef553f0fb827bb3ba1ac90d5b4de1af"
-  integrity sha512-9EqhXdGgFksyAMsEAt1xAsrbBgm5eGNNrgTFI4rw4ptaxXZ9ZnTxqjyTOMu1AMOf6CVhIznnqm0GR8zmvWI8zA==
+"@enonic/js-utils@0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@enonic/js-utils/-/js-utils-0.12.0.tgz#06736e3a11222de1179c66f7308cdef10768bdea"
+  integrity sha512-T7Cnm0mn9NvK+kXqWnyGTCfAhH4KCCo/QBRA3u/BST4rD9vUQInWRhVn+w4GdPpD0d2ey43X8TeY32zGvA6iwA==
 
 "@eslint/eslintrc@^1.0.5":
   version "1.0.5"
