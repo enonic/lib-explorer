@@ -210,6 +210,22 @@ const TIME_STRINGS = [
 
 const GEOPOINTS = GEOPOINT_ARRAYS.concat(GEOPOINT_STRINGS);
 
+const UUIDV4 = [
+	'c51c80c2-66a1-442a-91e2-4f55b4256a72'
+];
+
+const NOT_UUIDV4 = [
+	'',
+	'a',
+	true,
+	false,
+	[],
+	{},
+	-1,
+	1,
+	-Infinity,
+	Infinity
+];
 
 const TESTS_VALID = [{
 	/* No params :) */
@@ -375,6 +391,14 @@ const TESTS_VALID = [{
 		valueType: VALUE_TYPE_LOCAL_DATE_TIME,
 		name: 'localDateTime'
 	}]
+}))).concat(UUIDV4.map(uuidv4 => ({
+	data: {
+		reference: uuidv4
+	},
+	fields: [{
+		valueType: VALUE_TYPE_REFERENCE,
+		name: 'reference'
+	}]
 })));
 
 
@@ -473,6 +497,14 @@ const TESTS_INVALID = [{
 	fields: [{
 		valueType: VALUE_TYPE_LOCAL_DATE_TIME,
 		name: 'localDateTime'
+	}]
+}))).concat(NOT_UUIDV4.map(uuidv4 => ({
+	data: {
+		reference: uuidv4
+	},
+	fields: [{
+		valueType: VALUE_TYPE_REFERENCE,
+		name: 'reference'
 	}]
 })));
 

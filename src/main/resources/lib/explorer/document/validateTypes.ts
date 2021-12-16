@@ -24,7 +24,6 @@ import {
 	VALUE_TYPE_STRING,
 	//enonify,
 	isDate,
-	isDateString,
 	isGeoPoint,
 	isInstantString,
 	isInt,
