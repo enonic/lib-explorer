@@ -29,6 +29,7 @@ import {
 	isInstantString,
 	isInt,
 	isLocalDateString,
+	isLocalDateTimeString,
 	isNotSet,
 	isObject,
 	//isSet,
@@ -173,7 +174,7 @@ export function validateTypes({
 			}
 			break;
 		case VALUE_TYPE_LOCAL_DATE_TIME:
-			if (!(isDate(value) || isDateString(value))) {
+			if (!(isDate(value) || isLocalDateTimeString(value))) {
 				const msg = `Not a LocalDateTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 				log.debug(msg);
 				return false;
