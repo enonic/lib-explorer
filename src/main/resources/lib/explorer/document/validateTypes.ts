@@ -19,18 +19,25 @@ import {
 	VALUE_TYPE_LOCAL_DATE_TIME,
 	VALUE_TYPE_LOCAL_TIME,
 	VALUE_TYPE_LONG,
+	VALUE_TYPE_REFERENCE,
 	VALUE_TYPE_SET,
 	VALUE_TYPE_STRING,
 	//enonify,
+	isDate,
+	isDateString,
 	isGeoPoint,
+	isInstantString,
 	isInt,
 	isNotSet,
 	isObject,
 	//isSet,
 	isString,
+	isTime,
 	toStr
 } from '@enonic/js-utils/dist/esm/index.mjs';
 import getIn from 'get-value';
+import {v4 as isUuid4} from 'is-uuid';
+
 
 interface LooseObject {
 	[key :string] :any
@@ -110,35 +117,35 @@ export function validateTypes({
 		case 'uri':
 		//case 'xml':
 			if (!isString(value)) {
-				const msg = `validateTypes: Not a string:${toStr(value)} at path:${name} in data:${toStr(data)}!`
+				const msg = `validateTypes: Not a String:${toStr(value)} at path:${name} in data:${toStr(data)}!`
 				log.debug(msg);
 				return false;
 			}
 			break;
 		case VALUE_TYPE_BOOLEAN:
 			if (typeof value !== VALUE_TYPE_BOOLEAN) {
-				const msg = `validateTypes: Not a boolean:${toStr(value)} at path:${name} in data:${toStr(data)}!`
+				const msg = `validateTypes: Not a Boolean:${toStr(value)} at path:${name} in data:${toStr(data)}!`
 				log.debug(msg);
 				return false;
 			}
 			break;
 		case VALUE_TYPE_LONG:
 			if (!isInt(value)) {
-				const msg = `Not an integer:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				const msg = `Not an Integer:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 				log.debug(msg);
 				return false;
 			}
 			break;
 		case VALUE_TYPE_DOUBLE:
 			if (!isFloat(value)) {
-				const msg = `Not a number:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				const msg = `Not a Number:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 				log.debug(msg);
 				return false;
 			}
 			break;
 		case VALUE_TYPE_SET:
 			if (!isObject(value)) {
-				const msg = `Not a set:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				const msg = `Not a Set:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 				log.debug(msg);
 				return false;
 			}
@@ -146,6 +153,41 @@ export function validateTypes({
 		case VALUE_TYPE_GEO_POINT:
 			if (!isGeoPoint(value)) {
 				const msg = `Not a GeoPoint:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				log.debug(msg);
+				return false;
+			}
+			break;
+		case VALUE_TYPE_INSTANT:
+			if (!(isDate(value) || isInstantString(value))) {
+				const msg = `Not an Instant:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				log.debug(msg);
+				return false;
+			}
+			break;
+		case VALUE_TYPE_LOCAL_DATE:
+			if (!(isDate(value) || isDateString(value))) {
+				const msg = `Not a LocalDate:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				log.debug(msg);
+				return false;
+			}
+			break;
+		case VALUE_TYPE_LOCAL_DATE_TIME:
+			if (!(isDate(value) || isDateString(value))) {
+				const msg = `Not a LocalDateTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				log.debug(msg);
+				return false;
+			}
+			break;
+		case VALUE_TYPE_LOCAL_TIME:
+			if (!(isTime(value) || isDate(value))) {
+				const msg = `Not a LocalTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				log.debug(msg);
+				return false;
+			}
+			break;
+		case VALUE_TYPE_REFERENCE:
+			if (!isUuid4(value)) {
+				const msg = `Not a Reference/UUIDv4 :${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 				log.debug(msg);
 				return false;
 			}
