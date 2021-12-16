@@ -12,9 +12,20 @@
 import {
 	VALUE_TYPE_ANY,
 	VALUE_TYPE_BOOLEAN,
+	VALUE_TYPE_DOUBLE,
+	VALUE_TYPE_GEO_POINT,
+	VALUE_TYPE_INSTANT,
+	VALUE_TYPE_LOCAL_DATE,
+	VALUE_TYPE_LOCAL_DATE_TIME,
+	VALUE_TYPE_LOCAL_TIME,
+	VALUE_TYPE_LONG,
+	VALUE_TYPE_SET,
 	VALUE_TYPE_STRING,
 	//enonify,
+	isGeoPoint,
+	isInt,
 	isNotSet,
+	isObject,
 	//isSet,
 	isString,
 	toStr
@@ -56,6 +67,17 @@ const DEFAULT_LOG = {
 };
 
 
+// Any Float number with a zero decimal part are implicitly cast to Integer,
+// so it is not possible to check if they are Float or not.
+function isFloat(n) {
+	return Number(n) === n;
+	//return Number(n) === n && n % 1 !== 0; //
+
+	// Test whether a value is a number primitive value that has no fractional
+	// part and is within the size limits of what can be represented as an exact integer
+	//return n === +n && n !== (n|0);
+}
+
 export function validateTypes({
 	data = {},
 	fields = []
@@ -96,6 +118,34 @@ export function validateTypes({
 		case VALUE_TYPE_BOOLEAN:
 			if (typeof value !== VALUE_TYPE_BOOLEAN) {
 				const msg = `validateTypes: Not a boolean:${toStr(value)} at path:${name} in data:${toStr(data)}!`
+				log.debug(msg);
+				return false;
+			}
+			break;
+		case VALUE_TYPE_LONG:
+			if (!isInt(value)) {
+				const msg = `Not an integer:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				log.debug(msg);
+				return false;
+			}
+			break;
+		case VALUE_TYPE_DOUBLE:
+			if (!isFloat(value)) {
+				const msg = `Not a number:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				log.debug(msg);
+				return false;
+			}
+			break;
+		case VALUE_TYPE_SET:
+			if (!isObject(value)) {
+				const msg = `Not a set:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+				log.debug(msg);
+				return false;
+			}
+			break;
+		case VALUE_TYPE_GEO_POINT:
+			if (!isGeoPoint(value)) {
+				const msg = `Not a GeoPoint:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 				log.debug(msg);
 				return false;
 			}
