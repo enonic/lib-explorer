@@ -33,7 +33,7 @@ import {
 	isObject,
 	//isSet,
 	isString,
-	isTime,
+	isTimeString,
 	toStr
 } from '@enonic/js-utils/dist/esm/index.mjs';
 import getIn from 'get-value';
@@ -180,7 +180,7 @@ export function validateTypes({
 			}
 			break;
 		case VALUE_TYPE_LOCAL_TIME:
-			if (!(isTime(value) || isDate(value))) {
+			if (!(isTimeString(value) || isDate(value))) {
 				const msg = `Not a LocalTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 				log.debug(msg);
 				return false;
