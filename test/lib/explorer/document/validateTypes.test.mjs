@@ -12,8 +12,6 @@ import {
 	BOOLEANS,
 	GEOPOINTS,
 	EMPTY_STRING,
-	DATE_OBJECT,
-	DATE_OBJECTS,
 	FLOATS, // double
 	INSTANTS,
 	INSTANT_STRINGS_INVALID,
@@ -23,9 +21,12 @@ import {
 	LOCAL_DATE_TIME_STRINGS_INVALID,
 	LOCAL_DATES,
 	LOCAL_TIMES,
+	OBJECTS,
 	NOT_BOOLEANS,
+	NOT_GEOPOINTS,
 	NOT_INTEGERS,
 	NOT_NUMBERS,
+	NOT_OBJECTS,
 	NOT_STRINGS,
 	NOT_UUIDV4,
 	STRINGS,
@@ -51,11 +52,11 @@ const VALUE_TYPE_STRING = 'string';
 
 
 const log = { //console.log console.trace
-	debug: () => {},
+	debug: () => {/**/},
 	//debug: (...s) => console.debug('DEBUG', ...s),
 	error: (...s) => console.error('ERROR', ...s),
 	info: (...s) => console.info('INFO ', ...s),
-	warning: (...s) => console.warn('WARN ', ...s),
+	warning: (...s) => console.warn('WARN ', ...s)
 };
 
 
@@ -85,14 +86,6 @@ const TESTS_VALID = [{
 	fields: [{
 		//valueType: VALUE_TYPE_STRING,
 		name: 'text'
-	}]
-},{
-	data: {
-		object: {}
-	},
-	fields: [{
-		valueType: VALUE_TYPE_SET,
-		name: 'object'
 	}]
 }].concat(
 	BOOLEANS.map(boolean => ({
@@ -142,6 +135,15 @@ const TESTS_VALID = [{
 			name: 'geoPoint'
 		}]
 	})),
+	{
+		data: {
+			geoPointArray: GEOPOINTS
+		},
+		fields: [{
+			valueType: VALUE_TYPE_GEO_POINT,
+			name: 'geoPointArray'
+		}]
+	},
 	INSTANTS.map(instant => ({
 		data: {
 			instant
@@ -242,6 +244,24 @@ const TESTS_VALID = [{
 			name: 'localTimeArray'
 		}]
 	},
+	OBJECTS.map(object => ({
+		data: {
+			object
+		},
+		fields: [{
+			valueType: VALUE_TYPE_SET,
+			name: 'object'
+		}]
+	})),
+	{
+		data: {
+			objectArray: OBJECTS
+		},
+		fields: [{
+			valueType: VALUE_TYPE_SET,
+			name: 'objectArray'
+		}]
+	},
 	STRINGS.map(string => ({
 		data: {
 			string
@@ -326,6 +346,24 @@ const TESTS_INVALID = [{
 			valueType: VALUE_TYPE_DOUBLE,
 			//min: 0 || >2,
 			name: 'doubleArray'
+		}]
+	},
+	NOT_GEOPOINTS.map(notGeoPoint => ({
+		data: {
+			geoPoint: notGeoPoint
+		},
+		fields: [{
+			valueType: VALUE_TYPE_GEO_POINT,
+			name: 'geoPoint'
+		}]
+	})),
+	{
+		data: {
+			geoPointArray: GEOPOINTS.concat(NOT_GEOPOINTS)
+		},
+		fields: [{
+			valueType: VALUE_TYPE_GEO_POINT,
+			name: 'geoPointArray'
 		}]
 	},
 	INSTANT_STRINGS_INVALID.map(v => ({
@@ -418,6 +456,24 @@ const TESTS_INVALID = [{
 		fields: [{
 			valueType: VALUE_TYPE_LOCAL_TIME,
 			name: 'localTimeArray'
+		}]
+	},
+	NOT_OBJECTS.map(notObject => ({
+		data: {
+			object: notObject
+		},
+		fields: [{
+			valueType: VALUE_TYPE_SET,
+			name: 'object'
+		}]
+	})),
+	{
+		data: {
+			objectArray: OBJECTS.concat(NOT_OBJECTS)
+		},
+		fields: [{
+			valueType: VALUE_TYPE_SET,
+			name: 'objectArray'
 		}]
 	},
 	NOT_STRINGS.map(notString => ({
