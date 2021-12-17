@@ -77,8 +77,8 @@ const TESTS = [{
 		long: -1,
 		reference: 'c51c80c2-66a1-442a-91e2-4f55b4256a72',
 		//set: {}, // TODO
-		string: 'string'
-		//x: 'x' // TODO
+		string: 'string',
+		x: 'x'
 	},
 	fields: FIELDS
 },{
@@ -95,7 +95,8 @@ const TESTS = [{
 		long: 1,
 		//reference: 'c51c80c2-66a1-442a-91e2-4f55b4256a72',
 		//set: {},
-		//string: 'string'
+		//string: 'string',
+		//x: 'x'
 	},
 	fields: FIELDS
 }];

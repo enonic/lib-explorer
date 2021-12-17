@@ -59,6 +59,9 @@ const DEFAULT_LOG = {
 	error: (s: string) /*:void*/ => {
 		return s;
 	},
+	info: (s: string) /*:void*/ => {
+		return s;
+	},
 	warning: (s: string) /*:void*/ => {
 		return s;
 	}
@@ -92,6 +95,7 @@ export function typeCastToJava({
 	} // for
 	//log.debug(`fieldToValueTypeObj:${toStr(fieldToValueTypeObj)}`);
 
+	//const typeCastedData :LooseObject = JSON.parse(JSON.stringify(data));
 	const typeCastedData :LooseObject = {};
 	traverse(data).forEach(function(value) { // Fat arrow destroys this
 		if (
@@ -102,10 +106,10 @@ export function typeCastToJava({
 			const pathString = this.path.join('.');
 			//log.debug(`pathString:${toStr(pathString)}`);
 			const valueTypeForPath = getIn(fieldToValueTypeObj, pathString);
-			log.debug(`pathString:${toStr(pathString)} valueTypeForPath:${toStr(valueTypeForPath)}`);
+			//log.debug(`pathString:${toStr(pathString)} valueTypeForPath:${toStr(valueTypeForPath)}`);
 			if (valueTypeForPath) {
 				if ([
-					VALUE_TYPE_ANY,
+					VALUE_TYPE_ANY, // What is the data is a set?
 					VALUE_TYPE_BOOLEAN,
 					VALUE_TYPE_DOUBLE,
 					VALUE_TYPE_LONG,
@@ -113,11 +117,15 @@ export function typeCastToJava({
 					VALUE_TYPE_STRING
 				].includes(valueTypeForPath)) {
 					setIn(typeCastedData, pathString, value);
+					//this.update(value, true); // I actually don't need to update the value, but it's the only way to stopHere?
+					this.block();
 				} else if (valueTypeForPath === VALUE_TYPE_GEO_POINT) {
 					if (isGeoPointArray(value)) {
 						try {
 							const javaGeoPoint = geoPoint(value);
 							setIn(typeCastedData, pathString, javaGeoPoint);
+							//this.update(javaGeoPoint, true);
+							this.block();
 						} catch (e) {
 							log.error(`isGeoPointArray:true but geoPoint(${toStr(value)}) failed!`, e);
 						}
@@ -125,6 +133,8 @@ export function typeCastToJava({
 						try {
 							const javaGeoPoint = geoPointString(value);
 							setIn(typeCastedData, pathString, javaGeoPoint);
+							//this.update(javaGeoPoint, true);
+							this.block();
 						} catch (e) {
 							log.error(`isGeoPointString:true but geoPointString(${toStr(value)}) failed!`, e);
 						}
@@ -136,6 +146,8 @@ export function typeCastToJava({
 						try {
 							const javaInstant = instant(value);
 							setIn(typeCastedData, pathString, javaInstant);
+							//this.update(javaInstant, true);
+							this.block();
 						} catch (e) {
 							log.error(`isDate or isInstantString is true, but instant(${toStr(value)}) failed!`, e);
 						}
@@ -147,6 +159,8 @@ export function typeCastToJava({
 						try {
 							const javaLocalDate = localDate(value);
 							setIn(typeCastedData, pathString, javaLocalDate);
+							//this.update(javaLocalDate, true);
+							this.block();
 						} catch (e) {
 							log.error(`isDate or isLocalDateString is true, but localDate(${toStr(value)}) failed!`, e);
 						}
@@ -158,6 +172,8 @@ export function typeCastToJava({
 						try {
 							const javaLocalDateTime = localDateTime(value);
 							setIn(typeCastedData, pathString, javaLocalDateTime);
+							//this.update(javaLocalDateTime, true);
+							this.block();
 						} catch (e) {
 							log.error(`isDate or isLocalDateTimeString is true, but localDateTime(${toStr(value)}) failed!`, e);
 						}
@@ -169,6 +185,8 @@ export function typeCastToJava({
 						try {
 							const javaLocalTime = localTime(value);
 							setIn(typeCastedData, pathString, javaLocalTime);
+							//this.update(javaLocalTime, true);
+							this.block();
 						} catch (e) {
 							log.error(`isDate or isTimeString is true, but localTime(${toStr(value)}) failed!`, e);
 						}
@@ -180,6 +198,8 @@ export function typeCastToJava({
 						try {
 							const javaReference = reference(value);
 							setIn(typeCastedData, pathString, javaReference);
+							//this.update(javaReference, true);
+							this.block();
 						} catch (e) {
 							log.error(`isUuid4:true, but reference(${toStr(value)}) failed!`, e);
 						}
@@ -187,9 +207,12 @@ export function typeCastToJava({
 						log.warning(`Not an Reference/UUIDv4! value:${toStr(value)} at path:${pathString} in data:${toStr(data)}`);
 					}
 				}
-			} /*else { // !valueTypeForPath
+			} else { // !valueTypeForPath
+				log.debug(`Field without valueType path:${pathString} value:${toStr(value)}`);
+				//this.update(value, true);
 				setIn(typeCastedData, pathString, value);
-			}*/
+				this.block();
+			}
 		}
 	}); // traverse
 	log.debug('typeCastedData', typeCastedData);
