@@ -26,6 +26,7 @@ import {
 	forceArray,
 	isDate,
 	isGeoPoint,
+	isGeoPointArray,
 	isInstantString,
 	isInt,
 	isLocalDateString,
@@ -105,8 +106,6 @@ export function validateTypes({
 			break;
 		}
 
-		const valueArray = forceArray(value); // In enonic/elastic all array items must have the same type?
-
 		switch (valueType) {
 		case VALUE_TYPE_STRING:
 		case 'text': // TODO Remove in lib-explorer-4.0.0/app-explorer-2.0.0 ?
@@ -114,7 +113,9 @@ export function validateTypes({
 		case 'tag':
 		case 'uri':
 		//case 'xml':
-		for (let j = 0; j < valueArray.length; j++) {
+		{
+			const valueArray = forceArray(value);
+			for (let j = 0; j < valueArray.length; j++) {
 				if (!isString(valueArray[j])) {
 					const msg = [
 						'validateTypes: Not a String:',
@@ -129,7 +130,9 @@ export function validateTypes({
 				} // if !string
 			} // for
 			break;
-		case VALUE_TYPE_BOOLEAN:
+		}
+		case VALUE_TYPE_BOOLEAN: {
+			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (typeof valueArray[j] !== VALUE_TYPE_BOOLEAN) {
 					//const msg = `validateTypes: Not a Boolean:${toStr(valueArray[j])} at path:${name}${Array.isArray(value) ? `[${j}]` : ''} in data:${toStr(data)}!`;
@@ -146,7 +149,9 @@ export function validateTypes({
 				}
 			} // for
 			break;
-		case VALUE_TYPE_LONG:
+		}
+		case VALUE_TYPE_LONG: {
+			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!isInt(valueArray[j])) {
 					const msg = [
@@ -162,7 +167,9 @@ export function validateTypes({
 				}
 			} // for
 			break;
-		case VALUE_TYPE_DOUBLE:
+		}
+		case VALUE_TYPE_DOUBLE: {
+			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!isFloat(valueArray[j])) {
 					//const msg = `validateTypes: Not a Number:${toStr(valueArray[j])} at path:${name}${Array.isArray(value) ? `[${j}]` : ''} in data:${toStr(data)}!`;
@@ -179,21 +186,49 @@ export function validateTypes({
 				}
 			} // for
 			break;
-		case VALUE_TYPE_SET:
-			if (!isObject(value)) {
-				const msg = `Not a Set:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
+		}
+		case VALUE_TYPE_SET: {
+			const valueArray = forceArray(value);
+			log.info('valueArray', valueArray);
+			for (let j = 0; j < valueArray.length; j++) {
+				log.info('valueArray[', j, ']', valueArray[j]);
+				if (!isObject(valueArray[j])) {
+					//const msg = `Not a Set:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+					const msg = [
+						'validateTypes: Not a Set:',
+						valueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				}
+				break;
 			}
+		}
+		case VALUE_TYPE_GEO_POINT: {
+			const customValueArray = isGeoPointArray(value) ? [value] : forceArray(value);
+			for (let j = 0; j < customValueArray.length; j++) {
+				if (!isGeoPoint(customValueArray[j])) {
+					//const msg = `Not a GeoPoint:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+					const msg = [
+						'validateTypes: Not a GeoPoint:',
+						customValueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				} // if !geoPoint
+			} // for
 			break;
-		case VALUE_TYPE_GEO_POINT:
-			if (!isGeoPoint(value)) {
-				const msg = `Not a GeoPoint:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
-			}
-			break;
-		case VALUE_TYPE_INSTANT:
+		}
+		case VALUE_TYPE_INSTANT: {
+			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!(isDate(valueArray[j]) || isInstantString(valueArray[j]))) {
 					//const msg = `validateTypes: Not an Instant:${toStr(valueArray[j])} at path:${name}${Array.isArray(value) ? `[${j}]` : ''} in data:${toStr(data)}!`;
@@ -210,7 +245,9 @@ export function validateTypes({
 				}
 			} // for
 			break;
-		case VALUE_TYPE_LOCAL_DATE:
+		}
+		case VALUE_TYPE_LOCAL_DATE: {
+			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!(isDate(valueArray[j]) || isLocalDateString(valueArray[j]))) {
 					const msg = [
@@ -226,7 +263,9 @@ export function validateTypes({
 				}
 			} // for
 			break;
+		}
 		case VALUE_TYPE_LOCAL_DATE_TIME:
+			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!(isDate(valueArray[j]) || isLocalDateTimeString(valueArray[j]))) {
 					//const msg = `Not a LocalDateTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
@@ -243,7 +282,8 @@ export function validateTypes({
 				} // if !localDate
 			} // for
 			break;
-		case VALUE_TYPE_LOCAL_TIME:
+		case VALUE_TYPE_LOCAL_TIME: {
+			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!(isTimeString(valueArray[j]) || isDate(valueArray[j]))) {
 					//const msg = `Not a LocalTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
@@ -260,7 +300,9 @@ export function validateTypes({
 				} // if !localTime
 			} // for
 			break;
-		case VALUE_TYPE_REFERENCE:
+		}
+		case VALUE_TYPE_REFERENCE: {
+			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!isUuid4(valueArray[j])) {
 					//const msg = `Not a Reference/UUIDv4 :${toStr(value)} at path:${name} in data:${toStr(data)}!`;
@@ -277,6 +319,7 @@ export function validateTypes({
 				} // if !uuid
 			} // for
 			break;
+		}
 		default:
 			throw new Error(`Unhandeled valueType:${valueType}!`);
 		}
