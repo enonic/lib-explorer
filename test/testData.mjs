@@ -3,8 +3,10 @@ export const BOOLEANS = [
 	true
 ];
 
+export const DATE_OBJECT = new Date();
+
 export const DATE_OBJECTS = [
-	new Date()
+	DATE_OBJECT
 ];
 
 export const EMPTY_ARRAY = [];
@@ -61,17 +63,17 @@ export const INSTANT_STRINGS = [
 	'2011-12-03T10:15:30.1234567Z',
 	'2011-12-03T10:15:30.12345678Z',
 	'2011-12-03T10:15:30.123456789Z',
-	new Date().toJSON(),
-	new Date().toISOString()
+	DATE_OBJECT.toJSON(),
+	DATE_OBJECT.toISOString()
 ];
 
-export const LOCAL_DATE_STRINGS_VALID = [
+export const LOCAL_DATE_STRINGS = [
 	'2011-12-03',
 	'0000-01-01',
 	'9999-12-31'
 ];
 
-export const LOCAL_DATE_TIME_STRINGS_VALID = [
+export const LOCAL_DATE_TIME_STRINGS = [
 	'2007-12-03T10:15:30',
 	'0000-01-01T00:00:00', // min
 	'9999-12-31T23:59:59', // max
@@ -88,10 +90,10 @@ export const LOCAL_DATE_TIME_STRINGS_VALID = [
 	'0000-01-01T00:00:00.12345678',
 	'0000-01-01T00:00:00.123456789',
 	'0000-01-01T00:00:00.000000000',
-	new Date() // Not a localDateTimeString, but lib-value.localDateTime() supports it
+	DATE_OBJECT // Not a localDateTimeString, but lib-value.localDateTime() supports it
 ];
 
-export const TIME_STRINGS = [
+export const LOCAL_TIME_STRINGS = [
 	'00:00',
 	'00:00:00',
 	'00:00:00.', // Allowed
@@ -113,7 +115,7 @@ export const UUIDV4 = [
 //──────────────────────────────────────────────────────────────────────────────
 // Invalid
 //──────────────────────────────────────────────────────────────────────────────
-export const INVALID_INSTANT_STRINGS = [
+export const INSTANT_STRINGS_INVALID = [
 	'2011-12-03T10:15Z', // java.time.format.DateTimeParseException: Text '2011-12-03T10:15Z' could not be parsed at index 16
 	'2011-12-03T10:15:30', // java.time.format.DateTimeParseException: Text '2011-12-03T10:15:30' could not be parsed at index 19
 	'2011-12-03T10:15:30.1234567890Z', // java.time.format.DateTimeParseException: Text '2011-12-03T10:15:30.1234567890Z' could not be parsed at index 29
@@ -144,17 +146,17 @@ export const LOCAL_DATE_STRINGS_INVALID = [
 	'0000-13-01', // Text '0000-13-01' could not be parsed: Invalid value for MonthOfYear (valid values 1 - 12): 13 java.time.format.DateTimeParseException
 	'0000-01-32', // Text '0000-01-32' could not be parsed: Invalid value for DayOfMonth (valid values 1 - 28/31): 32 java.time.format.DateTimeParseException
 	// localDateString related, but not an actual localDateString
-	new Date().toDateString(),
-	new Date().toGMTString(),
-	new Date().toJSON(),
-	new Date().toLocaleDateString(),
-	new Date().toLocaleString(),
-	new Date().toLocaleTimeString(),
-	new Date().toISOString(),
-	//new Date().toSource(), // Deprecated
-	new Date().toString(),
-	new Date().toTimeString(),
-	new Date().toUTCString(),
+	DATE_OBJECT.toDateString(),
+	DATE_OBJECT.toGMTString(),
+	DATE_OBJECT.toJSON(),
+	DATE_OBJECT.toLocaleDateString(),
+	DATE_OBJECT.toLocaleString(),
+	DATE_OBJECT.toLocaleTimeString(),
+	DATE_OBJECT.toISOString(),
+	//DATE_OBJECT.toSource(), // Deprecated
+	DATE_OBJECT.toString(),
+	DATE_OBJECT.toTimeString(),
+	DATE_OBJECT.toUTCString(),
 	Date.now(),
 	Date.parse('2011-12-03T10:15:30Z'),
 	Date.UTC(),
@@ -163,7 +165,7 @@ export const LOCAL_DATE_STRINGS_INVALID = [
 	'a',
 	true,
 	false,
-	[],
+	//EMPTY_ARRAY,
 	{},
 	-1,
 	1,
@@ -186,17 +188,17 @@ export const LOCAL_DATE_TIME_STRINGS_INVALID = [
 	'0000-01-01T00:00:60', // Text '0000-01-01T00:00:60' could not be parsed: Invalid value for SecondOfMinute (valid values 0 - 59): 60 java.time.format.DateTimeParseException
 	'0000-01-01T00:00:00.1234567890', // Text '0000-01-01T00:00:00.1234567890' could not be parsed, unparsed text found at index 29 java.time.format.DateTimeParseException
 	// localDateTimeString related, but not an actual localDateTimeString
-	new Date().toDateString(),
-	new Date().toGMTString(),
-	new Date().toJSON(),
-	new Date().toLocaleDateString(),
-	new Date().toLocaleString(),
-	new Date().toLocaleTimeString(),
-	new Date().toISOString(),
-	//new Date().toSource(), // Deprecated
-	new Date().toString(),
-	new Date().toTimeString(),
-	new Date().toUTCString(),
+	DATE_OBJECT.toDateString(),
+	DATE_OBJECT.toGMTString(),
+	DATE_OBJECT.toJSON(),
+	DATE_OBJECT.toLocaleDateString(),
+	DATE_OBJECT.toLocaleString(),
+	DATE_OBJECT.toLocaleTimeString(),
+	DATE_OBJECT.toISOString(),
+	//DATE_OBJECT.toSource(), // Deprecated
+	DATE_OBJECT.toString(),
+	DATE_OBJECT.toTimeString(),
+	DATE_OBJECT.toUTCString(),
 	Date.now(),
 	Date.parse('2011-12-03T10:15:30Z'),
 	Date.UTC(),
@@ -205,7 +207,7 @@ export const LOCAL_DATE_TIME_STRINGS_INVALID = [
 	'a',
 	true,
 	false,
-	[],
+	//EMPTY_ARRAY,
 	{},
 	-1,
 	1,
@@ -213,12 +215,20 @@ export const LOCAL_DATE_TIME_STRINGS_INVALID = [
 	Infinity
 ];
 
+export const UUIDV4_INVALID = [
+	'00000000-0000-0000-0000-000000000000',
+	'12345678-1234-1234-1234-123456789012',
+	'ffffffff-ffff-ffff-ffff-ffffffffffff',
+	'gggggggg-gggg-gggg-gggg-gggggggggggg'
+];
+
 export const NOT_UUIDV4 = [
+	...UUIDV4_INVALID,
 	EMPTY_STRING,
 	'a',
 	true,
 	false,
-	[],
+	//EMPTY_ARRAY,
 	{},
 	-1,
 	1,
@@ -230,6 +240,14 @@ export const NOT_UUIDV4 = [
 // Derived
 //──────────────────────────────────────────────────────────────────────────────
 export const GEOPOINTS = GEOPOINT_ARRAYS.concat(GEOPOINT_STRINGS);
+
+export const INSTANTS = INSTANT_STRINGS.concat(DATE_OBJECTS);
+
+export const LOCAL_DATES = LOCAL_DATE_STRINGS.concat(DATE_OBJECTS);
+
+export const LOCAL_DATE_TIMES = LOCAL_DATE_TIME_STRINGS.concat(DATE_OBJECTS);
+
+export const LOCAL_TIMES = LOCAL_TIME_STRINGS.concat(DATE_OBJECTS);
 
 export const NUMBERS = [].concat(
 	INTEGERS,
@@ -258,8 +276,8 @@ export const STRINGS = [
 ]/*.concat(
 	GEOPOINT_STRINGS,
 	INSTANT_STRINGS,
-	INVALID_INSTANT_STRINGS,
-	LOCAL_DATE_STRINGS_VALID
+	INSTANT_STRINGS_INVALID,
+	LOCAL_DATE_STRINGS
 )*/;
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -268,7 +286,7 @@ export const STRINGS = [
 export const NOT_BOOLEANS = [].concat(
 	//BOOLEANS,
 	DATE_OBJECTS,
-	EMPTY_ARRAY,
+	//EMPTY_ARRAY, // Enonic XP doesn't index an empty array
 	EMPTY_OBJECT,
 	GEOPOINT_ARRAYS,
 	NUMBERS,
@@ -278,7 +296,7 @@ export const NOT_BOOLEANS = [].concat(
 export const NOT_DATE_OBJECTS = [].concat(
 	BOOLEANS,
 	//DATE_OBJECTS,
-	EMPTY_ARRAY,
+	//EMPTY_ARRAY, // Enonic XP doesn't index an empty array
 	EMPTY_OBJECT,
 	GEOPOINT_ARRAYS,
 	NUMBERS,
@@ -288,7 +306,7 @@ export const NOT_DATE_OBJECTS = [].concat(
 export const NOT_INTEGERS = [].concat(
 	BOOLEANS,
 	DATE_OBJECTS,
-	EMPTY_ARRAY,
+	//EMPTY_ARRAY, // Enonic XP doesn't index an empty array
 	EMPTY_OBJECT,
 	//FLOATS, // -0.0 and 0 becomes 0 which is an integer
 	//GEOPOINT_ARRAYS, // Array of integer and floats
@@ -308,7 +326,7 @@ export const NOT_NUMBERS = [].concat(
 export const NOT_STRINGS = [].concat(
 	BOOLEANS,
 	DATE_OBJECTS,
-	EMPTY_ARRAY,
+	//EMPTY_ARRAY, // Enonic XP doesn't index an empty array
 	EMPTY_OBJECT,
 	GEOPOINT_ARRAYS,
 	NUMBERS//,

@@ -23,6 +23,7 @@ import {
 	VALUE_TYPE_SET,
 	VALUE_TYPE_STRING,
 	//enonify,
+	forceArray,
 	isDate,
 	isGeoPoint,
 	isInstantString,
@@ -93,12 +94,18 @@ export function validateTypes({
 			valueType = VALUE_TYPE_STRING,
 			name
 		} = fields[i];
-		log.debug(`validateTypes name:${name} valueType:${valueType}`);
+		//log.debug(`validateTypes name:${name} valueType:${valueType}`);
 
 		const value = getIn(data, name);
-		if (isNotSet(value) || valueType === VALUE_TYPE_ANY) {
+		if (
+			isNotSet(value)
+			|| (Array.isArray(value) && !value.length) // Enonic XP doesn't index empty arrays // TODO flatten?
+			|| valueType === VALUE_TYPE_ANY
+		) {
 			break;
 		}
+
+		const valueArray = forceArray(value); // In enonic/elastic all array items must have the same type?
 
 		switch (valueType) {
 		case VALUE_TYPE_STRING:
@@ -107,32 +114,70 @@ export function validateTypes({
 		case 'tag':
 		case 'uri':
 		//case 'xml':
-			if (!isString(value)) {
-				const msg = `validateTypes: Not a String:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
-			}
+		for (let j = 0; j < valueArray.length; j++) {
+				if (!isString(valueArray[j])) {
+					const msg = [
+						'validateTypes: Not a String:',
+						valueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				} // if !string
+			} // for
 			break;
 		case VALUE_TYPE_BOOLEAN:
-			if (typeof value !== VALUE_TYPE_BOOLEAN) {
-				const msg = `validateTypes: Not a Boolean:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
-			}
+			for (let j = 0; j < valueArray.length; j++) {
+				if (typeof valueArray[j] !== VALUE_TYPE_BOOLEAN) {
+					//const msg = `validateTypes: Not a Boolean:${toStr(valueArray[j])} at path:${name}${Array.isArray(value) ? `[${j}]` : ''} in data:${toStr(data)}!`;
+					const msg = [
+						'validateTypes: Not a Boolean:',
+						valueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				}
+			} // for
 			break;
 		case VALUE_TYPE_LONG:
-			if (!isInt(value)) {
-				const msg = `Not an Integer:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
-			}
+			for (let j = 0; j < valueArray.length; j++) {
+				if (!isInt(valueArray[j])) {
+					const msg = [
+						'validateTypes: Not an Integer:',
+						valueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				}
+			} // for
 			break;
 		case VALUE_TYPE_DOUBLE:
-			if (!isFloat(value)) {
-				const msg = `Not a Number:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
-			}
+			for (let j = 0; j < valueArray.length; j++) {
+				if (!isFloat(valueArray[j])) {
+					//const msg = `validateTypes: Not a Number:${toStr(valueArray[j])} at path:${name}${Array.isArray(value) ? `[${j}]` : ''} in data:${toStr(data)}!`;
+					const msg = [
+						'validateTypes: Not a Number:',
+						valueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				}
+			} // for
 			break;
 		case VALUE_TYPE_SET:
 			if (!isObject(value)) {
@@ -149,39 +194,88 @@ export function validateTypes({
 			}
 			break;
 		case VALUE_TYPE_INSTANT:
-			if (!(isDate(value) || isInstantString(value))) {
-				const msg = `Not an Instant:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
-			}
+			for (let j = 0; j < valueArray.length; j++) {
+				if (!(isDate(valueArray[j]) || isInstantString(valueArray[j]))) {
+					//const msg = `validateTypes: Not an Instant:${toStr(valueArray[j])} at path:${name}${Array.isArray(value) ? `[${j}]` : ''} in data:${toStr(data)}!`;
+					const msg = [
+						'validateTypes: Not an Instant:',
+						valueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				}
+			} // for
 			break;
 		case VALUE_TYPE_LOCAL_DATE:
-			if (!(isDate(value) || isLocalDateString(value))) {
-				const msg = `Not a LocalDate:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
-			}
+			for (let j = 0; j < valueArray.length; j++) {
+				if (!(isDate(valueArray[j]) || isLocalDateString(valueArray[j]))) {
+					const msg = [
+						'validateTypes: Not a LocalDate:',
+						valueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				}
+			} // for
 			break;
 		case VALUE_TYPE_LOCAL_DATE_TIME:
-			if (!(isDate(value) || isLocalDateTimeString(value))) {
-				const msg = `Not a LocalDateTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
-			}
+			for (let j = 0; j < valueArray.length; j++) {
+				if (!(isDate(valueArray[j]) || isLocalDateTimeString(valueArray[j]))) {
+					//const msg = `Not a LocalDateTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+					const msg = [
+						'validateTypes: Not a LocalDateTime:',
+						valueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				} // if !localDate
+			} // for
 			break;
 		case VALUE_TYPE_LOCAL_TIME:
-			if (!(isTimeString(value) || isDate(value))) {
-				const msg = `Not a LocalTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
-			}
+			for (let j = 0; j < valueArray.length; j++) {
+				if (!(isTimeString(valueArray[j]) || isDate(valueArray[j]))) {
+					//const msg = `Not a LocalTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+					const msg = [
+						'validateTypes: Not a LocalTime:',
+						valueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				} // if !localTime
+			} // for
 			break;
 		case VALUE_TYPE_REFERENCE:
-			if (!isUuid4(value)) {
-				const msg = `Not a Reference/UUIDv4 :${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-				log.debug(msg);
-				return false;
-			}
+			for (let j = 0; j < valueArray.length; j++) {
+				if (!isUuid4(valueArray[j])) {
+					//const msg = `Not a Reference/UUIDv4 :${toStr(value)} at path:${name} in data:${toStr(data)}!`;
+					const msg = [
+						'validateTypes: Not a Reference/UUIDv4:',
+						valueArray[j],
+						'at path:',
+						`${name}${Array.isArray(value) ? `[${j}]` : ''}`,
+						'in data:',
+						data
+					];
+					log.debug(...msg);
+					return false;
+				} // if !uuid
+			} // for
 			break;
 		default:
 			throw new Error(`Unhandeled valueType:${valueType}!`);
