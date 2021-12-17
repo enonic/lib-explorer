@@ -11,11 +11,12 @@
 //──────────────────────────────────────────────────────────────────────────────
 import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
 
+import {logDummy} from './dummies';
 import {validateOccurrences} from './validateOccurrences';
 
 
 interface LooseObject {
-	[key :string] :any
+	[key :string] :unknown
 }
 
 interface Field {
@@ -40,32 +41,22 @@ interface ValidateParameters {
 }
 
 
-const DEFAULT_LOG = {
-	debug: (s: string) /*:void*/ => {
-		return s;
-	},
-	warning: (s: string) /*:void*/ => {
-		return s;
-	}
-};
-
-
 export function validate({
 	data,
 	fields,
 	validateOccurrences: boolValidateOccurrences = false,
 	validateTypes: boolValidateTypes = true
 }: ValidateParameters, {
-	log = DEFAULT_LOG
+	log = logDummy
 } = {}) {
 	//log.debug(`data:${toStr(data)}`);
 	//log.debug(`fields:${toStr(fields)}`);
 	//log.debug(`boolValidateOccurrences:${toStr(boolValidateOccurrences)}`);
 	log.debug(`boolValidateTypes:${toStr(boolValidateTypes)}`);
 	if (boolValidateOccurrences) {
-		if (!validateOccurrences({data, fields},{log})) {
+		if (!validateOccurrences({ data, fields }, { log })) {
 			return false;
-		};
+		}
 	}
 	return true;
 }
