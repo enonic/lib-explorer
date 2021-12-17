@@ -7,17 +7,17 @@ import {
 const {validateOccurrences} = document;
 
 
-const log = { //console.log console.trace
+/*const log = { //console.log console.trace
 	debug: console.debug,
 	error: console.error,
 	info: console.info,
 	warning: console.warn
-};
+};*/
 
 const TESTS_VALID = [{
 	/* No params :) */
 },{
-	data: {},
+	data: {}//,
 	//fields: []
 }, {
 	//data: {},

@@ -92,7 +92,7 @@ const TESTS = [{
 		localDate: new Date(),
 		localDateTime: new Date(),
 		localTime: new Date(),
-		long: 1,
+		long: 1//,
 		//reference: 'c51c80c2-66a1-442a-91e2-4f55b4256a72',
 		//set: {},
 		//string: 'string',

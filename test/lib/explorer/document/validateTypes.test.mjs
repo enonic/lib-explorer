@@ -8,6 +8,28 @@ import {
 	document
 } from '../../../../build/rollup/index.mjs';
 
+import {
+	BOOLEANS,
+	GEOPOINTS,
+	EMPTY_STRING,
+	FLOATS, // double
+	INSTANT_STRINGS,
+	INTEGERS, // long
+	INVALID_INSTANT_STRINGS,
+	LOCAL_DATE_STRINGS_INVALID,
+	LOCAL_DATE_STRINGS_VALID,
+	LOCAL_DATE_TIME_STRINGS_INVALID,
+	LOCAL_DATE_TIME_STRINGS_VALID,
+	NOT_BOOLEANS,
+	NOT_INTEGERS,
+	NOT_NUMBERS,
+	NOT_STRINGS,
+	NOT_UUIDV4,
+	STRINGS,
+	TIME_STRINGS,
+	UUIDV4
+} from '../../../testData.mjs';
+
 //const {VALUE_TYPE_STRING} = libExplorer;
 const {validateTypes} = document;
 
@@ -25,212 +47,19 @@ const VALUE_TYPE_LOCAL_DATE_TIME = 'localDateTime';
 const VALUE_TYPE_LOCAL_TIME = 'localTime';
 const VALUE_TYPE_REFERENCE = 'reference';
 
-const log = { //console.log console.trace
+
+/*const log = { //console.log console.trace
 	debug: console.debug,
 	error: console.error,
 	info: console.info,
 	warning: console.warn
-};
+};*/
 
-const GEOPOINT_ARRAYS = [
-	[59.9090442,10.7423389],
-	[-90,-180],
-	[90,-180],
-	[0,0],
-	[-90,180],
-	[90,180]
-]
-
-const GEOPOINT_STRINGS = [
-	'59.9090442,10.7423389',
-	'-90,-180',
-	'90,-180',
-	'0,0',
-	'-90,180',
-	'90,180'
-];
-
-const INSTANT_STRINGS = [
-	'2011-12-03T10:15:30Z',
-	'2011-12-03T10:15:30.1Z',
-	'2011-12-03T10:15:30.12Z',
-	'2011-12-03T10:15:30.123Z',
-	'2011-12-03T10:15:30.1234Z',
-	'2011-12-03T10:15:30.12345Z',
-	'2011-12-03T10:15:30.123456Z',
-	'2011-12-03T10:15:30.1234567Z',
-	'2011-12-03T10:15:30.12345678Z',
-	'2011-12-03T10:15:30.123456789Z',
-	new Date().toJSON(),
-	new Date().toISOString()
-];
-
-const INVALID_INSTANT_STRINGS = [
-	'2011-12-03T10:15Z', // java.time.format.DateTimeParseException: Text '2011-12-03T10:15Z' could not be parsed at index 16
-	'2011-12-03T10:15:30', // java.time.format.DateTimeParseException: Text '2011-12-03T10:15:30' could not be parsed at index 19
-	'2011-12-03T10:15:30.1234567890Z', // java.time.format.DateTimeParseException: Text '2011-12-03T10:15:30.1234567890Z' could not be parsed at index 29
-	'2002-12-31T23:00:00+01:00', // java.time.format.DateTimeParseException: Text '2002-12-31T23:00:00+01:00' could not be parsed at index 19
-	// Right format, but invalid time
-	'2000-00-01T00:00:00Z',
-	'2000-01-00T00:00:00Z',
-	'2000-13-01T00:00:00Z',
-	'2000-01-32T00:00:00Z',
-
-	// Date.parse doesn't allow '2000-01-01T24:00:00Z'
-	// For some reason lib-value.instant() does, but I'm sticking with Date.parse
-	'2000-01-01T24:00:00Z',
-
-	'2000-01-01T24:00:01Z',
-	'2000-01-01T25:00:00Z',
-	'2000-01-01T00:60:00Z',
-	'2000-01-01T00:00:60Z',
-];
-
-const LOCAL_DATE_STRINGS_VALID = [
-	'2011-12-03',
-	'0000-01-01',
-	'9999-12-31',
-	//new Date(),
-];
-
-const LOCAL_DATE_STRINGS_INVALID = [
-	// Invalid format
-	'0000-1-01', // Text '0000-1-01' could not be parsed at index 5 java.time.format.DateTimeParseException
-	'0000-01-01T', // Text '0000-01-01T' could not be parsed, unparsed text found at index 10 java.time.format.DateTimeParseException
-	// Valid format, but invalid date
-	'0000-00-01', // Text '0000-00-01' could not be parsed: Invalid value for MonthOfYear (valid values 1 - 12): 0 java.time.format.DateTimeParseException
-	'0000-01-00', // Text '0000-01-00' could not be parsed: Invalid value for DayOfMonth (valid values 1 - 28/31): 0 java.time.format.DateTimeParseException
-	'0000-13-01', // Text '0000-13-01' could not be parsed: Invalid value for MonthOfYear (valid values 1 - 12): 13 java.time.format.DateTimeParseException
-	'0000-01-32', // Text '0000-01-32' could not be parsed: Invalid value for DayOfMonth (valid values 1 - 28/31): 32 java.time.format.DateTimeParseException
-	// localDateString related, but not an actual localDateString
-	new Date().toDateString(),
-	new Date().toGMTString(),
-	new Date().toJSON(),
-	new Date().toLocaleDateString(),
-	new Date().toLocaleString(),
-	new Date().toLocaleTimeString(),
-	new Date().toISOString(),
-	//new Date().toSource(), // Deprecated
-	new Date().toString(),
-	new Date().toTimeString(),
-	new Date().toUTCString(),
-	Date.now(),
-	Date.parse('2011-12-03T10:15:30Z'),
-	Date.UTC(),
-	// Invalid input
-	'',
-	'a',
-	true,
-	false,
-	[],
-	{},
-	-1,
-	1,
-	-Infinity,
-	Infinity
-];
-
-const LOCAL_DATE_TIME_STRINGS_VALID = [
-	'2007-12-03T10:15:30',
-	'0000-01-01T00:00:00', // min
-	'9999-12-31T23:59:59', // max
-	'0000-01-01T00:00', // Surprise, this is allowed
-	'0000-01-01T00:00:00.', // Surprise, also allowed
-	'0000-01-01T00:00:00.0',
-	'0000-01-01T00:00:00.1',
-	'0000-01-01T00:00:00.12',
-	'0000-01-01T00:00:00.123',
-	'0000-01-01T00:00:00.1234',
-	'0000-01-01T00:00:00.12345',
-	'0000-01-01T00:00:00.123456',
-	'0000-01-01T00:00:00.1234567',
-	'0000-01-01T00:00:00.12345678',
-	'0000-01-01T00:00:00.123456789',
-	'0000-01-01T00:00:00.000000000',
-	new Date() // Not a localDateTimeString, but lib-value.localDateTime() supports it
-];
-
-const LOCAL_DATE_TIME_STRINGS_INVALID = [
-	// Invalid format
-	'0000-01-01', // Text '0000-01-01' could not be parsed at index 10 java.time.format.DateTimeParseException
-	'0000-01-01T', // Text '0000-01-01T' could not be parsed at index 11 java.time.format.DateTimeParseException
-	'0000-01-01T00', // Text '0000-01-01T00' could not be parsed at index 13 java.time.format.DateTimeParseException
-	'0000-01-01T00:00.1', // Text '0000-01-01T00:00.1' could not be parsed, unparsed text found at index 16 java.time.format.DateTimeParseException
-	'2007-12-03T10:15:30Z', // Text '2007-12-03T10:15:30Z' could not be parsed, unparsed text found at index 19 java.time.format.DateTimeParseException
-	// Valid format, but invalid date
-	'0000-00-01T00:00:00', // Text '0000-00-01T00:00:00' could not be parsed: Invalid value for MonthOfYear (valid values 1 - 12): 0 java.time.format.DateTimeParseException
-	'0000-01-00T00:00:00', // Text '0000-01-00T00:00:00' could not be parsed: Invalid value for DayOfMonth (valid values 1 - 28/31): 0 java.time.format.DateTimeParseException
-	'0000-01-01T24:00:00', // Text '0000-01-01T24:00:00' could not be parsed: Invalid value for HourOfDay (valid values 0 - 23): 24 java.time.format.DateTimeParseException
-	'0000-01-01T00:60:00', // Text '0000-01-01T00:60:00' could not be parsed: Invalid value for MinuteOfHour (valid values 0 - 59): 60 java.time.format.DateTimeParseException
-	'0000-01-01T00:00:60', // Text '0000-01-01T00:00:60' could not be parsed: Invalid value for SecondOfMinute (valid values 0 - 59): 60 java.time.format.DateTimeParseException
-	'0000-01-01T00:00:00.1234567890', // Text '0000-01-01T00:00:00.1234567890' could not be parsed, unparsed text found at index 29 java.time.format.DateTimeParseException
-	// localDateTimeString related, but not an actual localDateTimeString
-	new Date().toDateString(),
-	new Date().toGMTString(),
-	new Date().toJSON(),
-	new Date().toLocaleDateString(),
-	new Date().toLocaleString(),
-	new Date().toLocaleTimeString(),
-	new Date().toISOString(),
-	//new Date().toSource(), // Deprecated
-	new Date().toString(),
-	new Date().toTimeString(),
-	new Date().toUTCString(),
-	Date.now(),
-	Date.parse('2011-12-03T10:15:30Z'),
-	Date.UTC(),
-	// Invalid input
-	'',
-	'a',
-	true,
-	false,
-	[],
-	{},
-	-1,
-	1,
-	-Infinity,
-	Infinity
-];
-
-const TIME_STRINGS = [
-	'00:00',
-	'00:00:00',
-	'00:00:00.', // Allowed
-	'00:00:00.1',
-	'00:00:00.12',
-	'00:00:00.123',
-	'00:00:00.1234',
-	'00:00:00.12345',
-	'00:00:00.123456',
-	'00:00:00.1234567',
-	'00:00:00.12345678',
-	'00:00:00.123456789'
-];
-
-
-const GEOPOINTS = GEOPOINT_ARRAYS.concat(GEOPOINT_STRINGS);
-
-const UUIDV4 = [
-	'c51c80c2-66a1-442a-91e2-4f55b4256a72'
-];
-
-const NOT_UUIDV4 = [
-	'',
-	'a',
-	true,
-	false,
-	[],
-	{},
-	-1,
-	1,
-	-Infinity,
-	Infinity
-];
 
 const TESTS_VALID = [{
 	/* No params :) */
 },{
-	data: {},
+	data: {}//,
 	//fields: []
 }, {
 	//data: {},
@@ -240,7 +69,7 @@ const TESTS_VALID = [{
 	fields: []
 },{
 	data: {
-		text: ''
+		text: EMPTY_STRING
 	},
 	fields: [{
 		//valueType: VALUE_TYPE_STRING,
@@ -253,54 +82,6 @@ const TESTS_VALID = [{
 	fields: [{
 		//valueType: VALUE_TYPE_STRING,
 		name: 'text'
-	}]
-},{
-	data: {
-		text: 'a'
-	},
-	fields: [{
-		valueType: VALUE_TYPE_STRING,
-		name: 'text'
-	}]
-},{
-	data: {
-		boolean: false
-	},
-	fields: [{
-		valueType: VALUE_TYPE_BOOLEAN,
-		name: 'boolean'
-	}]
-},{
-	data: {
-		boolean: true
-	},
-	fields: [{
-		valueType: VALUE_TYPE_BOOLEAN,
-		name: 'boolean'
-	}]
-},{
-	data: {
-		long: 1
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LONG,
-		name: 'long'
-	}]
-},{
-	data: {
-		double: 1.1
-	},
-	fields: [{
-		valueType: VALUE_TYPE_DOUBLE,
-		name: 'double'
-	}]
-},{
-	data: {
-		doubleDecimalZero: 1.0
-	},
-	fields: [{
-		valueType: VALUE_TYPE_DOUBLE,
-		name: 'doubleDecimalZero'
 	}]
 },{
 	data: {
@@ -310,163 +91,142 @@ const TESTS_VALID = [{
 		valueType: VALUE_TYPE_SET,
 		name: 'object'
 	}]
-}].concat(GEOPOINTS.map(v => ({
-	data: {
-		geoPoint: v
-	},
-	fields: [{
-		valueType: VALUE_TYPE_GEO_POINT,
-		name: 'geoPoint'
-	}]
-})))
-.concat(INSTANT_STRINGS.map(v => ({
-	data: {
-		instant: v
-	},
-	fields: [{
-		valueType: VALUE_TYPE_INSTANT,
-		name: 'instant'
-	}]
-}))).concat([{
-	data: {
-		instant: new Date()
-	},
-	fields: [{
-		valueType: VALUE_TYPE_INSTANT,
-		name: 'instant'
-	}]
-},{
-	data: {
-		localDate: new Date()
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LOCAL_DATE,
-		name: 'localDate'
-	}]
-},{
-	data: {
-		localDateTime: '2007-12-03T10:15:30'
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LOCAL_DATE_TIME,
-		name: 'localDateTime'
-	}]
-},{
-	data: {
-		localDateTime: new Date()
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LOCAL_DATE_TIME,
-		name: 'localDateTime'
-	}]
-},{
-	data: {
-		localTime: new Date()
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LOCAL_TIME,
-		name: 'localTime'
-	}]
-}]).concat(TIME_STRINGS.map(t => ({
-	data: {
-		localTime: t
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LOCAL_TIME,
-		name: 'localTime'
-	}]
-}))).concat(LOCAL_DATE_STRINGS_VALID.map(ld => ({
-	data: {
-		localDate: ld
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LOCAL_DATE,
-		name: 'localDate'
-	}]
-}))).concat(LOCAL_DATE_TIME_STRINGS_VALID.map(ldt => ({
-	data: {
-		localDateTime: ldt
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LOCAL_DATE_TIME,
-		name: 'localDateTime'
-	}]
-}))).concat(UUIDV4.map(uuidv4 => ({
-	data: {
-		reference: uuidv4
-	},
-	fields: [{
-		valueType: VALUE_TYPE_REFERENCE,
-		name: 'reference'
-	}]
-})));
+}].concat(
+	BOOLEANS.map(boolean => ({
+		data: {
+			boolean
+		},
+		fields: [{
+			valueType: VALUE_TYPE_BOOLEAN,
+			name: 'boolean'
+		}]
+	})),
+	FLOATS.map(double => ({
+		data: {
+			double
+		},
+		fields: [{
+			valueType: VALUE_TYPE_DOUBLE,
+			name: 'double'
+		}]
+	})),
+	GEOPOINTS.map(v => ({
+		data: {
+			geoPoint: v
+		},
+		fields: [{
+			valueType: VALUE_TYPE_GEO_POINT,
+			name: 'geoPoint'
+		}]
+	})),
+	INSTANT_STRINGS.map(v => ({
+		data: {
+			instant: v
+		},
+		fields: [{
+			valueType: VALUE_TYPE_INSTANT,
+			name: 'instant'
+		}]
+	})),
+	[{
+		data: {
+			instant: new Date()
+		},
+		fields: [{
+			valueType: VALUE_TYPE_INSTANT,
+			name: 'instant'
+		}]
+	},{
+		data: {
+			localDate: new Date()
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LOCAL_DATE,
+			name: 'localDate'
+		}]
+	},{
+		data: {
+			localDateTime: '2007-12-03T10:15:30'
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LOCAL_DATE_TIME,
+			name: 'localDateTime'
+		}]
+	},{
+		data: {
+			localDateTime: new Date()
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LOCAL_DATE_TIME,
+			name: 'localDateTime'
+		}]
+	},{
+		data: {
+			localTime: new Date()
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LOCAL_TIME,
+			name: 'localTime'
+		}]
+	}],
+	INTEGERS.map(integer => ({
+		data: {
+			long: integer
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LONG,
+			name: 'long'
+		}]
+	})),
+	TIME_STRINGS.map(t => ({
+		data: {
+			localTime: t
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LOCAL_TIME,
+			name: 'localTime'
+		}]
+	})),
+	LOCAL_DATE_STRINGS_VALID.map(ld => ({
+		data: {
+			localDate: ld
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LOCAL_DATE,
+			name: 'localDate'
+		}]
+	})),
+	LOCAL_DATE_TIME_STRINGS_VALID.map(ldt => ({
+		data: {
+			localDateTime: ldt
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LOCAL_DATE_TIME,
+			name: 'localDateTime'
+		}]
+	})),
+	STRINGS.map(string => ({
+		data: {
+			string
+		},
+		fields: [{
+			valueType: VALUE_TYPE_STRING,
+			name: 'string'
+		}]
+	})),
+	UUIDV4.map(uuidv4 => ({
+		data: {
+			reference: uuidv4
+		},
+		fields: [{
+			valueType: VALUE_TYPE_REFERENCE,
+			name: 'reference'
+		}]
+	}))
+); // concat
 
 
 const TESTS_INVALID = [{
-	data: {
-		text: true
-	},
-	fields: [{
-		valueType: VALUE_TYPE_STRING,
-		name: 'text'
-	}]
-},{
-	data: {
-		text: false
-	},
-	fields: [{
-		valueType: VALUE_TYPE_STRING,
-		name: 'text'
-	}]
-},{
-	data: {
-		text: {}
-	},
-	fields: [{
-		valueType: VALUE_TYPE_STRING,
-		name: 'text'
-	}]
-},{
-	data: {
-		text: new Date() // Oh no, enonify stringifies dates!
-	},
-	fields: [{
-		valueType: VALUE_TYPE_STRING,
-		name: 'text'
-	}]
-},{
-	data: {
-		text: 1
-	},
-	fields: [{
-		valueType: VALUE_TYPE_STRING,
-		name: 'text'
-	}]
-},{
-	data: {
-		boolean: 'string'
-	},
-	fields: [{
-		valueType: VALUE_TYPE_BOOLEAN,
-		name: 'boolean'
-	}]
-},{
-	data: {
-		notLong: 1.1
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LONG,
-		name: 'notLong'
-	}]
-},{
-	data: {
-		notDouble: false
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LONG,
-		name: 'notDouble'
-	}]
-},{
 	data: {
 		notObject: false
 	},
@@ -474,39 +234,80 @@ const TESTS_INVALID = [{
 		valueType: VALUE_TYPE_SET,
 		name: 'notObject'
 	}]
-}].concat(INVALID_INSTANT_STRINGS.map(v => ({
-	data: {
-		instant: v
-	},
-	fields: [{
-		valueType: VALUE_TYPE_INSTANT,
-		name: 'instant'
-	}]
-}))).concat(LOCAL_DATE_STRINGS_INVALID.map(ld => ({
-	data: {
-		localDate: ld
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LOCAL_DATE,
-		name: 'localDate'
-	}]
-}))).concat(LOCAL_DATE_TIME_STRINGS_INVALID.map(ldt => ({
-	data: {
-		localDateTime: ldt
-	},
-	fields: [{
-		valueType: VALUE_TYPE_LOCAL_DATE_TIME,
-		name: 'localDateTime'
-	}]
-}))).concat(NOT_UUIDV4.map(uuidv4 => ({
-	data: {
-		reference: uuidv4
-	},
-	fields: [{
-		valueType: VALUE_TYPE_REFERENCE,
-		name: 'reference'
-	}]
-})));
+}].concat(
+	NOT_BOOLEANS.map(notBoolean => ({
+		data: {
+			boolean: notBoolean
+		},
+		fields: [{
+			valueType: VALUE_TYPE_BOOLEAN,
+			name: 'boolean'
+		}]
+	})),
+	NOT_NUMBERS.map(notDouble => ({
+		data: {
+			double: notDouble
+		},
+		fields: [{
+			valueType: VALUE_TYPE_DOUBLE,
+			name: 'double'
+		}]
+	})),
+	INVALID_INSTANT_STRINGS.map(v => ({
+		data: {
+			instant: v
+		},
+		fields: [{
+			valueType: VALUE_TYPE_INSTANT,
+			name: 'instant'
+		}]
+	})),
+	NOT_INTEGERS.map(notInteger => ({
+		data: {
+			long: notInteger
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LONG,
+			name: 'long'
+		}]
+	})),
+	LOCAL_DATE_STRINGS_INVALID.map(ld => ({
+		data: {
+			localDate: ld
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LOCAL_DATE,
+			name: 'localDate'
+		}]
+	})),
+	LOCAL_DATE_TIME_STRINGS_INVALID.map(ldt => ({
+		data: {
+			localDateTime: ldt
+		},
+		fields: [{
+			valueType: VALUE_TYPE_LOCAL_DATE_TIME,
+			name: 'localDateTime'
+		}]
+	})),
+	NOT_STRINGS.map(notString => ({
+		data: {
+			string: notString
+		},
+		fields: [{
+			valueType: VALUE_TYPE_STRING,
+			name: 'string'
+		}]
+	})),
+	NOT_UUIDV4.map(notUuidv4 => ({
+		data: {
+			reference: notUuidv4
+		},
+		fields: [{
+			valueType: VALUE_TYPE_REFERENCE,
+			name: 'reference'
+		}]
+	}))
+); // concat
 
 
 function toStr(v) { return JSON.stringify(v); }

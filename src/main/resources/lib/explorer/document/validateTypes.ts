@@ -39,9 +39,11 @@ import {
 import getIn from 'get-value';
 import {v4 as isUuid4} from 'is-uuid';
 
+import {logDummy} from './dummies';
+
 
 interface LooseObject {
-	[key :string] :any
+	[key :string] :unknown
 }
 
 interface Field {
@@ -62,19 +64,6 @@ interface ValidateTypesParameters {
 }
 
 
-const DEFAULT_LOG = {
-	debug: (s: string) /*:void*/ => {
-		return s;
-	},
-	error: (s: string) /*:void*/ => {
-		return s;
-	},
-	warning: (s: string) /*:void*/ => {
-		return s;
-	}
-};
-
-
 // Any Float number with a zero decimal part are implicitly cast to Integer,
 // so it is not possible to check if they are Float or not.
 function isFloat(n) {
@@ -86,11 +75,12 @@ function isFloat(n) {
 	//return n === +n && n !== (n|0);
 }
 
+
 export function validateTypes({
 	data = {},
 	fields = []
 } :ValidateTypesParameters = {} , {
-	log = DEFAULT_LOG
+	log = logDummy
 } = {}) {
 	//log.debug(`validateTypes data:${toStr(data)}`);
 	//log.debug(`validateTypes fields:${toStr(fields)}`);
@@ -98,7 +88,7 @@ export function validateTypes({
 	/*const enonifiedData = enonify(data); // NOTE enonify stringifies new Date(), etc
 	log.debug(`validateOccurrences enonifiedData:${toStr(enonifiedData)}`);*/
 
-	for (var i = 0; i < fields.length; i++) {
+	for (let i = 0; i < fields.length; i++) {
 		const {
 			valueType = VALUE_TYPE_STRING,
 			name
@@ -118,14 +108,14 @@ export function validateTypes({
 		case 'uri':
 		//case 'xml':
 			if (!isString(value)) {
-				const msg = `validateTypes: Not a String:${toStr(value)} at path:${name} in data:${toStr(data)}!`
+				const msg = `validateTypes: Not a String:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 				log.debug(msg);
 				return false;
 			}
 			break;
 		case VALUE_TYPE_BOOLEAN:
 			if (typeof value !== VALUE_TYPE_BOOLEAN) {
-				const msg = `validateTypes: Not a Boolean:${toStr(value)} at path:${name} in data:${toStr(data)}!`
+				const msg = `validateTypes: Not a Boolean:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 				log.debug(msg);
 				return false;
 			}

@@ -17,8 +17,11 @@ import {
 } from '@enonic/js-utils/dist/esm/index.mjs';
 import getIn from 'get-value';
 
+import {logDummy} from './dummies';
+
+
 interface LooseObject {
-	[key :string] :any
+	[key :string] :unknown
 }
 
 interface Field {
@@ -39,21 +42,11 @@ interface ValidateOccurrencesParameters {
 }
 
 
-const DEFAULT_LOG = {
-	debug: (s: string) /*:void*/ => {
-		return s;
-	},
-	warning: (s: string) /*:void*/ => {
-		return s;
-	}
-};
-
-
 export function validateOccurrences({
 	data = {},
 	fields = []
 } :ValidateOccurrencesParameters = {} , {
-	log = DEFAULT_LOG
+	log = logDummy
 } = {}) {
 	//log.debug(`validateOccurrences data:${toStr(data)}`);
 	//log.debug(`validateOccurrences fields:${toStr(fields)}`);
@@ -61,7 +54,7 @@ export function validateOccurrences({
 	const enonifiedData = enonify(data);
 	log.debug(`validateOccurrences enonifiedData:${toStr(enonifiedData)}`);
 
-	for (var i = 0; i < fields.length; i++) {
+	for (let i = 0; i < fields.length; i++) {
 		const {
 			max = 0,
 			min = 0,

@@ -9,10 +9,9 @@ import {
 	VALUE_TYPE_LOCAL_TIME,
 	VALUE_TYPE_LONG,
 	VALUE_TYPE_REFERENCE,
-	VALUE_TYPE_SET,
+	//VALUE_TYPE_SET,
 	VALUE_TYPE_STRING,
 	isDate,
-	isNotSet,
 	isGeoPointArray,
 	isGeoPointString,
 	isInstantString,
@@ -26,8 +25,20 @@ import {v4 as isUuid4} from 'is-uuid';
 import setIn from 'set-value';
 import traverse from 'traverse';
 
+import {
+	geoPointDummy,
+	geoPointStringDummy,
+	instantDummy,
+	localDateDummy,
+	localDateTimeDummy,
+	localTimeDummy,
+	logDummy,
+	referenceDummy
+} from './dummies';
+
+
 interface LooseObject {
-	[key :string] :any
+	[key :string] :unknown
 }
 
 interface Field {
@@ -52,46 +63,31 @@ interface TypeCastToJavaParameters {
 	readonly geoPoint
 }*/
 
-const DEFAULT_LOG = {
-	debug: (s: string) /*:void*/ => {
-		return s;
-	},
-	error: (s: string) /*:void*/ => {
-		return s;
-	},
-	info: (s: string) /*:void*/ => {
-		return s;
-	},
-	warning: (s: string) /*:void*/ => {
-		return s;
-	}
-};
-
 
 export function typeCastToJava({
 	data = {},
 	fields = []
 } :TypeCastToJavaParameters = {}, {
-	log = DEFAULT_LOG,
-	geoPoint = (v :number[]) :unknown => {return v;},
-	geoPointString = (v :string) :unknown => {return v;},
-	instant = (v :unknown) :unknown => {return v;},
-	localDate = (v :unknown) :unknown => {return v;},
-	localDateTime = (v :unknown) :unknown => {return v;},
-	localTime = (v :unknown) :unknown => {return v;},
-	reference = (v :string) :unknown => {return v;}
+	log = logDummy,
+	geoPoint = geoPointDummy,
+	geoPointString = geoPointStringDummy,
+	instant = instantDummy,
+	localDate = localDateDummy,
+	localDateTime = localDateTimeDummy,
+	localTime = localTimeDummy,
+	reference = referenceDummy
 } = {}) {
 	//log.debug(`typeCastToJava data:${toStr(data)}`);
 	//log.debug(`typeCastToJava fields:${toStr(fields)}`);
 
 	const fieldToValueTypeObj :LooseObject = {};
-	for (var i = 0; i < fields.length; i++) {
+	for (let i = 0; i < fields.length; i++) {
 		const {
 			valueType = VALUE_TYPE_STRING,
 			name
 		} = fields[i];
 		//log.debug(`typeCastToJava name:${name} valueType:${valueType}`);
-		setIn(fieldToValueTypeObj,name,valueType)
+		setIn(fieldToValueTypeObj, name, valueType);
 	} // for
 	//log.debug(`fieldToValueTypeObj:${toStr(fieldToValueTypeObj)}`);
 

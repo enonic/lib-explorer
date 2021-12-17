@@ -6,32 +6,28 @@ import {
 	FIELD_PATH_META
 //} from '/lib/explorer/constants';
 } from '../constants';
+import {logDummy} from './dummies';
 
 
 interface LooseObject {
-	[key :string] :any
+	[key :string] :unknown
 }
 
 interface CleanDataParameters {
-	allowExtraFields? :Boolean,
+	allowExtraFields? :boolean,
 	data :LooseObject
 	//documentType? :LooseObject
 }
 
-const DEFAULT_LOG = {
-	warning: (s: string) /*:void*/ => {
-		return s;
-	}
-};
 
 export function cleanData(
 	{
 		allowExtraFields = true,
-		data,
+		data//,
 		//documentType = {}
 	} :CleanDataParameters,
 	{
-		log = DEFAULT_LOG // Since log is not pure-js it must be passed in
+		log = logDummy
 	} = {}
 ) :LooseObject {
 	const cleanedData :LooseObject = JSON.parse(JSON.stringify(data));
