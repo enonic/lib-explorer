@@ -343,12 +343,32 @@ export function update({
 		return existingNode;
 	}
 
-	// These wont reflect modifiedTime, but that's ok?
-	//log.debug(`Changes detected in document with id:${_id}`);
-	//log.debug(`Changes detected in document with id:${_id} existingNode:${toStr(existingNode)} documentToDiff:${toStr(documentToDiff)}`);
-	//log.debug(`Changes detected in document with id:${_id} diff:${toStr(Diff.diffJson(existingNode, documentToDiff))}`);
-	log.debug(`Changes detected in document with id:${_id} diff:${toStr(detailedDiff(existingNode, documentToDiff))}`);
-	//log.debug(`Changes detected in document with id:${_id} diff:${toStr(diffDocument(existingNode, documentToDiff))}`);
+	try {
+		// These wont reflect modifiedTime, but that's ok?
+		//log.debug(`Changes detected in document with id:${_id}`);
+		//log.debug(`Changes detected in document with id:${_id} existingNode:${toStr(existingNode)} documentToDiff:${toStr(documentToDiff)}`);
+		//log.debug(`Changes detected in document with id:${_id} diff:${toStr(Diff.diffJson(existingNode, documentToDiff))}`);
+		log.debug(`Changes detected in document with id:${_id} diff:${toStr(detailedDiff(existingNode, documentToDiff))}`);
+		//log.debug(`Changes detected in document with id:${_id} diff:${toStr(diffDocument(existingNode, documentToDiff))}`);
+	} catch (e) {
+		// No-op :)
+
+		// jdk.nashorn.internal.runtime.ECMAException: TypeError: d97ce2b4-730e-41d9-b932-d2c8e635f60e is not an Object
+		// Happens when {referer: 'd97ce2b4-730e-41d9-b932-d2c8e635f60e'} a reference field. Probably a Java object?
+
+		// This can be showed to be a jdk object:
+		//var HashMap = Java.type("java.util.HashMap")
+		//log.info(`typeof(HashMap):${typeof(HashMap)}`); // function
+		//log.info(`Object.prototype.toString.call(HashMap):${Object.prototype.toString.call(HashMap)}`); // [object jdk.dynalink.beans.StaticClass]
+
+		// But existingNode.referer only comes out as string???
+		//log.info(`deep-object-diff failed with`, e);
+		//log.info(`existingNode:${toStr(existingNode)}`);
+		//log.info(`documentToDiff:${toStr(documentToDiff)}`);
+		//log.info(`existingNode.referer:${toStr(existingNode.referer)}`); // d97ce2b4-730e-41d9-b932-d2c8e635f60e
+		//log.info(`typeof(existingNode.referer):${typeof(existingNode.referer)}`); // string
+		//log.info(`Object.prototype.toString.call(existingNode.referer):${Object.prototype.toString.call(existingNode.referer)}`); // [object String]*/
+	}
 
 	//──────────────────────────────────────────────────────────────────────────
 	// Since changes detected
