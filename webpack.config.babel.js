@@ -68,7 +68,7 @@ const WEBPACK_CONFIG = [{
 				/node_modules[\\/]core-js/, // will cause errors if they are transpiled by Babel
 				/node_modules[\\/]webpack[\\/]buildin/ // will cause errors if they are transpiled by Babel
 			],
-			test: /\.(es6?|js)$/i, // Will need js for node module depenencies?
+			test: /\.(es6?|js|ts)$/i, // Will need js for node module depenencies?
 			use: [{
 				loader: 'babel-loader',
 				options: {
@@ -113,6 +113,7 @@ const WEBPACK_CONFIG = [{
 						'array-includes'
 					],
 					presets: [
+						'@babel/preset-typescript',
 						[
 							'@babel/preset-env',
 							{
@@ -161,7 +162,12 @@ const WEBPACK_CONFIG = [{
 	],
 	resolve: {
 		alias: SS_ALIAS,
-		extensions: ['es', 'js', 'json'].map(ext => `.${ext}`)
+		extensions: [
+			'es',
+			'js',
+			'json',
+			'ts' // Last for now, perhaps first later on :)
+		].map(ext => `.${ext}`)
 	}, // resolve
 	stats: {
 		colors: true,
