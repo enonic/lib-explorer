@@ -1,5 +1,8 @@
 //import {toStr} from '@enonic/js-utils';
-import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
+import {
+	toStr
+} from '@enonic/js-utils/dist/esm/index.mjs';
+import traverse from 'traverse';
 
 import {
 	FIELD_PATH_GLOBAL,
@@ -7,6 +10,10 @@ import {
 //} from '/lib/explorer/constants';
 } from '../constants';
 import {logDummy} from './dummies';
+import type {
+	Field,
+	FieldsObject
+} from './Field';
 
 
 interface LooseObject {
@@ -14,17 +21,17 @@ interface LooseObject {
 }
 
 interface CleanDataParameters {
-	allowExtraFields? :boolean,
-	data :LooseObject
-	//documentType? :LooseObject
+	cleanExtraFields? :boolean, // allow/deny
+	data :LooseObject,
+	fieldsObj? :FieldsObject
 }
 
 
 export function cleanData(
 	{
-		allowExtraFields = true,
-		data//,
-		//documentType = {}
+		cleanExtraFields = false,
+		data,
+		fieldsObj = {}
 	} :CleanDataParameters,
 	{
 		log = logDummy
@@ -32,10 +39,6 @@ export function cleanData(
 ) :LooseObject {
 	const cleanedData :LooseObject = JSON.parse(JSON.stringify(data));
 
-	if (!allowExtraFields) {
-		// TODO: Clean fields outside DocumentType
-		//documentType
-	}
 	if (cleanedData[FIELD_PATH_GLOBAL]) {
 		log.warning(`Cleaning ${FIELD_PATH_GLOBAL} from ${toStr(cleanedData)}`);
 		delete cleanedData[FIELD_PATH_GLOBAL];
@@ -44,5 +47,25 @@ export function cleanData(
 		log.warning(`Cleaning ${FIELD_PATH_META} from ${toStr(cleanedData)}`);
 		delete cleanedData[FIELD_PATH_META];
 	}
+
+	if (cleanExtraFields) {
+		// TODO: Clean fields outside DocumentType
+		traverse(cleanedData).forEach(function(value) { // Fat arrow destroys this
+			if (
+				this.notRoot
+				&& !this.path[0].startsWith('_')
+				&& !this.circular // Why?
+			) {
+				const pathString = this.path.join('.');
+				const field :Omit<Field, 'name'> = fieldsObj[pathString];
+				if (!field) {
+					// TODO Check if any parent has valueType === set?
+					log.warning(`Cleaning ${pathString} from ${toStr(cleanedData)}`);
+					this.remove(true);
+				}
+			}
+		}); // traverse
+	}
+	log.debug(`cleanedData:${toStr(cleanedData)}`);
 	return cleanedData;
 }

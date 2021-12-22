@@ -1,17 +1,3 @@
-//──────────────────────────────────────────────────────────────────────────────
-//
-// I want as much of the code as possible to be testable outside Enonic XP.
-// A good way to achieve this is higher order programming.
-// Any time a java lib or global is required, it must be passed in as a function,
-// so it can be stubbed/mocked during testing.
-//
-//──────────────────────────────────────────────────────────────────────────────
-//
-// createDocument is a function that takes
-//  data (to be cleaned, validated, typeCasted and persisted)
-//  options (how to clean, validate and typeCast, where to persist)
-//
-//──────────────────────────────────────────────────────────────────────────────
 import {
 	geoPoint,
 	geoPointString,
@@ -21,64 +7,6 @@ import {
 	localTime,
 	reference
 } from '/lib/xp/value';
-
-import {cleanData} from './cleanData';
-import {validate} from './validate';
-import {typeCastToJava} from './typeCastToJava';
-
-/*interface CreateOptions {
-	readonly validateOccurences? :boolean
-	readonly validateTypes? :boolean
-}*/
-
-export function create(data, {
-	validateOccurences = false,
-	validateTypes = true
-}) {
-	const cleanedData = cleanData({data}, {log});
-	const fields = [];
-	const isValid = validate({
-		data: cleanedData,
-		fields,
-		validateOccurences,
-		validateTypes
-	}, {log});
-	const dataWithJavaTypes = typeCastToJava({
-		data: cleanedData,
-		fields
-	}, { // Java objects and functions
-		log,
-		geoPoint,
-		geoPointString,
-		instant,
-		localDate,
-		localDateTime,
-		localTime,
-		reference
-	} = {}
-	const dataWithMetadata = addMetaData({
-		//branchName
-		//collectionId <- repoName:branchName:collectionId
-		collection // <- collectionName, // Collections can be renamed :(
-		collector: {
-			id,
-			version
-		},
-		createdTime,
-		creator,
-		data,
-		//documentTypeId <- repoName:branchName:documentTypeId
-		documentType, // <- documentTypeName,
-		language,
-		modifiedTime,
-		//repoName
-		//owner,
-		stemmingLanguage,
-		valid,
-	});
-	const dataWithIndexConfig = addIndexConfig({data, fields});
-}
-
 
 //──────────────────────────────────────────────────────────────────────────────
 // The old implementation
