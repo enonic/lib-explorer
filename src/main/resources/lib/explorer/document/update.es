@@ -142,12 +142,12 @@ export function update({
 	const now = new Date();
 
 	if (isNotSet(dataToBuildIndexConfigFrom.document_metadata.createdTime)) {
-		log.error(`_id:${_id} document_metadata.createdTime missing, setting to now`);
+		log.debug(`_id:${_id} document_metadata.createdTime missing, setting to now`);
 		dataToBuildIndexConfigFrom.document_metadata.createdTime = now;
 	}
 
 	if (isNotSet(dataToBuildIndexConfigFrom.document_metadata.valid)) {
-		log.error(`_id:${_id} document_metadata.valid missing, setting to false before validation`);
+		log.debug(`_id:${_id} document_metadata.valid missing, setting to false before validation`);
 		dataToBuildIndexConfigFrom.document_metadata.valid = false;
 	}
 
