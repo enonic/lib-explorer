@@ -153,12 +153,12 @@ export function update({
 	const now = new Date();
 
 	if (isNotSet(dataToBuildIndexConfigFrom[FIELD_PATH_META].createdTime)) {
-		log.error(`_id:${_id} ${FIELD_PATH_META}.createdTime missing, setting to now`);
+		log.debug(`_id:${_id} ${FIELD_PATH_META}.createdTime missing, setting to now`);
 		dataToBuildIndexConfigFrom[FIELD_PATH_META].createdTime = now;
 	}
 
 	if (isNotSet(dataToBuildIndexConfigFrom[FIELD_PATH_META].valid)) {
-		log.error(`_id:${_id} ${FIELD_PATH_META}.valid missing, setting to false before validation`);
+		log.debug(`_id:${_id} ${FIELD_PATH_META}.valid missing, setting to false before validation`);
 		dataToBuildIndexConfigFrom[FIELD_PATH_META].valid = false;
 	}
 
