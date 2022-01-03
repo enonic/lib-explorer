@@ -2,7 +2,7 @@ import {deepStrictEqual} from 'assert';
 
 import {
 	document
-} from '../../../../build/rollup/index.mjs';
+} from '../../../../../rollup/index.js';
 
 const {validateOccurrences} = document;
 

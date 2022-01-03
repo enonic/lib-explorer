@@ -5,7 +5,7 @@ import {
 
 import {
 	document
-} from '../../../../build/rollup/index.mjs';
+} from '../../../../../rollup/index.js';
 
 const {
 	addMissingSetToFieldsArray,

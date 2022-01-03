@@ -1,22 +1,17 @@
 import {deepStrictEqual} from 'assert';
 
-//import libExplorer from '../../../../build/swc/main/resources/lib/explorer/index.js';
-
 import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META,
 	document
-//} from '../../../../build/esbuild/esm/lib/explorer/index.mjs';
-//} from '../../../../build/tsc/lib/explorer/index.js';
-} from '../../../../build/rollup/index.mjs';
-//} from '../../../../build/rollup/index.umd.js';
-//} from '../../../../build/rollup/index.cjs';
+//} from '../../../../src/main/resources/lib/explorer';
+} from '../../../../../rollup/index.js';
+//} from '/lib/explorer';
+// Currently swc doesn't bundle, so import paths need to be relative to where the output file gets placed.
+// I don't think swc does dedup either, so it can't rewrite import paths.
+// I haven't found a way for mocha to resolve require paths either.
 
-/*const {
-	FIELD_PATH_GLOBAL,
-	FIELD_PATH_META,
-	document
-} = libExplorer;*/
+
 
 const {cleanData} = document;
 
@@ -30,6 +25,7 @@ const log = { //console.log console.trace
 	warning: () => {/**/}
 	//warning: (...s) => console.warn('WARN ', ...s)
 };
+
 
 describe('document', () => {
 	describe('cleanData()', () => {

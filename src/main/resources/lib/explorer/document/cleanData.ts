@@ -1,7 +1,6 @@
-//import {toStr} from '@enonic/js-utils';
-import {
-	toStr
-} from '@enonic/js-utils/dist/esm/index.mjs';
+import {toStr} from '@enonic/js-utils';
+//import {toStr} from '@enonic/js-utils/src';
+//import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
 import traverse from 'traverse';
 
 import {
@@ -21,7 +20,7 @@ interface LooseObject {
 }
 
 interface CleanDataParameters {
-	cleanExtraFields? :boolean, // allow/deny
+	cleanExtraFields? :boolean,
 	data :LooseObject,
 	fieldsObj? :FieldsObject
 }
@@ -43,14 +42,14 @@ export function cleanData(
 		log.warning(`Cleaning ${FIELD_PATH_GLOBAL} from ${toStr(cleanedData)}`);
 		delete cleanedData[FIELD_PATH_GLOBAL];
 	}
+
 	if (cleanedData[FIELD_PATH_META]) {
 		log.warning(`Cleaning ${FIELD_PATH_META} from ${toStr(cleanedData)}`);
 		delete cleanedData[FIELD_PATH_META];
 	}
 
 	if (cleanExtraFields) {
-		// TODO: Clean fields outside DocumentType
-		traverse(cleanedData).forEach(function(value) { // Fat arrow destroys this
+		traverse(cleanedData).forEach(function(/*value*/) { // Fat arrow destroys this
 			if (
 				this.notRoot
 				&& !this.path[0].startsWith('_')
@@ -59,13 +58,13 @@ export function cleanData(
 				const pathString = this.path.join('.');
 				const field :Omit<Field, 'name'> = fieldsObj[pathString];
 				if (!field) {
-					// TODO Check if any parent has valueType === set?
 					log.warning(`Cleaning ${pathString} from ${toStr(cleanedData)}`);
 					this.remove(true);
 				}
 			}
 		}); // traverse
-	}
+	} // if cleanExtraFields
+
 	log.debug(`cleanedData:${toStr(cleanedData)}`);
 	return cleanedData;
 }

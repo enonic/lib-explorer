@@ -24,14 +24,13 @@
 		"outDir": "build/tsc",
 		"paths": {
 			"@enonic/js-utils": ["node_modules/@enonic/js-utils/src"],
-			"enonic-types/*": ["node_modules/enonic-types/*"],
 			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
 		},
 		"preserveWatchOutput": false,
 		"pretty": true,
 		"removeComments": true,
 		"resolveJsonModule": true,
-		"rootDir": "src/main/resources",
+		"rootDir": "./",
 		"rootDirs": [
 			"src/main/resources",
 			"node_modules",
@@ -48,14 +47,10 @@
 		]
 	},
 	"exclude": [
-		"src/main/resources/**/*.spec.ts",
-		"build",
-		"node_modules"
+		"build"
 	],
 	"files": [
-		"src/main/resources/lib/explorer/constants.ts",
-		"src/main/resources/lib/explorer/document/cleanData.ts",
-		"src/main/resources/lib/xp/globals.d.ts"
+		"src/main/resources/lib/explorer/index.ts"
 	],
 	"include": [
       "src/main/resources/**/*.ts"
