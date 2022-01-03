@@ -6,7 +6,7 @@ import {deepStrictEqual} from 'assert';
 
 import {
 	document
-} from '../../../../build/rollup/index.mjs';
+} from '../../../../../rollup';
 
 import {
 	BOOLEANS,
@@ -31,7 +31,7 @@ import {
 	NOT_UUIDV4,
 	STRINGS,
 	UUIDV4
-} from '../../../testData.mjs';
+} from '../../../testData';
 
 //const {VALUE_TYPE_STRING} = libExplorer;
 const {validateTypes} = document;
@@ -244,7 +244,7 @@ const TESTS_VALID = [{
 			name: 'localTimeArray'
 		}]
 	},
-	OBJECTS.map(object => ({
+	/*OBJECTS.map(object => ({
 		data: {
 			object
 		},
@@ -261,7 +261,7 @@ const TESTS_VALID = [{
 			valueType: VALUE_TYPE_SET,
 			name: 'objectArray'
 		}]
-	},
+	},*/
 	STRINGS.map(string => ({
 		data: {
 			string
@@ -458,7 +458,7 @@ const TESTS_INVALID = [{
 			name: 'localTimeArray'
 		}]
 	},
-	NOT_OBJECTS.map(notObject => ({
+	/*NOT_OBJECTS.map(notObject => ({
 		data: {
 			object: notObject
 		},
@@ -475,7 +475,7 @@ const TESTS_INVALID = [{
 			valueType: VALUE_TYPE_SET,
 			name: 'objectArray'
 		}]
-	},
+	},*/
 	NOT_STRINGS.map(notString => ({
 		data: {
 			string: notString

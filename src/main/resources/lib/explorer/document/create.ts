@@ -12,6 +12,9 @@
 //  options (how to clean, validate and typeCast, where to persist)
 //
 //──────────────────────────────────────────────────────────────────────────────
+import type {Fields} from './field';
+
+import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {cleanData} from './cleanData';
 import {
 	geoPointDummy,
@@ -23,7 +26,6 @@ import {
 	logDummy,
 	referenceDummy
 } from './dummies';
-import type {Fields} from './field';
 import {fieldsArrayToObj} from './field';
 import {validate} from './validate';
 import {typeCastToJava} from './typeCastToJava';
@@ -33,9 +35,11 @@ interface LooseObject {
 }
 
 interface CreateParameters {
+	addExtraFields? :boolean
+	cleanExtraFields? :boolean
 	data: LooseObject
 	fields :Fields
-	validateOccurences? :boolean
+	validateOccurrences? :boolean
 	validateTypes? :boolean
 }
 
@@ -53,11 +57,11 @@ interface CreateOptions {
 // dieOnError
 export function create({
 	cleanExtraFields = false, // If true, extra fields can't cause error nor addType, because extra fields are deleted.
-	denyExtraFields = cleanExtraFields, // If false, extra fields cause error and not persisted
-	addTypeForNewFields = !denyExtraFields, // Detect from first instance? or always string?
+	//denyExtraFields = cleanExtraFields, // If false, extra fields cause error and not persisted
+	addExtraFields = !cleanExtraFields, // Detect from first instance? or always string?
 	data,
 	fields = [],
-	validateOccurences = false, // previously requireValid?
+	validateOccurrences = false, // previously requireValid?
 	validateTypes = true // previously requireValid
 } :CreateParameters, {
 	log = logDummy,
@@ -69,21 +73,31 @@ export function create({
 	localTime = localTimeDummy,
 	reference = referenceDummy
 } :CreateOptions) {
-	const fieldsObj = fieldsArrayToObj(fields, {log});
+	let myFields = JSON.parse(JSON.stringify(fields));
+	if (addExtraFields) {
+		myFields = addExtraFieldsToDocumentType({
+			data,
+			fields
+		}, { log });
+	}
+	const fieldsObj = fieldsArrayToObj(myFields, {log});
 	const cleanedData = cleanData({
 		cleanExtraFields,
 		data,
 		fieldsObj
 	}, {log});
+	/*if (!cleanExtraFields && denyExtraFields) {
+
+	}*/
 	const isValid = validate({
 		data: cleanedData,
-		fields,
-		validateOccurences,
+		fields: myFields,
+		validateOccurrences,
 		validateTypes
 	}, {log});
 	const dataWithJavaTypes = typeCastToJava({
 		data: cleanedData,
-		fields
+		fields: myFields
 	}, { // Java objects and functions
 		log,
 		geoPoint,
@@ -93,7 +107,7 @@ export function create({
 		localDateTime,
 		localTime,
 		reference
-	} = {});
+	});
 	/*const dataWithMetadata = addMetaData({
 		//branchName
 		//collectionId <- repoName:branchName:collectionId
