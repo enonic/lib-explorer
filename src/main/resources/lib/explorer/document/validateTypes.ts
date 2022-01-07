@@ -9,6 +9,8 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
+import type {ValidateTypesParameters} from './types';
+
 import {
 	VALUE_TYPE_ANY,
 	VALUE_TYPE_BOOLEAN,
@@ -42,28 +44,6 @@ import getIn from 'get-value';
 import {v4 as isUuid4} from 'is-uuid';
 
 import {logDummy} from './dummies';
-
-
-interface LooseObject {
-	[key :string] :unknown
-}
-
-interface Field {
-	//readonly enabled :boolean
-	//readonly fulltext :boolean
-	//readonly includeInAllText :boolean
-	//readonly max? :number
-	//readonly min? :number
-	readonly name :string
-	//readonly nGram :boolean
-	//readonly path :boolean
-	readonly valueType? :string
-}
-
-interface ValidateTypesParameters {
-	readonly data? :LooseObject
-	readonly fields? :Field[]
-}
 
 
 // Any Float number with a zero decimal part are implicitly cast to Integer,

@@ -9,36 +9,12 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
+import type {ValidateParameters} from './types';
+
 import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
 
 import {logDummy} from './dummies';
 import {validateOccurrences} from './validateOccurrences';
-
-
-interface LooseObject {
-	[key :string] :unknown
-}
-
-interface Field {
-	readonly active :boolean
-	readonly enabled :boolean
-	readonly fulltext :boolean
-	readonly includeInAllText :boolean
-	readonly max? :number
-	readonly min? :number
-	readonly name :string
-	readonly nGram :boolean
-	readonly path :boolean
-	readonly valueType? :string
-}
-
-interface ValidateParameters {
-	readonly data :LooseObject
-	readonly fields :Field[]
-	readonly validateOccurrences? :boolean
-	readonly validateTypes? :boolean
-	//documentType? :LooseObject
-}
 
 
 export function validate({

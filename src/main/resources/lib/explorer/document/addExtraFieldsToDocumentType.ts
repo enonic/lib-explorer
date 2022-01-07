@@ -1,12 +1,11 @@
-import {
-	toStr
-} from '@enonic/js-utils/dist/esm/index.mjs';
-import traverse from 'traverse';
-
 import type {
+	AddExtraFieldsToDocumentTypeParams,
 	Field,
 	Fields
-} from './Field';
+} from './types';
+
+import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
+import traverse from 'traverse';
 
 import {
 	applyDefaultsToField,
@@ -15,14 +14,7 @@ import {
 } from './Field';
 import {logDummy} from './dummies';
 
-interface LooseObject {
-	[key :string] :unknown
-}
 
-interface AddExtraFieldsToDocumentTypeParams {
-	data :LooseObject
-	fields :Fields
-}
 
 export function addExtraFieldsToDocumentType({
 	data,

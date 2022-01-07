@@ -1,3 +1,9 @@
+import type {
+	Field,
+	Fields,
+	FieldsObject
+} from './types';
+
 import {
 	INDEX_CONFIG_ENABLED_DEFAULT,
 	INDEX_CONFIG_FULLTEXT_DEFAULT,
@@ -24,25 +30,6 @@ import {
 } from '@enonic/js-utils/dist/esm/index.mjs';
 
 import {logDummy} from './dummies';
-
-
-export interface Field {
-	enabled? :boolean
-	fulltext? :boolean
-	includeInAllText? :boolean
-	max? :number
-	min? :number
-	name :string
-	nGram? :boolean
-	path? :boolean
-	valueType? :string
-}
-
-export type Fields = Field[];
-
-export interface FieldsObject {
-	[name :string] :Required<Omit<Field, 'name'>>
-}
 
 
 const BOOLEAN_PROPS = ['enabled', 'fulltext', 'includeInAllText', 'nGram',

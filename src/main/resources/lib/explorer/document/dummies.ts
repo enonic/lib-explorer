@@ -1,9 +1,15 @@
-export const geoPointDummy = (v :number[]) :unknown => v;
-export const geoPointStringDummy = (v :string) :unknown => v;
-export const instantDummy = (v :unknown) :unknown => v;
-export const localDateDummy = (v :unknown) :unknown => v;
-export const localDateTimeDummy = (v :unknown) :unknown => v;
-export const localTimeDummy = (v :unknown) :unknown => v;
+import type {
+	GeoPointFunction,
+	StringFunction,
+	UnknownFunction
+} from './types';
+
+export const geoPointDummy :GeoPointFunction = (v) => v;
+export const geoPointStringDummy :StringFunction = (v) => v;
+export const instantDummy :UnknownFunction = (v) => v;
+export const localDateDummy :UnknownFunction = (v) => v;
+export const localDateTimeDummy :UnknownFunction = (v) => v;
+export const localTimeDummy :UnknownFunction = (v) => v;
 export const logDummy :Log = {
 	error: () => {
 		// no-op
@@ -18,4 +24,4 @@ export const logDummy :Log = {
 		// no-op
 	}
 };
-export const referenceDummy = (v :string) :unknown => v;
+export const referenceDummy :StringFunction = (v) => v;

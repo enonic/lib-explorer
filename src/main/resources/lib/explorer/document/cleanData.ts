@@ -1,3 +1,9 @@
+import type {
+	CleanDataParameters,
+	Field,
+	LooseObject
+} from './types';
+
 import {toStr} from '@enonic/js-utils';
 //import {toStr} from '@enonic/js-utils/src';
 //import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
@@ -9,21 +15,6 @@ import {
 //} from '/lib/explorer/constants';
 } from '../constants';
 import {logDummy} from './dummies';
-import type {
-	Field,
-	FieldsObject
-} from './Field';
-
-
-interface LooseObject {
-	[key :string] :unknown
-}
-
-interface CleanDataParameters {
-	cleanExtraFields? :boolean,
-	data :LooseObject,
-	fieldsObj? :FieldsObject
-}
 
 
 export function cleanData(
