@@ -12,7 +12,10 @@
 //  options (how to clean, validate and typeCast, where to persist)
 //
 //──────────────────────────────────────────────────────────────────────────────
-import type {Fields} from './field';
+import type {
+	CreateOptions,
+	CreateParameters
+} from './types';
 
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {cleanData} from './cleanData';
@@ -29,30 +32,6 @@ import {
 import {fieldsArrayToObj} from './field';
 import {validate} from './validate';
 import {typeCastToJava} from './typeCastToJava';
-
-interface LooseObject {
-	[key :string] :unknown
-}
-
-interface CreateParameters {
-	addExtraFields? :boolean
-	cleanExtraFields? :boolean
-	data: LooseObject
-	fields :Fields
-	validateOccurrences? :boolean
-	validateTypes? :boolean
-}
-
-interface CreateOptions {
-	log :Log
-	geoPoint :typeof geoPointDummy
-	geoPointString :typeof geoPointStringDummy
-	instant :typeof instantDummy
-	localDate :typeof localDateDummy
-	localDateTime :typeof localDateTimeDummy
-	localTime :typeof localTimeDummy
-	reference :typeof referenceDummy
-}
 
 // dieOnError
 export function create({

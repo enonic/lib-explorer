@@ -1,3 +1,9 @@
+import type {
+	GeoPointArray,
+	LooseObject,
+	TypeCastToJavaParameters
+} from './types'
+
 import {
 	VALUE_TYPE_ANY,
 	VALUE_TYPE_BOOLEAN,
@@ -37,33 +43,6 @@ import {
 } from './dummies';
 
 
-interface LooseObject {
-	[key :string] :unknown
-}
-
-interface Field {
-	//readonly enabled :boolean
-	//readonly fulltext :boolean
-	//readonly includeInAllText :boolean
-	//readonly max? :number
-	//readonly min? :number
-	readonly name :string
-	//readonly nGram :boolean
-	//readonly path :boolean
-	readonly valueType? :string
-}
-
-interface TypeCastToJavaParameters {
-	readonly data? :LooseObject
-	readonly fields? :Field[]
-}
-
-/*interface TypeCastToJavaOptions {
-	readonly log :LooseObject
-	readonly geoPoint
-}*/
-
-
 export function typeCastToJava({
 	data = {},
 	fields = []
@@ -93,7 +72,7 @@ export function typeCastToJava({
 
 	//const typeCastedData :LooseObject = JSON.parse(JSON.stringify(data));
 	const typeCastedData :LooseObject = {};
-	traverse(data).forEach(function(value) { // Fat arrow destroys this
+	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
 		if (
 			this.notRoot
 			&& !this.path[0].startsWith('_')
@@ -118,7 +97,7 @@ export function typeCastToJava({
 				} else if (valueTypeForPath === VALUE_TYPE_GEO_POINT) {
 					if (isGeoPointArray(value)) {
 						try {
-							const javaGeoPoint = geoPoint(value);
+							const javaGeoPoint = geoPoint(value as GeoPointArray);
 							setIn(typeCastedData, pathString, javaGeoPoint);
 							//this.update(javaGeoPoint, true);
 							this.block();
@@ -127,7 +106,7 @@ export function typeCastToJava({
 						}
 					} else if(isGeoPointString(value)) {
 						try {
-							const javaGeoPoint = geoPointString(value);
+							const javaGeoPoint = geoPointString(value as string);
 							setIn(typeCastedData, pathString, javaGeoPoint);
 							//this.update(javaGeoPoint, true);
 							this.block();
@@ -192,7 +171,7 @@ export function typeCastToJava({
 				} else if (valueTypeForPath === VALUE_TYPE_REFERENCE) {
 					if (isUuid4(value)) {
 						try {
-							const javaReference = reference(value);
+							const javaReference = reference(value as string);
 							setIn(typeCastedData, pathString, javaReference);
 							//this.update(javaReference, true);
 							this.block();

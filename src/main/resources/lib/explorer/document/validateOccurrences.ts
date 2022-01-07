@@ -9,6 +9,8 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
+import type {ValidateOccurrencesParameters} from './types';
+
 import {
 	enonify,
 	isSet,
@@ -18,28 +20,6 @@ import {
 import getIn from 'get-value';
 
 import {logDummy} from './dummies';
-
-
-interface LooseObject {
-	[key :string] :unknown
-}
-
-interface Field {
-	//readonly enabled :boolean
-	//readonly fulltext :boolean
-	//readonly includeInAllText :boolean
-	readonly max? :number
-	readonly min? :number
-	readonly name :string
-	//readonly nGram :boolean
-	//readonly path :boolean
-	//readonly valueType? :string
-}
-
-interface ValidateOccurrencesParameters {
-	readonly data? :LooseObject
-	readonly fields? :Field[]
-}
 
 
 export function validateOccurrences({
