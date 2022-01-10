@@ -40,6 +40,7 @@ import {
 	isNotSet as notSet,
 	isString,
 	isUuidV4String,
+	sortKeys,
 	toStr
 } from '@enonic/js-utils';
 
@@ -51,6 +52,7 @@ import {
 	REPO_ID_EXPLORER
 } from '../constants';
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
+import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';
 import {
 	connectDummy,
@@ -224,7 +226,18 @@ export function create(createParameterObject :CreateParameterObject, {
 	});
 	//log.debug('dataWithJavaTypes %s', dataWithJavaTypes);
 
-	//const dataWithIndexConfig = addIndexConfig({data, fields});
+	const languages :string[] = [];
+	if (stemmingLanguage) {
+		languages.push(stemmingLanguage);
+	}
+
+	const indexConfig = buildIndexConfig({
+		//data,
+		fieldsObj,
+		languages
+	}, {log});
+	//log.debug('indexConfig %s', indexConfig);
+	dataWithJavaTypes['_indexConfig'] = indexConfig;
 
 	dataWithJavaTypes[FIELD_PATH_META] = {
 		collection: collectionName,
@@ -238,5 +251,9 @@ export function create(createParameterObject :CreateParameterObject, {
 		stemmingLanguage,
 		valid: isValid
 	};
-	return dataWithJavaTypes;
+
+	const sortedDataWithIndexConfig = sortKeys(dataWithJavaTypes);
+	//log.debug('sortedDataWithIndexConfig %s', sortedDataWithIndexConfig);
+
+	return sortedDataWithIndexConfig;
 }

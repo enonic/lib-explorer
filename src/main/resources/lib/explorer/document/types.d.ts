@@ -282,6 +282,16 @@ export interface TypeCastToJavaParameters {
 	fieldsObj :FieldsObject
 }
 
+export interface BuildIndexConfigParameterObject {
+	//data :LooseObject
+	fieldsObj :FieldsObject
+	languages :string[]
+}
+
+export interface BuildIndexConfigJavaBridge {
+	log? :Log
+}
+
 export interface CreateParameterObject {
 	addExtraFields? :boolean
 	cleanExtraFields? :boolean
