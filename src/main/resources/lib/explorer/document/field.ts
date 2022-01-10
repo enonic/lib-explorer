@@ -136,8 +136,9 @@ export function applyDefaultsToField(field :Partial<Field>, {log = logDummy} = {
 	if (name) {
 		FIELD.name = name;
 	}
-	Object.freeze(FIELD);
-	return FIELD as Readonly<Required<Field>>;
+	//Object.freeze(FIELD);
+	//return FIELD as Readonly<Required<Field>>;
+	return FIELD as Required<Field>;
 }
 
 
@@ -151,8 +152,16 @@ export function fieldsArrayToObj(fields :Fields, {log = logDummy} = {}) :FieldsO
 		const {name, ...rest} = field;
 		FIELDS_OBJ[name] = rest;
 	}
-	Object.freeze(FIELDS_OBJ);
+	//Object.freeze(FIELDS_OBJ);
 	return FIELDS_OBJ;
+}
+
+
+export function fieldsObjToArray(fieldsObj :FieldsObject, {log = logDummy} = {}) :Fields {
+	return Object.keys(fieldsObj).map(pathString => ({
+		...applyDefaultsToField(fieldsObj[pathString], { log }),
+		name: pathString
+	}));
 }
 
 
@@ -189,6 +198,6 @@ export function addMissingSetToFieldsArray(fields :Fields, {log = logDummy} = {}
   		return 0;
 	});
 	log.debug(`sorted returnFields:${toStr(returnFields)}`);
-	Object.freeze(returnFields);
+	//Object.freeze(returnFields);
 	return returnFields;
 }

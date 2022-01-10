@@ -15,6 +15,7 @@ import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
 
 import {logDummy} from './dummies';
 import {validateOccurrences} from './validateOccurrences';
+import {validateTypes} from './validateTypes';
 
 
 export function validate({
@@ -28,11 +29,14 @@ export function validate({
 	//log.debug(`data:${toStr(data)}`);
 	//log.debug(`fields:${toStr(fields)}`);
 	//log.debug(`boolValidateOccurrences:${toStr(boolValidateOccurrences)}`);
-	log.debug(`boolValidateTypes:${toStr(boolValidateTypes)}`);
 	if (boolValidateOccurrences) {
 		if (!validateOccurrences({ data, fields }, { log })) {
 			return false;
 		}
+	}
+	//log.debug(`boolValidateTypes:${toStr(boolValidateTypes)}`);
+	if (boolValidateTypes) {
+		return validateTypes({ data, fields }, { log });
 	}
 	return true;
 }
