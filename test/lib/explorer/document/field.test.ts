@@ -11,6 +11,7 @@ const {
 	addMissingSetToFieldsArray,
 	applyDefaultsToField,
 	fieldsArrayToObj,
+	fieldsObjToArray,
 	isField,
 	isFields
 } = document;
@@ -210,6 +211,29 @@ describe('document', () => {
 					);
 				});
 			} // for
+		});
+	});
+	describe('fieldsObjToArray()', () => {
+		const fieldsObj = {
+			myString: {
+				valueType: 'string'
+			}
+		};
+		it(`${toStr(fieldsObj)}`, () => {
+			deepStrictEqual(
+				[{
+					enabled: true,
+					fulltext: false,
+					includeInAllText: false,
+					max: 0,
+					min: 0,
+					nGram: false,
+					name: 'myString',
+					path: false,
+					valueType: 'string'
+				}],
+				fieldsObjToArray(fieldsObj, { log })
+			);
 		});
 	});
 	describe('addMissingSetToFieldsArray()', () => {

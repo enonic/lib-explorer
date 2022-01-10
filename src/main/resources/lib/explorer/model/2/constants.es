@@ -11,14 +11,16 @@ import {
 } from '@enonic/js-utils';
 
 export {
+	APP_EXPLORER,
+	BRANCH_ID_EXPLORER,
 	FIELD_PATH_GLOBAL,
-	FIELD_PATH_META
+	FIELD_PATH_META,
+	PRINCIPAL_EXPLORER_READ,
+	PRINCIPAL_EXPLORER_WRITE,
+	REPO_ID_EXPLORER,
+	ROLE_EXPLORER_READ,
+	ROLE_EXPLORER_WRITE
 } from '../../constants';
-
-//──────────────────────────────────────────────────────────────────────────────
-// Admin tool
-//──────────────────────────────────────────────────────────────────────────────
-export const APP_EXPLORER = 'com.enonic.app.explorer';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Folders
@@ -365,31 +367,21 @@ export const DEFAULT_FIELDS = NO_VALUES_FIELDS.concat(READONLY_FIELDS, READWRITE
 //──────────────────────────────────────────────────────────────────────────────
 // Repo
 //──────────────────────────────────────────────────────────────────────────────
-
-export const REPO_ID_EXPLORER = APP_EXPLORER;
-export const BRANCH_ID_EXPLORER = 'master';
 export const REPO_JOURNALS = `${APP_EXPLORER}${DOT_SIGN}journals`;
 
 export const COLLECTION_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}collection${DOT_SIGN}`;
 export const RESPONSES_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}responses${DOT_SIGN}`;
-
 
 //──────────────────────────────────────────────────────────────────────────────
 // Roles
 //──────────────────────────────────────────────────────────────────────────────
 export const ROLE_SYSTEM_ADMIN = 'system.admin';
 export const ROLE_EXPLORER_ADMIN = `${APP_EXPLORER}.admin`;
-export const ROLE_EXPLORER_READ = `${APP_EXPLORER}.read`;
-export const ROLE_EXPLORER_WRITE = `${APP_EXPLORER}.write`;
-
 
 //──────────────────────────────────────────────────────────────────────────────
 // Principals
 //──────────────────────────────────────────────────────────────────────────────
 export const PRINCIPAL_SYSTEM_ADMIN = `role:${ROLE_SYSTEM_ADMIN}`;
-export const PRINCIPAL_EXPLORER_READ = `role:${ROLE_EXPLORER_READ}`;
-export const PRINCIPAL_EXPLORER_WRITE = `role:${ROLE_EXPLORER_WRITE}`;
-
 
 //──────────────────────────────────────────────────────────────────────────────
 // User

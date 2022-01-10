@@ -1,16 +1,23 @@
 import type {
 	AddExtraFieldsToDocumentTypeParams,
 	Field,
-	Fields
+	FieldsObject
 } from './types';
 
-import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
+import {
+	VALUE_TYPE_GEO_POINT,
+	detectValueType,
+	toStr
+} from '@enonic/js-utils/dist/esm/index.mjs';
 import traverse from 'traverse';
 
 import {
+	FIELD_PATH_GLOBAL,
+	FIELD_PATH_META
+} from '../constants';
+import {
+	//addMissingSetToFieldsArray,
 	applyDefaultsToField,
-	fieldsArrayToObj,
-	isFields
 } from './Field';
 import {logDummy} from './dummies';
 
@@ -18,29 +25,42 @@ import {logDummy} from './dummies';
 
 export function addExtraFieldsToDocumentType({
 	data,
-	fields
+	fieldsObj,
+	updateDocumentType = () => {}
 } :AddExtraFieldsToDocumentTypeParams, {
-		log = logDummy
-} = {}) :Fields {
-	log.debug(`data:${toStr(data)}`);
-	if (!isFields(fields, { log })) { // NOTE Allowing empty array
-		throw new TypeError(`addExtraFieldsToDocumentType: fields not of type Fields! fields:${toStr(fields)}`);
-	}
-	const returnFields = JSON.parse(JSON.stringify(fields));
-	const fieldsObj = fieldsArrayToObj(fields, { log });
-	traverse(fields).forEach(function(/*value*/) { // Fat arrow destroys this
+	log = logDummy
+} = {}) :FieldsObject {
+	//log.debug(`data:${toStr(data)}`);
+	const returnFieldsObj = JSON.parse(JSON.stringify(fieldsObj));
+	let boolModified = false;
+	traverse(data).forEach(function(value) { // Fat arrow destroys this
 		if (
 			this.notRoot
 			&& !this.path[0].startsWith('_')
+			&& !this.path[0].startsWith(FIELD_PATH_GLOBAL)
+			&& !this.path[0].startsWith(FIELD_PATH_META)
 			&& !this.circular // Why?
 		) {
 			const pathString = this.path.join('.');
+			//log.debug(`pathString:${pathString}`);
+
 			const field :Omit<Field, 'name'> = fieldsObj[pathString];
 			if (!field) { // Field has no definition
-				//const valueTypeForPath = fieldObj[pathString].valueType || VALUE_TYPE_STRING;
-				// TODO detect type from value
+				//log.debug(`field:${pathString} doesn't exist in documentType, adding...`);
+				const detectedType = detectValueType(value);
+				log.debug(`field:${pathString} detectedType:${detectedType}`);
+				if (detectedType === VALUE_TYPE_GEO_POINT) {
+					this.block();
+				}
+				returnFieldsObj[pathString] = applyDefaultsToField({
+					valueType: detectedType
+				}, { log });
+				boolModified = true;
 			} // if !field
 		}
 	}); // traverse
-	return returnFields;
+	if (boolModified) {
+		updateDocumentType(returnFieldsObj);
+	}
+	return returnFieldsObj;
 }

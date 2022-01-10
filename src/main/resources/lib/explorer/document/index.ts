@@ -1,8 +1,11 @@
+export {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 export {cleanData} from './cleanData';
+export {create} from './create';
 export {
 	addMissingSetToFieldsArray,
 	applyDefaultsToField,
 	fieldsArrayToObj,
+	fieldsObjToArray,
 	isField,
 	isFields
 } from './field';

@@ -1,8 +1,18 @@
 import type {
+	ConnectFunction,
 	GeoPointFunction,
 	StringFunction,
 	UnknownFunction
 } from './types';
+
+export const connectDummy :ConnectFunction = (/*source*/) => ({
+	get: (key) => {
+		return {
+			_id: key as string//,
+			//_name: ''
+		};
+	}
+});
 
 export const geoPointDummy :GeoPointFunction = (v) => v;
 export const geoPointStringDummy :StringFunction = (v) => v;
@@ -25,3 +35,10 @@ export const logDummy :Log = {
 	}
 };
 export const referenceDummy :StringFunction = (v) => v;
+
+export const stemmingLanguageFromLocaleDummy = (locale :string) => {
+	if (locale === 'en-GB') {
+		return 'en';
+	}
+	return 'en';
+}
