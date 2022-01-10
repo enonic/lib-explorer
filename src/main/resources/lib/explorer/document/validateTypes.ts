@@ -165,9 +165,9 @@ export function validateTypes({
 		}
 		case VALUE_TYPE_SET: {
 			const valueArray = forceArray(value);
-			log.info('valueArray', valueArray);
+			log.debug('valueArray', valueArray);
 			for (let j = 0; j < valueArray.length; j++) {
-				log.info('valueArray[', j, ']', valueArray[j]);
+				log.debug('valueArray[', j, ']', valueArray[j]);
 				if (!isObject(valueArray[j])) {
 					//const msg = `Not a Set:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 					log.debug(

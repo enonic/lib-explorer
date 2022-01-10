@@ -2,6 +2,7 @@ import {
 	deepStrictEqual,
 	throws
 } from 'assert';
+import {stringify} from 'q-i';
 
 import {
 	document
@@ -13,7 +14,7 @@ const {create} = document;
 
 const log = { //console.log console.trace
 	//debug: () => {/**/},
-	debug: (...s :unknown[]) => console.debug('DEBUG', ...s),
+	debug: (format, ...s :unknown[]) => console.debug(`DEBUG ${format}`, stringify(...s, { maxItems: Infinity })),
 	//error: () => {/**/},
 	error: (...s :unknown[]) => console.error('ERROR', ...s),
 	info: () => {/**/},
@@ -35,12 +36,12 @@ const DOCUMENT_TYPE_ID = '00000000-0000-4000-8000-000000000001';
 const DOCUMENT_TYPE_NAME = 'myDocumentTypeName';
 const DOCUMENT_TYPE_FIELDS = [{
 	enabled: true,
-	fulltext: false,
-	includeInAllText: false,
+	fulltext: true,
+	includeInAllText: true,
 	max: 0,
 	min: 0,
 	name: 'myString',
-	nGram: false,
+	nGram: true,
 	path: false,
 	valueType: 'string'
 }];
@@ -148,6 +149,121 @@ describe('document', () => {
 		it(`is able to get collectionName, documentTypeId, documentTypeName, language and stemmmingLanguage from collectionId`, () => {
 			deepStrictEqual(
 				{
+					_indexConfig: {
+						configs: [{
+							path: 'document_metadata.collection',
+							config: {
+								decideByType: false,
+								enabled: true,
+								fulltext: true,
+								includeInAllText: false,
+								nGram: true,
+								path: false
+							}
+						},{
+							path: 'document_metadata.collector.id',
+							config: {
+								decideByType: false,
+								enabled: true,
+								fulltext: false,
+								includeInAllText: false,
+								nGram: false,
+								path: false
+							}
+						},{
+							path: 'document_metadata.collector.version',
+							config: {
+								decideByType: false,
+								enabled: true,
+								fulltext: false,
+								includeInAllText: false,
+								nGram: false,
+								path: false
+							}
+						},{
+							path: 'document_metadata.createdTime',
+							config: {
+								decideByType: true,
+								enabled: true,
+								fulltext: false,
+								includeInAllText: false,
+								nGram: false,
+								path: false
+							}
+						},{
+							path: 'document_metadata.documentType',
+							config: {
+								decideByType: false,
+								enabled: true,
+								fulltext: true,
+								includeInAllText: false,
+								nGram: true,
+								path: false
+							}
+						},{
+							path: 'document_metadata.language',
+							config: {
+								decideByType: false,
+								enabled: true,
+								fulltext: true,
+								includeInAllText: false,
+								nGram: true,
+								path: false
+							}
+						},{
+							path: 'document_metadata.stemmingLanguage',
+							config: {
+								decideByType: false,
+								enabled: true,
+								fulltext: true,
+								includeInAllText: false,
+								nGram: true,
+								path: false
+							}
+						},{
+							path: 'document_metadata.valid',
+							config: {
+								decideByType: true,
+								enabled: true,
+								fulltext: false,
+								includeInAllText: false,
+								nGram: false,
+								path: false
+							}
+						},{
+							path: 'extra',
+							config: {
+								decideByType: false,
+								enabled: true,
+								fulltext: false,
+								includeInAllText: false,
+								languages: [COLLECTION_STEMMING_LANGUAGE],
+								nGram: false,
+								path: false
+							}
+						},{
+							path: 'myString',
+							config: {
+								decideByType: false,
+								enabled: true,
+								fulltext: true,
+								includeInAllText: true,
+								languages: [COLLECTION_STEMMING_LANGUAGE],
+								nGram: true,
+								path: false
+							}
+						}],
+						default: {
+							decideByType: true,
+							enabled: true,
+							fulltext: false,
+							includeInAllText: false,
+							indexValueProcessors: [],
+							languages: [COLLECTION_STEMMING_LANGUAGE],
+							nGram: false,
+							path: false
+						}
+					},
 					document_metadata: {
 						collection: COLLECTION_NAME,
 						collector: {

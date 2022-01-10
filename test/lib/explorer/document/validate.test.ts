@@ -31,12 +31,12 @@ const {validate} = document;
 
 describe('document', () => {
 	describe('validate()', () => {
-		it('validate({data:{}, fields:[]}, validateOccurences: true) --> true', () => {
+		it('validate({data:{}, fieldsObj:{}}, validateOccurences: true) --> true', () => {
 			deepStrictEqual(
 				true,
 				validate({
 					data: {},
-					fields: [],
+					fieldsObj: {},
 					validateOccurences: true
 				}/*, {log}*/)
 			);
