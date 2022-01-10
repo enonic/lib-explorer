@@ -24,10 +24,10 @@ import {
 	isLocalDateString,
 	isLocalDateTimeString,
 	isTimeString,
+	isUuidV4String,
 	toStr
 } from '@enonic/js-utils/dist/esm/index.mjs';
 import getIn from 'get-value';
-import {v4 as isUuid4} from 'is-uuid';
 import setIn from 'set-value';
 import traverse from 'traverse';
 
@@ -45,8 +45,8 @@ import {
 
 export function typeCastToJava({
 	data = {},
-	fields = []
-} :TypeCastToJavaParameters = {}, {
+	fieldsObj = {}
+} :TypeCastToJavaParameters, {
 	log = logDummy,
 	geoPoint = geoPointDummy,
 	geoPointString = geoPointStringDummy,
@@ -58,20 +58,8 @@ export function typeCastToJava({
 } = {}) {
 	//log.debug(`typeCastToJava data:${toStr(data)}`);
 	//log.debug(`typeCastToJava fields:${toStr(fields)}`);
-
-	const fieldToValueTypeObj :LooseObject = {};
-	for (let i = 0; i < fields.length; i++) {
-		const {
-			valueType = VALUE_TYPE_STRING,
-			name
-		} = fields[i];
-		//log.debug(`typeCastToJava name:${name} valueType:${valueType}`);
-		setIn(fieldToValueTypeObj, name, valueType);
-	} // for
-	//log.debug(`fieldToValueTypeObj:${toStr(fieldToValueTypeObj)}`);
-
-	//const typeCastedData :LooseObject = JSON.parse(JSON.stringify(data));
-	const typeCastedData :LooseObject = {};
+	const typeCastedData :LooseObject = JSON.parse(JSON.stringify(data));
+	//const typeCastedData :LooseObject = {};
 	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
 		if (
 			this.notRoot
@@ -80,7 +68,7 @@ export function typeCastToJava({
 		) {
 			const pathString = this.path.join('.');
 			//log.debug(`pathString:${toStr(pathString)}`);
-			const valueTypeForPath = getIn(fieldToValueTypeObj, pathString);
+			const valueTypeForPath = getIn(fieldsObj, pathString);
 			//log.debug(`pathString:${toStr(pathString)} valueTypeForPath:${toStr(valueTypeForPath)}`);
 			if (valueTypeForPath) {
 				if ([
@@ -169,7 +157,7 @@ export function typeCastToJava({
 						log.warning(`Not an LocalTime! value:${toStr(value)} at path:${pathString} in data:${toStr(data)}`);
 					}
 				} else if (valueTypeForPath === VALUE_TYPE_REFERENCE) {
-					if (isUuid4(value)) {
+					if (isUuidV4String(value)) {
 						try {
 							const javaReference = reference(value as string);
 							setIn(typeCastedData, pathString, javaReference);
@@ -190,6 +178,6 @@ export function typeCastToJava({
 			}
 		}
 	}); // traverse
-	log.debug('typeCastedData', typeCastedData);
+	//log.debug('typeCastedData %s', typeCastedData);
 	return typeCastedData;
 }

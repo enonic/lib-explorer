@@ -48,7 +48,7 @@ export function addExtraFieldsToDocumentType({
 			if (!field) { // Field has no definition
 				//log.debug(`field:${pathString} doesn't exist in documentType, adding...`);
 				const detectedType = detectValueType(value);
-				log.debug(`field:${pathString} detectedType:${detectedType}`);
+				//log.debug(`field:${pathString} detectedType:${detectedType}`);
 				if (detectedType === VALUE_TYPE_GEO_POINT) {
 					this.block();
 				}

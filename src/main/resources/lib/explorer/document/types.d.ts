@@ -261,7 +261,7 @@ export interface CleanDataParameters {
 
 export interface ValidateParameters {
 	data :LooseObject
-	fields :Field[]
+	fieldsObj :FieldsObject
 	validateOccurrences? :boolean
 	validateTypes? :boolean
 	//documentType? :LooseObject
@@ -279,7 +279,7 @@ export interface ValidateTypesParameters {
 
 export interface TypeCastToJavaParameters {
 	data? :LooseObject
-	fields? :Field[]
+	fieldsObj :FieldsObject
 }
 
 export interface CreateParameterObject {
@@ -289,6 +289,7 @@ export interface CreateParameterObject {
 	collectionName? :string
 	collectorId :string // TODO Scalar Regexp?
 	collectorVersion :string // TODO Scalar Regexp?
+	createdTime: unknown,
 	data: LooseObject
 	documentTypeId? :string // TODO Scalar Regexp?
 	documentTypeName? :string
