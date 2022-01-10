@@ -14,13 +14,56 @@ const {create} = document;
 const log = { //console.log console.trace
 	//debug: () => {/**/},
 	debug: (...s :unknown[]) => console.debug('DEBUG', ...s),
-	error: () => {/**/},
-	//error: (...s :unknown[]) => console.error('ERROR', ...s),
+	//error: () => {/**/},
+	error: (...s :unknown[]) => console.error('ERROR', ...s),
 	info: () => {/**/},
 	//info: (...s :unknown[]) => console.info('INFO ', ...s),
-	warning: () => {/**/}
-	//warning: (...s :unknown[]) => console.warn('WARN ', ...s)
+	//warning: () => {/**/}
+	warning: (...s :unknown[]) => console.warn('WARN ', ...s)
 };
+
+
+const COLLECTION_ID = '00000000-0000-4000-8000-000000000000';
+const COLLECTION_NAME = 'myCollectionName';
+const COLLECTION_LANGUAGE = 'en-GB';
+const COLLECTION_STEMMING_LANGUAGE = 'en';
+
+const COLLECTOR_ID = 'todo-collectorId';
+const COLLECTOR_VERSION = 'todo-collectorVersion';
+
+const DOCUMENT_TYPE_ID = '00000000-0000-4000-8000-000000000001';
+const DOCUMENT_TYPE_NAME = 'myDocumentTypeName';
+const DOCUMENT_TYPE_FIELDS = [{
+	enabled: true,
+	fulltext: false,
+	includeInAllText: false,
+	max: 0,
+	min: 0,
+	name: 'myString',
+	nGram: false,
+	path: false,
+	valueType: 'string'
+}];
+
+const COLLECTION = {
+	_id: COLLECTION_ID,
+	_name: COLLECTION_NAME,
+	documentTypeId: DOCUMENT_TYPE_ID,
+	language: COLLECTION_LANGUAGE
+};
+
+const DOCUMENT_TYPE = {
+	_id: DOCUMENT_TYPE_ID,
+	_name: DOCUMENT_TYPE_NAME,
+	properties: DOCUMENT_TYPE_FIELDS
+};
+
+const NODES = {
+	[COLLECTION_ID]: COLLECTION,
+	[DOCUMENT_TYPE_ID]:  DOCUMENT_TYPE
+};
+
+const CREATED_TIME = new Date();
 
 
 describe('document', () => {
@@ -57,7 +100,7 @@ describe('document', () => {
 		it(`throws on missing collectorId`, () => {
 			throws(
 				() => create({
-					collectionId: '00000000-0000-4000-8000-000000000000'
+					collectionId: COLLECTION_ID
 				}),
 				{
 					message: "create: required parameter 'collectorId' is missing!",
@@ -68,7 +111,7 @@ describe('document', () => {
 		it(`throws when collectorId is not a string`, () => {
 			throws(
 				() => create({
-					collectionId: '00000000-0000-4000-8000-000000000000',
+					collectionId: COLLECTION_ID,
 					collectorId: 0
 				}),
 				{
@@ -80,8 +123,8 @@ describe('document', () => {
 		it(`throws on missing collectorVersion`, () => {
 			throws(
 				() => create({
-					collectionId: '00000000-0000-4000-8000-000000000000',
-					collectorId: 'todo-collectorId'
+					collectionId: COLLECTION_ID,
+					collectorId: COLLECTOR_ID
 				}),
 				{
 					message: "create: required parameter 'collectorVersion' is missing!",
@@ -92,8 +135,8 @@ describe('document', () => {
 		it(`throws when collectorVersion is not a string`, () => {
 			throws(
 				() => create({
-					collectionId: '00000000-0000-4000-8000-000000000000',
-					collectorId: 'todo-collectorId',
+					collectionId: COLLECTION_ID,
+					collectorId: COLLECTOR_ID,
 					collectorVersion: 0
 				}),
 				{
@@ -106,39 +149,41 @@ describe('document', () => {
 			deepStrictEqual(
 				{
 					document_metadata: {
-						collection: 'myCollectionName',
+						collection: COLLECTION_NAME,
 						collector: {
-							id: 'todo-collectorId',
-							version: 'todo-collectorVersion'
+							id: COLLECTOR_ID,
+							version: COLLECTOR_VERSION
 						},
-						//createdTime TODO
-						documentType: 'myDocumentTypeName',
-						language: 'en-GB',
-						stemmingLanguage: 'en'
-						//valid TODO
-					}
+						createdTime: CREATED_TIME,
+						documentType: DOCUMENT_TYPE_NAME,
+						language: COLLECTION_LANGUAGE,
+						stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
+						valid: true
+					},
+					extra: 'extra',
+					myString: 'string'
 				},
 				create({
-					collectionId: '00000000-0000-4000-8000-000000000000',
-					collectorId: 'todo-collectorId',
-					collectorVersion: 'todo-collectorVersion'
+					// Input
+					collectionId: COLLECTION_ID,
+					collectorId: COLLECTOR_ID,
+					collectorVersion: COLLECTOR_VERSION,
+					createdTime: CREATED_TIME,
+					data: {
+						myString: 'string',
+						extra: 'extra'
+					},
+					// Options
+					//addExtraFields, // default is !cleanExtraFields
+					//cleanExtraFields: false, // default is false
+					//cleanExtraFields: true,
+					requireValid: true,
+					validateOccurrences: true//, // default is false
+					//validateTypes: true // default is same as requireValid
 				}, {
 					connect: (/*source*/) => ({
 						get: (id :string) => {
-							if(id === '00000000-0000-4000-8000-000000000000') {
-								return {
-									_id: '00000000-0000-4000-8000-000000000000',
-									_name: 'myCollectionName',
-									documentTypeId: '00000000-0000-4000-8000-000000000001',
-									language: 'en-GB'
-								}
-							}
-							if(id === '00000000-0000-4000-8000-000000000001') {
-								return {
-									_id: '00000000-0000-4000-8000-000000000001',
-									_name: 'myDocumentTypeName'
-								}
-							}
+							return NODES[id];
 						}
 					}),
 					log

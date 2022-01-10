@@ -56,6 +56,6 @@ export function cleanData(
 		}); // traverse
 	} // if cleanExtraFields
 
-	log.debug(`cleanedData:${toStr(cleanedData)}`);
+	//log.debug(`cleanedData:${toStr(cleanedData)}`);
 	return cleanedData;
 }

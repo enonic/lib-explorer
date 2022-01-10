@@ -32,6 +32,7 @@
 import type {
 	CreateEnonicJavaBridge,
 	CreateParameterObject,
+	Fields,
 	LooseObject
 } from './types';
 
@@ -49,40 +50,37 @@ import {
 	//PRINCIPAL_EXPLORER_WRITE,
 	REPO_ID_EXPLORER
 } from '../constants';
-//import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
-//import {cleanData} from './cleanData';
+import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
+import {cleanData} from './cleanData';
 import {
 	connectDummy,
-	/*geoPointDummy,
+	geoPointDummy,
 	geoPointStringDummy,
 	instantDummy,
 	localDateDummy,
 	localDateTimeDummy,
-	localTimeDummy,*/
+	localTimeDummy,
 	logDummy,
-	stemmingLanguageFromLocaleDummy/*,
-	referenceDummy*/
+	stemmingLanguageFromLocaleDummy,
+	referenceDummy
 } from './dummies';
-/*import {
-	fieldsArrayToObj,
-	fieldsObjToArray
-} from './field';
+import {fieldsArrayToObj} from './field';
 import {validate} from './validate';
-import {typeCastToJava} from './typeCastToJava';*/
+import {typeCastToJava} from './typeCastToJava';
 
 
 // dieOnError
 export function create(createParameterObject :CreateParameterObject, {
 	connect = connectDummy,
 	log = logDummy,
-	stemmingLanguageFromLocale = stemmingLanguageFromLocaleDummy/*,
 	geoPoint = geoPointDummy,
 	geoPointString = geoPointStringDummy,
 	instant = instantDummy,
 	localDate = localDateDummy,
 	localDateTime = localDateTimeDummy,
 	localTime = localTimeDummy,
-	reference = referenceDummy*/
+	reference = referenceDummy,
+	stemmingLanguageFromLocale = stemmingLanguageFromLocaleDummy
 } :Partial<CreateEnonicJavaBridge> = {} ) {
 	if (notSet(createParameterObject)) {
 		throw new Error('create: parameter object is missing!');
@@ -93,10 +91,11 @@ export function create(createParameterObject :CreateParameterObject, {
 		collectionName, // If empty gotten from collectionNode via collectionId
 		collectorId,
 		collectorVersion,
+		createdTime, // Useful when testing
 		data,
 		documentTypeId, // If empty gotten from collectionNode via collectionId
 		documentTypeName, // If empty gotten from documentTypeNode via documentTypeId
-		fields = [], // if empty gotten from documentTypeNode
+		fields, // If empty gotten from documentTypeNode
 		language, // If empty gotten from collectionNode
 		stemmingLanguage, // If empty gotten from language
 
@@ -112,16 +111,16 @@ export function create(createParameterObject :CreateParameterObject, {
 	//log.debug(`collectionName:${collectionName}`);
 	//log.debug(`collectorId:${collectorId}`);
 	//log.debug(`collectorVersion:${collectorVersion}`);
-	log.debug(`data:${toStr(data)}`);
+	//log.debug(`data:${toStr(data)}`);
 	//log.debug(`documentTypeId:${documentTypeId}`);
 	//log.debug(`documentTypeName:${documentTypeName}`);
-	log.debug(`fields:${toStr(fields)}`);
+	//log.debug(`fields:${toStr(fields)}`);
 	//log.debug(`language:${language}`);
 	//log.debug(`stemmingLanguage:${stemmingLanguage}`);
 
-	log.debug(`addExtraFields:${addExtraFields}`);
-	log.debug(`validateOccurrences:${validateOccurrences}`);
-	log.debug(`validateTypes:${validateTypes}`);
+	//log.debug(`addExtraFields:${addExtraFields}`);
+	//log.debug(`validateOccurrences:${validateOccurrences}`);
+	//log.debug(`validateTypes:${validateTypes}`);
 
 	if (notSet(collectionId)) {
 		throw new Error("create: required parameter 'collectionId' is missing!");
@@ -164,9 +163,15 @@ export function create(createParameterObject :CreateParameterObject, {
 		}
 	}
 
-	if (notSet(documentTypeName)) {
+	if (notSet(documentTypeName) || notSet(fields)) {
 		const documentTypeNode = explorerReadConnection.get(documentTypeId) as LooseObject;
-		documentTypeName = documentTypeNode['_name'] as string;
+		if (notSet(documentTypeName)) {
+			documentTypeName = documentTypeNode['_name'] as string;
+		}
+		if (notSet(fields)) {
+			fields = documentTypeNode['properties'] as Fields;
+			//log.debug(`fields:${toStr(fields)}`);
+		}
 	}
 
 	if(notSet(stemmingLanguage)) {
@@ -174,7 +179,9 @@ export function create(createParameterObject :CreateParameterObject, {
 	}
 
 	//let myFields = JSON.parse(JSON.stringify(fields));
-	/*let fieldsObj = fieldsArrayToObj(fields, {log});
+	let fieldsObj = fieldsArrayToObj(fields, {log});
+	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);
+
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({
 			data,
@@ -182,24 +189,29 @@ export function create(createParameterObject :CreateParameterObject, {
 			updateDocumentType: () => {} // TODO
 		}, { log });
 	}
+	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);
+
 	const cleanedData = cleanData({
 		cleanExtraFields,
 		data,
 		fieldsObj
 	}, {log});
-	/*if (!cleanExtraFields && denyExtraFields) {
+	//log.debug(`cleanedData:${toStr(cleanedData)}`);
 
-	}/
-	const myFields = fieldsObjToArray(fieldsObj);
 	const isValid = validate({
 		data: cleanedData,
-		fields: myFields,
+		fieldsObj,
 		validateOccurrences,
 		validateTypes
 	}, {log});
+	//log.debug(`isValid:${toStr(isValid)}`);
+	if (requireValid && !isValid) {
+		throw new Error(`validation failed! requireValid:${requireValid} validateOccurrences:${validateOccurrences} validateTypes:${validateTypes} cleanedData:${toStr(cleanedData)} fieldsObj:${toStr(fieldsObj)}`);
+	}
+
 	const dataWithJavaTypes = typeCastToJava({
 		data: cleanedData,
-		fields: myFields
+		fieldsObj
 	}, { // Java objects and functions
 		log,
 		geoPoint,
@@ -210,39 +222,21 @@ export function create(createParameterObject :CreateParameterObject, {
 		localTime,
 		reference
 	});
-	dataWithJavaTypes[FIELD_PATH_META]['collection'] = collectionName;*/
-	/*const dataWithMetadata = addMetaData({
-		//branchName
-		//collectionId <- repoName:branchName:collectionId
-		collection // <- collectionName, // Collections can be renamed :(
+	//log.debug('dataWithJavaTypes %s', dataWithJavaTypes);
+
+	//const dataWithIndexConfig = addIndexConfig({data, fields});
+
+	dataWithJavaTypes[FIELD_PATH_META] = {
+		collection: collectionName,
 		collector: {
-			id,
-			version
+			id: collectorId,
+			version: collectorVersion
 		},
-		createdTime,
-		//creator,
-		data,
-		//documentTypeId <- repoName:branchName:documentTypeId
-		documentType, // <- documentTypeName,
+		createdTime: createdTime || new Date(),
+		documentType: documentTypeName,
 		language,
-		modifiedTime,
-		//repoName
-		//owner,
 		stemmingLanguage,
-		valid,
-	});
-	const dataWithIndexConfig = addIndexConfig({data, fields});*/
-	//return dataWithJavaTypes;
-	return {
-		[FIELD_PATH_META]: {
-			collection: collectionName,
-			collector: {
-				id: collectorId,
-				version: collectorVersion
-			},
-			documentType: documentTypeName,
-			language,
-			stemmingLanguage
-		}
+		valid: isValid
 	};
+	return dataWithJavaTypes;
 }

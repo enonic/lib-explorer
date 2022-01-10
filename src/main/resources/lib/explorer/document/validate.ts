@@ -14,13 +14,14 @@ import type {ValidateParameters} from './types';
 import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
 
 import {logDummy} from './dummies';
+import {fieldsObjToArray} from './field';
 import {validateOccurrences} from './validateOccurrences';
 import {validateTypes} from './validateTypes';
 
 
 export function validate({
 	data,
-	fields,
+	fieldsObj,
 	validateOccurrences: boolValidateOccurrences = false,
 	validateTypes: boolValidateTypes = true
 }: ValidateParameters, {
@@ -29,6 +30,8 @@ export function validate({
 	//log.debug(`data:${toStr(data)}`);
 	//log.debug(`fields:${toStr(fields)}`);
 	//log.debug(`boolValidateOccurrences:${toStr(boolValidateOccurrences)}`);
+	const fields = fieldsObjToArray(fieldsObj);
+
 	if (boolValidateOccurrences) {
 		if (!validateOccurrences({ data, fields }, { log })) {
 			return false;

@@ -32,7 +32,7 @@ export function validateOccurrences({
 	//log.debug(`validateOccurrences fields:${toStr(fields)}`);
 
 	const enonifiedData = enonify(data);
-	log.debug(`validateOccurrences enonifiedData:${toStr(enonifiedData)}`);
+	//log.debug(`validateOccurrences enonifiedData:${toStr(enonifiedData)}`);
 
 	for (let i = 0; i < fields.length; i++) {
 		const {
@@ -40,7 +40,7 @@ export function validateOccurrences({
 			min = 0,
 			name
 		} = fields[i];
-		log.debug(`name:${name} min:${min} max:${max}`);
+		//log.debug(`name:${name} min:${min} max:${max}`);
 		if (min === 0 && max === 0) {
 			break;
 		}
