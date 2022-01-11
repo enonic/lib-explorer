@@ -2,6 +2,7 @@ import {
 	deepStrictEqual,
 	throws
 } from 'assert';
+import {brightRed, brightYellow, grey, white} from 'colors/safe';
 import {stringify} from 'q-i';
 
 import {
@@ -13,16 +14,43 @@ const {create} = document;
 
 
 const log = { //console.log console.trace
-	//debug: () => {/**/},
-	debug: (format, ...s :unknown[]) => console.debug(`DEBUG ${format}`, stringify(...s, { maxItems: Infinity })),
-	//error: () => {/**/},
-	error: (...s :unknown[]) => console.error('ERROR', ...s),
-	info: () => {/**/},
-	//info: (...s :unknown[]) => console.info('INFO ', ...s),
-	//warning: () => {/**/}
-	warning: (...s :unknown[]) => console.warn('WARN ', ...s)
+	debug: (format :string, ...s :unknown[]) => {
+		if (s.length) {
+			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
+			console.debug(grey(`DEBUG ${format}`), ...colored);
+		} else {
+			console.debug(grey(`DEBUG ${format}`));
+		}
+	},
+	error: (format :string, ...s :unknown[]) => {
+		if (s.length) {
+			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
+			console.error(`${brightRed(`ERROR ${format}`)}`, ...colored);
+		} else {
+			console.error(brightRed(`ERROR ${format}`));
+		}
+	},
+	info: (format :string, ...s :unknown[]) => {
+		if (s.length) {
+			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
+			console.info(`${white(`INFO  ${format}`)}`, ...colored);
+		} else {
+			console.info(white(`INFO  ${format}`));
+		}
+	},
+	warning: (format :string, ...s :unknown[]) => {
+		if (s.length) {
+			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
+			console.warn(`${brightYellow(`WARN  ${format}`)}`, ...colored);
+		} else {
+			console.warn(brightYellow(`WARN  ${format}`));
+		}
+	}
 };
-
+/*log.error('data:%s', {key: 'value'});
+log.warning('data:%s', {key: 'value'});
+log.info('data:%s', {key: 'value'});
+log.debug('data:%s', {key: 'value'});*/
 
 const COLLECTION_ID = '00000000-0000-4000-8000-000000000000';
 const COLLECTION_NAME = 'myCollectionName';
@@ -67,6 +95,100 @@ const NODES = {
 const CREATED_TIME = new Date();
 
 
+const INDEX_CONFIG = {
+	configs: [{
+		path: 'document_metadata.collection',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: true,
+			includeInAllText: false,
+			nGram: true,
+			path: false
+		}
+	},{
+		path: 'document_metadata.collector.id',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: false,
+			includeInAllText: false,
+			nGram: false,
+			path: false
+		}
+	},{
+		path: 'document_metadata.collector.version',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: false,
+			includeInAllText: false,
+			nGram: false,
+			path: false
+		}
+	},{
+		path: 'document_metadata.createdTime',
+		config: {
+			decideByType: true,
+			enabled: true,
+			fulltext: false,
+			includeInAllText: false,
+			nGram: false,
+			path: false
+		}
+	},{
+		path: 'document_metadata.documentType',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: true,
+			includeInAllText: false,
+			nGram: true,
+			path: false
+		}
+	},{
+		path: 'document_metadata.language',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: true,
+			includeInAllText: false,
+			nGram: true,
+			path: false
+		}
+	},{
+		path: 'document_metadata.stemmingLanguage',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: true,
+			includeInAllText: false,
+			nGram: true,
+			path: false
+		}
+	},{
+		path: 'document_metadata.valid',
+		config: {
+			decideByType: true,
+			enabled: true,
+			fulltext: false,
+			includeInAllText: false,
+			nGram: false,
+			path: false
+		}
+	}],
+	default: {
+		decideByType: true,
+		enabled: true,
+		fulltext: false,
+		includeInAllText: false,
+		indexValueProcessors: [],
+		languages: [COLLECTION_STEMMING_LANGUAGE],
+		nGram: false,
+		path: false
+	}
+};
+
 describe('document', () => {
 	describe('create()', () => {
 		it(`throws on missing parameter object`, () => {
@@ -78,11 +200,24 @@ describe('document', () => {
 				}
 			);
 		}); // it
-		it(`throws on missing collectionId`, () => {
+		it(`throws if both collectionName and collectionId are missing`, () => {
 			throws(
-				() => create({}),
+				() => create({
+					documentTypeName: DOCUMENT_TYPE_NAME
+				}),
 				{
-					message: "create: required parameter 'collectionId' is missing!",
+					message: "create: either provide collectionName or collectionId!",
+					name: 'Error'
+				}
+			);
+		}); // it
+		it(`throws if both documentTypeName, documentTypeId and collectionId are missing`, () => {
+			throws(
+				() => create({
+					collectionName: COLLECTION_NAME
+				}),
+				{
+					message: "create: either provide documentTypeName, documentTypeId or collectionId!",
 					name: 'Error'
 				}
 			);
@@ -90,7 +225,9 @@ describe('document', () => {
 		it(`throws when collectionId is not an uuidv4 string`, () => {
 			throws(
 				() => create({
-					collectionId: ''
+					collectionId: '',
+					collectorId: COLLECTOR_ID,
+					collectorVersion: COLLECTOR_VERSION
 				}),
 				{
 					message: "create: parameter 'collectionId' is not an uuidv4 string!",
@@ -113,7 +250,8 @@ describe('document', () => {
 			throws(
 				() => create({
 					collectionId: COLLECTION_ID,
-					collectorId: 0
+					collectorId: 0,
+					collectorVersion: COLLECTOR_VERSION
 				}),
 				{
 					message: "create: parameter 'collectorId' is not a string!",
@@ -147,123 +285,34 @@ describe('document', () => {
 			);
 		}); // it
 		it(`is able to get collectionName, documentTypeId, documentTypeName, language and stemmmingLanguage from collectionId`, () => {
+			const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
+			_indexConfig.configs.push({
+					path: 'extra',
+					config: {
+						decideByType: false,
+						enabled: true,
+						fulltext: false,
+						includeInAllText: false,
+						languages: [COLLECTION_STEMMING_LANGUAGE],
+						nGram: false,
+						path: false
+					}
+				});
+			_indexConfig.configs.push({
+					path: 'myString',
+					config: {
+						decideByType: false,
+						enabled: true,
+						fulltext: true,
+						includeInAllText: true,
+						languages: [COLLECTION_STEMMING_LANGUAGE],
+						nGram: true,
+						path: false
+					}
+				});
 			deepStrictEqual(
 				{
-					_indexConfig: {
-						configs: [{
-							path: 'document_metadata.collection',
-							config: {
-								decideByType: false,
-								enabled: true,
-								fulltext: true,
-								includeInAllText: false,
-								nGram: true,
-								path: false
-							}
-						},{
-							path: 'document_metadata.collector.id',
-							config: {
-								decideByType: false,
-								enabled: true,
-								fulltext: false,
-								includeInAllText: false,
-								nGram: false,
-								path: false
-							}
-						},{
-							path: 'document_metadata.collector.version',
-							config: {
-								decideByType: false,
-								enabled: true,
-								fulltext: false,
-								includeInAllText: false,
-								nGram: false,
-								path: false
-							}
-						},{
-							path: 'document_metadata.createdTime',
-							config: {
-								decideByType: true,
-								enabled: true,
-								fulltext: false,
-								includeInAllText: false,
-								nGram: false,
-								path: false
-							}
-						},{
-							path: 'document_metadata.documentType',
-							config: {
-								decideByType: false,
-								enabled: true,
-								fulltext: true,
-								includeInAllText: false,
-								nGram: true,
-								path: false
-							}
-						},{
-							path: 'document_metadata.language',
-							config: {
-								decideByType: false,
-								enabled: true,
-								fulltext: true,
-								includeInAllText: false,
-								nGram: true,
-								path: false
-							}
-						},{
-							path: 'document_metadata.stemmingLanguage',
-							config: {
-								decideByType: false,
-								enabled: true,
-								fulltext: true,
-								includeInAllText: false,
-								nGram: true,
-								path: false
-							}
-						},{
-							path: 'document_metadata.valid',
-							config: {
-								decideByType: true,
-								enabled: true,
-								fulltext: false,
-								includeInAllText: false,
-								nGram: false,
-								path: false
-							}
-						},{
-							path: 'extra',
-							config: {
-								decideByType: false,
-								enabled: true,
-								fulltext: false,
-								includeInAllText: false,
-								languages: [COLLECTION_STEMMING_LANGUAGE],
-								nGram: false,
-								path: false
-							}
-						},{
-							path: 'myString',
-							config: {
-								decideByType: false,
-								enabled: true,
-								fulltext: true,
-								includeInAllText: true,
-								languages: [COLLECTION_STEMMING_LANGUAGE],
-								nGram: true,
-								path: false
-							}
-						}],
-						default: {
-							decideByType: true,
-							enabled: true,
-							fulltext: false,
-							includeInAllText: false,
-							indexValueProcessors: [],
-							languages: [COLLECTION_STEMMING_LANGUAGE],
-							nGram: false,
-							path: false
-						}
-					},
+					_indexConfig,
 					document_metadata: {
 						collection: COLLECTION_NAME,
 						collector: {
@@ -304,6 +353,60 @@ describe('document', () => {
 					}),
 					log
 				})
+			)
+		}); // it
+		it("is able to do it's thing without connection to the explorer repo if enough info is provided in the parameters", () => {
+			const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
+			_indexConfig.configs.push({
+					path: 'myString',
+					config: {
+						decideByType: false,
+						enabled: true,
+						fulltext: true,
+						includeInAllText: true,
+						languages: [COLLECTION_STEMMING_LANGUAGE],
+						nGram: true,
+						path: false
+					}
+				});
+			deepStrictEqual(
+				{
+					_indexConfig,
+					document_metadata: {
+						collection: COLLECTION_NAME,
+						collector: {
+							id: COLLECTOR_ID,
+							version: COLLECTOR_VERSION
+						},
+						createdTime: CREATED_TIME,
+						documentType: DOCUMENT_TYPE_NAME,
+						language: COLLECTION_LANGUAGE,
+						stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
+						valid: true
+					},
+					myString: 'string'
+				},
+				create({
+					collectionName: COLLECTION_NAME,
+					collectorId: COLLECTOR_ID,
+					collectorVersion: COLLECTOR_VERSION,
+					createdTime: CREATED_TIME,
+					data: {
+						document_metadata: {
+							shouldBeStripped: 'shouldBeStripped'
+						},
+						global: {
+							shouldBeStripped: 'shouldBeStripped'
+						},
+						myString: 'string',
+						extra: 'extra'
+					},
+					documentTypeName: DOCUMENT_TYPE_NAME,
+					fields: DOCUMENT_TYPE_FIELDS,
+					language: COLLECTION_LANGUAGE,
+					// Options
+					cleanExtraFields: true, // default is false
+				},{log})
 			)
 		}); // it
 	}); // describe create
