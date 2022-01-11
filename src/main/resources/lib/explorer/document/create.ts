@@ -47,9 +47,10 @@ import {
 
 import {
 	BRANCH_ID_EXPLORER,
+	COLLECTION_REPO_PREFIX,
 	FIELD_PATH_META,
 	PRINCIPAL_EXPLORER_READ,
-	//PRINCIPAL_EXPLORER_WRITE,
+	PRINCIPAL_EXPLORER_WRITE,
 	REPO_ID_EXPLORER
 } from '../constants';
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
@@ -323,5 +324,13 @@ export function create(createParameterObject :CreateParameterObject, {
 	const sortedDataWithIndexConfig = sortKeys(dataWithJavaTypes);
 	//log.debug('sortedDataWithIndexConfig %s', sortedDataWithIndexConfig);
 
-	return sortedDataWithIndexConfig;
+	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
+	//log.debug('repoId:%s', repoId);
+
+	const collectionRepoWriteConnection = connect({
+		branch: 'master',
+		principals: [PRINCIPAL_EXPLORER_WRITE],
+		repoId
+	});
+	return collectionRepoWriteConnection.create(sortedDataWithIndexConfig);
 }

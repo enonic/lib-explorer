@@ -13,6 +13,7 @@ import {
 export {
 	APP_EXPLORER,
 	BRANCH_ID_EXPLORER,
+	COLLECTION_REPO_PREFIX,
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META,
 	PRINCIPAL_EXPLORER_READ,
@@ -369,7 +370,6 @@ export const DEFAULT_FIELDS = NO_VALUES_FIELDS.concat(READONLY_FIELDS, READWRITE
 //──────────────────────────────────────────────────────────────────────────────
 export const REPO_JOURNALS = `${APP_EXPLORER}${DOT_SIGN}journals`;
 
-export const COLLECTION_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}collection${DOT_SIGN}`;
 export const RESPONSES_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}responses${DOT_SIGN}`;
 
 //──────────────────────────────────────────────────────────────────────────────

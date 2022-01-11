@@ -7,6 +7,7 @@ import {deepStrictEqual} from 'assert';
 import {
 	document
 } from '../../../../../rollup';
+import {log} from '../../../dummies';
 
 import {
 	BOOLEANS,
@@ -49,15 +50,6 @@ const VALUE_TYPE_LOCAL_DATE_TIME = 'localDateTime';
 const VALUE_TYPE_LOCAL_TIME = 'localTime';
 const VALUE_TYPE_REFERENCE = 'reference';
 const VALUE_TYPE_STRING = 'string';
-
-
-const log = { //console.log console.trace
-	debug: () => {/**/},
-	//debug: (...s) => console.debug('DEBUG', ...s),
-	error: (...s) => console.error('ERROR', ...s),
-	info: (...s) => console.info('INFO ', ...s),
-	warning: (...s) => console.warn('WARN ', ...s)
-};
 
 
 const TESTS_VALID = [{

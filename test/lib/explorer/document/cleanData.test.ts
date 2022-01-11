@@ -10,21 +10,10 @@ import {
 // Currently swc doesn't bundle, so import paths need to be relative to where the output file gets placed.
 // I don't think swc does dedup either, so it can't rewrite import paths.
 // I haven't found a way for mocha to resolve require paths either.
-
+import {log} from '../../../dummies';
 
 
 const {cleanData} = document;
-
-const log = { //console.log console.trace
-	debug: () => {/**/},
-	//debug: (...s) => console.debug('DEBUG', ...s),
-	error: () => {/**/},
-	//error: (...s) => console.error('ERROR', ...s),
-	info: () => {/**/},
-	//info: (...s) => console.info('INFO ', ...s),
-	warning: () => {/**/}
-	//warning: (...s) => console.warn('WARN ', ...s)
-};
 
 
 describe('document', () => {

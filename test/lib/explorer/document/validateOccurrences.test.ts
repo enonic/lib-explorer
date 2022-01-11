@@ -3,16 +3,10 @@ import {deepStrictEqual} from 'assert';
 import {
 	document
 } from '../../../../../rollup/index.js';
+import {log} from '../../../dummies';
 
 const {validateOccurrences} = document;
 
-
-/*const log = { //console.log console.trace
-	debug: console.debug,
-	error: console.error,
-	info: console.info,
-	warning: console.warn
-};*/
 
 const TESTS_VALID = [{
 	/* No params :) */

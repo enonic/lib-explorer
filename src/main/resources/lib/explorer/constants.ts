@@ -2,6 +2,7 @@ import type {
 	PrincipalKeyRole
 } from './types';
 
+import {DOT_SIGN} from '@enonic/js-utils';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Globals
@@ -13,6 +14,8 @@ export const APP_EXPLORER :string = 'com.enonic.app.explorer';
 //──────────────────────────────────────────────────────────────────────────────
 export const REPO_ID_EXPLORER :string = APP_EXPLORER;
 export const BRANCH_ID_EXPLORER :string = 'master';
+
+export const COLLECTION_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}collection${DOT_SIGN}`;
 
 //──────────────────────────────────────────────────────────────────────────────
 // Roles

@@ -2,55 +2,19 @@ import {
 	deepStrictEqual,
 	throws
 } from 'assert';
-import {brightRed, brightYellow, grey, white} from 'colors/safe';
-import {stringify} from 'q-i';
 
 import {
 	document
 } from '../../../../../rollup/index.js';
-
+import {log} from '../../../dummies';
 
 const {create} = document;
 
 
-const log = { //console.log console.trace
-	debug: (format :string, ...s :unknown[]) => {
-		if (s.length) {
-			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
-			console.debug(grey(`DEBUG ${format}`), ...colored);
-		} else {
-			console.debug(grey(`DEBUG ${format}`));
-		}
-	},
-	error: (format :string, ...s :unknown[]) => {
-		if (s.length) {
-			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
-			console.error(`${brightRed(`ERROR ${format}`)}`, ...colored);
-		} else {
-			console.error(brightRed(`ERROR ${format}`));
-		}
-	},
-	info: (format :string, ...s :unknown[]) => {
-		if (s.length) {
-			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
-			console.info(`${white(`INFO  ${format}`)}`, ...colored);
-		} else {
-			console.info(white(`INFO  ${format}`));
-		}
-	},
-	warning: (format :string, ...s :unknown[]) => {
-		if (s.length) {
-			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
-			console.warn(`${brightYellow(`WARN  ${format}`)}`, ...colored);
-		} else {
-			console.warn(brightYellow(`WARN  ${format}`));
-		}
-	}
-};
-/*log.error('data:%s', {key: 'value'});
-log.warning('data:%s', {key: 'value'});
-log.info('data:%s', {key: 'value'});
-log.debug('data:%s', {key: 'value'});*/
+export interface LooseObject {
+	[key :string] :unknown
+}
+
 
 const COLLECTION_ID = '00000000-0000-4000-8000-000000000000';
 const COLLECTION_NAME = 'myCollectionName';
@@ -188,6 +152,13 @@ const INDEX_CONFIG = {
 		path: false
 	}
 };
+
+const CONNECT_DUMMY = (/*source*/) => ({
+	create: (data :LooseObject) => data,
+	get: (id :string) => {
+		return NODES[id];
+	}
+});
 
 describe('document', () => {
 	describe('create()', () => {
@@ -346,11 +317,7 @@ describe('document', () => {
 					validateOccurrences: true//, // default is false
 					//validateTypes: true // default is same as requireValid
 				}, {
-					connect: (/*source*/) => ({
-						get: (id :string) => {
-							return NODES[id];
-						}
-					}),
+					connect: CONNECT_DUMMY,
 					log
 				})
 			)
@@ -406,7 +373,10 @@ describe('document', () => {
 					language: COLLECTION_LANGUAGE,
 					// Options
 					cleanExtraFields: true, // default is false
-				},{log})
+				},{
+					connect: CONNECT_DUMMY,
+					log
+				})
 			)
 		}); // it
 	}); // describe create

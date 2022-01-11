@@ -5,19 +5,9 @@ import {
 	FIELD_PATH_META,
 	document
 } from '../../../../../rollup/index.js';
+import {log} from '../../../dummies';
 
 const {addExtraFieldsToDocumentType} = document;
-
-const log = { //console.log console.trace
-	//debug: () => {/**/},
-	debug: (...s :unknown[]) => console.debug('DEBUG', ...s),
-	error: () => {/**/},
-	//error: (...s :unknown[]) => console.error('ERROR', ...s),
-	info: () => {/**/},
-	//info: (...s :unknown[]) => console.info('INFO ', ...s),
-	warning: () => {/**/}
-	//warning: (...s :unknown[]) => console.warn('WARN ', ...s)
-};
 
 
 describe('document', () => {
