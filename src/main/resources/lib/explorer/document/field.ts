@@ -179,7 +179,7 @@ export function addMissingSetToFieldsArray(fields :Fields, {log = logDummy} = {}
 			path = path.split('.').slice(0,-1).join('.');
 			log.debug(`path:${path}`);
 			if (!fieldsObj[path]) {
-				log.info(`Adding missing set at path:${path}`);
+				log.debug(`Adding missing set at path:${path}`);
 				returnFields.push(applyDefaultsToField({
 					name: path,
 					valueType: VALUE_TYPE_SET

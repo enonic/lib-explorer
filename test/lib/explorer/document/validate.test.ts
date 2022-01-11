@@ -3,6 +3,7 @@ import {deepStrictEqual} from 'assert';
 import {
 	document
 } from '../../../../../rollup/index.js';
+import {log} from '../../../dummies';
 
 const {validate} = document;
 
@@ -21,14 +22,6 @@ const {validate} = document;
 }];*/
 
 
-/*const log = { //console.log console.trace
-	debug: console.debug,
-	error: console.error,
-	info: console.info,
-	warning: console.warn
-};*/
-
-
 describe('document', () => {
 	describe('validate()', () => {
 		it('validate({data:{}, fieldsObj:{}}, validateOccurences: true) --> true', () => {
@@ -38,7 +31,7 @@ describe('document', () => {
 					data: {},
 					fieldsObj: {},
 					validateOccurences: true
-				}/*, {log}*/)
+				}, {log})
 			);
 		});
 	}); // describe validate()

@@ -109,6 +109,7 @@ export interface RepoConnection {
 	* same parent content, skip the name parameter and specify a displayName.
 	*/
 	//create<NodeData>(a: NodeData & NodeCreateParams): NodeData & RepoNode;
+	create(data :LooseObject) :LooseObject
 
 	/**
 	* Deleting a node or nodes.

@@ -6,6 +6,7 @@ import {
 import {
 	document
 } from '../../../../../rollup/index.js';
+import {log} from '../../../dummies';
 
 const {
 	addMissingSetToFieldsArray,
@@ -17,18 +18,7 @@ const {
 } = document;
 
 
-function toStr(v) { return JSON.stringify(v); }
-
-const log = { //console.log console.trace
-	debug: () => {/**/},
-	error: () => {/**/},
-	info: () => {/**/},
-	warning: () => {/**/}
-	//debug: (...s) => console.debug('DEBUG', ...s),
-	//error: (...s) => console.error('ERROR', ...s),
-	//info: (...s) => console.info('INFO ', ...s),
-	//warning: (...s) => console.warn('WARN ', ...s)
-};
+function toStr(v :unknown) { return JSON.stringify(v); }
 
 
 const FIELDS_VALID = [{

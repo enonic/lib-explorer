@@ -1,17 +1,14 @@
 import type {
 	ConnectFunction,
 	GeoPointFunction,
+	LooseObject,
 	StringFunction,
 	UnknownFunction
 } from './types';
 
 export const connectDummy :ConnectFunction = (/*source*/) => ({
-	get: (key) => {
-		return {
-			_id: key as string//,
-			//_name: ''
-		};
-	}
+	create: (data :LooseObject) => data,
+	get: (key) => ({_id: key})
 });
 
 export const geoPointDummy :GeoPointFunction = (v) => v;
