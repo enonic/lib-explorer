@@ -38,6 +38,7 @@ import type {
 
 import {
 	isNotSet as notSet,
+	isSet,
 	isString,
 	isUuidV4String,
 	sortKeys,
@@ -124,59 +125,126 @@ export function create(createParameterObject :CreateParameterObject, {
 	//log.debug(`validateOccurrences:${validateOccurrences}`);
 	//log.debug(`validateTypes:${validateTypes}`);
 
-	if (notSet(collectionId)) {
-		throw new Error("create: required parameter 'collectionId' is missing!");
-	} else if (!isUuidV4String(collectionId)) {
-		throw new TypeError("create: parameter 'collectionId' is not an uuidv4 string!");
+	//──────────────────────────────────────────────────────────────────────────
+	// Checking required parameters
+	//──────────────────────────────────────────────────────────────────────────
+	if (
+		notSet(collectionName) &&
+		notSet(collectionId)
+	) {
+		throw new Error("create: either provide collectionName or collectionId!");
+	}
+
+	if (
+		notSet(documentTypeName) &&
+		notSet(documentTypeId) &&
+		notSet(collectionId)
+	) {
+		throw new Error("create: either provide documentTypeName, documentTypeId or collectionId!");
+	}
+
+	if (
+		notSet(fields) &&
+		notSet(documentTypeId) &&
+		notSet(collectionId)
+	) {
+		throw new Error("create: either provide fields, documentTypeId or collectionId!");
 	}
 
 	if (notSet(collectorId)) {
 		throw new Error("create: required parameter 'collectorId' is missing!");
-	} else if (!isString(collectorId)) {
-		throw new TypeError("create: parameter 'collectorId' is not a string!");
 	}
 
 	if (notSet(collectorVersion)) {
 		throw new Error("create: required parameter 'collectorVersion' is missing!");
-	} else if (!isString(collectorVersion)) {
+	}
+
+	//──────────────────────────────────────────────────────────────────────────
+	// Checking type of provided parameters
+	//──────────────────────────────────────────────────────────────────────────
+	if (
+		isSet(collectionId) &&
+		!isUuidV4String(collectionId)
+	) {
+		throw new TypeError("create: parameter 'collectionId' is not an uuidv4 string!");
+	}
+
+	if (
+		isSet(collectionName) &&
+		!isString(collectionName)
+	) {
+		throw new TypeError("create: parameter 'collectionName' is not a string!");
+	}
+
+	if (!isString(collectorId)) {
+		throw new TypeError("create: parameter 'collectorId' is not a string!");
+	}
+
+	if (!isString(collectorVersion)) {
 		throw new TypeError("create: parameter 'collectorVersion' is not a string!");
 	}
 
-	const explorerReadConnection = connect({
-		branch: BRANCH_ID_EXPLORER,
-		principals: [PRINCIPAL_EXPLORER_READ],
-		repoId: REPO_ID_EXPLORER
-	});
+	if (
+		isSet(documentTypeName) &&
+		!isString(documentTypeName)
+	) {
+		throw new TypeError("create: parameter 'documentTypeName' is not a string!");
+	}
 
-	if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
-		let collectionNode :LooseObject;
-		collectionNode = explorerReadConnection.get(collectionId) as LooseObject;
+	if (
+		isSet(documentTypeId) &&
+		!isString(documentTypeId)
+	) {
+		throw new TypeError("create: parameter 'documentTypeId' is not a string!");
+	}
 
-		if (notSet(collectionName)) {
-			collectionName = collectionNode['_name'] as string;
+	//──────────────────────────────────────────────────────────────────────────
+	// Get values from provided parameters
+	//──────────────────────────────────────────────────────────────────────────
+
+	if (
+		notSet(collectionName) ||
+		notSet(documentTypeName) ||
+		notSet(fields) ||
+		notSet(language)
+	) {
+		log.debug('connecting to explorerRepo');
+		const explorerReadConnection = connect({
+			branch: BRANCH_ID_EXPLORER,
+			principals: [PRINCIPAL_EXPLORER_READ],
+			repoId: REPO_ID_EXPLORER
+		});
+		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
+			let collectionNode :LooseObject;
+			collectionNode = explorerReadConnection.get(collectionId) as LooseObject;
+
+			if (notSet(collectionName)) {
+				collectionName = collectionNode['_name'] as string;
+			}
+
+			if (notSet(documentTypeId)) {
+				documentTypeId = collectionNode['documentTypeId'] as string;
+			}
+
+			if(notSet(language)) {
+				language = collectionNode['language'] as string;
+			}
 		}
-
-		if (notSet(documentTypeId)) {
-			documentTypeId = collectionNode['documentTypeId'] as string;
-		}
-
-		if(notSet(language)) {
-			language = collectionNode['language'] as string;
+		if (notSet(documentTypeName) || notSet(fields)) {
+			const documentTypeNode = explorerReadConnection.get(documentTypeId) as LooseObject;
+			if (notSet(documentTypeName)) {
+				documentTypeName = documentTypeNode['_name'] as string;
+			}
+			if (notSet(fields)) {
+				fields = documentTypeNode['properties'] as Fields;
+				//log.debug(`fields:${toStr(fields)}`);
+			}
 		}
 	}
 
-	if (notSet(documentTypeName) || notSet(fields)) {
-		const documentTypeNode = explorerReadConnection.get(documentTypeId) as LooseObject;
-		if (notSet(documentTypeName)) {
-			documentTypeName = documentTypeNode['_name'] as string;
-		}
-		if (notSet(fields)) {
-			fields = documentTypeNode['properties'] as Fields;
-			//log.debug(`fields:${toStr(fields)}`);
-		}
-	}
+	//──────────────────────────────────────────────────────────────────────────
 
-	if(notSet(stemmingLanguage)) {
+	if(notSet(stemmingLanguage) && isSet(language)) {
 		stemmingLanguage = stemmingLanguageFromLocale(language);
 	}
 
