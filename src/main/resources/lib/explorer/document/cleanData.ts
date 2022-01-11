@@ -1,7 +1,9 @@
 import type {
-	CleanDataParameters,
-	Field,
 	LooseObject
+} from '../types';
+import type {
+	CleanDataParameters,
+	Field
 } from './types';
 
 import {toStr} from '@enonic/js-utils';

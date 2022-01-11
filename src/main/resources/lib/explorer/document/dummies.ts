@@ -1,14 +1,25 @@
 import type {
+	LooseObject,
+	UpdatedNode
+} from '../types';
+import type {
 	ConnectFunction,
 	GeoPointFunction,
-	LooseObject,
 	StringFunction,
 	UnknownFunction
 } from './types';
 
 export const connectDummy :ConnectFunction = (/*source*/) => ({
 	create: (data :LooseObject) => data,
-	get: (key) => ({_id: key})
+	get: (key) => ({_id: key}),
+	modify: (obj) => {
+		const {
+			//key,
+			//editor, // function ref
+			node
+		} = obj;
+		return node as UpdatedNode;
+	}
 });
 
 export const geoPointDummy :GeoPointFunction = (v) => v;

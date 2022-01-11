@@ -1,3 +1,5 @@
+import type {LooseObject} from '../../../types';
+
 import {
 	deepStrictEqual,
 	throws
@@ -6,165 +8,37 @@ import {
 import {
 	document
 } from '../../../../../rollup/index.js';
-import {log} from '../../../dummies';
+import {
+	COLLECTION_ID,
+	COLLECTION_LANGUAGE,
+	COLLECTION_NAME,
+	COLLECTION_STEMMING_LANGUAGE,
+	COLLECTOR_ID,
+	COLLECTOR_VERSION,
+	CREATED_TIME,
+	DOCUMENT_TYPE_FIELDS,
+	DOCUMENT_TYPE_NAME,
+	INDEX_CONFIG
+} from '../../../testData';
+import {
+	CONNECT_DUMMY,
+	log
+} from '../../../dummies';
 
 const {create} = document;
 
 
-export interface LooseObject {
-	[key :string] :unknown
-}
-
-
-const COLLECTION_ID = '00000000-0000-4000-8000-000000000000';
-const COLLECTION_NAME = 'myCollectionName';
-const COLLECTION_LANGUAGE = 'en-GB';
-const COLLECTION_STEMMING_LANGUAGE = 'en';
-
-const COLLECTOR_ID = 'todo-collectorId';
-const COLLECTOR_VERSION = 'todo-collectorVersion';
-
-const DOCUMENT_TYPE_ID = '00000000-0000-4000-8000-000000000001';
-const DOCUMENT_TYPE_NAME = 'myDocumentTypeName';
-const DOCUMENT_TYPE_FIELDS = [{
-	enabled: true,
-	fulltext: true,
-	includeInAllText: true,
-	max: 0,
-	min: 0,
-	name: 'myString',
-	nGram: true,
-	path: false,
-	valueType: 'string'
-}];
-
-const COLLECTION = {
-	_id: COLLECTION_ID,
-	_name: COLLECTION_NAME,
-	documentTypeId: DOCUMENT_TYPE_ID,
-	language: COLLECTION_LANGUAGE
+const javaBridgeStub = {
+	connect: CONNECT_DUMMY,
+	log
 };
 
-const DOCUMENT_TYPE = {
-	_id: DOCUMENT_TYPE_ID,
-	_name: DOCUMENT_TYPE_NAME,
-	properties: DOCUMENT_TYPE_FIELDS
-};
-
-const NODES = {
-	[COLLECTION_ID]: COLLECTION,
-	[DOCUMENT_TYPE_ID]:  DOCUMENT_TYPE
-};
-
-const CREATED_TIME = new Date();
-
-
-const INDEX_CONFIG = {
-	configs: [{
-		path: 'document_metadata.collection',
-		config: {
-			decideByType: false,
-			enabled: true,
-			fulltext: true,
-			includeInAllText: false,
-			nGram: true,
-			path: false
-		}
-	},{
-		path: 'document_metadata.collector.id',
-		config: {
-			decideByType: false,
-			enabled: true,
-			fulltext: false,
-			includeInAllText: false,
-			nGram: false,
-			path: false
-		}
-	},{
-		path: 'document_metadata.collector.version',
-		config: {
-			decideByType: false,
-			enabled: true,
-			fulltext: false,
-			includeInAllText: false,
-			nGram: false,
-			path: false
-		}
-	},{
-		path: 'document_metadata.createdTime',
-		config: {
-			decideByType: true,
-			enabled: true,
-			fulltext: false,
-			includeInAllText: false,
-			nGram: false,
-			path: false
-		}
-	},{
-		path: 'document_metadata.documentType',
-		config: {
-			decideByType: false,
-			enabled: true,
-			fulltext: true,
-			includeInAllText: false,
-			nGram: true,
-			path: false
-		}
-	},{
-		path: 'document_metadata.language',
-		config: {
-			decideByType: false,
-			enabled: true,
-			fulltext: true,
-			includeInAllText: false,
-			nGram: true,
-			path: false
-		}
-	},{
-		path: 'document_metadata.stemmingLanguage',
-		config: {
-			decideByType: false,
-			enabled: true,
-			fulltext: true,
-			includeInAllText: false,
-			nGram: true,
-			path: false
-		}
-	},{
-		path: 'document_metadata.valid',
-		config: {
-			decideByType: true,
-			enabled: true,
-			fulltext: false,
-			includeInAllText: false,
-			nGram: false,
-			path: false
-		}
-	}],
-	default: {
-		decideByType: true,
-		enabled: true,
-		fulltext: false,
-		includeInAllText: false,
-		indexValueProcessors: [],
-		languages: [COLLECTION_STEMMING_LANGUAGE],
-		nGram: false,
-		path: false
-	}
-};
-
-const CONNECT_DUMMY = (/*source*/) => ({
-	create: (data :LooseObject) => data,
-	get: (id :string) => {
-		return NODES[id];
-	}
-});
 
 describe('document', () => {
 	describe('create()', () => {
 		it(`throws on missing parameter object`, () => {
 			throws(
-				() => create(),
+				() => create(undefined, javaBridgeStub),
 				{
 					message: 'create: parameter object is missing!',
 					name: 'Error'
@@ -175,7 +49,7 @@ describe('document', () => {
 			throws(
 				() => create({
 					documentTypeName: DOCUMENT_TYPE_NAME
-				}),
+				}, javaBridgeStub),
 				{
 					message: "create: either provide collectionName or collectionId!",
 					name: 'Error'
@@ -186,7 +60,7 @@ describe('document', () => {
 			throws(
 				() => create({
 					collectionName: COLLECTION_NAME
-				}),
+				}, javaBridgeStub),
 				{
 					message: "create: either provide documentTypeName, documentTypeId or collectionId!",
 					name: 'Error'
@@ -199,7 +73,7 @@ describe('document', () => {
 					collectionId: '',
 					collectorId: COLLECTOR_ID,
 					collectorVersion: COLLECTOR_VERSION
-				}),
+				}, javaBridgeStub),
 				{
 					message: "create: parameter 'collectionId' is not an uuidv4 string!",
 					name: 'TypeError'
@@ -210,7 +84,7 @@ describe('document', () => {
 			throws(
 				() => create({
 					collectionId: COLLECTION_ID
-				}),
+				}, javaBridgeStub),
 				{
 					message: "create: required parameter 'collectorId' is missing!",
 					name: 'Error'
@@ -223,7 +97,7 @@ describe('document', () => {
 					collectionId: COLLECTION_ID,
 					collectorId: 0,
 					collectorVersion: COLLECTOR_VERSION
-				}),
+				}, javaBridgeStub),
 				{
 					message: "create: parameter 'collectorId' is not a string!",
 					name: 'TypeError'
@@ -235,7 +109,7 @@ describe('document', () => {
 				() => create({
 					collectionId: COLLECTION_ID,
 					collectorId: COLLECTOR_ID
-				}),
+				}, javaBridgeStub),
 				{
 					message: "create: required parameter 'collectorVersion' is missing!",
 					name: 'Error'
@@ -248,7 +122,7 @@ describe('document', () => {
 					collectionId: COLLECTION_ID,
 					collectorId: COLLECTOR_ID,
 					collectorVersion: 0
-				}),
+				}, javaBridgeStub),
 				{
 					message: "create: parameter 'collectorVersion' is not a string!",
 					name: 'TypeError'
@@ -316,10 +190,7 @@ describe('document', () => {
 					requireValid: true,
 					validateOccurrences: true//, // default is false
 					//validateTypes: true // default is same as requireValid
-				}, {
-					connect: CONNECT_DUMMY,
-					log
-				})
+				}, javaBridgeStub)
 			)
 		}); // it
 		it("is able to do it's thing without connection to the explorer repo if enough info is provided in the parameters", () => {
@@ -373,10 +244,7 @@ describe('document', () => {
 					language: COLLECTION_LANGUAGE,
 					// Options
 					cleanExtraFields: true, // default is false
-				},{
-					connect: CONNECT_DUMMY,
-					log
-				})
+				}, javaBridgeStub)
 			)
 		}); // it
 	}); // describe create

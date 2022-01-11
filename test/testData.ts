@@ -420,3 +420,175 @@ export const NOT_STRINGS = [].concat(
 	//STRINGS,
 	//UNDEFINED // Enonic XP doesn't index undefined
 );
+
+//──────────────────────────────────────────────────────────────────────────────
+// Exporer repo dummy
+//──────────────────────────────────────────────────────────────────────────────
+export const COLLECTION_ID = '00000000-0000-4000-8000-000000000000';
+export const COLLECTION_NAME = 'myCollectionName';
+export const COLLECTION_LANGUAGE = 'en-GB';
+export const COLLECTION_STEMMING_LANGUAGE = 'en';
+
+export const COLLECTOR_ID = 'todo-collectorId';
+export const COLLECTOR_VERSION = 'todo-collectorVersion';
+
+export const DOCUMENT_TYPE_ID = '00000000-0000-4000-8000-000000000001';
+export const DOCUMENT_TYPE_NAME = 'myDocumentTypeName';
+export const DOCUMENT_TYPE_FIELDS = [{
+	enabled: true,
+	fulltext: true,
+	includeInAllText: true,
+	max: 0,
+	min: 0,
+	name: 'myString',
+	nGram: true,
+	path: false,
+	valueType: 'string'
+}];
+
+export const COLLECTION = {
+	_id: COLLECTION_ID,
+	_name: COLLECTION_NAME,
+	documentTypeId: DOCUMENT_TYPE_ID,
+	language: COLLECTION_LANGUAGE
+};
+
+export const DOCUMENT_TYPE = {
+	_id: DOCUMENT_TYPE_ID,
+	_name: DOCUMENT_TYPE_NAME,
+	properties: DOCUMENT_TYPE_FIELDS
+};
+
+export const CREATED_TIME = new Date();
+
+export const INDEX_CONFIG = {
+	configs: [{
+		path: 'document_metadata.collection',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: true,
+			includeInAllText: false,
+			nGram: true,
+			path: false
+		}
+	},{
+		path: 'document_metadata.collector.id',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: false,
+			includeInAllText: false,
+			nGram: false,
+			path: false
+		}
+	},{
+		path: 'document_metadata.collector.version',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: false,
+			includeInAllText: false,
+			nGram: false,
+			path: false
+		}
+	},{
+		path: 'document_metadata.createdTime',
+		config: {
+			decideByType: true,
+			enabled: true,
+			fulltext: false,
+			includeInAllText: false,
+			nGram: false,
+			path: false
+		}
+	},{
+		path: 'document_metadata.documentType',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: true,
+			includeInAllText: false,
+			nGram: true,
+			path: false
+		}
+	},{
+		path: 'document_metadata.language',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: true,
+			includeInAllText: false,
+			nGram: true,
+			path: false
+		}
+	},{
+		path: 'document_metadata.stemmingLanguage',
+		config: {
+			decideByType: false,
+			enabled: true,
+			fulltext: true,
+			includeInAllText: false,
+			nGram: true,
+			path: false
+		}
+	},{
+		path: 'document_metadata.valid',
+		config: {
+			decideByType: true,
+			enabled: true,
+			fulltext: false,
+			includeInAllText: false,
+			nGram: false,
+			path: false
+		}
+	}],
+	default: {
+		decideByType: true,
+		enabled: true,
+		fulltext: false,
+		includeInAllText: false,
+		indexValueProcessors: [],
+		languages: [COLLECTION_STEMMING_LANGUAGE],
+		nGram: false,
+		path: false
+	}
+};
+
+export const DOCUMENT_ID = '00000000-0000-4000-8000-000000000002';
+const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
+_indexConfig.configs.push({
+	path: 'myString',
+	config: {
+		decideByType: false,
+		enabled: true,
+		fulltext: true,
+		includeInAllText: true,
+		languages: [COLLECTION_STEMMING_LANGUAGE],
+		nGram: true,
+		path: false
+	}
+});
+export const CREATED_DOCUMENT = {
+	_id: DOCUMENT_ID,
+	_indexConfig,
+	document_metadata: {
+		collection: COLLECTION_NAME,
+		collector: {
+			id: COLLECTOR_ID,
+			version: COLLECTOR_VERSION
+		},
+		createdTime: CREATED_TIME,
+		documentType: DOCUMENT_TYPE_NAME,
+		language: COLLECTION_LANGUAGE,
+		stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
+		valid: true
+	},
+	myString: 'string'
+};
+
+export const NODES = {
+	[COLLECTION_ID]: COLLECTION,
+	[DOCUMENT_TYPE_ID]:  DOCUMENT_TYPE//,
+	//[DOCUMENT_ID]: CREATED_DOCUMENT
+};

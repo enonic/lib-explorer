@@ -1,6 +1,8 @@
 import type {
+	LooseObject
+} from '../types';
+import type {
 	GeoPointArray,
-	LooseObject,
 	TypeCastToJavaParameters
 } from './types'
 
