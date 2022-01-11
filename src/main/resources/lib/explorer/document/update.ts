@@ -1,45 +1,16 @@
-//──────────────────────────────────────────────────────────────────────────────
-//
-// I want as much of the code as possible to be testable outside Enonic XP.
-// A good way to achieve this is higher order programming.
-// Any time a java lib or global is required, it must be passed in as a function,
-// so it can be stubbed/mocked during testing.
-//
-//──────────────────────────────────────────────────────────────────────────────
-//
-// createDocument is a function that takes
-//  data (to be cleaned, validated, typeCasted and persisted)
-//  options (how to clean, validate and typeCast, where to persist)
-//
-// ┌ inputs ─┐
-// │         ├ collectionConnection (Enonic doesn't reuse connections, so lets connect insice create instead)
-// │         ├ collectionId -> collectionName, (language -> stemmingLanguage)
-// │         ├ collectorId
-// │         ├ collectorVersion
-// │         ├ data
-// │         ├ documentTypeId -> documentTypeName, fields
-// │         └ explorerConnection (Enonic doesn't reuse connections, so lets connect insice create instead)
-// ├ options ┐
-// │         ├ addExtraFields
-// │         ├ cleanExtraFields
-// │         ├ requireValid
-// │         ├ validateOccurrences
-// │         └ validateTypes
-// └ outputs ┐
-//           ├ documentNode (created/modified)
-//           └ documentTypeNode (modified) (if created need to update collectionNode too, since we have the collectionId, that is actually possible)
-//──────────────────────────────────────────────────────────────────────────────
 import type {
-	LooseObject
+	LooseObject,
+	UpdatedNode
 } from '../types';
 import type {
-	CreateEnonicJavaBridge,
-	CreateParameterObject,
-	Fields
+	Fields,
+	UpdateEnonicJavaBridge,
+	UpdateParameterObject
 } from './types';
 
 import {
 	isNotSet as notSet,
+	isObject,
 	isSet,
 	isString,
 	isUuidV4String,
@@ -75,21 +46,23 @@ import {validate} from './validate';
 import {typeCastToJava} from './typeCastToJava';
 
 
-// dieOnError
-export function create(createParameterObject :CreateParameterObject, {
-	connect = connectDummy,
-	log = logDummy,
-	geoPoint = geoPointDummy,
-	geoPointString = geoPointStringDummy,
-	instant = instantDummy,
-	localDate = localDateDummy,
-	localDateTime = localDateTimeDummy,
-	localTime = localTimeDummy,
-	reference = referenceDummy,
-	stemmingLanguageFromLocale = stemmingLanguageFromLocaleDummy
-} :Required<CreateEnonicJavaBridge> ) {
-	if (notSet(createParameterObject)) {
-		throw new Error('create: parameter object is missing!');
+export function update(
+	updateParameterObject :UpdateParameterObject,
+	{
+		connect = connectDummy,
+		log = logDummy,
+		geoPoint = geoPointDummy,
+		geoPointString = geoPointStringDummy,
+		instant = instantDummy,
+		localDate = localDateDummy,
+		localDateTime = localDateTimeDummy,
+		localTime = localTimeDummy,
+		reference = referenceDummy,
+		stemmingLanguageFromLocale = stemmingLanguageFromLocaleDummy
+	} :Required<UpdateEnonicJavaBridge>
+) {
+	if (notSet(updateParameterObject)) {
+		throw new Error('update: parameter object is missing!');
 	}
 	let {
 		// Inputs
@@ -103,6 +76,7 @@ export function create(createParameterObject :CreateParameterObject, {
 		documentTypeName, // If empty gotten from documentTypeNode via documentTypeId
 		fields, // If empty gotten from documentTypeNode
 		language, // If empty gotten from collectionNode
+		modifiedTime, // Useful when testing
 		stemmingLanguage, // If empty gotten from language
 
 		// Options
@@ -112,30 +86,19 @@ export function create(createParameterObject :CreateParameterObject, {
 		requireValid = false,
 		validateOccurrences = false,
 		validateTypes = requireValid
-	} = createParameterObject;
-	//log.debug(`collectionId:${collectionId}`);
-	//log.debug(`collectionName:${collectionName}`);
-	//log.debug(`collectorId:${collectorId}`);
-	//log.debug(`collectorVersion:${collectorVersion}`);
-	//log.debug(`data:${toStr(data)}`);
-	//log.debug(`documentTypeId:${documentTypeId}`);
-	//log.debug(`documentTypeName:${documentTypeName}`);
-	//log.debug(`fields:${toStr(fields)}`);
-	//log.debug(`language:${language}`);
-	//log.debug(`stemmingLanguage:${stemmingLanguage}`);
-
-	//log.debug(`addExtraFields:${addExtraFields}`);
-	//log.debug(`validateOccurrences:${validateOccurrences}`);
-	//log.debug(`validateTypes:${validateTypes}`);
-
+	} = updateParameterObject;
 	//──────────────────────────────────────────────────────────────────────────
 	// Checking required parameters
 	//──────────────────────────────────────────────────────────────────────────
+	if (notSet(data)) {
+		throw new Error("update: missing required parameter data!");
+	}
+
 	if (
 		notSet(collectionName) &&
 		notSet(collectionId)
 	) {
-		throw new Error("create: either provide collectionName or collectionId!");
+		throw new Error("update: either provide collectionName or collectionId!");
 	}
 
 	if (
@@ -143,7 +106,7 @@ export function create(createParameterObject :CreateParameterObject, {
 		notSet(documentTypeId) &&
 		notSet(collectionId)
 	) {
-		throw new Error("create: either provide documentTypeName, documentTypeId or collectionId!");
+		throw new Error("update: either provide documentTypeName, documentTypeId or collectionId!");
 	}
 
 	if (
@@ -151,54 +114,67 @@ export function create(createParameterObject :CreateParameterObject, {
 		notSet(documentTypeId) &&
 		notSet(collectionId)
 	) {
-		throw new Error("create: either provide fields, documentTypeId or collectionId!");
+		throw new Error("update: either provide fields, documentTypeId or collectionId!");
 	}
 
 	if (notSet(collectorId)) {
-		throw new Error("create: required parameter 'collectorId' is missing!");
+		throw new Error("update: required parameter 'collectorId' is missing!");
 	}
 
 	if (notSet(collectorVersion)) {
-		throw new Error("create: required parameter 'collectorVersion' is missing!");
+		throw new Error("update: required parameter 'collectorVersion' is missing!");
 	}
 
 	//──────────────────────────────────────────────────────────────────────────
 	// Checking type of provided parameters
 	//──────────────────────────────────────────────────────────────────────────
+	if (!isObject(data)) {
+		throw new TypeError("update: parameter 'data' is not an Object!");
+	}
+
+	const {
+		_id: documentNodeId
+	} = data;
+	if (notSet(documentNodeId)) {
+		throw new Error("update: parameter data: missing required property '_id'!");
+	} else if (!isUuidV4String(documentNodeId)){
+		throw new TypeError("update: parameter data: property '_id' is not an uuidv4 string!");
+	}
+
 	if (
 		isSet(collectionId) &&
 		!isUuidV4String(collectionId)
 	) {
-		throw new TypeError("create: parameter 'collectionId' is not an uuidv4 string!");
+		throw new TypeError("update: parameter 'collectionId' is not an uuidv4 string!");
 	}
 
 	if (
 		isSet(collectionName) &&
 		!isString(collectionName)
 	) {
-		throw new TypeError("create: parameter 'collectionName' is not a string!");
+		throw new TypeError("update: parameter 'collectionName' is not a string!");
 	}
 
 	if (!isString(collectorId)) {
-		throw new TypeError("create: parameter 'collectorId' is not a string!");
+		throw new TypeError("update: parameter 'collectorId' is not a string!");
 	}
 
 	if (!isString(collectorVersion)) {
-		throw new TypeError("create: parameter 'collectorVersion' is not a string!");
+		throw new TypeError("update: parameter 'collectorVersion' is not a string!");
 	}
 
 	if (
 		isSet(documentTypeName) &&
 		!isString(documentTypeName)
 	) {
-		throw new TypeError("create: parameter 'documentTypeName' is not a string!");
+		throw new TypeError("update: parameter 'documentTypeName' is not a string!");
 	}
 
 	if (
 		isSet(documentTypeId) &&
 		!isString(documentTypeId)
 	) {
-		throw new TypeError("create: parameter 'documentTypeId' is not a string!");
+		throw new TypeError("update: parameter 'documentTypeId' is not a string!");
 	}
 
 	//──────────────────────────────────────────────────────────────────────────
@@ -319,6 +295,7 @@ export function create(createParameterObject :CreateParameterObject, {
 		createdTime: createdTime || new Date(),
 		documentType: documentTypeName,
 		language,
+		modifiedTime: modifiedTime || new Date(),
 		stemmingLanguage,
 		valid: isValid
 	};
@@ -334,5 +311,11 @@ export function create(createParameterObject :CreateParameterObject, {
 		principals: [PRINCIPAL_EXPLORER_WRITE],
 		repoId
 	});
-	return collectionRepoWriteConnection.create(sortedDataWithIndexConfig);
+	return collectionRepoWriteConnection.modify({
+		key: documentNodeId as string,
+		editor: () => {
+			return sortedDataWithIndexConfig as UpdatedNode
+		},
+		node: sortedDataWithIndexConfig as UpdatedNode
+	});
 }

@@ -1,5 +1,10 @@
 import {
-	PrincipalKey
+	//CreatedNode,
+	LooseObject,
+	//NodeModifyParams,
+	NodeModifyDummyParams,
+	PrincipalKey,
+	UpdatedNode
 } from '../types';
 
 
@@ -96,6 +101,18 @@ export interface RepoNode {
 	//_nodeType: string;
 }
 
+//export interface NodeModifyParams<NodeData> {
+	/**
+	* Path or ID of the node
+	*/
+	//key: string;
+
+	/**
+	* Editor callback function
+	*/
+	//editor: (node: NodeData & RepoNode) => NodeData & RepoNode;
+//}
+
 export interface RepoConnection {
 	/**
 	* Commits the active version of nodes.
@@ -186,6 +203,9 @@ export interface RepoConnection {
 	* This function modifies a node.
 	*/
 	//modify<NodeData>(params: NodeModifyParams<NodeData>): NodeData & RepoNode;
+	//modify(params :NodeModifyParams<CreatedNode>) :UpdatedNode
+	//modify(params :NodeModifyParams) :UpdatedNode
+	modify(params :NodeModifyDummyParams) :UpdatedNode
 
 	/**
 	* Rename a node or move it to a new path.
@@ -225,10 +245,6 @@ type GeoPointArray = FixedLengthArray<[number, number]>;
 export type GeoPointFunction = (v :GeoPointArray) => unknown;
 export type StringFunction = (v :string) => unknown;
 export type UnknownFunction = (v :unknown) => unknown;
-
-export interface LooseObject {
-	[key :string] :unknown
-}
 
 export interface Field {
 	enabled? :boolean
@@ -313,6 +329,10 @@ export interface CreateParameterObject {
 	validateTypes? :boolean
 }
 
+export interface UpdateParameterObject extends CreateParameterObject {
+	modifiedTime: unknown
+}
+
 export type StemmingLanguageFromLocaleFunction = (locale :string) => string;
 
 export interface CreateEnonicJavaBridge {
@@ -326,4 +346,8 @@ export interface CreateEnonicJavaBridge {
 	localTime :UnknownFunction
 	reference :StringFunction
 	stemmingLanguageFromLocale :StemmingLanguageFromLocaleFunction
+}
+
+export interface UpdateEnonicJavaBridge extends CreateEnonicJavaBridge {
+
 }
