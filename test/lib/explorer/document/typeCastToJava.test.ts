@@ -1,11 +1,22 @@
+import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
 import {deepStrictEqual} from 'assert';
 
 import {
 	document
-} from '../../../../../rollup/index.js';
+} from '../../../../build/rollup/index.js';
 import {log} from '../../../dummies';
 
 const {typeCastToJava} = document;
+
+
+const javaBridge = new JavaBridge({
+	app: {
+		config: {},
+		name: 'com.enonic.app.explorer',
+		version: '0.0.1-SNAPSHOT'
+	},
+	log
+});
 
 
 const VALUE_TYPE_ANY = 'any';
@@ -113,7 +124,7 @@ describe('document', () => {
 			it(`${toStr(params)}`, () => {
 				deepStrictEqual(
 					params.data,
-					typeCastToJava(params,{log})
+					typeCastToJava(params, javaBridge)
 				);
 			});
 		} // for

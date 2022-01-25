@@ -1,3 +1,5 @@
+import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
+import {toStr} from '@enonic/js-utils/src';
 import {
 	deepStrictEqual,
 	throws
@@ -5,7 +7,7 @@ import {
 
 import {
 	document
-} from '../../../../../rollup/index.js';
+} from '../../../../build/rollup/index.js';
 import {log} from '../../../dummies';
 
 const {
@@ -17,8 +19,16 @@ const {
 	isFields
 } = document;
 
+const javaBridge = new JavaBridge({
+	app: {
+		config: {},
+		name: 'com.enonic.app.explorer',
+		version: '0.0.1-SNAPSHOT'
+	},
+	log
+});
 
-function toStr(v :unknown) { return JSON.stringify(v); }
+//function toStr(v :unknown) { return JSON.stringify(v); }
 
 
 const FIELDS_VALID = [{
@@ -117,7 +127,7 @@ describe('document', () => {
 				it(`${toStr(field)}`, () => {
 					deepStrictEqual(
 						true,
-						isField(field, { log })
+						isField(field, javaBridge)
 					);
 				});
 			} // for
@@ -128,7 +138,7 @@ describe('document', () => {
 				it(`${toStr(field)}`, () => {
 					deepStrictEqual(
 						false,
-						isField(field, { log })
+						isField(field, javaBridge)
 					);
 				});
 			} // for
@@ -139,7 +149,7 @@ describe('document', () => {
 			it(`${toStr(FIELDS_VALID)}`, () => {
 				deepStrictEqual(
 					true,
-					isFields(FIELDS_VALID, { log })
+					isFields(FIELDS_VALID, javaBridge)
 				);
 			});
 		});
@@ -147,7 +157,7 @@ describe('document', () => {
 			it(`${toStr(FIELDS_INVALID)}`, () => {
 				deepStrictEqual(
 					false,
-					isFields(FIELDS_INVALID, { log })
+					isFields(FIELDS_INVALID, javaBridge)
 				);
 			});
 		});
@@ -159,7 +169,7 @@ describe('document', () => {
 				it(`${toStr(field)}`, () => {
 					deepStrictEqual(
 						FIELDS_VALID[1],
-						applyDefaultsToField(field, { log })
+						applyDefaultsToField(field, javaBridge)
 					);
 				});
 			} // for
@@ -169,7 +179,7 @@ describe('document', () => {
 				const field = FIELDS_INVALID[i]
 				it(`${toStr(field)}`, () => {
 					throws(
-						() => applyDefaultsToField(field, { log }),
+						() => applyDefaultsToField(field, javaBridge),
 						{
 							name: 'TypeError'
 						}
@@ -184,7 +194,7 @@ describe('document', () => {
 			it(`${toStr(fields)}`, () => {
 				deepStrictEqual(
 					expected,
-					fieldsArrayToObj(fields, { log })
+					fieldsArrayToObj(fields, javaBridge)
 				);
 			});
 		} // for
@@ -193,7 +203,7 @@ describe('document', () => {
 				const field = FIELDS_INVALID[i]
 				it(`${toStr(field)}`, () => {
 					throws(
-						() => fieldsArrayToObj(field, { log }),
+						() => fieldsArrayToObj(field, javaBridge),
 						{
 							message: /fieldsArrayToObj: fields not of type Fields/,
 							name: 'TypeError'
@@ -222,7 +232,7 @@ describe('document', () => {
 					path: false,
 					valueType: 'string'
 				}],
-				fieldsObjToArray(fieldsObj, { log })
+				fieldsObjToArray(fieldsObj, javaBridge)
 			);
 		});
 	});
@@ -263,7 +273,7 @@ describe('document', () => {
 				addMissingSetToFieldsArray([{
 					name: 'obj.first.second',
 					valueType: 'string'
-				}], { log })
+				}], javaBridge)
 			); // deepStrictEqual
 		}); // it
 	}); // describe addMissingSetToFieldsArray

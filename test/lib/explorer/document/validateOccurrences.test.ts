@@ -1,12 +1,22 @@
+import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
 import {deepStrictEqual} from 'assert';
 
 import {
 	document
-} from '../../../../../rollup/index.js';
+} from '../../../../build/rollup/index.js';
 import {log} from '../../../dummies';
 
 const {validateOccurrences} = document;
 
+
+const javaBridge = new JavaBridge({
+	app: {
+		config: {},
+		name: 'com.enonic.app.explorer',
+		version: '0.0.1-SNAPSHOT'
+	},
+	log
+});
 
 const TESTS_VALID = [{
 	/* No params :) */
@@ -148,7 +158,7 @@ describe('document', () => {
 				it(`${toStr(params)}`, () => {
 					deepStrictEqual(
 						true,
-						validateOccurrences(params/*, {log}*/)
+						validateOccurrences(params, javaBridge)
 					);
 				});
 			});
@@ -158,7 +168,7 @@ describe('document', () => {
 				it(`${toStr(params)}`, () => {
 					deepStrictEqual(
 						false,
-						validateOccurrences(params/*, {log}*/)
+						validateOccurrences(params, javaBridge)
 					);
 				});
 			});

@@ -1,14 +1,23 @@
+import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
 import {deepStrictEqual} from 'assert';
 
 import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META,
 	document
-} from '../../../../../rollup/index.js';
+} from '../../../../build/rollup/index.js';
 import {log} from '../../../dummies';
 
 const {addExtraFieldsToDocumentType} = document;
 
+const javaBridge = new JavaBridge({
+	app: {
+		config: {},
+		name: 'com.enonic.app.explorer',
+		version: '0.0.1-SNAPSHOT'
+	},
+	log
+});
 
 describe('document', () => {
 	describe('addExtraFieldsToDocumentType()', () => {
@@ -158,9 +167,7 @@ describe('document', () => {
 						myObject
 					},
 					fieldsObj
-				}, {
-					log
-				})
+				}, javaBridge)
 			);
 		}); // it
 	}); // describe addExtraFieldsToDocumentType

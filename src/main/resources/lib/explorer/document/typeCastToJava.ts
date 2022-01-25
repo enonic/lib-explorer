@@ -3,6 +3,7 @@ import type {
 } from '../types';
 import type {
 	GeoPointArray,
+	JavaBridge,
 	TypeCastToJavaParameters
 } from './types'
 
@@ -34,30 +35,29 @@ import setIn from 'set-value';
 import traverse from 'traverse';
 
 import {
-	geoPointDummy,
-	geoPointStringDummy,
-	instantDummy,
-	localDateDummy,
-	localDateTimeDummy,
-	localTimeDummy,
-	logDummy,
-	referenceDummy
+	javaBridgeDummy
 } from './dummies';
 
 
-export function typeCastToJava({
-	data = {},
-	fieldsObj = {}
-} :TypeCastToJavaParameters, {
-	log = logDummy,
-	geoPoint = geoPointDummy,
-	geoPointString = geoPointStringDummy,
-	instant = instantDummy,
-	localDate = localDateDummy,
-	localDateTime = localDateTimeDummy,
-	localTime = localTimeDummy,
-	reference = referenceDummy
-} = {}) {
+export function typeCastToJava(
+	{
+		data = {},
+		fieldsObj = {}
+	} :TypeCastToJavaParameters,
+	javaBridge :JavaBridge = javaBridgeDummy
+) {
+	const {
+		log,
+		value: {
+			geoPoint,
+			geoPointString,
+			instant,
+			localDate,
+			localDateTime,
+			localTime,
+			reference
+		}
+	} = javaBridge;
 	//log.debug(`typeCastToJava data:${toStr(data)}`);
 	//log.debug(`typeCastToJava fields:${toStr(fields)}`);
 	const typeCastedData :LooseObject = JSON.parse(JSON.stringify(data));

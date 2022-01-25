@@ -1,7 +1,8 @@
 import type {
 	Field,
 	Fields,
-	FieldsObject
+	FieldsObject,
+	JavaBridge
 } from './types';
 
 import {
@@ -29,7 +30,7 @@ import {
 	toStr
 } from '@enonic/js-utils/dist/esm/index.mjs';
 
-import {logDummy} from './dummies';
+import {javaBridgeDummy} from './dummies';
 
 
 const BOOLEAN_PROPS = ['enabled', 'fulltext', 'includeInAllText', 'nGram',
@@ -59,7 +60,11 @@ const VALUE_TYPES = [
 Object.freeze(VALUE_TYPES);
 
 
-export function isField(value :unknown, {log = logDummy} = {}) :value is Field {
+export function isField(
+	value :unknown,
+	javaBridge :JavaBridge = javaBridgeDummy
+) :value is Field {
+	const {log} = javaBridge;
 	if (!isObject(value)) { return false; }
 	const keys :string[] = Object.keys(value as Object);
 	for (let i = 0; i < keys.length; i++) {
@@ -96,11 +101,14 @@ export function isField(value :unknown, {log = logDummy} = {}) :value is Field {
 }
 
 
-export function isFields(fields :unknown, {log = logDummy} = {}) :fields is Fields {
+export function isFields(
+	fields :unknown,
+	javaBridge :JavaBridge = javaBridgeDummy
+) :fields is Fields {
 	if (!Array.isArray(fields)) { return false; }
 	for (let i = 0; i < fields.length; i++) {
 		const field = fields[i];
-		if (!isField(field, {log})) {
+		if (!isField(field, javaBridge)) {
 			return false;
 		}
 	}
@@ -108,8 +116,12 @@ export function isFields(fields :unknown, {log = logDummy} = {}) :fields is Fiel
 }
 
 
-export function applyDefaultsToField(field :Partial<Field>, {log = logDummy} = {}) :Readonly<Required<Field>> {
-	if (!isField(field, {log})) {
+export function applyDefaultsToField(
+	field :Partial<Field>,
+	javaBridge :JavaBridge = javaBridgeDummy
+) :Readonly<Required<Field>> {
+	//const {log} = javaBridge;
+	if (!isField(field, javaBridge)) {
 		throw new TypeError(`applyDefaultsToField: field not of type Field! field:${toStr(field)}`);
 	}
 	const {
@@ -142,13 +154,16 @@ export function applyDefaultsToField(field :Partial<Field>, {log = logDummy} = {
 }
 
 
-export function fieldsArrayToObj(fields :Fields, {log = logDummy} = {}) :FieldsObject {
-	if (!isFields(fields, { log })) { // NOTE Allowing empty array
+export function fieldsArrayToObj(
+	fields :Fields,
+	javaBridge :JavaBridge = javaBridgeDummy
+) :FieldsObject {
+	if (!isFields(fields, javaBridge)) { // NOTE Allowing empty array
 		throw new TypeError(`fieldsArrayToObj: fields not of type Fields! fields:${toStr(fields)}`);
 	}
 	const FIELDS_OBJ :FieldsObject = {};
 	for (let i = 0; i < fields.length; i++) {
-		const field = applyDefaultsToField(fields[i], { log });
+		const field = applyDefaultsToField(fields[i], javaBridge);
 		const {name, ...rest} = field;
 		FIELDS_OBJ[name] = rest;
 	}
@@ -157,20 +172,27 @@ export function fieldsArrayToObj(fields :Fields, {log = logDummy} = {}) :FieldsO
 }
 
 
-export function fieldsObjToArray(fieldsObj :FieldsObject, {log = logDummy} = {}) :Fields {
+export function fieldsObjToArray(
+	fieldsObj :FieldsObject,
+	javaBridge :JavaBridge = javaBridgeDummy
+) :Fields {
 	return Object.keys(fieldsObj).map(pathString => ({
-		...applyDefaultsToField(fieldsObj[pathString], { log }),
+		...applyDefaultsToField(fieldsObj[pathString], javaBridge),
 		name: pathString
 	}));
 }
 
 
-export function addMissingSetToFieldsArray(fields :Fields, {log = logDummy} = {}) :Fields {
-	if (!isFields(fields, { log })) { // NOTE Allowing empty array
+export function addMissingSetToFieldsArray(
+	fields :Fields,
+	javaBridge :JavaBridge = javaBridgeDummy
+) :Fields {
+	const {log} = javaBridge;
+	if (!isFields(fields, javaBridge)) { // NOTE Allowing empty array
 		throw new TypeError(`addMissingSetToFields: fields not of type Fields! fields:${toStr(fields)}`);
 	}
 	const returnFields :Fields = JSON.parse(JSON.stringify(fields));
-	const fieldsObj = fieldsArrayToObj(fields, { log });
+	const fieldsObj = fieldsArrayToObj(fields, javaBridge);
 	for (let i = 0; i < fields.length; i++) {
 		const field = fields[i];
 		let {name: path} = field;
@@ -183,7 +205,7 @@ export function addMissingSetToFieldsArray(fields :Fields, {log = logDummy} = {}
 				returnFields.push(applyDefaultsToField({
 					name: path,
 					valueType: VALUE_TYPE_SET
-				}, { log }));
+				}, javaBridge));
 			}
 		}
 	}

@@ -9,7 +9,10 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
-import type {ValidateOccurrencesParameters} from './types';
+import type {
+	JavaBridge,
+	ValidateOccurrencesParameters
+} from './types';
 
 import {
 	enonify,
@@ -19,15 +22,17 @@ import {
 } from '@enonic/js-utils/dist/esm/index.mjs';
 import getIn from 'get-value';
 
-import {logDummy} from './dummies';
+import {javaBridgeDummy} from './dummies';
 
 
-export function validateOccurrences({
-	data = {},
-	fields = []
-} :ValidateOccurrencesParameters = {} , {
-	log = logDummy
-} = {}) {
+export function validateOccurrences(
+	{
+		data = {},
+		fields = []
+	} :ValidateOccurrencesParameters = {},
+	javaBridge :JavaBridge = javaBridgeDummy
+) {
+	const {log} = javaBridge;
 	//log.debug(`validateOccurrences data:${toStr(data)}`);
 	//log.debug(`validateOccurrences fields:${toStr(fields)}`);
 

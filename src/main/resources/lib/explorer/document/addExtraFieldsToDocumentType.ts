@@ -1,13 +1,14 @@
 import type {
 	AddExtraFieldsToDocumentTypeParams,
 	Field,
-	FieldsObject
+	FieldsObject,
+	JavaBridge
 } from './types';
 
 import {
 	VALUE_TYPE_GEO_POINT,
-	detectValueType,
-	toStr
+	detectValueType//,
+	//toStr
 } from '@enonic/js-utils/dist/esm/index.mjs';
 import traverse from 'traverse';
 
@@ -19,17 +20,19 @@ import {
 	//addMissingSetToFieldsArray,
 	applyDefaultsToField,
 } from './Field';
-import {logDummy} from './dummies';
+import {javaBridgeDummy} from './dummies';
 
 
 
-export function addExtraFieldsToDocumentType({
-	data,
-	fieldsObj,
-	updateDocumentType = () => {}
-} :AddExtraFieldsToDocumentTypeParams, {
-	log = logDummy
-} = {}) :FieldsObject {
+export function addExtraFieldsToDocumentType(
+	{
+		data,
+		fieldsObj,
+		updateDocumentType = () => {}
+	} :AddExtraFieldsToDocumentTypeParams,
+	javaBridge :JavaBridge = javaBridgeDummy
+) :FieldsObject {
+	//const {log} = javaBridge;
 	//log.debug(`data:${toStr(data)}`);
 	const returnFieldsObj = JSON.parse(JSON.stringify(fieldsObj));
 	let boolModified = false;
@@ -54,7 +57,7 @@ export function addExtraFieldsToDocumentType({
 				}
 				returnFieldsObj[pathString] = applyDefaultsToField({
 					valueType: detectedType
-				}, { log });
+				}, javaBridge);
 				boolModified = true;
 			} // if !field
 		}

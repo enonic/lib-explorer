@@ -15,6 +15,7 @@ declare global {
 		info(message :string, ...args :unknown[]): void
 		warning(message :string, ...args :unknown[]): void
 	}
-	const app :App;
-	const log :Log;
+	// We don't want any global objects, pass around JavaBridge instead
+	//const app :App;
+	//const log :Log;
 }

@@ -1,6 +1,12 @@
 import type {
-	BuildIndexConfigJavaBridge,
-	BuildIndexConfigParameterObject
+	IndexConfig,
+	IndexConfigConfig,
+	IndexConfigObject
+} from '../types/IndexConfig';
+
+import type {
+	BuildIndexConfigParameterObject,
+	JavaBridge
 } from './types';
 
 import {
@@ -16,22 +22,12 @@ import {
 	VALUE_TYPE_REFERENCE,
 	VALUE_TYPE_SET,*/
 	VALUE_TYPE_STRING,
-	indexTemplateToConfig
+	indexTemplateToConfig,
+	sortByProperty
 } from '@enonic/js-utils';
 
 import {FIELD_PATH_META} from '../constants';
-//import {logDummy} from './dummies';
-
-interface IndexConfigEntry {
-  decideByType: boolean;
-  enabled: boolean;
-  nGram: boolean;
-  fulltext: boolean;
-  includeInAllText: boolean;
-  path: boolean;
-  //indexValueProcessors?: ReadonlyArray<unknown>;
-  languages?: Array<string>;
-}
+import {javaBridgeDummy} from './dummies';
 
 
 function decideByTypeFromValueType(valueType :string) :boolean {
@@ -56,14 +52,16 @@ function decideByTypeFromValueType(valueType :string) :boolean {
 	return true;
 }
 
-export function buildIndexConfig({
-	//data,
-	fieldsObj,
-	languages = []
-} :BuildIndexConfigParameterObject, {
-	//log = logDummy
-} :BuildIndexConfigJavaBridge = {}) {
-	const indexConfig = {
+export function buildIndexConfig(
+	{
+		//data,
+		fieldsObj,
+		languages = []
+	} :BuildIndexConfigParameterObject//,
+	//javaBridge :JavaBridge = javaBridgeDummy
+) :IndexConfig {
+	//const {log} = javaBridge;
+	const indexConfig :IndexConfig = {
 		configs: [{
 			path: `${FIELD_PATH_META}.collection`,
 			config: {
@@ -77,13 +75,13 @@ export function buildIndexConfig({
 			}
 		},{
 			path: `${FIELD_PATH_META}.collector.id`,
-			config: indexTemplateToConfig({template: 'minimal'}) // This field is not stemmed
+			config: indexTemplateToConfig({template: 'minimal'}) as IndexConfigObject // This field is not stemmed
 		},{
 			path: `${FIELD_PATH_META}.collector.version`,
-			config: indexTemplateToConfig({template: 'minimal'}) // This field is not stemmed
+			config: indexTemplateToConfig({template: 'minimal'}) as IndexConfigObject // This field is not stemmed
 		},{
 			path: `${FIELD_PATH_META}.createdTime`,
-			config: indexTemplateToConfig({template: 'byType'}) // This field is not stemmed
+			config: indexTemplateToConfig({template: 'byType'}) as IndexConfigObject // This field is not stemmed
 		},{
 			path: `${FIELD_PATH_META}.documentType`,
 			config: {
@@ -119,13 +117,13 @@ export function buildIndexConfig({
 			}
 		},{
 			path: `${FIELD_PATH_META}.valid`,
-			config: indexTemplateToConfig({template: 'byType'}) // This field is not stemmed
+			config: indexTemplateToConfig({template: 'byType'}) as IndexConfigObject // This field is not stemmed
 		}],
 		default: indexTemplateToConfig({
 			template: 'byType', // TODO Perhaps minimal?
 			indexValueProcessors: [],
 			languages: languages as [] // TODO
-		})
+		}) as IndexConfigObject
 	};
 
 	const fieldKeys = Object.keys(fieldsObj);
@@ -143,7 +141,7 @@ export function buildIndexConfig({
 			valueType
 		} = fieldsObj[fieldPath];
 
-		const config :Partial<IndexConfigEntry> = {
+		const config :IndexConfigConfig = {
 			decideByType: decideByTypeFromValueType(valueType),
 			enabled,
 			fulltext,
@@ -160,18 +158,12 @@ export function buildIndexConfig({
 
 		indexConfig.configs.push({
 			path: fieldPath,
-			config: config as IndexConfigEntry
+			config: config as IndexConfigConfig
 		});
 		//log.debug('indexConfig %s', indexConfig);
 	}
 
-	indexConfig.configs = indexConfig.configs.sort((a,b) => {
-		const pathA = a.path;
-		const pathB = b.path;
-		if (pathA < pathB) {return -1;}
-		if (pathA > pathB) {return 1;}
-		return 0;// equal
-	});
+	indexConfig.configs = sortByProperty(indexConfig.configs, 'path');
 
 	//log.debug('indexConfig %s', indexConfig);
 	return indexConfig;

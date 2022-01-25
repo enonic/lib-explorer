@@ -1,5 +1,5 @@
 module.exports = {
     color: true,
     parallel: true,
-	spec: 'build/swc/test/**'
+	spec: 'build/rollup/test/**'
 }

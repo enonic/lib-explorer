@@ -1,27 +1,27 @@
 import type {LooseObject} from './types';
 
 import {
+	//@ts-ignore
 	brightRed,
+	//@ts-ignore
 	brightYellow,
-	//grey,
+	grey,
 	white
 } from 'colors/safe';
 import {stringify} from 'q-i';
 
-import {NODES} from './testData';
-
 
 export const log = { //console.log console.trace
-	debug: () => {},
-	/*debug: (format :string, ...s :unknown[]) => {
+	//debug: () => {},
+	debug: (format :string, ...s :unknown[]) :void => {
 		if (s.length) {
 			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 			console.debug(grey(`DEBUG ${format}`), ...colored);
 		} else {
 			console.debug(grey(`DEBUG ${format}`));
 		}
-	},*/
-	error: (format :string, ...s :unknown[]) => {
+	},
+	error: (format :string, ...s :unknown[]) :void => {
 		if (s.length) {
 			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 			console.error(`${brightRed(`ERROR ${format}`)}`, ...colored);
@@ -29,7 +29,7 @@ export const log = { //console.log console.trace
 			console.error(brightRed(`ERROR ${format}`));
 		}
 	},
-	info: (format :string, ...s :unknown[]) => {
+	info: (format :string, ...s :unknown[]) :void => {
 		if (s.length) {
 			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 			console.info(`${white(`INFO  ${format}`)}`, ...colored);
@@ -37,7 +37,7 @@ export const log = { //console.log console.trace
 			console.info(white(`INFO  ${format}`));
 		}
 	},
-	warning: (format :string, ...s :unknown[]) => {
+	warning: (format :string, ...s :unknown[]) :void => {
 		if (s.length) {
 			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 			console.warn(`${brightYellow(`WARN  ${format}`)}`, ...colored);
@@ -50,10 +50,3 @@ export const log = { //console.log console.trace
 log.warning('data:%s', {key: 'value'});
 log.info('data:%s', {key: 'value'});
 log.debug('data:%s', {key: 'value'});*/
-
-export const CONNECT_DUMMY = (/*source*/) => ({
-	create: (data :LooseObject) => data,
-	get: (id :string) => {
-		return NODES[id];
-	}
-});

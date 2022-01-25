@@ -1,4 +1,9 @@
 import {
+	CreateRepoParams,
+	RepositoryConfig
+} from '@enonic/js-utils/src/mock/repo.d';
+
+import {
 	//CreatedNode,
 	LooseObject,
 	//NodeModifyParams,
@@ -305,10 +310,6 @@ export interface BuildIndexConfigParameterObject {
 	languages :string[]
 }
 
-export interface BuildIndexConfigJavaBridge {
-	log? :Log
-}
-
 export interface CreateParameterObject {
 	addExtraFields? :boolean
 	cleanExtraFields? :boolean
@@ -333,11 +334,13 @@ export interface UpdateParameterObject extends CreateParameterObject {
 	modifiedTime: unknown
 }
 
-export type StemmingLanguageFromLocaleFunction = (locale :string) => string;
+export interface RepoLib {
+	create(param :CreateRepoParams) :RepositoryConfig
+	get(repoId :string) :RepositoryConfig
+	list() :RepositoryConfig[]
+}
 
-export interface CreateEnonicJavaBridge {
-	connect :ConnectFunction
-	log :Log
+export interface ValueLib {
 	geoPoint :GeoPointFunction
 	geoPointString :StringFunction
 	instant :UnknownFunction
@@ -345,9 +348,14 @@ export interface CreateEnonicJavaBridge {
 	localDateTime :UnknownFunction
 	localTime :UnknownFunction
 	reference :StringFunction
-	stemmingLanguageFromLocale :StemmingLanguageFromLocaleFunction
 }
 
-export interface UpdateEnonicJavaBridge extends CreateEnonicJavaBridge {
+export type StemmingLanguageFromLocaleFunction = (locale :string) => string;
 
+export interface JavaBridge {
+	connect :ConnectFunction
+	log :Log
+	repo :RepoLib
+	value :ValueLib
+	stemmingLanguageFromLocale :StemmingLanguageFromLocaleFunction
 }
