@@ -3,7 +3,8 @@ import type {
 } from '../types';
 import type {
 	CleanDataParameters,
-	Field
+	Field,
+	JavaBridge
 } from './types';
 
 import {toStr} from '@enonic/js-utils';
@@ -16,7 +17,7 @@ import {
 	FIELD_PATH_META
 //} from '/lib/explorer/constants';
 } from '../constants';
-import {logDummy} from './dummies';
+import {javaBridgeDummy} from './dummies';
 
 
 export function cleanData(
@@ -25,19 +26,18 @@ export function cleanData(
 		data,
 		fieldsObj = {}
 	} :CleanDataParameters,
-	{
-		log = logDummy
-	} = {}
+	javaBridge :JavaBridge = javaBridgeDummy
 ) :LooseObject {
+	const {log} = javaBridge;
 	const cleanedData :LooseObject = JSON.parse(JSON.stringify(data));
 
 	if (cleanedData[FIELD_PATH_GLOBAL]) {
-		log.debug('Cleaning path:%s from data:%s', FIELD_PATH_GLOBAL, cleanedData);
+		//log.debug('Cleaning path:%s from data:%s', FIELD_PATH_GLOBAL, cleanedData);
 		delete cleanedData[FIELD_PATH_GLOBAL];
 	}
 
 	if (cleanedData[FIELD_PATH_META]) {
-		log.debug('Cleaning path:%s from data:%s', FIELD_PATH_META, cleanedData);
+		//log.debug('Cleaning path:%s from data:%s', FIELD_PATH_META, cleanedData);
 		delete cleanedData[FIELD_PATH_META];
 	}
 
@@ -51,7 +51,7 @@ export function cleanData(
 				const pathString = this.path.join('.');
 				const field :Omit<Field, 'name'> = fieldsObj[pathString];
 				if (!field) {
-					log.debug('Cleaning path:%s from data:%s', pathString, cleanedData);
+					//log.debug('Cleaning path:%s from data:%s', pathString, cleanedData);
 					this.remove(true);
 				}
 			}

@@ -1,12 +1,11 @@
+import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
 import {deepStrictEqual} from 'assert';
 
 import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META,
 	document
-//} from '../../../../src/main/resources/lib/explorer';
-} from '../../../../../rollup/index.js';
-//} from '/lib/explorer';
+} from '../../../../build/rollup/index.js';
 // Currently swc doesn't bundle, so import paths need to be relative to where the output file gets placed.
 // I don't think swc does dedup either, so it can't rewrite import paths.
 // I haven't found a way for mocha to resolve require paths either.
@@ -15,6 +14,15 @@ import {log} from '../../../dummies';
 
 const {cleanData} = document;
 
+
+const javaBridge = new JavaBridge({
+	app: {
+		config: {},
+		name: 'com.enonic.app.explorer',
+		version: '0.0.1-SNAPSHOT'
+	},
+	log
+});
 
 describe('document', () => {
 	describe('cleanData()', () => {
@@ -43,9 +51,7 @@ describe('document', () => {
 							myProperty: 'myObject.myProperty'
 						}
 					}
-				}/*, {
-					log
-				}*/)
+				}, javaBridge)
 			);
 		}); // it
 
@@ -77,9 +83,7 @@ describe('document', () => {
 							valueType: 'string'
 						}
 					}
-				}, {
-					log
-				})
+				}, javaBridge)
 			);
 		});
 
@@ -117,9 +121,7 @@ describe('document', () => {
 							valueType: 'set'
 						}
 					}
-				}, {
-					log
-				})
+				}, javaBridge)
 			);
 		});
 
@@ -162,9 +164,7 @@ describe('document', () => {
 							valueType: 'set'
 						}
 					}
-				}, {
-					log
-				})
+				}, javaBridge)
 			);
 		});
 	}); // describe cleanData

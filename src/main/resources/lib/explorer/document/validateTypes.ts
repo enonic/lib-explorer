@@ -9,7 +9,10 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
-import type {ValidateTypesParameters} from './types';
+import type {
+	JavaBridge,
+	ValidateTypesParameters
+} from './types';
 
 import {
 	VALUE_TYPE_ANY,
@@ -43,7 +46,7 @@ import {
 import getIn from 'get-value';
 import {v4 as isUuid4} from 'is-uuid';
 
-import {logDummy} from './dummies';
+import {javaBridgeDummy} from './dummies';
 
 
 // Any Float number with a zero decimal part are implicitly cast to Integer,
@@ -58,12 +61,14 @@ function isFloat(n) {
 }
 
 
-export function validateTypes({
-	data = {},
-	fields = []
-} :ValidateTypesParameters = {} , {
-	log = logDummy
-} = {}) {
+export function validateTypes(
+	{
+		data = {},
+		fields = []
+	} :ValidateTypesParameters = {},
+	javaBridge :JavaBridge = javaBridgeDummy
+) {
+	const {log} = javaBridge;
 	//log.debug(`validateTypes data:${toStr(data)}`);
 	//log.debug(`validateTypes fields:${toStr(fields)}`);
 

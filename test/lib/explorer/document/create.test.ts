@@ -1,44 +1,81 @@
 import type {LooseObject} from '../../../types';
 
+//import {enonify} from '@enonic/js-utils/src';
+import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
 import {
 	deepStrictEqual,
 	throws
 } from 'assert';
 
 import {
+	COLLECTION_REPO_PREFIX,
 	document
-} from '../../../../../rollup/index.js';
+} from '../../../../build/rollup/index.js';
 import {
-	COLLECTION_ID,
+	COLLECTION,
 	COLLECTION_LANGUAGE,
 	COLLECTION_NAME,
 	COLLECTION_STEMMING_LANGUAGE,
+	COLLECTIONS_FOLDER,
 	COLLECTOR_ID,
 	COLLECTOR_VERSION,
-	CREATED_TIME,
+	DOCUMENT_TYPE,
 	DOCUMENT_TYPE_FIELDS,
 	DOCUMENT_TYPE_NAME,
+	DOCUMENT_TYPES_FOLDER,
 	INDEX_CONFIG
 } from '../../../testData';
-import {
-	CONNECT_DUMMY,
-	log
-} from '../../../dummies';
+import {log} from '../../../dummies';
 
 const {create} = document;
 
 
-const javaBridgeStub = {
-	connect: CONNECT_DUMMY,
+const javaBridge = new JavaBridge({
+	app: {
+		config: {},
+		name: 'com.enonic.app.explorer',
+		version: '0.0.1-SNAPSHOT'
+	},
 	log
-};
+});
+//javaBridge.log.info('Yes this works!');
+javaBridge.repo.create({
+	id: 'com.enonic.app.explorer'
+});
+javaBridge.repo.create({
+	id: `${COLLECTION_REPO_PREFIX}${COLLECTION_NAME}`
+});
+//const repos = javaBridge.repo.list();
+//javaBridge.log.info('repos:%s', repos);
 
+const connection = javaBridge.connect({
+	repoId: 'com.enonic.app.explorer',
+	branch: 'master'
+});
+connection.create(COLLECTIONS_FOLDER);
+connection.create(DOCUMENT_TYPES_FOLDER);
+const CREATED_DOCUMENT_TYPE_NODE = connection.create(DOCUMENT_TYPE);
+const CREATED_COLLECTION_NODE = connection.create({
+	...COLLECTION,
+	documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
+});
+//const queryRes = connection.query({});
+//const nodes = queryRes.hits.map(({id}) => connection.get(id));
+//javaBridge.log.info('nodes:%s', nodes);
+
+//@ts-ignore
+javaBridge.stemmingLanguageFromLocale = (locale :string) => {
+	if (locale === 'en-GB') {
+		return 'en';
+	}
+	return 'en';
+}
 
 describe('document', () => {
 	describe('create()', () => {
 		it(`throws on missing parameter object`, () => {
 			throws(
-				() => create(undefined, javaBridgeStub),
+				() => create(undefined, javaBridge),
 				{
 					message: 'create: parameter object is missing!',
 					name: 'Error'
@@ -49,7 +86,7 @@ describe('document', () => {
 			throws(
 				() => create({
 					documentTypeName: DOCUMENT_TYPE_NAME
-				}, javaBridgeStub),
+				}, javaBridge),
 				{
 					message: "create: either provide collectionName or collectionId!",
 					name: 'Error'
@@ -60,7 +97,7 @@ describe('document', () => {
 			throws(
 				() => create({
 					collectionName: COLLECTION_NAME
-				}, javaBridgeStub),
+				}, javaBridge),
 				{
 					message: "create: either provide documentTypeName, documentTypeId or collectionId!",
 					name: 'Error'
@@ -73,7 +110,7 @@ describe('document', () => {
 					collectionId: '',
 					collectorId: COLLECTOR_ID,
 					collectorVersion: COLLECTOR_VERSION
-				}, javaBridgeStub),
+				}, javaBridge),
 				{
 					message: "create: parameter 'collectionId' is not an uuidv4 string!",
 					name: 'TypeError'
@@ -83,8 +120,8 @@ describe('document', () => {
 		it(`throws on missing collectorId`, () => {
 			throws(
 				() => create({
-					collectionId: COLLECTION_ID
-				}, javaBridgeStub),
+					collectionId: CREATED_COLLECTION_NODE._id
+				}, javaBridge),
 				{
 					message: "create: required parameter 'collectorId' is missing!",
 					name: 'Error'
@@ -94,10 +131,10 @@ describe('document', () => {
 		it(`throws when collectorId is not a string`, () => {
 			throws(
 				() => create({
-					collectionId: COLLECTION_ID,
+					collectionId: CREATED_COLLECTION_NODE._id,
 					collectorId: 0,
 					collectorVersion: COLLECTOR_VERSION
-				}, javaBridgeStub),
+				}, javaBridge),
 				{
 					message: "create: parameter 'collectorId' is not a string!",
 					name: 'TypeError'
@@ -107,9 +144,9 @@ describe('document', () => {
 		it(`throws on missing collectorVersion`, () => {
 			throws(
 				() => create({
-					collectionId: COLLECTION_ID,
+					collectionId: CREATED_COLLECTION_NODE._id,
 					collectorId: COLLECTOR_ID
-				}, javaBridgeStub),
+				}, javaBridge),
 				{
 					message: "create: required parameter 'collectorVersion' is missing!",
 					name: 'Error'
@@ -119,10 +156,10 @@ describe('document', () => {
 		it(`throws when collectorVersion is not a string`, () => {
 			throws(
 				() => create({
-					collectionId: COLLECTION_ID,
+					collectionId: CREATED_COLLECTION_NODE._id,
 					collectorId: COLLECTOR_ID,
 					collectorVersion: 0
-				}, javaBridgeStub),
+				}, javaBridge),
 				{
 					message: "create: parameter 'collectorVersion' is not a string!",
 					name: 'TypeError'
@@ -155,16 +192,40 @@ describe('document', () => {
 						path: false
 					}
 				});
+			const createRes = create({
+				// Input
+				collectionId: CREATED_COLLECTION_NODE._id,
+				collectorId: COLLECTOR_ID,
+				collectorVersion: COLLECTOR_VERSION,
+				data: {
+					myString: 'string',
+					extra: 'extra'
+				},
+				// Options
+				//addExtraFields, // default is !cleanExtraFields
+				//cleanExtraFields: false, // default is false
+				//cleanExtraFields: true,
+				requireValid: true,
+				validateOccurrences: true//, // default is false
+				//validateTypes: true // default is same as requireValid
+			}, javaBridge);
+			//javaBridge.log.info('createRes:%s', createRes);
 			deepStrictEqual(
 				{
+					_id: createRes._id,
 					_indexConfig,
+					_name: createRes._id,
+					_nodeType: 'default',
+					_state: 'DEFAULT',
+					_ts: createRes._ts,
+					_versionKey: createRes._versionKey,
 					document_metadata: {
 						collection: COLLECTION_NAME,
 						collector: {
 							id: COLLECTOR_ID,
 							version: COLLECTOR_VERSION
 						},
-						createdTime: CREATED_TIME,
+						createdTime: createRes.document_metadata.createdTime,
 						documentType: DOCUMENT_TYPE_NAME,
 						language: COLLECTION_LANGUAGE,
 						stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
@@ -173,27 +234,10 @@ describe('document', () => {
 					extra: 'extra',
 					myString: 'string'
 				},
-				create({
-					// Input
-					collectionId: COLLECTION_ID,
-					collectorId: COLLECTOR_ID,
-					collectorVersion: COLLECTOR_VERSION,
-					createdTime: CREATED_TIME,
-					data: {
-						myString: 'string',
-						extra: 'extra'
-					},
-					// Options
-					//addExtraFields, // default is !cleanExtraFields
-					//cleanExtraFields: false, // default is false
-					//cleanExtraFields: true,
-					requireValid: true,
-					validateOccurrences: true//, // default is false
-					//validateTypes: true // default is same as requireValid
-				}, javaBridgeStub)
-			)
+				createRes
+			) // deepStrictEqual
 		}); // it
-		it("is able to do it's thing without connection to the explorer repo if enough info is provided in the parameters", () => {
+		it("is able to do it's thing without connecting to the explorer repo WHEN enough info is provided in the parameters", () => {
 			const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
 			_indexConfig.configs.push({
 					path: 'myString',
@@ -207,28 +251,10 @@ describe('document', () => {
 						path: false
 					}
 				});
-			deepStrictEqual(
-				{
-					_indexConfig,
-					document_metadata: {
-						collection: COLLECTION_NAME,
-						collector: {
-							id: COLLECTOR_ID,
-							version: COLLECTOR_VERSION
-						},
-						createdTime: CREATED_TIME,
-						documentType: DOCUMENT_TYPE_NAME,
-						language: COLLECTION_LANGUAGE,
-						stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
-						valid: true
-					},
-					myString: 'string'
-				},
-				create({
+				const createRes = create({
 					collectionName: COLLECTION_NAME,
 					collectorId: COLLECTOR_ID,
 					collectorVersion: COLLECTOR_VERSION,
-					createdTime: CREATED_TIME,
 					data: {
 						document_metadata: {
 							shouldBeStripped: 'shouldBeStripped'
@@ -244,8 +270,32 @@ describe('document', () => {
 					language: COLLECTION_LANGUAGE,
 					// Options
 					cleanExtraFields: true, // default is false
-				}, javaBridgeStub)
-			)
+				}, javaBridge); // create
+			deepStrictEqual(
+				{
+					_id: createRes._id,
+					_indexConfig,
+					_name: createRes._id,
+					_nodeType: 'default',
+					_state: 'DEFAULT',
+					_ts: createRes._ts,
+					_versionKey: createRes._versionKey,
+					document_metadata: {
+						collection: COLLECTION_NAME,
+						collector: {
+							id: COLLECTOR_ID,
+							version: COLLECTOR_VERSION
+						},
+						createdTime: createRes.document_metadata.createdTime,
+						documentType: DOCUMENT_TYPE_NAME,
+						language: COLLECTION_LANGUAGE,
+						stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
+						valid: true
+					},
+					myString: 'string'
+				},
+				createRes
+			) // deepStrictEqual
 		}); // it
 	}); // describe create
 }); // describe document

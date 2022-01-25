@@ -1,12 +1,22 @@
+import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
 import {deepStrictEqual} from 'assert';
 
 import {
 	document
-} from '../../../../../rollup/index.js';
+} from '../../../../build/rollup/index.js';
 import {log} from '../../../dummies';
 
 const {validate} = document;
 
+
+const javaBridge = new JavaBridge({
+	app: {
+		config: {},
+		name: 'com.enonic.app.explorer',
+		version: '0.0.1-SNAPSHOT'
+	},
+	log
+});
 
 /*const FIELDS = [{
 	active: true,
@@ -31,7 +41,7 @@ describe('document', () => {
 					data: {},
 					fieldsObj: {},
 					validateOccurences: true
-				}, {log})
+				}, javaBridge)
 			);
 		});
 	}); // describe validate()

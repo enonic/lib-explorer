@@ -1,14 +1,19 @@
 import type {
+	CreatedDocumentTypeNode,
 	LooseObject,
+	RequiredMetaData,
 	UpdatedNode
 } from '../types';
 import type {
 	Fields,
-	UpdateEnonicJavaBridge,
+	JavaBridge,
 	UpdateParameterObject
 } from './types';
 
 import {
+	forceArray,
+	//isDate,
+	isInstantString,
 	isNotSet as notSet,
 	isObject,
 	isSet,
@@ -29,18 +34,7 @@ import {
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';
-import {
-	connectDummy,
-	geoPointDummy,
-	geoPointStringDummy,
-	instantDummy,
-	localDateDummy,
-	localDateTimeDummy,
-	localTimeDummy,
-	logDummy,
-	stemmingLanguageFromLocaleDummy,
-	referenceDummy
-} from './dummies';
+import {javaBridgeDummy} from './dummies';
 import {fieldsArrayToObj} from './field';
 import {validate} from './validate';
 import {typeCastToJava} from './typeCastToJava';
@@ -48,19 +42,13 @@ import {typeCastToJava} from './typeCastToJava';
 
 export function update(
 	updateParameterObject :UpdateParameterObject,
-	{
-		connect = connectDummy,
-		log = logDummy,
-		geoPoint = geoPointDummy,
-		geoPointString = geoPointStringDummy,
-		instant = instantDummy,
-		localDate = localDateDummy,
-		localDateTime = localDateTimeDummy,
-		localTime = localTimeDummy,
-		reference = referenceDummy,
-		stemmingLanguageFromLocale = stemmingLanguageFromLocaleDummy
-	} :Required<UpdateEnonicJavaBridge>
+	javaBridge :JavaBridge = javaBridgeDummy
 ) {
+	const {
+		//connect, // destructure destroys this
+		log,
+		stemmingLanguageFromLocale
+	} = javaBridge;
 	if (notSet(updateParameterObject)) {
 		throw new Error('update: parameter object is missing!');
 	}
@@ -70,13 +58,13 @@ export function update(
 		collectionName, // If empty gotten from collectionNode via collectionId
 		collectorId,
 		collectorVersion,
-		createdTime, // Useful when testing
+		//createdTime, // Useful when testing
 		data,
 		documentTypeId, // If empty gotten from collectionNode via collectionId
 		documentTypeName, // If empty gotten from documentTypeNode via documentTypeId
 		fields, // If empty gotten from documentTypeNode
 		language, // If empty gotten from collectionNode
-		modifiedTime, // Useful when testing
+		//modifiedTime, // Useful when testing
 		stemmingLanguage, // If empty gotten from language
 
 		// Options
@@ -188,14 +176,13 @@ export function update(
 		notSet(language)
 	) {
 		log.debug('connecting to explorerRepo');
-		const explorerReadConnection = connect({
+		const explorerReadConnection = javaBridge.connect({
 			branch: BRANCH_ID_EXPLORER,
 			principals: [PRINCIPAL_EXPLORER_READ],
 			repoId: REPO_ID_EXPLORER
 		});
 		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
-			let collectionNode :LooseObject;
-			collectionNode = explorerReadConnection.get(collectionId) as LooseObject;
+			const collectionNode :LooseObject = explorerReadConnection.get(collectionId) as LooseObject;
 
 			if (notSet(collectionName)) {
 				collectionName = collectionNode['_name'] as string;
@@ -210,16 +197,49 @@ export function update(
 			}
 		}
 		if (notSet(documentTypeName) || notSet(fields)) {
-			const documentTypeNode = explorerReadConnection.get(documentTypeId) as LooseObject;
+			const documentTypeNode :LooseObject = explorerReadConnection.get(documentTypeId) as LooseObject;
 			if (notSet(documentTypeName)) {
 				documentTypeName = documentTypeNode['_name'] as string;
 			}
 			if (notSet(fields)) {
-				fields = documentTypeNode['properties'] as Fields;
+				fields = forceArray(documentTypeNode['properties']) as Fields;
 				//log.debug(`fields:${toStr(fields)}`);
 			}
 		}
 	}
+
+	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
+	//log.debug('repoId:%s', repoId);
+
+	const collectionRepoReadConnection = javaBridge.connect({
+		branch: 'master',
+		principals: [PRINCIPAL_EXPLORER_READ],
+		repoId
+	});
+	const documentNode :CreatedDocumentTypeNode = collectionRepoReadConnection.get(documentNodeId as string) as CreatedDocumentTypeNode;
+	if (!documentNode) {
+		throw new Error(`update: No document with _id:${documentNodeId}`);
+	}
+	//log.debug(`documentNode:${toStr(documentNode)}`);
+
+	if (notSet(documentNode[FIELD_PATH_META])) {
+		throw new Error(`update: Document with _id:${documentNodeId} has no ${FIELD_PATH_META} property!`);
+	}
+
+	if (!isObject(documentNode[FIELD_PATH_META])) {
+		throw new Error(`update: Document with _id:${documentNodeId} ${FIELD_PATH_META} is not an object!`);
+	}
+
+	if (notSet((documentNode[FIELD_PATH_META] as RequiredMetaData).createdTime)) {
+		throw new Error(`update: Document with _id:${documentNodeId} has no ${FIELD_PATH_META}:${toStr(documentNode[FIELD_PATH_META])} has no createdTime property!`);
+	}
+
+	/*const createdTime = isObject(documentNode[FIELD_PATH_META])
+		? (documentNode[FIELD_PATH_META] as RequiredMetaData).createdTime
+		: isInstantString(documentNode._ts)
+			? documentNode._ts
+			: new Date();*/
+	const createdTime = (documentNode[FIELD_PATH_META] as RequiredMetaData).createdTime;
 
 	//──────────────────────────────────────────────────────────────────────────
 
@@ -228,7 +248,7 @@ export function update(
 	}
 
 	//let myFields = JSON.parse(JSON.stringify(fields));
-	let fieldsObj = fieldsArrayToObj(fields, {log});
+	let fieldsObj = fieldsArrayToObj(fields, javaBridge);
 	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);
 
 	if (addExtraFields) {
@@ -236,7 +256,7 @@ export function update(
 			data,
 			fieldsObj,
 			updateDocumentType: () => {} // TODO
-		}, { log });
+		}, javaBridge);
 	}
 	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);
 
@@ -244,7 +264,7 @@ export function update(
 		cleanExtraFields,
 		data,
 		fieldsObj
-	}, {log});
+	}, javaBridge);
 	//log.debug(`cleanedData:${toStr(cleanedData)}`);
 
 	const isValid = validate({
@@ -252,7 +272,7 @@ export function update(
 		fieldsObj,
 		validateOccurrences,
 		validateTypes
-	}, {log});
+	}, javaBridge);
 	//log.debug(`isValid:${toStr(isValid)}`);
 	if (requireValid && !isValid) {
 		throw new Error(`validation failed! requireValid:${requireValid} validateOccurrences:${validateOccurrences} validateTypes:${validateTypes} cleanedData:${toStr(cleanedData)} fieldsObj:${toStr(fieldsObj)}`);
@@ -261,16 +281,7 @@ export function update(
 	const dataWithJavaTypes = typeCastToJava({
 		data: cleanedData,
 		fieldsObj
-	}, { // Java objects and functions
-		log,
-		geoPoint,
-		geoPointString,
-		instant,
-		localDate,
-		localDateTime,
-		localTime,
-		reference
-	});
+	}, javaBridge);
 	//log.debug('dataWithJavaTypes %s', dataWithJavaTypes);
 
 	const languages :string[] = [];
@@ -282,7 +293,7 @@ export function update(
 		//data,
 		fieldsObj,
 		languages
-	}, {log});
+	}/*, javaBridge*/);
 	//log.debug('indexConfig %s', indexConfig);
 	dataWithJavaTypes['_indexConfig'] = indexConfig;
 
@@ -292,10 +303,11 @@ export function update(
 			id: collectorId,
 			version: collectorVersion
 		},
-		createdTime: createdTime || new Date(),
+		createdTime,
 		documentType: documentTypeName,
 		language,
-		modifiedTime: modifiedTime || new Date(),
+		//modifiedTime: modifiedTime || new Date(),
+		modifiedTime: new Date(),
 		stemmingLanguage,
 		valid: isValid
 	};
@@ -303,10 +315,7 @@ export function update(
 	const sortedDataWithIndexConfig = sortKeys(dataWithJavaTypes);
 	//log.debug('sortedDataWithIndexConfig %s', sortedDataWithIndexConfig);
 
-	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
-	//log.debug('repoId:%s', repoId);
-
-	const collectionRepoWriteConnection = connect({
+	const collectionRepoWriteConnection = javaBridge.connect({
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_WRITE],
 		repoId

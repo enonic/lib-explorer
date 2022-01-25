@@ -1,4 +1,8 @@
+import type {IndexConfig} from './types/IndexConfig'
+
+
 export interface LooseObject {
+	//[key :PropertyKey] :unknown
 	[key :string] :unknown
 }
 
@@ -33,52 +37,6 @@ export interface PermissionsParams {
 	deny: Array<Permission>
 }
 
-export interface IndexConfigEntry {
-	/**
-	* If true, indexing is done based on valueType, according to the table above. I.e. numeric values are indexed as
-	* both string and numeric.
-	*/
-	decideByType: boolean
-
-	/**
-	* If false, indexing will be disabled for the affected properties
-	*/
-	enabled: boolean
-
-	/**
-	* Values are stored as 'ngram'
-	*/
-	nGram: boolean
-
-	/**
-	* Values are stored as 'ngram', 'analyzed' and also added to the _allText system property
-	*/
-	fulltext: boolean
-
-	/**
-	* Affected values will be added to the _allText property
-	*/
-	includeInAllText: boolean
-
-	/**
-	* Values are stored as 'path' type and applicable for the pathMatch-function
-	*/
-	path: boolean
-
-	indexValueProcessors: Array<any>
-	languages: string[]
-}
-
-export type IndexConfigTemplates = "none" | "byType" | "fulltext" | "path" | "minimal";
-
-export interface IndexConfig {
-	default: IndexConfigEntry | IndexConfigTemplates;
-	configs?: Array<{
-		path: string;
-		config: IndexConfigEntry | IndexConfigTemplates;
-	}>;
-}
-
 export interface RequiredNodeProperties {
 	_id: string
 	_childOrder: string
@@ -94,6 +52,34 @@ export interface RequiredNodeProperties {
 }
 
 export type CreatedNode = RequiredNodeProperties & LooseObject;
+
+export interface RequiredMetaData {
+	collection :string
+	collector :{
+		id :string
+		version :string
+	}
+	createdTime :string
+	documentType :string
+	language :string
+	stemmingLanguage :string
+	valid :boolean
+}
+
+export interface RequiredMetaDataAfterUpdate extends RequiredMetaData {
+	modifiedTime :string
+}
+
+export interface RequiredDocumentNode extends RequiredNodeProperties {
+	document_metadata :RequiredMetaData
+}
+
+export interface RequiredDocumentNodeAfterUpdate extends RequiredNodeProperties {
+	document_metadata :RequiredMetaDataAfterUpdate
+}
+
+export type CreatedDocumentTypeNode = RequiredDocumentNode & LooseObject;
+export type UpdatedDocumentTypeNode = RequiredDocumentNodeAfterUpdate & LooseObject;
 
 export interface UpdatedNode extends CreatedNode {
 	modifiedTime :string

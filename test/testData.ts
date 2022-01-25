@@ -182,7 +182,10 @@ export const LOCAL_DATE_STRINGS_INVALID = [
 	'0000-01-32', // Text '0000-01-32' could not be parsed: Invalid value for DayOfMonth (valid values 1 - 28/31): 32 java.time.format.DateTimeParseException
 	// localDateString related, but not an actual localDateString
 	DATE_OBJECT.toDateString(),
+
+	//@ts-ignore
 	DATE_OBJECT.toGMTString(),
+
 	DATE_OBJECT.toJSON(),
 	DATE_OBJECT.toLocaleDateString(),
 	DATE_OBJECT.toLocaleString(),
@@ -194,7 +197,10 @@ export const LOCAL_DATE_STRINGS_INVALID = [
 	DATE_OBJECT.toUTCString(),
 	Date.now(),
 	Date.parse('2011-12-03T10:15:30Z'),
+
+	//@ts-ignore
 	Date.UTC(),
+
 	// Invalid input
 	EMPTY_STRING,
 	'a',
@@ -224,7 +230,10 @@ export const LOCAL_DATE_TIME_STRINGS_INVALID = [
 	'0000-01-01T00:00:00.1234567890', // Text '0000-01-01T00:00:00.1234567890' could not be parsed, unparsed text found at index 29 java.time.format.DateTimeParseException
 	// localDateTimeString related, but not an actual localDateTimeString
 	DATE_OBJECT.toDateString(),
+
+	//@ts-ignore
 	DATE_OBJECT.toGMTString(),
+
 	DATE_OBJECT.toJSON(),
 	DATE_OBJECT.toLocaleDateString(),
 	DATE_OBJECT.toLocaleString(),
@@ -236,7 +245,10 @@ export const LOCAL_DATE_TIME_STRINGS_INVALID = [
 	DATE_OBJECT.toUTCString(),
 	Date.now(),
 	Date.parse('2011-12-03T10:15:30Z'),
+
+	//@ts-ignore
 	Date.UTC(),
+
 	// Invalid input
 	EMPTY_STRING,
 	'a',
@@ -274,17 +286,35 @@ export const NOT_UUIDV4 = [
 //──────────────────────────────────────────────────────────────────────────────
 // Derived
 //──────────────────────────────────────────────────────────────────────────────
-export const GEOPOINTS = GEOPOINT_ARRAYS.concat(GEOPOINT_STRINGS);
+export const GEOPOINTS = [].concat(
+	GEOPOINT_ARRAYS,
+	GEOPOINT_STRINGS
+);
 
-export const GEOPOINTS_INVALID = GEOPOINT_ARRAYS_INVALID.concat(GEOPOINT_STRINGS_INVALID);
+export const GEOPOINTS_INVALID = [].concat(
+	GEOPOINT_ARRAYS_INVALID,
+	GEOPOINT_STRINGS_INVALID
+);
 
-export const INSTANTS = INSTANT_STRINGS.concat(DATE_OBJECTS);
+export const INSTANTS = [].concat(
+	INSTANT_STRINGS,
+	DATE_OBJECTS
+);
 
-export const LOCAL_DATES = LOCAL_DATE_STRINGS.concat(DATE_OBJECTS);
+export const LOCAL_DATES = [].concat(
+	LOCAL_DATE_STRINGS,
+	DATE_OBJECTS
+);
 
-export const LOCAL_DATE_TIMES = LOCAL_DATE_TIME_STRINGS.concat(DATE_OBJECTS);
+export const LOCAL_DATE_TIMES = [].concat(
+	LOCAL_DATE_TIME_STRINGS,
+	DATE_OBJECTS
+);
 
-export const LOCAL_TIMES = LOCAL_TIME_STRINGS.concat(DATE_OBJECTS);
+export const LOCAL_TIMES = [].concat(
+	LOCAL_TIME_STRINGS,
+	DATE_OBJECTS
+);
 
 export const NUMBERS = [].concat(
 	INTEGERS,
@@ -424,16 +454,30 @@ export const NOT_STRINGS = [].concat(
 //──────────────────────────────────────────────────────────────────────────────
 // Exporer repo dummy
 //──────────────────────────────────────────────────────────────────────────────
-export const COLLECTION_ID = '00000000-0000-4000-8000-000000000000';
+export const COLLECTIONS_FOLDER_NAME = 'collections';
+export const COLLECTIONS_FOLDER_PATH = `/${COLLECTIONS_FOLDER_NAME}`;
+export const COLLECTIONS_FOLDER = {
+	_name: COLLECTIONS_FOLDER_NAME,
+	_path: COLLECTIONS_FOLDER_PATH
+};
+
+export const DOCUMENT_TYPES_FOLDER_NAME = 'documentTypes';
+export const DOCUMENT_TYPES_FOLDER_PATH = `/${DOCUMENT_TYPES_FOLDER_NAME}`;
+export const DOCUMENT_TYPES_FOLDER = {
+	_name: DOCUMENT_TYPES_FOLDER_NAME,
+	_path: DOCUMENT_TYPES_FOLDER_PATH
+};
+
 export const COLLECTION_NAME = 'myCollectionName';
+export const COLLECTION_PATH = `${COLLECTIONS_FOLDER_PATH}/${COLLECTION_NAME}`;
 export const COLLECTION_LANGUAGE = 'en-GB';
 export const COLLECTION_STEMMING_LANGUAGE = 'en';
 
 export const COLLECTOR_ID = 'todo-collectorId';
 export const COLLECTOR_VERSION = 'todo-collectorVersion';
 
-export const DOCUMENT_TYPE_ID = '00000000-0000-4000-8000-000000000001';
 export const DOCUMENT_TYPE_NAME = 'myDocumentTypeName';
+export const DOCUMENT_TYPE_PATH = `${DOCUMENT_TYPES_FOLDER_PATH}/${DOCUMENT_TYPE_NAME}`;
 export const DOCUMENT_TYPE_FIELDS = [{
 	enabled: true,
 	fulltext: true,
@@ -447,15 +491,14 @@ export const DOCUMENT_TYPE_FIELDS = [{
 }];
 
 export const COLLECTION = {
-	_id: COLLECTION_ID,
 	_name: COLLECTION_NAME,
-	documentTypeId: DOCUMENT_TYPE_ID,
+	_path: COLLECTION_PATH,
 	language: COLLECTION_LANGUAGE
 };
 
 export const DOCUMENT_TYPE = {
-	_id: DOCUMENT_TYPE_ID,
 	_name: DOCUMENT_TYPE_NAME,
+	_path: DOCUMENT_TYPE_PATH,
 	properties: DOCUMENT_TYPE_FIELDS
 };
 
@@ -550,45 +593,8 @@ export const INDEX_CONFIG = {
 		includeInAllText: false,
 		indexValueProcessors: [],
 		languages: [COLLECTION_STEMMING_LANGUAGE],
+		//languages: COLLECTION_STEMMING_LANGUAGE, // enonified
 		nGram: false,
 		path: false
 	}
-};
-
-export const DOCUMENT_ID = '00000000-0000-4000-8000-000000000002';
-const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
-_indexConfig.configs.push({
-	path: 'myString',
-	config: {
-		decideByType: false,
-		enabled: true,
-		fulltext: true,
-		includeInAllText: true,
-		languages: [COLLECTION_STEMMING_LANGUAGE],
-		nGram: true,
-		path: false
-	}
-});
-export const CREATED_DOCUMENT = {
-	_id: DOCUMENT_ID,
-	_indexConfig,
-	document_metadata: {
-		collection: COLLECTION_NAME,
-		collector: {
-			id: COLLECTOR_ID,
-			version: COLLECTOR_VERSION
-		},
-		createdTime: CREATED_TIME,
-		documentType: DOCUMENT_TYPE_NAME,
-		language: COLLECTION_LANGUAGE,
-		stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
-		valid: true
-	},
-	myString: 'string'
-};
-
-export const NODES = {
-	[COLLECTION_ID]: COLLECTION,
-	[DOCUMENT_TYPE_ID]:  DOCUMENT_TYPE//,
-	//[DOCUMENT_ID]: CREATED_DOCUMENT
 };

@@ -33,12 +33,13 @@ import type {
 	LooseObject
 } from '../types';
 import type {
-	CreateEnonicJavaBridge,
 	CreateParameterObject,
-	Fields
+	Fields,
+	JavaBridge
 } from './types';
 
 import {
+	forceArray,
 	isNotSet as notSet,
 	isSet,
 	isString,
@@ -58,36 +59,17 @@ import {
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';
-import {
-	connectDummy,
-	geoPointDummy,
-	geoPointStringDummy,
-	instantDummy,
-	localDateDummy,
-	localDateTimeDummy,
-	localTimeDummy,
-	logDummy,
-	stemmingLanguageFromLocaleDummy,
-	referenceDummy
-} from './dummies';
+import {javaBridgeDummy} from './dummies';
 import {fieldsArrayToObj} from './field';
 import {validate} from './validate';
 import {typeCastToJava} from './typeCastToJava';
 
 
 // dieOnError
-export function create(createParameterObject :CreateParameterObject, {
-	connect = connectDummy,
-	log = logDummy,
-	geoPoint = geoPointDummy,
-	geoPointString = geoPointStringDummy,
-	instant = instantDummy,
-	localDate = localDateDummy,
-	localDateTime = localDateTimeDummy,
-	localTime = localTimeDummy,
-	reference = referenceDummy,
-	stemmingLanguageFromLocale = stemmingLanguageFromLocaleDummy
-} :Required<CreateEnonicJavaBridge> ) {
+export function create(
+	createParameterObject :CreateParameterObject,
+	javaBridge :JavaBridge = javaBridgeDummy
+) {
 	if (notSet(createParameterObject)) {
 		throw new Error('create: parameter object is missing!');
 	}
@@ -113,6 +95,12 @@ export function create(createParameterObject :CreateParameterObject, {
 		validateOccurrences = false,
 		validateTypes = requireValid
 	} = createParameterObject;
+
+	const {
+		//connect, // destructure destroys this
+		log,
+		stemmingLanguageFromLocale
+	} = javaBridge;
 	//log.debug(`collectionId:${collectionId}`);
 	//log.debug(`collectionName:${collectionName}`);
 	//log.debug(`collectorId:${collectorId}`);
@@ -212,14 +200,16 @@ export function create(createParameterObject :CreateParameterObject, {
 		notSet(language)
 	) {
 		log.debug('connecting to explorerRepo');
-		const explorerReadConnection = connect({
+		const explorerReadConnection = javaBridge.connect({
 			branch: BRANCH_ID_EXPLORER,
 			principals: [PRINCIPAL_EXPLORER_READ],
 			repoId: REPO_ID_EXPLORER
 		});
 		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
-			let collectionNode :LooseObject;
-			collectionNode = explorerReadConnection.get(collectionId) as LooseObject;
+			//log.debug('collectionId:%s', collectionId);
+
+			const collectionNode :LooseObject = explorerReadConnection.get(collectionId) as LooseObject;
+			//log.debug('collectionNode:%s', collectionNode);
 
 			if (notSet(collectionName)) {
 				collectionName = collectionNode['_name'] as string;
@@ -239,7 +229,7 @@ export function create(createParameterObject :CreateParameterObject, {
 				documentTypeName = documentTypeNode['_name'] as string;
 			}
 			if (notSet(fields)) {
-				fields = documentTypeNode['properties'] as Fields;
+				fields = forceArray(documentTypeNode['properties']) as Fields;
 				//log.debug(`fields:${toStr(fields)}`);
 			}
 		}
@@ -252,7 +242,7 @@ export function create(createParameterObject :CreateParameterObject, {
 	}
 
 	//let myFields = JSON.parse(JSON.stringify(fields));
-	let fieldsObj = fieldsArrayToObj(fields, {log});
+	let fieldsObj = fieldsArrayToObj(fields, javaBridge);
 	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);
 
 	if (addExtraFields) {
@@ -260,7 +250,7 @@ export function create(createParameterObject :CreateParameterObject, {
 			data,
 			fieldsObj,
 			updateDocumentType: () => {} // TODO
-		}, { log });
+		}, javaBridge);
 	}
 	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);
 
@@ -268,7 +258,7 @@ export function create(createParameterObject :CreateParameterObject, {
 		cleanExtraFields,
 		data,
 		fieldsObj
-	}, {log});
+	}, javaBridge);
 	//log.debug(`cleanedData:${toStr(cleanedData)}`);
 
 	const isValid = validate({
@@ -276,7 +266,7 @@ export function create(createParameterObject :CreateParameterObject, {
 		fieldsObj,
 		validateOccurrences,
 		validateTypes
-	}, {log});
+	}, javaBridge);
 	//log.debug(`isValid:${toStr(isValid)}`);
 	if (requireValid && !isValid) {
 		throw new Error(`validation failed! requireValid:${requireValid} validateOccurrences:${validateOccurrences} validateTypes:${validateTypes} cleanedData:${toStr(cleanedData)} fieldsObj:${toStr(fieldsObj)}`);
@@ -285,16 +275,7 @@ export function create(createParameterObject :CreateParameterObject, {
 	const dataWithJavaTypes = typeCastToJava({
 		data: cleanedData,
 		fieldsObj
-	}, { // Java objects and functions
-		log,
-		geoPoint,
-		geoPointString,
-		instant,
-		localDate,
-		localDateTime,
-		localTime,
-		reference
-	});
+	}, javaBridge);
 	//log.debug('dataWithJavaTypes %s', dataWithJavaTypes);
 
 	const languages :string[] = [];
@@ -306,7 +287,7 @@ export function create(createParameterObject :CreateParameterObject, {
 		//data,
 		fieldsObj,
 		languages
-	}, {log});
+	}/*, javaBridge*/);
 	//log.debug('indexConfig %s', indexConfig);
 	dataWithJavaTypes['_indexConfig'] = indexConfig;
 
@@ -329,10 +310,13 @@ export function create(createParameterObject :CreateParameterObject, {
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
 	//log.debug('repoId:%s', repoId);
 
-	const collectionRepoWriteConnection = connect({
+	//log.debug('connecting to repoId:%s', repoId);
+	const collectionRepoWriteConnection = javaBridge.connect({
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_WRITE],
 		repoId
 	});
+
+	//log.debug('creating node:%s', sortedDataWithIndexConfig);
 	return collectionRepoWriteConnection.create(sortedDataWithIndexConfig);
 }

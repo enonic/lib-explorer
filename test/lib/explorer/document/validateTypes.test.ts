@@ -1,3 +1,4 @@
+import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
 import {deepStrictEqual} from 'assert';
 
 //import {VALUE_TYPE_STRING} from '@enonic/js-utils';
@@ -6,7 +7,7 @@ import {deepStrictEqual} from 'assert';
 
 import {
 	document
-} from '../../../../../rollup';
+} from '../../../../build/rollup';
 import {log} from '../../../dummies';
 
 import {
@@ -22,12 +23,12 @@ import {
 	LOCAL_DATE_TIME_STRINGS_INVALID,
 	LOCAL_DATES,
 	LOCAL_TIMES,
-	OBJECTS,
+	//OBJECTS,
 	NOT_BOOLEANS,
 	NOT_GEOPOINTS,
 	NOT_INTEGERS,
 	NOT_NUMBERS,
-	NOT_OBJECTS,
+	//NOT_OBJECTS,
 	NOT_STRINGS,
 	NOT_UUIDV4,
 	STRINGS,
@@ -37,6 +38,15 @@ import {
 //const {VALUE_TYPE_STRING} = libExplorer;
 const {validateTypes} = document;
 
+
+const javaBridge = new JavaBridge({
+	app: {
+		config: {},
+		name: 'com.enonic.app.explorer',
+		version: '0.0.1-SNAPSHOT'
+	},
+	log
+});
 
 //export const VALUE_TYPE_ANY:string = 'any';
 const VALUE_TYPE_BOOLEAN = 'boolean';
@@ -52,34 +62,35 @@ const VALUE_TYPE_REFERENCE = 'reference';
 const VALUE_TYPE_STRING = 'string';
 
 
-const TESTS_VALID = [{
-	/* No params :) */
-},{
-	data: {}//,
-	//fields: []
-}, {
-	//data: {},
-	fields: []
-},{
-	data: {},
-	fields: []
-},{
-	data: {
-		text: EMPTY_STRING
-	},
-	fields: [{
-		//valueType: VALUE_TYPE_STRING,
-		name: 'text'
-	}]
-},{
-	data: {
-		text: 'a'
-	},
-	fields: [{
-		//valueType: VALUE_TYPE_STRING,
-		name: 'text'
-	}]
-}].concat(
+const TESTS_VALID = [].concat(
+	[{
+		/* No params :) */
+	},{
+		data: {}//,
+		//fields: []
+	}, {
+		//data: {},
+		fields: []
+	},{
+		data: {},
+		fields: []
+	},{
+		data: {
+			text: EMPTY_STRING
+		},
+		fields: [{
+			//valueType: VALUE_TYPE_STRING,
+			name: 'text'
+		}]
+	},{
+		data: {
+			text: 'a'
+		},
+		fields: [{
+			//valueType: VALUE_TYPE_STRING,
+			name: 'text'
+		}]
+	}],
 	BOOLEANS.map(boolean => ({
 		data: {
 			boolean
@@ -294,15 +305,16 @@ const TESTS_VALID = [{
 ); // concat
 
 
-const TESTS_INVALID = [{
-	data: {
-		notObject: false
-	},
-	fields: [{
-		valueType: VALUE_TYPE_SET,
-		name: 'notObject'
-	}]
-}].concat(
+const TESTS_INVALID = [].concat(
+	[{
+		data: {
+			notObject: false
+		},
+		fields: [{
+			valueType: VALUE_TYPE_SET,
+			name: 'notObject'
+		}]
+	}],
 	NOT_BOOLEANS.map(notBoolean => ({
 		data: {
 			boolean: notBoolean
@@ -497,7 +509,10 @@ const TESTS_INVALID = [{
 	})),
 	{
 		data: {
-			referenceArray: UUIDV4.concat(NOT_UUIDV4)
+			referenceArray: [].concat(
+				UUIDV4,
+				NOT_UUIDV4
+			)
 		},
 		fields: [{
 			name: 'referenceArray',
@@ -507,7 +522,7 @@ const TESTS_INVALID = [{
 ); // concat
 
 
-function toStr(v) { return JSON.stringify(v); }
+function toStr(v :unknown) { return JSON.stringify(v); }
 
 
 describe('document', () => {
@@ -517,7 +532,7 @@ describe('document', () => {
 				it(`${toStr(params)}`, () => {
 					deepStrictEqual(
 						true,
-						validateTypes(params, {log})
+						validateTypes(params, javaBridge)
 					);
 				});
 			});
@@ -527,7 +542,7 @@ describe('document', () => {
 				it(`${toStr(params)}`, () => {
 					deepStrictEqual(
 						false,
-						validateTypes(params, {log})
+						validateTypes(params, javaBridge)
 					);
 				});
 			});
