@@ -5,7 +5,7 @@ import typescript from 'rollup-plugin-typescript2';
 
 
 export default {
-	input: 'src/main/resources/lib/explorer/index.ts',
+	input: 'src/main/typeScript/lib/explorer/index.ts',
 	//input: 'build/tsc/lib/explorer/index.js',
 	//input: 'build/swc/src/main/resources/lib/explorer/index.js',
 	output: {
