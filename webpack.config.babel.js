@@ -45,7 +45,7 @@ if (MODE === 'production') {
 	SS_ALIAS['/lib/util'] = path.resolve(__dirname, '../lib-util/src/main/resources/lib/util/');
 }
 
-const JS_EXTENSION_GLOB_BRACE = '*.{es,es6,mjs,jsx,flow,js}';
+const JS_EXTENSION_GLOB_BRACE = '*.{es,es6,mjs,jsx,flow,js,ts}';
 const ASSETS_PATH_GLOB_BRACE = '{site/assets,assets}';
 const ALL_JS_ASSETS_GLOB = `${SRC_DIR}/${ASSETS_PATH_GLOB_BRACE}/**/${JS_EXTENSION_GLOB_BRACE}`;
 const ALL_JS_ASSETS_FILES = glob.sync(ALL_JS_ASSETS_GLOB);

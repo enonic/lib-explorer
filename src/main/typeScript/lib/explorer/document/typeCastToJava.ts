@@ -29,7 +29,7 @@ import {
 	isTimeString,
 	isUuidV4String,
 	toStr
-} from '@enonic/js-utils/dist/esm/index.mjs';
+} from '@enonic/js-utils';
 import getIn from 'get-value';
 import setIn from 'set-value';
 import traverse from 'traverse';

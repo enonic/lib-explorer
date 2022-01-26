@@ -12,7 +12,7 @@ import {
 	isString,
 	isUuidV4String//,
 	//toStr
-} from '@enonic/js-utils/src';
+} from '@enonic/js-utils';
 
 import {
 	BRANCH_ID_EXPLORER,

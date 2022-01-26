@@ -23,13 +23,13 @@ import {
 	VALUE_TYPE_REFERENCE,
 	VALUE_TYPE_SET,
 	VALUE_TYPE_STRING,
-	forceArray,
+	//forceArray,
 	isBoolean,
 	isObject,
 	isPositiveInteger,
 	isString,
 	toStr
-} from '@enonic/js-utils/dist/esm/index.mjs';
+} from '@enonic/js-utils';
 
 import {javaBridgeDummy} from './dummies';
 

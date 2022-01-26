@@ -19,7 +19,7 @@ import {
 	isSet,
 	isString,
 	toStr
-} from '@enonic/js-utils/dist/esm/index.mjs';
+} from '@enonic/js-utils';
 import getIn from 'get-value';
 
 import {javaBridgeDummy} from './dummies';
