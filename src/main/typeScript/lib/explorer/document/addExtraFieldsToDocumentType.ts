@@ -9,7 +9,7 @@ import {
 	VALUE_TYPE_GEO_POINT,
 	detectValueType//,
 	//toStr
-} from '@enonic/js-utils/dist/esm/index.mjs';
+} from '@enonic/js-utils';
 import traverse from 'traverse';
 
 import {
@@ -19,7 +19,7 @@ import {
 import {
 	//addMissingSetToFieldsArray,
 	applyDefaultsToField,
-} from './Field';
+} from './field';
 import {javaBridgeDummy} from './dummies';
 
 
