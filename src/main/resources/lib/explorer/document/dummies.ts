@@ -12,6 +12,7 @@ import type {
 
 export const connectDummy :ConnectFunction = (/*source*/) => ({
 	create: (data :LooseObject) => data,
+	exists: (key) => (Array.isArray(key) ? key : [key]),
 	get: (key) => ({_id: key}),
 	modify: (obj) => {
 		const {
