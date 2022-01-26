@@ -472,6 +472,22 @@ describe('document', () => {
 					updateRes
 				) // deepStrictEqual
 			}); // it
-		}); // describe updated
+		}); // describe modifies document node
+		it('leaves document node unchanged when diff is empty', () => {
+			const updateRes = update({
+				collectionId: CREATED_COLLECTION_NODE._id,
+				collectorId: COLLECTOR_ID,
+				collectorVersion: COLLECTOR_VERSION,
+				data: {
+					_id: CREATED_DOCUMENT_NODE._id,
+					myString: 'string'
+				},
+				partial: true
+			}, javaBridge);
+			deepStrictEqual(
+				CREATED_DOCUMENT_NODE,
+				updateRes
+			);
+		}); // it
 	}); // describe update()
 }); // describe document

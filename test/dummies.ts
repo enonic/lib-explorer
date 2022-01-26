@@ -12,14 +12,14 @@ import {stringify} from 'q-i';
 
 
 export const log = { //console.log console.trace
-	//debug: () => {},
-	debug: (format :string, ...s :unknown[]) :void => {
-		if (s.length) {
+	//@ts-ignore
+	debug: (format :string,...s :unknown[]) :void => {
+		/*if (s.length) {
 			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 			console.debug(grey(`DEBUG ${format}`), ...colored);
 		} else {
 			console.debug(grey(`DEBUG ${format}`));
-		}
+		}*/
 	},
 	error: (format :string, ...s :unknown[]) :void => {
 		if (s.length) {

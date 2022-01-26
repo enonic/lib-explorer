@@ -34,6 +34,7 @@ import {
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';
+import {documentUnchanged} from './documentUnchanged';
 import {javaBridgeDummy} from './dummies';
 import {fieldsArrayToObj} from './field';
 import {validate} from './validate';
@@ -266,7 +267,7 @@ export function update(
 	//log.debug(`cleanedData:${toStr(cleanedData)}`);
 
 	const combinedData = {
-		...documentNode,
+		...JSON.parse(JSON.stringify(documentNode)),
 		...cleanedData
 	};
 	//log.debug(`combinedData:${toStr(combinedData)}`);
@@ -316,8 +317,12 @@ export function update(
 		valid: isValid
 	};
 
-	const sortedDataWithIndexConfig = sortKeys(dataWithJavaTypes);
+	const sortedDataWithIndexConfig :UpdatedNode = sortKeys(dataWithJavaTypes) as UpdatedNode;
 	//log.debug('sortedDataWithIndexConfig %s', sortedDataWithIndexConfig);
+
+	if (documentUnchanged(documentNode, sortedDataWithIndexConfig, javaBridge)) {
+		return documentNode;
+	}
 
 	const collectionRepoWriteConnection = javaBridge.connect({
 		branch: 'master',
