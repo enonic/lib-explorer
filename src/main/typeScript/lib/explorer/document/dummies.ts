@@ -10,6 +10,12 @@ import type {
 	UnknownFunction,
 } from './types';
 
+export const appDummy :App = {
+	config: {},
+	name: 'com.enonic.app.explorer',
+	version: '0.0.1'
+};
+
 export const connectDummy :ConnectFunction = (/*source*/) => ({
 	create: (data :LooseObject) => data,
 	exists: (key) => (Array.isArray(key) ? key : [key]),
@@ -87,6 +93,7 @@ export const stemmingLanguageFromLocaleDummy = (locale :string) => {
 }
 
 export const javaBridgeDummy :JavaBridge = {
+	app: appDummy,
 	connect: connectDummy,
 	log: logDummy,
 	repo: libRepoDummy,
