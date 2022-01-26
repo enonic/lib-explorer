@@ -146,7 +146,7 @@ export interface RepoConnection {
 	/**
 	* Checking if a node or nodes exist for the current context.
 	*/
-	//exists(keys: string | ReadonlyArray<string>): ReadonlyArray<string>;
+	exists(keys: string | Array<string>): Array<string>;
 
 	/**
 	* Fetch the versions of a node.
@@ -319,8 +319,9 @@ export interface CreateParameterObject {
 	collectionName? :string
 	collectorId :string // TODO Scalar Regexp?
 	collectorVersion :string // TODO Scalar Regexp?
-	//createdTime :unknown,
-	data: LooseObject
+	data? :{
+		[key :PropertyKey] :unknown
+	}
 	documentTypeId? :string // TODO Scalar Regexp?
 	documentTypeName? :string
 	fields? :Fields
@@ -333,8 +334,11 @@ export interface CreateParameterObject {
 }
 
 export interface UpdateParameterObject extends CreateParameterObject {
-	//modifiedTime :unknown
-	partial :boolean
+	data? :{
+		_id? :string
+		[key :PropertyKey] :unknown
+	}
+	partial? :boolean
 }
 
 export interface RepoLib {
