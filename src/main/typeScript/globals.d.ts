@@ -1,4 +1,7 @@
-export {};
+export {
+	App,
+	Log
+};
 
 declare global {
 	interface AppConfigObject {

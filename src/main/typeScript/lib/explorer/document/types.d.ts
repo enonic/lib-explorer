@@ -360,6 +360,7 @@ export interface ValueLib {
 export type StemmingLanguageFromLocaleFunction = (locale :string) => string;
 
 export interface JavaBridge {
+	app :App
 	connect :ConnectFunction
 	log :Log
 	repo :RepoLib
