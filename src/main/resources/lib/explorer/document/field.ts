@@ -23,6 +23,7 @@ import {
 	VALUE_TYPE_REFERENCE,
 	VALUE_TYPE_SET,
 	VALUE_TYPE_STRING,
+	forceArray,
 	isBoolean,
 	isObject,
 	isPositiveInteger,
@@ -65,15 +66,19 @@ export function isField(
 	javaBridge :JavaBridge = javaBridgeDummy
 ) :value is Field {
 	const {log} = javaBridge;
+	//log.debug('isField() value:%s', value);
 	if (!isObject(value)) { return false; }
 	const keys :string[] = Object.keys(value as Object);
 	for (let i = 0; i < keys.length; i++) {
+		//log.debug('isField() i:%s', i);
 		const key = keys[i];
+		//log.debug('isField() i:%s key:%s', i, key);
 		if (!ALLOWED_PROPS.includes(key)) {
 			log.error(`key:${key} is not an allowed property on interface Field!`);
 			return false;
 		} else {
 			const property = value[key];
+			//log.debug('isField() i:%s key:%s property:%s', i, key, property);
 			if (BOOLEAN_PROPS.includes(key)) {
 				if (!isBoolean(property)) {
 					log.error(`key:${key} value:${toStr(property)} is not of type boolean on interface Field!`);
@@ -105,9 +110,13 @@ export function isFields(
 	fields :unknown,
 	javaBridge :JavaBridge = javaBridgeDummy
 ) :fields is Fields {
+	//const {log} = javaBridge;
+	//log.debug('isFields() fields:%s', fields);
 	if (!Array.isArray(fields)) { return false; }
 	for (let i = 0; i < fields.length; i++) {
+		//log.debug('isFields() i:%s', i);
 		const field = fields[i];
+		//log.debug('isFields() i:%s field:%s', i, field);
 		if (!isField(field, javaBridge)) {
 			return false;
 		}
@@ -155,9 +164,11 @@ export function applyDefaultsToField(
 
 
 export function fieldsArrayToObj(
+	//field :Fields | Field,
 	fields :Fields,
 	javaBridge :JavaBridge = javaBridgeDummy
 ) :FieldsObject {
+	//const fields = forceArray(field);
 	if (!isFields(fields, javaBridge)) { // NOTE Allowing empty array
 		throw new TypeError(`fieldsArrayToObj: fields not of type Fields! fields:${toStr(fields)}`);
 	}

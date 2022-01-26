@@ -58,19 +58,18 @@ export function update(
 		collectionName, // If empty gotten from collectionNode via collectionId
 		collectorId,
 		collectorVersion,
-		//createdTime, // Useful when testing
-		data,
+		data = {},
 		documentTypeId, // If empty gotten from collectionNode via collectionId
 		documentTypeName, // If empty gotten from documentTypeNode via documentTypeId
 		fields, // If empty gotten from documentTypeNode
 		language, // If empty gotten from collectionNode
-		//modifiedTime, // Useful when testing
 		stemmingLanguage, // If empty gotten from language
 
 		// Options
 		cleanExtraFields = false, // If true, extra fields can't cause error nor addType, because extra fields are deleted.
 		//denyExtraFields = cleanExtraFields, // If false, extra fields cause error and not persisted
 		addExtraFields = !cleanExtraFields, // Extra fields are always added as string
+		partial = false,
 		requireValid = false,
 		validateOccurrences = false,
 		validateTypes = requireValid
@@ -222,24 +221,23 @@ export function update(
 	}
 	//log.debug(`documentNode:${toStr(documentNode)}`);
 
-	if (notSet(documentNode[FIELD_PATH_META])) {
+	// This would break when updating exisiting data!
+	/*if (notSet(documentNode[FIELD_PATH_META])) {
 		throw new Error(`update: Document with _id:${documentNodeId} has no ${FIELD_PATH_META} property!`);
 	}
-
 	if (!isObject(documentNode[FIELD_PATH_META])) {
 		throw new Error(`update: Document with _id:${documentNodeId} ${FIELD_PATH_META} is not an object!`);
 	}
-
 	if (notSet((documentNode[FIELD_PATH_META] as RequiredMetaData).createdTime)) {
 		throw new Error(`update: Document with _id:${documentNodeId} has no ${FIELD_PATH_META}:${toStr(documentNode[FIELD_PATH_META])} has no createdTime property!`);
 	}
+	const createdTime = (documentNode[FIELD_PATH_META] as RequiredMetaData).createdTime;*/
 
-	/*const createdTime = isObject(documentNode[FIELD_PATH_META])
+	const createdTime = isObject(documentNode[FIELD_PATH_META]) && (documentNode[FIELD_PATH_META] as RequiredMetaData).createdTime
 		? (documentNode[FIELD_PATH_META] as RequiredMetaData).createdTime
 		: isInstantString(documentNode._ts)
 			? documentNode._ts
-			: new Date();*/
-	const createdTime = (documentNode[FIELD_PATH_META] as RequiredMetaData).createdTime;
+			: new Date();
 
 	//──────────────────────────────────────────────────────────────────────────
 
@@ -267,9 +265,16 @@ export function update(
 	}, javaBridge);
 	//log.debug(`cleanedData:${toStr(cleanedData)}`);
 
+	const combinedData = {
+		...documentNode,
+		...cleanedData
+	};
+	//log.debug(`combinedData:${toStr(combinedData)}`);
+
 	const isValid = validate({
-		data: cleanedData,
+		data: combinedData,
 		fieldsObj,
+		//partial, // Doing full validation since using combinedData
 		validateOccurrences,
 		validateTypes
 	}, javaBridge);
@@ -279,7 +284,7 @@ export function update(
 	}
 
 	const dataWithJavaTypes = typeCastToJava({
-		data: cleanedData,
+		data: combinedData,
 		fieldsObj
 	}, javaBridge);
 	//log.debug('dataWithJavaTypes %s', dataWithJavaTypes);
@@ -306,7 +311,6 @@ export function update(
 		createdTime,
 		documentType: documentTypeName,
 		language,
-		//modifiedTime: modifiedTime || new Date(),
 		modifiedTime: new Date(),
 		stemmingLanguage,
 		valid: isValid

@@ -29,6 +29,7 @@ export function cleanData(
 	javaBridge :JavaBridge = javaBridgeDummy
 ) :LooseObject {
 	const {log} = javaBridge;
+	//log.debug('cleanData() data:%s', data);
 	const cleanedData :LooseObject = JSON.parse(JSON.stringify(data));
 
 	if (cleanedData[FIELD_PATH_GLOBAL]) {

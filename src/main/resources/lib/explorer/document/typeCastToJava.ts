@@ -35,6 +35,10 @@ import setIn from 'set-value';
 import traverse from 'traverse';
 
 import {
+	FIELD_PATH_GLOBAL,
+	FIELD_PATH_META,
+} from '../constants';
+import {
 	javaBridgeDummy
 } from './dummies';
 
@@ -173,7 +177,9 @@ export function typeCastToJava(
 					}
 				}
 			} else { // !valueTypeForPath
-				log.debug(`Field without valueType path:${pathString} value:${toStr(value)}`);
+				if (![FIELD_PATH_GLOBAL, FIELD_PATH_META].includes(pathString)) {
+					log.debug(`Field without valueType path:${pathString} value:${toStr(value)}`);
+				}
 				//this.update(value, true);
 				setIn(typeCastedData, pathString, value);
 				this.block();

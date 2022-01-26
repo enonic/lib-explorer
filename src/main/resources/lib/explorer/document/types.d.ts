@@ -284,6 +284,7 @@ export interface CleanDataParameters {
 export interface ValidateParameters {
 	data :LooseObject
 	fieldsObj :FieldsObject
+	partial? :boolean
 	validateOccurrences? :boolean
 	validateTypes? :boolean
 	//documentType? :LooseObject
@@ -292,6 +293,7 @@ export interface ValidateParameters {
 export interface ValidateOccurrencesParameters {
 	data? :LooseObject
 	fields? :Field[]
+	partial? :boolean
 }
 
 export interface ValidateTypesParameters {
@@ -317,7 +319,7 @@ export interface CreateParameterObject {
 	collectionName? :string
 	collectorId :string // TODO Scalar Regexp?
 	collectorVersion :string // TODO Scalar Regexp?
-	createdTime: unknown,
+	//createdTime :unknown,
 	data: LooseObject
 	documentTypeId? :string // TODO Scalar Regexp?
 	documentTypeName? :string
@@ -331,7 +333,8 @@ export interface CreateParameterObject {
 }
 
 export interface UpdateParameterObject extends CreateParameterObject {
-	modifiedTime: unknown
+	//modifiedTime :unknown
+	partial :boolean
 }
 
 export interface RepoLib {
