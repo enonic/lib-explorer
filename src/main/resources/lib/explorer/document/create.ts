@@ -79,8 +79,7 @@ export function create(
 		collectionName, // If empty gotten from collectionNode via collectionId
 		collectorId,
 		collectorVersion,
-		createdTime, // Useful when testing
-		data,
+		data = {},
 		documentTypeId, // If empty gotten from collectionNode via collectionId
 		documentTypeName, // If empty gotten from documentTypeNode via documentTypeId
 		fields, // If empty gotten from documentTypeNode
@@ -230,7 +229,7 @@ export function create(
 			}
 			if (notSet(fields)) {
 				fields = forceArray(documentTypeNode['properties']) as Fields;
-				//log.debug(`fields:${toStr(fields)}`);
+				//log.debug(`create() fields:${toStr(fields)}`);
 			}
 		}
 	}
@@ -297,7 +296,7 @@ export function create(
 			id: collectorId,
 			version: collectorVersion
 		},
-		createdTime: createdTime || new Date(),
+		createdTime: new Date(),
 		documentType: documentTypeName,
 		language,
 		stemmingLanguage,

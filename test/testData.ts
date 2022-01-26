@@ -1,3 +1,11 @@
+import {
+	VALUE_TYPE_BOOLEAN,
+	//VALUE_TYPE_DOUBLE,
+	//VALUE_TYPE_LONG,
+	VALUE_TYPE_STRING
+} from '@enonic/js-utils/src';
+
+
 export const BOOLEANS = [
 	false,
 	true
@@ -487,7 +495,7 @@ export const DOCUMENT_TYPE_FIELDS = [{
 	name: 'myString',
 	nGram: true,
 	path: false,
-	valueType: 'string'
+	valueType: VALUE_TYPE_STRING
 }];
 
 export const COLLECTION = {

@@ -26,6 +26,7 @@ export function validate(
 	{
 		data,
 		fieldsObj,
+		partial = false,
 		validateOccurrences: boolValidateOccurrences = false,
 		validateTypes: boolValidateTypes = true
 	}: ValidateParameters,
@@ -38,7 +39,7 @@ export function validate(
 	const fields = fieldsObjToArray(fieldsObj);
 
 	if (boolValidateOccurrences) {
-		if (!validateOccurrences({ data, fields }, javaBridge)) {
+		if (!validateOccurrences({ data, fields, partial }, javaBridge)) {
 			return false;
 		}
 	}

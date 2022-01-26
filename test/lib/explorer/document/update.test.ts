@@ -93,312 +93,385 @@ const CREATED_DOCUMENT_NODE = create({
 	collectorVersion: COLLECTOR_VERSION,
 	data: {
 		myString: 'string'
-	}
+	},
+	requireValid: true, // default is false
+	//validateOccurrences: true, // default is false
+	//validateTypes: true // default is requireValid
 }, javaBridge);
 //javaBridge.log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
+
+const CREATED_INVALID_DOCUMENT_NODE = create({
+	collectionId: CREATED_COLLECTION_NODE._id,
+	collectorId: COLLECTOR_ID,
+	collectorVersion: COLLECTOR_VERSION,
+	data: {
+		myString: 0
+	},
+	requireValid: false, // default is false
+	//validateOccurrences: true, // default is false
+	validateTypes: true // default is requireValid
+}, javaBridge);
+//javaBridge.log.info('CREATED_INVALID_DOCUMENT_NODE:%s', CREATED_INVALID_DOCUMENT_NODE);
+
 /*const queryRes = connection.query({});
 const nodes = queryRes.hits.map(({id}) => connection.get(id));
 javaBridge.log.info('nodes:%s', nodes);*/
 
 describe('document', () => {
 	describe('update()', () => {
-		it(`throws on missing parameter object`, () => {
-			throws(
-				() => update(undefined, javaBridge),
-				{
-					message: 'update: parameter object is missing!',
-					name: 'Error'
-				}
-			);
-		}); // it
-		it(`throws if data is missing`, () => {
-			throws(
-				() => update({}, javaBridge),
-				{
-					message: "update: missing required parameter data!",
-					name: 'Error'
-				}
-			);
-		}); // it
-		it(`throws if data doesn't contain _id`, () => {
-			throws(
-				() => update({
-					collectionName: COLLECTION_NAME,
+		describe('throws', () => {
+			it(`on missing parameter object`, () => {
+				throws(
+					() => update(undefined, javaBridge),
+					{
+						message: 'update: parameter object is missing!',
+						name: 'Error'
+					}
+				);
+			}); // it
+			it(`if data is null`, () => {
+				throws(
+					() => update({
+						collectionId: CREATED_COLLECTION_NODE._id,
+						collectorId: COLLECTOR_ID,
+						collectorVersion: COLLECTOR_VERSION,
+						data: null
+						//data: undefined // defauls to {}
+					}, javaBridge),
+					{
+						message: "update: missing required parameter data!",
+						name: 'Error'
+					}
+				);
+			}); // it
+			it(`if data is not an Object`, () => {
+				throws(
+					() => update({
+						collectionId: CREATED_COLLECTION_NODE._id,
+						collectorId: COLLECTOR_ID,
+						collectorVersion: COLLECTOR_VERSION,
+						data: 'string'
+					}, javaBridge),
+					{
+						message: "update: parameter 'data' is not an Object!",
+						name: 'TypeError'
+					}
+				);
+			}); // it
+			it(`if data doesn't contain _id`, () => {
+				throws(
+					() => update({
+						collectionName: COLLECTION_NAME,
+						collectorId: COLLECTOR_ID,
+						collectorVersion: COLLECTOR_VERSION,
+						documentTypeName: DOCUMENT_TYPE_NAME,
+						data: {},
+						fields: DOCUMENT_TYPE_FIELDS//,
+						//language: COLLECTION_LANGUAGE
+					}, javaBridge),
+					{
+						message: "update: parameter data: missing required property '_id'!",
+						name: 'Error'
+					}
+				);
+			}); // it
+			it(`if data._id not uuidv4 string`, () => {
+				throws(
+					() => update({
+						collectionName: COLLECTION_NAME,
+						collectorId: COLLECTOR_ID,
+						collectorVersion: COLLECTOR_VERSION,
+						documentTypeName: DOCUMENT_TYPE_NAME,
+						data: {
+							_id: ''
+						},
+						fields: DOCUMENT_TYPE_FIELDS//,
+						//language: COLLECTION_LANGUAGE
+					}, javaBridge),
+					{
+						message: "update: parameter data: property '_id' is not an uuidv4 string!",
+						name: 'TypeError'
+					}
+				);
+			}); // it
+			it(`if both collectionName and collectionId are missing`, () => {
+				throws(
+					() => update({
+						data: CREATED_DOCUMENT_NODE
+					}, javaBridge),
+					{
+						message: "update: either provide collectionName or collectionId!",
+						name: 'Error'
+					}
+				);
+			}); // it
+			it(`if both documentTypeName, documentTypeId and collectionId are missing`, () => {
+				throws(
+					() => update({
+						collectionName: COLLECTION_NAME,
+						data: CREATED_DOCUMENT_NODE
+					}, javaBridge),
+					{
+						message: "update: either provide documentTypeName, documentTypeId or collectionId!",
+						name: 'Error'
+					}
+				);
+			}); // it
+			it(`if both fields, documentTypeId and collectionId are missing`, () => {
+				throws(
+					() => update({
+						collectionName: COLLECTION_NAME,
+						documentTypeName: DOCUMENT_TYPE_NAME,
+						data: CREATED_DOCUMENT_NODE
+					}, javaBridge),
+					{
+						message: "update: either provide fields, documentTypeId or collectionId!",
+						name: 'Error'
+					}
+				);
+			}); // it
+			it(`on missing collectorId`, () => {
+				throws(
+					() => update({
+						collectionId: CREATED_COLLECTION_NODE._id,
+						data: CREATED_DOCUMENT_NODE
+					}, javaBridge),
+					{
+						message: "update: required parameter 'collectorId' is missing!",
+						name: 'Error'
+					}
+				);
+			}); // it
+			it(`when collectorId is not a string`, () => {
+				throws(
+					() => update({
+						collectionId: CREATED_COLLECTION_NODE._id,
+						collectorId: 0,
+						collectorVersion: COLLECTOR_VERSION,
+						data: CREATED_DOCUMENT_NODE
+					}, javaBridge),
+					{
+						message: "update: parameter 'collectorId' is not a string!",
+						name: 'TypeError'
+					}
+				);
+			}); // it
+			it(`throws on missing collectorVersion`, () => {
+				throws(
+					() => update({
+						collectionId: CREATED_COLLECTION_NODE._id,
+						collectorId: COLLECTOR_ID,
+						data: CREATED_DOCUMENT_NODE
+					}, javaBridge),
+					{
+						message: "update: required parameter 'collectorVersion' is missing!",
+						name: 'Error'
+					}
+				);
+			}); // it
+			it(`when collectorVersion is not a string`, () => {
+				throws(
+					() => update({
+						collectionId: CREATED_COLLECTION_NODE._id,
+						collectorId: COLLECTOR_ID,
+						collectorVersion: 0,
+						data: CREATED_DOCUMENT_NODE
+					}, javaBridge),
+					{
+						message: "update: parameter 'collectorVersion' is not a string!",
+						name: 'TypeError'
+					}
+				);
+			}); // it
+			it(`when collectionId is not an uuidv4 string`, () => {
+				throws(
+					() => update({
+						collectionId: '',
+						collectorId: COLLECTOR_ID,
+						collectorVersion: COLLECTOR_VERSION,
+						data: CREATED_DOCUMENT_NODE
+					}, javaBridge),
+					{
+						message: "update: parameter 'collectionId' is not an uuidv4 string!",
+						name: 'TypeError'
+					}
+				);
+			}); // it
+			it(`when collectionName is not a string`, () => {
+				throws(
+					() => update({
+						collectionName: true, // !string
+						collectorId: COLLECTOR_ID,
+						collectorVersion: COLLECTOR_VERSION,
+						data: CREATED_DOCUMENT_NODE,
+						documentTypeName: DOCUMENT_TYPE_NAME,
+						fields: DOCUMENT_TYPE_FIELDS
+					}, javaBridge),
+					{
+						message: "update: parameter 'collectionName' is not a string!",
+						name: 'TypeError'
+					}
+				);
+			}); // it
+			it(`when documentTypeName is not a string`, () => {
+				throws(
+					() => update({
+						collectionName: COLLECTION_NAME,
+						collectorId: COLLECTOR_ID,
+						collectorVersion: COLLECTOR_VERSION,
+						data: CREATED_DOCUMENT_NODE,
+						documentTypeName: true, // !string
+						fields: DOCUMENT_TYPE_FIELDS
+					}, javaBridge),
+					{
+						message: "update: parameter 'documentTypeName' is not a string!",
+						name: 'TypeError'
+					}
+				);
+			}); // it
+			it(`when documentTypeId is not a string`, () => {
+				throws(
+					() => update({
+						collectionName: COLLECTION_NAME,
+						collectorId: COLLECTOR_ID,
+						collectorVersion: COLLECTOR_VERSION,
+						data: CREATED_DOCUMENT_NODE,
+						documentTypeId: true, // !string
+						fields: DOCUMENT_TYPE_FIELDS
+					}, javaBridge),
+					{
+						message: "update: parameter 'documentTypeId' is not a string!",
+						name: 'TypeError'
+					}
+				);
+			}); // it
+			it(`when requireValid=true and invalid`, () => {
+				//javaBridge.log.info('CREATED_COLLECTION_NODE:%s', CREATED_COLLECTION_NODE);
+				//javaBridge.log.info('CREATED_DOCUMENT_TYPE_NODE:%s', CREATED_DOCUMENT_TYPE_NODE);
+				//javaBridge.log.info("CREATED_DOCUMENT_TYPE_NODE['properties']:%s", CREATED_DOCUMENT_TYPE_NODE['properties']);
+				throws(
+					() => update({
+						collectionId: CREATED_COLLECTION_NODE._id,
+						collectorId: COLLECTOR_ID,
+						collectorVersion: COLLECTOR_VERSION,
+						data: {
+							_id: CREATED_DOCUMENT_NODE._id,
+							myString: 0 // Should be string, thus fails validation as we want
+						},
+						requireValid: true
+					}, javaBridge),
+					{
+						message: /validation failed/,
+						name: 'Error'
+					}
+				);
+			}); // it
+		}); // describe throws
+
+		describe('modifies document node', () => {
+			it(`modifies data, but not under ${FIELD_PATH_META} nor ${FIELD_PATH_GLOBAL}`, () => {
+				//javaBridge.log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
+				const updateRes = update({
+					collectionId: CREATED_COLLECTION_NODE._id,
 					collectorId: COLLECTOR_ID,
 					collectorVersion: COLLECTOR_VERSION,
-					documentTypeName: DOCUMENT_TYPE_NAME,
-					data: {},
-					fields: DOCUMENT_TYPE_FIELDS//,
-					//language: COLLECTION_LANGUAGE
-				}, javaBridge),
-				{
-					message: "update: parameter data: missing required property '_id'!",
-					name: 'Error'
-				}
-			);
-		}); // it
-		it(`throws if data._id not uuidv4 string`, () => {
-			throws(
-				() => update({
-					collectionName: COLLECTION_NAME,
-					collectorId: COLLECTOR_ID,
-					collectorVersion: COLLECTOR_VERSION,
-					documentTypeName: DOCUMENT_TYPE_NAME,
 					data: {
-						_id: ''
-					},
-					fields: DOCUMENT_TYPE_FIELDS//,
-					//language: COLLECTION_LANGUAGE
-				}, javaBridge),
-				{
-					message: "update: parameter data: property '_id' is not an uuidv4 string!",
-					name: 'TypeError'
-				}
-			);
-		}); // it
-		it(`throws if both collectionName and collectionId are missing`, () => {
-			throws(
-				() => update({
-					data: CREATED_DOCUMENT_NODE
-				}, javaBridge),
-				{
-					message: "update: either provide collectionName or collectionId!",
-					name: 'Error'
-				}
-			);
-		}); // it
-		it(`throws if both documentTypeName, documentTypeId and collectionId are missing`, () => {
-			throws(
-				() => update({
-					collectionName: COLLECTION_NAME,
-					data: CREATED_DOCUMENT_NODE
-				}, javaBridge),
-				{
-					message: "update: either provide documentTypeName, documentTypeId or collectionId!",
-					name: 'Error'
-				}
-			);
-		}); // it
-		it(`throws if both fields, documentTypeId and collectionId are missing`, () => {
-			throws(
-				() => update({
-					collectionName: COLLECTION_NAME,
-					documentTypeName: DOCUMENT_TYPE_NAME,
-					data: CREATED_DOCUMENT_NODE
-				}, javaBridge),
-				{
-					message: "update: either provide fields, documentTypeId or collectionId!",
-					name: 'Error'
-				}
-			);
-		}); // it
-		it(`throws on missing collectorId`, () => {
-			throws(
-				() => update({
-					collectionId: CREATED_COLLECTION_NODE._id,
-					data: CREATED_DOCUMENT_NODE
-				}, javaBridge),
-				{
-					message: "update: required parameter 'collectorId' is missing!",
-					name: 'Error'
-				}
-			);
-		}); // it
-		it(`throws when collectorId is not a string`, () => {
-			throws(
-				() => update({
-					collectionId: CREATED_COLLECTION_NODE._id,
-					collectorId: 0,
-					collectorVersion: COLLECTOR_VERSION,
-					data: CREATED_DOCUMENT_NODE
-				}, javaBridge),
-				{
-					message: "update: parameter 'collectorId' is not a string!",
-					name: 'TypeError'
-				}
-			);
-		}); // it
-		it(`throws on missing collectorVersion`, () => {
-			throws(
-				() => update({
-					collectionId: CREATED_COLLECTION_NODE._id,
-					collectorId: COLLECTOR_ID,
-					data: CREATED_DOCUMENT_NODE
-				}, javaBridge),
-				{
-					message: "update: required parameter 'collectorVersion' is missing!",
-					name: 'Error'
-				}
-			);
-		}); // it
-		it(`throws when collectorVersion is not a string`, () => {
-			throws(
-				() => update({
-					collectionId: CREATED_COLLECTION_NODE._id,
-					collectorId: COLLECTOR_ID,
-					collectorVersion: 0,
-					data: CREATED_DOCUMENT_NODE
-				}, javaBridge),
-				{
-					message: "update: parameter 'collectorVersion' is not a string!",
-					name: 'TypeError'
-				}
-			);
-		}); // it
-		it(`throws when collectionId is not an uuidv4 string`, () => {
-			throws(
-				() => update({
-					collectionId: '',
-					collectorId: COLLECTOR_ID,
-					collectorVersion: COLLECTOR_VERSION,
-					data: CREATED_DOCUMENT_NODE
-				}, javaBridge),
-				{
-					message: "update: parameter 'collectionId' is not an uuidv4 string!",
-					name: 'TypeError'
-				}
-			);
-		}); // it
-		it(`throws when collectionName is not a string`, () => {
-			throws(
-				() => update({
-					collectionName: true, // !string
-					collectorId: COLLECTOR_ID,
-					collectorVersion: COLLECTOR_VERSION,
-					data: CREATED_DOCUMENT_NODE,
-					documentTypeName: DOCUMENT_TYPE_NAME,
-					fields: DOCUMENT_TYPE_FIELDS
-				}, javaBridge),
-				{
-					message: "update: parameter 'collectionName' is not a string!",
-					name: 'TypeError'
-				}
-			);
-		}); // it
-		it(`throws when documentTypeName is not a string`, () => {
-			throws(
-				() => update({
-					collectionName: COLLECTION_NAME,
-					collectorId: COLLECTOR_ID,
-					collectorVersion: COLLECTOR_VERSION,
-					data: CREATED_DOCUMENT_NODE,
-					documentTypeName: true, // !string
-					fields: DOCUMENT_TYPE_FIELDS
-				}, javaBridge),
-				{
-					message: "update: parameter 'documentTypeName' is not a string!",
-					name: 'TypeError'
-				}
-			);
-		}); // it
-		it(`throws when documentTypeId is not a string`, () => {
-			throws(
-				() => update({
-					collectionName: COLLECTION_NAME,
-					collectorId: COLLECTOR_ID,
-					collectorVersion: COLLECTOR_VERSION,
-					data: CREATED_DOCUMENT_NODE,
-					documentTypeId: true, // !string
-					fields: DOCUMENT_TYPE_FIELDS
-				}, javaBridge),
-				{
-					message: "update: parameter 'documentTypeId' is not a string!",
-					name: 'TypeError'
-				}
-			);
-		}); // it
-		it(`modifies data, but not under ${FIELD_PATH_META} nor ${FIELD_PATH_GLOBAL}`, () => {
-			//javaBridge.log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
-			const updateRes = update({
-				collectionId: CREATED_COLLECTION_NODE._id,
-				collectorId: COLLECTOR_ID,
-				collectorVersion: COLLECTOR_VERSION,
-				data: {
-					_id: CREATED_DOCUMENT_NODE._id,
-					[FIELD_PATH_GLOBAL]: {
-						illegal: 'shouldBeCleaned'
-					},
-					[FIELD_PATH_META]: {
-						createdTime: 'createdTime',
-						illegal: 'shouldBeCleaned'
-					},
-					myString: 'myStringChanged'
-				}
-			}, javaBridge);
-			deepStrictEqual(
-				{
-					_id: CREATED_DOCUMENT_NODE._id,
-					_indexConfig: CREATED_DOCUMENT_NODE._indexConfig,
-					[FIELD_PATH_META]: {
-						collection: 'myCollectionName',
-						collector: {
-							id: COLLECTOR_ID,
-							version: COLLECTOR_VERSION
+						_id: CREATED_DOCUMENT_NODE._id,
+						[FIELD_PATH_GLOBAL]: {
+							illegal: 'shouldBeCleaned'
 						},
-						createdTime: CREATED_DOCUMENT_NODE[FIELD_PATH_META].createdTime,
-						documentType: 'myDocumentTypeName',
-						language: 'en-GB',
-						modifiedTime: updateRes[FIELD_PATH_META].modifiedTime,
-						stemmingLanguage: 'en',
-						valid: true
-					},
-					myString: 'myStringChanged'
-				},
-				updateRes
-			) // deepStrictEqual
-		}); // it
-		it(`adds indexconfig for new fields`, () => {
-			//javaBridge.log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
-			//javaBridge.log.info('CREATED_DOCUMENT_NODE._indexConfig.configs:%s', CREATED_DOCUMENT_NODE._indexConfig.configs);
-			const updateRes = update({
-				collectionId: CREATED_COLLECTION_NODE._id,
-				collectorId: COLLECTOR_ID,
-				collectorVersion: COLLECTOR_VERSION,
-				data: {
-					_id: CREATED_DOCUMENT_NODE._id,
-					[FIELD_PATH_META]: {
-						createdTime: 'createdTime'
-					},
-					myString: 'myStringChanged',
-					extra: 'extraAdded'
-				}
-			}, javaBridge);
-			const _indexConfig = JSON.parse(JSON.stringify(CREATED_DOCUMENT_NODE._indexConfig));
-			_indexConfig.configs.push({
-				path: 'extra',
-				config: {
-					decideByType: false,
-					enabled: true,
-					fulltext: false,
-					includeInAllText: false,
-					languages: [COLLECTION_STEMMING_LANGUAGE],
-					nGram: false,
-					path: false
-				}
-			});
-			_indexConfig.configs = sortByProperty(_indexConfig.configs, 'path');
-			deepStrictEqual(
-				{
-					_id: CREATED_DOCUMENT_NODE._id,
-					_indexConfig,
-					[FIELD_PATH_META]: {
-						collection: 'myCollectionName',
-						collector: {
-							id: COLLECTOR_ID,
-							version: COLLECTOR_VERSION
+						[FIELD_PATH_META]: {
+							createdTime: 'createdTime',
+							illegal: 'shouldBeCleaned'
 						},
-						createdTime: CREATED_DOCUMENT_NODE[FIELD_PATH_META].createdTime,
-						documentType: 'myDocumentTypeName',
-						language: 'en-GB',
-						modifiedTime: updateRes[FIELD_PATH_META].modifiedTime,
-						stemmingLanguage: 'en',
-						valid: true
+						myString: 'myStringChanged'
+					}
+				}, javaBridge);
+				deepStrictEqual(
+					{
+						_id: CREATED_DOCUMENT_NODE._id,
+						_indexConfig: CREATED_DOCUMENT_NODE._indexConfig,
+						_name: CREATED_DOCUMENT_NODE._id,
+						_nodeType: 'default',
+						_state: 'DEFAULT',
+						_ts: updateRes._ts,
+						_versionKey: updateRes._versionKey,
+						[FIELD_PATH_META]: {
+							collection: 'myCollectionName',
+							collector: {
+								id: COLLECTOR_ID,
+								version: COLLECTOR_VERSION
+							},
+							createdTime: CREATED_DOCUMENT_NODE[FIELD_PATH_META].createdTime,
+							documentType: 'myDocumentTypeName',
+							language: 'en-GB',
+							modifiedTime: updateRes[FIELD_PATH_META].modifiedTime,
+							stemmingLanguage: 'en',
+							valid: true
+						},
+						myString: 'myStringChanged'
 					},
-					extra: 'extraAdded',
-					myString: 'myStringChanged'
-				},
-				updateRes
-			) // deepStrictEqual
-		}); // it
-	}); // describe create
+					updateRes
+				) // deepStrictEqual
+			}); // it
+			it(`adds indexconfig for new fields`, () => {
+				//javaBridge.log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
+				//javaBridge.log.info('CREATED_DOCUMENT_NODE._indexConfig.configs:%s', CREATED_DOCUMENT_NODE._indexConfig.configs);
+				const updateRes = update({
+					collectionId: CREATED_COLLECTION_NODE._id,
+					collectorId: COLLECTOR_ID,
+					collectorVersion: COLLECTOR_VERSION,
+					data: {
+						_id: CREATED_DOCUMENT_NODE._id,
+						[FIELD_PATH_META]: {
+							createdTime: 'createdTime'
+						},
+						myString: 'myStringChanged',
+						extra: 'extraAdded'
+					}
+				}, javaBridge);
+				const _indexConfig = JSON.parse(JSON.stringify(CREATED_DOCUMENT_NODE._indexConfig));
+				_indexConfig.configs.push({
+					path: 'extra',
+					config: {
+						decideByType: false,
+						enabled: true,
+						fulltext: false,
+						includeInAllText: false,
+						languages: [COLLECTION_STEMMING_LANGUAGE],
+						nGram: false,
+						path: false
+					}
+				});
+				_indexConfig.configs = sortByProperty(_indexConfig.configs, 'path');
+				deepStrictEqual(
+					{
+						_id: CREATED_DOCUMENT_NODE._id,
+						_indexConfig,
+						_name: CREATED_DOCUMENT_NODE._id,
+						_nodeType: 'default',
+						_state: 'DEFAULT',
+						_ts: updateRes._ts,
+						_versionKey: updateRes._versionKey,
+						[FIELD_PATH_META]: {
+							collection: 'myCollectionName',
+							collector: {
+								id: COLLECTOR_ID,
+								version: COLLECTOR_VERSION
+							},
+							createdTime: CREATED_DOCUMENT_NODE[FIELD_PATH_META].createdTime,
+							documentType: 'myDocumentTypeName',
+							language: 'en-GB',
+							modifiedTime: updateRes[FIELD_PATH_META].modifiedTime,
+							stemmingLanguage: 'en',
+							valid: true
+						},
+						extra: 'extraAdded',
+						myString: 'myStringChanged'
+					},
+					updateRes
+				) // deepStrictEqual
+			}); // it
+		}); // describe updated
+	}); // describe update()
 }); // describe document
