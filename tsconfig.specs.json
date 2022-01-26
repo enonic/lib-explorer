@@ -11,7 +11,7 @@
 			"@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
 			"//assert": ["node_modules/assert"],
 			"enonic-types/*": ["node_modules/enonic-types/*"],
-			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
+			"/lib/explorer/*": ["src/main/typeScript/lib/explorer/*"]
 		},
 		"pretty": true,
 		"rootDir": "src/main/resources",
@@ -26,10 +26,10 @@
 		]
 	},
 	"files": [
-		"src/main/resources/lib/explorer/constants.ts",
-		"src/main/resources/lib/xp/globals.d.ts"
+		"src/main/typeScript/lib/explorer/constants.ts",
+		"src/main/typeScript/globals.d.ts"
 	],
 	"include": [
-		"src/main/resources/**/*.spec.ts"
+		"src/main/typeScript/**/*.spec.ts"
 	]
 }

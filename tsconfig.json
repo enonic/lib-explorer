@@ -25,7 +25,7 @@
 		"outDir": "build/tsc",
 		"paths": {
 			"@enonic/js-utils": ["node_modules/@enonic/js-utils/src"],
-			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
+			"/lib/explorer/*": ["src/main/typeScript/lib/explorer/*"]
 		},
 		"preserveWatchOutput": false,
 		"pretty": true,
@@ -33,7 +33,7 @@
 		"resolveJsonModule": true,
 		"rootDir": "./",
 		"rootDirs": [
-			"src/main/resources",
+			"src/main/typeScript",
 			"node_modules",
 			"test"
 		],
@@ -51,9 +51,9 @@
 		"build"
 	],
 	"files": [
-		"src/main/resources/lib/explorer/index.ts"
+		"src/main/typeScript/lib/explorer/index.ts"
 	],
 	"include": [
-      "src/main/resources/**/*.ts"
+      "src/main/typeScript/**/*.ts"
   ]
 }
