@@ -29,14 +29,10 @@
 //           ├ documentNode (created/modified)
 //           └ documentTypeNode (modified) (if created need to update collectionNode too, since we have the collectionId, that is actually possible)
 //──────────────────────────────────────────────────────────────────────────────
-import type {
-	LooseObject
-} from '../types';
-import type {
-	CreateParameterObject,
-	Fields,
-	JavaBridge
-} from './types';
+import type {JavaBridge} from '../types.d';
+import type {CollectionNode} from '../collection/types.d';
+import type {DocumentTypeNode} from '../documentType/types.d';
+import type {CreateParameterObject} from './types';
 
 import {
 	forceArray,
@@ -207,28 +203,28 @@ export function create(
 		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
 			//log.debug('collectionId:%s', collectionId);
 
-			const collectionNode :LooseObject = explorerReadConnection.get(collectionId) as LooseObject;
+			const collectionNode = explorerReadConnection.get(collectionId) as CollectionNode;
 			//log.debug('collectionNode:%s', collectionNode);
 
 			if (notSet(collectionName)) {
-				collectionName = collectionNode['_name'] as string;
+				collectionName = collectionNode['_name'];
 			}
 
 			if (notSet(documentTypeId)) {
-				documentTypeId = collectionNode['documentTypeId'] as string;
+				documentTypeId = collectionNode['documentTypeId'];
 			}
 
 			if(notSet(language)) {
-				language = collectionNode['language'] as string;
+				language = collectionNode['language'];
 			}
 		}
 		if (notSet(documentTypeName) || notSet(fields)) {
-			const documentTypeNode = explorerReadConnection.get(documentTypeId) as LooseObject;
+			const documentTypeNode = explorerReadConnection.get(documentTypeId) as DocumentTypeNode;
 			if (notSet(documentTypeName)) {
-				documentTypeName = documentTypeNode['_name'] as string;
+				documentTypeName = documentTypeNode['_name'];
 			}
 			if (notSet(fields)) {
-				fields = forceArray(documentTypeNode['properties']) as Fields;
+				fields = forceArray(documentTypeNode['properties']);
 				//log.debug(`create() fields:${toStr(fields)}`);
 			}
 		}
@@ -247,8 +243,8 @@ export function create(
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({
 			data,
+			documentTypeId,
 			fieldsObj,
-			updateDocumentType: () => {} // TODO
 		}, javaBridge);
 	}
 	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);

@@ -1,10 +1,8 @@
 import type {
+	JavaBridge,
 	LooseObject
 } from '../types';
-import type {
-	JavaBridge,
-	UpdateParameterObject
-} from './types';
+import type {UpdateParameterObject} from './types';
 
 import {
 	isNotSet as notSet,

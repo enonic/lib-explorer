@@ -1,14 +1,12 @@
 import type {
-	LooseObject,
-	UpdatedNode
-} from '../types';
-import type {
 	ConnectFunction,
 	GeoPointFunction,
 	JavaBridge,
+	Node,
+	NodeCreateParams,
 	StringFunction,
 	UnknownFunction,
-} from './types';
+} from '../types';
 
 export const appDummy :App = {
 	config: {},
@@ -17,16 +15,17 @@ export const appDummy :App = {
 };
 
 export const connectDummy :ConnectFunction = (/*source*/) => ({
-	create: (data :LooseObject) => data,
+	create: <T>(data :NodeCreateParams & T) :Node<T> => data as Node<T>,
 	exists: (key) => (Array.isArray(key) ? key : [key]),
 	get: (key) => ({_id: key}),
-	modify: (obj) => {
-		const {
-			//key,
-			//editor, // function ref
-			node
-		} = obj;
-		return node as UpdatedNode;
+	modify: <T>(
+		//@ts-ignore
+		{
+			key,
+			editor
+		}
+	) => {
+		return {} as Node<T>;
 	}
 });
 

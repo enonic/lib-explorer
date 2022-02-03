@@ -1,12 +1,9 @@
+import type {JavaBridge} from '../types.d';
+import type {CollectionNode} from '../collection/types.d';
+import type {DocumentTypeNode} from '../documentType/types.d';
 import type {
-	CreatedDocumentTypeNode,
-	LooseObject,
+	DocumentNode,
 	RequiredMetaData,
-	UpdatedNode
-} from '../types';
-import type {
-	Fields,
-	JavaBridge,
 	UpdateParameterObject
 } from './types';
 
@@ -182,27 +179,27 @@ export function update(
 			repoId: REPO_ID_EXPLORER
 		});
 		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
-			const collectionNode :LooseObject = explorerReadConnection.get(collectionId) as LooseObject;
+			const collectionNode = explorerReadConnection.get(collectionId) as CollectionNode;
 
 			if (notSet(collectionName)) {
-				collectionName = collectionNode['_name'] as string;
+				collectionName = collectionNode['_name'];
 			}
 
 			if (notSet(documentTypeId)) {
-				documentTypeId = collectionNode['documentTypeId'] as string;
+				documentTypeId = collectionNode['documentTypeId'];
 			}
 
 			if(notSet(language)) {
-				language = collectionNode['language'] as string;
+				language = collectionNode['language'];
 			}
 		}
 		if (notSet(documentTypeName) || notSet(fields)) {
-			const documentTypeNode :LooseObject = explorerReadConnection.get(documentTypeId) as LooseObject;
+			const documentTypeNode = explorerReadConnection.get(documentTypeId) as DocumentTypeNode;
 			if (notSet(documentTypeName)) {
-				documentTypeName = documentTypeNode['_name'] as string;
+				documentTypeName = documentTypeNode['_name'];
 			}
 			if (notSet(fields)) {
-				fields = forceArray(documentTypeNode['properties']) as Fields;
+				fields = forceArray(documentTypeNode['properties']);
 				//log.debug(`fields:${toStr(fields)}`);
 			}
 		}
@@ -216,7 +213,7 @@ export function update(
 		principals: [PRINCIPAL_EXPLORER_READ],
 		repoId
 	});
-	const documentNode :CreatedDocumentTypeNode = collectionRepoReadConnection.get(documentNodeId as string) as CreatedDocumentTypeNode;
+	const documentNode = collectionRepoReadConnection.get(documentNodeId) as DocumentNode;
 	if (!documentNode) {
 		throw new Error(`update: No document with _id:${documentNodeId}`);
 	}
@@ -253,8 +250,8 @@ export function update(
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({
 			data,
+			documentTypeId,
 			fieldsObj,
-			updateDocumentType: () => {} // TODO
 		}, javaBridge);
 	}
 	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);
@@ -317,7 +314,7 @@ export function update(
 		valid: isValid
 	};
 
-	const sortedDataWithIndexConfig :UpdatedNode = sortKeys(dataWithJavaTypes) as UpdatedNode;
+	const sortedDataWithIndexConfig = sortKeys(dataWithJavaTypes);
 	//log.debug('sortedDataWithIndexConfig %s', sortedDataWithIndexConfig);
 
 	if (documentUnchanged(documentNode, sortedDataWithIndexConfig, javaBridge)) {
@@ -330,10 +327,10 @@ export function update(
 		repoId
 	});
 	return collectionRepoWriteConnection.modify({
-		key: documentNodeId as string,
+		key: documentNodeId,
 		editor: () => {
-			return sortedDataWithIndexConfig as UpdatedNode
-		},
-		node: sortedDataWithIndexConfig as UpdatedNode
+			return sortedDataWithIndexConfig
+		}/*,
+		node: sortedDataWithIndexConfig as UpdatedNode*/
 	});
 }

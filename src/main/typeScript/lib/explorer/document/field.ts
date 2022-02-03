@@ -1,9 +1,10 @@
+import type {JavaBridge} from '../types.d';
 import type {
 	Field,
 	Fields,
-	FieldsObject,
-	JavaBridge
-} from './types';
+	FieldsObject
+} from '../documentType/types.d';
+
 
 import {
 	INDEX_CONFIG_ENABLED_DEFAULT,

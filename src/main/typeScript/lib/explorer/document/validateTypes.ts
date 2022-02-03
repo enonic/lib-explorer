@@ -9,10 +9,9 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
-import type {
-	JavaBridge,
-	ValidateTypesParameters
-} from './types';
+import type {JavaBridge} from '../types.d';
+import type {ValidateTypesParameters} from './types.d';
+
 
 import {
 	VALUE_TYPE_ANY,

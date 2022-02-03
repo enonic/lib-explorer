@@ -1,9 +1,10 @@
+import type {JavaBridge} from '../types.d';
 import type {
-	AddExtraFieldsToDocumentTypeParams,
 	Field,
-	FieldsObject,
-	JavaBridge
-} from './types';
+	FieldsObject
+} from '../documentType/types.d';
+import type {AddExtraFieldsToDocumentTypeParams} from './types';
+
 
 import {
 	VALUE_TYPE_GEO_POINT,
@@ -16,6 +17,7 @@ import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META
 } from '../constants';
+import {update as updateDocumentType} from '../documentType/update'
 import {
 	//addMissingSetToFieldsArray,
 	applyDefaultsToField,
@@ -27,8 +29,8 @@ import {javaBridgeDummy} from './dummies';
 export function addExtraFieldsToDocumentType(
 	{
 		data,
-		fieldsObj,
-		updateDocumentType = () => {}
+		documentTypeId,
+		fieldsObj
 	} :AddExtraFieldsToDocumentTypeParams,
 	javaBridge :JavaBridge = javaBridgeDummy
 ) :FieldsObject {
@@ -36,7 +38,7 @@ export function addExtraFieldsToDocumentType(
 	//log.debug(`data:${toStr(data)}`);
 	const returnFieldsObj = JSON.parse(JSON.stringify(fieldsObj));
 	let boolModified = false;
-	traverse(data).forEach(function(value) { // Fat arrow destroys this
+	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
 		if (
 			this.notRoot
 			&& !this.path[0].startsWith('_')
@@ -63,7 +65,10 @@ export function addExtraFieldsToDocumentType(
 		}
 	}); // traverse
 	if (boolModified) {
-		updateDocumentType(returnFieldsObj);
+		updateDocumentType({
+			_id: documentTypeId,
+			properties: returnFieldsObj
+		});
 	}
 	return returnFieldsObj;
 }

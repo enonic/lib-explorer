@@ -9,10 +9,9 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
-import type {
-	JavaBridge,
-	ValidateParameters
-} from './types';
+import type {JavaBridge} from '../types.d';
+import type {ValidateParameters} from './types.d';
+
 
 import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
 
