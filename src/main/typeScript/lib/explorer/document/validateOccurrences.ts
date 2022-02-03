@@ -9,10 +9,9 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
-import type {
-	JavaBridge,
-	ValidateOccurrencesParameters
-} from './types';
+import type {JavaBridge} from '../types.d';
+import type {ValidateOccurrencesParameters} from './types.d';
+
 
 import {
 	enonify,

@@ -1,13 +1,11 @@
+//import type {JavaBridge} from '../types.d';
 import type {
 	IndexConfig,
 	IndexConfigConfig,
 	IndexConfigObject
 } from '../types/IndexConfig';
+import type {BuildIndexConfigParameterObject} from './types';
 
-import type {
-	BuildIndexConfigParameterObject,
-	JavaBridge
-} from './types';
 
 import {
 	/*VALUE_TYPE_ANY,

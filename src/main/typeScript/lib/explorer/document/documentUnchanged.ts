@@ -1,10 +1,8 @@
 import type {
-	CreatedDocumentTypeNode,
-	UpdatedNode
+	JavaBridge,
+	Node
 } from '../types';
-import type {
-	JavaBridge
-} from './types';
+import type {DocumentNode} from './types';
 
 
 import {
@@ -25,8 +23,8 @@ const { diff: diffDocument } = new HumanDiff({
 
 
 export function documentUnchanged(
-	exisitingDocument :CreatedDocumentTypeNode,
-	maybeChangedDocument :UpdatedNode,
+	exisitingDocument :DocumentNode,
+	maybeChangedDocument :Node<DocumentNode>,
 	javaBridge :JavaBridge
 ) :boolean {
 	const {log} = javaBridge;

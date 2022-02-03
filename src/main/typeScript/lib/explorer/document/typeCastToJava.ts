@@ -1,11 +1,12 @@
 import type {
-	LooseObject
-} from '../types';
-import type {
 	GeoPointArray,
-	JavaBridge,
+	JavaBridge
+} from '../types.d'
+import type {
+	DocumentNode,
 	TypeCastToJavaParameters
-} from './types'
+} from './types.d'
+
 
 import {
 	VALUE_TYPE_ANY,
@@ -49,7 +50,7 @@ export function typeCastToJava(
 		fieldsObj = {}
 	} :TypeCastToJavaParameters,
 	javaBridge :JavaBridge = javaBridgeDummy
-) {
+) :DocumentNode {
 	const {
 		log,
 		value: {
@@ -64,8 +65,7 @@ export function typeCastToJava(
 	} = javaBridge;
 	//log.debug(`typeCastToJava data:${toStr(data)}`);
 	//log.debug(`typeCastToJava fields:${toStr(fields)}`);
-	const typeCastedData :LooseObject = JSON.parse(JSON.stringify(data));
-	//const typeCastedData :LooseObject = {};
+	const typeCastedData :DocumentNode = JSON.parse(JSON.stringify(data));
 	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
 		if (
 			this.notRoot

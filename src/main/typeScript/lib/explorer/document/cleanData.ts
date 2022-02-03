@@ -1,11 +1,9 @@
 import type {
-	LooseObject
-} from '../types';
-import type {
-	CleanDataParameters,
-	Field,
+	LooseObject,
 	JavaBridge
-} from './types';
+} from '../types';
+import type {Field} from '../documentType/types.d';
+import type {CleanDataParameters} from './types';
 
 import {toStr} from '@enonic/js-utils';
 //import {toStr} from '@enonic/js-utils/src';
