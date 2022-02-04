@@ -2,19 +2,13 @@
 // Node modules (webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {
-	forceArray//,
+	forceArray,
+	getIn,
+	setIn//,
 	//toStr
 } from '@enonic/js-utils';
 //import highlightSearchResult from 'highlight-search-result';
-//import {get, set} from 'lodash'; // Cannot read property "Array" from undefined
-import getIn from 'get-value';
-import set from 'set-value';
 import striptags from 'striptags';
-
-//──────────────────────────────────────────────────────────────────────────────
-// Enonic XP libs (externals not webpacked)
-//──────────────────────────────────────────────────────────────────────────────
-import {dlv as get} from '/lib/util/object';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
@@ -121,7 +115,7 @@ export function mapMultiRepoQueryHits({
 
 			//log.info(`node:${toStr({node})}`);
 			//log.info(`field:${toStr({field})}`);
-			const value = get(node, field);
+			const value = getIn(node, field);
 			//log.info(`value:${toStr({value})}`);
 
 			let mappedValue = value;

@@ -1,12 +1,9 @@
 import {
-	forceArray//,
+	forceArray,
+	getIn,
+	setIn
 	//toStr
 } from '@enonic/js-utils';
-
-import set from 'set-value';
-
-import {dlv} from '/lib/util/object';
-
 
 /*
 	What is needed to build the facet filters?
@@ -31,8 +28,8 @@ export function buildFiltersFromParams({
 					}
 				});
 				if (values.length) {
-					if (!dlv(filters, 'boolean.must')) {
-						set(filters, 'boolean.must', []);
+					if (!getIn(filters, 'boolean.must')) {
+						setIn(filters, 'boolean.must', []);
 					}
 					filters.boolean.must.push({
 						hasValue: {
