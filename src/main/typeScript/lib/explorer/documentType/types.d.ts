@@ -21,7 +21,8 @@ export interface FieldsObject {
 
 
 export interface DocumentTypeNode extends RequiredNodeProperties {
+	addFields :boolean
 	properties :Fields
-	//createdTime? :string
+	//createdTime? :Date | string
 	//modifiedTime? :string
 }

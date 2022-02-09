@@ -15,6 +15,7 @@ import {
 	COLLECTION_REPO_PREFIX,
 	//FIELD_PATH_GLOBAL,
 	FIELD_PATH_META,
+	NT_DOCUMENT,
 	document
 } from '../../../../build/rollup/index.js';
 import {
@@ -175,6 +176,32 @@ describe('document', () => {
 					}
 				);
 			}); // it
+			it(`when the document already exists (_name)`, () => {
+				const createParam = {
+					collectionId: CREATED_COLLECTION_NODE._id,
+					collectorId: COLLECTOR_ID,
+					collectorVersion: COLLECTOR_VERSION,
+					data: {
+						//_id:
+						_name: 'a'
+						//_parentPath: '/'
+						//_path:
+					}
+				};
+				//const createdDocument =
+				create(createParam, javaBridge);
+				//javaBridge.log.info('createdDocument:%s', createdDocument);
+				throws(
+					() => create(createParam, javaBridge),
+					{
+						message: "Node already exists at /a repository: com.enonic.app.explorer.collection.myCollectionName branch: master",
+						name: 'com.enonic.xp.node.NodeAlreadyExistAtPathException'
+					}
+				);
+				//const queryRes = connection.query({});
+				//const nodes = queryRes.hits.map(({id}) => connection.get(id));
+				//javaBridge.log.info('nodes:%s', nodes);
+			}); // it
 		}); // describe throws
 		describe('creates', () => {
 			it(`is able to get collectionName, documentTypeId, documentTypeName, language and stemmmingLanguage from collectionId`, () => {
@@ -226,7 +253,7 @@ describe('document', () => {
 						_id: createRes._id,
 						_indexConfig,
 						_name: createRes._id,
-						_nodeType: 'default',
+						_nodeType: NT_DOCUMENT,
 						_path: createRes._path,
 						_state: 'DEFAULT',
 						_ts: createRes._ts,
@@ -288,7 +315,7 @@ describe('document', () => {
 						_id: createRes._id,
 						_indexConfig,
 						_name: createRes._id,
-						_nodeType: 'default',
+						_nodeType: NT_DOCUMENT,
 						_path: createRes._path,
 						_state: 'DEFAULT',
 						_ts: createRes._ts,
@@ -383,7 +410,7 @@ describe('document', () => {
 						_id: createRes._id,
 						_indexConfig: createRes._indexConfig,
 						_name: createRes._id,
-						_nodeType: 'default',
+						_nodeType: NT_DOCUMENT,
 						_path: createRes._path,
 						_state: 'DEFAULT',
 						_ts: createRes._ts,
@@ -428,7 +455,7 @@ describe('document', () => {
 						_id: createRes._id,
 						_indexConfig: createRes._indexConfig,
 						_name: createRes._id,
-						_nodeType: 'default',
+						_nodeType: NT_DOCUMENT,
 						_path: createRes._path,
 						_state: 'DEFAULT',
 						_ts: createRes._ts,

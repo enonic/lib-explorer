@@ -1,1 +1,1 @@
-export * from '../../../typeScript/lib/explorer/constants';
+export * from '/lib/explorer-typescript/constants';

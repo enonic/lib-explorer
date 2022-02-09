@@ -6,16 +6,27 @@ import type {DocumentNode} from './types';
 
 
 import {
-	enonify,
+	//enonify,
 	toStr
 } from '@enonic/js-utils';
-import {detailedDiff} from 'deep-object-diff';
+
+import {detailedDiff} from 'deep-object-diff/dist/detailed';/* as {
+	detailedDiff :(a: object, b:object) => object
+};*/
+//import * as deepObjectDiff from 'deep-object-diff';
+
 import * as Diff from 'diff';
+
 import fastDeepEqual from 'fast-deep-equal';
-import HumanDiff from 'human-object-diff';
+//import * as fastDeepEqual from 'fast-deep-equal'; // (!) Cannot call a namespace ('fastDeepEqual')
+
+//import HumanDiff from 'human-object-diff';
+import * as HumanDiff from 'human-object-diff';
 
 import {FIELD_PATH_META} from '../constants';
 
+
+//const {detailedDiff} = deepObjectDiff;
 
 const { diff: diffDocument } = new HumanDiff({
 	objectName: 'document'

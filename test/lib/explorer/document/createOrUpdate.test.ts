@@ -1,7 +1,7 @@
 import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
 import {
-	deepStrictEqual//,
-	//throws
+	deepStrictEqual,
+	throws
 } from 'assert';
 import {
 	COLLECTION_REPO_PREFIX,
@@ -11,19 +11,12 @@ import {
 } from '../../../../build/rollup/index.js';
 import {
 	COLLECTION,
-	COLLECTION_LANGUAGE,
 	COLLECTION_NAME,
-	COLLECTION_STEMMING_LANGUAGE,
 	COLLECTIONS_FOLDER,
-	COLLECTIONS_FOLDER_PATH,
 	COLLECTOR_ID,
 	COLLECTOR_VERSION,
 	DOCUMENT_TYPE,
-	DOCUMENT_TYPE_FIELDS,
-	DOCUMENT_TYPE_NAME,
-	DOCUMENT_TYPES_FOLDER,
-	DOCUMENT_TYPES_FOLDER_PATH,
-	INDEX_CONFIG
+	DOCUMENT_TYPES_FOLDER
 } from '../../../testData';
 import {log} from '../../../dummies';
 
@@ -66,6 +59,24 @@ javaBridge.stemmingLanguageFromLocale = (locale :string) => {
 
 describe('document', () => {
 	describe('createOrUpdate()', () => {
+		describe('throws', () => {
+			it(`when a non existant _id is passed in`, () => {
+				throws(
+					() => createOrUpdate({
+						collectionId: CREATED_COLLECTION_NODE._id,
+						collectorId: COLLECTOR_ID,
+						collectorVersion: COLLECTOR_VERSION,
+						data: {
+							_id: 'ffffffff-ffff-4fff-8fff-fffffffffff2' // nonExistant
+						}
+					}, javaBridge),
+					{
+						message: 'update: No document with _id:ffffffff-ffff-4fff-8fff-fffffffffff2',
+						name: 'Error'
+					}
+				);
+			}); // it
+		}); // describe throws
 		const createRes = createOrUpdate({
 			collectionId: CREATED_COLLECTION_NODE._id,
 			collectorId: COLLECTOR_ID,
@@ -74,15 +85,6 @@ describe('document', () => {
 				myString: 'string'
 			}*/
 		}, javaBridge);
-		const createRes2 = createOrUpdate({
-			collectionId: CREATED_COLLECTION_NODE._id,
-			collectorId: COLLECTOR_ID,
-			collectorVersion: COLLECTOR_VERSION,
-			data: {
-				_id: 'ffffffff-ffff-4fff-8fff-fffffffffff2', // nonExistant
-				myString: 'string'
-			}
-		}, javaBridge);
 		it('creates new document node when data._id is missing', () => {
 			deepStrictEqual(
 				{
@@ -90,15 +92,6 @@ describe('document', () => {
 					 _id: '00000000-0000-4000-8000-000000000002'
 				},
 				createRes
-			);
-		}); // it
-		it("creates new document node when no exisiting document node is found matching data._id", () => {
-			deepStrictEqual(
-				{
-					...createRes2,
-					 _id: 'ffffffff-ffff-4fff-8fff-fffffffffff2'
-				},
-				createRes2
 			);
 		}); // it
 		it('updates document node when data._id is present', () => {

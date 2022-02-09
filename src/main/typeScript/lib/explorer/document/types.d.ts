@@ -1,5 +1,7 @@
 import {
 	LooseObject,
+	Path,
+	ParentPath,
 	RequiredNodeProperties
 } from '../types';
 
@@ -16,7 +18,7 @@ export interface RequiredMetaData {
 		id :string
 		version :string
 	}
-	createdTime :string
+	createdTime :Date | string
 	documentType :string
 	language :string
 	stemmingLanguage :string
@@ -25,7 +27,7 @@ export interface RequiredMetaData {
 
 
 export interface MetaData extends RequiredMetaData {
-	modifiedTime? :string
+	modifiedTime? :Date | string
 }
 
 export interface CreatedMetaData extends RequiredMetaData {
@@ -33,7 +35,7 @@ export interface CreatedMetaData extends RequiredMetaData {
 }
 
 export interface UpdatedMetaData extends RequiredMetaData {
-	modifiedTime :string
+	modifiedTime :Date | string
 }
 
 
@@ -123,6 +125,9 @@ export interface CreateParameterObject {
 	collectorId :string // TODO Scalar Regexp?
 	collectorVersion :string // TODO Scalar Regexp?
 	data? :{
+		_name? :string
+		_parentPath? :ParentPath
+		_path? :Path
 		[key :PropertyKey] :unknown
 	}
 	documentTypeId? :string // TODO Scalar Regexp?
@@ -139,6 +144,9 @@ export interface CreateParameterObject {
 export interface UpdateParameterObject extends CreateParameterObject {
 	data? :{
 		_id? :string
+		_name? :string
+		_parentPath? :ParentPath
+		_path? :Path
 		[key :PropertyKey] :unknown
 	}
 	partial? :boolean

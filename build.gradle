@@ -86,16 +86,16 @@ wrapper {
 
 
 //──────────────────────────────────────────────────────────────────────────────
-// Webpack
+// Rollup
 //──────────────────────────────────────────────────────────────────────────────
-task webpack(type:NodeTask) {
+task rollup(type: NpxTask) {
 	dependsOn yarn_install
 	mustRunAfter yarn_install
-	script = file('node_modules/webpack-cli/bin/cli.js')
+	command = 'rollup'
 	args = [
-		'--color'
+		'-c', 'rollup.config.jar.js'
 	]
-	outputs.dir './build/resources/main/lib/' // processResources will delete the directory if this is not present
+	//outputs.dir './build/resources/main/lib/' // processResources will delete the directory if this is not present
 }
 
 

@@ -12,6 +12,7 @@ import {
 	COLLECTION_REPO_PREFIX,
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META,
+	NT_DOCUMENT,
 	document
 } from '../../../../build/rollup/index.js';
 import {
@@ -392,7 +393,7 @@ describe('document', () => {
 						_id: CREATED_DOCUMENT_NODE._id,
 						_indexConfig: CREATED_DOCUMENT_NODE._indexConfig,
 						_name: CREATED_DOCUMENT_NODE._id,
-						_nodeType: 'default',
+						_nodeType: NT_DOCUMENT,
 						_path: updateRes._path,
 						_state: 'DEFAULT',
 						_ts: updateRes._ts,
@@ -450,7 +451,7 @@ describe('document', () => {
 						_id: CREATED_DOCUMENT_NODE._id,
 						_indexConfig,
 						_name: CREATED_DOCUMENT_NODE._id,
-						_nodeType: 'default',
+						_nodeType: NT_DOCUMENT,
 						_path: updateRes._path,
 						_state: 'DEFAULT',
 						_ts: updateRes._ts,

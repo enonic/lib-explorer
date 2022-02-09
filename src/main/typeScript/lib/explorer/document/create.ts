@@ -48,6 +48,7 @@ import {
 	BRANCH_ID_EXPLORER,
 	COLLECTION_REPO_PREFIX,
 	FIELD_PATH_META,
+	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ,
 	PRINCIPAL_EXPLORER_WRITE,
 	REPO_ID_EXPLORER
@@ -298,6 +299,7 @@ export function create(
 		stemmingLanguage,
 		valid: isValid
 	};
+	dataWithJavaTypes._nodeType = NT_DOCUMENT;
 
 	const sortedDataWithIndexConfig = sortKeys(dataWithJavaTypes);
 	//log.debug('sortedDataWithIndexConfig %s', sortedDataWithIndexConfig);

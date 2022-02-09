@@ -1,14 +1,22 @@
 import type {RequiredNodeProperties} from '../types.d';
 
 
-export interface CollectionNode extends RequiredNodeProperties {
-	//collector,
-	//createdTime,
-	//creator,
-	//documentCount,
+export interface CollectionSpecific {
+	_score :number
+	collector :{
+		config :Object // TODO?
+		name :string
+		configJson :string
+	}
+	createdTime :Date | string
+	creator :string,
+	doCollect? :boolean
+	documentCount :number
 	documentTypeId :string
-	//interfaces,// = [],
+	interfaces :Array<string>
 	language :string
-	//modifiedTime,
-	//modifier
+	modifiedTime? :Date | string
+	modifier? :string
 }
+
+export type CollectionNode = RequiredNodeProperties & CollectionSpecific;
