@@ -1,6 +1,6 @@
-import type {UpdateParameterObject} from '../../../../typeScript/lib/explorer/document/types';
+import type {UpdateParameterObject} from '/lib/explorer-typescript/document/types';
 
-import {update as pureTsUpdate} from '../../../../typeScript/lib/explorer/document/update';
+import {update as pureTsUpdate} from '/lib/explorer-typescript/document/update';
 import {javaBridge} from './javaBridge';
 
 

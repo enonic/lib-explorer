@@ -1,3 +1,8 @@
+import type {
+	ParentPath,
+	Path
+} from '/lib/explorer-typescript/types.d';
+
 export type IndexConfigTemplate = 'none' | 'byType' | 'fulltext' | 'path' | 'minimal';
 
 export interface DetailedIndexConfig {
@@ -22,8 +27,8 @@ export interface RootIndexConfig {
 export interface Node {
 	_id?: string; // TODO uuid
 	_name: string;
-	_parentPath?: string;
-	_path: string;
+	_parentPath?: ParentPath;
+	_path: Path;
 	_childOrder?: string, // TODO '_ts DESC'
 	_inheritsPermissions?: boolean,
 	_indexConfig: RootIndexConfig;

@@ -11,7 +11,10 @@ import {
 	detectValueType//,
 	//toStr
 } from '@enonic/js-utils';
+
 import traverse from 'traverse';
+//import * as traverse from 'traverse'; //(!) Cannot call a namespace ('traverse')
+//const traverse = require('traverse');
 
 import {
 	FIELD_PATH_GLOBAL,

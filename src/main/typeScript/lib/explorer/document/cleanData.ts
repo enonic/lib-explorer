@@ -8,7 +8,9 @@ import type {CleanDataParameters} from './types';
 import {toStr} from '@enonic/js-utils';
 //import {toStr} from '@enonic/js-utils/src';
 //import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
+
 import traverse from 'traverse';
+//import * as traverse from 'traverse'; //(!) Cannot call a namespace ('traverse')
 
 import {
 	FIELD_PATH_GLOBAL,

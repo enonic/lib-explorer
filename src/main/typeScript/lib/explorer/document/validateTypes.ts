@@ -28,6 +28,7 @@ import {
 	VALUE_TYPE_STRING,
 	//enonify,
 	forceArray,
+	getIn,
 	isDate,
 	isGeoPoint,
 	isGeoPointArray,
@@ -40,10 +41,11 @@ import {
 	//isSet,
 	isString,
 	isTimeString,
-	toStr
+	isUuidV4String//,
+	//toStr
 } from '@enonic/js-utils';
-import getIn from 'get-value';
-import {v4 as isUuid4} from 'is-uuid';
+//import getIn from 'get-value';
+//import {v4 as isUuid4} from 'is-uuid';
 
 import {javaBridgeDummy} from './dummies';
 
@@ -278,7 +280,7 @@ export function validateTypes(
 		case VALUE_TYPE_REFERENCE: {
 			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
-				if (!isUuid4(valueArray[j])) {
+				if (!isUuidV4String(valueArray[j])) {
 					//const msg = `Not a Reference/UUIDv4 :${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 					log.debug(
 						'validateTypes: Not a Reference/UUIDv4:',

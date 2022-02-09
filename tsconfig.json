@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"allowSyntheticDefaultImports": true,
-		"allowJs": false,
+		"allowJs": true,
 		"baseUrl": "./",
 		"declaration": false,
 		"declarationMap": false,
@@ -11,7 +11,7 @@
 		"importsNotUsedAsValues": "remove",
 		"inlineSourceMap": false,
 		"inlineSources": false,
-		"listEmittedFiles": true,
+		"listEmittedFiles": false,
 		"listFiles": false,
 		"module": "es6",
 		"moduleResolution": "node",
@@ -22,10 +22,11 @@
 		"noUncheckedIndexedAccess": true,
 		"noUnusedLocals": false,
 		"noUnusedParameters": true,
-		"outDir": "build/tsc",
+		"outDir": "build/rollup",
 		"paths": {
 			"@enonic/js-utils": ["node_modules/@enonic/js-utils/src"],
-			"/lib/explorer/*": ["src/main/typeScript/lib/explorer/*"]
+			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"],
+			"/lib/explorer-typescript/*": ["src/main/typeScript/lib/explorer/*"]
 		},
 		"preserveWatchOutput": false,
 		"pretty": true,
@@ -41,7 +42,7 @@
 		"strict": false,
 		"strictFunctionTypes": false,
 		"strictNullChecks": false,
-		"target": "esnext",
+		"target": "es6",
 		"types": [
 			"mocha",
 			"node"
@@ -51,9 +52,14 @@
 		"build"
 	],
 	"files": [
+		"src/main/resources/lib/explorer/index.ts",
 		"src/main/typeScript/lib/explorer/index.ts"
 	],
 	"include": [
-      "src/main/typeScript/**/*.ts"
+		"node_modules/@enonic/js-utils/src",
+		"src/main/resources/**/*.ts",
+		"src/main/resources/**/*.es",
+		"src/main/typeScript/**/*.ts",
+		//"test/**/*.ts"
   ]
 }

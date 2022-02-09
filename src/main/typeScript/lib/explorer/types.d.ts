@@ -1,4 +1,9 @@
-import {
+import type {BasicFilters} from '@enonic/js-utils/src/storage/query/Filters.d';
+import type {
+	PermissionsParams,
+	PrincipalKey
+} from '@enonic/js-utils/src/mock/auth/';
+import type {
 	CreateRepoParams,
 	RepositoryConfig
 } from '@enonic/js-utils/src/mock/repo/';
@@ -11,55 +16,39 @@ export interface LooseObject {
 	[key :string] :unknown
 }
 
-export type PrincipalKeySystem =
-	| "role:system.everyone"
-	| "role:system.authenticated"
-	| "role:system.admin"
-	| "role:system.admin.login"
-	| "role:system.auditlog"
-	| "role:system.user.admin"
-	| "role:system.user.app"
-	| "user:system:su";
+export type Name = string;
+export type Id = string;
+export type ChildOrder = string;
+export type Path = `/${string}`;
+export type State = string;
+export type NodeType = string;
+export type TimeStamp = string;
+export type VersionKey = string;
 
-export type PrincipalKeyUser = `user:${string}:${string}`;
-export type PrincipalKeyGroup = `group:${string}:${string}`;
-export type PrincipalKeyRole = `role:${string}`;
+export type Key = Id|Path;
+export type ParentPath = Path;
 
-export type PrincipalKey = PrincipalKeySystem | PrincipalKeyUser | PrincipalKeyGroup | PrincipalKeyRole;
-
-export type Permission =
-	| "READ"
-	| "CREATE"
-	| "MODIFY"
-	| "DELETE"
-	| "PUBLISH"
-	| "READ_PERMISSIONS"
-	| "WRITE_PERMISSIONS";
-
-export interface PermissionsParams {
-	principal: PrincipalKey
-	allow: Array<Permission>
-	deny: Array<Permission>
-}
 
 export interface RequiredNodeProperties {
-	_id: string
-	_childOrder: string
+	_id: Id
+	_childOrder: ChildOrder
 	_indexConfig: IndexConfig
 	_inheritsPermissions: boolean
-	_name: string
-	_path: string
+	_name: Name
+	_path: Path
 	_permissions: PermissionsParams[]
-	_state: string
-	_nodeType: string
-	_ts :string
-	_versionKey :string
+	_state: State
+	_nodeType: NodeType
+	_ts :TimeStamp
+	_versionKey :VersionKey
 }
+
 
 export type Node<T> = RequiredNodeProperties & T;
 
+
 export interface NodeModifyParams {
-	key :string
+	key :Id|Path
 	editor: <T>(node :Node<T>) => Node<T>
 }
 
@@ -74,52 +63,18 @@ export interface Source {
 }
 
 export interface NodeCreateParams {
-	/**
-	* Name of content.
-	*/
-	_name?: string;
-
-	/**
-	* Path to place content under.
-	*/
-	_parentPath?: string;
-
-	/**
-	* How the document should be indexed. A default value "byType" will be set if no value specified.
-	*/
-	//_indexConfig?: IndexConfig;
-
-	/**
-	* The access control list for the node. By default the creator will have full access
-	*/
-	//_permissions?: ReadonlyArray<import("/lib/xp/content").PermissionsParams>;
-
-	/**
-	* true if the permissions should be inherited from the node parent. Default is false.
-	*/
-	_inheritsPermissions?: boolean;
-
-	/**
-	* Value used to order document when ordering by parent and child-order is set to manual
-	*/
-	_manualOrderValue?: number;
-
-	/**
-	* Default ordering of children when doing getChildren if no order is given in query
-	*/
-	_childOrder?: string;
+	_name?: Name; // Name of content.
+	_parentPath?: ParentPath; // Path to place content under.
+	_indexConfig?: IndexConfig; // How the document should be indexed. A default value "byType" will be set if no value specified.
+	_permissions?: ReadonlyArray<PermissionsParams>; // The access control list for the node. By default the creator will have full access
+	_inheritsPermissions?: boolean; // true if the permissions should be inherited from the node parent. Default is false.
+	_manualOrderValue?: number; // Value used to order document when ordering by parent and child-order is set to manual
+	_childOrder?: ChildOrder; // Default ordering of children when doing getChildren if no order is given in query
 }
 
 export interface NodeGetParams {
-	/**
-	* Path or ID of the node.
-	*/
-	key: string;
-
-	/**
-	* Version to get
-	*/
-	versionId: string;
+	key: Key; // Path or ID of the node.
+	versionId: string; // Version to get
 }
 
 export interface CommitParams {
@@ -144,6 +99,27 @@ export interface CommitResponse {
 export interface MultiCommitParams {
   keys: Array<string>;
   message?: string;
+}
+
+export interface QueryFilters {
+	boolean?: {
+		must?: BasicFilters | Array<BasicFilters>;
+		mustNot?: BasicFilters | Array<BasicFilters>;
+		should?: BasicFilters | Array<BasicFilters>;
+	}
+	exists?: {
+		field: string;
+	}
+	notExists?: {
+		field: string;
+	}
+	hasValue?: {
+		field: string;
+		values: Array<unknown>;
+	}
+	ids?: {
+		values: Array<string>;
+	}
 }
 
 export interface RepoConnection {
@@ -184,7 +160,8 @@ export interface RepoConnection {
 	* Fetches a specific node by path or ID.
 	*/
 	//get<NodeData>(key: string | NodeGetParams): NodeData & RepoNode;
-	get(...keys :string[]) :unknown
+	//get(...keys :string[]) :unknown
+	get<T>(...keys :string[]) :Node<T>
 
 	/**
 	* Fetches specific nodes by paths or IDs.
@@ -225,11 +202,25 @@ export interface RepoConnection {
 	/*query<AggregationKeys extends string = never>(
 		params: NodeQueryParams<AggregationKeys>
 	): NodeQueryResponse<AggregationKeys>;*/
+	query(object :{
+		count? :number
+		filters? :QueryFilters
+		query :string
+		sort? :string
+		start? :number
+	}) :{
+		count :number
+		total :number
+		hits :Array<{
+			id :string
+			score :string
+		}>
+	}
 
 	/**
 	* Refresh the index for the current repoConnection
 	*/
-	//refresh(mode?: "ALL" | "SEARCH" | "STORAGE"): void;
+	refresh(mode?: "ALL" | "SEARCH" | "STORAGE"): void;
 
 	/**
 	* This function modifies a node.
@@ -247,6 +238,10 @@ export interface RepoConnection {
 	* Rename a node or move it to a new path.
 	*/
 	//move(params: NodeMoveParams): boolean;
+	move(object :{
+		source :string
+		target :string
+	}) :boolean
 
 	/**
 	* Pushes a node to a given branch.

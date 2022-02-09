@@ -1,6 +1,6 @@
-import type {CreateParameterObject} from '../../../../typeScript/lib/explorer/document/types';
+import type {CreateParameterObject} from '/lib/explorer-typescript/document/types';
 
-import {create as pureTsCreate} from '../../../../typeScript/lib/explorer/document/create';
+import {create as pureTsCreate} from '/lib/explorer-typescript/document/create';
 import {javaBridge} from './javaBridge';
 
 

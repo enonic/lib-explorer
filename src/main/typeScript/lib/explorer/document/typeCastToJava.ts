@@ -2,6 +2,7 @@ import type {
 	GeoPointArray,
 	JavaBridge
 } from '../types.d'
+import type {Field} from '../documentType/types.d'
 import type {
 	DocumentNode,
 	TypeCastToJavaParameters
@@ -21,6 +22,7 @@ import {
 	VALUE_TYPE_REFERENCE,
 	//VALUE_TYPE_SET,
 	VALUE_TYPE_STRING,
+	getIn,
 	isDate,
 	isGeoPointArray,
 	isGeoPointString,
@@ -29,11 +31,14 @@ import {
 	isLocalDateTimeString,
 	isTimeString,
 	isUuidV4String,
+	setIn,
 	toStr
 } from '@enonic/js-utils';
-import getIn from 'get-value';
-import setIn from 'set-value';
+//import getIn from 'get-value';
+//import setIn from 'set-value';
+
 import traverse from 'traverse';
+//import * as traverse from 'traverse'; //(!) Cannot call a namespace ('traverse')
 
 import {
 	FIELD_PATH_GLOBAL,
@@ -64,7 +69,7 @@ export function typeCastToJava(
 		}
 	} = javaBridge;
 	//log.debug(`typeCastToJava data:${toStr(data)}`);
-	//log.debug(`typeCastToJava fields:${toStr(fields)}`);
+	log.debug(`typeCastToJava fieldsObj:${toStr(fieldsObj)}`);
 	const typeCastedData :DocumentNode = JSON.parse(JSON.stringify(data));
 	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
 		if (
@@ -74,7 +79,10 @@ export function typeCastToJava(
 		) {
 			const pathString = this.path.join('.');
 			//log.debug(`pathString:${toStr(pathString)}`);
-			const valueTypeForPath = getIn(fieldsObj, pathString);
+			const fieldObjWithoutName = getIn(fieldsObj, pathString) as Required<Omit<Field, 'name'>>;
+			const {
+				valueType: valueTypeForPath
+			} = fieldObjWithoutName;
 			//log.debug(`pathString:${toStr(pathString)} valueTypeForPath:${toStr(valueTypeForPath)}`);
 			if (valueTypeForPath) {
 				if ([

@@ -15,11 +15,12 @@ import type {ValidateOccurrencesParameters} from './types.d';
 
 import {
 	enonify,
+	getIn,
 	isSet,
 	isString,
 	toStr
 } from '@enonic/js-utils';
-import getIn from 'get-value';
+//import getIn from 'get-value';
 
 import {javaBridgeDummy} from './dummies';
 
@@ -36,7 +37,7 @@ function moreThanOne(value :unknown) :boolean {
 }
 
 
-function moreThan(value :unknown, max :number) :boolean {
+function moreThan(value :unknown, max :number) :value is Array<unknown> {
 	return max > 0 // Not infinite
 		&& Array.isArray(value) // and value an array
 		&& value.length > max // and array count larger than limit

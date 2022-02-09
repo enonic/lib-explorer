@@ -29,15 +29,6 @@ export function createOrUpdate(
 	const {log} = javaBridge;
 	//log.info('createOrUpdateParameterObject:%s', createOrUpdateParameterObject);
 
-	const {
-		data:{
-			_id
-		} = {}
-	} = createOrUpdateParameterObject;
-	if (!_id) {
-		return create(createOrUpdateParameterObject, javaBridge);
-	}
-
 	let {
 		collectionId,
 		collectionName
@@ -81,13 +72,33 @@ export function createOrUpdate(
 		collectionName = collectionNode['_name'] as string;
 	}
 
+	//──────────────────────────────────────────────────────────────────────────
+
+	if (createOrUpdateParameterObject.data && createOrUpdateParameterObject.data._id) {
+		return update(createOrUpdateParameterObject, javaBridge);
+	}
+
+	const {
+		data:{
+			_name,
+			_parentPath = '/',
+			_path = _name ? `${_parentPath}${_name}` : undefined
+		} = {}
+	} = createOrUpdateParameterObject;
+
+	// /lib/xp/node.connect().create() ignores _path (but not _parentPath and _name, which makes up _path)
+
+	if (!_path) {
+		return create(createOrUpdateParameterObject, javaBridge);
+	}
+
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
 	const collectionRepoReadConnection = javaBridge.connect({
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_READ],
 		repoId
 	});
-	if (collectionRepoReadConnection.exists(_id).includes(_id)) {
+	if (collectionRepoReadConnection.exists(_path).includes(_path)) {
 		return update(createOrUpdateParameterObject, javaBridge);
 	}
 	return create(createOrUpdateParameterObject, javaBridge);

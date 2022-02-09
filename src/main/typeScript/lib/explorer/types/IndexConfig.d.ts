@@ -1,3 +1,6 @@
+//import type {IndexConfigEntry} from '@enonic/js-utils/src/storage/indexing/IndexConfig.d';
+
+
 export interface IndexConfigObject {
 	/**
 	* If true, indexing is done based on valueType, according to the table above. I.e. numeric values are indexed as
