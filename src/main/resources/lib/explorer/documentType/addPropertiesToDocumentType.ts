@@ -1,4 +1,4 @@
-import type {DocumentTypeNode} from '/lib/explorer-typescript/documentType/types.d';
+import type {DocumentTypeNode} from '/lib/explorer/documentType/types.d';
 
 
 import {

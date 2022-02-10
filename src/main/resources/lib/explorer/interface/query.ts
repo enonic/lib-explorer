@@ -1,4 +1,4 @@
-import type {RepoConnection} from '/lib/explorer-typescript/types.d';
+import type {RepoConnection} from '/lib/explorer/types.d';
 
 import {NT_INTERFACE} from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';

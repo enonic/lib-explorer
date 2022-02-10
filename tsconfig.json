@@ -25,8 +25,7 @@
 		"outDir": "build/rollup",
 		"paths": {
 			"@enonic/js-utils": ["node_modules/@enonic/js-utils/src"],
-			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"],
-			"/lib/explorer-typescript/*": ["src/main/typeScript/lib/explorer/*"]
+			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
 		},
 		"preserveWatchOutput": false,
 		"pretty": true,
@@ -53,7 +52,7 @@
 	],
 	"files": [
 		"src/main/resources/lib/explorer/index.ts",
-		"src/main/typeScript/lib/explorer/index.ts"
+		"src/main/resources/lib/explorer/_uncoupled/index.ts"
 	],
 	"include": [
 		"node_modules/@enonic/js-utils/src",

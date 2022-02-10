@@ -1,4 +1,4 @@
-//import type {Path} from '/lib/explorer-typescript/types.d';
+//import type {Path} from '/lib/explorer/types.d';
 import {join} from '/lib/explorer/path/join';
 
 

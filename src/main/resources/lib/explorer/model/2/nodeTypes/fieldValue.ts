@@ -1,3 +1,12 @@
+import type {
+	Id,
+	//IndexConfig,
+	Name,
+	Path,
+	ParentPath,
+	PermissionsParams
+} from '/lib/explorer/types.d';
+
 import {
 	//toStr,
 	ucFirst
@@ -22,6 +31,17 @@ export function fieldValue({
 	_name = value,
 	displayName = ucFirst(_name),
 	...rest
+} :{
+	_id :Id
+	_name :Name
+	_path :Path
+	_permissions :Array<PermissionsParams>
+	field :string
+	fieldReference :string
+	value :string
+	// Optional
+	_parentPath? :ParentPath
+	displayName? :string
 }) {
 	log.warning('model/2/nodeTypes/fieldValue() was deprecated in lib-explorer-4.0.0'); // TODO Throw error in lib-explorer-5.0.0 and remove in lib-explorer-6.0.0
 	/*log.info(toStr({

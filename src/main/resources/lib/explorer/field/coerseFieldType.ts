@@ -1,4 +1,4 @@
-//import type {Field} from '/lib/explorer-typescript/documentType/types.d';
+//import type {Field} from '/lib/explorer/documentType/types.d';
 
 import {
 	INDEX_CONFIG_TEMPLATE_BY_TYPE,

@@ -1,5 +1,5 @@
-//import type {Collector} from '/lib/explorer-typescript/collector/types.d';
-import type {Task} from '/lib/explorer-typescript/task/types.d';
+//import type {Collector} from '/lib/explorer/collector/types.d';
+import type {Task} from '/lib/explorer/task/types.d';
 
 //import {toStr} from '@enonic/js-utils';
 

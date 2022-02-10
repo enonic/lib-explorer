@@ -1,7 +1,7 @@
-//export * from '/lib/explorer-typescript/constants'; // ReferenceError: "APP_EXPLORER" is not defined
+//export * from '/lib/explorer/constants'; // ReferenceError: "APP_EXPLORER" is not defined
 export {
 	APP_EXPLORER
-} from '/lib/explorer-typescript/constants';
+} from '/lib/explorer/constants';
 
 //export {list as getApplications} from '/lib/explorer/application';
 export {create, update} from '/lib/explorer/document';

@@ -1,4 +1,4 @@
-import type {RequiredNodeProperties} from '/lib/explorer-typescript/types.d';
+import type {RequiredNodeProperties} from '/lib/explorer/types.d';
 
 
 export interface ThesaurusSpecific {

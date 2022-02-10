@@ -1,3 +1,5 @@
+import type {WriteConnection} from '../node/WriteConnection.d';
+
 import {
 	isNotSet,
 	toStr
@@ -13,10 +15,17 @@ export const persistResponse = ({
 	request,
 	response,
 	...rest
+} :{
+	_name :string
+	request :{}
+	response :{}
+	_parentPath? :string
 }, {
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	...ignoredOptions
-} = {}) => {
+} :{
+	connection :WriteConnection
+}) => {
 	//log.info(toStr({_parentPath, _name, request, response}));
 	Object.keys(rest).forEach((k) => {
 		if (k.startsWith('__')) {
@@ -45,5 +54,6 @@ export const persistResponse = ({
 		response
 	});
 	//log.info(toStr({params}));
+	//@ts-ignore
 	return createOrModify(params, {connection});
 }; // persistResponse

@@ -1,3 +1,12 @@
+import type {
+	Id,
+	//IndexConfig,
+	Name,
+	Path,
+	ParentPath,
+	PermissionsParams
+} from '/lib/explorer/types.d';
+
 import {
 	isNotSet,
 	toStr
@@ -13,7 +22,6 @@ import {node} from '/lib/explorer/model/2/nodeTypes/node';
 
 
 export function folder({
-
 	// avoid from ...rest
 	_id, // eslint-disable-line no-unused-vars
 	_path, // eslint-disable-line no-unused-vars
@@ -22,6 +30,12 @@ export function folder({
 	_parentPath = '/',
 	_name,
 	...rest
+} :{
+	_id :Id
+	_name :Name
+	_path :Path
+	_parentPath? :ParentPath
+	_permissions :Array<PermissionsParams>
 }, {
 	user,
 	...ignoredOptions

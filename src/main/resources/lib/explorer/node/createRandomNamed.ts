@@ -1,3 +1,14 @@
+import type {
+	Id,
+	IndexConfig,
+	Name,
+	ParentPath,
+	PermissionsParams,
+	RepoConnection
+} from '/lib/explorer/types.d';
+import type {WriteConnection} from '../node/WriteConnection.d';
+
+
 import {
 	isNotSet,
 	toStr
@@ -5,6 +16,7 @@ import {
 import {v4 as generateUuidv4} from 'uuid';
 
 //import {getUser} from '/lib/xp/auth';
+//@ts-ignore
 import {sanitize as doSanitize} from '/lib/xp/common';
 
 import {NT_FOLDER} from '/lib/explorer/model/2/constants';
@@ -20,10 +32,19 @@ export function createRandomNamed({
 	_permissions = [],
 	//creator = __user.key,
 	...rest
+} :{
+	_id :Id
+	_indexConfig? :IndexConfig
+	_inheritsPermissions? :boolean
+	_name? :Name
+	_parentPath? :ParentPath
+	_permissions? :Array<PermissionsParams>
 }, {
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	...ignoredOptions
-} = {}) {
+} :{
+	connection :WriteConnection
+}) {
 	//log.info(`_name:${_name}`);
 
 	Object.keys(rest).forEach((k) => {
@@ -52,10 +73,11 @@ export function createRandomNamed({
 		const ancestor = connection.get(path); //log.info(toStr({ancestor}));
 		if (!ancestor) {
 			const folderParams = {
-				_indexConfig: {default: 'none'},
+				_indexConfig: {default: 'none'} as IndexConfig,
 				_inheritsPermissions: true,
 				_name: pathParts[i],
-				_parentPath: pathParts.slice(0, i).join('/') || '/',
+				_nodeType: NT_FOLDER,
+				_parentPath: (pathParts.slice(0, i).join('/') || '/') as ParentPath,
 				//creator,
 				//createdTime: new Date(),
 				type: NT_FOLDER
@@ -69,7 +91,7 @@ export function createRandomNamed({
 
 	// WARNING This might go on forever?
 	while (exists({
-		connection,
+		connection: connection as RepoConnection,
 		_parentPath,
 		_name
 	})) {

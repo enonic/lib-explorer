@@ -1,7 +1,7 @@
 import type {
 	QueryFilters,
 	RepoConnection
-} from '/lib/explorer-typescript/types.d';
+} from '/lib/explorer/types.d';
 import type {
 	Thesaurus,
 	ThesaurusNode

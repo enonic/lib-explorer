@@ -26,9 +26,12 @@
 // Later we can extend with all the document-layer support, but at the same time
 // leave the pitfalls in the hands of the Collector developer.
 //──────────────────────────────────────────────────────────────────────────────
-
-import type {CollectionNode} from '/lib/explorer-typescript/collection/types.d';
-//import type {FieldsObject} from '/lib/explorer-typescript/documentType/types.d';
+import type {
+	Name,
+	ParentPath
+} from '/lib/explorer/types.d';
+import type {CollectionNode} from '/lib/explorer/collection/types.d';
+//import type {FieldsObject} from '/lib/explorer/documentType/types.d';
 import type {MsgUri} from '../journal/types.d';
 import type {Progress} from '../task/progress';
 
@@ -273,6 +276,10 @@ export class Collector {
 		uri, // Present in lib-explorer-3.x
 		_name = hash(uri), // Present in lib-explorer-3.x
 		...rest // Slurps properties
+	} :{
+		uri :string
+		_name? :Name
+		_parentPath? :ParentPath
 	}, {
 		//cleanExtraFields // TODO Perhaps later
 		//addExtraFields // TODO Perhaps later

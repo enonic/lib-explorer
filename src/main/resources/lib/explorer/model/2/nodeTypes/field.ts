@@ -1,7 +1,7 @@
 import type {
 	ParentPath,
 	Path
-} from '/lib/explorer-typescript/types.d';
+} from '/lib/explorer/types.d';
 
 
 import {NT_FIELD} from '/lib/explorer/model/2/constants';

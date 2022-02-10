@@ -1,8 +1,8 @@
 import type {
 	ParentPath,
 	Path
-} from '/lib/explorer-typescript/types.d';
-//import type {IndexConfig} from '/lib/explorer-typescript/types/IndexConfig.d';
+} from '/lib/explorer/types.d';
+//import type {IndexConfig} from '/lib/explorer/types/IndexConfig.d';
 
 
 import {forceArray} from '@enonic/js-utils';

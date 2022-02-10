@@ -1,5 +1,6 @@
 //import {toStr} from '@enonic/js-utils';
 
+//@ts-ignore
 import {reference} from '/lib/xp/value';
 import {join}  from '/lib/explorer/path/join';
 

@@ -1,3 +1,9 @@
+import type {
+	IndexConfig,
+	RequiredNodeProperties
+} from '/lib/explorer/types.d';
+import type {WriteConnection} from '../node/WriteConnection.d';
+
 import {
 	isSet//,
 	//toStr
@@ -9,6 +15,9 @@ import {modify as modifyNode} from '/lib/explorer/node/modify';
 
 
 export class Node {
+	connection :WriteConnection
+	node :RequiredNodeProperties
+
 	constructor({
 		__connection,
 		_parentPath = '/',
@@ -19,6 +28,12 @@ export class Node {
 		},
 		displayName = ucFirst(_name),
 		...rest
+	} :{
+		__connection :WriteConnection
+		_indexConfig :IndexConfig
+		_name? :string
+		_parentPath? :string
+		displayName? :string
 	}, {
 		connection = __connection
 	} = {}) {
@@ -36,8 +51,10 @@ export class Node {
 			_indexConfig.analyzer = 'document_index_default';
 		}*/
 		this.node = {
+			//@ts-ignore
 			_parentPath,
 			_name,
+			//@ts-ignore
 			_indexConfig,
 			displayName,
 			...rest
@@ -50,6 +67,7 @@ export class Node {
 		connection = this.connection // eslint-disable-line no-underscore-dangle
 	} = {}) {
 		//log.info(toStr({node: this.node}));
+		//@ts-ignore
 		return createNode(this.node, {connection});
 	} // create
 

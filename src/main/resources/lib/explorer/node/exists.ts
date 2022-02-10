@@ -3,7 +3,7 @@ import type {
 	ParentPath,
 	Path,
 	RepoConnection
-} from '/lib/explorer-typescript/types.d';
+} from '/lib/explorer/types.d';
 //import {toStr} from '@enonic/js-utils';
 
 //──────────────────────────────────────────────────────────────────────────────

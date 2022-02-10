@@ -1,6 +1,8 @@
 //import {toStr} from '@enonic/js-utils';
 
+//@ts-ignore
 import {get as getContext} from '/lib/xp/context';
+//@ts-ignore
 import {connect, multiRepoConnect} from '/lib/xp/node';
 
 import {runAsSu} from '/lib/explorer/runAsSu';
