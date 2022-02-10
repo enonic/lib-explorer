@@ -1,7 +1,7 @@
-import type {UpdateParameterObject} from '/lib/explorer-typescript/document/types';
+import type {UpdateParameterObject} from '/lib/explorer/_uncoupled/document/types';
 
-import {createOrUpdate as pureTsCreateOrUpdate} from '/lib/explorer-typescript/document/createOrUpdate';
-import {javaBridge} from './javaBridge';
+import {createOrUpdate as pureTsCreateOrUpdate} from '/lib/explorer/_uncoupled/document/createOrUpdate';
+import {javaBridge} from '../_coupling/javaBridge';
 
 
 export function createOrUpdate(object :UpdateParameterObject) {

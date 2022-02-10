@@ -1,7 +1,7 @@
 import type {
 	ParentPath,
 	Path
-} from '/lib/explorer-typescript/types.d';
+} from '/lib/explorer/types.d';
 
 export type IndexConfigTemplate = 'none' | 'byType' | 'fulltext' | 'path' | 'minimal';
 

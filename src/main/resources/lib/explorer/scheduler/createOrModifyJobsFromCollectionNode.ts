@@ -1,3 +1,13 @@
+import type {ApplicationKey} from '../../../globals.d';
+import type {RepoConnection} from '/lib/explorer/types.d';
+import type {Collection} from '../collection/types.d';
+import type {WriteConnection} from '../node/WriteConnection.d';
+import type {
+	TaskDescriptor,
+	TaskName
+} from '../task/types.d';
+
+
 import {
 	DOT_SIGN,
 	forceArray,
@@ -14,6 +24,7 @@ import {
 import {createOrModifyJob} from '/lib/explorer/scheduler/createOrModifyJob';
 import {listExplorerJobsThatStartWithName} from '/lib/explorer/scheduler/listExplorerJobsThatStartWithName';
 
+//@ts-ignore
 import {delete as deleteJob} from '/lib/xp/scheduler';
 
 
@@ -22,15 +33,22 @@ const USER = `user:${USER_EXPLORER_APP_ID_PROVIDER}:${USER_EXPLORER_APP_NAME}`;
 
 export function getCollectors({
 	connection
+} :{
+	connection :RepoConnection | WriteConnection
 }) {
-	const collectors = {};
+	const collectors :{
+		[taskDescriptor :string] :boolean
+	}= {};
 	queryCollectors({
-		connection
+		connection: connection as RepoConnection
 	}).hits.forEach(({
 		appName,
 		collectTaskName
+	} :{
+		appName :ApplicationKey
+		collectTaskName :TaskName
 	}) => {
-		collectors[`${appName}:${collectTaskName}`] = true;
+		collectors[`${appName}:${collectTaskName}` as TaskDescriptor] = true;
 	});
 	return collectors;
 }
@@ -42,6 +60,13 @@ export function createOrModifyJobsFromCollectionNode({
 	collectionNode,
 	timeZone = 'GMT+02:00' // CEST (Summer Time)
 	//timeZone = 'GMT+01:00' // CET
+} :{
+	connection :WriteConnection
+	collectors? :{
+		[taskDescriptor :string] :boolean
+	}
+	collectionNode :Collection // cron, // cron is no longer stored on the CollectionNode, but is passed in here from GraphQL mutation.
+	timeZone :string
 }) {
 	//log.debug(`createOrModifyJobsFromCollectionNode collectionNode:${toStr(collectionNode)}`);
 	const {

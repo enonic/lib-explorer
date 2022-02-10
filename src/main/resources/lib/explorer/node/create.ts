@@ -1,4 +1,8 @@
-import type {NodeCreateParams} from '/lib/explorer-typescript/types.d';
+import type {
+	IndexConfig,
+	NodeCreateParams,
+	ParentPath
+} from '/lib/explorer/types.d';
 import type {WriteConnection} from '../node/WriteConnection.d';
 
 import {
@@ -35,7 +39,7 @@ import {
 
 
 export function create<N extends NodeCreateParams & {
-	creator :string
+	creator? :string
 	displayName? :string
 }>({
 	// It appears that properties that starts with an undescore are ignored, except the standard ones.
@@ -121,10 +125,10 @@ export function create<N extends NodeCreateParams & {
 		const ancestor = connection.get(path); //log.info(toStr({ancestor}));
 		if (!ancestor) {
 			const folderParams = {
-				_indexConfig: {default: 'none'},
+				_indexConfig: {default: 'none'} as IndexConfig,
 				_inheritsPermissions: true,
 				_name: pathParts[i],
-				_parentPath: pathParts.slice(0, i).join('/') || '/',
+				_parentPath: (pathParts.slice(0, i).join('/') || '/') as ParentPath,
 				creator,
 				createdTime: new Date(),
 				type: NT_FOLDER

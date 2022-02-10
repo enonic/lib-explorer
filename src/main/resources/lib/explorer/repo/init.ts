@@ -2,6 +2,7 @@ import {toStr} from '@enonic/js-utils';
 
 //import {getUser} from '/lib/xp/auth';
 //import {get as getContext} from '/lib/xp/context';
+//@ts-ignore
 import {create as createRepo, createBranch} from '/lib/xp/repo';
 
 //──────────────────────────────────────────────────────────────────────────────

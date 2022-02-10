@@ -1,4 +1,12 @@
-import type {IndexConfigObject} from '/lib/explorer-typescript/types/IndexConfig.d';
+import type {ApplicationKey} from '../../../../../globals.d';
+import type {
+	IndexConfigObject,
+	Name,
+	//Path,
+	ParentPath//,
+	//PermissionsParams
+} from '/lib/explorer/types.d';
+import type {TaskDescriptor} from '/lib/explorer/task/types.d';
 
 
 import {
@@ -24,6 +32,18 @@ export function Document({
 	//text,
 	//title,
 	...rest
+} :{
+	//_id :Id
+	//_path :Path
+	//_permissions :Array<PermissionsParams>
+	uri :string
+	// Optional
+	_name? :Name
+	_parentPath? :ParentPath
+	collectorAppName? :ApplicationKey
+	collectorId? :TaskDescriptor | ApplicationKey
+	collectorVersion? :string
+	//displayName? :string
 }) {
 	if (!uri) { throw new Error('Missing required property uri!'); }
 	delete rest['_id'];

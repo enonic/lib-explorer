@@ -1,5 +1,5 @@
-import type {ParentPath} from '/lib/explorer-typescript/types.d';
-import type {CollectionNode} from '/lib/explorer-typescript/collection/types.d';
+import type {ParentPath} from '/lib/explorer/types.d';
+import type {CollectionNode} from '/lib/explorer/collection/types.d';
 
 
 import {

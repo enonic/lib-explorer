@@ -13,7 +13,7 @@ import {
 import {
 	APP_EXPLORER,
 	FIELD_PATH_META
-} from '/lib/explorer-typescript/constants';
+} from '/lib/explorer/constants';
 export {
 	APP_EXPLORER,
 	BRANCH_ID_EXPLORER,
@@ -49,7 +49,7 @@ export {
 	ROOT_PERMISSION_EXPLORER_READ,
 	ROOT_PERMISSIONS_EXPLORER
 //} from '../../constants';
-} from '/lib/explorer-typescript/constants';
+} from '/lib/explorer/constants';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Node types

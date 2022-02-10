@@ -1,4 +1,8 @@
-import type {ParentPath} from '/lib/explorer-typescript/types.d';
+import type {
+	IndexConfig,
+	ParentPath
+} from '/lib/explorer/types.d';
+import type {MsgUri} from '/lib/explorer/journal/types.d';
 
 //@ts-ignore
 import {instant} from '/lib/xp/value';
@@ -17,28 +21,14 @@ const {currentTimeMillis} = Java.type('java.lang.System') as {
 interface JournalInput {
 	name :string
 	startTime :number
-	errors? :Array<{
-		message :string
-		uri :string
-	}>
-	successes? :Array<{
-		message :string
-		uri :string
-	}>
+	errors? :Array<MsgUri>
+	successes? :Array<MsgUri>
 }
 
 
 interface JournalNode extends JournalInput {
 	//_id :string
-	_indexConfig :{
-		configs :Array<{
-			config :string | {
-				enabled :boolean
-			}
-			path :string
-		}>
-		default :string
-	}
+	_indexConfig :IndexConfig
 	_name :string
 	_nodeType :string
 	_parentPath :ParentPath

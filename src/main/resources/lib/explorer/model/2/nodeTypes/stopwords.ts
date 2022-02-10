@@ -1,4 +1,8 @@
-import type {IndexConfig} from '/lib/explorer-typescript/types/IndexConfig.d';
+import type {
+	IndexConfig,
+	Name,
+	ParentPath
+} from '/lib/explorer/types.d';
 
 
 import {
@@ -15,6 +19,11 @@ export function stopwords({
 	displayName = ucFirst(_name), // TODO remove?
 	words,
 	...rest
+} :{
+	_name :Name
+	_parentPath? :ParentPath
+	displayName? :string
+	words :Array<string>|string
 }) {
 	delete rest['_id'];
 	delete rest['_path'];

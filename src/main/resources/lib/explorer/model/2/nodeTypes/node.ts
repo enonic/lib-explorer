@@ -1,6 +1,8 @@
-import type {ParentPath} from '/lib/explorer-typescript/types.d';
+import type {
+	IndexConfig,
+	ParentPath
+} from '/lib/explorer/types.d';
 //import type {IndexConfigEntry} from '@enonic/js-utils/src/storage/indexing/IndexConfig.d';
-import type {IndexConfig} from '/lib/explorer-typescript/types/IndexConfig.d';
 
 
 export function node<Node extends {

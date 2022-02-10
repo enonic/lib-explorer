@@ -1,4 +1,7 @@
-import type {CollectionNode} from '/lib/explorer-typescript/collection/types.d';
+import type {
+	Collection,
+	CollectionNode
+} from '/lib/explorer/collection/types.d';
 
 //import {toStr} from '@enonic/js-utils';
 
@@ -25,10 +28,11 @@ export function updateCollection({
 	_name, // nonNull
 	//_path, // nonNull
 	collector, // optional
+	cron, // This is no longer stored on the CollectionNode, but is passed in here from GraphQL mutation.
 	doCollect,
 	documentTypeId, // optional
 	language // optional
-} :CollectionNode ) {
+} :Collection ) {
 	//log.debug(`_id:${toStr(_id)}`);
 	//log.debug(`_name:${toStr(_name)}`);
 	//log.debug(`collector:${toStr(collector)}`);
@@ -109,7 +113,7 @@ export function updateCollection({
 	//log.debug(`updateCollection documentTypeId:${toStr(documentTypeId)}`); // toStr on reference becomes ''
 	//log.debug(`propertiesToBeUpdated:${toStr(propertiesToBeUpdated)}`);
 
-	const modifiedNode :CollectionNode = writeConnection.modify({
+	const modifiedNode = writeConnection.modify({
 		key: _id,
 		editor: (n :CollectionNode) => {
 			Object.keys(propertiesToBeUpdated).forEach((property) => {
@@ -118,11 +122,12 @@ export function updateCollection({
 			});
 			return n;
 		}
-	});
+	}) as Collection;
 	//log.debug(`modifiedNode:${toStr(modifiedNode)}`);
 
 	if (modifiedNode) {
 		writeConnection.refresh(); // So the data becomes immidiately searchable
+		modifiedNode.cron = cron;
 		modifiedNode.doCollect = doCollect;
 		//log.debug(`modifiedNode:${toStr(modifiedNode)}`);
 		createOrModifyJobsFromCollectionNode({

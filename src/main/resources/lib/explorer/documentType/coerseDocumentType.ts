@@ -1,4 +1,4 @@
-//import type {DocumentTypeNode} from '/lib/explorer-typescript/documentType/types.d';
+//import type {DocumentTypeNode} from '/lib/explorer/documentType/types.d';
 
 
 // It seems scoped packages are not resolved in *.mjs files,

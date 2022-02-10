@@ -1,4 +1,4 @@
-import type {CollectionNode} from '/lib/explorer-typescript/collection/types.d';
+import type {CollectionNode} from '/lib/explorer/collection/types.d';
 
 
 import {

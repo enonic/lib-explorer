@@ -1,3 +1,11 @@
+import type {
+	Name,
+	Path,
+	ParentPath
+} from '/lib/explorer/types.d';
+import type {WriteConnection} from '../node/WriteConnection.d';
+import type {Field} from './types.d';
+
 import {
 	forceArray//,
 	//toStr
@@ -9,7 +17,7 @@ import {
 import {connect} from '/lib/explorer/repo/connect';
 
 //@ts-ignore
-import {reference} from '/lib/xp/value';
+//import {reference} from '/lib/xp/value';
 
 import {
 	NAME_DOCUMENT_TYPE_FOLDER,
@@ -24,17 +32,21 @@ export function createDocumentType({
 	_name,
 	addFields = true,
 	properties = []
+} :{
+	_name: Name
+	addFields? :boolean
+	properties? :Array<Field>
 }) {
 	//log.debug(`_name:${_name} addFields:${addFields} fields:${toStr(fields)} properties:${toStr(properties)}`);
-	const writeConnection = connect({ principals: [PRINCIPAL_EXPLORER_WRITE] });
+	const writeConnection = connect({ principals: [PRINCIPAL_EXPLORER_WRITE] }) as WriteConnection;
 	if (!writeConnection.exists(PATH_DOCUMENT_TYPE_FOLDER)) {
 		writeConnection.create({
 			_name: NAME_DOCUMENT_TYPE_FOLDER,
 			_nodeType: NT_FOLDER
 		});
 	}
-	const _parentPath = PATH_DOCUMENT_TYPE_FOLDER;
-	const _path = `${_parentPath}/${_name}`;
+	const _parentPath :ParentPath = PATH_DOCUMENT_TYPE_FOLDER;
+	const _path :Path = `${_parentPath}/${_name}`;
 	if (writeConnection.exists(_path)) {
 		throw new Error(`A documentType with _name:${_name} already exists!`);
 	}

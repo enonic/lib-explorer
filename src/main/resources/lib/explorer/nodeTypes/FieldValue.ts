@@ -23,6 +23,7 @@ export class FieldValue extends Node {
 		}
 		super({
 			_parentPath,
+			//@ts-ignore
 			fieldReference: getReference({
 				connection,
 				path: _parentPath

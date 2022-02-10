@@ -11,6 +11,7 @@ import {
 	create as createJob,
 	get as getJob,
 	modify as modifyJob
+	//@ts-ignore
 } from '/lib/xp/scheduler';
 
 

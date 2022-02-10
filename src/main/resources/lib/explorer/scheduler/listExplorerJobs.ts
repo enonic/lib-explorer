@@ -1,6 +1,8 @@
 //import {toStr} from '@enonic/js-utils';
 
 import {APP_EXPLORER} from '/lib/explorer/model/2/constants';
+
+//@ts-ignore
 import {list as listJobs} from '/lib/xp/scheduler';
 
 

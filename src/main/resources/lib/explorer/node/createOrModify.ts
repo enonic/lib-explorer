@@ -1,7 +1,7 @@
 import type {
-	NodeCreateParams,
-	NodeModifyParams
-} from '/lib/explorer-typescript/types.d';
+	NodeCreateParams//,
+	//NodeModifyParams
+} from '/lib/explorer/types.d';
 import type {WriteConnection} from './WriteConnection.d';
 
 import {

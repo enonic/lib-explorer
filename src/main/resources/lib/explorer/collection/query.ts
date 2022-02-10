@@ -1,7 +1,12 @@
 import type {
 	QueryFilters,
 	RepoConnection
-} from '/lib/explorer-typescript/types.d';
+} from '/lib/explorer/types.d';
+import type {
+	CollectionNode,
+	QueriedCollection
+} from './types.d';
+
 
 import {
 	addQueryFilter,
@@ -66,31 +71,36 @@ export function query({
 	};
 	//log.debug(`queryParams:${toStr(queryParams)}`);
 
-	const queryRes = connection.query(queryParams) as {
+	const queryRes = connection.query(queryParams);
+
+	const collectionQueryRes :{
 		count :number
-		hits :Array<{
-			//_score :string
-			id :string
-			score :string
-		}>
-		page :number
-		pageStart :number
-		pageEnd :number
-		pagesTotal :number
+		hits :Array<QueriedCollection>
 		total :number
+		// Optional
+		page? :number
+		pageStart? :number
+		pageEnd? :number
+		pagesTotal? :number
+	} = {
+		count: queryRes.count,
+		hits: queryRes.hits.map(({
+			id,
+			score
+		}) => ({
+			...connection.get(id) as CollectionNode,
+			_score: score
+		} as QueriedCollection)),
+		total: queryRes.total
 	};
+
 	if(isSet(intPage)) {
-		queryRes.page = intPage;
-		queryRes.pageStart = start + 1;
-		queryRes.pageEnd = Math.min(start + intPerPage, queryRes.total);
-		queryRes.pagesTotal = Math.ceil(queryRes.total / intPerPage);
+		collectionQueryRes.page = intPage;
+		collectionQueryRes.pageStart = start + 1;
+		collectionQueryRes.pageEnd = Math.min(start + intPerPage, queryRes.total);
+		collectionQueryRes.pagesTotal = Math.ceil(queryRes.total / intPerPage);
 	}
-	queryRes.hits = queryRes.hits.map(({
-		id,
-		score
-	}) => ({
-		...connection.get(id),
-		_score: score
-	}));
-	return queryRes;
+
+	//log.debug('queryParams:%s', toStr(queryParams));
+	return collectionQueryRes;
 }

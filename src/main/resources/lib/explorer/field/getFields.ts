@@ -1,4 +1,4 @@
-import type {RepoConnection} from '/lib/explorer-typescript/types.d';
+import type {RepoConnection} from '/lib/explorer/types.d';
 
 import {
 	VALUE_TYPE_STRING,

@@ -1,3 +1,8 @@
+import type {
+	Name,
+	ParentPath
+} from '/lib/explorer/types.d';
+
 import {
 	NT_THESAURUS
 } from '/lib/explorer/model/2/constants';
@@ -16,6 +21,9 @@ export function thesaurus({
 	},*/
 
 	...rest
+} :{
+	_name :Name
+	_parentPath :ParentPath
 }) {
 	delete rest['_id'];
 	delete rest['_path'];
