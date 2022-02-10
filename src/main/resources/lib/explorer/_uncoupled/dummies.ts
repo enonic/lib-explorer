@@ -1,4 +1,8 @@
 import type {
+	App,
+	Log
+} from '../../../index.d';
+import type {
 	AggregationsResponse,
 	Node,
 	NodeCreateParams

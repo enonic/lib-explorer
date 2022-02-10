@@ -1,4 +1,4 @@
-import type {ApplicationKey} from '../../../globals.d';
+import type {Application} from '../../../index.d';
 
 
 export type TaskName = string;
@@ -18,4 +18,4 @@ export interface Task {
     }
 }
 
-export type TaskDescriptor = `${ApplicationKey}:${TaskName}`;
+export type TaskDescriptor = `${Application.Key}:${TaskName}`;

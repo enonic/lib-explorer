@@ -1,4 +1,4 @@
-import type {ApplicationKey} from '../../../globals.d';
+import type {Application} from '../../../index.d';
 import type {RepoConnection} from '/lib/explorer/types.d';
 import type {Collection} from '../collection/types.d';
 import type {WriteConnection} from '../node/WriteConnection.d';
@@ -45,7 +45,7 @@ export function getCollectors({
 		appName,
 		collectTaskName
 	} :{
-		appName :ApplicationKey
+		appName :Application.Key
 		collectTaskName :TaskName
 	}) => {
 		collectors[`${appName}:${collectTaskName}` as TaskDescriptor] = true;

@@ -51,6 +51,7 @@
 		"build"
 	],
 	"files": [
+		"src/main/resources/index.d.ts",
 		"src/main/resources/lib/explorer/index.ts",
 		"src/main/resources/lib/explorer/_uncoupled/index.ts"
 	],
