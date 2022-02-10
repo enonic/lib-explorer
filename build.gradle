@@ -98,6 +98,19 @@ task rollup(type: NpxTask) {
 	//outputs.dir './build/resources/main/lib/' // processResources will delete the directory if this is not present
 }
 
+//──────────────────────────────────────────────────────────────────────────────
+// Webpack
+//──────────────────────────────────────────────────────────────────────────────
+task webpack(type:NodeTask) {
+	dependsOn yarn_install
+	mustRunAfter yarn_install
+	script = file('node_modules/webpack-cli/bin/cli.js')
+	args = [
+		'--color'
+	]
+	outputs.dir './build/resources/main/lib/' // processResources will delete the directory if this is not present
+}
+
 
 processResources {
 	exclude '**/.gitkeep'

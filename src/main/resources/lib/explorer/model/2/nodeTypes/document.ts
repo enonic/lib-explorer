@@ -1,4 +1,4 @@
-import type {ApplicationKey} from '../../../../../globals.d';
+import type {Application} from '../../../../../index.d';
 import type {
 	IndexConfigObject,
 	Name,
@@ -40,8 +40,8 @@ export function Document({
 	// Optional
 	_name? :Name
 	_parentPath? :ParentPath
-	collectorAppName? :ApplicationKey
-	collectorId? :TaskDescriptor | ApplicationKey
+	collectorAppName? :Application.Key
+	collectorId? :TaskDescriptor | Application.Key
 	collectorVersion? :string
 	//displayName? :string
 }) {

@@ -1,7 +1,7 @@
 import type {
 	App,
 	Log
-} from '../../../globals.d';
+} from '../../../index.d';
 import type {JavaBridge} from './types.d';
 
 //@ts-ignore
