@@ -8,8 +8,8 @@ import type {AddExtraFieldsToDocumentTypeParams} from './types';
 
 import {
 	VALUE_TYPE_GEO_POINT,
-	detectValueType//,
-	//toStr
+	detectValueType,
+	toStr
 } from '@enonic/js-utils';
 
 //import traverse from 'traverse'; //[!] Error: 'default' is not exported by node_modules/traverse/index.js
@@ -62,7 +62,7 @@ export function addExtraFieldsToDocumentType(
 			if (!field) { // Field has no definition
 				//log.debug(`field:${pathString} doesn't exist in documentType, adding...`);
 				const detectedType = detectValueType(value);
-				//log.debug(`field:${pathString} detectedType:${detectedType}`);
+				//log.debug('field:%s detectedType:%s', pathString, detectedType);
 				if (detectedType === VALUE_TYPE_GEO_POINT) {
 					this.block();
 				}
@@ -70,6 +70,9 @@ export function addExtraFieldsToDocumentType(
 					valueType: detectedType
 				}, javaBridge);
 				boolModified = true;
+				if (Array.isArray(value)) {
+					this.block();
+				}
 			} // if !field
 		}
 	}); // traverse

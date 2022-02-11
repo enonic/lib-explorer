@@ -34,7 +34,7 @@ const CREATED_DOCUMENT_TYPE_NODE = connection.create(DOCUMENT_TYPE);
 
 describe('document', () => {
 	describe('addExtraFieldsToDocumentType()', () => {
-		it(``, () => {
+		it(`handles all valueTypes`, () => {
 			const myObject = {
 				myBoolean: true,
 				myDateObj: new Date(),
@@ -184,5 +184,49 @@ describe('document', () => {
 				}, javaBridge)
 			);
 		}); // it
+		it(`doesn't make an entry per item in an array`, () => {
+			deepStrictEqual(
+				{
+					myArray: {
+						enabled: true,
+						fulltext: false,
+						includeInAllText: false,
+						max: 0,
+						min: 0,
+						nGram: false,
+						path: false,
+						valueType: 'string'
+					},
+					myObjArray: {
+						enabled: true,
+						fulltext: false,
+						includeInAllText: false,
+						max: 0,
+						min: 0,
+						nGram: false,
+						path: false,
+						valueType: 'set'
+					}
+				},
+				addExtraFieldsToDocumentType({
+					data: {
+						_id: '_id',
+						_name: '_name',
+						_path: '_path',
+						_versionKey: '_versionKey',
+						//[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
+						//[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+						myArray: ['one', 'two'],
+						myObjArray: [{
+							key: 'a'
+						},{
+							key: 'b'
+						}]
+					},
+					documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
+					fieldsObj: {}
+				}, javaBridge)
+			);
+		});
 	}); // describe addExtraFieldsToDocumentType
 }); // describe document
