@@ -2,7 +2,7 @@ export {
 	App,
 	Application,
 	Log
-} from './types';
+} from './types/index.d';
 
 // Global-modifying module, should be placed in moduleRoot/index.d.ts
 /*declare global {

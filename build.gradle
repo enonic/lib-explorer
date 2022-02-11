@@ -124,7 +124,9 @@ processResources {
 	exclude '**/*.sass'
 	exclude '**/*.scss'
 	exclude '**/*.styl'
-	exclude '**/*.ts'
+	//exclude '**/*.ts'
+
+	//include '**/*.d.ts'
 }
 
 processResources.mustRunAfter webpack
