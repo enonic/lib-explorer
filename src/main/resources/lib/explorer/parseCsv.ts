@@ -1,6 +1,10 @@
 //import {toStr} from '@enonic/js-utils';
 //import {csvParseRows} from 'd3-dsv/src/csv';
-import {csvParseRows} from 'd3-dsv'; // Resolve problems when building development build of app-explorer
+
+// This has resolve problems when building development build of app-explorer
+// But only when aliasing to build rather than src
+import {csvParseRows} from 'd3-dsv';
+
 //import {csvParseRows} from '../../../../../node_modules/d3-dsv/dist/d3-dsv.js';
 
 
