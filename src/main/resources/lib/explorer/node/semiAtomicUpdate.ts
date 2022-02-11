@@ -5,7 +5,9 @@ import {
 	toStr
 } from '@enonic/js-utils';
 import deepEqual from 'fast-deep-equal';
+
 import HumanDiff from 'human-object-diff';
+//import * as HumanDiff from 'human-object-diff'; // This fails when doing app-explorer development build
 
 const { diff: diffNode } = new HumanDiff({
 	objectName: 'node'

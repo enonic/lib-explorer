@@ -10,7 +10,9 @@ import {
 } from '@enonic/js-utils';
 //import {detailedDiff} from 'deep-object-diff';
 import deepEqual from 'fast-deep-equal';
+
 import HumanDiff from 'human-object-diff';
+//import * as HumanDiff from 'human-object-diff'; // This fails when doing app-explorer development build
 
 //import {getCachedDocumentType} from '/lib/explorer/documentType/documentTypesCache';
 import {

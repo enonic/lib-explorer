@@ -18,8 +18,8 @@ import * as Diff from 'diff';
 import fastDeepEqual from 'fast-deep-equal';
 //import * as fastDeepEqual from 'fast-deep-equal'; // (!) Cannot call a namespace ('fastDeepEqual')
 
-//import HumanDiff from 'human-object-diff';
-import * as HumanDiff from 'human-object-diff';
+import HumanDiff from 'human-object-diff';
+//import * as HumanDiff from 'human-object-diff'; // This fails when doing app-explorer development build
 
 import {FIELD_PATH_META} from '../../constants';
 
