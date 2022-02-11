@@ -22,7 +22,7 @@ import {
 } from '@enonic/js-utils';
 //import getIn from 'get-value';
 
-import {javaBridgeDummy} from '../dummies';
+//import {javaBridgeDummy} from '../dummies';
 
 
 function zeroOccurrences(value :unknown) :boolean {
@@ -50,7 +50,7 @@ export function validateOccurrences(
 		fields = [],
 		partial = false
 	} :ValidateOccurrencesParameters = {},
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) {
 	const {log} = javaBridge;
 	//log.debug(`validateOccurrences data:${toStr(data)}`);

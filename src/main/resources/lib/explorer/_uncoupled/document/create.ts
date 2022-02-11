@@ -53,7 +53,7 @@ import {
 	PRINCIPAL_EXPLORER_WRITE,
 	REPO_ID_EXPLORER
 } from '../../constants';
-import {javaBridgeDummy} from '../dummies';
+//import {javaBridgeDummy} from '../dummies';
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';
@@ -65,7 +65,7 @@ import {typeCastToJava} from './typeCastToJava';
 // dieOnError
 export function create(
 	createParameterObject :CreateParameterObject,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) {
 	if (notSet(createParameterObject)) {
 		throw new Error('create: parameter object is missing!');
@@ -97,20 +97,22 @@ export function create(
 		log,
 		stemmingLanguageFromLocale
 	} = javaBridge;
-	//log.debug(`collectionId:${collectionId}`);
-	//log.debug(`collectionName:${collectionName}`);
-	//log.debug(`collectorId:${collectorId}`);
-	//log.debug(`collectorVersion:${collectorVersion}`);
-	//log.debug(`data:${toStr(data)}`);
-	//log.debug(`documentTypeId:${documentTypeId}`);
-	//log.debug(`documentTypeName:${documentTypeName}`);
-	//log.debug(`fields:${toStr(fields)}`);
-	//log.debug(`language:${language}`);
-	//log.debug(`stemmingLanguage:${stemmingLanguage}`);
+	//log.debug('document.create: collectionId:%s', collectionId);
+	//log.debug('document.create: collectionName:%s', collectionName);
+	//log.debug('document.create: collectorId:%s', collectorId);
+	//log.debug('document.create: collectorVersion:%s', collectorVersion);
+	//log.debug('document.create: data:%s', toStr(data));
+	//log.debug('document.create: documentTypeId:%s', documentTypeId);
+	//log.debug('document.create: documentTypeName:%s', documentTypeName);
+	//log.debug('document.create: fields:%s', toStr(fields));
+	//log.debug('document.create: language:%s', language);
+	//log.debug('document.create: stemmingLanguage:%s', stemmingLanguage);
 
-	//log.debug(`addExtraFields:${addExtraFields}`);
-	//log.debug(`validateOccurrences:${validateOccurrences}`);
-	//log.debug(`validateTypes:${validateTypes}`);
+	//log.debug('document.create: addExtraFields:%s', addExtraFields);
+	//log.debug('document.create: cleanExtraFields:%s', cleanExtraFields);
+	//log.debug('document.create: requireValid:%s', requireValid);
+	//log.debug('document.create: validateOccurrences:%s', validateOccurrences);
+	//log.debug('document.create: validateTypes:%s', validateTypes);
 
 	//──────────────────────────────────────────────────────────────────────────
 	// Checking required parameters
@@ -225,8 +227,10 @@ export function create(
 				documentTypeName = documentTypeNode['_name'];
 			}
 			if (notSet(fields)) {
-				fields = forceArray(documentTypeNode['properties']);
-				//log.debug(`create() fields:${toStr(fields)}`);
+				//log.debug("document.create: documentTypeNode:%s", toStr(documentTypeNode));
+				//log.debug("document.create: documentTypeNode['properties']:%s", toStr(documentTypeNode['properties'])); // undefined
+				fields = isSet(documentTypeNode['properties']) ? forceArray(documentTypeNode['properties']) : [];
+				//log.debug('document.create: fields:%s', toStr(fields));
 			}
 		}
 	}
@@ -237,9 +241,22 @@ export function create(
 		stemmingLanguage = stemmingLanguageFromLocale(language);
 	}
 
+	//──────────────────────────────────────────────────────────────────────────
+
+	//log.debug('document.create: collectionId:%s', collectionId);
+	//log.debug('document.create: collectionName:%s', collectionName);
+	//log.debug('document.create: collectorId:%s', collectorId);
+	//log.debug('document.create: collectorVersion:%s', collectorVersion);
+	//log.debug('document.create: data:%s', toStr(data));
+	//log.debug('document.create: documentTypeId:%s', documentTypeId);
+	//log.debug('document.create: documentTypeName:%s', documentTypeName);
+	//log.debug('document.create: fields:%s', toStr(fields));
+	//log.debug('document.create: language:%s', language);
+	//log.debug('document.create: stemmingLanguage:%s', stemmingLanguage);
+
 	//let myFields = JSON.parse(JSON.stringify(fields));
 	let fieldsObj = fieldsArrayToObj(fields, javaBridge);
-	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);
+	//log.debug('document.create: fieldsObj:%s', toStr(fieldsObj));
 
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({

@@ -15,7 +15,7 @@ import type {ValidateParameters} from './types.d';
 
 import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
 
-import {javaBridgeDummy} from '../dummies';
+//import {javaBridgeDummy} from '../dummies';
 import {fieldsObjToArray} from './field';
 import {validateOccurrences} from './validateOccurrences';
 import {validateTypes} from './validateTypes';
@@ -29,13 +29,13 @@ export function validate(
 		validateOccurrences: boolValidateOccurrences = false,
 		validateTypes: boolValidateTypes = true
 	}: ValidateParameters,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) {
 	//const {log} = javaBridge;
 	//log.debug(`data:${toStr(data)}`);
 	//log.debug(`fields:${toStr(fields)}`);
 	//log.debug(`boolValidateOccurrences:${toStr(boolValidateOccurrences)}`);
-	const fields = fieldsObjToArray(fieldsObj);
+	const fields = fieldsObjToArray(fieldsObj, javaBridge);
 
 	if (boolValidateOccurrences) {
 		if (!validateOccurrences({ data, fields, partial }, javaBridge)) {

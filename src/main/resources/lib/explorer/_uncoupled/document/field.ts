@@ -32,7 +32,7 @@ import {
 	toStr
 } from '@enonic/js-utils';
 
-import {javaBridgeDummy} from '../dummies';
+//import {javaBridgeDummy} from '../dummies';
 
 
 const BOOLEAN_PROPS = ['enabled', 'fulltext', 'includeInAllText', 'nGram',
@@ -64,7 +64,7 @@ Object.freeze(VALUE_TYPES);
 
 export function isField(
 	value :unknown,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) :value is Field {
 	const {log} = javaBridge;
 	//log.debug('isField() value:%s', value);
@@ -109,7 +109,7 @@ export function isField(
 
 export function isFields(
 	fields :unknown,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) :fields is Fields {
 	//const {log} = javaBridge;
 	//log.debug('isFields() fields:%s', fields);
@@ -128,7 +128,7 @@ export function isFields(
 
 export function applyDefaultsToField(
 	field :Partial<Field>,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) :Readonly<Required<Field>> {
 	//const {log} = javaBridge;
 	if (!isField(field, javaBridge)) {
@@ -167,7 +167,7 @@ export function applyDefaultsToField(
 export function fieldsArrayToObj(
 	//field :Fields | Field,
 	fields :Fields,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) :FieldsObject {
 	//const fields = forceArray(field);
 	if (!isFields(fields, javaBridge)) { // NOTE Allowing empty array
@@ -186,7 +186,7 @@ export function fieldsArrayToObj(
 
 export function fieldsObjToArray(
 	fieldsObj :FieldsObject,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) :Fields {
 	return Object.keys(fieldsObj).map(pathString => ({
 		...applyDefaultsToField(fieldsObj[pathString], javaBridge),
@@ -197,7 +197,7 @@ export function fieldsObjToArray(
 
 export function addMissingSetToFieldsArray(
 	fields :Fields,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) :Fields {
 	const {log} = javaBridge;
 	if (!isFields(fields, javaBridge)) { // NOTE Allowing empty array

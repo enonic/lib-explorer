@@ -47,7 +47,7 @@ import {
 //import getIn from 'get-value';
 //import {v4 as isUuid4} from 'is-uuid';
 
-import {javaBridgeDummy} from '../dummies';
+//import {javaBridgeDummy} from '../dummies';
 
 
 // Any Float number with a zero decimal part are implicitly cast to Integer,
@@ -67,7 +67,7 @@ export function validateTypes(
 		data = {},
 		fields = []
 	} :ValidateTypesParameters = {},
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) {
 	const {log} = javaBridge;
 	//log.debug(`validateTypes data:${toStr(data)}`);

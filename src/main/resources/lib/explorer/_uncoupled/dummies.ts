@@ -10,7 +10,7 @@ import type {
 import type {
 	ConnectFunction,
 	GeoPointFunction,
-	JavaBridge,
+	//JavaBridge,
 	StringFunction,
 	UnknownFunction,
 } from '../_coupling/types.d';
@@ -113,11 +113,11 @@ export const stemmingLanguageFromLocaleDummy = (locale :string) => {
 	return 'en';
 }
 
-export const javaBridgeDummy :JavaBridge = {
+/*export const javaBridgeDummy :JavaBridge = {
 	app: appDummy,
 	connect: connectDummy,
 	log: logDummy,
 	repo: libRepoDummy,
 	value: libValueDummy,
 	stemmingLanguageFromLocale: stemmingLanguageFromLocaleDummy
-};
+};*/

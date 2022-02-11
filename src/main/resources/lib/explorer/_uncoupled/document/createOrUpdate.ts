@@ -97,11 +97,11 @@ export function createOrUpdate(
 		repoId
 	});
 
-	// Even though the documentation says it should always return an array, it also returns false
+	// Even though the documentation says it should always return an array, it returns true or false when input is a single id or path.
 	const existsRes = collectionRepoReadConnection.exists(_path);
-	//log.info('existsRes:%s', existsRes);
+	//log.debug('document.createOrUpdate: existsRes:%s', existsRes);
 
-	if (existsRes && existsRes.includes(_path)) { // TypeError: collectionRepoReadConnection.exists(_path).indexOf is not a function
+	if (existsRes /*&& existsRes.includes(_path)*/) { // TypeError: collectionRepoReadConnection.exists(_path).indexOf is not a function
 		return update(createOrUpdateParameterObject, javaBridge);
 	}
 
