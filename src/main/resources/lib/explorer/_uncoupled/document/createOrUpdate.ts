@@ -96,8 +96,14 @@ export function createOrUpdate(
 		principals: [PRINCIPAL_EXPLORER_READ],
 		repoId
 	});
-	if (collectionRepoReadConnection.exists(_path).includes(_path)) {
+
+	// Even though the documentation says it should always return an array, it also returns false
+	const existsRes = collectionRepoReadConnection.exists(_path);
+	//log.info('existsRes:%s', existsRes);
+
+	if (existsRes && existsRes.includes(_path)) { // TypeError: collectionRepoReadConnection.exists(_path).indexOf is not a function
 		return update(createOrUpdateParameterObject, javaBridge);
 	}
+
 	return create(createOrUpdateParameterObject, javaBridge);
 }
