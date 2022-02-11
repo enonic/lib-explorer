@@ -33,7 +33,7 @@
 		"resolveJsonModule": true,
 		"rootDir": "./",
 		"rootDirs": [
-			"src/main/typeScript",
+			"src/main/resources",
 			"node_modules",
 			"test"
 		],
@@ -59,7 +59,6 @@
 		"node_modules/@enonic/js-utils/src",
 		"src/main/resources/**/*.ts",
 		"src/main/resources/**/*.es",
-		"src/main/typeScript/**/*.ts",
 		//"test/**/*.ts"
   ]
 }
