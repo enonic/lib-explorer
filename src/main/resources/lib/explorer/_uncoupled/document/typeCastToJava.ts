@@ -1,12 +1,10 @@
 import type {
 	JavaBridge,
 	GeoPointArray
-} from '../../_coupling/types.d';
-import type {Field} from '../../documentType/types.d'
-import type {
-	DocumentNode,
-	TypeCastToJavaParameters
-} from './types.d'
+} from '/lib/explorer/_coupling/types.d';
+import type {Field} from '/lib/explorer/documentType/types.d'
+import type {DocumentNode} from '/lib/explorer/document/types.d'
+import type {TypeCastToJavaParameters} from './types.d'
 
 
 import {
@@ -44,9 +42,7 @@ import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META,
 } from '../../constants';
-import {
-	javaBridgeDummy
-} from '../dummies';
+//import {javaBridgeDummy} from '../dummies';
 
 
 export function typeCastToJava(
@@ -54,7 +50,7 @@ export function typeCastToJava(
 		data = {},
 		fieldsObj = {}
 	} :TypeCastToJavaParameters,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) :DocumentNode {
 	const {
 		log,
@@ -68,8 +64,8 @@ export function typeCastToJava(
 			reference
 		}
 	} = javaBridge;
-	//log.debug(`typeCastToJava data:${toStr(data)}`);
-	log.debug(`typeCastToJava fieldsObj:${toStr(fieldsObj)}`);
+	//log.debug('typeCastToJava data:%s', toStr(data));
+	//log.debug('typeCastToJava fieldsObj:%s', toStr(fieldsObj));
 	const typeCastedData :DocumentNode = JSON.parse(JSON.stringify(data));
 	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
 		if (
@@ -78,8 +74,11 @@ export function typeCastToJava(
 			&& !this.circular // Why?
 		) {
 			const pathString = this.path.join('.');
-			//log.debug(`pathString:${toStr(pathString)}`);
+			//log.debug('pathString:%s', pathString);
+
 			const fieldObjWithoutName = getIn(fieldsObj, pathString) as Required<Omit<Field, 'name'>>;
+			//log.debug('fieldObjWithoutName:%s', toStr(fieldObjWithoutName));
+
 			const {
 				valueType: valueTypeForPath
 			} = fieldObjWithoutName;

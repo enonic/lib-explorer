@@ -1,11 +1,11 @@
-import type {JavaBridge} from '../../_coupling/types.d';
-import type {CollectionNode} from '../../collection/types.d';
-import type {DocumentTypeNode} from '../../documentType/types.d';
+import type {JavaBridge} from '/lib/explorer/_coupling/types.d';
+import type {CollectionNode} from '/lib/explorer/collection/types.d';
 import type {
 	DocumentNode,
-	RequiredMetaData,
-	UpdateParameterObject
-} from './types';
+	RequiredMetaData
+} from '/lib/explorer/document/types.d';
+import type {DocumentTypeNode} from '/lib/explorer/documentType/types.d';
+import type {UpdateParameterObject} from './types';
 
 import {
 	forceArray,
@@ -27,8 +27,9 @@ import {
 	PRINCIPAL_EXPLORER_READ,
 	PRINCIPAL_EXPLORER_WRITE,
 	REPO_ID_EXPLORER
-} from '../../constants';
-import {javaBridgeDummy} from '../dummies';
+} from '/lib/explorer/constants';
+
+//import {javaBridgeDummy} from '../dummies';
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';
@@ -40,7 +41,7 @@ import {typeCastToJava} from './typeCastToJava';
 
 export function update(
 	updateParameterObject :UpdateParameterObject,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) {
 	const {
 		//connect, // destructure destroys this
@@ -72,6 +73,23 @@ export function update(
 		validateOccurrences = false,
 		validateTypes = requireValid
 	} = updateParameterObject;
+	//log.debug('document.update: collectionId:%s', collectionId);
+	//log.debug('document.update: collectionName:%s', collectionName);
+	//log.debug('document.update: collectorId:%s', collectorId);
+	//log.debug('document.update: collectorVersion:%s', collectorVersion);
+	//log.debug('document.update: data:%s', toStr(data));
+	//log.debug('document.update: documentTypeId:%s', documentTypeId);
+	//log.debug('document.update: documentTypeName:%s', documentTypeName);
+	//log.debug('document.update: fields:%s', toStr(fields));
+	//log.debug('document.update: language:%s', language);
+	//log.debug('document.update: stemmingLanguage:%s', stemmingLanguage);
+
+	//log.debug('document.update: addExtraFields:%s', addExtraFields);
+	//log.debug('document.update: cleanExtraFields:%s', cleanExtraFields);
+	//log.debug('document.update: partial:%s', partial);
+	//log.debug('document.update: requireValid:%s', requireValid);
+	//log.debug('document.update: validateOccurrences:%s', validateOccurrences);
+	//log.debug('document.update: validateTypes:%s', validateTypes);
 	//──────────────────────────────────────────────────────────────────────────
 	// Checking required parameters
 	//──────────────────────────────────────────────────────────────────────────
@@ -118,8 +136,13 @@ export function update(
 	}
 
 	const {
-		_id: documentNodeId
+		_id: documentNodeId,
+		//_name: documentNodeName,
+		//_parentPath : documentNodeParentPath = '/',
+		//_path: documentNodePath = documentNodeName ? `${documentNodeParentPath}${documentNodeName}` : undefined
 	} = data;
+	//const documentNodeKey = documentNodeId || documentNodePath;
+
 	if (notSet(documentNodeId)) {
 		throw new Error("update: parameter data: missing required property '_id'!");
 	} else if (!isUuidV4String(documentNodeId)){
@@ -199,7 +222,7 @@ export function update(
 				documentTypeName = documentTypeNode['_name'];
 			}
 			if (notSet(fields)) {
-				fields = forceArray(documentTypeNode['properties']);
+				fields = isSet(documentTypeNode['properties']) ? forceArray(documentTypeNode['properties']) : [];
 				//log.debug(`fields:${toStr(fields)}`);
 			}
 		}
@@ -243,9 +266,22 @@ export function update(
 		stemmingLanguage = stemmingLanguageFromLocale(language);
 	}
 
+	//──────────────────────────────────────────────────────────────────────────
+
+	//log.debug('document.update: collectionId:%s', collectionId);
+	//log.debug('document.update: collectionName:%s', collectionName);
+	//log.debug('document.update: collectorId:%s', collectorId);
+	//log.debug('document.update: collectorVersion:%s', collectorVersion);
+	//log.debug('document.update: data:%s', toStr(data));
+	//log.debug('document.update: documentTypeId:%s', documentTypeId);
+	//log.debug('document.update: documentTypeName:%s', documentTypeName);
+	//log.debug('document.update: fields:%s', toStr(fields));
+	//log.debug('document.update: language:%s', language);
+	//log.debug('document.update: stemmingLanguage:%s', stemmingLanguage);
+
 	//let myFields = JSON.parse(JSON.stringify(fields));
 	let fieldsObj = fieldsArrayToObj(fields, javaBridge);
-	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);
+	//log.debug('document.create: fieldsObj:%s', toStr(fieldsObj));
 
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({

@@ -24,8 +24,9 @@ import {update as updateDocumentType} from '../documentType/update'
 import {
 	//addMissingSetToFieldsArray,
 	applyDefaultsToField,
+	fieldsObjToArray
 } from './field';
-import {javaBridgeDummy} from '../dummies';
+//import {javaBridgeDummy} from '../dummies';
 
 
 
@@ -35,10 +36,12 @@ export function addExtraFieldsToDocumentType(
 		documentTypeId,
 		fieldsObj
 	} :AddExtraFieldsToDocumentTypeParams,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) :FieldsObject {
 	//const {log} = javaBridge;
-	//log.debug(`data:${toStr(data)}`);
+	//log.debug('document.addExtraFieldsToDocumentType: data:%s', toStr(data));
+	//log.debug('document.addExtraFieldsToDocumentType: documentTypeId:%s', documentTypeId);
+	//log.debug('document.addExtraFieldsToDocumentType: fieldsObj:%s', toStr(fieldsObj));
 	const returnFieldsObj = JSON.parse(JSON.stringify(fieldsObj));
 	let boolModified = false;
 	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
@@ -67,11 +70,12 @@ export function addExtraFieldsToDocumentType(
 			} // if !field
 		}
 	}); // traverse
+	//log.debug('document.addExtraFieldsToDocumentType: boolModified:%s', boolModified);
 	if (boolModified) {
 		updateDocumentType({
 			_id: documentTypeId,
-			properties: returnFieldsObj
-		});
+			properties: fieldsObjToArray(returnFieldsObj, javaBridge)
+		}, javaBridge);
 	}
 	return returnFieldsObj;
 }

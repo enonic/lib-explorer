@@ -15,7 +15,7 @@ import {
 	FIELD_PATH_META
 //} from '/lib/explorer/constants';
 } from '../../constants';
-import {javaBridgeDummy} from '../dummies';
+//import {javaBridgeDummy} from '../dummies';
 
 
 export function cleanData(
@@ -24,7 +24,7 @@ export function cleanData(
 		data,
 		fieldsObj = {}
 	} :CleanDataParameters,
-	javaBridge :JavaBridge = javaBridgeDummy
+	javaBridge :JavaBridge// = javaBridgeDummy
 ) :LooseObject {
 	const {log} = javaBridge;
 	//log.debug('cleanData() data:%s', data);

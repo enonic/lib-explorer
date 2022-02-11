@@ -27,10 +27,13 @@
 // leave the pitfalls in the hands of the Collector developer.
 //──────────────────────────────────────────────────────────────────────────────
 import type {
+	Id,
 	Name,
-	ParentPath
+	ParentPath//,
+	//RequiredNodeProperties
 } from '/lib/explorer/types.d';
 import type {CollectionNode} from '/lib/explorer/collection/types.d';
+import type {DocumentNode} from '/lib/explorer/document/types.d';
 //import type {FieldsObject} from '/lib/explorer/documentType/types.d';
 import type {MsgUri} from '../journal/types.d';
 import type {Progress} from '../task/progress';
@@ -136,7 +139,11 @@ export class Collector {
 		language? :string
 		name? :string
 	}) {
-		//log.info(toStr({name, collectorId, configJson}));
+		log.debug('Collector.constructor: collectionId:%s', collectionId);
+		//log.debug('Collector.constructor: collectorId:%s', collectorId);
+		//log.debug('Collector.constructor: configJson:%s', configJson);
+		//log.debug('Collector.constructor: language:%s', language);
+		//log.debug('Collector.constructor: name:%s', name);
 
 		/*if (!collectionId) { // TODO lib-explorer-5.0.0
 			throw new Error('Collector.constructor: Missing required parameter collectionId!');
@@ -278,6 +285,7 @@ export class Collector {
 		...rest // Slurps properties
 	} :{
 		uri :string
+		_id? :Id
 		_name? :Name
 		_parentPath? :ParentPath
 	}, {
@@ -335,6 +343,23 @@ export class Collector {
 		};
 		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
 
+		const path = `${_parentPath}${_name}`;
+		//log.debug(`path:${path}`);
+
+		const existingNode = this.collection.connection.get(path) as DocumentNode;
+		//log.debug(`existingNode:${toStr(existingNode)}`);
+
+		if (existingNode) {
+			documentToPersist._id = existingNode._id; // createOrUpdate doesn't support _path only _id
+		}
+		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
+
+		log.debug('Collector.persistDocument: collectionId:%s', this.#collectionId);
+		//log.debug('Collector.persistDocument: collectorId:%s', this.#collectorId);
+		//log.debug('Collector.persistDocument: collectorVersion:%s', app.version);
+		//log.debug('Collector.persistDocument: data:%s', toStr(documentToPersist));
+		//log.debug('Collector.persistDocument: language:%s', this.#language);
+		//log.debug('Collector.persistDocument: requireValid:%s', boolRequireValid);
 		const persistedNode = createOrUpdate({
 			collectionId: this.#collectionId,
 			//collectionName: this.collectionName, // Perhaps later
