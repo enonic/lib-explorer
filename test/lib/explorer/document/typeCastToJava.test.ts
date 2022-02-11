@@ -6,7 +6,10 @@ import {
 } from '../../../../build/rollup/index.js';
 import {log} from '../../../dummies';
 
-const {typeCastToJava} = document;
+const {
+	fieldsArrayToObj,
+	typeCastToJava
+} = document;
 
 
 const javaBridge = new JavaBridge({
@@ -75,6 +78,8 @@ const FIELDS = [{
 }];
 
 
+const FIELDS_OBJ = fieldsArrayToObj(FIELDS, javaBridge);
+
 const TESTS = [{
 	data: {
 		any: 'any',
@@ -90,9 +95,9 @@ const TESTS = [{
 		reference: 'c51c80c2-66a1-442a-91e2-4f55b4256a72',
 		//set: {}, // TODO
 		string: 'string',
-		x: 'x'
+		x: 'x' // Extra field which is not defined in documentType thus cannot be typeCasted
 	},
-	fields: FIELDS
+	fieldsObj: FIELDS_OBJ
 },{
 	data: {
 		//any: 'any',
@@ -110,7 +115,7 @@ const TESTS = [{
 		//string: 'string',
 		//x: 'x'
 	},
-	fields: FIELDS
+	fieldsObj: FIELDS_OBJ
 }];
 
 

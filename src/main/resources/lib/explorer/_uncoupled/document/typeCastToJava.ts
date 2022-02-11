@@ -35,7 +35,7 @@ import {
 //import getIn from 'get-value';
 //import setIn from 'set-value';
 
-import traverse from 'traverse';
+//import traverse from 'traverse'; //[!] Error: 'default' is not exported by node_modules/traverse/index.js
 //import * as traverse from 'traverse'; //(!) Cannot call a namespace ('traverse')
 
 import {
@@ -43,6 +43,8 @@ import {
 	FIELD_PATH_META,
 } from '../../constants';
 //import {javaBridgeDummy} from '../dummies';
+
+const traverse = require('traverse');
 
 
 export function typeCastToJava(
@@ -76,7 +78,7 @@ export function typeCastToJava(
 			const pathString = this.path.join('.');
 			//log.debug('pathString:%s', pathString);
 
-			const fieldObjWithoutName = getIn(fieldsObj, pathString) as Required<Omit<Field, 'name'>>;
+			const fieldObjWithoutName = getIn(fieldsObj, pathString, {}) as Required<Omit<Field, 'name'>>;
 			//log.debug('fieldObjWithoutName:%s', toStr(fieldObjWithoutName));
 
 			const {

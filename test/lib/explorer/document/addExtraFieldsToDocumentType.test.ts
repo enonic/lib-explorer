@@ -6,6 +6,10 @@ import {
 	FIELD_PATH_META,
 	document
 } from '../../../../build/rollup/index.js';
+import {
+	DOCUMENT_TYPE,
+	DOCUMENT_TYPES_FOLDER
+} from '../../../testData';
 import {log} from '../../../dummies';
 
 const {addExtraFieldsToDocumentType} = document;
@@ -18,6 +22,15 @@ const javaBridge = new JavaBridge({
 	},
 	log
 });
+javaBridge.repo.create({
+	id: 'com.enonic.app.explorer'
+});
+const connection = javaBridge.connect({
+	repoId: 'com.enonic.app.explorer',
+	branch: 'master'
+});
+connection.create(DOCUMENT_TYPES_FOLDER);
+const CREATED_DOCUMENT_TYPE_NODE = connection.create(DOCUMENT_TYPE);
 
 describe('document', () => {
 	describe('addExtraFieldsToDocumentType()', () => {
@@ -166,6 +179,7 @@ describe('document', () => {
 						myString: 'myString',
 						myObject
 					},
+					documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
 					fieldsObj
 				}, javaBridge)
 			);

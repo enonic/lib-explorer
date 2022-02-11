@@ -40,7 +40,7 @@ describe('document', () => {
 				validate({
 					data: {},
 					fieldsObj: {},
-					validateOccurences: true
+					validateOccurrences: true
 				}, javaBridge)
 			);
 		});
