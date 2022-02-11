@@ -8,23 +8,30 @@ import {
 	toStr
 } from '@enonic/js-utils';
 
-import {detailedDiff} from 'deep-object-diff/dist/detailed';/* as {
+//import {detailedDiff} from 'deep-object-diff/dist/detailed'; // [!] Error: 'detailedDiff' is not exported by node_modules/deep-object-diff/dist/detailed/index.js
+/* as {
 	detailedDiff :(a: object, b:object) => object
 };*/
 //import * as deepObjectDiff from 'deep-object-diff';
 
-import * as Diff from 'diff';
+//import * as Diff from 'diff';
 
-import fastDeepEqual from 'fast-deep-equal';
+//import fastDeepEqual from 'fast-deep-equal'; // [!] Error: 'default' is not exported by node_modules/fast-deep-equal/index.js
 //import * as fastDeepEqual from 'fast-deep-equal'; // (!) Cannot call a namespace ('fastDeepEqual')
 
-import HumanDiff from 'human-object-diff';
+//import HumanDiff from 'human-object-diff'; // [!] Error: 'default' is not exported by node_modules/human-object-diff/index.js
 //import * as HumanDiff from 'human-object-diff'; // This fails when doing app-explorer development build
 
 import {FIELD_PATH_META} from '../../constants';
 
+const deepObjectDiff = require('deep-object-diff');
+const Diff = require('diff');
+const fastDeepEqual = require('fast-deep-equal');
+const HumanDiff = require('human-object-diff');
 
-//const {detailedDiff} = deepObjectDiff;
+const {detailedDiff} = deepObjectDiff;
+
+const {diffJson} = Diff;
 
 const { diff: diffDocument } = new HumanDiff({
 	objectName: 'document'
@@ -61,7 +68,7 @@ export function documentUnchanged(
 			log.debug(`Changes detected in document with id:${id} diff:${toStr(diffDocument(exisitingDocument, maybeChangedDocument))}`);
 		} catch (e) {
 			try {
-				log.debug(`Changes detected in document with id:${id} diff:${toStr(Diff.diffJson(exisitingDocument, maybeChangedDocument))}`);
+				log.debug(`Changes detected in document with id:${id} diff:${toStr(diffJson(exisitingDocument, maybeChangedDocument))}`);
 			} catch (e) {
 				// No-op :)
 			} // catch3

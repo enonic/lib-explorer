@@ -22,8 +22,9 @@ export default {
 		'/lib/xp/value',
 	],
 	input: {
-		'src/main/resources/lib/explorer/index': 'src/main/resources/lib/explorer/index.ts',
-		'src/main/resources/lib/explorer/_uncoupled/index': 'src/main/resources/lib/explorer/_uncoupled/index.ts',
+		//'src/main/resources/lib/explorer/index': 'src/main/resources/lib/explorer/index.ts',
+		//'src/main/resources/lib/explorer/_uncoupled/index': 'src/main/resources/lib/explorer/_uncoupled/index.ts',
+		'index': 'src/main/resources/lib/explorer/_uncoupled/index.ts',
 	},
 	//input: 'build/tsc/src/main/resources/lib/explorer/index.js', // Not TypeScript
 	//input: 'build/swc/src/main/resources/lib/explorer/index.js',

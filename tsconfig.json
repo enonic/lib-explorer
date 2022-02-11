@@ -6,6 +6,7 @@
 		"declaration": false,
 		"declarationMap": false,
 		"downlevelIteration": true,
+		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"importHelpers": true,
 		"importsNotUsedAsValues": "remove",
@@ -44,7 +45,8 @@
 		"target": "es6",
 		"types": [
 			"mocha",
-			"node"
+			"node",
+			"traverse"
 		]
 	},
 	"exclude": [

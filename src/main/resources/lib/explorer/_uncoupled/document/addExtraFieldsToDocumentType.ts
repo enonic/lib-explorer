@@ -12,8 +12,10 @@ import {
 	//toStr
 } from '@enonic/js-utils';
 
-import traverse from 'traverse';
+//import traverse from 'traverse'; //[!] Error: 'default' is not exported by node_modules/traverse/index.js
 //import * as traverse from 'traverse'; //(!) Cannot call a namespace ('traverse')
+//import traverse = require('traverse'); // Import assignment cannot be used when targeting ECMAScript modules. Consider using 'import * as ns from "mod"', 'import {a} from "mod"', 'import d from "mod"', or another module format instead.
+// module.exports is a function
 //const traverse = require('traverse');
 
 import {
@@ -28,6 +30,7 @@ import {
 } from './field';
 //import {javaBridgeDummy} from '../dummies';
 
+const traverse = require('traverse');
 
 
 export function addExtraFieldsToDocumentType(

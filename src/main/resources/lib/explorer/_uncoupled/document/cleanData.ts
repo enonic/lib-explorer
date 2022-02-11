@@ -7,7 +7,7 @@ import type {CleanDataParameters} from './types';
 //import {toStr} from '@enonic/js-utils/src';
 //import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
 
-import traverse from 'traverse';
+//import traverse from 'traverse'; //[!] Error: 'default' is not exported by node_modules/traverse/index.js
 //import * as traverse from 'traverse'; //(!) Cannot call a namespace ('traverse')
 
 import {
@@ -16,6 +16,8 @@ import {
 //} from '/lib/explorer/constants';
 } from '../../constants';
 //import {javaBridgeDummy} from '../dummies';
+
+const traverse = require('traverse');
 
 
 export function cleanData(
