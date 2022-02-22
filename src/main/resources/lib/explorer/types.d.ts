@@ -13,7 +13,8 @@ import type {IndexConfig} from './types/IndexConfig'
 export type {
 	PermissionsParams,
 	PrincipalKey,
-	PrincipalKeyRole
+	PrincipalKeyRole,
+	PrincipalKeyUser
 } from '@enonic/js-utils/src/mock/auth/';
 export type {
 	CreateRepoParams,
@@ -28,6 +29,16 @@ export type {
 	IndexConfigObject
 } from './types/IndexConfig';
 
+export type OneOrMore<T> = T | T[];
+export type Unset = undefined | null;
+export type ZeroOrMore<T> = Unset | OneOrMore<T>;
+
+export type NonEmptyArray<T> = [T, ...T[]]
+export type IsEmptyArray<T> = T extends any[]
+  ? T extends NonEmptyArray<any>
+    ? false
+    : true
+  : false
 
 export interface LooseObject {
 	//[key :PropertyKey] :unknown
@@ -62,7 +73,7 @@ export interface GetContext<
 
 export type Name = string;
 export type Id = string;
-export type ChildOrder = string;
+export type ChildOrder = `${string} ASC` | `${string} DESC`;
 export type Path = `/${string}`;
 export type State = string;
 export type NodeType = string;
@@ -97,13 +108,14 @@ export interface NodeModifyParams {
 }
 
 export interface NodeCreateParams {
-	_name?: Name; // Name of content.
-	_parentPath?: ParentPath; // Path to place content under.
+	_childOrder?: ChildOrder; // Default ordering of children when doing getChildren if no order is given in query
 	_indexConfig?: IndexConfig; // How the document should be indexed. A default value "byType" will be set if no value specified.
-	_permissions?: ReadonlyArray<PermissionsParams>; // The access control list for the node. By default the creator will have full access
 	_inheritsPermissions?: boolean; // true if the permissions should be inherited from the node parent. Default is false.
 	_manualOrderValue?: number; // Value used to order document when ordering by parent and child-order is set to manual
-	_childOrder?: ChildOrder; // Default ordering of children when doing getChildren if no order is given in query
+	_name?: Name; // Name of content.
+	_nodeType? :string
+	_parentPath?: ParentPath; // Path to place content under.
+	_permissions?: ReadonlyArray<PermissionsParams>; // The access control list for the node. By default the creator will have full access
 }
 
 export interface NodeGetParams {
@@ -219,6 +231,7 @@ export interface RepoConnection {
 	* Deleting a node or nodes.
 	*/
 	delete(keys: string | ReadonlyArray<string>): ReadonlyArray<string>;
+	delete(...keys: ReadonlyArray<string>): ReadonlyArray<string>;
 
 	/**
 	* Resolves the differences for a node between current and given branch.

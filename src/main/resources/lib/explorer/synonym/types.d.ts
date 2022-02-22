@@ -1,9 +1,12 @@
-import type {RequiredNodeProperties} from '/lib/explorer/types.d';
+import type {
+	OneOrMore,
+	RequiredNodeProperties
+} from '/lib/explorer/types.d';
 
 
 export interface SynonymSpecific {
-	from :string|Array<string>
-	to :string|Array<string>
+	from :OneOrMore<string>
+	to :OneOrMore<string>
 	//displayName? :string
 	thesaurus :string
 	thesaurusReference :string

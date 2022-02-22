@@ -29,11 +29,13 @@ export function query({
 	sort = '_name ASC',
 	start = 0
 } :{
+	// Required
 	connection :RepoConnection
-	count :number
-	filters :QueryFilters
+	// Optional
+	count? :number
+	filters? :QueryFilters
 	query? :string
-	page :string//|number
+	page? :string//|number
 	perPage? :string//|number
 	sort? :string
 	start? :number

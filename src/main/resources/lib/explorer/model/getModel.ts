@@ -1,4 +1,5 @@
 import type {
+	GetContext,
 	PrincipalKeyRole,
 	RepoConnection
 } from '/lib/explorer/types.d';
@@ -22,7 +23,7 @@ export function getModel({
 	})
 } :{
 	branch? :string
-	context? :string
+	context? :GetContext
 	principals? :Array<PrincipalKeyRole>
 	repoId? :string
 	connection :RepoConnection

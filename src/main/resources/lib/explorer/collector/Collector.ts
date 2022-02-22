@@ -84,13 +84,14 @@ export class Collector {
 	public taskProgressObj :Progress // Public in lib-explorer-3.x
 
 	// "#" is js runtime and better than "private" typescript compiletime
-	//#collectionDefaultDocumentTypeId;
-	#collectionId :string; // New in lib-explorer-4.0.0
-	#collectionName :string; // Private from lib-explorer-4.0.0
-	#collectorId :string; // Private from lib-explorer-4.0.0
-	//#documentTypeObj :FieldsObject;
-	//#documentTypesObj;
-	#language :string; // Private in lib-explorer-3.x
+	// but cannot be used when target < "es6"
+	//_collectionDefaultDocumentTypeId;
+	private _collectionId :string; // New in lib-explorer-4.0.0
+	private _collectionName :string; // Private from lib-explorer-4.0.0
+	private _collectorId :string; // Private from lib-explorer-4.0.0
+	//_documentTypeObj :FieldsObject;
+	//_documentTypesObj;
+	private _language :string; // Private in lib-explorer-3.x
 
 	constructor({
 		collectionId,
@@ -165,8 +166,8 @@ export class Collector {
 				throw new Error(`Collector.constructor: Unable to get collection node with id:${collectionId}!`);
 			}
 			//log.debug(`collectionNode:${toStr(collectionNode)}`);
-			this.#collectionId = collectionId;
-			this.#collectionName = collectionNode._name;
+			this._collectionId = collectionId;
+			this._collectionName = collectionNode._name;
 		} else { // !collectionId // TODO remove in lib-explorer-5.0.0
 			if (name) {
 				log.warning(`Collector constructor: Parameter 'name' is deprecated in lib-explorer-4.0.0 and will be removed in lib-explorer-5.0.0, use collectionId instead!`);
@@ -178,33 +179,33 @@ export class Collector {
 					throw new Error(`Collector.constructor: Unable to find collection from name:${name}!`);
 				}
 				//log.debug(`collectionNode from name:${toStr(collectionNode)}`);
-				this.#collectionId = collectionNode._id;
-				this.#collectionName = name;
+				this._collectionId = collectionNode._id;
+				this._collectionName = name;
 			}
 		}
-		//log.debug(`this.#collectionId:${this.#collectionId}`);
-		//log.debug(`this.#collectionName:${this.#collectionName}`);
+		//log.debug(`this._collectionId:${this._collectionId}`);
+		//log.debug(`this._collectionName:${this._collectionName}`);
 
-		this.#collectorId = collectorId;
-		//log.debug(`this.#collectorId:${this.#collectorId}`);
+		this._collectorId = collectorId;
+		//log.debug(`this._collectorId:${this._collectorId}`);
 
-		//this.#documentTypeObj = documentTypeObj;
-		//this.#documentTypesObj = {};
+		//this._documentTypeObj = documentTypeObj;
+		//this._documentTypesObj = {};
 
 		if (language) {
-			//this.#language = javaLocaleToSupportedLanguage(language);
-			this.#language = language; // Reducing to stemmingLanguage happens inside create and update
+			//this._language = javaLocaleToSupportedLanguage(language);
+			this._language = language; // Reducing to stemmingLanguage happens inside create and update
 		}
-		//log.debug(`this.#language:${this.#language}`);
+		//log.debug(`this._language:${this._language}`);
 
 		// Collections created by Collectors doesn't have documentType...
 		/*if (collectionNode.documentTypeId) {
-			throw new Error(`The collection with id:${this.#collectionId} is missing a documentTypeId!`);
+			throw new Error(`The collection with id:${this._collectionId} is missing a documentTypeId!`);
 		}
-		this.#collectionDefaultDocumentTypeId = collectionNode.documentTypeId;
-		const documentTypeNode = explorerRepoReadConnection.get(this.#collectionDefaultDocumentTypeId);
-		this.#documentTypesObj[this.#collectionDefaultDocumentTypeId] = documentTypeNode;
-		log.debug(`this.#documentTypesObj:${this.#documentTypesObj}`);*/
+		this._collectionDefaultDocumentTypeId = collectionNode.documentTypeId;
+		const documentTypeNode = explorerRepoReadConnection.get(this._collectionDefaultDocumentTypeId);
+		this._documentTypesObj[this._collectionDefaultDocumentTypeId] = documentTypeNode;
+		log.debug(`this._documentTypesObj:${this._documentTypesObj}`);*/
 
 		/*const collectionsTotalCount = getTotalCount({ connection: explorerRepoReadConnection });
 		//log.info(`collectionsTotalCount:${collectionsTotalCount}`);
@@ -244,21 +245,21 @@ export class Collector {
 			current: 0,
 			total: 1, // Or it will appear as there is nothing to do.
 			info: {
-				name: this.#collectionName,
+				name: this._collectionName,
 				message: 'Initializing...',
 				startTime: this.startTime
 			}
 		};
 		DEBUG && log.debug(`Collector.start this.taskProgressObj:${toStr(this.taskProgressObj)}`);
 		this.progress();
-		this.collection = new Collection({name: this.#collectionName});
+		this.collection = new Collection({name: this._collectionName});
 		modifyTask({
 			connection: this.collection.connection,
 			state: 'RUNNING',
 			should: 'RUN'
 		});
 		this.journal = new Journal({
-			name: this.#collectionName,
+			name: this._collectionName,
 			startTime: this.startTime
 		});
 	} // start
@@ -354,24 +355,24 @@ export class Collector {
 		}
 		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
 
-		log.debug('Collector.persistDocument: collectionId:%s', this.#collectionId);
-		//log.debug('Collector.persistDocument: collectorId:%s', this.#collectorId);
+		log.debug('Collector.persistDocument: collectionId:%s', this._collectionId);
+		//log.debug('Collector.persistDocument: collectorId:%s', this._collectorId);
 		//log.debug('Collector.persistDocument: collectorVersion:%s', app.version);
 		//log.debug('Collector.persistDocument: data:%s', toStr(documentToPersist));
-		//log.debug('Collector.persistDocument: language:%s', this.#language);
+		//log.debug('Collector.persistDocument: language:%s', this._language);
 		//log.debug('Collector.persistDocument: requireValid:%s', boolRequireValid);
 		const persistedNode = createOrUpdate({
-			collectionId: this.#collectionId,
+			collectionId: this._collectionId,
 			//collectionName: this.collectionName, // Perhaps later
-			collectorId: this.#collectorId,
+			collectorId: this._collectorId,
 			collectorVersion: app.version,
 			//connection: this.collection.connection, // No longer needed in lib-explorer-4.0.0
 			data: documentToPersist,
 			//documentTypeId // Perhaps later
 			//documentTypeName // Perhaps later
-			//documentTypeObj: this.#documentTypeObj,
+			//documentTypeObj: this._documentTypeObj,
 			//fields: // Perhaps later
-			language: this.#language,
+			language: this._language,
 			//stemmingLanguage: // Perhaps later
 
 			//cleanExtraFields // TODO Perhaps later
@@ -429,7 +430,7 @@ export class Collector {
 					const emailParams = {
 						from: 'explorer-noreply@enonic.com',
 						to: emails,
-						subject: `Collecting to ${this.#collectionName} had ${this.journal.errors.length} errors!`,
+						subject: `Collecting to ${this._collectionName} had ${this.journal.errors.length} errors!`,
 						body: `${toStr(this.journal.errors)}`
 					};
 					log.info(`emailParams:${toStr(emailParams)}`);
@@ -455,7 +456,7 @@ export class Collector {
 				const emailParams = {
 					from: 'explorer-noreply@enonic.com',
 					to: emails,
-					subject: `Collecting to ${this.#collectionName} successful :)`,
+					subject: `Collecting to ${this._collectionName} successful :)`,
 					body: `:)`
 				};
 				log.info(`emailParams:${toStr(emailParams)}`);

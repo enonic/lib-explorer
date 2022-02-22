@@ -59,9 +59,11 @@ describe('document', () => {
 			deepStrictEqual(
 				{
 					myString: {
+						//active: true,
 						valueType: 'string'
 					},
 					myObject: {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -72,6 +74,7 @@ describe('document', () => {
 						valueType: 'set'
 					},
 					'myObject.myBoolean': {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -82,6 +85,7 @@ describe('document', () => {
 						valueType: 'boolean'
 					},
 					'myObject.myDateObj': {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -92,6 +96,7 @@ describe('document', () => {
 						valueType: 'instant'
 					},
 					'myObject.myGeoPointArray': {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -102,6 +107,7 @@ describe('document', () => {
 						valueType: 'geoPoint'
 					},
 					'myObject.myGeoPointString': {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -112,6 +118,7 @@ describe('document', () => {
 						valueType: 'geoPoint'
 					},
 					'myObject.myInstantString': {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -122,6 +129,7 @@ describe('document', () => {
 						valueType: 'instant'
 					},
 					'myObject.myLocalDateString': {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -132,6 +140,7 @@ describe('document', () => {
 						valueType: 'localDate'
 					},
 					'myObject.myLocalDateTimeString': {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -142,6 +151,7 @@ describe('document', () => {
 						valueType: 'localDateTime'
 					},
 					'myObject.myLocalTimeString': {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -152,6 +162,7 @@ describe('document', () => {
 						valueType: 'localTime'
 					},
 					'myObject.myNumber': {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -162,6 +173,7 @@ describe('document', () => {
 						valueType: 'double'
 					},
 					'myObject.myString': {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -192,6 +204,7 @@ describe('document', () => {
 			deepStrictEqual(
 				{
 					myArray: {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -202,6 +215,7 @@ describe('document', () => {
 						valueType: 'string'
 					},
 					myObjArray: {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -246,6 +260,7 @@ describe('document', () => {
 			deepStrictEqual(
 				{
 					myGeoPointArray: {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
@@ -256,6 +271,7 @@ describe('document', () => {
 						valueType: 'geoPoint'
 					},
 					myGeoPointString: {
+						active: true,
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,

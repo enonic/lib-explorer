@@ -34,6 +34,7 @@ const javaBridge = new JavaBridge({
 const FIELDS_VALID = [{
 	// Empty
 },{
+	active: true,
 	enabled: true,
 	fulltext: false,
 	includeInAllText: false,
@@ -73,6 +74,7 @@ const TESTS = [[
 ], [
 	[{name: 'a'}], {
 		a: {
+			active: true,
 			enabled: true,
 			fulltext: false,
 			includeInAllText: false,
@@ -85,6 +87,7 @@ const TESTS = [[
 	}
 ], [
 	[{name: 'a'},{
+		active: true,
 		enabled: false,
 		fulltext: true,
 		includeInAllText: true,
@@ -96,6 +99,7 @@ const TESTS = [[
 		valueType: 'boolean'
 	}], {
 		a: {
+			active: true,
 			enabled: true,
 			fulltext: false,
 			includeInAllText: false,
@@ -106,6 +110,7 @@ const TESTS = [[
 			valueType: 'string'
 		},
 		b: {
+			active: true,
 			enabled: false,
 			fulltext: true,
 			includeInAllText: true,
@@ -222,6 +227,7 @@ describe('document', () => {
 		it(`${toStr(fieldsObj)}`, () => {
 			deepStrictEqual(
 				[{
+					active: true,
 					enabled: true,
 					fulltext: false,
 					includeInAllText: false,
@@ -240,6 +246,7 @@ describe('document', () => {
 		it('adds missing nested set in a sorted manner', () => {
 			deepStrictEqual(
 				[{
+					active: true,
 					enabled: true,
 					fulltext: false,
 					includeInAllText: false,
@@ -250,6 +257,7 @@ describe('document', () => {
 					path: false,
 					valueType: 'set'
 				},{
+					active: true,
 					enabled: true,
 					fulltext: false,
 					includeInAllText: false,
