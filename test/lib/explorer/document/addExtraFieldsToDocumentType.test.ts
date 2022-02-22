@@ -8,11 +8,15 @@ import {
 } from '../../../../build/rollup/index.js';
 import {
 	DOCUMENT_TYPE,
-	DOCUMENT_TYPES_FOLDER
+	DOCUMENT_TYPES_FOLDER,
+	DOCUMENT_TYPES_FOLDER_PATH
 } from '../../../testData';
 import {log} from '../../../dummies';
 
-const {addExtraFieldsToDocumentType} = document;
+const {
+	addExtraFieldsToDocumentType,
+	fieldsArrayToObj
+} = document;
 
 const javaBridge = new JavaBridge({
 	app: {
@@ -227,6 +231,82 @@ describe('document', () => {
 					fieldsObj: {}
 				}, javaBridge)
 			);
+		});
+		it(`doesn't make an entry per item in an GeoPointArray`, () => {
+			const newDocumentTypeNode = connection.create({
+				_name: 'a',
+				_path: `${DOCUMENT_TYPES_FOLDER_PATH}/a`,
+				properties: []
+			});
+			//javaBridge.log.debug('newDocumentTypeNode:%s', newDocumentTypeNode);
+
+			const fieldsObj = fieldsArrayToObj(newDocumentTypeNode['properties'] || [], javaBridge);
+			//javaBridge.log.debug('fieldsObj:%s', fieldsObj);
+
+			deepStrictEqual(
+				{
+					myGeoPointArray: {
+						enabled: true,
+						fulltext: false,
+						includeInAllText: false,
+						max: 0,
+						min: 0,
+						nGram: false,
+						path: false,
+						valueType: 'geoPoint'
+					},
+					myGeoPointString: {
+						enabled: true,
+						fulltext: false,
+						includeInAllText: false,
+						max: 0,
+						min: 0,
+						nGram: false,
+						path: false,
+						valueType: 'geoPoint'
+					}
+				},
+				addExtraFieldsToDocumentType({
+					data: {
+						_id: '_id',
+						_name: '_name',
+						_path: '_path',
+						_versionKey: '_versionKey',
+						//[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
+						//[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+						myGeoPointArray: [
+							59.9090442,
+							10.7423389
+						],
+						myGeoPointString: '59.9090442,10.7423389'
+					},
+					documentTypeId: newDocumentTypeNode._id,
+					fieldsObj
+				}, javaBridge)
+			);
+			/*const documentTypeNodeAfter = connection.get(newDocumentTypeNode._id);
+			javaBridge.log.debug('documentTypeNodeAfter:%s', documentTypeNodeAfter);
+
+			addExtraFieldsToDocumentType({
+				data: {
+					_id: '_id',
+					_name: '_name',
+					_path: '_path',
+					_versionKey: '_versionKey',
+					//[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
+					//[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+					myGeoPointString: [
+						59.9090442,
+						10.7423389
+					],
+					myGeoPointArray: '59.9090442,10.7423389'
+				},
+				documentTypeId: newDocumentTypeNode._id,
+				fieldsObj
+			}, javaBridge);
+
+			const documentTypeNodeAgain = connection.get(newDocumentTypeNode._id);
+			javaBridge.log.debug('documentTypeNodeAgain:%s', documentTypeNodeAgain);*/
 		});
 	}); // describe addExtraFieldsToDocumentType
 }); // describe document
