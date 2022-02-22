@@ -98,13 +98,11 @@ export const NO_VALUES_FIELDS = [{
 	key: '_allText',
 	_name: 'alltext', // sanitize removes _ and makes T small
 	denyDelete: true, // TODO: Only used in Fields.jsx and FieldList.es
-	denyValues: true, // TODO: Only used in Fields.jsx and FieldList.es
 	//displayName: 'All text',
 	fieldType: VALUE_TYPE_STRING
 },{
 	_name: FIELD_PATH_META_SANITIZED, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	key: FIELD_PATH_META,
@@ -113,7 +111,6 @@ export const NO_VALUES_FIELDS = [{
 },{
 	_name: `${FIELD_PATH_META_SANITIZED}.collector`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.collector`,
@@ -122,7 +119,6 @@ export const NO_VALUES_FIELDS = [{
 },{
 	_name: `${FIELD_PATH_META_SANITIZED}.collector.id`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.collector.id`,
@@ -131,7 +127,6 @@ export const NO_VALUES_FIELDS = [{
 },{
 	_name: `${FIELD_PATH_META_SANITIZED}.collector.version`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.collector.version`,
@@ -140,7 +135,6 @@ export const NO_VALUES_FIELDS = [{
 },/*{
 	_name: `${FIELD_PATH_META_SANITIZED}.collection`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.collection`,
@@ -149,7 +143,6 @@ export const NO_VALUES_FIELDS = [{
 },{
 	_name: `${FIELD_PATH_META_SANITIZED}.collection.id`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_REFERENCE,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.collection.id`,
@@ -158,7 +151,6 @@ export const NO_VALUES_FIELDS = [{
 },*/{
 	_name: `${FIELD_PATH_META_SANITIZED}.collection`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.collection`,
@@ -167,7 +159,6 @@ export const NO_VALUES_FIELDS = [{
 },{
 	_name: `${FIELD_PATH_META_SANITIZED}.createdTime`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_INSTANT,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.createdTime`,
@@ -176,7 +167,6 @@ export const NO_VALUES_FIELDS = [{
 },/*{
 	_name: `${FIELD_PATH_META_SANITIZED}.documentType`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.documentType`,
@@ -185,7 +175,6 @@ export const NO_VALUES_FIELDS = [{
 },{
 	_name: 'document-metadata.documentType.id', // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_REFERENCE,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.documentType.id`,
@@ -194,7 +183,6 @@ export const NO_VALUES_FIELDS = [{
 },*/{
 	_name: 'document-metadata.documentType', // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.documentType`,
@@ -203,7 +191,6 @@ export const NO_VALUES_FIELDS = [{
 },{
 	_name: `${FIELD_PATH_META_SANITIZED}.language`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG,
 	key: `${FIELD_PATH_META}.language`,
@@ -212,7 +199,6 @@ export const NO_VALUES_FIELDS = [{
 },{
 	_name: `${FIELD_PATH_META_SANITIZED}.modifiedTime`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_INSTANT,
 	indexConfig: FIELD_MODIFIED_TIME_INDEX_CONFIG,
 	key: `${FIELD_PATH_META}.modifiedTime`,
@@ -221,7 +207,6 @@ export const NO_VALUES_FIELDS = [{
 },/*{
 	_name: `${FIELD_PATH_META_SANITIZED}.repo`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.repo`,
@@ -230,7 +215,6 @@ export const NO_VALUES_FIELDS = [{
 },{
 	_name: `${FIELD_PATH_META_SANITIZED}.repo`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.repo`,
@@ -239,7 +223,6 @@ export const NO_VALUES_FIELDS = [{
 },*/{
 	_name: `${FIELD_PATH_META_SANITIZED}.stemmingLanguage`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: FIELD_DOCUMENT_METADATA_STEMMING_LANGUAGE_INDEX_CONFIG,
 	key: `${FIELD_PATH_META}.stemmingLanguage`,
@@ -248,7 +231,6 @@ export const NO_VALUES_FIELDS = [{
 },{
 	_name: `${FIELD_PATH_META_SANITIZED}.valid`, // sanitize make _ into -
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_BOOLEAN,
 	indexConfig: 'minimal',
 	key: `${FIELD_PATH_META}.valid`,
@@ -261,7 +243,6 @@ export const READONLY_FIELDS = [{
 	_name: 'underscore-nodetype', // sanitize removes _ and makes T small
 	key: '_nodeType',
 	denyDelete: true,
-	denyValues: false,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
 	max: 1,
@@ -270,7 +251,6 @@ export const READONLY_FIELDS = [{
 	_name: 'underscore-score', // sanitize removes _ and makes T small
 	key: '_score',
 	denyDelete: true,
-	denyValues: true,
 	fieldType: VALUE_TYPE_DOUBLE,
 	indexConfig: 'minimal',
 	max: 1,
@@ -284,7 +264,6 @@ export const READWRITE_FIELDS = [{
 	key: 'title',
 	_name: 'title',
 	denyDelete: true,
-	denyValues: false,
 	//displayName: 'Title'*/
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'fulltext', // includes nGram
@@ -294,7 +273,6 @@ export const READWRITE_FIELDS = [{
 	key: 'language',
 	_name: 'language',
 	denyDelete: true,
-	denyValues: false,
 	//displayName: 'Language'*/
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'type',
@@ -304,7 +282,6 @@ export const READWRITE_FIELDS = [{
 	key: 'text',
 	_name: 'text',
 	denyDelete: true,
-	denyValues: false,
 	//displayName: 'Text'
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'fulltext', // includes nGram
@@ -314,7 +291,6 @@ export const READWRITE_FIELDS = [{
 	key: 'uri',
 	_name: 'uri',
 	denyDelete: true,
-	denyValues: false,
 	//displayName: 'Uri'
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: {
