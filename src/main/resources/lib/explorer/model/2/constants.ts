@@ -100,15 +100,13 @@ export const NO_VALUES_FIELDS = [{
 	denyDelete: true, // TODO: Only used in Fields.jsx and FieldList.es
 	denyValues: true, // TODO: Only used in Fields.jsx and FieldList.es
 	//displayName: 'All text',
-	fieldType: VALUE_TYPE_STRING,
-	inResults: false // Used in interface/GraphQL and services/interfaceList.es
+	fieldType: VALUE_TYPE_STRING
 },{
 	_name: FIELD_PATH_META_SANITIZED, // sanitize make _ into -
 	denyDelete: true,
 	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: FIELD_PATH_META,
 	max: 1,
 	min: 1
@@ -118,7 +116,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: `${FIELD_PATH_META}.collector`,
 	max: 1,
 	min: 0
@@ -128,7 +125,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: `${FIELD_PATH_META}.collector.id`,
 	max: 1,
 	min: 0
@@ -138,7 +134,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: `${FIELD_PATH_META}.collector.version`,
 	max: 1,
 	min: 0
@@ -148,7 +143,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: `${FIELD_PATH_META}.collection`,
 	max: 1,
 	min: 1
@@ -158,7 +152,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_REFERENCE,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: `${FIELD_PATH_META}.collection.id`,
 	max: 1,
 	min: 1
@@ -168,7 +161,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
-	inResults: true,
 	key: `${FIELD_PATH_META}.collection`,
 	max: 1,
 	min: 1
@@ -178,7 +170,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_INSTANT,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: `${FIELD_PATH_META}.createdTime`,
 	max: 1,
 	min: 1
@@ -188,7 +179,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: `${FIELD_PATH_META}.documentType`,
 	max: 1,
 	min: 1
@@ -198,7 +188,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_REFERENCE,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: `${FIELD_PATH_META}.documentType.id`,
 	max: 1,
 	min: 1
@@ -208,7 +197,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
-	inResults: true,
 	key: `${FIELD_PATH_META}.documentType`,
 	max: 1,
 	min: 1
@@ -218,7 +206,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: FIELD_DOCUMENT_METADATA_LANGUAGE_INDEX_CONFIG,
-	inResults: true,
 	key: `${FIELD_PATH_META}.language`,
 	max: 1,
 	min: 0
@@ -228,7 +215,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_INSTANT,
 	indexConfig: FIELD_MODIFIED_TIME_INDEX_CONFIG,
-	inResults: false,
 	key: `${FIELD_PATH_META}.modifiedTime`,
 	max: 1,
 	min: 0
@@ -238,7 +224,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_SET,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: `${FIELD_PATH_META}.repo`,
 	max: 1,
 	min: 1
@@ -248,7 +233,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
-	inResults: true,
 	key: `${FIELD_PATH_META}.repo`,
 	max: 1,
 	min: 1
@@ -258,7 +242,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: FIELD_DOCUMENT_METADATA_STEMMING_LANGUAGE_INDEX_CONFIG,
-	inResults: true,
 	key: `${FIELD_PATH_META}.stemmingLanguage`,
 	max: 1,
 	min: 0
@@ -268,7 +251,6 @@ export const NO_VALUES_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_BOOLEAN,
 	indexConfig: 'minimal',
-	inResults: false,
 	key: `${FIELD_PATH_META}.valid`,
 	max: 1,
 	min: 1
@@ -282,7 +264,6 @@ export const READONLY_FIELDS = [{
 	denyValues: false,
 	fieldType: VALUE_TYPE_STRING,
 	indexConfig: 'minimal',
-	//inResults: false,
 	max: 1,
 	min: 1
 }/*,{
@@ -292,7 +273,6 @@ export const READONLY_FIELDS = [{
 	denyValues: true,
 	fieldType: VALUE_TYPE_DOUBLE,
 	indexConfig: 'minimal',
-	inResults: true,
 	max: 1,
 	min: 0
 }*/];

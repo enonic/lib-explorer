@@ -65,7 +65,6 @@ export function createField({
 		enabled,
 		fulltext,
 		includeInAllText,
-		//inResults, // Not stored in node
 		nGram, // INDEX_CONFIG_N_GRAM
 		path
 	});

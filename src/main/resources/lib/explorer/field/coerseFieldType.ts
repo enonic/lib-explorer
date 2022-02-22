@@ -27,7 +27,6 @@ export function coerseFieldType({
 	denyDelete,
 	description,
 	indexConfig, // Can be null, string or object
-	inResults,
 	fieldType,
 	max,
 	min
@@ -41,7 +40,6 @@ export function coerseFieldType({
 	log.debug(`denyDelete:${toStr(denyDelete)}`);
 	log.debug(`description:${description}`);
 	log.debug(`indexConfig:${toStr(indexConfig)}`);
-	log.debug(`inResults:${toStr(inResults)}`);
 	log.debug(`fieldType:${fieldType}`);
 	log.debug(`max:${max}`);
 	log.debug(`min:${min}`);*/
@@ -50,7 +48,6 @@ export function coerseFieldType({
 	if (isNotTrue(denyDelete)) { denyDelete = false; }
 	if (isNotSet(description)) { description = ''; }
 	if (isNotSet(indexConfig)) { indexConfig = INDEX_CONFIG_TEMPLATE_BY_TYPE; }
-	if (isNotFalse(inResults)) { inResults = true; }
 	if (isNotSet(fieldType)) { fieldType = VALUE_TYPE_STRING; }
 	if (isNotSet(max)) { max = 0; }
 	if (isNotSet(min)) { min = 0; }
@@ -62,7 +59,6 @@ export function coerseFieldType({
 	log.debug(`key:${key} denyDelete:${toStr(denyDelete)}`);
 	log.debug(`key:${key} description:${description}`);
 	log.debug(`key:${key} indexConfig:${toStr(indexConfig)}`);
-	log.debug(`key:${key} inResults:${toStr(inResults)}`);
 	log.debug(`key:${key} fieldType:${fieldType}`);
 	log.debug(`key:${key} max:${max}`);
 	log.debug(`key:${key} min:${min}`);*/
@@ -106,7 +102,6 @@ export function coerseFieldType({
 		enabled,
 		fulltext,
 		fieldType,
-		inResults,
 		indexConfig: indexConfigObject,
 		includeInAllText,
 		key,
