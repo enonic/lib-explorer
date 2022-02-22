@@ -35,14 +35,19 @@ import {
 //import {javaBridgeDummy} from '../dummies';
 
 
-const BOOLEAN_PROPS = ['enabled', 'fulltext', 'includeInAllText', 'nGram',
-'path'];
+const BOOLEAN_PROPS = [
+	'active', // TODO: From GUI
+	'enabled', 'fulltext', 'includeInAllText', 'nGram','path'];
 Object.freeze(BOOLEAN_PROPS);
 
 const POSITIVE_INTEGER_PROPS = ['max', 'min'];
 Object.freeze(POSITIVE_INTEGER_PROPS);
 
-const ALLOWED_PROPS = BOOLEAN_PROPS.concat(POSITIVE_INTEGER_PROPS, ['name', 'valueType']);
+const ALLOWED_PROPS = [].concat(
+	BOOLEAN_PROPS,
+	POSITIVE_INTEGER_PROPS,
+	['name', 'valueType']
+);
 Object.freeze(ALLOWED_PROPS);
 
 const VALUE_TYPES = [
@@ -135,6 +140,7 @@ export function applyDefaultsToField(
 		throw new TypeError(`applyDefaultsToField: field not of type Field! field:${toStr(field)}`);
 	}
 	const {
+		active = true,
 		enabled = INDEX_CONFIG_ENABLED_DEFAULT,
 		fulltext = INDEX_CONFIG_FULLTEXT_DEFAULT,
 		includeInAllText = INDEX_CONFIG_INCLUDE_IN_ALL_TEXT_DEFAULT,
@@ -146,6 +152,7 @@ export function applyDefaultsToField(
 		valueType = VALUE_TYPE_STRING
 	} = field;
 	const FIELD :Partial<Field> = {
+		active,
 		enabled,
 		fulltext,
 		includeInAllText,

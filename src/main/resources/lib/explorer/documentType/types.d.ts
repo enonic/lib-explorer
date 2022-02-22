@@ -2,6 +2,7 @@ import type {RequiredNodeProperties} from '../types.d';
 
 
 export interface Field {
+	active? :boolean // From GUI
 	enabled? :boolean
 	fulltext? :boolean
 	includeInAllText? :boolean
