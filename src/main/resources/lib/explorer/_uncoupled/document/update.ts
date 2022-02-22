@@ -68,7 +68,7 @@ export function update(
 		cleanExtraFields = false, // If true, extra fields can't cause error nor addType, because extra fields are deleted.
 		//denyExtraFields = cleanExtraFields, // If false, extra fields cause error and not persisted
 		addExtraFields = !cleanExtraFields, // Extra fields are always added as string
-		partial = false,
+		//partial = false,
 		requireValid = false,
 		validateOccurrences = false,
 		validateTypes = requireValid

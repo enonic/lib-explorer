@@ -43,8 +43,8 @@ export function addExtraFieldsToDocumentType(
 ) :FieldsObject {
 	//const {log} = javaBridge;
 	//log.debug('document.addExtraFieldsToDocumentType: data:%s', toStr(data));
-	//log.debug('document.addExtraFieldsToDocumentType: documentTypeId:%s', documentTypeId);
-	//log.debug('document.addExtraFieldsToDocumentType: fieldsObj:%s', toStr(fieldsObj));
+	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: documentTypeId:%s', documentTypeId);
+	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: fieldsObj:%s', toStr(fieldsObj));
 	const returnFieldsObj = JSON.parse(JSON.stringify(fieldsObj));
 	let boolModified = false;
 	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
@@ -62,7 +62,7 @@ export function addExtraFieldsToDocumentType(
 			if (!field) { // Field has no definition
 				//log.debug(`field:${pathString} doesn't exist in documentType, adding...`);
 				const detectedType = detectValueType(value);
-				//log.debug('field:%s detectedType:%s', pathString, detectedType);
+				//javaBridge.log.debug('field:%s detectedType:%s', pathString, detectedType);
 				if (detectedType === VALUE_TYPE_GEO_POINT) {
 					this.block();
 				}
@@ -76,7 +76,7 @@ export function addExtraFieldsToDocumentType(
 			} // if !field
 		}
 	}); // traverse
-	//log.debug('document.addExtraFieldsToDocumentType: boolModified:%s', boolModified);
+	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: boolModified:%s', boolModified);
 	if (boolModified) {
 		updateDocumentType({
 			_id: documentTypeId,
