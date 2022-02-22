@@ -21,7 +21,8 @@ import {sanitize as doSanitize} from '/lib/xp/common';
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {
-	NT_FOLDER
+	NT_FOLDER,
+	ROOT_PERMISSIONS_EXPLORER
 } from '/lib/explorer/constants';
 
 
@@ -48,11 +49,11 @@ export function create<N extends NodeCreateParams & {
 	// Mentioned in documentation:
 	//_childOrder
 	_indexConfig = {default: 'byType'},
-	_inheritsPermissions = true,
+	_inheritsPermissions = false, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 	//_manualOrderValue
 	_name,
 	_parentPath = '/',
-	_permissions = [],
+	_permissions = ROOT_PERMISSIONS_EXPLORER,
 	//_timestamp // Automatically added
 
 	// Our own standard properties (cannot start with underscore)
@@ -126,9 +127,10 @@ export function create<N extends NodeCreateParams & {
 		if (!ancestor) {
 			const folderParams = {
 				_indexConfig: {default: 'none'} as IndexConfig,
-				_inheritsPermissions: true,
+				_inheritsPermissions: false,
 				_name: pathParts[i],
 				_parentPath: (pathParts.slice(0, i).join('/') || '/') as ParentPath,
+				_permissions,
 				creator,
 				createdTime: new Date(),
 				type: NT_FOLDER
@@ -142,7 +144,7 @@ export function create<N extends NodeCreateParams & {
 
 	const CREATE_PARAMS = {
 		_indexConfig,
-		_inheritsPermissions,
+		_inheritsPermissions, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 		_name: sanitize ? doSanitize(_name) : _name,
 		_parentPath,
 		_permissions,

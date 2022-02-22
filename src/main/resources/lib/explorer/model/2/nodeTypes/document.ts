@@ -15,15 +15,17 @@ import {
 } from '@enonic/js-utils';
 
 import {
-	DOCUMENT_METADATA,
-	NT_DOCUMENT
-} from '/lib/explorer/model/2/constants';
+	NT_DOCUMENT,
+	ROOT_PERMISSIONS_EXPLORER
+} from '/lib/explorer/constants';
+import {DOCUMENT_METADATA} from '/lib/explorer/model/2/constants';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
 import {hash} from '/lib/explorer/string/hash';
 
 
 export function Document({
 	_parentPath = '/',
+	//_permissions = ROOT_PERMISSIONS_EXPLORER,
 	uri,
 	_name = hash(uri),
 	collectorAppName = app.name,
@@ -95,9 +97,10 @@ export function Document({
 				}) as IndexConfigObject
 			}] // TODO indexConfig for ...rest
 		},
-		//_inheritsPermissions: true,
+		_inheritsPermissions: false, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 		_name,
 		_nodeType: NT_DOCUMENT,
+		_permissions: ROOT_PERMISSIONS_EXPLORER,
 		collectorAppName,
 		collectorId, // <appname>:<taskname>
 		collectorVersion,

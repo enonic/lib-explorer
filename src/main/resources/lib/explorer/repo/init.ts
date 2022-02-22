@@ -12,12 +12,13 @@ import {
 	BRANCH_ID_EXPLORER,
 	REPO_ID_EXPLORER,
 	ROOT_PERMISSIONS_EXPLORER
-} from '/lib/explorer/model/2/constants';
+} from '/lib/explorer/constants';
 
 
 export function init({
 	repoId = REPO_ID_EXPLORER,
-	branchId = BRANCH_ID_EXPLORER
+	branchId = BRANCH_ID_EXPLORER,
+	rootPermissions = ROOT_PERMISSIONS_EXPLORER
 } = {}) {
 	//log.info(`repoId:${repoId} branchId:${branchId}`);
 
@@ -25,7 +26,7 @@ export function init({
 
 	const createRepoParams = {
 		id: repoId,
-		rootPermissions: ROOT_PERMISSIONS_EXPLORER,
+		rootPermissions,
 		rootChildOrder: '_ts DESC'
 	};
 	//log.info(`createRepoParams:${toStr(createRepoParams)}`);

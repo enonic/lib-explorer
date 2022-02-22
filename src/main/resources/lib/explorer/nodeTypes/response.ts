@@ -1,3 +1,4 @@
+import {ROOT_PERMISSIONS_EXPLORER} from '/lib/explorer/constants';
 import {NT_RESPONSE} from '/lib/explorer/model/2/constants';
 
 
@@ -22,10 +23,10 @@ export function response ({
 				config: 'minimal'
 			}]
 		},
-		//_inheritsPermissions = false
+		_inheritsPermissions: false, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 		_name,
 		_parentPath,
-		//_permissions // TODO Only superadmin and crawler should have access
+		_permissions: ROOT_PERMISSIONS_EXPLORER,
 		request,
 		response,
 		type: NT_RESPONSE,

@@ -16,7 +16,8 @@ import {
 import {getUser} from '/lib/xp/auth';
 
 import {
-	NT_FOLDER
+	NT_FOLDER,
+	ROOT_PERMISSIONS_EXPLORER
 } from '/lib/explorer/model/2/constants';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
 
@@ -25,17 +26,17 @@ export function folder({
 	// avoid from ...rest
 	_id, // eslint-disable-line no-unused-vars
 	_path, // eslint-disable-line no-unused-vars
-	_permissions, // eslint-disable-line no-unused-vars
 
 	_parentPath = '/',
+	_permissions = ROOT_PERMISSIONS_EXPLORER,
 	_name,
 	...rest
 } :{
-	_id :Id
+	_id? :Id
 	_name :Name
-	_path :Path
+	_path? :Path
 	_parentPath? :ParentPath
-	_permissions :Array<PermissionsParams>
+	_permissions? :Array<PermissionsParams>
 }, {
 	user,
 	...ignoredOptions
@@ -77,10 +78,11 @@ export function folder({
 	return node({
 		...rest,
 		_indexConfig: {default: 'minimal'},
-		_inheritsPermissions: true,
+		_inheritsPermissions: false, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 		_name,
 		_nodeType: NT_FOLDER,
 		_parentPath,
+		_permissions,
 		creator: user.key,
 		createdTime: new Date()
 	});

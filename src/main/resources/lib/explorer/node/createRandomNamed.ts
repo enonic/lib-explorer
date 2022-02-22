@@ -19,17 +19,20 @@ import {v4 as generateUuidv4} from 'uuid';
 //@ts-ignore
 import {sanitize as doSanitize} from '/lib/xp/common';
 
-import {NT_FOLDER} from '/lib/explorer/model/2/constants';
+import {
+	NT_FOLDER,
+	ROOT_PERMISSIONS_EXPLORER
+} from '/lib/explorer/constants';
 import {exists} from '/lib/explorer/node/exists';
 
 
 export function createRandomNamed({
 	_id, // So it doesn't end up in rest
 	_indexConfig = {default: 'byType'},
-	_inheritsPermissions = true,
+	_inheritsPermissions = false, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 	_name = doSanitize(generateUuidv4()),
 	_parentPath = '/',
-	_permissions = [],
+	_permissions = ROOT_PERMISSIONS_EXPLORER,
 	//creator = __user.key,
 	...rest
 } :{
@@ -74,10 +77,11 @@ export function createRandomNamed({
 		if (!ancestor) {
 			const folderParams = {
 				_indexConfig: {default: 'none'} as IndexConfig,
-				_inheritsPermissions: true,
+				_inheritsPermissions: false, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 				_name: pathParts[i],
 				_nodeType: NT_FOLDER,
 				_parentPath: (pathParts.slice(0, i).join('/') || '/') as ParentPath,
+				_permissions,
 				//creator,
 				//createdTime: new Date(),
 				type: NT_FOLDER
@@ -101,7 +105,7 @@ export function createRandomNamed({
 
 	const CREATE_PARAMS = {
 		_indexConfig,
-		_inheritsPermissions,
+		_inheritsPermissions, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 		_name,
 		_parentPath,
 		_permissions,
