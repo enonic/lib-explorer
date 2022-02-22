@@ -1,4 +1,8 @@
-//import type {RepoConnection} from '/lib/explorer/types.d';
+import type {
+	GetContext,
+	PrincipalKey,
+	RepoConnection
+} from '/lib/explorer/types.d';
 
 
 import {getModel} from '/lib/explorer/model/getModel';
@@ -6,6 +10,8 @@ import {connect} from '/lib/explorer/repo/connect';
 
 
 export function isModelLessThan({
+	version,
+	// Optional
 	branch,
 	context,
 	principals,
@@ -15,8 +21,15 @@ export function isModelLessThan({
 		context,
 		principals,
 		repoId
-	}),
-	version
+	})
+} :{
+	version :number
+	// Optional
+	branch? :string
+	context? :GetContext
+	principals? :Array<PrincipalKey>
+	repoId? :string
+	connection? :RepoConnection
 }) {
 	const currentModel = getModel({connection});
 	const boolLessThan = currentModel < version;

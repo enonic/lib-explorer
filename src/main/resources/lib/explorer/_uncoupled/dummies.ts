@@ -24,6 +24,7 @@ export const appDummy :App = {
 export const connectDummy :ConnectFunction = (/*source*/) => ({
 	create: <T>(data :NodeCreateParams & T) :Node<T> => data as Node<T>,
 	exists: (key) => (Array.isArray(key) ? key : [key]),
+	delete: (keys: string | Array<string>) => [...keys] as Array<string>,
 	get: <T>(key:string) => ({_id: key}) as Node<T>,
 	modify: <T>(
 		//@ts-ignore

@@ -1,5 +1,6 @@
 import type {
 	Path,
+	PermissionsParams,
 	PrincipalKeyRole
 } from '/lib/explorer/types.d';
 
@@ -28,7 +29,7 @@ export const COLLECTION_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}collection${DOT
 //──────────────────────────────────────────────────────────────────────────────
 export const INTERFACES_FOLDER = 'interfaces';
 const FOLDER_API_KEYS = 'api-keys';
-const FOLDER_COLLECTIONS = 'collections';
+export const FOLDER_COLLECTIONS = 'collections';
 const FOLDER_COLLECTORS = 'collectors';
 const FOLDER_FIELDS = 'fields';
 
@@ -72,12 +73,14 @@ export const NT_THESAURUS = `${APP_EXPLORER}${COLON_SIGN}thesaurus`;
 export const ROLE_EXPLORER_READ = `${APP_EXPLORER}.read`;
 export const ROLE_EXPLORER_WRITE = `${APP_EXPLORER}.write`;
 export const ROLE_SYSTEM_ADMIN = 'system.admin';
+export const ROLE_SYSTEM_EVERYONE = 'system.everyone';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Principals
 //──────────────────────────────────────────────────────────────────────────────
 export const PRINCIPAL_EXPLORER_READ :PrincipalKeyRole = `role:${ROLE_EXPLORER_READ}`;
 export const PRINCIPAL_EXPLORER_WRITE :PrincipalKeyRole = `role:${ROLE_EXPLORER_WRITE}`;
+export const PRINCIPAL_EVERYONE :PrincipalKeyRole = `role:${ROLE_SYSTEM_EVERYONE}`;
 export const PRINCIPAL_SYSTEM_ADMIN :PrincipalKeyRole = `role:${ROLE_SYSTEM_ADMIN}`;
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -87,9 +90,15 @@ export const FIELD_PATH_GLOBAL = 'global'; // TODO _global or _x ?
 export const FIELD_PATH_META = 'document_metadata'; // TODO _meta ?
 
 //──────────────────────────────────────────────────────────────────────────────
-// Root Permissions
+// Permissions
 //──────────────────────────────────────────────────────────────────────────────
-export const ROOT_PERMISSION_SYSTEM_ADMIN = {
+export const PERMISSION_SYSTEM_ADMIN :PermissionsParams = {
+	principal: PRINCIPAL_EVERYONE,
+	allow: ['READ'],
+	deny: []
+}
+
+export const ROOT_PERMISSION_SYSTEM_ADMIN :PermissionsParams = {
 	principal: PRINCIPAL_SYSTEM_ADMIN,
 	allow: [
 		'READ',
@@ -103,7 +112,7 @@ export const ROOT_PERMISSION_SYSTEM_ADMIN = {
 	deny: []
 };
 
-export const ROOT_PERMISSION_EXPLORER_WRITE = {
+export const ROOT_PERMISSION_EXPLORER_WRITE :PermissionsParams = {
 	principal: PRINCIPAL_EXPLORER_WRITE,
 	allow: [
 		'READ',
@@ -114,7 +123,7 @@ export const ROOT_PERMISSION_EXPLORER_WRITE = {
 	deny: []
 };
 
-export const ROOT_PERMISSION_EXPLORER_READ = {
+export const ROOT_PERMISSION_EXPLORER_READ :PermissionsParams = {
 	principal: PRINCIPAL_EXPLORER_READ,
 	allow: ['READ'],
 	deny: []

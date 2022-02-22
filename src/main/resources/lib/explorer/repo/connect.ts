@@ -1,4 +1,8 @@
-import type {RepoConnection} from '/lib/explorer/types.d';
+import type {
+	GetContext,
+	PrincipalKey,
+	RepoConnection
+} from '/lib/explorer/types.d';
 
 
 //import {toStr} from '@enonic/js-utils';
@@ -21,7 +25,7 @@ import {
 
 
 export function connect({
-	context = getContext(),
+	context = getContext() as GetContext,
 	repoId = REPO_ID_EXPLORER,
 	branch = BRANCH_ID_EXPLORER,
 	principals: passedPrincipals = [PRINCIPAL_EXPLORER_READ],
@@ -33,6 +37,17 @@ export function connect({
 		login,
 		idProvider
 	} : null
+} :{
+	branch? :string
+	context? :GetContext
+	idProvider? :string
+	login? :string
+	principals? :Array<PrincipalKey>
+	repoId? :string
+	user? :{
+		idProvider :string
+		login :string
+	}
 } = {}) :RepoConnection {
 	/*log.info(toStr({
 		//context,

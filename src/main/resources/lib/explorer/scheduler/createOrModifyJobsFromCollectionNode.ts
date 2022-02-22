@@ -1,6 +1,6 @@
 import type {Application} from '../../../index.d';
 import type {RepoConnection} from '/lib/explorer/types.d';
-import type {Collection} from '../collection/types.d';
+import type {CollectionWithCron} from '../collection/types.d';
 import type {WriteConnection} from '../node/WriteConnection.d';
 import type {
 	TaskDescriptor,
@@ -65,7 +65,7 @@ export function createOrModifyJobsFromCollectionNode({
 	collectors? :{
 		[taskDescriptor :string] :boolean
 	}
-	collectionNode :Collection // cron, // cron is no longer stored on the CollectionNode, but is passed in here from GraphQL mutation.
+	collectionNode :CollectionWithCron // cron, // cron is no longer stored on the CollectionNode, but is passed in here from GraphQL mutation.
 	timeZone :string
 }) {
 	//log.debug(`createOrModifyJobsFromCollectionNode collectionNode:${toStr(collectionNode)}`);

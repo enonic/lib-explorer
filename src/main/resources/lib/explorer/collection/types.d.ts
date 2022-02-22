@@ -1,8 +1,13 @@
 import type {RequiredNodeProperties} from '../types.d';
 
 
-export interface CollectionNodeSpecific {
+export interface Collection {
+	_id? :string
+	_name :string
+	//_nodeType :string // Useless info, always the same
+	//_path :string // No reason to expose
 	_score :number
+	_versionKey :string
 	collector :{
 		config :Object // TODO?
 		name :string
@@ -20,7 +25,7 @@ export interface CollectionNodeSpecific {
 	modifier? :string
 }
 
-export type CollectionNode = RequiredNodeProperties & CollectionNodeSpecific;
+export type CollectionNode = RequiredNodeProperties & Collection;
 
 export interface Cron {
 	minute :string,
@@ -30,7 +35,7 @@ export interface Cron {
 	dayOfWeek :string
 }
 
-export type Collection = CollectionNode & {
+export type CollectionWithCron = Collection & {
 	cron :Cron | Array<Cron>
 };
 

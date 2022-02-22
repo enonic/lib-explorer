@@ -1,6 +1,6 @@
 import type {
-	Collection,
-	CollectionNode
+	CollectionNode,
+	CollectionWithCron
 } from '/lib/explorer/collection/types.d';
 
 //import {toStr} from '@enonic/js-utils';
@@ -10,7 +10,7 @@ import {createDocumentType} from '/lib/explorer/documentType/createDocumentType'
 import {
 	//NT_COLLECTION,
 	PRINCIPAL_EXPLORER_WRITE
-} from '/lib/explorer/model/2/constants';
+} from '/lib/explorer/constants';
 import {exists} from '/lib/explorer/node/exists';
 import {connect} from '/lib/explorer/repo/connect';
 import {createOrModifyJobsFromCollectionNode} from '/lib/explorer/scheduler/createOrModifyJobsFromCollectionNode';
@@ -32,7 +32,7 @@ export function updateCollection({
 	doCollect,
 	documentTypeId, // optional
 	language // optional
-} :Collection ) {
+} :CollectionWithCron ) {
 	//log.debug(`_id:${toStr(_id)}`);
 	//log.debug(`_name:${toStr(_name)}`);
 	//log.debug(`collector:${toStr(collector)}`);
@@ -61,7 +61,7 @@ export function updateCollection({
 
 	const propertiesToBeUpdated :Partial<CollectionNode> = {
 		//_indexConfig: {default: 'byType'},
-		//_inheritsPermissions: true,
+		//_inheritsPermissions: true, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 		//_name,
 		//_nodeType: NT_COLLECTION,
 		//_parentPath: '/collections',
@@ -122,17 +122,18 @@ export function updateCollection({
 			});
 			return n;
 		}
-	}) as Collection;
+	});
 	//log.debug(`modifiedNode:${toStr(modifiedNode)}`);
 
 	if (modifiedNode) {
 		writeConnection.refresh(); // So the data becomes immidiately searchable
-		modifiedNode.cron = cron;
-		modifiedNode.doCollect = doCollect;
+		const modifiedNodeWithCron = JSON.parse(JSON.stringify(modifiedNode)) as CollectionWithCron;
+		modifiedNodeWithCron.cron = cron;
+		modifiedNodeWithCron.doCollect = doCollect;
 		//log.debug(`modifiedNode:${toStr(modifiedNode)}`);
 		createOrModifyJobsFromCollectionNode({
 			connection: writeConnection,
-			collectionNode: modifiedNode,
+			collectionNode: modifiedNodeWithCron,
 			timeZone: 'GMT+02:00' // CEST (Summer Time)
 			//timeZone: 'GMT+01:00' // CET
 		});

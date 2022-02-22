@@ -1,7 +1,7 @@
 import {
 	REPO_ID_EXPLORER,
 	ROOT_PERMISSIONS_EXPLORER
-} from '/lib/explorer/model/2/constants';
+} from '/lib/explorer/constants';
 
 
 export const REPO = {

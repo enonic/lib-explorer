@@ -57,7 +57,7 @@ export interface BuildIndexConfigParameterObject {
 export interface CreateParameterObject {
 	addExtraFields? :boolean
 	cleanExtraFields? :boolean
-	collectionId :string // TODO Scalar Regexp?
+	collectionId? :string // TODO Scalar Regexp?
 	collectionName? :string
 	collectorId :string // TODO Scalar Regexp?
 	collectorVersion :string // TODO Scalar Regexp?

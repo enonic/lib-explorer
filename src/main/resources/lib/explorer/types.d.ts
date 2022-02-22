@@ -1,5 +1,8 @@
 import type {BasicFilters} from '@enonic/js-utils/src/storage/query/Filters.d';
-import type {PermissionsParams} from '@enonic/js-utils/src/mock/auth/';
+import type {
+	PermissionsParams,
+	PrincipalKey
+} from '@enonic/js-utils/src/mock/auth/';
 
 import type {
 	Aggregation,
@@ -23,12 +26,38 @@ export type {
 export type {
 	IndexConfig,
 	IndexConfigObject
-} from './types/IndexConfig'
+} from './types/IndexConfig';
 
 
 export interface LooseObject {
 	//[key :PropertyKey] :unknown
 	[key :string] :unknown
+}
+
+export interface User {
+	readonly type: string;
+	readonly key: string;
+	readonly displayName: string;
+	readonly disabled: boolean;
+	readonly email: string;
+	readonly login: string;
+	readonly idProvider: string;
+}
+
+export interface AuthInfo {
+	readonly user: User;
+	readonly principals: ReadonlyArray<PrincipalKey>;
+}
+
+export type ContextAttributes = Record<string, string | boolean | number>;
+
+export interface GetContext<
+	Attributes extends ContextAttributes | undefined = undefined
+> {
+	readonly repository :string;
+	readonly branch: string;
+	readonly authInfo: AuthInfo;
+	readonly attributes?: Attributes;
 }
 
 export type Name = string;
@@ -189,7 +218,7 @@ export interface RepoConnection {
 	/**
 	* Deleting a node or nodes.
 	*/
-	//delete(keys: string | ReadonlyArray<string>): ReadonlyArray<string>;
+	delete(keys: string | ReadonlyArray<string>): ReadonlyArray<string>;
 
 	/**
 	* Resolves the differences for a node between current and given branch.
