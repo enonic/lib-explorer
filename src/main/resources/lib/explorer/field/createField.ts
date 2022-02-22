@@ -55,7 +55,6 @@ export function createField({
 	const lcKey = key.toLowerCase();
 	const nodeToCreate = field({
 		_name: lcKey,
-		//denyDelete, // Not stored in node
 		description,
 		fieldType,
 		key: lcKey,

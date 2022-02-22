@@ -24,7 +24,6 @@ export function coerseFieldType({
 	_versionKey,
 	key,
 	// Optional parameters. GraphQL passes null, so defaults are bypassed :(
-	denyDelete,
 	description,
 	indexConfig, // Can be null, string or object
 	fieldType,
@@ -37,7 +36,6 @@ export function coerseFieldType({
 	log.debug(`_path:${_path}`);
 	log.debug(`_versionKey:${_versionKey}`);
 	log.debug(`key:${key}`);
-	log.debug(`denyDelete:${toStr(denyDelete)}`);
 	log.debug(`description:${description}`);
 	log.debug(`indexConfig:${toStr(indexConfig)}`);
 	log.debug(`fieldType:${fieldType}`);
@@ -45,7 +43,6 @@ export function coerseFieldType({
 	log.debug(`min:${min}`);*/
 
 	// GraphQL passes null, so defaults are bypassed :(
-	if (isNotTrue(denyDelete)) { denyDelete = false; }
 	if (isNotSet(description)) { description = ''; }
 	if (isNotSet(indexConfig)) { indexConfig = INDEX_CONFIG_TEMPLATE_BY_TYPE; }
 	if (isNotSet(fieldType)) { fieldType = VALUE_TYPE_STRING; }
@@ -56,7 +53,6 @@ export function coerseFieldType({
 	log.debug(`key:${key} _nodeType:${_nodeType}`);
 	log.debug(`key:${key} _path:${_path}`);
 	log.debug(`key:${key} _versionKey:${_versionKey}`);
-	log.debug(`key:${key} denyDelete:${toStr(denyDelete)}`);
 	log.debug(`key:${key} description:${description}`);
 	log.debug(`key:${key} indexConfig:${toStr(indexConfig)}`);
 	log.debug(`key:${key} fieldType:${fieldType}`);
@@ -97,7 +93,6 @@ export function coerseFieldType({
 		_path,
 		_versionKey,
 		decideByType,
-		denyDelete,
 		description,
 		enabled,
 		fulltext,
