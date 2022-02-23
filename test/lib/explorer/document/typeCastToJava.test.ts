@@ -85,7 +85,6 @@ const TESTS = [{
 		any: 'any',
 		boolean: true,
 		double: -1.1,
-		geoPoint: [59.9090442,10.7423389],
 		geoPointString: '59.9090442,10.7423389',
 		instant: '9999-12-31T23:59:59.123456789Z',
 		localDate: '9999-12-31',
@@ -103,7 +102,6 @@ const TESTS = [{
 		//any: 'any',
 		boolean: false,
 		double: 1.1,
-		geoPoint: [-90,-180],
 		geoPointString: '-90,-180',
 		instant: new Date(),
 		localDate: new Date(),
@@ -133,5 +131,33 @@ describe('document', () => {
 				);
 			});
 		} // for
-	});
-});
+
+		it(`[59.9090442,10.7423389]`, () => {
+			deepStrictEqual(
+				{
+					geoPoint: '59.9090442,10.7423389',
+				},
+				typeCastToJava({
+					data: {
+						geoPoint: [59.9090442,10.7423389]
+					},
+					fieldsObj: FIELDS_OBJ
+				}, javaBridge)
+			);
+		}); // it
+
+		it(`[-90,-180]`, () => {
+			deepStrictEqual(
+				{
+					geoPoint: '-90,-180',
+				},
+				typeCastToJava({
+					data: {
+						geoPoint: [-90,-180]
+					},
+					fieldsObj: FIELDS_OBJ
+				}, javaBridge)
+			);
+		}); // it
+	}); // describe typeCastToJava()
+}); // describe document

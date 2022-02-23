@@ -1,7 +1,4 @@
-import type {
-	JavaBridge,
-	GeoPointArray
-} from '/lib/explorer/_coupling/types.d';
+import type {JavaBridge} from '/lib/explorer/_coupling/types.d';
 import type {Field} from '/lib/explorer/documentType/types.d'
 import type {DocumentNode} from '/lib/explorer/document/types.d'
 import type {TypeCastToJavaParameters} from './types.d'
@@ -100,7 +97,7 @@ export function typeCastToJava(
 				} else if (valueTypeForPath === VALUE_TYPE_GEO_POINT) {
 					if (isGeoPointArray(value)) {
 						try {
-							const javaGeoPoint = geoPoint(value as GeoPointArray);
+							const javaGeoPoint = geoPoint(value[0], value[1]);
 							setIn(typeCastedData, pathString, javaGeoPoint);
 							//this.update(javaGeoPoint, true);
 							this.block();

@@ -25,17 +25,19 @@
 		"noUnusedParameters": true,
 		"outDir": "build/rollup",
 		"paths": {
-			"@enonic/js-utils": ["node_modules/@enonic/js-utils/src"],
+			"@enonic/js-utils": ["../enonic-js-utils/src"],
+			//"@enonic/js-utils": ["node_modules/@enonic/js-utils/src"],
 			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
 		},
 		"preserveWatchOutput": false,
 		"pretty": true,
 		"removeComments": true,
 		"resolveJsonModule": true,
-		"rootDir": "./",
+		"rootDir": "../",
 		"rootDirs": [
 			"src/main/resources",
 			"node_modules",
+			"../enonic-js-utils/src",
 			"test"
 		],
 		"sourceMap": false,
@@ -50,7 +52,9 @@
 		]
 	},
 	"exclude": [
-		"build"
+		"../enonic-js-utils/src",
+		"build",
+		"node_modules"
 	],
 	"files": [
 		"src/main/resources/index.d.ts",
@@ -58,7 +62,6 @@
 		"src/main/resources/lib/explorer/_uncoupled/index.ts"
 	],
 	"include": [
-		"node_modules/@enonic/js-utils/src",
 		"src/main/resources/**/*.ts",
 		"src/main/resources/**/*.es",
 		//"test/**/*.ts"
