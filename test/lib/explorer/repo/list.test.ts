@@ -62,6 +62,54 @@ describe('repo', () => {
 				list({}, javaBridge)
 			);
 		});
+		it(`list({ branch: 'master' }) --> all repos`, () => {
+			deepStrictEqual(
+				[{
+					id: 'system-repo',
+					branches: ['master'],
+					settings: {}
+				},{
+					id: 'com.enonic.cms.default',
+					branches: ['master','draft'],
+					settings: {}
+				},{
+					id: 'com.enonic.app.explorer',
+					branches: ['master'],
+					settings: {}
+				},{
+					id: REPO_ID,
+					branches: ['master'],
+					settings: {}
+				}],
+				list({
+					branch: 'master',
+				}, javaBridge)
+			);
+		});
+		it(`list({ branches: ['master', 'draft'] }) --> all repos`, () => {
+			deepStrictEqual(
+				[{
+					id: 'system-repo',
+					branches: ['master'],
+					settings: {}
+				},{
+					id: 'com.enonic.cms.default',
+					branches: ['master','draft'],
+					settings: {}
+				},{
+					id: 'com.enonic.app.explorer',
+					branches: ['master'],
+					settings: {}
+				},{
+					id: REPO_ID,
+					branches: ['master'],
+					settings: {}
+				}],
+				list({
+					branches: ['master', 'draft'],
+				}, javaBridge)
+			);
+		});
 		it(`list({ branch: 'draft' }) --> only cms repo`, () => {
 			deepStrictEqual(
 				[{

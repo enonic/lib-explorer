@@ -11,3 +11,4 @@ export {register, unregister, Collector} from '/lib/explorer/collector';
 //export {create, update} from './document';
 //export {search} from './client';
 //export {register, unregister, Collector} from './collector';
+//export * as repo from './repo';
