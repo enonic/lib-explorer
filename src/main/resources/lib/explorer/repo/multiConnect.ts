@@ -1,3 +1,13 @@
+import type {
+	MultiRepoConnection,
+	SourceWithPrincipals
+} from '@enonic/js-utils/src/mock/node/multiRepoConnection.d';
+
+import type {
+	GetContext,
+	PrincipalKey
+} from '/lib/explorer/types.d';
+
 //import {toStr} from '@enonic/js-utils';
 
 //@ts-ignore
@@ -23,7 +33,17 @@ export function multiConnect({
 		login,
 		idProvider
 	} : null
-}) {
+} :{
+	sources :Array<SourceWithPrincipals>
+	context? :GetContext
+	idProvider? :string
+	login? :string
+	principals? :Array<PrincipalKey>
+	user? :{
+		idProvider :string
+		login :string
+	}
+}) :MultiRepoConnection {
 	const existingRepos = {};
 	runAsSu(() => {
 		connect({repoId: 'system-repo', branch: 'master'}).query({
