@@ -1,3 +1,4 @@
+import {VALUE_TYPE_BOOLEAN} from '@enonic/js-utils';
 import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
 import {deepStrictEqual} from 'assert';
 
@@ -7,9 +8,22 @@ import {
 	document
 } from '../../../../build/rollup/index.js';
 import {
+	FIELD_BOOLEAN,
+	FIELD_DOUBLE,
+	FIELD_GEO_POINT,
+	FIELD_INSTANT,
+	FIELD_LOCAL_DATE,
+	FIELD_LOCAL_DATE_TIME,
+	FIELD_LOCAL_TIME,
+	FIELD_SET,
+	FIELD_STRING
+} from '../../../fields';
+import {
+	BOOLEANS,
 	DOCUMENT_TYPE,
 	DOCUMENT_TYPES_FOLDER,
-	DOCUMENT_TYPES_FOLDER_PATH
+	DOCUMENT_TYPES_FOLDER_PATH,
+	STRINGS
 } from '../../../testData';
 import {log} from '../../../dummies';
 
@@ -62,127 +76,17 @@ describe('document', () => {
 						//active: true,
 						valueType: 'string'
 					},
-					myObject: {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'set'
-					},
-					'myObject.myBoolean': {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'boolean'
-					},
-					'myObject.myDateObj': {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'instant'
-					},
-					'myObject.myGeoPointArray': {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'geoPoint'
-					},
-					'myObject.myGeoPointString': {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'geoPoint'
-					},
-					'myObject.myInstantString': {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'instant'
-					},
-					'myObject.myLocalDateString': {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'localDate'
-					},
-					'myObject.myLocalDateTimeString': {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'localDateTime'
-					},
-					'myObject.myLocalTimeString': {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'localTime'
-					},
-					'myObject.myNumber': {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'double'
-					},
-					'myObject.myString': {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'string'
-					}
+					myObject: FIELD_SET,
+					'myObject.myBoolean': FIELD_BOOLEAN,
+					'myObject.myDateObj': FIELD_INSTANT,
+					'myObject.myGeoPointArray': FIELD_GEO_POINT,
+					'myObject.myGeoPointString': FIELD_GEO_POINT,
+					'myObject.myInstantString': FIELD_INSTANT,
+					'myObject.myLocalDateString': FIELD_LOCAL_DATE,
+					'myObject.myLocalDateTimeString': FIELD_LOCAL_DATE_TIME,
+					'myObject.myLocalTimeString': FIELD_LOCAL_TIME,
+					'myObject.myNumber': FIELD_DOUBLE,
+					'myObject.myString': FIELD_STRING
 				},
 				addExtraFieldsToDocumentType({
 					data: {
@@ -203,28 +107,9 @@ describe('document', () => {
 		it(`doesn't make an entry per item in an array`, () => {
 			deepStrictEqual(
 				{
-					myArray: {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'string'
-					},
-					myObjArray: {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'set'
-					}
+					myArray: FIELD_STRING,
+					myObjArray: FIELD_SET,
+					'myObjArray.key': FIELD_STRING
 				},
 				addExtraFieldsToDocumentType({
 					data: {
@@ -259,28 +144,8 @@ describe('document', () => {
 
 			deepStrictEqual(
 				{
-					myGeoPointArray: {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'geoPoint'
-					},
-					myGeoPointString: {
-						active: true,
-						enabled: true,
-						fulltext: false,
-						includeInAllText: false,
-						max: 0,
-						min: 0,
-						nGram: false,
-						path: false,
-						valueType: 'geoPoint'
-					}
+					myGeoPointArray: FIELD_GEO_POINT,
+					myGeoPointArrayArray: FIELD_GEO_POINT
 				},
 				addExtraFieldsToDocumentType({
 					data: {
@@ -294,35 +159,120 @@ describe('document', () => {
 							59.9090442,
 							10.7423389
 						],
-						myGeoPointString: '59.9090442,10.7423389'
+						myGeoPointArrayArray: [[
+							-90,
+							-180
+						],[
+							0,
+							0
+						],[
+							90,
+							180
+						]]
 					},
 					documentTypeId: newDocumentTypeNode._id,
 					fieldsObj
 				}, javaBridge)
-			);
-			/*const documentTypeNodeAfter = connection.get(newDocumentTypeNode._id);
-			javaBridge.log.debug('documentTypeNodeAfter:%s', documentTypeNodeAfter);
+			); // deepStrictEqual
+		}); // it
+		it('Makes fields for children in an array of sets', () => {
+			const emptyDocumentTypeNode = connection.create({
+				_name: 'b',
+				_path: `${DOCUMENT_TYPES_FOLDER_PATH}/b`,
+				properties: []
+			});
+			//javaBridge.log.debug('newDocumentTypeNode:%s', newDocumentTypeNode);
 
-			addExtraFieldsToDocumentType({
-				data: {
-					_id: '_id',
-					_name: '_name',
-					_path: '_path',
-					_versionKey: '_versionKey',
-					//[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-					//[FIELD_PATH_META]: `${FIELD_PATH_META}`,
-					myGeoPointString: [
-						59.9090442,
-						10.7423389
-					],
-					myGeoPointArray: '59.9090442,10.7423389'
+			const fieldsObj = fieldsArrayToObj(emptyDocumentTypeNode['properties'] || [], javaBridge);
+			//javaBridge.log.debug('fieldsObj:%s', fieldsObj);
+
+			const setWithArrayValues = {
+				oneOrMoreBooleans: BOOLEANS,
+			};
+			const setWithSingleValues = {
+				oneOrMoreBooleans: true,
+			};
+
+			const expected = {
+				oneOrMoreSets: FIELD_SET,
+				'oneOrMoreSets.oneOrMoreBooleans': FIELD_BOOLEAN,
+			};
+
+			deepStrictEqual(
+				expected,
+				addExtraFieldsToDocumentType({
+					data: {
+						_id: '_id',
+						_name: '_name',
+						_path: '_path',
+						_versionKey: '_versionKey',
+						oneOrMoreSets: [
+							setWithArrayValues,
+							setWithSingleValues
+						]
+					},
+					documentTypeId: emptyDocumentTypeNode._id,
+					fieldsObj
+				}, javaBridge)
+			); // deepStrictEqual
+			deepStrictEqual(
+				expected,
+				addExtraFieldsToDocumentType({
+					data: {
+						_id: '_id',
+						_name: '_name',
+						_path: '_path',
+						_versionKey: '_versionKey',
+						oneOrMoreSets: setWithSingleValues
+					},
+					documentTypeId: emptyDocumentTypeNode._id,
+					fieldsObj
+				}, javaBridge)
+			); // deepStrictEqual
+		}); // it
+		it('Extends an existing set inside an array of sets', () => {
+			const documentTypeNodeWithSetWithOneProperty = connection.create({
+				_name: 'c',
+				_path: `${DOCUMENT_TYPES_FOLDER_PATH}/c`,
+				properties: [{
+					...FIELD_SET,
+					name: 'oneOrMoreSets'
+				}, {
+					...FIELD_STRING,
+					name: 'oneOrMoreSets.oneOrMoreStrings'
+				}]
+			});
+			//javaBridge.log.debug('documentTypeNodeWithSetWithOneProperty:%s', documentTypeNodeWithSetWithOneProperty);
+
+			const fieldsObj = fieldsArrayToObj(documentTypeNodeWithSetWithOneProperty['properties'] || [], javaBridge);
+			//javaBridge.log.debug('fieldsObj:%s', fieldsObj);
+
+			deepStrictEqual(
+				{
+					oneOrMoreSets: FIELD_SET,
+					'oneOrMoreSets.oneOrMoreBooleans': FIELD_BOOLEAN,
+					'oneOrMoreSets.oneOrMoreStrings': FIELD_STRING
 				},
-				documentTypeId: newDocumentTypeNode._id,
-				fieldsObj
-			}, javaBridge);
-
-			const documentTypeNodeAgain = connection.get(newDocumentTypeNode._id);
-			javaBridge.log.debug('documentTypeNodeAgain:%s', documentTypeNodeAgain);*/
-		});
+				addExtraFieldsToDocumentType({
+					data: {
+						_id: '_id',
+						_name: '_name',
+						_path: '_path',
+						_versionKey: '_versionKey',
+						oneOrMoreSets: [{
+							oneOrMoreBooleans: BOOLEANS,
+							oneOrMoreStrings: STRINGS
+						}, {
+							oneOrMoreBooleans: true,
+							oneOrMoreStrings: 'string'
+						}]
+					},
+					documentTypeId: documentTypeNodeWithSetWithOneProperty._id,
+					fieldsObj
+				}, javaBridge)
+			); // deepStrictEqual
+		}); // it
+		// TODO Empty arrays
+		// TODO Arrays with first item undefined or ''
 	}); // describe addExtraFieldsToDocumentType
 }); // describe document
