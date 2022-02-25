@@ -1,6 +1,7 @@
 import type {
 	//NodeCreateParams,
 	OneOrMore,
+	ParentPath,
 	RequiredNodeProperties
 } from '/lib/explorer/types.d';
 
@@ -41,4 +42,8 @@ export type InterfaceNode = RequiredNodeProperties & {
 	modifiedTime? :Date|string
 	stopWords? :OneOrMore<string>
 	synonymIds? :OneOrMore<string>
+}
+
+export interface InterfaceCreateParams extends InterfaceNode {
+	_parentPath :ParentPath
 }

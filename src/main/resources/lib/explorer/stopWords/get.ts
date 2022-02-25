@@ -20,7 +20,7 @@ export function get({
 	key = id || path
 } :{
 	connection :RepoConnection
-	id :string
+	id? :string
 	parentPath? :ParentPath
 	name? :string
 	path? :Path

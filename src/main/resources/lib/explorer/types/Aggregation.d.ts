@@ -133,19 +133,80 @@ export type Aggregation =
 	| MaxAggregation
 	| ValueCountAggregation;
 
-export interface AggregationsResponseBucket {
-	readonly docCount: number;
+
+export type AggregationsResponseBucket<SubAggregationKey = never> = SubAggregationKey extends PropertyKey
+	? {
+		[K in SubAggregationKey] :{
+			readonly buckets? :ReadonlyArray<AggregationsResponseBucket<SubAggregationKey>>;
+
+			// Max, Min, Value Count
+			readonly value? :number
+
+			// Stats
+			readonly avg? :number
+			readonly count? :number
+			readonly max? :number
+			readonly min? :number
+			readonly sum? :number
+		}
+	} & {
+		// DateHistogram, DateRange, GeoDistance, Range, Term
+		readonly docCount: number; // doc_count??? https://developer.enonic.com/docs/xp/stable/storage/aggregations#geodistance
+		readonly key: string;
+
+		// DateRange, Range
+		readonly from?: number | string;
+		readonly to?: number | string;
+	}
+	: {
+		// DateHistogram, DateRange, GeoDistance, Range, Term
+		readonly docCount: number; // doc_count??? https://developer.enonic.com/docs/xp/stable/storage/aggregations#geodistance
+		readonly key: string;
+
+		// DateRange, Range
+		readonly from?: number | string;
+		readonly to?: number | string;
+	}
+
+
+/*export interface AggregationsResponseBucket {
+	// DateHistogram, DateRange, GeoDistance, Range, Term
+	readonly docCount: number; // doc_count??? https://developer.enonic.com/docs/xp/stable/storage/aggregations#geodistance
 	readonly key: string;
+
+	// DateRange, Range
 	readonly from?: number | string;
 	readonly to?: number | string;
 
-	readonly [key2: string]: any; // sub aggregations
+	[key2 in SubAggregationKey] :{
+		readonly buckets? :ReadonlyArray<AggregationsResponseBucket>;
+
+		// Max, Min, Value Count
+		readonly value? :number
+
+		// Stats
+		readonly avg? :number
+		readonly count? :number
+		readonly max? :number
+		readonly min? :number
+		readonly sum? :number
+	} | any;
+}*/
+
+export interface AggregationsResponseEntry<SubAggregationKey = never> {
+	readonly buckets :Array<AggregationsResponseBucket<SubAggregationKey>>;
+
+	// Max, Min, Value Count
+	readonly value? :number
+
+	// Stats
+	readonly avg? :number
+	readonly count? :number
+	readonly max? :number
+	readonly min? :number
+	readonly sum? :number
 }
 
-export interface AggregationsResponseEntry {
-	readonly buckets: Array<AggregationsResponseBucket>;
-}
-
-export type AggregationsResponse<AggregationKey> = AggregationKey extends PropertyKey ? {
-	[K in AggregationKey]: AggregationsResponseEntry;
+export type AggregationsResponse<AggregationKey = never, SubAggregationKey = never> = AggregationKey extends PropertyKey ? {
+	[K in AggregationKey] :AggregationsResponseEntry<SubAggregationKey>;
 } : {};

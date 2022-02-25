@@ -1,4 +1,8 @@
 import type {RepoConnection} from '/lib/explorer/types.d';
+import type {
+	Field,
+	FieldNode
+} from '/lib/explorer/field/types.d';
 
 import {
 	VALUE_TYPE_STRING,
@@ -48,18 +52,12 @@ export function getFields({
 	const queryRes = connection.query(queryParams);
 	//log.info(`queryRes:${toStr(queryRes)}`);
 
-	const fieldsArray :Array<{
-		key :string
-	}>= queryRes.hits.map(hit => {
+	const fieldsArray :Array<Field> = queryRes.hits.map(hit => {
 		const {
 			fieldType = VALUE_TYPE_STRING,
 			isSystemField = false,
 			...rest
-		} = connection.get(hit.id) as {
-			fieldType :string
-			isSystemField :boolean
-			key :string
-		};
+		} = connection.get<FieldNode>(hit.id);
 		return {
 			...rest,
 			fieldType,
