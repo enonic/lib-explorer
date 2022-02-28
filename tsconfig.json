@@ -25,8 +25,8 @@
 		"noUnusedParameters": true,
 		"outDir": "build/rollup",
 		"paths": {
-			"@enonic/js-utils": ["../enonic-js-utils/src"],
 			//"@enonic/js-utils": ["node_modules/@enonic/js-utils/src"],
+			"@enonic/js-utils": ["../enonic-js-utils/src"],
 			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
 		},
 		"preserveWatchOutput": false,
@@ -52,9 +52,9 @@
 		]
 	},
 	"exclude": [
-		"../enonic-js-utils/src",
-		"build",
-		"node_modules"
+		"../enonic-js-utils/**/*",
+		"build/**/*",
+		"node_modules/**/*"
 	],
 	"files": [
 		"src/main/resources/index.d.ts",

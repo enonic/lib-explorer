@@ -1,4 +1,4 @@
-import type {Aggregation} from '@enonic/js-utils/src/mock/node/query/aggregation.d';
+import type {Aggregations} from '@enonic/js-utils/src/mock/node/query/aggregation.d';
 import type {
 	Highlight,
 	QueryFilters,
@@ -16,7 +16,7 @@ import {get} from '/lib/explorer/stopWords/get';
 
 
 export function query<
-	AggregationKeys extends string = never
+	AggregationKeys extends undefined|string = undefined
 >({
 	aggregations,
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
@@ -26,7 +26,7 @@ export function query<
 	sort = '_name ASC',
 	start = 0
 } :{
-	aggregations? :Record<AggregationKeys, Aggregation>
+	aggregations? :Aggregations<AggregationKeys>
 	connection :RepoConnection
 	count? :number
 	filters? :QueryFilters

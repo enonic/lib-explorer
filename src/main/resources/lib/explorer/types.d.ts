@@ -5,7 +5,7 @@ import type {
 } from '@enonic/js-utils/src/mock/auth/';
 
 import type {
-	Aggregation,
+	Aggregations,
 	AggregationsResponse
 } from './types/Aggregation.d';
 import type {IndexConfig} from './types/IndexConfig'
@@ -179,8 +179,8 @@ export interface Highlight {
 	postTag?: string;
 	requireFieldMatch?: boolean;
 	tagsSchema?: string;
-	properties?: Record<string, Highlight>;
-	}
+	properties?: Record<string, Highlight>; // Yes it's optional, no error will occur, but no highilights returned either
+}
 
 export interface HighlightResponse {
 	readonly [uuid: string]:
@@ -294,8 +294,10 @@ export interface RepoConnection {
 	/*query<AggregationKeys extends string = never>(
 		params: NodeQueryParams<AggregationKeys>
 	): NodeQueryResponse<AggregationKeys>;*/
-	query<AggregationKey extends string = never>(object :{
-		aggregations? :Record<AggregationKey, Aggregation>
+	query<
+		AggregationKey extends undefined|string = undefined
+	>(object :{
+		aggregations? :Aggregations<AggregationKey>
 		count? :number
 		filters? :QueryFilters
 		highlight? :Highlight
