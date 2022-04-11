@@ -1,4 +1,4 @@
-import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
+import {JavaBridge} from '@enonic/mock-xp';
 import {
 	deepStrictEqual,
 	throws

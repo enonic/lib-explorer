@@ -1,7 +1,7 @@
 import type {
 	MultiRepoConnection,
 	SourceWithPrincipals
-} from '@enonic/js-utils/src/mock/node/multiRepoConnection.d';
+} from '@enonic/js-utils/src/types/node/multiRepoConnection.d';
 
 import type {
 	GetContext,

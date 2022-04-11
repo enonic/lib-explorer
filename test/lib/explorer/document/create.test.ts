@@ -4,8 +4,8 @@ import {
 	VALUE_TYPE_BOOLEAN,
 	VALUE_TYPE_DOUBLE,
 	VALUE_TYPE_STRING
-} from '@enonic/js-utils/src';
-import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
+} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
+import {JavaBridge} from '@enonic/mock-xp';
 import {
 	deepStrictEqual,
 	throws

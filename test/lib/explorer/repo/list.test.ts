@@ -1,5 +1,5 @@
-import {toStr} from '@enonic/js-utils/src';
-import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
+import {toStr} from '@enonic/js-utils/dist/cjs/value/toStr';
+import {JavaBridge} from '@enonic/mock-xp';
 import {deepStrictEqual} from 'assert';
 
 import {

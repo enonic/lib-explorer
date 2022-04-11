@@ -1,8 +1,8 @@
-import type {BasicFilters} from '@enonic/js-utils/src/storage/query/Filters.d';
+import type {BasicFilters} from '@enonic/js-utils/src/types/node/query/Filters.d';
 import type {
 	PermissionsParams,
 	PrincipalKey
-} from '@enonic/js-utils/src/mock/auth/';
+} from '@enonic/js-utils/src/types/Auth.d';
 
 import type {
 	Aggregations,
@@ -15,11 +15,11 @@ export type {
 	PrincipalKey,
 	PrincipalKeyRole,
 	PrincipalKeyUser
-} from '@enonic/js-utils/src/mock/auth/';
+} from '@enonic/js-utils/src/types/Auth.d';
 export type {
 	CreateRepoParams,
 	RepositoryConfig
-} from '@enonic/js-utils/src/mock/repo/';
+} from '@enonic/js-utils/src/types/Repo.d';
 export type {
 	Aggregation,
 	AggregationsResponse

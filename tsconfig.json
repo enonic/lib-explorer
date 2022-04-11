@@ -25,8 +25,8 @@
 		"noUnusedParameters": true,
 		"outDir": "build/rollup",
 		"paths": {
-			//"@enonic/js-utils": ["node_modules/@enonic/js-utils/src"],
-			"@enonic/js-utils": ["../enonic-js-utils/src"],
+			//"@enonic/js-utils": ["../enonic-js-utils/src"], // Use this or npm link ../enonic-js-utils
+			"@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
 			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
 		},
 		"preserveWatchOutput": false,

@@ -10,9 +10,9 @@ import {
 	VALUE_TYPE_GEO_POINT,
 	VALUE_TYPE_SET,
 	detectValueType,
-	isNonNegativeIntegerString,
-	isNotSet,
-	toStr
+	isNonNegativeIntegerString//,
+	//isNotSet,
+	//toStr
 } from '@enonic/js-utils';
 
 //import traverse from 'traverse'; //[!] Error: 'default' is not exported by node_modules/traverse/index.js

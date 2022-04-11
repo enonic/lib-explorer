@@ -4,8 +4,8 @@
 
 
 import alias from '@rollup/plugin-alias';
-//import commonjs from '@rollup/plugin-commonjs'; // Convert CommonJS modules to ES6, so they can be included in a Rollup bundle
-//import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs'; // Convert CommonJS modules to ES6, so they can be included in a Rollup bundle
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 //import typescript from 'rollup-plugin-typescript2';
 
@@ -41,6 +41,10 @@ export default {
 		//format: 'esm'
 		freeze: false,
     	interop: false,
+
+		// Actually still using webpack to build before making the jar file, so this is pointless so far:
+		//preserveModules: true, // Copy modules into build/resources/main/node_modules instead of bundling them
+
 		sourcemap: false
 	},
 	plugins: [
@@ -55,7 +59,7 @@ export default {
 				{ find: 'date-fns/format'         , replacement: 'node_modules/date-fns/format/index.js' }
 			]
 		}),
-		/*nodeResolve({
+		nodeResolve({
 			/*dedupe: [
 				'/lib/xp/node'
 			]*/
@@ -65,7 +69,7 @@ export default {
 			//	'node_modules'
 			//],
 			//modulesOnly: true, // If true, inspect resolved files to assert that they are ES2015 modules.
-			//preferBuiltins: false,
+			preferBuiltins: false//,
 			// An Array which instructs the plugin to limit module resolution to
 			// those whose names match patterns in the array. Note: Modules not
 			// matching any patterns will be marked as external.
@@ -81,9 +85,9 @@ export default {
 				//'/lib/explorer',
 				//'/lib/explorer-typescript'
 				/^\/lib\/explorer.*$/
-			]*
-		}),*/
-		typescript()//,
-		//commonjs() // Convert CommonJS modules to ES6, so they can be included in a Rollup bundle
+			]*/
+		}),
+		typescript(),
+		commonjs() // Convert CommonJS modules to ES6, so they can be included in a Rollup bundle
 	]
 };

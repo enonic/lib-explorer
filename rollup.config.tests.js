@@ -10,7 +10,8 @@ export default {
 	},
 	plugins: [
 		nodeResolve({
-			resolveOnly: ['@enonic/js-utils']
+			preferBuiltins: true, // Avoid warning
+			//resolveOnly: ['@enonic/js-utils']
 		}),
 		typescript(),
 		commonjs()

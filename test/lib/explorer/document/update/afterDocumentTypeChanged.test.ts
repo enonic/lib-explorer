@@ -1,9 +1,7 @@
-import {
-	VALUE_TYPE_STRING,
-	forceArray,
-	sortByProperty
-} from '@enonic/js-utils/src';
-import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
+import {forceArray} from '@enonic/js-utils/dist/cjs/array/forceArray';
+import {sortByProperty} from '@enonic/js-utils/dist/cjs/array/sortBy';
+import {VALUE_TYPE_STRING} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
+import {JavaBridge} from '@enonic/mock-xp';
 
 import {deepStrictEqual} from 'assert';
 

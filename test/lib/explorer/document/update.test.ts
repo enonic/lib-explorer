@@ -1,8 +1,8 @@
-import type {LooseObject} from '../../../types';
+//import type {LooseObject} from '../../../types.d';
 
-import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
 
-import {sortByProperty} from '@enonic/js-utils';
+import {sortByProperty} from '@enonic/js-utils/dist/cjs/array/sortBy';
+import {JavaBridge} from '@enonic/mock-xp';
 import {
 	deepStrictEqual,
 	throws

@@ -1,4 +1,4 @@
-import type {Aggregations} from '@enonic/js-utils/src/mock/node/query/aggregation.d';
+import type {Aggregations} from '@enonic/js-utils/src/types/node/query/aggregation.d';
 import type {
 	Highlight,
 	QueryFilters,

@@ -6,9 +6,6 @@
 		"moduleResolution": "node",
 		"outDir": "build/tsc/specs",
 		"paths": {
-			"//@enonic/js-utils": ["node_modules/@enonic/js-utils"],
-			"///@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/esm/index.mjs"],
-			"@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
 			"//assert": ["node_modules/assert"],
 			"enonic-types/*": ["node_modules/enonic-types/*"],
 			"/lib/explorer/*": ["src/main/typeScript/lib/explorer/*"]

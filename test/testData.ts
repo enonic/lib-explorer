@@ -1,9 +1,9 @@
 import {
-	VALUE_TYPE_BOOLEAN,
+	//VALUE_TYPE_BOOLEAN,
 	//VALUE_TYPE_DOUBLE,
 	//VALUE_TYPE_LONG,
 	VALUE_TYPE_STRING
-} from '@enonic/js-utils/src';
+} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
 
 
 export const BOOLEANS = [

@@ -1,9 +1,8 @@
-import {JavaBridge} from '@enonic/js-utils/src/mock/JavaBridge';
+import {JavaBridge} from '@enonic/mock-xp';
 import {deepStrictEqual} from 'assert';
 
-//import {VALUE_TYPE_STRING} from '@enonic/js-utils';
-//import {VALUE_TYPE_STRING} from '../../../../build/swc/main/resources/lib/explorer/index.js';
-//import libExplorer from '../../../../build/swc/main/resources/lib/explorer/index.js';
+//import {VALUE_TYPE_STRING} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
+
 
 import {
 	document
