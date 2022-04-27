@@ -1,7 +1,7 @@
 import type {
 	Interface,
 	InterfaceNode
-} from './types.d';
+} from '../types/Interface.d';
 
 import {
 	forceArray//,

@@ -8,7 +8,7 @@ import type {
 } from '/lib/explorer/types.d';
 import type {
 	InterfaceField
-} from '/lib/explorer/interface/types.d';
+} from '/lib/explorer/types/Interface.d';
 //import type {IndexConfig} from '/lib/explorer/types/IndexConfig.d';
 
 

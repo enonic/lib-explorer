@@ -1,5 +1,5 @@
 import type {RepoConnection} from '/lib/explorer/types.d';
-import type {InterfaceNode} from './types.d';
+import type {InterfaceNode} from '../types/Interface.d';
 
 import {INTERFACES_FOLDER} from '/lib/explorer/constants';
 

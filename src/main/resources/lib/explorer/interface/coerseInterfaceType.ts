@@ -3,7 +3,7 @@ import type {
 	Interface,
 	InterfaceField,
 	InterfaceNode
-} from './types.d';
+} from '../types/Interface.d';
 
 import {
 	forceArray,
