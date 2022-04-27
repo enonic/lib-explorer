@@ -42,6 +42,7 @@ export function query({
 	//log.info(toStr({queryRes}));
 
 	const journalQueryRes = {
+		aggregations: queryRes.aggregations,
 		count: queryRes.count,
 		hits: queryRes.hits.map(hit => {
 			//log.info(toStr({node}));
