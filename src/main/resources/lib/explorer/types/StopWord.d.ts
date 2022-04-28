@@ -10,19 +10,17 @@ export type StopwordNode = RequiredNodeProperties & StopwordNodeSpecific;
 export type Stopword = Omit<
 	RequiredNodeProperties,
 	'_childOrder'
-		| '_id'
+		//| '_id' // Needed for common GraphQL Interface Node
 		| '_indexConfig'
 		| '_inheritsPermissions'
-		| '_name' // Name is random and useless...
-		| '_nodeType'
-		//| '_path'
+		//| '_name' // Needed for common GraphQL Interface Node
+		//| '_nodeType' // Needed for common GraphQL Interface Node
+		//| '_path' // Needed for common GraphQL Interface Node
 		| '_permissions'
 		| '_state'
 		| '_ts'
-		| '_versionKey'
+		//| '_versionKey' // Needed for common GraphQL Interface Node
 > & Omit<StopwordNodeSpecific, 'words'> & {
-	id :string // TODO This is not present in the node, and should be removed
-	name :string // TODO This is not present in the node, and should be removed
 	words :Array<string>
 }
 
@@ -30,5 +28,5 @@ export interface QueriedStopword extends Stopword {
 	/*_highlight? :{
 		[name: string]: ReadonlyArray<string>;
 	}*/
-	score :number // TODO rename _score
+	_score :number
 }

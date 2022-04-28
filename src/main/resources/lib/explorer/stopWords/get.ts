@@ -4,12 +4,12 @@ import type {
 	Path,
 	RepoConnection
 } from '/lib/explorer/types.d';
-import type {StopwordNode} from './types.d';
+import type {StopwordNode} from '../types/StopWord.d';
 
 //import {toStr} from '@enonic/js-utils';
 
 import {join} from '/lib/explorer/path/join';
-import {map} from '/lib/explorer/stopWords/map';
+import {coerseStopWordType} from '/lib/explorer/stopWords/coerseStopWordType';
 
 export function get({
 	connection,
@@ -30,5 +30,5 @@ export function get({
 	if (!node) { // Handle ghost nodes
 		return null;
 	}
-	return map(node);
+	return coerseStopWordType(node);
 }

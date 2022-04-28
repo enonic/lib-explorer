@@ -4,7 +4,7 @@ import type {
 	QueryFilters,
 	RepoConnection
 } from '/lib/explorer/types.d';
-import type {QueriedStopword} from './types.d';
+import type {QueriedStopword} from '../types/StopWord.d';
 
 
 //import {toStr} from '@enonic/js-utils';
@@ -56,7 +56,7 @@ export function query<
 		count: queryRes.count,
 		hits: queryRes.hits.map((hit) => {
 			const obj = get({connection, id: hit.id}) as QueriedStopword;
-			obj.score = hit.score;
+			obj._score = hit.score;
 			return obj;
 		}).filter(x => x),
 		total: queryRes.total
