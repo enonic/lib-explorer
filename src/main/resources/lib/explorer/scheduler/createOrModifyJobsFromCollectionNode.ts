@@ -90,7 +90,7 @@ export function createOrModifyJobsFromCollectionNode({
 	//log.debug(`createOrModifyJobsFromCollectionNode collection name:${collectionNodeName} existingJobs:${toStr(existingJobs)}`);
 
 	if (!collectorId) {
-		log.error(`Collection with name:${collectionNodeName} is missing a collector!`);
+		log.debug(`Collection with name:${collectionNodeName} is missing a collector! (which may be ok)`);
 		existingJobs.forEach(({name}) => {
 			log.warning(`Deleting job name:${name}, because the collection with name:${collectionNodeName} doesn't specify a collectorId!`);
 			deleteJob({name});
