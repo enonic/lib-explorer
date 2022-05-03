@@ -1,7 +1,7 @@
 import type {
 	Collection,
 	CollectionNode
-} from '/lib/explorer/collection/types.d';
+} from '/lib/explorer/types/Collection.d';
 
 
 export function coerseCollectionType({

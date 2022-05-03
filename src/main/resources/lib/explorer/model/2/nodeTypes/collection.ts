@@ -1,5 +1,5 @@
-import type {ParentPath} from '/lib/explorer/types.d';
-import type {CollectionNode} from '/lib/explorer/collection/types.d';
+import type {ParentPath} from '/lib/explorer/types/index.d';
+import type {CollectionNode} from '/lib/explorer/types/Collection.d';
 
 
 import {

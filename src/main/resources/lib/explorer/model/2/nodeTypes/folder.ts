@@ -3,9 +3,9 @@ import type {
 	//IndexConfig,
 	Name,
 	Path,
-	ParentPath,
-	PermissionsParams
-} from '/lib/explorer/types.d';
+	ParentPath
+} from '/lib/explorer/types/index.d';
+import type {PermissionsParams} from '/lib/explorer/types.d';
 
 import {
 	isNotSet,

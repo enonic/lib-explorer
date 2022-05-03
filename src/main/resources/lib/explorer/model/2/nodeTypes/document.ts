@@ -5,7 +5,7 @@ import type {
 	//Path,
 	ParentPath//,
 	//PermissionsParams
-} from '/lib/explorer/types.d';
+} from '/lib/explorer/types/index.d';
 import type {TaskDescriptor} from '/lib/explorer/task/types.d';
 
 

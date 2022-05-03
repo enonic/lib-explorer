@@ -1,4 +1,4 @@
-import type {LooseObject} from '../../types';
+import type {AnyObject} from '../../types/index.d';
 import type {JavaBridge} from '../../_coupling/types.d';
 import type {UpdateParameterObject} from './types';
 
@@ -66,7 +66,7 @@ export function createOrUpdate(
 			principals: [PRINCIPAL_EXPLORER_READ],
 			repoId: REPO_ID_EXPLORER
 		});
-		const collectionNode :LooseObject = explorerReadConnection.get(collectionId) as LooseObject;
+		const collectionNode :AnyObject = explorerReadConnection.get(collectionId) as AnyObject;
 		collectionName = collectionNode['_name'] as string;
 	}
 

@@ -1,5 +1,7 @@
 import type {
-	Path,
+	Path
+} from '/lib/explorer/types/index.d';
+import type {
 	PermissionsParams,
 	PrincipalKeyRole
 } from '/lib/explorer/types.d';

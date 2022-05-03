@@ -23,7 +23,7 @@ export interface IndexConfigObject {
 	*/
 	includeInAllText :boolean
 
-	indexValueProcessors? :Array<any>
+	indexValueProcessors? :Array<unknown>
 
 	languages? :string[]
 

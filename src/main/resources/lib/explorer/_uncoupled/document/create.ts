@@ -30,7 +30,7 @@
 //           └ documentTypeNode (modified) (if created need to update collectionNode too, since we have the collectionId, that is actually possible)
 //──────────────────────────────────────────────────────────────────────────────
 import type {JavaBridge} from '../../_coupling/types.d';
-import type {CollectionNode} from '../../collection/types.d';
+import type {CollectionNode} from '../../types/Collection.d';
 import type {DocumentTypeNode} from '../../types/DocumentType.d';
 import type {CreateParameterObject} from './types';
 

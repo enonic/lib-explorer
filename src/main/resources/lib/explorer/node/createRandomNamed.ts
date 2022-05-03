@@ -2,7 +2,9 @@ import type {
 	Id,
 	IndexConfig,
 	Name,
-	ParentPath,
+	ParentPath
+} from '/lib/explorer/types/index.d';
+import type {
 	PermissionsParams,
 	RepoConnection
 } from '/lib/explorer/types.d';

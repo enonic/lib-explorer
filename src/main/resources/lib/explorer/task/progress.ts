@@ -1,3 +1,5 @@
+import type {AnyObject} from '../../../types/index.d';
+
 //──────────────────────────────────────────────────────────────────────────────
 // Polyfill
 //──────────────────────────────────────────────────────────────────────────────
@@ -23,15 +25,16 @@ import {progress as _progress} from '/lib/xp/task';
 import {currentTimeMillis} from '../time/currentTimeMillis';
 
 
-export interface Progress {
+export interface Progress<Info extends AnyObject = {
+	currentTime? :number
+	name? :string
+	message? :string
+	startTime? :number
+	uri ?:string
+}> {
 	current? :number
 	total? :number
-	info? :{
-		currentTime? :number
-		name? :string
-		message? :string
-		startTime? :number
-	}
+	info? :Info
 }
 
 //──────────────────────────────────────────────────────────────────────────────

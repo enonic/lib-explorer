@@ -1,4 +1,4 @@
-import type {Path} from '/lib/explorer/types.d';
+import type {Path} from '/lib/explorer/types/index.d';
 
 import {COLON_SIGN} from '@enonic/js-utils';
 

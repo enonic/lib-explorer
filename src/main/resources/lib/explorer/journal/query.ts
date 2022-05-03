@@ -1,3 +1,5 @@
+import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
+import type {QueryFilters} from '/lib/explorer/types.d';
 import type {Journal} from '../journal/types.d';
 
 //import {toStr} from '@enonic/js-utils';
@@ -12,13 +14,22 @@ import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 
 
-export function query({
-	aggregations = {},
+export function query<
+	AggregationKeys extends undefined|string = undefined
+>({
+	aggregations,
 	count = 25,
 	filters = {},
 	query = '',
 	sort = 'endTime DESC',
 	start = 10
+} :{
+	aggregations ?:Aggregations<AggregationKeys>
+	count ?:number
+	filters ?:QueryFilters
+	query ?:string
+	sort ?:string
+	start ?:number
 } = {}) {
 	const connection = connect({
 		repoId: REPO_JOURNALS,
@@ -46,7 +57,7 @@ export function query({
 		count: queryRes.count,
 		hits: queryRes.hits.map(hit => {
 			//log.info(toStr({node}));
-			const node = connection.get(hit.id) as Journal;
+			const node = connection.get<Journal>(hit.id);
 			if (!node.errors) {
 				node.errors = [];
 			} else if (!Array.isArray(node.errors)) {

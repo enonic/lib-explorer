@@ -1,8 +1,8 @@
 import type {
 	IndexConfig,
-	NodeCreateParams,
 	ParentPath
-} from '/lib/explorer/types.d';
+} from '/lib/explorer/types/index.d';
+import type {NodeCreateParams} from '/lib/explorer/types.d';
 import type {WriteConnection} from '../node/WriteConnection.d';
 
 import {
@@ -48,7 +48,7 @@ export function create<N extends NodeCreateParams & {
 
 	// Mentioned in documentation:
 	//_childOrder
-	_indexConfig = {default: 'byType'},
+	_indexConfig = {default: 'byType'} as IndexConfig,
 	_inheritsPermissions = false, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 	//_manualOrderValue
 	_name,

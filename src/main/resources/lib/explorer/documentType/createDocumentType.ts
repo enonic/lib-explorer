@@ -2,7 +2,7 @@ import type {
 	Name,
 	Path,
 	ParentPath
-} from '/lib/explorer/types.d';
+} from '/lib/explorer/types/index.d';
 import type {WriteConnection} from '../node/WriteConnection.d';
 import type {Field} from '../types/Field.d';
 

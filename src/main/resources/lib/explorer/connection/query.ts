@@ -2,7 +2,7 @@
 
 
 export function query({
-	aggregations,
+	aggregations = {},
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
 	filters = {},

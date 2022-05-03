@@ -1,8 +1,8 @@
 import type {
+	IndexConfig,
 	ParentPath,
 	Path
-} from '/lib/explorer/types.d';
-//import type {IndexConfig} from '/lib/explorer/types/IndexConfig.d';
+} from '/lib/explorer/types/index.d';
 
 
 import {forceArray} from '@enonic/js-utils';
@@ -32,17 +32,17 @@ export function synonym({
 	from :string|Array<string>
 	to :string|Array<string>
 
-	_id? :string
-	_parentPath? :ParentPath
-	_path? :Path
-	_permissions? :Array<string>
-	//_nodeType? :string
-	//_versionKey? :string
-	displayName? :string
+	_id ?:string
+	_parentPath ?:ParentPath
+	_path ?:Path
+	_permissions ?:Array<string>
+	//_nodeType ?:string
+	//_versionKey ?:string
+	displayName ?:string
 }) {
 	return node({
 		...rest,
-		_indexConfig: {default: 'byType'},// as IndexConfig,
+		_indexConfig: {default: 'byType'} as IndexConfig,
 		_name,
 		_nodeType: NT_SYNONYM,
 		_parentPath,

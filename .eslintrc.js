@@ -109,7 +109,7 @@ module.exports = {
 			//'**/*.es', // TODO Currently too many errors to include
 			'**/*.js',
 			//'**/*.jsx',
-			'**/*.mjs',
+			//'**/*.mjs', // Currently no such files
 			'**/*.ts'//,
 			//'**/*.tsx'
 		]
@@ -125,10 +125,27 @@ module.exports = {
 	root: true,
 
 	rules: { // https://eslint.org/docs/rules
+		'@typescript-eslint/ban-ts-comment': ['error', {
+			'ts-expect-error': false, // 'allow-with-comment'
+			'ts-ignore': false, // 'allow-with-comment'
+			'ts-nocheck': true,
+			'ts-check': true
+		}],
 		'@typescript-eslint/no-inferrable-types': ['off'],
 		'comma-dangle': ['error', {
+			// never (default) disallows trailing commas
+			// always requires trailing commas
+			// always-multiline requires trailing commas when the last element
+			//  or property is in a different line than the closing ] or } and
+			//  disallows trailing commas when the last element or property is
+			//  on the same line as the closing ] or }
+			// only-multiline allows (but does not require) trailing commas when
+			//  the last element or property is in a different line than the
+			//  closing ] or } and disallows trailing commas when the last
+			//  element or property is on the same line as the closing ] or }
+			// ignore who cares? no body
 			arrays: 'ignore',
-			objects: 'never',
+			objects: 'only-multiline',
 			imports: 'never',
 			exports: 'never',
 			functions: 'ignore'
@@ -163,7 +180,7 @@ module.exports = {
 				'_permissions', // node property
 				'_versionKey' // node property
 			],
-			allowAfterThis: false,
+			allowAfterThis: true,
 			allowAfterSuper: false,
 			enforceInMethodNames: false
 		}],
@@ -175,7 +192,28 @@ module.exports = {
 		//'react/jsx-uses-vars': 'error',
 		//'react/prop-types': 'off',
 		//'react/react-in-jsx-scope': 'off', // Since React is a global
-		semi: 'error',
+		semi: [
+			'off',
+			// "always" (default) requires semicolons at the end of statements
+			// "never" disallows semicolons as the end of statements (except to
+			//         disambiguate statements beginning with [, (, /, +, or -)
+			'always',
+			{
+				// when "always"
+				omitLastInOneLineBlock: true
+
+				// when "never"
+				// "any" (default) ignores semicolons (or lacking semicolon) at
+				//       the end of statements if the next line starts with
+				//       [, (, /, +, or -.
+				// "always" requires semicolons at the end of statements if the
+				//          next line starts with [, (, /, +, or -.
+				// "never" disallows semicolons as the end of statements if it
+				//         doesn't make ASI hazard even if the next line starts
+				//         with [, (, /, +, or -.
+				//beforeStatementContinuationChars: 'never'
+			}
+		],
 		'spaced-comment': ['off'],
 		strict: 1
 	} // rules

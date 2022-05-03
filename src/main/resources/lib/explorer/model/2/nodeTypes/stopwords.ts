@@ -2,7 +2,7 @@ import type {
 	IndexConfig,
 	Name,
 	ParentPath
-} from '/lib/explorer/types.d';
+} from '/lib/explorer/types/index.d';
 
 
 import {

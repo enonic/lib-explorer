@@ -1,4 +1,4 @@
-import type {LooseObject} from '../../types.d'
+import type {AnyObject} from '../../types/index.d'
 import type {JavaBridge} from '../../_coupling/types.d';
 import type {Field} from '../../types/Field.d';
 import type {CleanDataParameters} from './types';
@@ -27,10 +27,10 @@ export function cleanData(
 		fieldsObj = {}
 	} :CleanDataParameters,
 	javaBridge :JavaBridge// = javaBridgeDummy
-) :LooseObject {
+) :AnyObject {
 	const {log} = javaBridge;
 	//log.debug('cleanData() data:%s', data);
-	const cleanedData :LooseObject = JSON.parse(JSON.stringify(data));
+	const cleanedData :AnyObject = JSON.parse(JSON.stringify(data));
 
 	if (cleanedData[FIELD_PATH_GLOBAL]) {
 		//log.debug('Cleaning path:%s from data:%s', FIELD_PATH_GLOBAL, cleanedData);

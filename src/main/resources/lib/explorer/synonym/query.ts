@@ -40,14 +40,14 @@ export function query<
 	sort = '_name ASC',
 	start = 0
 } :{
-	aggregations? :Aggregations<AggregationKeys>
+	aggregations ?:Aggregations<AggregationKeys>
 	connection :RepoConnection
-	count? :number
-	filters? :QueryFilters
-	highlight? :Highlight
-	query? :string
-	sort? :string
-	start? :number
+	count ?:number
+	filters ?:QueryFilters
+	highlight ?:Highlight
+	query ?:string
+	sort ?:string
+	start ?:number
 }) {
 	//log.info(toStr({connection, count, filters, query, sort}));
 	addFilter({

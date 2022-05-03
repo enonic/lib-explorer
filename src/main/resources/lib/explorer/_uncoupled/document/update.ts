@@ -1,9 +1,9 @@
 import type {JavaBridge} from '/lib/explorer/_coupling/types.d';
-import type {CollectionNode} from '/lib/explorer/collection/types.d';
+import type {CollectionNode} from '/lib/explorer/types/Collection.d';
 import type {
 	DocumentNode,
 	RequiredMetaData
-} from '/lib/explorer/document/types.d';
+} from '/lib/explorer/types/Document.d';
 import type {DocumentTypeNode} from '/lib/explorer/types/DocumentType.d';
 import type {UpdateParameterObject} from './types';
 

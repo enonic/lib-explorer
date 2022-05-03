@@ -5,7 +5,7 @@ import type {
 import type {
 	CollectionNode,
 	QueriedCollection
-} from './types.d';
+} from '../types/Collection.d';
 
 
 import {

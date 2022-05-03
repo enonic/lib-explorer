@@ -76,24 +76,22 @@ export function query({
 		hits: queryThesauriRes.hits.map((hit) => {
 			const {
 				_name,
-				//_nodeType,
+				_nodeType,
 				_path,
-				//_versionKey,
+				_versionKey,
 				description = '',
-				language//,
-				//type
+				language
 			} = connection.get(hit.id) as ThesaurusNode;
 			const rv :Thesaurus = {
 				_id: hit.id,
 				_name,
-				//_nodeType,
+				_nodeType,
 				_path,
-				//_versionKey,
+				_versionKey,
 				description,
 				id: hit.id, // backwards compatibility
 				language,
-				name: _name//, // backwards compatibility
-				//type
+				name: _name // backwards compatibility
 			};
 			if (getSynonymsCount) {
 				const synonymsRes = querySynonyms({

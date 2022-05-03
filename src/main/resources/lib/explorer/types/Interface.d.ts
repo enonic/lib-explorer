@@ -1,7 +1,7 @@
+import type {ParentPath} from '/lib/explorer/types/index.d';
 import type {
 	//NodeCreateParams,
 	OneOrMore,
-	ParentPath,
 	RequiredNodeProperties
 } from '/lib/explorer/types.d';
 

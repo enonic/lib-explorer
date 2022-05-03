@@ -1,9 +1,11 @@
 import type {
 	IndexConfig,
+	ParentPath,
+	Path
+} from '/lib/explorer/types/index.d';
+import type {
 	NodeCreateParams,
 	OneOrMore,
-	ParentPath,
-	Path,
 	PermissionsParams
 } from '/lib/explorer/types.d';
 import type {

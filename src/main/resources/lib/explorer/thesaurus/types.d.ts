@@ -13,13 +13,13 @@ export type Thesaurus = Omit<
 	'_childOrder'
 		| '_indexConfig'
 		| '_inheritsPermissions'
-		| '_nodeType'
+		//| '_nodeType' // GraphQL Interface Node needs this
 		| '_permissions'
 		| '_state'
 		| '_ts'
-		| '_versionKey'
+		//| '_versionKey' // GraphQL Interface Node needs this
 > & ThesaurusSpecific & {
-	id :string // backwards compatibility
-	name :string // backwards compatibility
+	id ?:string // backwards compatibility
+	name ?:string // backwards compatibility
 	synonymsCount? :number
 }

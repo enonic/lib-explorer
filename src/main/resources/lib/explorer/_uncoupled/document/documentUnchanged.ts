@@ -1,6 +1,6 @@
 import type {Node} from '/lib/explorer/types.d';
 import type {JavaBridge} from '/lib/explorer/_coupling/types.d';
-import type {DocumentNode} from '/lib/explorer/document/types.d';
+import type {DocumentNode} from '/lib/explorer/types/Document.d';
 
 
 import {

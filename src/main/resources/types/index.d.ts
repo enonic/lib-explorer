@@ -5,3 +5,7 @@ export {
 export {
 	Log
 } from './Log.d';
+export {
+	AnyObject,
+	EmptyObject
+} from './Utility';

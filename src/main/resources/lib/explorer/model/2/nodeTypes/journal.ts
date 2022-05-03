@@ -1,8 +1,11 @@
 import type {
 	IndexConfig,
 	ParentPath
-} from '/lib/explorer/types.d';
-import type {MsgUri} from '/lib/explorer/journal/types.d';
+} from '/lib/explorer/types/index.d';
+import type {
+	JournalError,
+	JournalSuccess
+} from '/lib/explorer/journal/types.d';
 
 //@ts-ignore
 import {instant} from '/lib/xp/value';
@@ -21,8 +24,8 @@ const {currentTimeMillis} = Java.type('java.lang.System') as {
 interface JournalInput {
 	name :string
 	startTime :number
-	errors? :Array<MsgUri>
-	successes? :Array<MsgUri>
+	errors? :Array<JournalError>
+	successes? :Array<JournalSuccess>
 }
 
 

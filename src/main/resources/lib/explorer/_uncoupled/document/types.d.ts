@@ -1,8 +1,8 @@
 import {
-	LooseObject,
+	AnyObject,
 	Path,
 	ParentPath
-} from '../../types';
+} from '../../types/index.d';
 
 import {
 	Field,
@@ -12,44 +12,44 @@ import {
 
 
 export interface AddExtraFieldsToDocumentTypeParams {
-	data :LooseObject
+	data :AnyObject
 	documentTypeId :string
 	fieldsObj :FieldsObject
 }
 
 export interface CleanDataParameters {
 	cleanExtraFields? :boolean,
-	data :LooseObject,
+	data :AnyObject,
 	fieldsObj? :FieldsObject
 }
 
 export interface ValidateParameters {
-	data :LooseObject
+	data :AnyObject
 	fieldsObj :FieldsObject
 	partial? :boolean
 	validateOccurrences? :boolean
 	validateTypes? :boolean
-	//documentType? :LooseObject
+	//documentType? :AnyObject
 }
 
 export interface ValidateOccurrencesParameters {
-	data? :LooseObject
+	data? :AnyObject
 	fields? :Field[]
 	partial? :boolean
 }
 
 export interface ValidateTypesParameters {
-	data? :LooseObject
+	data? :AnyObject
 	fields? :Field[]
 }
 
 export interface TypeCastToJavaParameters {
-	data? :LooseObject
+	data? :AnyObject
 	fieldsObj :FieldsObject
 }
 
 export interface BuildIndexConfigParameterObject {
-	//data :LooseObject
+	//data :AnyObject
 	fieldsObj :FieldsObject
 	languages :string[]
 }

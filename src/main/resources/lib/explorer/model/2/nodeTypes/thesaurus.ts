@@ -1,7 +1,8 @@
 import type {
 	Name,
-	ParentPath
-} from '/lib/explorer/types.d';
+	ParentPath,
+	IndexConfigConfig
+} from '/lib/explorer/types/index.d';
 
 import {
 	NT_THESAURUS
@@ -30,7 +31,9 @@ export function thesaurus({
 	delete rest['_permissions'];
 	return node({
 		...rest,
-		_indexConfig: {default: 'byType'},
+		_indexConfig: {
+			default: 'byType' as IndexConfigConfig
+		},
 		_name,
 		_nodeType: NT_THESAURUS,
 		_parentPath/*,

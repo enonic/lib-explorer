@@ -26,16 +26,20 @@
 // Later we can extend with all the document-layer support, but at the same time
 // leave the pitfalls in the hands of the Collector developer.
 //──────────────────────────────────────────────────────────────────────────────
+import type {AnyObject} from '../../../types/index.d';
 import type {
 	Id,
 	Name,
 	ParentPath//,
 	//RequiredNodeProperties
-} from '/lib/explorer/types.d';
-import type {CollectionNode} from '/lib/explorer/collection/types.d';
-import type {DocumentNode} from '/lib/explorer/document/types.d';
+} from '/lib/explorer/types/index.d';
+import type {CollectionNode} from '/lib/explorer/types/Collection.d';
+import type {DocumentNode} from '/lib/explorer/types/Document.d';
 //import type {FieldsObject} from '/lib/explorer/documentType/types.d';
-import type {MsgUri} from '../journal/types.d';
+import type {
+	JournalError,
+	JournalSuccess
+} from '../journal/types.d';
 import type {Progress} from '../task/progress';
 
 import {
@@ -76,9 +80,9 @@ const TRACE = false;
 const {currentTimeMillis} = Java.type('java.lang.System');
 
 
-export class Collector {
+export class Collector<Config extends AnyObject = AnyObject> {
 	public collection :Collection // Public in lib-explorer-3.x
-	public config :{} // Public in lib-explorer-3.x
+	public config :Config // Public in lib-explorer-3.x // TODO
 	public journal :Journal // Public in lib-explorer-3.x
 	public startTime :number // Public in lib-explorer-3.x
 	public taskProgressObj :Progress // Public in lib-explorer-3.x
@@ -377,7 +381,7 @@ export class Collector {
 
 			//cleanExtraFields // TODO Perhaps later
 			//addExtraFields // TODO Perhaps later
-			requireValid: boolRequireValid,
+			requireValid: boolRequireValid//,
 			//validateOccurrences // TODO Perhaps later
 			//validateTypes // TODO Perhaps later
 		});
@@ -389,12 +393,12 @@ export class Collector {
 	} // persistDocument
 
 
-	addError(error :MsgUri) {
+	addError(error :JournalError) {
 		this.journal.addError(error);
 	}
 
 
-	addSuccess(success :MsgUri) {
+	addSuccess(success :JournalSuccess) {
 		this.journal.addSuccess(success);
 	}
 
