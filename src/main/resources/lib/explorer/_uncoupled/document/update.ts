@@ -4,7 +4,7 @@ import type {
 	DocumentNode,
 	RequiredMetaData
 } from '/lib/explorer/document/types.d';
-import type {DocumentTypeNode} from '/lib/explorer/documentType/types.d';
+import type {DocumentTypeNode} from '/lib/explorer/types/DocumentType.d';
 import type {UpdateParameterObject} from './types';
 
 import {

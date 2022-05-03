@@ -2,7 +2,7 @@ import type {JavaBridge} from '../../_coupling/types.d';
 import type {
 	Field,
 	FieldsObject
-} from '../../documentType/types.d';
+} from '../../types/Field.d';
 import type {AddExtraFieldsToDocumentTypeParams} from './types';
 
 

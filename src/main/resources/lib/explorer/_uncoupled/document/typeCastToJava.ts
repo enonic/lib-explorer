@@ -1,5 +1,5 @@
 import type {JavaBridge} from '/lib/explorer/_coupling/types.d';
-import type {Field} from '/lib/explorer/documentType/types.d'
+import type {Field} from '/lib/explorer/types/Field.d'
 import type {DocumentNode} from '/lib/explorer/document/types.d'
 import type {TypeCastToJavaParameters} from './types.d'
 

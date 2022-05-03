@@ -31,7 +31,7 @@
 //──────────────────────────────────────────────────────────────────────────────
 import type {JavaBridge} from '../../_coupling/types.d';
 import type {CollectionNode} from '../../collection/types.d';
-import type {DocumentTypeNode} from '../../documentType/types.d';
+import type {DocumentTypeNode} from '../../types/DocumentType.d';
 import type {CreateParameterObject} from './types';
 
 import {

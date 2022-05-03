@@ -1,6 +1,6 @@
 import type {LooseObject} from '../../types.d'
 import type {JavaBridge} from '../../_coupling/types.d';
-import type {Field} from '../../documentType/types.d';
+import type {Field} from '../../types/Field.d';
 import type {CleanDataParameters} from './types';
 
 //import {toStr} from '@enonic/js-utils';

@@ -8,7 +8,7 @@ import {
 	Field,
 	Fields,
 	FieldsObject
-} from '../../documentType/types.d';
+} from '../../types/Field.d';
 
 
 export interface AddExtraFieldsToDocumentTypeParams {

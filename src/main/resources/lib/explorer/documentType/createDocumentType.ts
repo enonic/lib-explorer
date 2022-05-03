@@ -4,7 +4,7 @@ import type {
 	ParentPath
 } from '/lib/explorer/types.d';
 import type {WriteConnection} from '../node/WriteConnection.d';
-import type {Field} from './types.d';
+import type {Field} from '../types/Field.d';
 
 import {
 	forceArray//,

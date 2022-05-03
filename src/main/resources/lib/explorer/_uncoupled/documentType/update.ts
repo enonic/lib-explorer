@@ -1,8 +1,6 @@
 import type {JavaBridge} from '../../_coupling/types.d';
-import type {
-	DocumentTypeNode,
-	Fields
-} from '../../documentType/types.d';
+import type {DocumentTypeNode} from '../../types/DocumentType.d';
+import type {Fields} from '../../types/Field.d';
 
 
 //import {toStr} from '@enonic/js-utils';

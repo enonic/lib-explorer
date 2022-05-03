@@ -1,6 +1,3 @@
-import type {RequiredNodeProperties} from '../types.d';
-
-
 export interface Field {
 	active? :boolean // From GUI
 	enabled? :boolean
@@ -18,12 +15,4 @@ export type Fields = Field[];
 
 export interface FieldsObject {
 	[name :string] :Required<Omit<Field, 'name'>>
-}
-
-
-export interface DocumentTypeNode extends RequiredNodeProperties {
-	addFields :boolean
-	properties :Fields
-	//createdTime? :Date | string
-	//modifiedTime? :string
 }
