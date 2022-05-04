@@ -76,31 +76,27 @@ export function query<
 			const {
 				//_id,
 				//_name,
-				//_nodeType,
+				_nodeType,
 				_path,
-				//displayName, // TODO We want to remove displayName
+				_versionKey,
 				from,
 				thesaurusReference,
-				to//,
-				//type
+				to
 			} = node;
 			const queriedSynonym :QueriedSynonym = {
 				_highlight: queryRes.highlight[node._id],
 				_id: hit.id,
 				//_name, // Name is random and useless...
-				//_nodeType,
+				_nodeType,
 				_path,
 				_score: hit.score,
-				//displayName, // TODO We want to remove displayName
+				_versionKey,
 				from: forceArray(from),
 				//highlight: hit.highlight,
-				//id: hit.id,
-				//name: _name,
 				thesaurus: _path.match(/[^/]+/g)[1],
 				thesaurusReference,
 				//score: hit.score,
-				to: forceArray(to)//,
-				//type
+				to: forceArray(to)
 			};
 			return queriedSynonym;
 		}).filter(x => x),// as Array<QueriedSynonym>,

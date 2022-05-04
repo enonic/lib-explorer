@@ -1,3 +1,8 @@
+import type {
+	OneOrMore,
+	QueriedSynonym
+} from '/lib/explorer/types/index.d';
+
 import {forceArray} from '@enonic/js-utils';
 
 
@@ -11,6 +16,11 @@ export function coerseSynonymType({
 	//thesaurus,
 	thesaurusReference,
 	to
+} :Omit<QueriedSynonym,'_score'|'from'|'thesaurus'|'to'> & {
+	_score ?:number
+	from :OneOrMore<string>
+	thesaurus ?:string
+	to :OneOrMore<string>
 }) {
 	return {
 		_id,

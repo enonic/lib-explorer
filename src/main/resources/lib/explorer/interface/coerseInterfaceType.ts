@@ -45,9 +45,9 @@ export function coerseInterfaceTypeSynonymIds(
 export const coerseInterfaceType = ({
 	_id,
 	_name,
-	//_nodeType, // No point exposing, always the same
+	_nodeType, // GraphQL Interface Node needs this
 	_path,
-	_versionKey,
+	_versionKey,  // GraphQL Interface Node needs this
 	collectionIds,
 	fields = [],
 	//stopWordIds = [],
@@ -57,9 +57,9 @@ export const coerseInterfaceType = ({
 } :InterfaceNode ) :Interface => ({
 	_id,
 	_name,
-	//_nodeType, // No point exposing, always the same
+	_nodeType,  // GraphQL Interface Node needs this
 	_path,
-	_versionKey,
+	_versionKey,  // GraphQL Interface Node needs this
 	collectionIds: coerseInterfaceTypeCollectionIds(collectionIds),
 	fields: coerseInterfaceTypeFields(fields),
 	//stopWordIds: forceArray(stopWordIds),//.map((stopWordId) => reference(stopWordId)), // empty array allowed,

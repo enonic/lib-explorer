@@ -14,19 +14,23 @@ export type VersionKey = string;
 export type Key = Id|Path;
 export type ParentPath = Path;
 
-export type RequiredNodeProperties = {
+
+export type ExplorerAdminGQLInterfaceNodeCommonProps<T> = {
 	_id :Id
+	_name :Name
+	_path :Path
+	_nodeType :NodeType
+	_versionKey :VersionKey
+} & T
+
+export type RequiredNodeProperties = ExplorerAdminGQLInterfaceNodeCommonProps<{
 	_childOrder :ChildOrder
 	_indexConfig :IndexConfig
 	_inheritsPermissions :boolean
-	_name :Name
-	_path :Path
 	_permissions :Array<PermissionsParams>
 	_state :State
-	_nodeType :NodeType
 	_ts :TimeStamp
-	_versionKey :VersionKey
-}
+}>
 
 export type Node<T> = RequiredNodeProperties & T;
 

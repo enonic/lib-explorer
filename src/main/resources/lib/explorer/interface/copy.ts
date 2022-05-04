@@ -1,5 +1,6 @@
 import type {
-	InterfaceCreateParams,
+	InterfaceNode,
+	InterfaceNodeCreateParams,
 	WriteConnection
 } from '/lib/explorer/types/index.d';
 
@@ -37,7 +38,9 @@ export function copy({
 	const interfaceNode = get({
 		connection,
 		interfaceName: from
-	}) as InterfaceCreateParams;
+	}) as InterfaceNodeCreateParams & {
+		_id ?:string
+	};
 	if (!interfaceNode) {
 		throw new Error(`Cannot copy interface ${from} to ${to}. From doesn't exist!`);
 	}

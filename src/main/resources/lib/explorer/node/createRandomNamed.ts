@@ -2,6 +2,7 @@ import type {
 	Id,
 	IndexConfig,
 	Name,
+	NodeCreateParams,
 	ParentPath,
 	PermissionsParams,
 	RepoConnection,
@@ -26,22 +27,20 @@ import {
 import {exists} from '/lib/explorer/node/exists';
 
 
-export function createRandomNamed({
+export function createRandomNamed<
+	Params extends NodeCreateParams = NodeCreateParams
+>({
 	_id, // So it doesn't end up in rest
 	_indexConfig = {default: 'byType'},
 	_inheritsPermissions = false, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 	_name = doSanitize(generateUuidv4()),
+	_nodeType,
 	_parentPath = '/',
 	_permissions = ROOT_PERMISSIONS_EXPLORER,
 	//creator = __user.key,
 	...rest
-} :{
-	_id :Id
-	_indexConfig? :IndexConfig
-	_inheritsPermissions? :boolean
-	_name? :Name
-	_parentPath? :ParentPath
-	_permissions? :Array<PermissionsParams>
+} :Params & {
+	_id ?:string
 }, {
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	...ignoredOptions
@@ -107,6 +106,7 @@ export function createRandomNamed({
 		_indexConfig,
 		_inheritsPermissions, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 		_name,
+		_nodeType,
 		_parentPath,
 		_permissions,
 		//creator,

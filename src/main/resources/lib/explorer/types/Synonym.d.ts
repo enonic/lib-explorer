@@ -1,4 +1,5 @@
 import type {
+	NodeCreate,
 	OneOrMore,
 	RequiredNodeProperties
 } from '/lib/explorer/types/index.d';
@@ -7,12 +8,12 @@ import type {
 export interface SynonymSpecific {
 	from :OneOrMore<string>
 	to :OneOrMore<string>
-	//displayName? :string
-	thesaurus :string
+	//thesaurus :string
 	thesaurusReference :string
 }
 
 export type SynonymNode = RequiredNodeProperties & SynonymSpecific;
+export type SynonymNodeCreateParams = NodeCreate<SynonymSpecific>;
 
 export type Synonym = Omit<
 	RequiredNodeProperties,
@@ -20,11 +21,11 @@ export type Synonym = Omit<
 		| '_indexConfig'
 		| '_inheritsPermissions'
 		| '_name' // Name is random and useless...
-		| '_nodeType'
+		//| '_nodeType' // GraphQL Interface Node needs this
 		| '_permissions'
 		| '_state'
 		| '_ts'
-		| '_versionKey'
+		//| '_versionKey' // GraphQL Interface Node needs this
 > & Omit<SynonymSpecific, 'from'|'to'> & {
 	from :Array<string>
 	to :Array<string>
@@ -35,4 +36,5 @@ export interface QueriedSynonym extends Synonym {
 		[name: string]: ReadonlyArray<string>;
 	  }
 	_score :number
+	thesaurus :string
 }

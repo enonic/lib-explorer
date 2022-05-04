@@ -67,6 +67,7 @@ export type {
 } from './Journal.d';
 export type {
 	ChildOrder,
+	ExplorerAdminGQLInterfaceNodeCommonProps,
 	Id,
 	Key,
 	Name,
@@ -85,9 +86,11 @@ export type {
 } from './Node.d';
 export type {
 	Interface,
-	InterfaceCreateParams,
+	InterfaceSpecific,
 	InterfaceField,
-	InterfaceNode
+	InterfaceNode,
+	InterfaceNodeCreateParams,
+	InterfaceNodeSpecific
 } from './Interface.d';
 export type {
 	Repo
@@ -96,9 +99,17 @@ export type {
 	RepoConnection
 } from './RepoConnection.d';
 export type {
+	ScheduledJob
+} from './Scheduler.d';
+export type {
+	Stopword,
+	StopwordNode
+} from './Stopword.d';
+export type {
 	QueriedSynonym,
 	Synonym,
-	SynonymNode
+	SynonymNode,
+	SynonymNodeCreateParams
 } from './Synonym.d';
 export type {
 	Task,

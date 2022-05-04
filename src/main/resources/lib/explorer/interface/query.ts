@@ -1,4 +1,8 @@
-import type {RepoConnection} from '/lib/explorer/types/index.d';
+import type {
+	InterfaceNode,
+	QueryFilters,
+	RepoConnection
+} from '/lib/explorer/types/index.d';
 
 
 import {NT_INTERFACE} from '/lib/explorer/model/2/constants';
@@ -14,10 +18,10 @@ export function query({
 	sort = '_name ASC'
 } :{
 	connection :RepoConnection
-	count? :number
-	filters? :{}
-	query? :string
-	sort? :string
+	count ?:number
+	filters ?:QueryFilters
+	query ?:string
+	sort ?:string
 }) {
 	addFilter({
 		filter: hasValue('_nodeType', [NT_INTERFACE]),
@@ -33,7 +37,7 @@ export function query({
 
 	const interfaceQueryResponse = {
 		count: queryRes.count,
-		hits: queryRes.hits.map(hit => connection.get(hit.id)),
+		hits: queryRes.hits.map(hit => connection.get<InterfaceNode>(hit.id)),
 		total: queryRes.total,
 	};
 	return interfaceQueryResponse;
