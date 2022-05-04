@@ -1,4 +1,4 @@
-import type {NodeCreateParams} from '/lib/explorer/types.d';
+import type {NodeCreateParams} from '/lib/explorer/types/index.d';
 
 
 import {ROOT_PERMISSIONS_EXPLORER} from '/lib/explorer/constants';

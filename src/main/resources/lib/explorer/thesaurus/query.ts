@@ -1,11 +1,10 @@
 import type {
 	QueryFilters,
-	RepoConnection
-} from '/lib/explorer/types.d';
-import type {
+	RepoConnection,
 	Thesaurus,
 	ThesaurusNode
-} from './types.d';
+} from '/lib/explorer/types/index.d';
+
 
 import {
 	forceArray,
@@ -89,9 +88,7 @@ export function query({
 				_path,
 				_versionKey,
 				description,
-				id: hit.id, // backwards compatibility
-				language,
-				name: _name // backwards compatibility
+				language
 			};
 			if (getSynonymsCount) {
 				const synonymsRes = querySynonyms({

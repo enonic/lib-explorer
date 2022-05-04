@@ -1,9 +1,10 @@
-import {ZeroOrMore} from '/lib/explorer/types.d';
-import type {
+import {
 	Interface,
 	InterfaceField,
-	InterfaceNode
-} from '../types/Interface.d';
+	InterfaceNode,
+	ZeroOrMore
+} from '/lib/explorer/types/index.d';
+
 
 import {
 	forceArray,

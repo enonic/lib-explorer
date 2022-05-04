@@ -1,6 +1,8 @@
 import type {JavaBridge} from '../../_coupling/types.d';
-import type {DocumentTypeNode} from '../../types/DocumentType.d';
-import type {Fields} from '../../types/Field.d';
+import type {
+	DocumentTypeFields,
+	DocumentTypeNode
+} from '../../types/index.d';
 
 
 //import {toStr} from '@enonic/js-utils';
@@ -18,7 +20,7 @@ export function update(
 		properties
 	} :{
 		_id :string
-		properties :Fields
+		properties :DocumentTypeFields
 	},
 	javaBridge :JavaBridge// = javaBridgeDummy
 ) :DocumentTypeNode {

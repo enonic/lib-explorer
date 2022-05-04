@@ -1,9 +1,9 @@
 import type {
 	Name,
 	ParentPath,
-	Path
+	Path,
+	RepoConnection
 } from '/lib/explorer/types/index.d';
-import type {RepoConnection} from '/lib/explorer/types.d';
 //import {toStr} from '@enonic/js-utils';
 
 //──────────────────────────────────────────────────────────────────────────────

@@ -1,5 +1,5 @@
 import type {Application} from '../../../index.d';
-import type {TaskName} from '../task/types.d';
+import type {TaskName} from './Task.d';
 
 
 export interface Collector {

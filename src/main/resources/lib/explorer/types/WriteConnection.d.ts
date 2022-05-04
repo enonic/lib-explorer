@@ -1,4 +1,4 @@
-import type {RepoConnection} from '/lib/explorer/types.d';
+import type {RepoConnection} from '/lib/explorer/types/index.d';
 
 
 export interface WriteConnection extends RepoConnection {

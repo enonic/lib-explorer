@@ -1,8 +1,8 @@
 import type {JavaBridge} from '../../_coupling/types.d';
 import type {
-	Field,
-	FieldsObject
-} from '../../types/Field.d';
+	DocumentTypeField,
+	DocumentTypeFieldsObject
+} from '../../types/index.d';
 import type {AddExtraFieldsToDocumentTypeParams} from './types';
 
 
@@ -72,7 +72,7 @@ export function addExtraFieldsToDocumentType(
 		fieldsObj
 	} :AddExtraFieldsToDocumentTypeParams,
 	javaBridge :JavaBridge// = javaBridgeDummy
-) :FieldsObject {
+) :DocumentTypeFieldsObject {
 	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: data:%s', toStr(data));
 	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: documentTypeId:%s', documentTypeId);
 	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: fieldsObj:%s', toStr(fieldsObj));
@@ -106,7 +106,7 @@ export function addExtraFieldsToDocumentType(
 			const pathStringWithoutArrayIndicies = (this.path as Array<string>).filter(s => !isNonNegativeIntegerString(s)).join('.');
 			//javaBridge.log.debug('pathStringWithoutArrayIndicies:%s', pathStringWithoutArrayIndicies);
 
-			const field :Omit<Field, 'name'> = fieldsObj[pathStringWithoutArrayIndicies];
+			const field :Omit<DocumentTypeField, 'name'> = fieldsObj[pathStringWithoutArrayIndicies];
 			if (field) {
 				const {valueType} = field;
 				//javaBridge.log.debug('field:%s valueType:%s', pathStringWithoutArrayIndicies, valueType);

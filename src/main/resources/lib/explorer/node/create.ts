@@ -1,9 +1,10 @@
 import type {
 	IndexConfig,
-	ParentPath
+	NodeCreateParams,
+	ParentPath,
+	WriteConnection
 } from '/lib/explorer/types/index.d';
-import type {NodeCreateParams} from '/lib/explorer/types.d';
-import type {WriteConnection} from '../node/WriteConnection.d';
+
 
 import {
 	isNotSet,

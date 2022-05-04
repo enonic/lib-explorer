@@ -1,4 +1,4 @@
-import type {RequiredNodeProperties} from '../types.d';
+import type {Node} from './Node.d';
 
 
 export interface Collection {
@@ -25,7 +25,7 @@ export interface Collection {
 	modifier? :string
 }
 
-export type CollectionNode = RequiredNodeProperties & Collection;
+export type CollectionNode = Node<Collection>;
 
 export interface Cron {
 	minute :string,

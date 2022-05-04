@@ -1,9 +1,10 @@
-import type {ParentPath} from '/lib/explorer/types/index.d';
 import type {
 	//NodeCreateParams,
-	OneOrMore,
+	ParentPath,
 	RequiredNodeProperties
-} from '/lib/explorer/types.d';
+} from '/lib/explorer/types/Node.d';
+import type {OneOrMore} from '/lib/explorer/types/Utility.d';
+
 
 export interface InterfaceField {
 	name :string

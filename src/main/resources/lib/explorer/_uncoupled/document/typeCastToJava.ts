@@ -1,6 +1,8 @@
 import type {JavaBridge} from '/lib/explorer/_coupling/types.d';
-import type {Field} from '/lib/explorer/types/Field.d'
-import type {DocumentNode} from '/lib/explorer/types/Document.d'
+import type {
+	DocumentNode,
+	DocumentTypeField
+} from '/lib/explorer/types/index.d'
 import type {TypeCastToJavaParameters} from './types.d'
 
 
@@ -37,7 +39,7 @@ import {
 
 import {
 	FIELD_PATH_GLOBAL,
-	FIELD_PATH_META,
+	FIELD_PATH_META
 } from '../../constants';
 //import {javaBridgeDummy} from '../dummies';
 
@@ -75,7 +77,7 @@ export function typeCastToJava(
 			const pathString = this.path.join('.');
 			//log.debug('pathString:%s', pathString);
 
-			const fieldObjWithoutName = getIn(fieldsObj, pathString, {}) as Required<Omit<Field, 'name'>>;
+			const fieldObjWithoutName = getIn(fieldsObj, pathString, {}) as Required<Omit<DocumentTypeField, 'name'>>;
 			//log.debug('fieldObjWithoutName:%s', toStr(fieldObjWithoutName));
 
 			const {

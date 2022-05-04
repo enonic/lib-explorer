@@ -1,11 +1,11 @@
 import type {Application} from '../../../index.d';
-import type {RepoConnection} from '/lib/explorer/types.d';
-import type {CollectionWithCron} from '../types/Collection.d';
-import type {WriteConnection} from '../node/WriteConnection.d';
 import type {
+	CollectionWithCron,
+	RepoConnection,
 	TaskDescriptor,
-	TaskName
-} from '../task/types.d';
+	TaskName,
+	WriteConnection
+} from '/lib/explorer/types/index.d';
 
 
 import {

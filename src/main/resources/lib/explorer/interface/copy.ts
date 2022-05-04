@@ -1,5 +1,7 @@
-import type {WriteConnection} from '../node/WriteConnection.d';
-import type {InterfaceCreateParams} from '../types/Interface.d';
+import type {
+	InterfaceCreateParams,
+	WriteConnection
+} from '/lib/explorer/types/index.d';
 
 
 import {INTERFACES_FOLDER} from '/lib/explorer/index';

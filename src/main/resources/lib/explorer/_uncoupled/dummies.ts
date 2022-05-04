@@ -3,16 +3,16 @@ import type {
 	Log
 } from '../../../index.d';
 import type {
-	AggregationsResponse,
 	Node,
 	NodeCreateParams
-} from '/lib/explorer/types.d';
+} from '/lib/explorer/types/index.d';
+import type {AggregationsResponse} from '/lib/explorer/types.d';
 import type {
 	ConnectFunction,
 	GeoPointFunction,
 	//JavaBridge,
 	StringFunction,
-	UnknownFunction,
+	UnknownFunction
 } from '../_coupling/types.d';
 
 export const appDummy :App = {

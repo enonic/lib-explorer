@@ -1,31 +1,27 @@
 import {
 	AnyObject,
+	DocumentTypeFields,
+	DocumentTypeFieldsObject,
 	Path,
 	ParentPath
-} from '../../types/index.d';
-
-import {
-	Field,
-	Fields,
-	FieldsObject
-} from '../../types/Field.d';
+} from '/lib/explorer/types/index.d';
 
 
 export interface AddExtraFieldsToDocumentTypeParams {
 	data :AnyObject
 	documentTypeId :string
-	fieldsObj :FieldsObject
+	fieldsObj :DocumentTypeFieldsObject
 }
 
 export interface CleanDataParameters {
 	cleanExtraFields? :boolean,
 	data :AnyObject,
-	fieldsObj? :FieldsObject
+	fieldsObj? :DocumentTypeFieldsObject
 }
 
 export interface ValidateParameters {
 	data :AnyObject
-	fieldsObj :FieldsObject
+	fieldsObj :DocumentTypeFieldsObject
 	partial? :boolean
 	validateOccurrences? :boolean
 	validateTypes? :boolean
@@ -34,23 +30,23 @@ export interface ValidateParameters {
 
 export interface ValidateOccurrencesParameters {
 	data? :AnyObject
-	fields? :Field[]
+	fields? :DocumentTypeFields
 	partial? :boolean
 }
 
 export interface ValidateTypesParameters {
 	data? :AnyObject
-	fields? :Field[]
+	fields? :DocumentTypeFields
 }
 
 export interface TypeCastToJavaParameters {
 	data? :AnyObject
-	fieldsObj :FieldsObject
+	fieldsObj :DocumentTypeFieldsObject
 }
 
 export interface BuildIndexConfigParameterObject {
 	//data :AnyObject
-	fieldsObj :FieldsObject
+	fieldsObj :DocumentTypeFieldsObject
 	languages :string[]
 }
 
@@ -69,7 +65,7 @@ export interface CreateParameterObject {
 	}
 	documentTypeId? :string // TODO Scalar Regexp?
 	documentTypeName? :string
-	fields? :Fields
+	fields? :DocumentTypeFields
 	language? :string
 	requireValid? :boolean
 	//repoName? :string

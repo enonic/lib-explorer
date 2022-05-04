@@ -1,5 +1,5 @@
 import type {JavaBridge} from '/lib/explorer/_coupling/types.d';
-import type {Repo} from '/lib/explorer/repo/types.d';
+import type {Repo} from '/lib/explorer/types/index.d';
 
 
 import {

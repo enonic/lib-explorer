@@ -2,7 +2,7 @@ import type {
 	GetContext,
 	PrincipalKey,
 	RepoConnection
-} from '/lib/explorer/types.d';
+} from '/lib/explorer/types/index.d';
 
 
 //import {toStr} from '@enonic/js-utils';

@@ -1,5 +1,7 @@
-import type {RepoConnection} from '/lib/explorer/types.d';
-import type {Collector} from '/lib/explorer/types/Collector.d';
+import type {
+	Collector,
+	RepoConnection
+} from '/lib/explorer/types/index.d';
 
 //import {toStr} from '@enonic/js-utils';
 

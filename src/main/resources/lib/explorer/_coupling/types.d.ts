@@ -7,7 +7,7 @@ import type {
 	PrincipalKey,
 	RepoConnection,
 	RepositoryConfig
-} from '/lib/explorer/types.d';
+} from '/lib/explorer/types/index.d';
 
 
 export interface Source {

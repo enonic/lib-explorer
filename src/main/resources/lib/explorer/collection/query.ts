@@ -1,11 +1,9 @@
 import type {
+	CollectionNode,
+	QueriedCollection,
 	QueryFilters,
 	RepoConnection
-} from '/lib/explorer/types.d';
-import type {
-	CollectionNode,
-	QueriedCollection
-} from '../types/Collection.d';
+} from '/lib/explorer/types/index.d';
 
 
 import {

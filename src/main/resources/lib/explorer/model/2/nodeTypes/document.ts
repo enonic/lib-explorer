@@ -3,10 +3,10 @@ import type {
 	IndexConfigObject,
 	Name,
 	//Path,
-	ParentPath//,
-	//PermissionsParams
+	ParentPath,
+	//PermissionsParams,
+	TaskDescriptor
 } from '/lib/explorer/types/index.d';
-import type {TaskDescriptor} from '/lib/explorer/task/types.d';
 
 
 import {

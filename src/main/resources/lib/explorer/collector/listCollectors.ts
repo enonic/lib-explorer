@@ -1,15 +1,13 @@
-//import type {Collector} from '/lib/explorer/collector/types.d';
-import type {Task} from '/lib/explorer/task/types.d';
+import type {Task} from '/lib/explorer/types/index.d';
+
 
 //import {toStr} from '@enonic/js-utils';
-
 //@ts-ignore
 import {list as listTasks} from '/lib/xp/task' /*as {
 	list :(
 		name :string
 	) => Array<Task>
 };*/
-
 import {PRINCIPAL_EXPLORER_READ/*, TASK_COLLECT*/} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {query as queryCollectors} from '/lib/explorer/collector/query';

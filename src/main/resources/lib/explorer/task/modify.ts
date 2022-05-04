@@ -1,4 +1,6 @@
-import type {WriteConnection} from '../node/WriteConnection.d';
+import type {WriteConnection} from '/lib/explorer/types/index.d';
+
+
 import {modify as modifyNode} from '../node/modify';
 
 

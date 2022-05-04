@@ -2,12 +2,10 @@ import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregati
 import type {
 	Highlight,
 	QueryFilters,
-	RepoConnection
-} from '/lib/explorer/types.d';
-import type {
 	QueriedSynonym,
+	RepoConnection,
 	SynonymNode
-} from './types.d';
+} from '/lib/explorer/types/index.d';
 
 
 import {

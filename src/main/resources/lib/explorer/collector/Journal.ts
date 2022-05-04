@@ -1,9 +1,10 @@
 import type {
 	Journal as JournalInterface,
 	JournalError,
-	JournalSuccess
-} from '../journal/types.d';
-import type {WriteConnection} from '../node/WriteConnection.d';
+	JournalSuccess,
+	WriteConnection
+} from '/lib/explorer/types/index.d';
+
 
 import {
 	REPO_JOURNALS,

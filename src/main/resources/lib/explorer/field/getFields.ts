@@ -1,8 +1,9 @@
-import type {RepoConnection} from '/lib/explorer/types.d';
+import type {RepoConnection} from '/lib/explorer/types/index.d';
 import type {
 	Field,
 	FieldNode
 } from '/lib/explorer/field/types.d';
+
 
 import {
 	VALUE_TYPE_STRING,

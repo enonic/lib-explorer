@@ -6,15 +6,14 @@ import type {
 import type {
 	GetContext,
 	PrincipalKey
-} from '/lib/explorer/types.d';
+} from '/lib/explorer/types/index.d';
+
 
 //import {toStr} from '@enonic/js-utils';
-
 //@ts-ignore
 import {get as getContext} from '/lib/xp/context';
 //@ts-ignore
 import {connect, multiRepoConnect} from '/lib/xp/node';
-
 import {runAsSu} from '/lib/explorer/runAsSu';
 
 

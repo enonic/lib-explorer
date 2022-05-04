@@ -1,8 +1,9 @@
 import type {
 	IndexConfig,
-	RequiredNodeProperties
-} from '/lib/explorer/types.d';
-import type {WriteConnection} from '../node/WriteConnection.d';
+	RequiredNodeProperties,
+	WriteConnection
+} from '/lib/explorer/types/index.d';
+
 
 import {
 	isSet//,

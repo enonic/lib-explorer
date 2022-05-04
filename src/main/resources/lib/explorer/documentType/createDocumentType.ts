@@ -1,10 +1,10 @@
 import type {
+	DocumentTypeFields,
 	Name,
 	Path,
-	ParentPath
+	ParentPath,
+	WriteConnection
 } from '/lib/explorer/types/index.d';
-import type {WriteConnection} from '../node/WriteConnection.d';
-import type {Field} from '../types/Field.d';
 
 import {
 	forceArray//,
@@ -35,7 +35,7 @@ export function createDocumentType({
 } :{
 	_name: Name
 	addFields? :boolean
-	properties? :Array<Field>
+	properties? :DocumentTypeFields
 }) {
 	//log.debug(`_name:${_name} addFields:${addFields} fields:${toStr(fields)} properties:${toStr(properties)}`);
 	const writeConnection = connect({ principals: [PRINCIPAL_EXPLORER_WRITE] }) as WriteConnection;

@@ -2,13 +2,11 @@ import type {
 	Id,
 	IndexConfig,
 	Name,
-	ParentPath
-} from '/lib/explorer/types/index.d';
-import type {
+	ParentPath,
 	PermissionsParams,
-	RepoConnection
-} from '/lib/explorer/types.d';
-import type {WriteConnection} from '../node/WriteConnection.d';
+	RepoConnection,
+	WriteConnection
+} from '/lib/explorer/types/index.d';
 
 
 import {

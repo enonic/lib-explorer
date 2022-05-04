@@ -1,5 +1,7 @@
-import type {ParentPath} from '/lib/explorer/types/index.d';
-import type {WriteConnection} from './WriteConnection.d';
+import type {
+	ParentPath,
+	WriteConnection
+} from '/lib/explorer/types/index.d';
 
 
 import {

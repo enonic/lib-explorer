@@ -1,8 +1,9 @@
 import type {
-	NodeCreateParams//,
-	//NodeModifyParams
-} from '/lib/explorer/types.d';
-import type {WriteConnection} from './WriteConnection.d';
+	NodeCreateParams,
+	//NodeModifyParams,
+	WriteConnection
+} from '/lib/explorer/types/index.d';
+
 
 import {
 	isNotSet,

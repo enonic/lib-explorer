@@ -26,20 +26,17 @@
 // Later we can extend with all the document-layer support, but at the same time
 // leave the pitfalls in the hands of the Collector developer.
 //──────────────────────────────────────────────────────────────────────────────
-import type {AnyObject} from '../../../types/index.d';
 import type {
+	AnyObject,
+	CollectionNode,
+	DocumentNode,
 	Id,
+	JournalError,
+	JournalSuccess,
 	Name,
 	ParentPath//,
 	//RequiredNodeProperties
 } from '/lib/explorer/types/index.d';
-import type {CollectionNode} from '/lib/explorer/types/Collection.d';
-import type {DocumentNode} from '/lib/explorer/types/Document.d';
-//import type {FieldsObject} from '/lib/explorer/documentType/types.d';
-import type {
-	JournalError,
-	JournalSuccess
-} from '../journal/types.d';
 import type {Progress} from '../task/progress';
 
 import {

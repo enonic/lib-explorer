@@ -1,11 +1,10 @@
 import type {
 	IndexConfig,
+	JournalError,
+	JournalSuccess,
 	ParentPath
 } from '/lib/explorer/types/index.d';
-import type {
-	JournalError,
-	JournalSuccess
-} from '/lib/explorer/journal/types.d';
+
 
 //@ts-ignore
 import {instant} from '/lib/xp/value';

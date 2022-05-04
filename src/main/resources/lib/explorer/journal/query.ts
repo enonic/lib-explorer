@@ -1,6 +1,9 @@
 import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
-import type {QueryFilters} from '/lib/explorer/types.d';
-import type {Journal} from '../journal/types.d';
+import type {
+	Journal,
+	QueryFilters
+} from '/lib/explorer/types/index.d';
+
 
 //import {toStr} from '@enonic/js-utils';
 

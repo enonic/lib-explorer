@@ -3,7 +3,7 @@ import type {
 	Highlight,
 	QueryFilters,
 	RepoConnection
-} from '/lib/explorer/types.d';
+} from '/lib/explorer/types/index.d';
 import type {QueriedStopword} from '../types/StopWord.d';
 
 

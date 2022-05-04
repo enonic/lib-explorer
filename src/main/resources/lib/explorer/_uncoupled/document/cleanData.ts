@@ -1,6 +1,6 @@
 import type {AnyObject} from '../../types/index.d'
 import type {JavaBridge} from '../../_coupling/types.d';
-import type {Field} from '../../types/Field.d';
+import type {DocumentTypeField} from '../../types/index.d';
 import type {CleanDataParameters} from './types';
 
 //import {toStr} from '@enonic/js-utils';
@@ -50,7 +50,7 @@ export function cleanData(
 				&& !this.circular // Why?
 			) {
 				const pathString = this.path.join('.');
-				const field :Omit<Field, 'name'> = fieldsObj[pathString];
+				const field :Omit<DocumentTypeField, 'name'> = fieldsObj[pathString];
 				if (!field) {
 					//log.debug('Cleaning path:%s from data:%s', pathString, cleanedData);
 					this.remove(true);

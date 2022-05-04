@@ -1,4 +1,5 @@
-import type {WriteConnection} from '../node/WriteConnection.d';
+import type {WriteConnection} from '/lib/explorer/types/index.d';
+
 
 import {
 	COLLECTION_REPO_PREFIX,

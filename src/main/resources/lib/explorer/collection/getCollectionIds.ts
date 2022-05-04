@@ -1,4 +1,5 @@
-import type {RepoConnection} from '/lib/explorer/types.d';
+import type {RepoConnection} from '/lib/explorer/types/index.d';
+
 
 import {addQueryFilter} from '@enonic/js-utils';
 import {NT_COLLECTION} from '/lib/explorer/constants';
