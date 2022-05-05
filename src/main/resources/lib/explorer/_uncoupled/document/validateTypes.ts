@@ -44,7 +44,6 @@ import {
 	isUuidV4String//,
 	//toStr
 } from '@enonic/js-utils';
-//import getIn from 'get-value';
 //import {v4 as isUuid4} from 'is-uuid';
 
 //import {javaBridgeDummy} from '../dummies';

@@ -20,7 +20,6 @@ import {
 	isString,
 	toStr
 } from '@enonic/js-utils';
-//import getIn from 'get-value';
 
 //import {javaBridgeDummy} from '../dummies';
 
