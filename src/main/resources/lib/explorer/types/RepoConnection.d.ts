@@ -43,7 +43,7 @@ interface PushNodeResult {
 	deleted: Array<string>;
 }
 
-export interface RepoConnection {
+export type RepoConnection = {
 	/**
 	* Commits the active version of nodes.
 	*/
@@ -71,7 +71,19 @@ export interface RepoConnection {
 	/**
 	* Checking if a node or nodes exist for the current context.
 	*/
-	exists(keys: string | Array<string>): Array<string>;
+	// The documentation does NOT match reality
+	// https://developer.enonic.com/docs/xp/stable/api/lib-node#exists
+	// I know a single key returns a single boolean, but I haven't tested mulitple keys.
+
+	// These specific overload signatures give type errors on any generic implementation :(
+	//exists(key: string) :boolean;
+	//exists(keys: Array<string>) :Array<string>;
+	/*exists<
+		Keys extends string|Array<string>
+	>(keyOrKeys: Keys) :Keys extends string ? boolean : Array<string>;*/
+
+	//  This generic signature works :)
+	exists(keyOrKeys: string|Array<string>) :boolean|Array<string>;
 
 	/**
 	* Fetch the versions of a node.

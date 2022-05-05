@@ -33,9 +33,9 @@ export function createDocumentType({
 	addFields = true,
 	properties = []
 } :{
-	_name: Name
-	addFields? :boolean
-	properties? :DocumentTypeFields
+	_name :Name
+	addFields ?:boolean
+	properties ?:DocumentTypeFields
 }) {
 	//log.debug(`_name:${_name} addFields:${addFields} fields:${toStr(fields)} properties:${toStr(properties)}`);
 	const writeConnection = connect({ principals: [PRINCIPAL_EXPLORER_WRITE] }) as WriteConnection;
