@@ -48,7 +48,6 @@ dependencies {
 	// Other enonic libs (com.enonic.lib)
 	//──────────────────────────────────────────────────────────────────────────
 	compile 'com.enonic.lib:lib-cache:2.1.1'
-	compile 'com.enonic.lib:lib-graphql:2.0.0'
 
 	compile 'com.enonic.lib:lib-http-client:3.0.0' // User-Agent: okhttp/4.9.1
 
