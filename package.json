@@ -8,7 +8,6 @@
   "dependencies": {
     "@enonic/fnv-plus": "^1",
     "@enonic/js-utils": "^0",
-    "classnames": "^2",
     "core-js": "^3",
     "cross-env": "^7",
     "d3-dsv": "^3",
