@@ -8,7 +8,7 @@ import type {OneOrMore} from '/lib/explorer/types/Utility.d';
 
 export type InterfaceField = {
 	name :string
-	boost? :number
+	boost ?:number
 }
 
 export type InterfaceNodeSpecific = {
@@ -24,10 +24,10 @@ export type InterfaceNode = Node<InterfaceNodeSpecific>
 export type InterfaceNodeCreateParams = NodeCreate<InterfaceNodeSpecific>
 
 export type InterfaceSpecific = {
-	collectionIds? :Array<string>
-	fields? :Array<InterfaceField>
-	stopWords? :Array<string>
-	synonymIds? :Array<string>
+	collectionIds ?:Array<string>
+	fields ?:Array<InterfaceField>
+	stopWords ?:Array<string>
+	synonymIds ?:Array<string>
 }
 
 export type Interface = ExplorerAdminGQLInterfaceNodeCommonProps<

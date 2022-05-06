@@ -10,6 +10,7 @@ import {
 	forceArray,
 	isNotSet
 } from '@enonic/js-utils';
+import {NT_INTERFACE} from '/lib/explorer/constants';
 
 // Reference doesn't work well when diffing or printing, so let's do that in the model
 
@@ -24,7 +25,13 @@ export function coerseInterfaceTypeCollectionIds(
 export function coerseInterfaceTypeFields(
 	fields :ZeroOrMore<InterfaceField>
 ) :Array<InterfaceField> {
-	return isNotSet(fields) ? [] : forceArray(fields);
+	return isNotSet(fields) ? [] : forceArray(fields).map(({ // empty array allowed
+		boost, // undefined allowed
+		name
+	}) => ({
+		boost,
+		name
+	}));
 }
 
 
@@ -45,7 +52,10 @@ export function coerseInterfaceTypeSynonymIds(
 export const coerseInterfaceType = ({
 	_id,
 	_name,
-	_nodeType, // GraphQL Interface Node needs this
+
+	//@ts-ignore
+	_nodeType, // eslint-disable-line @typescript-eslint/no-unused-vars
+
 	_path,
 	_versionKey,  // GraphQL Interface Node needs this
 	collectionIds,
@@ -57,7 +67,7 @@ export const coerseInterfaceType = ({
 } :InterfaceNode ) :Interface => ({
 	_id,
 	_name,
-	_nodeType,  // GraphQL Interface Node needs this
+	_nodeType: NT_INTERFACE,  // GraphQL Interface Node needs this
 	_path,
 	_versionKey,  // GraphQL Interface Node needs this
 	collectionIds: coerseInterfaceTypeCollectionIds(collectionIds),

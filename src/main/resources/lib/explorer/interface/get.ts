@@ -13,7 +13,7 @@ export function get({
 	key = `/${INTERFACES_FOLDER}/${interfaceName}`
 } :{
 	connection :RepoConnection,
-	interfaceName :string
+	interfaceName ?:string
 	key? :string
 }) :InterfaceNode {
 	return connection.get<InterfaceNode>(key) as InterfaceNode;
