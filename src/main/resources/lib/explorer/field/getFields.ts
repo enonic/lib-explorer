@@ -39,7 +39,7 @@ export function getFields({
 			throw new Error(`Invalid fields parameter! Must be string or Array<string> fields:${toStr(fields)}`);
 		}
 		addFilter({
-			filter: hasValue('key', fields), // _allText
+			filter: hasValue('key', fields),
 			filters // reference gets modified
 		});
 	}

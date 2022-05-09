@@ -14,12 +14,12 @@ export interface IndexConfigObject {
 	enabled :boolean
 
 	/**
-	* Values are stored as 'ngram', 'analyzed' and also added to the _allText system property
+	* Values are stored as 'ngram', 'analyzed' and also added to the _alltext system property
 	*/
 	fulltext :boolean
 
 	/**
-	* Affected values will be added to the _allText property
+	* Affected values will be added to the _alltext property
 	*/
 	includeInAllText :boolean
 

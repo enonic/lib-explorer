@@ -73,8 +73,8 @@ export function get({
 		query: query
 			.split(' ')
 			.map(word => `(
-				fulltext('name^7, _name^5, displayName^3, _allText^1', '${word}', 'OR')
-				OR ${QUERY_FUNCTION_NGRAM}('name^6, _name^4, displayName^2, _allText', '${word}', 'OR')
+				fulltext('name^7, _name^5, displayName^3, _alltext^1', '${word}', 'OR')
+				OR ${QUERY_FUNCTION_NGRAM}('name^6, _name^4, displayName^2, _alltext', '${word}', 'OR')
 			)`)
 			.join(' AND ')
 			.replace(/\n\s*/g, ' ')

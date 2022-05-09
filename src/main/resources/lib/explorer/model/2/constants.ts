@@ -1,6 +1,7 @@
 import {
 	COLON_SIGN,
 	DOT_SIGN,
+	HIGHLIGHT_FIELD_ALLTEXT,
 	INDEX_CONFIG_N_GRAM,
 	VALUE_TYPE_BOOLEAN,
 	//VALUE_TYPE_DOUBLE,
@@ -95,7 +96,7 @@ export const FIELD_DOCUMENT_METADATA_STEMMING_LANGUAGE_INDEX_CONFIG = {
 
 // NO_VALUES_FIELDS are included in SYSTEM_FIELDS which are fields that do not exist as nodes in explorer-repo.
 export const NO_VALUES_FIELDS = [{
-	key: '_allText',
+	key: HIGHLIGHT_FIELD_ALLTEXT,
 	_name: 'alltext', // sanitize removes _ and makes T small
 	//displayName: 'All text',
 	fieldType: VALUE_TYPE_STRING
