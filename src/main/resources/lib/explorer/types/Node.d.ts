@@ -18,7 +18,7 @@ export type ParentPath = Path;
 export type ExplorerAdminGQLInterfaceNodeCommonProps<T> = {
 	_id :Id
 	_name :Name
-	_path :Path
+	_path :Path // Yes _path is also part of Explorer Admin GQL Interface Node
 	_nodeType :NodeType
 	_versionKey :VersionKey
 } & T
@@ -33,6 +33,13 @@ export type RequiredNodeProperties = ExplorerAdminGQLInterfaceNodeCommonProps<{
 }>
 
 export type Node<T> = RequiredNodeProperties & T;
+
+export type ScoreOptional<T> = Omit<T,'_score'> & {
+	_score ?:number
+}
+export type ScoreRequired<T> = Omit<T,'_score'> & {
+	_score :number
+}
 
 export interface NodeCreateParams {
 	_childOrder ?:ChildOrder; // Default ordering of children when doing getChildren if no order is given in query

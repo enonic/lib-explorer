@@ -1,6 +1,6 @@
 import type {
-	DocumentTypeFields,
-	Name,
+	DocumentTypeCreateParams,
+	DocumentTypeNode,
 	Path,
 	ParentPath,
 	WriteConnection
@@ -31,12 +31,9 @@ import {coerseDocumentType} from './coerseDocumentType';
 export function createDocumentType({
 	_name,
 	addFields = true,
+	managedBy,
 	properties = []
-} :{
-	_name :Name
-	addFields ?:boolean
-	properties ?:DocumentTypeFields
-}) {
+} :DocumentTypeCreateParams) {
 	//log.debug(`_name:${_name} addFields:${addFields} fields:${toStr(fields)} properties:${toStr(properties)}`);
 	const writeConnection = connect({ principals: [PRINCIPAL_EXPLORER_WRITE] }) as WriteConnection;
 	if (!writeConnection.exists(PATH_DOCUMENT_TYPE_FOLDER)) {
@@ -55,11 +52,12 @@ export function createDocumentType({
 		_nodeType: NT_DOCUMENT_TYPE,
 		_parentPath,
 		addFields,
+		managedBy, // undefined is allowed
 
 		// No point in forceArray, since Enonic will "destroy" on store,
 		// but we're using forceArray so sort don't throw...
 		properties: forceArray(properties).sort((a, b) => (a.name > b.name) ? 1 : -1)
 	};
-	const createdNode = writeConnection.create(nodeToBeCreated);
+	const createdNode = writeConnection.create<DocumentTypeCreateParams>(nodeToBeCreated) as DocumentTypeNode;
 	return coerseDocumentType(createdNode);
 }

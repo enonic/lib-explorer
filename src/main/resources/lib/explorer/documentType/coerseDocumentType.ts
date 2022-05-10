@@ -1,4 +1,8 @@
-//import type {DocumentTypeNode} from '/lib/explorer/documentType/types.d';
+import type {
+	DocumentType,
+	DocumentTypeFields,
+	DocumentTypeNode
+} from '/lib/explorer/types/index.d';
 
 
 // It seems scoped packages are not resolved in *.mjs files,
@@ -23,13 +27,13 @@ import {
 } from '@enonic/js-utils';
 
 
-export function coerseDocumentTypeAddFields(addFields) {
+export function coerseDocumentTypeAddFields(addFields ?:boolean) {
 	//log.debug(`resolveAddFields(${addFields})`);
 	return isNotSet(addFields) ? true : addFields;
 }
 
 
-export function coerseDocumentTypeProperties(properties) {
+export function coerseDocumentTypeProperties(properties ?:DocumentTypeFields) {
 	//log.debug(`resolveProperties(${toStr(properties)})`);
 	const rv = (isNotSet(properties) ? [] : forceArray(properties)).map(({
 		active,
@@ -73,8 +77,9 @@ export function coerseDocumentType({
 	_path,
 	_versionKey,
 	addFields,
+	managedBy, // undefined is allowed
 	properties
-}) {
+} :DocumentTypeNode) {
 	/*log.debug(`coerseDocumentType({
 		_id:${_id},
 		_name:${_name},
@@ -84,13 +89,14 @@ export function coerseDocumentType({
 		addFields:${addFields},
 		properties:${toStr(properties)}
 	})`);*/
-	const rv = {
+	const dt :DocumentType = {
 		_id,
 		_name,
 		_nodeType,
 		_path,
 		_versionKey,
 		addFields: coerseDocumentTypeAddFields(addFields),
+		managedBy, // undefined is allowed
 		properties: coerseDocumentTypeProperties(properties)
 	};
 	/*log.debug(`coerseDocumentType({
@@ -101,6 +107,6 @@ export function coerseDocumentType({
 		_versionKey:${_versionKey},
 		addFields:${addFields},
 		properties:${toStr(properties)}
-	}) --> ${toStr(rv)}`);*/
-	return rv;
+	}) --> ${toStr(dt)}`);*/
+	return dt;
 }

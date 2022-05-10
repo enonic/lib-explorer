@@ -1,14 +1,13 @@
-import type {Node} from './Node.d';
+import type {
+	ExplorerAdminGQLInterfaceNodeCommonProps,
+	Node,
+	NodeCreate,
+	ScoreRequired
+} from './Node.d';
 
 
-export interface Collection {
-	_id? :string
-	_name :string
-	//_nodeType :string // Useless info, always the same
-	//_path :string // No reason to expose
-	_score :number
-	_versionKey :string
-	collector :{
+export type CollectionNodeSpecific = {
+	collector ?:{ // Yes it's optional, a collection doesn't require a collector
 		config :Object // TODO?
 		name :string
 		configJson :string
@@ -17,17 +16,30 @@ export interface Collection {
 	creator :string,
 	//cron :never // This is no longer stored on the CollectionNode but in the scheduling repo
 	doCollect? :boolean
-	documentCount :number
-	documentTypeId :string
-	interfaces :Array<string>
+
+	// Typically a documentType will be created, if none is selected, but there
+	// might exist historical collections without a documentType
+	documentTypeId ?:string
+
 	language :string
 	modifiedTime? :Date | string
 	modifier? :string
 }
 
-export type CollectionNode = Node<Collection>;
+export type CollectionNode = Node<CollectionNodeSpecific>;
 
-export interface Cron {
+export type CollectionNodeCreateParams = NodeCreate<CollectionNodeSpecific>
+
+export type CollectionGQLSpecific = {
+	documentCount :number // not stored, added by graphql
+	interfaces :Array<string> // not stored, added by graphql
+}
+
+export type Collection = ExplorerAdminGQLInterfaceNodeCommonProps<
+	CollectionNodeSpecific
+>
+
+export type Cron = {
 	minute :string,
 	hour :string,
 	dayOfMonth :string,
@@ -39,6 +51,4 @@ export type CollectionWithCron = Collection & {
 	cron :Cron | Array<Cron>
 };
 
-export type QueriedCollection = CollectionNode & {
-	_score :number
-}
+export type QueriedCollection = ScoreRequired<CollectionNode>

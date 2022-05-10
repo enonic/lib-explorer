@@ -1,42 +1,37 @@
 import type {
 	Collection,
 	CollectionNode
-} from '/lib/explorer/types/Collection.d';
+} from '/lib/explorer/types/index.d';
 
 
+// This function is currently used when creating or modifying a CollectionNode.
+// So it doesn't add _score, documentCount nor interfaces, which isn't stored in the CollectionNode.
 export function coerseCollectionType({
 	_id,
 	_name,
-	//_nodeType,
-	//_path,
-	_score, // TODO _score -> __score
+	_nodeType,
+	_path,
 	_versionKey,
 	collector,
 	createdTime,
 	creator,
 	doCollect = false,
-	documentCount,
 	documentTypeId,
-	interfaces,// = [],
 	language,
 	modifiedTime,
-	modifier//,
-	//...rest // _childOrder
+	modifier
 } :CollectionNode) :Collection {
 	return {
 		_id,
-		_name,// : _name.toLowerCase(), // It should be written in lowercase
-		//_nodeType,
-		//_path,
-		_score, // TODO _score -> __score
+		_name,
+		_nodeType,
+		_path,
 		_versionKey,
 		collector,
 		createdTime,
 		creator,
 		doCollect,
-		documentCount,
 		documentTypeId,
-		interfaces,
 		language,
 		modifiedTime,
 		modifier

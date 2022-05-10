@@ -31,6 +31,8 @@ export type {
 export type {
 	Collection,
 	CollectionNode,
+	CollectionNodeCreateParams,
+	CollectionNodeSpecific,
 	Cron,
 	CollectionWithCron,
 	QueriedCollection
@@ -45,6 +47,8 @@ export type {
 	DocumentNode
 } from './Document.d';
 export type {
+	DocumentType,
+	DocumentTypeCreateParams,
 	DocumentTypeField,
 	DocumentTypeFields,
 	DocumentTypeFieldsObject,
@@ -80,6 +84,8 @@ export type {
 	ParentPath,
 	Path,
 	RequiredNodeProperties,
+	ScoreOptional,
+	ScoreRequired,
 	State,
 	TimeStamp,
 	VersionKey
