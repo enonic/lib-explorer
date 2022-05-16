@@ -47,11 +47,22 @@ export function query<
 	sort ?:string
 	start ?:number
 }) {
-	//log.info(toStr({connection, count, filters, query, sort}));
+	/*log.debug('synonym.query(%s)', toStr({
+		aggregations,
+		count,
+		filters,
+		highlight,
+		query,
+		sort,
+		start
+	}));*/
+
 	addFilter({
 		filter: hasValue('_nodeType', [NT_SYNONYM]),
 		filters
 	});
+	//log.debug('synonym.query filters:%s', toStr(filters));
+
 	const queryParams = {
 		aggregations,
 		count,
@@ -61,21 +72,26 @@ export function query<
 		sort,
 		start
 	};
-	//log.info(toStr({queryParams}));
+	//log.debug('synonym.query queryParams:%s', toStr(queryParams));
+
 	const queryRes = connection.query(queryParams);
-	//log.info(`queryRes:${toStr(queryRes)}`);
+	//log.info('synonym.query queryRes:%s', toStr(queryRes));
 
 	const synonymQueryRes = {
 		aggregations: queryRes.aggregations,
 		count: queryRes.count,
 		hits: queryRes.hits.map((hit) => {
+			//log.info('synonym.query hit:%s', toStr(hit));
+
 			const node = connection.get(hit.id) as SynonymNode;
+			//log.info('synonym.query node:%s', toStr(node));
 			if (!node) { // Handle ghost nodes
 				return null;
 			}
+
 			const {
 				//_id,
-				//_name,
+				_name,
 				_nodeType,
 				_path,
 				_versionKey,
@@ -84,9 +100,9 @@ export function query<
 				to
 			} = node;
 			const queriedSynonym :QueriedSynonym = {
-				_highlight: queryRes.highlight[node._id],
+				_highlight: queryRes.highlight ? queryRes.highlight[node._id] : {},
 				_id: hit.id,
-				//_name, // Name is random and useless...
+				_name, // Needed by GraphQL Interface Node
 				_nodeType,
 				_path,
 				_score: hit.score,

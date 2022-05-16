@@ -8,6 +8,7 @@ import {forceArray} from '@enonic/js-utils';
 
 export function coerseSynonymType({
 	_id,
+	_name,
 	_nodeType,
 	_path,
 	_score, // TODO _score -> __score
@@ -24,6 +25,7 @@ export function coerseSynonymType({
 }) {
 	return {
 		_id,
+		_name,
 		_nodeType,
 		_path,
 		_score, // TODO _score -> __score

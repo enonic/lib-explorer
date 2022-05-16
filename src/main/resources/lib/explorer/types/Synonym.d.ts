@@ -20,7 +20,7 @@ export type Synonym = Omit<
 	'_childOrder'
 		| '_indexConfig'
 		| '_inheritsPermissions'
-		| '_name' // Name is random and useless...
+		//| '_name' // GraphQL Interface Node needs this
 		//| '_nodeType' // GraphQL Interface Node needs this
 		| '_permissions'
 		| '_state'
