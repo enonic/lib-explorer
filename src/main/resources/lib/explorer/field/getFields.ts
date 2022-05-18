@@ -1,20 +1,19 @@
-import type {RepoConnection} from '/lib/explorer/types/index.d';
 import type {
 	Field,
-	FieldNode
-} from '/lib/explorer/field/types.d';
+	FieldNode,
+	RepoConnection
+} from '/lib/explorer/types/index.d';
 
 
 import {
-	VALUE_TYPE_STRING,
 	isString,
 	toStr
 } from '@enonic/js-utils';
-
 import {
 	NT_FIELD,
 	SYSTEM_FIELDS
 } from '/lib/explorer/model/2/constants';
+import {coerceFieldType} from '/lib/explorer/field/coerceFieldType';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 
@@ -53,17 +52,15 @@ export function getFields({
 	const queryRes = connection.query(queryParams);
 	//log.info(`queryRes:${toStr(queryRes)}`);
 
-	const fieldsArray :Array<Field> = queryRes.hits.map(hit => {
-		const {
-			fieldType = VALUE_TYPE_STRING,
-			isSystemField = false,
-			...rest
-		} = connection.get<FieldNode>(hit.id);
+	const fieldsArray :Array<Field & {
+		isSystemField :boolean
+	}> = queryRes.hits.map(hit => {
+		const node = connection.get<FieldNode>(hit.id);
 		return {
-			...rest,
-			fieldType,
-			isSystemField,
-			valueType: fieldType // TODO transition to valueType everywhere and remove fieldType
+			...coerceFieldType(node),
+			isSystemField: false
+		} as Field & {
+			isSystemField :boolean
 		};
 	});
 

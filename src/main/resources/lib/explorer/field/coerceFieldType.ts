@@ -1,12 +1,16 @@
-//import type {Field} from '/lib/explorer/documentType/types.d';
+import type {
+	Field,
+	FieldNode
+} from '/lib/explorer/types/index.d';
+
 
 import {
 	INDEX_CONFIG_TEMPLATE_BY_TYPE,
 	VALUE_TYPE_STRING,
 	indexTemplateToConfig,
-	isNotFalse,
+	//isNotFalse,
 	isNotSet,
-	isNotTrue,
+	//isNotTrue,
 	isString//,
 	//toStr
 } from '@enonic/js-utils';
@@ -15,7 +19,7 @@ import {
 const INSTRUCTION_CUSTOM = 'custom'; // Keeping this for backwards compatibility
 
 
-export function coerseFieldType({
+export function coerceFieldType({
 	// Required parameters
 	_id,
 	_name,
@@ -24,12 +28,12 @@ export function coerseFieldType({
 	_versionKey,
 	key,
 	// Optional parameters. GraphQL passes null, so defaults are bypassed :(
-	description,
+	//description,
 	indexConfig, // Can be null, string or object
 	fieldType,
 	max,
 	min
-}) {
+} :FieldNode) :Field {
 	/*log.debug(`_id:${_id}`);
 	log.debug(`_name:${_name}`);
 	log.debug(`_nodeType:${_nodeType}`);
@@ -43,8 +47,12 @@ export function coerseFieldType({
 	log.debug(`min:${min}`);*/
 
 	// GraphQL passes null, so defaults are bypassed :(
-	if (isNotSet(description)) { description = ''; }
-	if (isNotSet(indexConfig)) { indexConfig = INDEX_CONFIG_TEMPLATE_BY_TYPE; }
+	//if (isNotSet(description)) { description = ''; }
+	if (isNotSet(indexConfig)) {
+		indexConfig = indexTemplateToConfig({
+			template:INDEX_CONFIG_TEMPLATE_BY_TYPE
+		});
+	}
 	if (isNotSet(fieldType)) { fieldType = VALUE_TYPE_STRING; }
 	if (isNotSet(max)) { max = 0; }
 	if (isNotSet(min)) { min = 0; }
@@ -93,7 +101,7 @@ export function coerseFieldType({
 		_path,
 		_versionKey,
 		decideByType,
-		description,
+		//description,
 		enabled,
 		fulltext,
 		fieldType,
@@ -103,6 +111,7 @@ export function coerseFieldType({
 		max,
 		min,
 		nGram, // INDEX_CONFIG_N_GRAM
-		path
+		path,
+		valueType: fieldType
 	};
 } // coerseFieldType

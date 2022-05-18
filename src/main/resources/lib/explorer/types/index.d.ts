@@ -55,6 +55,10 @@ export type {
 	DocumentTypeNode
 } from './DocumentType.d';
 export type {
+	Field,
+	FieldNode
+} from './Field.d';
+export type {
 	QueryFilters
 } from './Filters.d';
 export type {
@@ -67,13 +71,16 @@ export type {
 export type {
 	Journal,
 	JournalError,
-	JournalSuccess
+	JournalNode,
+	JournalSuccess,
+	JournalType
 } from './Journal.d';
 export type {
 	ChildOrder,
 	ExplorerAdminGQLInterfaceNodeCommonProps,
 	Id,
 	Key,
+	MultiRepoConnectionQueryNode,
 	Name,
 	Node,
 	NodeCreate,

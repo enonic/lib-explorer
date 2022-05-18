@@ -1,5 +1,6 @@
 import type {PermissionsParams} from '@enonic/js-utils/src/types/Auth.d';
 import type {IndexConfig} from './IndexConfig';
+import type {AnyObject} from './Utility';
 
 
 export type Name = string;
@@ -32,7 +33,7 @@ export type RequiredNodeProperties = ExplorerAdminGQLInterfaceNodeCommonProps<{
 	_ts :TimeStamp
 }>
 
-export type Node<T> = RequiredNodeProperties & T;
+export type Node<T = AnyObject> = RequiredNodeProperties & T;
 
 export type ScoreOptional<T> = Omit<T,'_score'> & {
 	_score ?:number
@@ -40,6 +41,12 @@ export type ScoreOptional<T> = Omit<T,'_score'> & {
 export type ScoreRequired<T> = Omit<T,'_score'> & {
 	_score :number
 }
+
+export type MultiRepoConnectionQueryNode = Node<{
+	_branchId :string
+	_repoId :string
+	_score :number
+}>
 
 export interface NodeCreateParams {
 	_childOrder ?:ChildOrder; // Default ordering of children when doing getChildren if no order is given in query

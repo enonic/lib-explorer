@@ -1,3 +1,6 @@
+import type {FieldNode} from '/lib/explorer/types/index.d';
+
+
 import {
 	VALUE_TYPE_STRING,
 	isNotSet//,
@@ -16,7 +19,7 @@ export function updateField({
 	// Optional
 	decideByType,
 	enabled,
-	description,
+	//description,
 	fieldType, // TODO valueType
 	fulltext,
 	includeInAllText,
@@ -28,7 +31,7 @@ export function updateField({
 	_id :string
 
 	decideByType? :boolean
-	description? :string
+	//description? :string
 	enabled? :boolean
 	fieldType? :string
 	fulltext? :boolean
@@ -37,12 +40,12 @@ export function updateField({
 	min? :string | number
 	nGram? :boolean
 	path? :boolean
-}) {
+}) :FieldNode {
 
 	// Handle null values
 	if (isNotSet(decideByType)) { decideByType = true; }
 	if (isNotSet(enabled)) { enabled = true; }
-	if (isNotSet(description)) { description = ''; }
+	//if (isNotSet(description)) { description = ''; }
 	if (isNotSet(fieldType)) { fieldType = VALUE_TYPE_STRING; }
 	if (isNotSet(fulltext)) { fulltext = true; }
 	if (isNotSet(includeInAllText)) { includeInAllText = true; }
@@ -54,7 +57,7 @@ export function updateField({
 	//const lcKey = key.toLowerCase();
 	const propertiesToUpdate = {
 		_id,
-		description,
+		//description,
 		fieldType,
 		max: parseInt(max as string, 10),
 		min: parseInt(min as string, 10),
@@ -71,7 +74,7 @@ export function updateField({
 
 	const updatedNode = modify(propertiesToUpdate, {
 		connection: connect({principals: [PRINCIPAL_EXPLORER_WRITE]})
-	});
+	}) as FieldNode;
 	//log.debug(`updatedNode:${toStr(updatedNode)}`);
 
 	if(!updatedNode) {

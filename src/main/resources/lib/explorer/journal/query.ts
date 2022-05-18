@@ -1,6 +1,6 @@
 import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
 import type {
-	Journal,
+	JournalNode,
 	QueryFilters
 } from '/lib/explorer/types/index.d';
 
@@ -60,7 +60,7 @@ export function query<
 		count: queryRes.count,
 		hits: queryRes.hits.map(hit => {
 			//log.info(toStr({node}));
-			const node = connection.get<Journal>(hit.id);
+			const node = connection.get<JournalNode>(hit.id);
 			if (!node.errors) {
 				node.errors = [];
 			} else if (!Array.isArray(node.errors)) {

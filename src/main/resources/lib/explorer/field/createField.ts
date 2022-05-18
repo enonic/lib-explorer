@@ -1,4 +1,4 @@
-//import type {Field} from '/lib/explorer/documentType/types.d';
+import type {FieldNode} from '/lib/explorer/types/index.d';
 
 import {
 	VALUE_TYPE_STRING,
@@ -71,7 +71,7 @@ export function createField({
 
 	const createdNode = create(nodeToCreate, {
 		connection: connect({principals: [PRINCIPAL_EXPLORER_WRITE]})
-	});
+	}) as unknown as FieldNode;
 	//log.debug(`createdNode:${toStr(createdNode)}`);
 
 	if(!createdNode) {
