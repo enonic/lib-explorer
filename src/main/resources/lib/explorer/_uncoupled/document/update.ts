@@ -33,6 +33,7 @@ import {
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';
+import {constrainPropertyNames} from './constrainPropertyNames';
 import {documentUnchanged} from './documentUnchanged';
 import {fieldsArrayToObj} from './field';
 import {validate} from './validate';
@@ -283,9 +284,13 @@ export function update(
 	let fieldsObj = fieldsArrayToObj(fields, javaBridge);
 	//log.debug('document.create: fieldsObj:%s', toStr(fieldsObj));
 
+	const dataWithConstrainedPropertyNames = constrainPropertyNames({
+		data
+	}, javaBridge);
+
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({
-			data,
+			data: dataWithConstrainedPropertyNames,
 			documentTypeId,
 			fieldsObj,
 		}, javaBridge);
@@ -294,7 +299,7 @@ export function update(
 
 	const cleanedData = cleanData({
 		cleanExtraFields,
-		data,
+		data: dataWithConstrainedPropertyNames,
 		fieldsObj
 	}, javaBridge);
 	//log.debug(`cleanedData:${toStr(cleanedData)}`);
