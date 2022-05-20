@@ -57,6 +57,7 @@ import {
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';
+import {constrainPropertyNames} from './constrainPropertyNames';
 import {fieldsArrayToObj} from './field';
 import {validate} from './validate';
 import {typeCastToJava} from './typeCastToJava';
@@ -70,19 +71,12 @@ export function create(
 	if (notSet(createParameterObject)) {
 		throw new Error('create: parameter object is missing!');
 	}
-	let {
+	const {
 		// Inputs
 		collectionId,
-		collectionName, // If empty gotten from collectionNode via collectionId
 		collectorId,
 		collectorVersion,
 		data = {},
-		documentTypeId, // If empty gotten from collectionNode via collectionId
-		documentTypeName, // If empty gotten from documentTypeNode via documentTypeId
-		fields, // If empty gotten from documentTypeNode
-		language, // If empty gotten from collectionNode
-		stemmingLanguage, // If empty gotten from language
-
 		// Options
 		cleanExtraFields = false, // If true, extra fields can't cause error nor addType, because extra fields are deleted.
 		//denyExtraFields = cleanExtraFields, // If false, extra fields cause error and not persisted
@@ -90,6 +84,15 @@ export function create(
 		requireValid = false,
 		validateOccurrences = false,
 		validateTypes = requireValid
+	} = createParameterObject;
+	let {
+		// Inputs
+		collectionName, // If empty gotten from collectionNode via collectionId
+		documentTypeId, // If empty gotten from collectionNode via collectionId
+		documentTypeName, // If empty gotten from documentTypeNode via documentTypeId
+		fields, // If empty gotten from documentTypeNode
+		language, // If empty gotten from collectionNode
+		stemmingLanguage, // If empty gotten from language
 	} = createParameterObject;
 
 	const {
@@ -258,9 +261,13 @@ export function create(
 	let fieldsObj = fieldsArrayToObj(fields, javaBridge);
 	//log.debug('document.create: fieldsObj:%s', toStr(fieldsObj));
 
+	const dataWithConstrainedPropertyNames = constrainPropertyNames({
+		data
+	}, javaBridge);
+
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({
-			data,
+			data: dataWithConstrainedPropertyNames,
 			documentTypeId,
 			fieldsObj,
 		}, javaBridge);
@@ -269,7 +276,7 @@ export function create(
 
 	const cleanedData = cleanData({
 		cleanExtraFields,
-		data,
+		data :dataWithConstrainedPropertyNames,
 		fieldsObj
 	}, javaBridge);
 	//log.debug(`cleanedData:${toStr(cleanedData)}`);

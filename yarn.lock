@@ -1020,9 +1020,9 @@
   integrity sha512-BCN9uNWH8AmiP7BXBJqEinUY9KXalmRzo+L0cB/mQsmFfzODxwQrbvxCHXUNH2iP+qKkWYtB4vyy8N62PViMFw==
 
 "@enonic/js-utils@^0":
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/@enonic/js-utils/-/js-utils-0.36.0.tgz#c6a8ec680e4611f4738d2cf061eae7f70124099d"
-  integrity sha512-wruFYZVYnI/MpJZUT2JXNDunv66/S+H7v4b+2fJO39xRJEOM74IMaGRbz5vPQX5kTpM9hnv5IXPQ59+8MOFE4w==
+  version "0.37.0"
+  resolved "https://registry.yarnpkg.com/@enonic/js-utils/-/js-utils-0.37.0.tgz#eb0461a0fbb0a3083ea5bfccffe6b78b7a3c3ee7"
+  integrity sha512-gyhOzFLlUSveh/ssnmwEi58fdqsbRSOuDLP9BvSEvCvSsaVk7+04u70IprICmrgosYNB1tV8gL82/0+9GIdnRw==
 
 "@enonic/js-utils@^0.34.1":
   version "0.34.3"
@@ -1035,6 +1035,11 @@
   integrity sha512-d/d006PlvEKEMR7ADcH/0SD/cvFti4nOXcIYZFI+Yeq2HOJhFX7Fcde/x6QyDKHabUz4iGKgqYCnTJPQMDneog==
   dependencies:
     "@enonic/js-utils" "^0.34.1"
+
+"@enonic/test-data@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@enonic/test-data/-/test-data-0.2.1.tgz#68dd6374f48060fd9a39c5659edf6e7cb487064a"
+  integrity sha512-63Hz92ONDSLcNPP8plbJbDx6PyK6wuOs2nUQmazHjqTa22m3N2XhfogRmJOvF3JVsO08rdTPEr3iBC76OAUKgA==
 
 "@eslint/eslintrc@^1.2.3":
   version "1.2.3"
