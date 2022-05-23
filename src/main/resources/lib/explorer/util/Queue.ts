@@ -1,17 +1,17 @@
 const ITEMS = '_items';
 
 
-export class Queue {
-	constructor(...items) {
+export class Queue<Item = unknown> {
+	constructor(...items :Array<Item>) {
 		this[ITEMS] = [...items];
 	}
-	add(...args) {
+	add(...args :Array<unknown>) :number {
 		return this[ITEMS].push(...args);
 	}
-	poll(...args) {
-		return this[ITEMS].shift(...args);
+	poll(...args :Array<unknown>) {
+		return this[ITEMS].shift(...args) as Item;
 	}
-	get length() {
+	get length() :number {
 		return this[ITEMS].length;
 	}
 	/*set length(length) {

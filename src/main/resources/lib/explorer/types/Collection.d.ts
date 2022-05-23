@@ -6,6 +6,8 @@ import type {
 } from './Node.d';
 
 
+export type CollectionId = string
+
 export type CollectionNodeSpecific = {
 	collector ?:{ // Yes it's optional, a collection doesn't require a collector
 		config :Object // TODO?

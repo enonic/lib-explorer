@@ -1,3 +1,32 @@
+import type {CollectionId as ImportedCollectionId} from './Collection.d';
+import type {CollectorId as ImportedCollectorId} from './Collector.d';
+
+
+export namespace Explorer {
+	export type CollectionId = ImportedCollectionId
+	export type CollectorId = ImportedCollectorId
+	export type Language = string
+} // namespace Explorer
+
+
+export namespace HttpClient {
+	export type Method = 'GET'|'POST'|'PUT'|'DELETE'|'HEAD'|'PATCH'
+	export type Request = {
+		connectionTimeout ?:number
+		body :string
+		method :Method
+		headers :Record<string,string>
+		readTimeout :number
+		url :string
+	}
+	export type Response = {
+		body :string|null // Body of the response as string. Null if the response content-type is not of type text.
+		contentType :string
+		status :number
+	}
+} // namespace HttpClient
+
+
 export type {
 	Aggregation,
 	Aggregations,
