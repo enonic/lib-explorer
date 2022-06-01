@@ -1,4 +1,7 @@
-import type {RepoConnection} from '/lib/explorer/types/index.d';
+import type {
+	FieldNode,
+	RepoConnection
+} from '/lib/explorer/types/index.d';
 
 
 import {get} from '/lib/explorer/node/get';
@@ -17,7 +20,7 @@ export function getField({
 	key ?:string
 }) {
 	//log.info(`_name:${_name}`);
-	return get({
+	return get<FieldNode>({
 		connection,
 		key
 	});
