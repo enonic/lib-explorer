@@ -127,6 +127,12 @@ export type {
 	VersionKey
 } from './Node.d';
 export type {
+	Notifications,
+	NotificationsNode,
+	NotificationsNodeCreateParams,
+	NotificationsNodeSpecific
+} from './Notifications.d';
+export type {
 	Interface,
 	InterfaceSpecific,
 	InterfaceField,

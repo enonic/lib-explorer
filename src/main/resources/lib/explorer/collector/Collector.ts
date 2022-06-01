@@ -34,6 +34,7 @@ import type {
 	JournalError,
 	JournalSuccess,
 	Name,
+	NotificationsNode,
 	ParentPath//,
 	//RequiredNodeProperties
 } from '/lib/explorer/types/index.d';
@@ -406,12 +407,12 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		this.taskProgressObj.info.message = `Finished with ${this.journal.errors.length} errors.`;
 		this.progress(); // This also implicitly sets final currentTime and duration
 
-		const node = getNode({
+		const node = getNode<NotificationsNode>({
 			connection: connect({
 				principals: [PRINCIPAL_EXPLORER_READ]
 			}),
 			path: '/notifications'
-		}) || {};
+		}) || {} as NotificationsNode;
 		//log.info(`node:${toStr(node)}`);
 
 		const {emails = []} = node;
