@@ -4,6 +4,7 @@
 // - If you want a type meaning "empty object", you probably want `Record<string, never>` instead  @typescript-eslint/ban-types
 export type AnyObject = Record<string, unknown>;
 export type EmptyObject = Record<string, never>;
+export type StringObject = Record<string, string>;
 
 
 export type OneOrMore<T> = T | T[];

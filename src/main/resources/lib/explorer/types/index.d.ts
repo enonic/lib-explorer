@@ -141,6 +141,14 @@ export type {
 	RepoConnection
 } from './RepoConnection.d';
 export type {
+	EnonicXpRequest,
+	HttpClientRequest
+} from './Request.d';
+export type {
+	PageContributions,
+	Response
+} from './Response.d';
+export type {
 	ScheduledJob
 } from './Scheduler.d';
 export type {
