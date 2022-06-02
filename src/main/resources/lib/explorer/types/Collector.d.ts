@@ -14,6 +14,9 @@ export type SiteOptions = Array<unknown>;
 
 export type Fields = Record<string,{
 	label :string
+	values :Record<string,{
+		label :string
+	}>
 }>;
 
 export type CollectorProps<CollectorConfig extends AnyObject = AnyObject> = {

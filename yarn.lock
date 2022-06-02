@@ -1053,9 +1053,9 @@
     "@enonic/js-utils" "^0.34.1"
 
 "@enonic/semantic-ui-react-form@^2":
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/@enonic/semantic-ui-react-form/-/semantic-ui-react-form-2.5.4.tgz#88491ec692d585f1a7d2c0b0e75af84a89452fcc"
-  integrity sha512-1qTXvDdq+A72owM9s1U+MHNfE5b3gqya1H4SWvAUH9no9tXn6H79lBnSI3jFeAdHd+6Dt7tkUjwSXfYBE1gGSw==
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/@enonic/semantic-ui-react-form/-/semantic-ui-react-form-2.5.5.tgz#e4816547265041e4de8d9a7dd57ddb53865481c6"
+  integrity sha512-IukV7jRbHQAnPP8z4LcWBTbPa2zrX4MjUPMKkMrZ91j/ukrADXgDTOZrSNDtcL5llQGQb/fZt+GmjyDTZPbSHA==
   dependencies:
     "@enonic/js-utils" "^0.37.0"
     fast-deep-equal "^3"
@@ -2592,17 +2592,17 @@ cookie@0.5.0:
   integrity sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==
 
 core-js-compat@^3.21.0, core-js-compat@^3.22.1:
-  version "3.22.7"
-  resolved "https://registry.yarnpkg.com/core-js-compat/-/core-js-compat-3.22.7.tgz#8359eb66ecbf726dd0cfced8e48d5e73f3224239"
-  integrity sha512-uI9DAQKKiiE/mclIC5g4AjRpio27g+VMRhe6rQoz+q4Wm4L6A/fJhiLtBw+sfOpDG9wZ3O0pxIw7GbfOlBgjOA==
+  version "3.22.8"
+  resolved "https://registry.yarnpkg.com/core-js-compat/-/core-js-compat-3.22.8.tgz#46fa34ce1ddf742acd7f95f575f66bbb21e05d62"
+  integrity sha512-pQnwg4xtuvc2Bs/5zYQPaEYYSuTxsF7LBWF0SvnVhthZo/Qe+rJpcEekrdNK5DWwDJ0gv0oI9NNX5Mppdy0ctg==
   dependencies:
     browserslist "^4.20.3"
     semver "7.0.0"
 
 core-js-pure@^3.20.2:
-  version "3.22.7"
-  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.22.7.tgz#f58489d9b309fa7b26486a0f70d4ec19a418084e"
-  integrity sha512-wTriFxiZI+C8msGeh7fJcbC/a0V8fdInN1oS2eK79DMBGs8iIJiXhtFJCiT3rBa8w6zroHWW3p8ArlujZ/Mz+w==
+  version "3.22.8"
+  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.22.8.tgz#f2157793b58719196ccf9673cc14f3683adc0957"
+  integrity sha512-bOxbZIy9S5n4OVH63XaLVXZ49QKicjowDx/UELyJ68vxfCRpYsbyh/WNZNfEfAk+ekA8vSjt+gCDpvh672bc3w==
 
 core-js@^3:
   version "3.22.8"
@@ -5292,7 +5292,7 @@ process-nextick-args@~2.0.0:
 process@^0.11.1:
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
-  integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
+  integrity sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==
 
 prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
