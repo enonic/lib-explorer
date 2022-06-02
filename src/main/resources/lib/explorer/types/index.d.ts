@@ -59,6 +59,7 @@ export type {
 
 export type {
 	Collection,
+	CollectionFormValues,
 	CollectionNode,
 	CollectionNodeCreateParams,
 	CollectionNodeSpecific,

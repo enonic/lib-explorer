@@ -4,13 +4,35 @@ import type {
 	NodeCreate,
 	ScoreRequired
 } from './Node.d';
+import type {AnyObject} from './Utility';
 
+
+export type CollectionFormValues<Config extends AnyObject = AnyObject> = {
+	_id ?:string
+	_name :string
+	_path :string
+	collector :{
+		configJson ?:string
+		config ?:Config
+		name :string
+	}
+	cron :Array<{
+		month :string
+		dayOfMonth :string
+		dayOfWeek :string
+		minute :string
+		hour :string
+	}>
+	doCollect :boolean
+	documentTypeId ?:string
+	language :string
+};
 
 export type CollectionId = string
 
 export type CollectionNodeSpecific = {
 	collector ?:{ // Yes it's optional, a collection doesn't require a collector
-		config :Object // TODO?
+		config :AnyObject // Different for each Collector
 		name :string
 		configJson :string
 	}
