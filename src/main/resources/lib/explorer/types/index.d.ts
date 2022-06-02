@@ -68,7 +68,8 @@ export type {
 	QueriedCollection
 } from './Collection.d';
 export type {
-	Collector
+	Collector,
+	CollectorProps
 } from './Collector.d';
 export type {
 	GetContext
