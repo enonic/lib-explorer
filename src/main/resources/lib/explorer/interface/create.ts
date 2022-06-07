@@ -37,7 +37,7 @@ export function create({
 } :{
 	writeConnection: WriteConnection
 }) {
-	return writeConnection.create<InterfaceNodeCreateParams>({
+	const createdInterface = writeConnection.create<InterfaceNodeCreateParams>({
 		_indexConfig: {
 			default: {
 				decideByType: true,
@@ -66,4 +66,6 @@ export function create({
 		stopWords: isNotSet(stopWords) ? [] : forceArray(stopWords),
 		synonymIds: isNotSet(synonymIds) ? [] : forceArray(synonymIds).map((synonymId) => reference(synonymId)) // empty array allowed
 	}) as InterfaceNode;
+	writeConnection.refresh(); // So the data becomes immidiately searchable
+	return createdInterface;
 }

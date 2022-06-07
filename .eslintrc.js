@@ -32,13 +32,13 @@ module.exports = {
 
 	// https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/style.js
 	extends: [
-		//'eslint:recommended',
+		'eslint:recommended',
 		//'airbnb-base',
 		'plugin:@typescript-eslint/eslint-recommended',
-		'plugin:@typescript-eslint/recommended'//,
-		//'plugin:react/recommended',
-		//'plugin:jsx-a11y/recommended'//,
-		//'plugin:react-hooks/recommended'
+		'plugin:@typescript-eslint/recommended',
+		'plugin:react/recommended',
+		'plugin:jsx-a11y/recommended',
+		'plugin:react-hooks/recommended'
 	],
 
 	globals: {
@@ -78,47 +78,50 @@ module.exports = {
 		//React: false
 	},
 
-	//parser: '@babel/eslint-parser',
-
-	/*parserOptions: {
-		allowImportExportEverywhere: false,
-
-		codeFrame: true,
-
-		ecmaFeatures: {
-			experimentalObjectRestSpread: true,
-			impliedStrict: true,
-			jsx: true,
-			modules: true
-		},
-
-		// set to 3, 5 (default), 6, 7, 8, 9, 10 or 11 to specify the version of ECMAScript syntax you want to use.
-		// You can also set to 2015 (same as 6), 2016 (same as 7), 2017 (same as 8), 2018 (same as 9), 2019 (same as 10) or 2020 (same as 11) to use the year-based naming.
-		//ecmaVersion: 2020, // 11
-		ecmaVersion: 2017,
-		//ecmaVersion: 6, // 2015
-
-		impliedStrict: true,
-
-		// set to "script" (default) or "module" if your code is in ECMAScript modules.
-		//sourceType: 'module' // allow import statements
-	},*/
-
 	overrides: [{
 		files: [
 			//'**/*.es', // TODO Currently too many errors to include
 			'**/*.js',
 			//'**/*.jsx',
 			//'**/*.mjs', // Currently no such files
-			'**/*.ts'//,
-			//'**/*.tsx'
+			'**/*.ts',
+			'**/*.tsx'
 		]
 	}],
 
+	//parser: '@babel/eslint-parser',
+	parser: '@typescript-eslint/parser',
+
+	parserOptions: {
+		//allowImportExportEverywhere: false,
+
+		//codeFrame: true,
+
+		ecmaFeatures: {
+			//experimentalObjectRestSpread: true,
+			//impliedStrict: true,
+			jsx: true,
+			//modules: true
+		},
+
+		// set to 3, 5 (default), 6, 7, 8, 9, 10 or 11 to specify the version of ECMAScript syntax you want to use.
+		// You can also set to 2015 (same as 6), 2016 (same as 7), 2017 (same as 8), 2018 (same as 9), 2019 (same as 10) or 2020 (same as 11) to use the year-based naming.
+		//ecmaVersion: 2020, // 11
+		//ecmaVersion: 2017,
+		//ecmaVersion: 6, // 2015
+
+		//impliedStrict: true,
+
+		//requireConfigFile: false
+
+		// set to "script" (default) or "module" if your code is in ECMAScript modules.
+		//sourceType: 'module' // allow import statements
+	},
+
 	plugins: [
 		//'import',
-		//'react',
-		//'jsx-a11y'
+		'react',
+		'jsx-a11y',
 		'@typescript-eslint'
 	],
 

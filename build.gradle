@@ -10,6 +10,7 @@ plugins {
 
 
 repositories {
+	mavenLocal()
 	xp.enonicRepo('dev') // Not provided by com.enonic.defaults
 	mavenCentral()
 	//maven {url 'http://repo.enonic.com/public'}

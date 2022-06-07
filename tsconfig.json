@@ -12,6 +12,7 @@
 		"importsNotUsedAsValues": "remove",
 		"inlineSourceMap": false,
 		"inlineSources": false,
+		"jsx": "react-jsx",
 		"listEmittedFiles": false,
 		"listFiles": false,
 		"module": "es6",
@@ -27,6 +28,7 @@
 		"paths": {
 			//"@enonic/js-utils": ["../enonic-js-utils/src"], // Use this or npm link ../enonic-js-utils
 			"@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
+			//"@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],
 			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
 		},
 		"preserveWatchOutput": false,

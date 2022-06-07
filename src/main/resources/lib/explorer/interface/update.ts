@@ -30,7 +30,7 @@ export function update({
 } :{
 	writeConnection: WriteConnection
 }) {
-	return writeConnection.modify<InterfaceNode>({
+	 const updatedInterface = writeConnection.modify<InterfaceNode>({
 		key: _id,
 		editor: (interfaceNode) => {
 			interfaceNode.collectionIds = isNotSet(collectionIds) ? [] : forceArray(collectionIds).map((collectionId) => reference(collectionId)); // empty array allowed,
@@ -45,5 +45,7 @@ export function update({
 			interfaceNode.synonymIds = isNotSet(synonymIds) ? [] : forceArray(synonymIds).map((synonymId) => reference(synonymId)); // empty array allowed,
 			return interfaceNode;
 		}
-	})
+	});
+	writeConnection.refresh(); // So the data becomes immidiately searchable
+	return updatedInterface;
 }

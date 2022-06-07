@@ -1,5 +1,5 @@
 import type React from 'react';
-import type {SemanticUiReactForm} from 'semantic-ui-react-form';
+import type {SemanticUiReactForm} from '@enonic/semantic-ui-react-form';
 import type {Application} from '../../../index.d';
 import type {CollectionFormValues} from './Collection.d';
 import type {TaskName} from './Task.d';
