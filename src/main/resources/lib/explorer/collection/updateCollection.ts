@@ -90,10 +90,12 @@ export function updateCollection({
 			propertiesToBeUpdated.collector.configJson = configJson;
 			propertiesToBeUpdated.collector.config = JSON.parse(configJson);
 		}
+	} else {
+		propertiesToBeUpdated.collector = undefined; // So it can be changed to "_none"
 	}
 	//log.debug(`propertiesToBeUpdated:${toStr(propertiesToBeUpdated)}`);
 
-	if (!documentTypeId) {
+	if (documentTypeId === '_new') {
 		// Create DocumentType With CollectionName pluss some integer if already existing
 		let documentTypeName = _name;
 		let i = 0;
@@ -109,7 +111,11 @@ export function updateCollection({
 		//log.debug(`createdDocumentTypeNode:${toStr(createdDocumentTypeNode)}`);
 		documentTypeId = createdDocumentTypeNode._id;
 	}
-	propertiesToBeUpdated.documentTypeId = reference(documentTypeId);
+	if (documentTypeId && !documentTypeId.startsWith('_')) {
+		propertiesToBeUpdated.documentTypeId = reference(documentTypeId);
+	} else {
+		propertiesToBeUpdated.documentTypeId = undefined; // So it can be changed to "_none"
+	}
 	//log.debug(`updateCollection documentTypeId:${toStr(documentTypeId)}`); // toStr on reference becomes ''
 	//log.debug(`propertiesToBeUpdated:${toStr(propertiesToBeUpdated)}`);
 
