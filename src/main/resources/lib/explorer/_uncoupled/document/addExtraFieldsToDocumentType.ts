@@ -92,7 +92,7 @@ export function addExtraFieldsToDocumentType(
 					!value.length
 					|| (
 						isNotSet(value[0])
-						|| value[0] === ''
+						|| value[0] === ''
 					)
 				)
 			) {
