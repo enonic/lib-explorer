@@ -136,3 +136,13 @@ export const ROOT_PERMISSIONS_EXPLORER = [
 	ROOT_PERMISSION_EXPLORER_WRITE,
 	ROOT_PERMISSION_SYSTEM_ADMIN
 ];
+
+//──────────────────────────────────────────────────────────────────────────────
+// Events
+//──────────────────────────────────────────────────────────────────────────────
+const EVENT_TYPE_PREFIX_CUSTOM = 'custom'; // Move to @enonic/js-utils?
+export const EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED = 'explorer.documentType.created';
+export const EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED = 'explorer.documentType.updated';
+
+export const EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED = `${EVENT_TYPE_PREFIX_CUSTOM}.${EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED}` as const;
+export const EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED = `${EVENT_TYPE_PREFIX_CUSTOM}.${EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED}` as const;
