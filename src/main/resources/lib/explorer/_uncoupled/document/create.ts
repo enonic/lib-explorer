@@ -206,7 +206,7 @@ export function create(
 			principals: [PRINCIPAL_EXPLORER_READ],
 			repoId: REPO_ID_EXPLORER
 		});
-		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
+		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
 			//log.debug('collectionId:%s', collectionId);
 
 			const collectionNode = explorerReadConnection.get(collectionId) as CollectionNode;
