@@ -11,11 +11,13 @@ import {
 	//toStr
 } from '@enonic/js-utils';
 import {
+	EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED,
 	NT_FOLDER,
 	PRINCIPAL_EXPLORER_WRITE
-} from '/lib/explorer/model/2/constants';
+} from '/lib/explorer/constants';
 import {connect} from '/lib/explorer/repo/connect';
-
+//@ts-ignore
+import {send} from '/lib/xp/event';
 //@ts-ignore
 //import {reference} from '/lib/xp/value';
 
@@ -59,5 +61,13 @@ export function createDocumentType({
 		properties: forceArray(properties).sort((a, b) => (a.name > b.name) ? 1 : -1)
 	};
 	const createdNode = writeConnection.create<DocumentTypeCreateParams>(nodeToBeCreated) as DocumentTypeNode;
+	//writeConnection.refresh(); // Not needed?
+
+	send({
+		type: EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED,
+		distributed: true,
+		data: createdNode
+	});
+
 	return coerseDocumentType(createdNode);
 }

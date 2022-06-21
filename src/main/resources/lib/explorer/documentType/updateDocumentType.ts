@@ -16,14 +16,17 @@ import HumanDiff from 'human-object-diff';
 
 //import {getCachedDocumentType} from '/lib/explorer/documentType/documentTypesCache';
 import {
+	EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
 	NT_COLLECTION,
 	PRINCIPAL_EXPLORER_WRITE
-} from '/lib/explorer/model/2/constants';
+} from '/lib/explorer/constants';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {connect} from '/lib/explorer/repo/connect';
 
 //@ts-ignore
-import {reference} from '/lib/xp/value';
+import {send} from '/lib/xp/event';
+//@ts-ignore
+//import {reference} from '/lib/xp/value';
 
 import {reindexCollections} from '../collection/reindexCollections';
 import {coerseDocumentType} from './coerseDocumentType';
@@ -116,6 +119,11 @@ export function updateDocumentType({
 			}
 		});
 		writeConnection.refresh();
+		send({
+			type: EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
+			distributed: true,
+			data: updatedNode
+		});
 		/*getCachedDocumentType({ WARNING Cache remove is not cluster "safe"
 			_id: documentTypeId,
 			refresh: true
