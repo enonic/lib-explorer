@@ -26,8 +26,8 @@
 		"noUnusedParameters": true,
 		"outDir": "build/rollup",
 		"paths": {
-			//"@enonic/js-utils": ["../enonic-js-utils/src"], // Use this or npm link ../enonic-js-utils
-			"@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
+			"@enonic/js-utils": ["../enonic-js-utils/src"], // Use this or npm link ../enonic-js-utils
+			//"@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
 			//"@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],
 			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
 		},

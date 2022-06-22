@@ -1059,9 +1059,9 @@
   integrity sha512-BCN9uNWH8AmiP7BXBJqEinUY9KXalmRzo+L0cB/mQsmFfzODxwQrbvxCHXUNH2iP+qKkWYtB4vyy8N62PViMFw==
 
 "@enonic/js-utils@^0":
-  version "0.38.5"
-  resolved "https://registry.yarnpkg.com/@enonic/js-utils/-/js-utils-0.38.5.tgz#23eae53c3a53a38c18fff799cbf34ea8f2a3dc2f"
-  integrity sha512-Ia7mLztXWYjOSY4y91j78rsS2XT6vLPh/Z41LJbP4RLPcGMvbbU7zgFW+Z54ICAX4+nHy4GD3KErlYFYFBO8LQ==
+  version "0.38.6"
+  resolved "https://registry.yarnpkg.com/@enonic/js-utils/-/js-utils-0.38.6.tgz#235ec749b4a2ea02b657ba54f3e5c66463b48eee"
+  integrity sha512-F6j5FHaVpeAwkNJ4vj93y9ACMX5mwOULFIsQurfJcDtPOr78tMiN6lXE9x1OSOOVNbC/GlPLEPquz9N8kshoHg==
 
 "@enonic/js-utils@^0.34.1":
   version "0.34.3"

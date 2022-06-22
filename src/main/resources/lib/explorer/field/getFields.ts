@@ -6,7 +6,7 @@ import type {
 
 
 import {
-	isString,
+	isStringLiteral,
 	toStr
 } from '@enonic/js-utils';
 import {
@@ -31,7 +31,7 @@ export function getFields({
 		filter: hasValue('_nodeType', [NT_FIELD])
 	});
 	if (fields) {
-		if (isString(fields)) {
+		if (isStringLiteral(fields)) {
 			fields = [fields];
 		}
 		if (!Array.isArray(fields)) {
