@@ -295,12 +295,19 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		//cleanExtraFields // TODO Perhaps later
 		//addExtraFields // TODO Perhaps later
 		boolRequireValid, // Present in lib-explorer-3.x
+
+		// When configuring a collection, after having selected a collector,
+		// it's no longer possible to select documentType.
+		// Thus documentTypeName MUST be provided when persisting a document.
+		documentTypeName,
+
 		//validateOccurrences, // TODO Perhaps later
 		//validateTypes // TODO Perhaps later
 		...ignoredOptions
 	} :{
-		boolRequireValid? :boolean
-	} = {}) {
+		boolRequireValid ?:boolean
+		documentTypeName :string
+	}) {
 		//log.debug(`document_metadata_props:${toStr(document_metadata_props)}`);
 		//log.debug(`rest:${toStr(rest)}`);
 		//log.debug(`ignoredOptions:${toStr(ignoredOptions)}`);
@@ -327,6 +334,10 @@ export class Collector<Config extends AnyObject = AnyObject> {
 
 		if (Object.keys(ignoredOptions).length) {
 			log.warning(`collector.persistDocument: Ignored options:${toStr(ignoredOptions)}`);
+		}
+
+		if (!documentTypeName) {
+			throw new Error('persistDocument(): Missing required parameter documentTypeName!');
 		}
 
 		// Even when boolRequireValid is false, we still require uri for Collectors,
@@ -371,7 +382,7 @@ export class Collector<Config extends AnyObject = AnyObject> {
 			//connection: this.collection.connection, // No longer needed in lib-explorer-4.0.0
 			data: documentToPersist,
 			//documentTypeId // Perhaps later
-			//documentTypeName // Perhaps later
+			documentTypeName,
 			//documentTypeObj: this._documentTypeObj,
 			//fields: // Perhaps later
 			language: this._language,

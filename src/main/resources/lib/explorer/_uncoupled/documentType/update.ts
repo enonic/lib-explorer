@@ -6,8 +6,6 @@ import type {
 
 
 //import {toStr} from '@enonic/js-utils';
-//@ts-ignore
-import {send} from '/lib/xp/event';
 import {
 	EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
 	PRINCIPAL_EXPLORER_WRITE,
@@ -46,7 +44,7 @@ export function update(
 	//log.debug('documentType.update: modifiedDocumentTypeNode:%s', toStr(modifiedDocumentTypeNode));
 	explorerWriteConnection.refresh();
 
-	send({
+	javaBridge.event.send({
 		type: EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
 		distributed: true,
 		data: modifiedDocumentTypeNode

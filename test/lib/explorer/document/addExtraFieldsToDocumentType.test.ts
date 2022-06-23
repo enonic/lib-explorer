@@ -29,6 +29,7 @@ import {log} from '../../../dummies';
 
 const {
 	addExtraFieldsToDocumentType,
+	constrainPropertyNames,
 	fieldsArrayToObj
 } = document;
 
@@ -66,39 +67,41 @@ describe('document', () => {
 				myString: 'string'
 			};
 			const fieldsObj = {
-				myString: {
+				mystring: {
 					valueType: 'string'
 				}
 			};
 			deepStrictEqual(
 				{
-					myString: {
+					mystring: {
 						//active: true,
 						valueType: 'string'
 					},
-					myObject: FIELD_SET,
-					'myObject.myBoolean': FIELD_BOOLEAN,
-					'myObject.myDateObj': FIELD_INSTANT,
-					'myObject.myGeoPointArray': FIELD_GEO_POINT,
-					'myObject.myGeoPointString': FIELD_GEO_POINT,
-					'myObject.myInstantString': FIELD_INSTANT,
-					'myObject.myLocalDateString': FIELD_LOCAL_DATE,
-					'myObject.myLocalDateTimeString': FIELD_LOCAL_DATE_TIME,
-					'myObject.myLocalTimeString': FIELD_LOCAL_TIME,
-					'myObject.myNumber': FIELD_DOUBLE,
-					'myObject.myString': FIELD_STRING
+					myobject: FIELD_SET,
+					'myobject.myboolean': FIELD_BOOLEAN,
+					'myobject.mydateobj': FIELD_INSTANT,
+					'myobject.mygeopointarray': FIELD_GEO_POINT,
+					'myobject.mygeopointstring': FIELD_GEO_POINT,
+					'myobject.myinstantstring': FIELD_INSTANT,
+					'myobject.mylocaldatestring': FIELD_LOCAL_DATE,
+					'myobject.mylocaldatetimestring': FIELD_LOCAL_DATE_TIME,
+					'myobject.mylocaltimestring': FIELD_LOCAL_TIME,
+					'myobject.mynumber': FIELD_DOUBLE,
+					'myobject.mystring': FIELD_STRING
 				},
 				addExtraFieldsToDocumentType({
-					data: {
-						_id: '_id',
-						_name: '_name',
-						_path: '_path',
-						_versionKey: '_versionKey',
-						[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-						[FIELD_PATH_META]: `${FIELD_PATH_META}`,
-						myString: 'myString',
-						myObject
-					},
+					data: constrainPropertyNames({
+						data: {
+							_id: '_id',
+							_name: '_name',
+							_path: '_path',
+							_versionKey: '_versionKey',
+							[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
+							[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+							myString: 'myString',
+							myObject
+						}
+					}, javaBridge),
 					documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
 					fieldsObj
 				}, javaBridge)
@@ -107,25 +110,27 @@ describe('document', () => {
 		it(`doesn't make an entry per item in an array`, () => {
 			deepStrictEqual(
 				{
-					myArray: FIELD_STRING,
-					myObjArray: FIELD_SET,
-					'myObjArray.key': FIELD_STRING
+					myarray: FIELD_STRING,
+					myobjarray: FIELD_SET,
+					'myobjarray.key': FIELD_STRING
 				},
 				addExtraFieldsToDocumentType({
-					data: {
-						_id: '_id',
-						_name: '_name',
-						_path: '_path',
-						_versionKey: '_versionKey',
-						//[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-						//[FIELD_PATH_META]: `${FIELD_PATH_META}`,
-						myArray: ['one', 'two'],
-						myObjArray: [{
-							key: 'a'
-						},{
-							key: 'b'
-						}]
-					},
+					data: constrainPropertyNames({
+						data: {
+							_id: '_id',
+							_name: '_name',
+							_path: '_path',
+							_versionKey: '_versionKey',
+							//[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
+							//[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+							myArray: ['one', 'two'],
+							myObjArray: [{
+								key: 'a'
+							},{
+								key: 'b'
+							}]
+						}
+					}, javaBridge),
 					documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
 					fieldsObj: {}
 				}, javaBridge)
@@ -144,32 +149,34 @@ describe('document', () => {
 
 			deepStrictEqual(
 				{
-					myGeoPointArray: FIELD_GEO_POINT,
-					myGeoPointArrayArray: FIELD_GEO_POINT
+					mygeopointarray: FIELD_GEO_POINT,
+					mygeopointarrayarray: FIELD_GEO_POINT
 				},
 				addExtraFieldsToDocumentType({
-					data: {
-						_id: '_id',
-						_name: '_name',
-						_path: '_path',
-						_versionKey: '_versionKey',
-						//[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-						//[FIELD_PATH_META]: `${FIELD_PATH_META}`,
-						myGeoPointArray: [
-							59.9090442,
-							10.7423389
-						],
-						myGeoPointArrayArray: [[
-							-90,
-							-180
-						],[
-							0,
-							0
-						],[
-							90,
-							180
-						]]
-					},
+					data: constrainPropertyNames({
+						data: {
+							_id: '_id',
+							_name: '_name',
+							_path: '_path',
+							_versionKey: '_versionKey',
+							//[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
+							//[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+							myGeoPointArray: [
+								59.9090442,
+								10.7423389
+							],
+							myGeoPointArrayArray: [[
+								-90,
+								-180
+							],[
+								0,
+								0
+							],[
+								90,
+								180
+							]]
+						}
+					}, javaBridge),
 					documentTypeId: newDocumentTypeNode._id,
 					fieldsObj
 				}, javaBridge)
@@ -194,23 +201,25 @@ describe('document', () => {
 			};
 
 			const expected = {
-				oneOrMoreSets: FIELD_SET,
-				'oneOrMoreSets.oneOrMoreBooleans': FIELD_BOOLEAN,
+				oneormoresets: FIELD_SET,
+				'oneormoresets.oneormorebooleans': FIELD_BOOLEAN,
 			};
 
 			deepStrictEqual(
 				expected,
 				addExtraFieldsToDocumentType({
-					data: {
-						_id: '_id',
-						_name: '_name',
-						_path: '_path',
-						_versionKey: '_versionKey',
-						oneOrMoreSets: [
-							setWithArrayValues,
-							setWithSingleValues
-						]
-					},
+					data: constrainPropertyNames({
+						data: {
+							_id: '_id',
+							_name: '_name',
+							_path: '_path',
+							_versionKey: '_versionKey',
+							oneOrMoreSets: [
+								setWithArrayValues,
+								setWithSingleValues
+							]
+						}
+					}, javaBridge),
 					documentTypeId: emptyDocumentTypeNode._id,
 					fieldsObj
 				}, javaBridge)
@@ -218,13 +227,15 @@ describe('document', () => {
 			deepStrictEqual(
 				expected,
 				addExtraFieldsToDocumentType({
-					data: {
-						_id: '_id',
-						_name: '_name',
-						_path: '_path',
-						_versionKey: '_versionKey',
-						oneOrMoreSets: setWithSingleValues
-					},
+					data: constrainPropertyNames({
+						data: {
+							_id: '_id',
+							_name: '_name',
+							_path: '_path',
+							_versionKey: '_versionKey',
+							oneOrMoreSets: setWithSingleValues
+						}
+					}, javaBridge),
 					documentTypeId: emptyDocumentTypeNode._id,
 					fieldsObj
 				}, javaBridge)
@@ -236,10 +247,10 @@ describe('document', () => {
 				_path: `${DOCUMENT_TYPES_FOLDER_PATH}/c`,
 				properties: [{
 					...FIELD_SET,
-					name: 'oneOrMoreSets'
+					name: 'oneormoresets'
 				}, {
 					...FIELD_STRING,
-					name: 'oneOrMoreSets.oneOrMoreStrings'
+					name: 'oneormoresets.oneormorestrings'
 				}]
 			});
 			//javaBridge.log.debug('documentTypeNodeWithSetWithOneProperty:%s', documentTypeNodeWithSetWithOneProperty);
@@ -249,24 +260,26 @@ describe('document', () => {
 
 			deepStrictEqual(
 				{
-					oneOrMoreSets: FIELD_SET,
-					'oneOrMoreSets.oneOrMoreBooleans': FIELD_BOOLEAN,
-					'oneOrMoreSets.oneOrMoreStrings': FIELD_STRING
+					oneormoresets: FIELD_SET,
+					'oneormoresets.oneormorebooleans': FIELD_BOOLEAN,
+					'oneormoresets.oneormorestrings': FIELD_STRING
 				},
 				addExtraFieldsToDocumentType({
-					data: {
-						_id: '_id',
-						_name: '_name',
-						_path: '_path',
-						_versionKey: '_versionKey',
-						oneOrMoreSets: [{
-							oneOrMoreBooleans: BOOLEANS,
-							oneOrMoreStrings: STRINGS
-						}, {
-							oneOrMoreBooleans: true,
-							oneOrMoreStrings: 'string'
-						}]
-					},
+					data: constrainPropertyNames({
+						data: {
+							_id: '_id',
+							_name: '_name',
+							_path: '_path',
+							_versionKey: '_versionKey',
+							oneOrMoreSets: [{
+								oneOrMoreBooleans: BOOLEANS,
+								oneOrMoreStrings: STRINGS
+							}, {
+								oneOrMoreBooleans: true,
+								oneOrMoreStrings: 'string'
+							}]
+						}
+					}, javaBridge),
 					documentTypeId: documentTypeNodeWithSetWithOneProperty._id,
 					fieldsObj
 				}, javaBridge)

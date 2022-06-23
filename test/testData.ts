@@ -492,7 +492,7 @@ export const DOCUMENT_TYPE_FIELDS = [{
 	includeInAllText: true,
 	max: 0,
 	min: 0,
-	name: 'myString',
+	name: 'mystring',
 	nGram: true,
 	path: false,
 	valueType: VALUE_TYPE_STRING

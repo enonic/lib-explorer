@@ -92,6 +92,71 @@ describe('document', () => {
 					}
 				);
 			}); // it
+
+			it(`if addExtraFields=true and both documentTypeName and documentTypeId are missing`, () => {
+				throws(
+					() => create({
+						addExtraFields: true
+					}, javaBridge),
+					{
+						message: "create: when addExtraFields=true either documentTypeName or documentTypeId must be provided!",
+						name: 'Error'
+					}
+				);
+			}); // it
+
+			it(`if at least one of (validateTypes), validateOccurrences or cleanExtraFields is true and none of documentTypeName, documentTypeId or fields is provided`, () => {
+				throws(
+					() => create({
+						addExtraFields: false, // To avoid previous error
+						validateTypes: true
+					}, javaBridge),
+					{
+						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided!",
+						name: 'Error'
+					}
+				);
+			}); // it
+			it(`if at least one of validateTypes, (validateOccurrences) or cleanExtraFields is true and none of documentTypeName, documentTypeId or fields is provided`, () => {
+				throws(
+					() => create({
+						addExtraFields: false, // To avoid previous error
+						validateOccurrences: true
+					}, javaBridge),
+					{
+						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided!",
+						name: 'Error'
+					}
+				);
+			}); // it
+			it(`if at least one of validateTypes, validateOccurrences or (cleanExtraFields) is true and none of documentTypeName, documentTypeId or fields is provided`, () => {
+				throws(
+					() => create({
+						addExtraFields: false, // To avoid previous error
+						cleanExtraFields: true
+					}, javaBridge),
+					{
+						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided!",
+						name: 'Error'
+					}
+				);
+			}); // it
+
+			it(`if requireValid=true and both validateTypes and validateOccurrences are false`, () => {
+				throws(
+					() => create({
+						documentTypeName: DOCUMENT_TYPE_NAME,
+						requireValid: true,
+						validateTypes: false,
+						validateOccurrences: false
+					}, javaBridge),
+					{
+						message: "create: when requireValid=true either validateTypes or validateOccurrences must be true!",
+						name: 'Error'
+					}
+				);
+			}); // it
+
 			it(`if both collectionName and collectionId are missing`, () => {
 				throws(
 					() => create({
@@ -103,23 +168,14 @@ describe('document', () => {
 					}
 				);
 			}); // it
-			it(`if both documentTypeName, documentTypeId and collectionId are missing`, () => {
-				throws(
-					() => create({
-						collectionName: COLLECTION_NAME
-					}, javaBridge),
-					{
-						message: "create: either provide documentTypeName, documentTypeId or collectionId!",
-						name: 'Error'
-					}
-				);
-			}); // it
+
 			it(`when collectionId is not an uuidv4 string`, () => {
 				throws(
 					() => create({
 						collectionId: '',
 						collectorId: COLLECTOR_ID,
-						collectorVersion: COLLECTOR_VERSION
+						collectorVersion: COLLECTOR_VERSION,
+						documentTypeName: DOCUMENT_TYPE_NAME
 					}, javaBridge),
 					{
 						message: "create: parameter 'collectionId' is not an uuidv4 string!",
@@ -127,10 +183,12 @@ describe('document', () => {
 					}
 				);
 			}); // it
+
 			it(`on missing collectorId`, () => {
 				throws(
 					() => create({
-						collectionId: CREATED_COLLECTION_NODE._id
+						collectionId: CREATED_COLLECTION_NODE._id,
+						documentTypeName: DOCUMENT_TYPE_NAME
 					}, javaBridge),
 					{
 						message: "create: required parameter 'collectorId' is missing!",
@@ -143,7 +201,8 @@ describe('document', () => {
 					() => create({
 						collectionId: CREATED_COLLECTION_NODE._id,
 						collectorId: 0,
-						collectorVersion: COLLECTOR_VERSION
+						collectorVersion: COLLECTOR_VERSION,
+						documentTypeName: DOCUMENT_TYPE_NAME
 					}, javaBridge),
 					{
 						message: "create: parameter 'collectorId' is not a string!",
@@ -155,7 +214,8 @@ describe('document', () => {
 				throws(
 					() => create({
 						collectionId: CREATED_COLLECTION_NODE._id,
-						collectorId: COLLECTOR_ID
+						collectorId: COLLECTOR_ID,
+						documentTypeName: DOCUMENT_TYPE_NAME
 					}, javaBridge),
 					{
 						message: "create: required parameter 'collectorVersion' is missing!",
@@ -168,7 +228,8 @@ describe('document', () => {
 					() => create({
 						collectionId: CREATED_COLLECTION_NODE._id,
 						collectorId: COLLECTOR_ID,
-						collectorVersion: 0
+						collectorVersion: 0,
+						documentTypeName: DOCUMENT_TYPE_NAME
 					}, javaBridge),
 					{
 						message: "create: parameter 'collectorVersion' is not a string!",
@@ -181,6 +242,7 @@ describe('document', () => {
 					collectionId: CREATED_COLLECTION_NODE._id,
 					collectorId: COLLECTOR_ID,
 					collectorVersion: COLLECTOR_VERSION,
+					documentTypeName: DOCUMENT_TYPE_NAME,
 					data: {
 						//_id:
 						_name: 'a'
@@ -204,7 +266,7 @@ describe('document', () => {
 			}); // it
 		}); // describe throws
 		describe('creates', () => {
-			it(`is able to get collectionName, documentTypeId, documentTypeName, language and stemmmingLanguage from collectionId`, () => {
+			it(`is able to get collectionName, language and stemmmingLanguage from collectionId`, () => {
 				const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
 				_indexConfig.configs.push({
 						path: 'extra',
@@ -219,7 +281,7 @@ describe('document', () => {
 						}
 					});
 				_indexConfig.configs.push({
-						path: 'myString',
+						path: 'mystring',
 						config: {
 							decideByType: false,
 							enabled: true,
@@ -230,6 +292,7 @@ describe('document', () => {
 							path: false
 						}
 					});
+				//javaBridge.log.info('_indexConfig:%s', _indexConfig);
 				const createRes = create({
 					// Input
 					collectionId: CREATED_COLLECTION_NODE._id,
@@ -239,6 +302,7 @@ describe('document', () => {
 						myString: 'string',
 						extra: 'extra'
 					},
+					documentTypeName: DOCUMENT_TYPE_NAME,
 					// Options
 					//addExtraFields, // default is !cleanExtraFields
 					//cleanExtraFields: false, // default is false
@@ -247,39 +311,41 @@ describe('document', () => {
 					validateOccurrences: true//, // default is false
 					//validateTypes: true // default is same as requireValid
 				}, javaBridge);
+				const expected = {
+					_id: createRes._id,
+					_indexConfig,
+					_name: createRes._id,
+					_nodeType: NT_DOCUMENT,
+					_path: createRes._path,
+					_state: 'DEFAULT',
+					_ts: createRes._ts,
+					_versionKey: createRes._versionKey,
+					[FIELD_PATH_META]: {
+						collection: COLLECTION_NAME,
+						collector: {
+							id: COLLECTOR_ID,
+							version: COLLECTOR_VERSION
+						},
+						createdTime: createRes[FIELD_PATH_META].createdTime,
+						documentType: DOCUMENT_TYPE_NAME,
+						language: COLLECTION_LANGUAGE,
+						stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
+						valid: true
+					},
+					extra: 'extra',
+					mystring: 'string'
+				};
+				//javaBridge.log.info('expected:%s', expected);
 				//javaBridge.log.info('createRes:%s', createRes);
 				deepStrictEqual(
-					{
-						_id: createRes._id,
-						_indexConfig,
-						_name: createRes._id,
-						_nodeType: NT_DOCUMENT,
-						_path: createRes._path,
-						_state: 'DEFAULT',
-						_ts: createRes._ts,
-						_versionKey: createRes._versionKey,
-						[FIELD_PATH_META]: {
-							collection: COLLECTION_NAME,
-							collector: {
-								id: COLLECTOR_ID,
-								version: COLLECTOR_VERSION
-							},
-							createdTime: createRes[FIELD_PATH_META].createdTime,
-							documentType: DOCUMENT_TYPE_NAME,
-							language: COLLECTION_LANGUAGE,
-							stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
-							valid: true
-						},
-						extra: 'extra',
-						myString: 'string'
-					},
+					expected,
 					createRes
 				) // deepStrictEqual
 			}); // it
 			it("is able to do it's thing without connecting to the explorer repo WHEN enough info is provided in the parameters", () => {
 				const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
 				_indexConfig.configs.push({
-						path: 'myString',
+						path: 'mystring',
 						config: {
 							decideByType: false,
 							enabled: true,
@@ -332,152 +398,10 @@ describe('document', () => {
 							stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
 							valid: true
 						},
-						myString: 'string'
+						mystring: 'string'
 					},
 					createRes
 				) // deepStrictEqual
-			}); // it
-
-			const myDocumentTypeNode2 = connection.create({
-				_name: 'myDocumentTypeName2',
-				_path: `${DOCUMENT_TYPES_FOLDER_PATH}/myDocumentTypeName2`,
-				properties: [{
-					enabled: true,
-					fulltext: false,
-					includeInAllText: false,
-					max: 0,
-					min: 0,
-					name: 'zeroOrMoreBooleans',
-					nGram: false,
-					path: false,
-					valueType: VALUE_TYPE_BOOLEAN
-				},{
-					enabled: true,
-					fulltext: false,
-					includeInAllText: false,
-					max: 1,
-					min: 1,
-					name: 'mustOnlyOneDouble',
-					nGram: false,
-					path: false,
-					valueType: VALUE_TYPE_DOUBLE
-				},{
-					enabled: true,
-					fulltext: true,
-					includeInAllText: true,
-					max: 0,
-					min: 2,
-					name: 'twoOrMoreStrings',
-					nGram: true,
-					path: false,
-					valueType: VALUE_TYPE_STRING
-				}]
-			});
-			//javaBridge.log.info('myDocumentTypeNode2:%s', myDocumentTypeNode2);
-
-			const myCollectionNode2 = connection.create({
-				_name: 'myCollectionName2',
-				_path: `${COLLECTIONS_FOLDER_PATH}/myCollectionName2`,
-				documentTypeId: myDocumentTypeNode2._id,
-				language: COLLECTION_LANGUAGE,
-			});
-			//javaBridge.log.info('myCollectionNode2:%s', myCollectionNode2);
-			//javaBridge.log.info('myDocumentTypeNode2.properties:%s', myDocumentTypeNode2['properties']);
-
-			javaBridge.repo.create({
-				id: `${COLLECTION_REPO_PREFIX}myCollectionName2`
-			});
-
-			it('an "invalid" document node when requireValid=false and validate occurrences fails', () => {
-				const createRes = create({
-					collectionId: myCollectionNode2._id,
-					collectorId: COLLECTOR_ID,
-					collectorVersion: COLLECTOR_VERSION,
-					data: {
-						zeroOrMoreBooleans: true, // valid
-						mustOnlyOneDouble: 0.1, // valis
-						//twoOrMoreStrings: ['string1', 'string2'] // invalid occurences
-						twoOrMoreStrings: 'string' // correct type, but too few
-					},
-					requireValid: false, // default is false
-					validateOccurrences: true, // default is false
-					validateTypes: false // default is requireValid
-				}, javaBridge);
-				//javaBridge.log.info('createRes:%s', createRes);
-
-				deepStrictEqual(
-					{
-						_id: createRes._id,
-						_indexConfig: createRes._indexConfig,
-						_name: createRes._id,
-						_nodeType: NT_DOCUMENT,
-						_path: createRes._path,
-						_state: 'DEFAULT',
-						_ts: createRes._ts,
-						_versionKey: createRes._versionKey,
-						[FIELD_PATH_META]: {
-							collection: 'myCollectionName2',
-							collector: {
-								id: COLLECTOR_ID,
-								version: COLLECTOR_VERSION
-							},
-							createdTime: createRes[FIELD_PATH_META].createdTime,
-							documentType: 'myDocumentTypeName2',
-							language: COLLECTION_LANGUAGE,
-							stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
-							valid: false
-						},
-						mustOnlyOneDouble: 0.1,
-						twoOrMoreStrings: 'string',
-						zeroOrMoreBooleans: true
-					},
-					createRes
-				); // deepStrictEqual
-			}); // it
-			it('an "invalid" document node when requireValid=false and validate types fails', () => {
-				const createRes = create({
-					collectionId: myCollectionNode2._id,
-					collectorId: COLLECTOR_ID,
-					collectorVersion: COLLECTOR_VERSION,
-					data: {
-						zeroOrMoreBooleans: 'notBoolean',
-						mustOnlyOneDouble: 'notDouble',
-						twoOrMoreStrings: [1, 2]
-					},
-					requireValid: false, // default is false
-					validateOccurrences: false, // default is false
-					validateTypes: true // default is requireValid
-				}, javaBridge);
-				//javaBridge.log.info('createRes:%s', createRes);
-
-				deepStrictEqual(
-					{
-						_id: createRes._id,
-						_indexConfig: createRes._indexConfig,
-						_name: createRes._id,
-						_nodeType: NT_DOCUMENT,
-						_path: createRes._path,
-						_state: 'DEFAULT',
-						_ts: createRes._ts,
-						_versionKey: createRes._versionKey,
-						[FIELD_PATH_META]: {
-							collection: 'myCollectionName2',
-							collector: {
-								id: COLLECTOR_ID,
-								version: COLLECTOR_VERSION
-							},
-							createdTime: createRes[FIELD_PATH_META].createdTime,
-							documentType: 'myDocumentTypeName2',
-							language: COLLECTION_LANGUAGE,
-							stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
-							valid: false
-						},
-						mustOnlyOneDouble: 'notDouble',
-						twoOrMoreStrings: [1, 2],
-						zeroOrMoreBooleans: 'notBoolean'
-					},
-					createRes
-				); // deepStrictEqual
 			}); // it
 		}); // describe creates
 	}); // describe create

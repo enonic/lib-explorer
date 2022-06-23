@@ -82,7 +82,7 @@ export function create(
 		// Options
 		cleanExtraFields = false, // If true, extra fields can't cause error nor addType, because extra fields are deleted.
 		//denyExtraFields = cleanExtraFields, // If false, extra fields cause error and not persisted
-		addExtraFields = !cleanExtraFields, // Extra fields are always added as string
+		addExtraFields = !cleanExtraFields,
 		requireValid = false,
 		validateOccurrences = false,
 		validateTypes = requireValid
@@ -122,27 +122,38 @@ export function create(
 	//──────────────────────────────────────────────────────────────────────────
 	// Checking required parameters
 	//──────────────────────────────────────────────────────────────────────────
-	if (
+	if ( // Need to know which documentTypeNode to expand.
+		addExtraFields
+		&& notSet(documentTypeName)
+		&& notSet(documentTypeId)
+	) {
+		throw new Error("create: when addExtraFields=true either documentTypeName or documentTypeId must be provided!");
+	}
+
+	if ( // Need to know what to clean or validate on.
+		(
+			validateTypes
+			|| validateOccurrences
+			|| cleanExtraFields
+			//|| requireValid
+		)
+		&& notSet(documentTypeName)
+		&& notSet(documentTypeId)
+		&& notSet(fields)
+	) {
+		throw new Error('create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided!');
+	}
+
+	if (requireValid && !(validateTypes || validateOccurrences)) {
+		throw new Error("create: when requireValid=true either validateTypes or validateOccurrences must be true!");
+	}
+
+
+	if ( // Need to know which repo to write to.
 		notSet(collectionName) &&
 		notSet(collectionId)
 	) {
 		throw new Error("create: either provide collectionName or collectionId!");
-	}
-
-	if (
-		notSet(documentTypeName) &&
-		notSet(documentTypeId) &&
-		notSet(collectionId)
-	) {
-		throw new Error("create: either provide documentTypeName, documentTypeId or collectionId!");
-	}
-
-	if (
-		notSet(fields) &&
-		notSet(documentTypeId) &&
-		notSet(collectionId)
-	) {
-		throw new Error("create: either provide fields, documentTypeId or collectionId!");
 	}
 
 	if (notSet(collectorId)) {
@@ -266,6 +277,7 @@ export function create(
 	const dataWithConstrainedPropertyNames = constrainPropertyNames({
 		data
 	}, javaBridge);
+	log.debug('document.create: dataWithConstrainedPropertyNames:%s', toStr(dataWithConstrainedPropertyNames));
 
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({

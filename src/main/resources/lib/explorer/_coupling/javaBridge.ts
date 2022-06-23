@@ -4,6 +4,9 @@ import type {
 } from '../../../index.d';
 import type {JavaBridge} from './types.d';
 
+
+//@ts-ignore
+import event from '/lib/xp/event';
 //@ts-ignore
 import {connect} from '/lib/xp/node';
 //@ts-ignore
@@ -25,6 +28,7 @@ declare global {
 export const javaBridge :JavaBridge = {
 	app,
 	connect,
+	event,
 	log,
 	repo,
 	stemmingLanguageFromLocale,

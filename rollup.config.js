@@ -15,6 +15,7 @@ export default {
 		'/lib/xp/auth',
 		'/lib/xp/context',
 		'/lib/xp/common',
+		'/lib/xp/event',
 		'/lib/xp/mail',
 		'/lib/xp/node',
 		'/lib/xp/repo',
@@ -40,7 +41,7 @@ export default {
 		format: 'cjs',
 		//format: 'esm'
 		freeze: false,
-    	interop: false,
+		interop: false,
 
 		// Actually still using webpack to build before making the jar file, so this is pointless so far:
 		//preserveModules: true, // Copy modules into build/resources/main/node_modules instead of bundling them

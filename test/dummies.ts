@@ -21,29 +21,32 @@ export const log = { //console.log console.trace
 			console.debug(grey(`DEBUG ${format}`));
 		}*/
 	},
+	//@ts-ignore
 	error: (format :string, ...s :unknown[]) :void => {
-		if (s.length) {
+		/*if (s.length) {
 			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 			console.error(`${brightRed(`ERROR ${format}`)}`, ...colored);
 		} else {
 			console.error(brightRed(`ERROR ${format}`));
-		}
+		}*/
 	},
+	//@ts-ignore
 	info: (format :string, ...s :unknown[]) :void => {
-		if (s.length) {
+		/*if (s.length) {
 			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 			console.info(`${white(`INFO  ${format}`)}`, ...colored);
 		} else {
 			console.info(white(`INFO  ${format}`));
-		}
+		}*/
 	},
+	//@ts-ignore
 	warning: (format :string, ...s :unknown[]) :void => {
-		if (s.length) {
+		/*if (s.length) {
 			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 			console.warn(`${brightYellow(`WARN  ${format}`)}`, ...colored);
 		} else {
 			console.warn(brightYellow(`WARN  ${format}`));
-		}
+		}*/
 	}
 };
 /*log.error('data:%s', {key: 'value'});

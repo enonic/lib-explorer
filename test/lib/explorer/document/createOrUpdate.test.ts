@@ -80,10 +80,11 @@ describe('document', () => {
 		const createRes = createOrUpdate({
 			collectionId: CREATED_COLLECTION_NODE._id,
 			collectorId: COLLECTOR_ID,
-			collectorVersion: COLLECTOR_VERSION/*,
-			data: {
+			collectorVersion: COLLECTOR_VERSION,
+			/*data: {
 				myString: 'string'
-			}*/
+			},*/
+			documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id
 		}, javaBridge);
 		it('creates new document node when data._id is missing', () => {
 			deepStrictEqual(

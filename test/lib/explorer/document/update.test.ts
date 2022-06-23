@@ -95,23 +95,25 @@ const CREATED_DOCUMENT_NODE = create({
 	data: {
 		myString: 'string'
 	},
+	documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
 	requireValid: true, // default is false
 	//validateOccurrences: true, // default is false
 	//validateTypes: true // default is requireValid
 }, javaBridge);
 //javaBridge.log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
 
-const CREATED_INVALID_DOCUMENT_NODE = create({
+/*const CREATED_INVALID_DOCUMENT_NODE = create({
 	collectionId: CREATED_COLLECTION_NODE._id,
 	collectorId: COLLECTOR_ID,
 	collectorVersion: COLLECTOR_VERSION,
 	data: {
 		myString: 0
 	},
+	documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
 	requireValid: false, // default is false
 	//validateOccurrences: true, // default is false
 	validateTypes: true // default is requireValid
-}, javaBridge);
+}, javaBridge);*/
 //javaBridge.log.info('CREATED_INVALID_DOCUMENT_NODE:%s', CREATED_INVALID_DOCUMENT_NODE);
 
 /*const queryRes = connection.query({});
@@ -411,7 +413,7 @@ describe('document', () => {
 							stemmingLanguage: 'en',
 							valid: true
 						},
-						myString: 'myStringChanged'
+						mystring: 'myStringChanged'
 					},
 					updateRes
 				) // deepStrictEqual
@@ -470,7 +472,7 @@ describe('document', () => {
 							valid: true
 						},
 						extra: 'extraAdded',
-						myString: 'myStringChanged'
+						mystring: 'myStringChanged'
 					},
 					updateRes
 				) // deepStrictEqual

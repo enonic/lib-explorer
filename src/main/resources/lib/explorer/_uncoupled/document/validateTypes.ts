@@ -102,7 +102,7 @@ export function validateTypes(
 			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!isString(valueArray[j])) {
-					log.debug(
+					log.warning(
 						'validateTypes: Not a String:',
 						valueArray[j],
 						'at path:',
@@ -120,7 +120,7 @@ export function validateTypes(
 			for (let j = 0; j < valueArray.length; j++) {
 				if (typeof valueArray[j] !== VALUE_TYPE_BOOLEAN) {
 					//const msg = `validateTypes: Not a Boolean:${toStr(valueArray[j])} at path:${name}${Array.isArray(value) ? `[${j}]` : ''} in data:${toStr(data)}!`;
-					log.debug(
+					log.warning(
 						'validateTypes: Not a Boolean:',
 						valueArray[j],
 						'at path:',
@@ -137,7 +137,7 @@ export function validateTypes(
 			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!isInt(valueArray[j])) {
-					log.debug(
+					log.warning(
 						'validateTypes: Not an Integer:',
 						valueArray[j],
 						'at path:',
@@ -155,7 +155,7 @@ export function validateTypes(
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!isFloat(valueArray[j])) {
 					//const msg = `validateTypes: Not a Number:${toStr(valueArray[j])} at path:${name}${Array.isArray(value) ? `[${j}]` : ''} in data:${toStr(data)}!`;
-					log.debug(
+					log.warning(
 						'validateTypes: Not a Number:',
 						valueArray[j],
 						'at path:',
@@ -175,7 +175,7 @@ export function validateTypes(
 				log.debug('valueArray[', j, ']', valueArray[j]);
 				if (!isObject(valueArray[j])) {
 					//const msg = `Not a Set:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-					log.debug(
+					log.warning(
 						'validateTypes: Not a Set:',
 						valueArray[j],
 						'at path:',
@@ -193,7 +193,7 @@ export function validateTypes(
 			for (let j = 0; j < customValueArray.length; j++) {
 				if (!isGeoPoint(customValueArray[j])) {
 					//const msg = `Not a GeoPoint:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-					log.debug(
+					log.warning(
 						'validateTypes: Not a GeoPoint:',
 						customValueArray[j],
 						'at path:',
@@ -211,7 +211,7 @@ export function validateTypes(
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!(isDate(valueArray[j]) || isInstantString(valueArray[j]))) {
 					//const msg = `validateTypes: Not an Instant:${toStr(valueArray[j])} at path:${name}${Array.isArray(value) ? `[${j}]` : ''} in data:${toStr(data)}!`;
-					log.debug(
+					log.warning(
 						'validateTypes: Not an Instant:',
 						valueArray[j],
 						'at path:',
@@ -228,7 +228,7 @@ export function validateTypes(
 			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!(isDate(valueArray[j]) || isLocalDateString(valueArray[j]))) {
-					log.debug(
+					log.warning(
 						'validateTypes: Not a LocalDate:',
 						valueArray[j],
 						'at path:',
@@ -246,7 +246,7 @@ export function validateTypes(
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!(isDate(valueArray[j]) || isLocalDateTimeString(valueArray[j]))) {
 					//const msg = `Not a LocalDateTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-					log.debug(
+					log.warning(
 						'validateTypes: Not a LocalDateTime:',
 						valueArray[j],
 						'at path:',
@@ -263,7 +263,7 @@ export function validateTypes(
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!(isTimeString(valueArray[j]) || isDate(valueArray[j]))) {
 					//const msg = `Not a LocalTime:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-					log.debug(
+					log.warning(
 						'validateTypes: Not a LocalTime:',
 						valueArray[j],
 						'at path:',
@@ -281,7 +281,7 @@ export function validateTypes(
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!isUuidV4String(valueArray[j])) {
 					//const msg = `Not a Reference/UUIDv4 :${toStr(value)} at path:${name} in data:${toStr(data)}!`;
-					log.debug(
+					log.warning(
 						'validateTypes: Not a Reference/UUIDv4:',
 						valueArray[j],
 						'at path:',

@@ -1,3 +1,4 @@
+import type {EventLib} from '@enonic/js-utils/src/types/index.d';
 import type {
 	App,
 	Log
@@ -10,7 +11,7 @@ import type {
 } from '/lib/explorer/types/index.d';
 
 
-export interface Source {
+export type Source = {
 	repoId: string;
 	branch: string;
 	user?: {
@@ -34,13 +35,13 @@ export type GeoPointFunction = (lat :number, lon :number) => unknown;
 export type StringFunction = (v :string) => unknown;
 export type UnknownFunction = (v :unknown) => unknown;
 
-export interface RepoLib {
+export type RepoLib = {
 	create(param :CreateRepoParams) :RepositoryConfig
 	get(repoId :string) :RepositoryConfig
 	list() :RepositoryConfig[]
 }
 
-export interface ValueLib {
+export type ValueLib = {
 	geoPoint :GeoPointFunction
 	geoPointString :StringFunction
 	instant :UnknownFunction
@@ -52,9 +53,10 @@ export interface ValueLib {
 
 export type StemmingLanguageFromLocaleFunction = (locale :string) => string;
 
-export interface JavaBridge {
+export type JavaBridge = {
 	app :App
 	connect :ConnectFunction
+	event :EventLib
 	log :Log
 	repo :RepoLib
 	value :ValueLib

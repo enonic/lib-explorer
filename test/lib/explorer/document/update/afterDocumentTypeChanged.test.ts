@@ -73,6 +73,7 @@ const CREATED_DOCUMENT_NODE = create({
 	data: {
 		myString: 'string'
 	},
+	documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
 	requireValid: true, // default is false
 	//validateOccurrences: true, // default is false
 	//validateTypes: true // default is requireValid
