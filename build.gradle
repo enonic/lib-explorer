@@ -50,7 +50,7 @@ dependencies {
 	//──────────────────────────────────────────────────────────────────────────
 	compile 'com.enonic.lib:lib-cache:2.1.1'
 
-	compile 'com.enonic.lib:lib-http-client:3.0.0' // User-Agent: okhttp/4.9.1
+	compile 'com.enonic.lib:lib-http-client:3.1.0'
 
 	compile 'com.enonic.lib:lib-license:3.0.0'
 	compile 'com.enonic.lib:lib-router:2.1.0'
