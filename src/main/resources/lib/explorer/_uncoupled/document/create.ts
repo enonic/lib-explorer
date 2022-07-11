@@ -55,6 +55,7 @@ import {
 	PRINCIPAL_EXPLORER_WRITE,
 	REPO_ID_EXPLORER
 } from '../../constants';
+import {documentTypeNameToPath} from '../documentType/documentTypeNameToPath';
 //import {javaBridgeDummy} from '../dummies';
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
@@ -90,8 +91,8 @@ export function create(
 	let {
 		// Inputs
 		collectionName, // If empty gotten from collectionNode via collectionId
-		documentTypeId, // If empty gotten from collectionNode via collectionId
-		documentTypeName, // If empty gotten from documentTypeNode via documentTypeId
+		documentTypeId, // If empty gotten from documentTypeName or fallback to collectionNode via collectionId
+		documentTypeName, // Is now a required parameter for collectors, but not the document API.
 		fields, // If empty gotten from documentTypeNode
 		language, // If empty gotten from collectionNode
 		stemmingLanguage, // If empty gotten from language
@@ -204,21 +205,61 @@ export function create(
 	}
 
 	//──────────────────────────────────────────────────────────────────────────
-	// Get values from provided parameters
+	// Get derived "parameters" from provided parameters
 	//──────────────────────────────────────────────────────────────────────────
+	// At this point the required parameters are provided and of the correct
+	// type. From the provided parameters we now get derived parameters.
+	//
+	// if documentTypeId is provided it supersedes documentTypeName
+	// if documentTypeName is provided it supersedes 'Default document type' aka collectionNode.documentTypeId
 
 	if (
+		documentTypeId ||
 		notSet(collectionName) ||
 		notSet(documentTypeName) ||
 		notSet(fields) ||
 		notSet(language)
 	) {
-		log.debug('connecting to explorerRepo');
+		log.debug('document.create: connecting to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
 		const explorerReadConnection = javaBridge.connect({
 			branch: BRANCH_ID_EXPLORER,
 			principals: [PRINCIPAL_EXPLORER_READ],
 			repoId: REPO_ID_EXPLORER
 		});
+
+		// There are many valid ways to call document.create with regards to documentTypeId and documentTypeName.
+		// 1. Only documentTypeId provided.
+		// 2. Only documentTypeName provided (typical for collectors).
+		// 3. Both documentTypeId and documentTypeName provided.
+		// 4. Neither documentTypeId nor documentTypeName provided (only valid when addExtraFields is false and validation is off, or fields provided).
+		//
+		// documentTypeName is always required, since it's stored on the node for aggregation purposes.
+		// documentTypeId is only? required when addExtraFields is true
+
+		let documentTypeNode :DocumentTypeNode;
+		if (documentTypeId) { // This covers 1 and 3.
+			documentTypeNode = explorerReadConnection.get(documentTypeId);
+			//log.debug("document.create: documentTypeNode(A):%s", toStr(documentTypeNode));
+			if (documentTypeName && documentTypeName !== documentTypeNode._name) {
+				log.warning('documentTypeNode._name:%s from documentTypeId:%s supersedes passed in documentTypeName:%s', documentTypeNode._name, documentTypeId, documentTypeName);
+			}
+			documentTypeName = documentTypeNode._name;
+			log.debug('document.create: sat documentTypeName:%s from documentTypeId:%s', documentTypeName, documentTypeId);
+		} else if(
+			//!documentTypeId &&
+			documentTypeName
+		) {
+			const documentTypeNodePath = documentTypeNameToPath(documentTypeName);
+			documentTypeNode = explorerReadConnection.get(documentTypeNodePath);
+			//log.debug("document.create: documentTypeNode(B):%s", toStr(documentTypeNode));
+			if (!documentTypeNode) {
+				throw new Error(`Something went wrong when trying to get documentTypeId from documentTypeName:${documentTypeName} via path:${documentTypeNodePath}`);
+			}
+			documentTypeId = documentTypeNode._id;
+			log.debug('document.create: sat documentTypeId:%s from documentTypeName:%s', documentTypeId, documentTypeName);
+		}
+		// At this point both documentTypeId and documentTypeName can still be undefined.
+
 		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
 			//log.debug('collectionId:%s', collectionId);
 
@@ -227,26 +268,43 @@ export function create(
 
 			if (notSet(collectionName)) {
 				collectionName = collectionNode['_name'];
+				log.debug('document.create: sat collectionName:%s from collectionNode._name', collectionName);
 			}
 
 			if (notSet(documentTypeId)) {
-				documentTypeId = collectionNode['documentTypeId'];
+				if (collectionNode['documentTypeId']) {
+					documentTypeId = collectionNode['documentTypeId'];
+					log.debug('document.create: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
+				} else {
+					// collectionNode.documentTypeId is now called 'Default document type' in the GUI, and can be set to 'none'.
+					log.debug('document.create: collectionNode.documentTypeId is undefined');
+				}
 			}
 
 			if(notSet(language)) {
 				language = collectionNode['language'];
+				log.debug('document.create: sat language:%s from collectionNode.language', language);
 			}
 		}
+		// At this point both documentTypeId and documentTypeName (and thus documentTypeNode) can still be undefined.
+
 		if (notSet(documentTypeName) || notSet(fields)) {
-			const documentTypeNode = explorerReadConnection.get(documentTypeId) as DocumentTypeNode;
+			if (!documentTypeNode) {
+				if (!documentTypeId) {
+					throw new Error(`Can't get documentTypeName or fields from documentTypeNode, since documentTypeId is undefined!`);
+				}
+				documentTypeNode = explorerReadConnection.get(documentTypeId); // This only happens when documentTypeId is gotten from fallback to 'Default document type'.
+				//log.debug("document.create: documentTypeNode(C):%s", toStr(documentTypeNode));
+			}
 			if (notSet(documentTypeName)) {
 				documentTypeName = documentTypeNode['_name'];
+				log.debug('document.create: sat documentTypeName:%s from documentTypeNode._name', documentTypeName);
 			}
 			if (notSet(fields)) {
 				//log.debug("document.create: documentTypeNode:%s", toStr(documentTypeNode));
 				//log.debug("document.create: documentTypeNode['properties']:%s", toStr(documentTypeNode['properties'])); // undefined
 				fields = isSet(documentTypeNode['properties']) ? forceArray(documentTypeNode['properties']) : [];
-				//log.debug('document.create: fields:%s', toStr(fields));
+				log.debug('document.create: sat fields:%s from documentTypeNode.properties', toStr(fields));
 			}
 		}
 	}
@@ -255,20 +313,16 @@ export function create(
 
 	if(notSet(stemmingLanguage) && isSet(language)) {
 		stemmingLanguage = stemmingLanguageFromLocale(language);
+		log.debug('document.create: sat stemmingLanguage:%s from language:%s', stemmingLanguage, language);
 	}
 
 	//──────────────────────────────────────────────────────────────────────────
 
 	//log.debug('document.create: collectionId:%s', collectionId);
-	//log.debug('document.create: collectionName:%s', collectionName);
 	//log.debug('document.create: collectorId:%s', collectorId);
 	//log.debug('document.create: collectorVersion:%s', collectorVersion);
 	//log.debug('document.create: data:%s', toStr(data));
-	//log.debug('document.create: documentTypeId:%s', documentTypeId);
-	//log.debug('document.create: documentTypeName:%s', documentTypeName);
 	//log.debug('document.create: fields:%s', toStr(fields));
-	//log.debug('document.create: language:%s', language);
-	//log.debug('document.create: stemmingLanguage:%s', stemmingLanguage);
 
 	//let myFields = JSON.parse(JSON.stringify(fields));
 	let fieldsObj = fieldsArrayToObj(fields, javaBridge);
@@ -277,7 +331,7 @@ export function create(
 	const dataWithConstrainedPropertyNames = constrainPropertyNames({
 		data
 	}, javaBridge);
-	log.debug('document.create: dataWithConstrainedPropertyNames:%s', toStr(dataWithConstrainedPropertyNames));
+	//log.debug('document.create: dataWithConstrainedPropertyNames:%s', toStr(dataWithConstrainedPropertyNames));
 
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({
@@ -345,7 +399,7 @@ export function create(
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
 	//log.debug('repoId:%s', repoId);
 
-	//log.debug('connecting to repoId:%s', repoId);
+	//log.debug('document.create: connecting to repoId:%s branch:%s with principals:%s', repoId, 'master', toStr([PRINCIPAL_EXPLORER_WRITE]));
 	const collectionRepoWriteConnection = javaBridge.connect({
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_WRITE],
