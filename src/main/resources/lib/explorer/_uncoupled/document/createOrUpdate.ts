@@ -6,8 +6,8 @@ import {
 	isNotSet as notSet,
 	isSet,
 	isString,
-	isUuidV4String//,
-	//toStr
+	isUuidV4String,
+	toStr
 } from '@enonic/js-utils';
 
 import {
@@ -61,6 +61,7 @@ export function createOrUpdate(
 	//──────────────────────────────────────────────────────────────────────────
 
 	if (notSet(collectionName)) {
+		log.debug('document.createOrUpdate: connecting to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
 		const explorerReadConnection = javaBridge.connect({
 			branch: BRANCH_ID_EXPLORER,
 			principals: [PRINCIPAL_EXPLORER_READ],
@@ -91,6 +92,7 @@ export function createOrUpdate(
 	}
 
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
+	log.debug('document.createOrUpdate: connecting to repoId:%s branch:%s with principals:%s', repoId, 'master', toStr([PRINCIPAL_EXPLORER_READ]));
 	const collectionRepoReadConnection = javaBridge.connect({
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_READ],

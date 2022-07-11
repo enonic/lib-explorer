@@ -368,13 +368,7 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		}
 		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
 
-		log.debug('Collector.persistDocument: collectionId:%s', this._collectionId);
-		//log.debug('Collector.persistDocument: collectorId:%s', this._collectorId);
-		//log.debug('Collector.persistDocument: collectorVersion:%s', app.version);
-		//log.debug('Collector.persistDocument: data:%s', toStr(documentToPersist));
-		//log.debug('Collector.persistDocument: language:%s', this._language);
-		//log.debug('Collector.persistDocument: requireValid:%s', boolRequireValid);
-		const persistedNode = createOrUpdate({
+		const createOrUpdateParams = {
 			collectionId: this._collectionId,
 			//collectionName: this.collectionName, // Perhaps later
 			collectorId: this._collectorId,
@@ -393,11 +387,14 @@ export class Collector<Config extends AnyObject = AnyObject> {
 			requireValid: boolRequireValid//,
 			//validateOccurrences // TODO Perhaps later
 			//validateTypes // TODO Perhaps later
-		});
+		};
+		log.debug('Collector.persistDocument: createOrUpdateParams:%s', toStr(createOrUpdateParams));
+
+		const persistedNode = createOrUpdate(createOrUpdateParams);
 		if (!persistedNode) {
 			throw new Error('Something went wrong when trying to persist a document!');
 		}
-		//log.debug(`persistedNode:${toStr(persistedNode)}`);
+		//log.debug('persistedNode:%s', toStr(persistedNode));
 		return persistedNode;
 	} // persistDocument
 

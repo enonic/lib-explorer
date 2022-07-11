@@ -181,6 +181,7 @@ module.exports = {
 				'_nodeType', // node property
 				'_parentPath', // node create property
 				'_permissions', // node property
+				'_ts', // node property
 				'_versionKey' // node property
 			],
 			allowAfterThis: true,

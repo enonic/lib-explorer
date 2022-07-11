@@ -30,6 +30,7 @@ import {
 } from '/lib/explorer/constants';
 
 //import {javaBridgeDummy} from '../dummies';
+import {documentTypeNameToPath} from '../documentType/documentTypeNameToPath';
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';
@@ -52,19 +53,12 @@ export function update(
 	if (notSet(updateParameterObject)) {
 		throw new Error('update: parameter object is missing!');
 	}
-	let {
+	const {
 		// Inputs
 		collectionId,
-		collectionName, // If empty gotten from collectionNode via collectionId
 		collectorId,
 		collectorVersion,
 		data = {},
-		documentTypeId, // If empty gotten from collectionNode via collectionId
-		documentTypeName, // If empty gotten from documentTypeNode via documentTypeId
-		fields, // If empty gotten from documentTypeNode
-		language, // If empty gotten from collectionNode
-		stemmingLanguage, // If empty gotten from language
-
 		// Options
 		cleanExtraFields = false, // If true, extra fields can't cause error nor addType, because extra fields are deleted.
 		//denyExtraFields = cleanExtraFields, // If false, extra fields cause error and not persisted
@@ -73,6 +67,15 @@ export function update(
 		requireValid = false,
 		validateOccurrences = false,
 		validateTypes = requireValid
+	} = updateParameterObject
+	let {
+		// Inputs
+		collectionName, // If empty gotten from collectionNode via collectionId
+		documentTypeId, // If empty gotten from documentTypeName or fallback to collectionNode via collectionId
+		documentTypeName, // Is now a required parameter for collectors, but not the document API.
+		fields, // If empty gotten from documentTypeNode
+		language, // If empty gotten from collectionNode
+		stemmingLanguage, // If empty gotten from language
 	} = updateParameterObject;
 	//log.debug('document.update: collectionId:%s', collectionId);
 	//log.debug('document.update: collectionName:%s', collectionName);
@@ -142,7 +145,7 @@ export function update(
 		//_parentPath : documentNodeParentPath = '/',
 		//_path: documentNodePath = documentNodeName ? `${documentNodeParentPath}${documentNodeName}` : undefined
 	} = data;
-	//const documentNodeKey = documentNodeId || documentNodePath;
+	//const documentNodeKey = documentNodeId || documentNodePath;
 
 	if (notSet(documentNodeId)) {
 		throw new Error("update: parameter data: missing required property '_id'!");
@@ -187,22 +190,53 @@ export function update(
 	}
 
 	//──────────────────────────────────────────────────────────────────────────
-	// Get values from provided parameters
+	// Get derived "parameters" from provided parameters
 	//──────────────────────────────────────────────────────────────────────────
+	// At this point the required parameters are provided and of the correct
+	// type. From the provided parameters we now get derived parameters.
+	//
+	// if documentTypeId is provided it supersedes documentTypeName
+	// if documentTypeName is provided it supersedes 'Default document type' aka collectionNode.documentTypeId
 
 	if (
+		documentTypeId ||
 		notSet(collectionName) ||
 		notSet(documentTypeName) ||
 		notSet(fields) ||
 		notSet(language)
 	) {
-		log.debug('connecting to explorerRepo');
+		log.debug('document.update: connecting to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
 		const explorerReadConnection = javaBridge.connect({
 			branch: BRANCH_ID_EXPLORER,
 			principals: [PRINCIPAL_EXPLORER_READ],
 			repoId: REPO_ID_EXPLORER
 		});
-		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
+
+		let documentTypeNode :DocumentTypeNode;
+		if (documentTypeId) {
+			documentTypeNode = explorerReadConnection.get(documentTypeId);
+			//log.debug("document.update: documentTypeNode(A):%s", toStr(documentTypeNode));
+			if (documentTypeName && documentTypeName !== documentTypeNode._name) {
+				log.warning('documentTypeNode._name:%s from documentTypeId:%s supersedes passed in documentTypeName:%s', documentTypeNode._name, documentTypeId, documentTypeName);
+			}
+			documentTypeName = documentTypeNode._name;
+			log.debug('document.update: sat documentTypeName:%s from documentTypeId:%s', documentTypeName, documentTypeId);
+		} else if(
+			//!documentTypeId &&
+			documentTypeName
+		) {
+			const documentTypeNodePath = documentTypeNameToPath(documentTypeName);
+			documentTypeNode = explorerReadConnection.get(documentTypeNodePath);
+			//log.debug("document.update: documentTypeNode(B):%s", toStr(documentTypeNode));
+			if (!documentTypeNode) {
+				throw new Error(`Something went wrong when trying to get documentTypeId from documentTypeName:${documentTypeName} via path:${documentTypeNodePath}`);
+			}
+			documentTypeId = documentTypeNode._id;
+			log.debug('document.update: sat documentTypeId:%s from documentTypeName:%s', documentTypeId, documentTypeName);
+		}
+		// At this point both documentTypeId and documentTypeName can still be undefined.
+
+		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
 			const collectionNode = explorerReadConnection.get(collectionId) as CollectionNode;
 
 			if (notSet(collectionName)) {
@@ -210,7 +244,13 @@ export function update(
 			}
 
 			if (notSet(documentTypeId)) {
-				documentTypeId = collectionNode['documentTypeId'];
+				if (collectionNode['documentTypeId']) {
+					documentTypeId = collectionNode['documentTypeId'];
+					log.debug('document.update: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
+				} else {
+					// collectionNode.documentTypeId is now called 'Default document type' in the GUI, and can be set to 'none'.
+					log.debug('document.update: collectionNode.documentTypeId is undefined');
+				}
 			}
 
 			if(notSet(language)) {
@@ -218,7 +258,13 @@ export function update(
 			}
 		}
 		if (notSet(documentTypeName) || notSet(fields)) {
-			const documentTypeNode = explorerReadConnection.get(documentTypeId) as DocumentTypeNode;
+			if (!documentTypeNode) {
+				if (!documentTypeId) {
+					throw new Error(`Can't get documentTypeName or fields from documentTypeNode, since documentTypeId is undefined!`);
+				}
+				documentTypeNode = explorerReadConnection.get(documentTypeId); // This only happens when documentTypeId is gotten from fallback to 'Default document type'.
+				//log.debug("document.update: documentTypeNode(C):%s", toStr(documentTypeNode));
+			}
 			if (notSet(documentTypeName)) {
 				documentTypeName = documentTypeNode['_name'];
 			}
@@ -282,7 +328,7 @@ export function update(
 
 	//let myFields = JSON.parse(JSON.stringify(fields));
 	let fieldsObj = fieldsArrayToObj(fields, javaBridge);
-	//log.debug('document.create: fieldsObj:%s', toStr(fieldsObj));
+	//log.debug('document.update: fieldsObj:%s', toStr(fieldsObj));
 
 	const dataWithConstrainedPropertyNames = constrainPropertyNames({
 		data
@@ -362,6 +408,7 @@ export function update(
 		return documentNode;
 	}
 
+	//log.debug('document.update: connecting to repoId:%s branch:%s with principals:%s', repoId, 'master', toStr([PRINCIPAL_EXPLORER_WRITE]));
 	const collectionRepoWriteConnection = javaBridge.connect({
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_WRITE],
