@@ -5,7 +5,7 @@ import type {AnyObject} from './Utility.d';
 //──────────────────────────────────────────────────────────────────────────────
 // Collector UI
 //──────────────────────────────────────────────────────────────────────────────
-export type CollectorComponentResetFunction = () => void;
+export type CollectorComponentAfterResetFunction = () => void;
 
 export type CollectorComponentValidateFunction<
 	CollectorConfig extends AnyObject = AnyObject
@@ -14,7 +14,7 @@ export type CollectorComponentValidateFunction<
 export type CollectorComponentImperativeHandle<
 	CollectorConfig extends AnyObject = AnyObject
 > = {
-	reset :CollectorComponentResetFunction
+	afterReset :CollectorComponentAfterResetFunction
 	validate :CollectorComponentValidateFunction<CollectorConfig>
 };
 
