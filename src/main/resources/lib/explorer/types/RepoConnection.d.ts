@@ -1,3 +1,7 @@
+import type {
+	QueryDSL,
+	SortDSLExpression
+} from '@enonic/js-utils/src/types';
 import type {Highlight} from '@enonic/js-utils/src/types/node/query/Highlight.d';
 import type {
 	Aggregations,
@@ -143,8 +147,8 @@ export type RepoConnection = {
 		count? :number
 		filters? :QueryFilters
 		highlight? :Highlight
-		query :string
-		sort? :string
+		query ?:QueryDSL|string
+		sort? :SortDSLExpression|string
 		start? :number
 	}) :{
 		aggregations: AggregationsResponse<AggregationKey>

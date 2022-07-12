@@ -27,6 +27,11 @@
 // leave the pitfalls in the hands of the Collector developer.
 //──────────────────────────────────────────────────────────────────────────────
 import type {
+	QueryDSL,
+	SortDSLExpression
+} from '@enonic/js-utils/src/types';
+import type {
+	Aggregations,
 	AnyObject,
 	CollectionNode,
 	DocumentNode,
@@ -35,7 +40,8 @@ import type {
 	JournalSuccess,
 	Name,
 	NotificationsNode,
-	ParentPath//,
+	ParentPath,
+	QueryFilters//,
 	//RequiredNodeProperties
 } from '/lib/explorer/types/index.d';
 import type {Progress} from '../task/progress';
@@ -54,13 +60,12 @@ import {send} from '/lib/xp/mail';
 
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/constants'; // Start with / so it stays an external bundle
 import {createOrUpdate} from '/lib/explorer/document'; // It's own bundle
-
+import {queryDocuments} from '/lib/explorer/document/queryDocuments';
 import {get as getCollection} from '../collection/get';
 import {get as getNode} from '../node/get';
 import {connect} from '../repo/connect';
 import {progress} from '../task/progress';
 import {get as getTask} from '../task/get';
-import {hash} from '../string/hash';
 import {modify as modifyTask} from '../task/modify';
 //import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
 //import {Document} from '/lib/explorer/model/2/nodeTypes/document';
@@ -240,6 +245,33 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		progress(this.taskProgressObj);
 	}
 
+	queryDocuments<
+		AggregationKey extends undefined|string = undefined
+	>({
+		aggregations,
+		count,
+		filters,
+		query,
+		sort,
+		start
+	} :{
+		aggregations ?:Aggregations<AggregationKey>
+		count ?:number
+		filters ?:QueryFilters
+		query ?:QueryDSL
+		sort? :SortDSLExpression
+		start ?:number
+	}) {
+		return queryDocuments({
+			aggregations,
+			collectionRepoReadConnection: this.collection.connection,
+			count,
+			filters,
+			query,
+			sort,
+			start
+		});
+	} // queryDocuments
 
 	start() {
 		this.startTime = currentTimeMillis();
@@ -279,15 +311,14 @@ export class Collector<Config extends AnyObject = AnyObject> {
 
 
 	persistDocument({
+		_id,
+		_name,
 		_parentPath = '/', // Present in lib-explorer-3.x
 		/*document_metadata: {
 			...document_metadata_props
 		} = {},*/
-		uri, // Present in lib-explorer-3.x
-		_name = hash(uri), // Present in lib-explorer-3.x
 		...rest // Slurps properties
 	} :{
-		uri :string
 		_id? :Id
 		_name? :Name
 		_parentPath? :ParentPath
@@ -340,32 +371,34 @@ export class Collector<Config extends AnyObject = AnyObject> {
 			throw new Error('persistDocument(): Missing required parameter documentTypeName!');
 		}
 
-		// Even when boolRequireValid is false, we still require uri for Collectors,
-		// or they can't find _id from _name when updating
-		if (!uri) { throw new Error('persistDocument: Missing required parameter uri!'); }
-
-		const documentToPersist = {
-			...rest, // If contains _id does update rather than create
+		const documentToPersist :{
+			_id? :Id
+			_name? :Name
+			_parentPath :ParentPath
+		} = {
+			...rest,
 
 			// TODO? lib-explorer-4.0.0 Allow advanced collectors to pass their own.
 			//_indexConfig, // Built automatically
 
-			_name,
-			//_nodeType: NT_DOCUMENT, // Hardcoded in document-layer in lib-explorer-4.x
-			_parentPath,
-			uri
-		};
+			_parentPath
+		} ;
 		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
 
-		const path = `${_parentPath}${_name}`;
-		//log.debug(`path:${path}`);
+		if (_id) {
+			documentToPersist._id = _id;
+		} else if (_name) {
+			const path = `${_parentPath}${_name}`;
+			//log.debug(`path:${path}`);
 
-		const existingNode = this.collection.connection.get(path) as DocumentNode;
-		//log.debug(`existingNode:${toStr(existingNode)}`);
+			const existingNode = this.collection.connection.get(path) as DocumentNode;
+			//log.debug(`existingNode:${toStr(existingNode)}`);
 
-		if (existingNode) {
-			documentToPersist._id = existingNode._id; // createOrUpdate doesn't support _path only _id
+			if (existingNode) {
+				documentToPersist._id = existingNode._id; // createOrUpdate doesn't support _path only _id
+			}
 		}
+
 		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
 
 		const createOrUpdateParams = {
@@ -427,7 +460,7 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		//log.info(`emails:${toStr(emails)}`);
 
 		if (this.journal.errors.length) {
-			log.error(toStr({failedUris: this.journal.errors}));
+			log.error('errors:%s',toStr(this.journal.errors));
 			modifyTask({
 				connection: this.collection.connection,
 				state: 'FAILED',
