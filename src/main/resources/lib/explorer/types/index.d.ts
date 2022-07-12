@@ -69,9 +69,9 @@ export type {
 } from './Collection.d';
 export type {
 	Collector,
+	CollectorComponentAfterResetFunction,
 	CollectorComponentImperativeHandle,
 	CollectorComponentRef,
-	CollectorComponentResetFunction,
 	CollectorComponentValidateFunction,
 	CollectorProps
 } from './Collector.d';
