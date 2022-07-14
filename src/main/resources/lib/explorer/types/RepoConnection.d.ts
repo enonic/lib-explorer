@@ -158,6 +158,7 @@ export type RepoConnection = {
 		hits :Array<{
 			id :string
 			score :number
+			highlight :Record<string, ReadonlyArray<string>>
 		}>
 	}
 
