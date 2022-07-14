@@ -2,7 +2,7 @@
 
 
 // Inlined to ava tests can run
-function isSet(value) {
+function isSet(value :unknown) {
 	if (typeof value === 'boolean') { return true; } // If value is true/false it is set
 	return value !== null && typeof value !== 'undefined';
 }

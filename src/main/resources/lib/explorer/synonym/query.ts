@@ -1,3 +1,7 @@
+import type {
+	QueryDSL,
+	SortDSLExpression
+} from '@enonic/js-utils/src/types';
 import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
 import type {
 	Highlight,
@@ -9,13 +13,28 @@ import type {
 
 
 import {
-	forceArray//,
-	//toStr
+	forceArray,
+	toStr
 } from '@enonic/js-utils';
 
 import {NT_SYNONYM} from '/lib/explorer/model/2/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
+
+
+export type QuerySynonymsParams<
+	AggregationKeys extends undefined|string = undefined
+> = {
+	aggregations ?:Aggregations<AggregationKeys>
+	connection :RepoConnection
+	count ?:number
+	explain ?:boolean
+	filters ?:QueryFilters
+	highlight ?:Highlight
+	query ?:QueryDSL|string
+	sort ?:SortDSLExpression|string
+	start ?:number
+}
 
 
 export function query<
@@ -24,6 +43,7 @@ export function query<
 	aggregations,
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
+	explain = false,
 	filters = {},
 	highlight = {
 		/*numberOfFragments: 10,
@@ -34,28 +54,22 @@ export function query<
 			to: {}
 		}*/
 	},
-	query = '',
-	sort = '_name ASC',
+	query,
+	sort = {
+		field: '_name',
+		direction: 'ASC'
+	},
 	start = 0
-} :{
-	aggregations ?:Aggregations<AggregationKeys>
-	connection :RepoConnection
-	count ?:number
-	filters ?:QueryFilters
-	highlight ?:Highlight
-	query ?:string
-	sort ?:string
-	start ?:number
-}) {
+} :QuerySynonymsParams<AggregationKeys>) {
 	/*log.debug('synonym.query(%s)', toStr({
 		aggregations,
 		count,
 		filters,
-		highlight,
 		query,
 		sort,
 		start
 	}));*/
+	//log.debug('highlight:%s', toStr(highlight));
 
 	addFilter({
 		filter: hasValue('_nodeType', [NT_SYNONYM]),
@@ -66,13 +80,16 @@ export function query<
 	const queryParams = {
 		aggregations,
 		count,
+		explain,
 		filters,
 		highlight,
 		query,
 		sort,
 		start
 	};
-	//log.debug('synonym.query queryParams:%s', toStr(queryParams));
+	if (explain) {
+		log.debug('synonym.query queryParams:%s', toStr(queryParams));
+	}
 
 	const queryRes = connection.query(queryParams);
 	//log.info('synonym.query queryRes:%s', toStr(queryRes));
@@ -83,7 +100,13 @@ export function query<
 		hits: queryRes.hits.map((hit) => {
 			//log.info('synonym.query hit:%s', toStr(hit));
 
-			const node = connection.get(hit.id) as SynonymNode;
+			const {
+				id: _id,
+				highlight: _highlight,
+				score: _score
+			} = hit;
+
+			const node = connection.get(_id) as SynonymNode;
 			//log.info('synonym.query node:%s', toStr(node));
 			if (!node) { // Handle ghost nodes
 				return null;
@@ -100,18 +123,16 @@ export function query<
 				to
 			} = node;
 			const queriedSynonym :QueriedSynonym = {
-				_highlight: queryRes.highlight ? queryRes.highlight[node._id] : {},
-				_id: hit.id,
+				_highlight,
+				_id,
 				_name, // Needed by GraphQL Interface Node
 				_nodeType,
 				_path,
-				_score: hit.score,
+				_score,
 				_versionKey,
 				from: forceArray(from),
-				//highlight: hit.highlight,
 				thesaurus: _path.match(/[^/]+/g)[1],
 				thesaurusReference,
-				//score: hit.score,
 				to: forceArray(to)
 			};
 			return queriedSynonym;
