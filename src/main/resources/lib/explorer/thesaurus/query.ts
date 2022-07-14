@@ -18,7 +18,9 @@ import {query as querySynonyms} from '/lib/explorer/synonym/query';
 
 
 export function query({
+	// Required
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
+	// Optional
 	count = -1,
 	explain = false,
 	filters = {},
@@ -29,16 +31,18 @@ export function query({
 	sort = '_name ASC',
 	thesauri
 } :{
+	// Required
 	connection :RepoConnection
-	count? :number
-	explain? :boolean
-	filters? :QueryFilters
-	getSynonymsCount? :boolean
-	logQuery? :boolean
-	logQueryResults? :boolean
-	query? :string
-	sort? :string
-	thesauri? :string
+	// Optional
+	count ?:number
+	explain ?:boolean
+	filters ?:QueryFilters
+	getSynonymsCount ?:boolean
+	logQuery ?:boolean
+	logQueryResults ?:boolean
+	query ?:string
+	sort ?:string
+	thesauri ?:string|Array<string>
 }) {
 	addFilter({
 		filter: hasValue('_nodeType', [NT_THESAURUS]),
@@ -48,6 +52,7 @@ export function query({
 		const thesauriArr = forceArray(thesauri);
 		if (thesauriArr.length) {
 			addFilter({
+				//clause: 'should', // Must clause works, the _name field simply needs to match one of the values in the array, not all of them :)
 				filters,
 				filter: hasValue('_name', thesauriArr)
 				//filter: hasValue('_parentPath', thesauriArr.map(n => `/thesauri/${n}`))
