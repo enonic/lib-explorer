@@ -1,7 +1,7 @@
 //import type {IndexConfigEntry} from '@enonic/js-utils/src/storage/indexing/IndexConfig.d';
 
 
-export interface IndexConfigObject {
+export type IndexConfigObject = {
 	/**
 	* If true, indexing is done based on valueType, according to the table above. I.e. numeric values are indexed as
 	* both string and numeric.
@@ -23,9 +23,9 @@ export interface IndexConfigObject {
 	*/
 	includeInAllText :boolean
 
-	indexValueProcessors? :Array<unknown>
+	indexValueProcessors ?:Array<unknown>
 
-	languages? :string[]
+	languages ?:string[]
 
 	/**
 	* Values are stored as 'ngram'
@@ -38,16 +38,16 @@ export interface IndexConfigObject {
 	path :boolean
 }
 
-export type IndexConfigTemplate = "none" | "byType" | "fulltext" | "path" | "minimal";
+export type IndexConfigTemplate = "none" | "byType" | "fulltext" | "path" | "minimal"
 
-export type IndexConfigConfig = IndexConfigObject | IndexConfigTemplate;
+export type IndexConfigConfig = IndexConfigObject | IndexConfigTemplate
 
-export interface IndexConfigConfigsEntry {
-	path :string;
-	config :IndexConfigConfig;
+export type IndexConfigConfigsEntry = {
+	path :string
+	config :IndexConfigConfig
 }
 
-export interface IndexConfig {
-	default :IndexConfigConfig;
-	configs? :Array<IndexConfigConfigsEntry>;
+export type IndexConfig = {
+	default :IndexConfigConfig
+	configs ?:Array<IndexConfigConfigsEntry>
 }
