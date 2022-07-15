@@ -6,10 +6,21 @@ import type {
 
 
 export interface SynonymSpecific {
+	//comment ?:string
+	//enabled ?:boolean
 	from :OneOrMore<string>
-	to :OneOrMore<string>
+	/*languages ?:Record<string,{
+		comment ?:string
+		enabled ?:boolean
+		synonyms :OneOrMore<{
+			comment ?:string
+			enabled ?:boolean
+			synonym :string
+		}>
+	}>*/
 	//thesaurus :string
 	thesaurusReference :string
+	to :OneOrMore<string>
 }
 
 export type SynonymNode = RequiredNodeProperties & SynonymSpecific;
@@ -34,7 +45,7 @@ export type Synonym = Omit<
 export interface QueriedSynonym extends Synonym {
 	_highlight? :{
 		[name: string]: ReadonlyArray<string>;
-	  }
+	}
 	_score :number
 	thesaurus :string
 }
