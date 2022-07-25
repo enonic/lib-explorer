@@ -1,8 +1,6 @@
 import type {
 	QueryFilters,
-	RepoConnection,
-	Thesaurus,
-	ThesaurusNode
+	RepoConnection
 } from '/lib/explorer/types/index.d';
 
 
@@ -11,10 +9,14 @@ import {
 	toStr
 } from '@enonic/js-utils';
 
-import {NT_THESAURUS} from '/lib/explorer/model/2/constants';
+import {
+	FOLDER_THESAURI,
+	NT_THESAURUS
+} from '/lib/explorer/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {query as querySynonyms} from '/lib/explorer/synonym/query';
+import {coerceThesaurus} from '/lib/explorer/thesaurus/coerceThesaurus';
 
 
 export function query({
@@ -78,28 +80,13 @@ export function query({
 	const thesaurusQueryRes = {
 		count: queryThesauriRes.count,
 		hits: queryThesauriRes.hits.map((hit) => {
-			const {
-				_name,
-				_nodeType,
-				_path,
-				_versionKey,
-				description = '',
-				language
-			} = connection.get(hit.id) as ThesaurusNode;
-			const rv :Thesaurus = {
-				_id: hit.id,
-				_name,
-				_nodeType,
-				_path,
-				_versionKey,
-				description,
-				language
-			};
+			const rv = coerceThesaurus(connection.get(hit.id));
+			const {_name} = rv;
 			if (getSynonymsCount) {
 				const synonymsRes = querySynonyms({
 					connection,
 					count: 0,
-					query: `_parentPath = '/thesauri/${_name}'`
+					query: `_parentPath = '/${FOLDER_THESAURI}/${_name}'`
 				});
 				//log.info(toStr({synonymsRes}));
 				rv.synonymsCount = synonymsRes.total;

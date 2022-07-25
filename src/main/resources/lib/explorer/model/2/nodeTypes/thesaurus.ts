@@ -2,7 +2,7 @@ import type {
 	Name,
 	ParentPath,
 	IndexConfigConfig,
-	ThesaurusLanguage,
+	//ThesaurusLanguage,
 	ThesaurusNodeCreateParams
 } from '/lib/explorer/types/index.d';
 
@@ -16,16 +16,18 @@ export function thesaurus({
 	_name,
 	_parentPath = '/thesauri',
 	description,
+	allowedLanguages = []/*,
 	language = {
 		from: '',
 		to: ''
-	},
+	}*/,
 	...rest
 } :{
 	_name :Name
 	_parentPath ?:ParentPath
+	allowedLanguages ?:Array<string>
 	description ?:string
-	language :ThesaurusLanguage
+	//language :ThesaurusLanguage
 }) :ThesaurusNodeCreateParams {
 	delete rest['_id'];
 	delete rest['_path'];
@@ -38,7 +40,8 @@ export function thesaurus({
 		_name,
 		_nodeType: NT_THESAURUS,
 		_parentPath,
-		description,
-		language
+		allowedLanguages,
+		description//,
+		//language
 	});
 } // field

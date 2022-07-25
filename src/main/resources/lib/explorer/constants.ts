@@ -34,6 +34,7 @@ const FOLDER_API_KEYS = 'api-keys';
 export const FOLDER_COLLECTIONS = 'collections';
 const FOLDER_COLLECTORS = 'collectors';
 const FOLDER_FIELDS = 'fields';
+export const FOLDER_THESAURI = 'thesauri'
 
 export const FOLDERS = [
 	FOLDER_API_KEYS,
@@ -43,7 +44,7 @@ export const FOLDERS = [
 	INTERFACES_FOLDER,
 	'notifications',
 	'stopwords',
-	'thesauri'
+	FOLDER_THESAURI
 ];
 
 //──────────────────────────────────────────────────────────────────────────────

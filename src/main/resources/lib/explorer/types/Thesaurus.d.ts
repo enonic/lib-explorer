@@ -4,15 +4,16 @@ import type {
 } from '/lib/explorer/types/Node.d';
 
 
-export type ThesaurusLanguage = {
+/*export type ThesaurusLanguage = {
 	from :string
 	to :string
-}
+}*/
 
 export interface ThesaurusSpecific {
 	description ?:string
+	allowedLanguages ?:Array<string> // Optional for backwards compatibility with exisiting Thesauri.
 	//language? :string
-	language :ThesaurusLanguage
+	//language :ThesaurusLanguage
 }
 
 export type ThesaurusNode = Node<ThesaurusSpecific>;
