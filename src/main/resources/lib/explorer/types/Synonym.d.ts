@@ -4,27 +4,38 @@ import type {
 	RequiredNodeProperties
 } from '/lib/explorer/types/index.d';
 
+export type SynonymUse = 'from'|'to'|'both'; // default is to
 
-export interface SynonymSpecific {
-	//comment ?:string
-	//enabled ?:boolean
-	from :OneOrMore<string>
-	/*languages ?:Record<string,{
-		comment ?:string
-		enabled ?:boolean
-		synonyms :OneOrMore<{
-			comment ?:string
-			enabled ?:boolean
-			synonym :string
-		}>
-	}>*/
-	//thesaurus :string
-	thesaurusReference :string
-	to :OneOrMore<string>
+export type SynonymLanguagesSynonymObject<Type extends 'Array'|'OneOrMore'= 'Array'> = {
+	comment ?:string
+	disabledInInterfaces ?:Type extends 'Array' ? Array<string> : OneOrMore<string>
+	enabled ?:boolean
+	synonym :string
+	use ?:SynonymUse
 }
 
-export type SynonymNode = RequiredNodeProperties & SynonymSpecific;
-export type SynonymNodeCreateParams = NodeCreate<SynonymSpecific>;
+export type SynonymSpecific<Type extends 'Array'|'OneOrMore'= 'Array'> = {
+	comment ?:string
+	enabled ?:boolean
+	disabledInInterfaces ?:Type extends 'Array' ? Array<string> : OneOrMore<string>
+	//from :Type extends 'Array' ? Array<string> : OneOrMore<string>
+	languages ?:Record<string,{
+		comment ?:string
+		enabled ?:boolean
+		disabledInInterfaces ?:Type extends 'Array' ? Array<string> : OneOrMore<string>
+		synonyms :Type extends 'Array'
+			? Array<SynonymLanguagesSynonymObject<'Array'>>
+			: OneOrMore<SynonymLanguagesSynonymObject<'OneOrMore'>>
+	}>
+	//to :Type extends 'Array' ? Array<string> : OneOrMore<string>
+	//thesaurus :string
+	thesaurusReference :string
+}
+
+export type SynonymGUIState = Omit<SynonymSpecific<'Array'>,'thesaurusReference'>
+
+export type SynonymNode = RequiredNodeProperties & SynonymSpecific<'OneOrMore'>;
+export type SynonymNodeCreateParams = NodeCreate<SynonymSpecific<'Array'>>;
 
 export type Synonym = Omit<
 	RequiredNodeProperties,
@@ -37,12 +48,9 @@ export type Synonym = Omit<
 		| '_state'
 		| '_ts'
 		//| '_versionKey' // GraphQL Interface Node needs this
-> & Omit<SynonymSpecific, 'from'|'to'> & {
-	from :Array<string>
-	to :Array<string>
-}
+> & SynonymSpecific<'OneOrMore'>
 
-export interface QueriedSynonym extends Synonym {
+export type QueriedSynonym = Synonym & {
 	_highlight? :{
 		[name: string]: ReadonlyArray<string>;
 	}
