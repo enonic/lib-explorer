@@ -180,7 +180,6 @@ export type {
 } from './Task.d';
 export type {
 	Thesaurus,
-	ThesaurusLanguage,
 	ThesaurusNode,
 	ThesaurusNodeCreateParams,
 	ThesaurusSpecific

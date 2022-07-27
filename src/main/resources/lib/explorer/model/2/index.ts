@@ -8,7 +8,6 @@ export {fieldValue} from '/lib/explorer/model/2/nodeTypes/fieldValue';
 export {folder} from '/lib/explorer/model/2/nodeTypes/folder';
 export {journal} from '/lib/explorer/model/2/nodeTypes/journal';
 export {stopwords} from '/lib/explorer/model/2/nodeTypes/stopwords';
-export {synonym} from '/lib/explorer/model/2/nodeTypes/synonym';
 export {thesaurus} from '/lib/explorer/model/2/nodeTypes/thesaurus';
 
 
