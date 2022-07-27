@@ -48,7 +48,7 @@ export type MultiRepoConnectionQueryNode = Node<{
 	_score :number
 }>
 
-export interface NodeCreateParams {
+export type NodeCreateParams = {
 	_childOrder ?:ChildOrder; // Default ordering of children when doing getChildren if no order is given in query
 	_indexConfig ?:IndexConfig; // How the document should be indexed. A default value "byType" will be set if no value specified.
 	_inheritsPermissions ?:boolean; // true if the permissions should be inherited from the node parent. Default is false.
@@ -56,7 +56,7 @@ export interface NodeCreateParams {
 	_name ?: Name; // Name of content.
 	_nodeType ?:string
 	_parentPath ?:ParentPath; // Path to place content under.
-	_permissions ?:ReadonlyArray<PermissionsParams>; // The access control list for the node. By default the creator will have full access
+	_permissions ?:Array<PermissionsParams>; // The access control list for the node. By default the creator will have full access
 }
 
 export type NodeCreate<T> = NodeCreateParams & T;
