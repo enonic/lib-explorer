@@ -13,13 +13,13 @@ import type {
 
 
 import {
-	forceArray,
+	//forceArray,
 	toStr
 } from '@enonic/js-utils';
-
-import {NT_SYNONYM} from '/lib/explorer/model/2/constants';
+import {NT_SYNONYM} from '/lib/explorer/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
+import {coerceSynonymType} from '/lib/explorer/synonym/coerceSynonymType';
 
 
 export type QuerySynonymsParams<
@@ -112,30 +112,11 @@ export function query<
 				return null;
 			}
 
-			const {
-				//_id,
-				_name,
-				_nodeType,
-				_path,
-				_versionKey,
-				from,
-				thesaurusReference,
-				to
-			} = node;
-			const queriedSynonym :QueriedSynonym = {
+			return coerceSynonymType({
+				...node,
 				_highlight,
-				_id,
-				_name, // Needed by GraphQL Interface Node
-				_nodeType,
-				_path,
-				_score,
-				_versionKey,
-				from: forceArray(from),
-				thesaurus: _path.match(/[^/]+/g)[1],
-				thesaurusReference,
-				to: forceArray(to)
-			};
-			return queriedSynonym;
+				_score
+			}) as QueriedSynonym;
 		}).filter(x => x),// as Array<QueriedSynonym>,
 		total: queryRes.total
 	};
