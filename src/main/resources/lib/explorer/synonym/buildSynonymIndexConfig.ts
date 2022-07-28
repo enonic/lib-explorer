@@ -76,36 +76,6 @@ export function buildSynonymIndexConfig({
 	for (let i = 0; i < locales.length; i++) {
 		const locale = locales[i];
 
-		indexConfig.configs.push({
-			config: COMMENT_CONFIG,
-			path: `languages.${locale}.comment`
-		});
-
-		indexConfig.configs.push({
-			config: ENABLED_CONFIG,
-			path: `languages.${locale}.enabled`
-		});
-
-		indexConfig.configs.push({
-			config: DISABLED_IN_INTERFACES_CONFIG,
-			path: `languages.${locale}.disabledInInterfaces`
-		});
-
-		indexConfig.configs.push({
-			config: COMMENT_CONFIG,
-			path: `languages.${locale}.synonyms.comment`
-		});
-
-		indexConfig.configs.push({
-			config: ENABLED_CONFIG,
-			path: `languages.${locale}.synonyms.enabled`
-		});
-
-		indexConfig.configs.push({
-			config: DISABLED_IN_INTERFACES_CONFIG,
-			path: `languages.${locale}.synonyms.disabledInInterfaces`
-		});
-
 		const synonymConfig :IndexConfigConfig = {
 			decideByType: false, // string
 			enabled: true,
@@ -128,20 +98,78 @@ export function buildSynonymIndexConfig({
 		}
 
 		indexConfig.configs.push({
-			config: synonymConfig,
-			path: `languages.${locale}.synonyms.synonym`
+			config: COMMENT_CONFIG,
+			path: `languages.${locale}.both.comment`
 		});
 
 		indexConfig.configs.push({
-			config: {
-				decideByType: false, // 'from'|'to'|'both'
-				enabled: true,
-				fulltext: false,
-				includeInAllText: false,
-				nGram: false,
-				path: false
-			},
-			path: `languages.${locale}.synonyms.use`
+			config: DISABLED_IN_INTERFACES_CONFIG,
+			path: `languages.${locale}.both.disabledInInterfaces`
+		});
+
+		indexConfig.configs.push({
+			config: ENABLED_CONFIG,
+			path: `languages.${locale}.both.enabled`
+		});
+
+		indexConfig.configs.push({
+			config: synonymConfig,
+			path: `languages.${locale}.both.synonym`
+		});
+
+		indexConfig.configs.push({
+			config: COMMENT_CONFIG,
+			path: `languages.${locale}.comment`
+		});
+
+		indexConfig.configs.push({
+			config: DISABLED_IN_INTERFACES_CONFIG,
+			path: `languages.${locale}.disabledInInterfaces`
+		});
+
+		indexConfig.configs.push({
+			config: ENABLED_CONFIG,
+			path: `languages.${locale}.enabled`
+		});
+
+		indexConfig.configs.push({
+			config: COMMENT_CONFIG,
+			path: `languages.${locale}.from.comment`
+		});
+
+		indexConfig.configs.push({
+			config: DISABLED_IN_INTERFACES_CONFIG,
+			path: `languages.${locale}.from.disabledInInterfaces`
+		});
+
+		indexConfig.configs.push({
+			config: ENABLED_CONFIG,
+			path: `languages.${locale}.from.enabled`
+		});
+
+		indexConfig.configs.push({
+			config: synonymConfig,
+			path: `languages.${locale}.from.synonym`
+		});
+
+		indexConfig.configs.push({
+			config: COMMENT_CONFIG,
+			path: `languages.${locale}.to.comment`
+		});
+
+		indexConfig.configs.push({
+			config: DISABLED_IN_INTERFACES_CONFIG,
+			path: `languages.${locale}.to.disabledInInterfaces`
+		});
+
+		indexConfig.configs.push({
+			config: ENABLED_CONFIG,
+			path: `languages.${locale}.to.enabled`
+		});
+
+		indexConfig.configs.push({
+			config: synonymConfig,
+			path: `languages.${locale}.to.synonym`
 		});
 	} // for locales
 	indexConfig.configs = sortByProperty(indexConfig.configs, 'path');
