@@ -14,19 +14,25 @@ export type SynonymLanguagesSynonymObject<Type extends 'Array'|'OneOrMore'= 'Arr
 	use ?:SynonymUse
 }
 
+export type SynonymLanguage<Type extends 'Array'|'OneOrMore'= 'Array'> = {
+	comment ?:string
+	enabled ?:boolean
+	disabledInInterfaces ?:Type extends 'Array' ? Array<string> : OneOrMore<string>
+	synonyms :Type extends 'Array'
+		? Array<SynonymLanguagesSynonymObject<'Array'>>
+		: OneOrMore<SynonymLanguagesSynonymObject<'OneOrMore'>>
+}
+
+export type SynonymLanguages<
+	Type extends 'Array'|'OneOrMore'= 'Array'
+> = Record<string,SynonymLanguage<Type>>
+
 export type SynonymSpecific<Type extends 'Array'|'OneOrMore'= 'Array'> = {
 	comment ?:string
 	enabled ?:boolean
 	disabledInInterfaces ?:Type extends 'Array' ? Array<string> : OneOrMore<string>
 	//from :Type extends 'Array' ? Array<string> : OneOrMore<string>
-	languages ?:Record<string,{
-		comment ?:string
-		enabled ?:boolean
-		disabledInInterfaces ?:Type extends 'Array' ? Array<string> : OneOrMore<string>
-		synonyms :Type extends 'Array'
-			? Array<SynonymLanguagesSynonymObject<'Array'>>
-			: OneOrMore<SynonymLanguagesSynonymObject<'OneOrMore'>>
-	}>
+	languages ?:SynonymLanguages
 	//to :Type extends 'Array' ? Array<string> : OneOrMore<string>
 	//thesaurus :string
 	thesaurusReference :string
@@ -51,7 +57,7 @@ export type Synonym = Omit<
 > & SynonymSpecific<'OneOrMore'>
 
 export type QueriedSynonym = Synonym & {
-	_highlight? :{
+	_highlight ?:{
 		[name: string]: ReadonlyArray<string>;
 	}
 	_score :number
