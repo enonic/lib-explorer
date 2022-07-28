@@ -1,3 +1,4 @@
+import type {HighlightResult} from '@enonic/js-utils/src/types/node/query/Highlight';
 import type {
 	SynonymNode,
 	Synonym
@@ -11,6 +12,7 @@ import {
 
 
 export function coerceSynonymType({
+	_highlight,
 	_id,
 	_name,
 	_nodeType,
@@ -24,8 +26,10 @@ export function coerceSynonymType({
 	//thesaurus,
 	thesaurusReference,
 } :SynonymNode & {
+	_highlight ?:HighlightResult
 	_score ?:number
 }) :Synonym & {
+	_highlight ?:HighlightResult
 	_score ?:number
 	thesaurus :string
 } {
@@ -73,6 +77,7 @@ export function coerceSynonymType({
 	//log.debug('coercedLanguages:%s', toStr(coercedLanguages));
 
 	return {
+		_highlight,
 		_id,
 		_name,
 		_nodeType,
