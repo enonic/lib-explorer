@@ -6,7 +6,6 @@ import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregati
 import type {
 	Highlight,
 	QueryFilters,
-	QueriedSynonym,
 	RepoConnection,
 	SynonymNode
 } from '/lib/explorer/types/index.d';
@@ -19,7 +18,7 @@ import {
 import {NT_SYNONYM} from '/lib/explorer/constants';
 import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
-import {coerceSynonymType} from '/lib/explorer/synonym/coerceSynonymType';
+import {moldQueriedSynonymNode} from '/lib/explorer/synonym/moldQueriedSynonymNode';
 
 
 export type QuerySynonymsParams<
@@ -112,11 +111,11 @@ export function query<
 				return null;
 			}
 
-			return coerceSynonymType({
+			return moldQueriedSynonymNode({
 				...node,
 				_highlight,
 				_score
-			}) as QueriedSynonym;
+			});
 		}).filter(x => x),// as Array<QueriedSynonym>,
 		total: queryRes.total
 	};
