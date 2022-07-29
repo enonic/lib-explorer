@@ -91,13 +91,13 @@ export function query<
 	}
 
 	const queryRes = connection.query(queryParams);
-	//log.info('synonym.query queryRes:%s', toStr(queryRes));
+	//log.debug('synonym.query queryRes:%s', toStr(queryRes));
 
 	const synonymQueryRes = {
 		aggregations: queryRes.aggregations,
 		count: queryRes.count,
 		hits: queryRes.hits.map((hit) => {
-			//log.info('synonym.query hit:%s', toStr(hit));
+			//log.debug('synonym.query hit:%s', toStr(hit));
 
 			const {
 				id: _id,
