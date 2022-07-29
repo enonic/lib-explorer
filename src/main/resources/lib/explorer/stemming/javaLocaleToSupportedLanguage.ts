@@ -30,13 +30,13 @@ export function javaLocaleToSupportedLanguage(javaLocale :string) :string {
 
 	const localeMatchesLangCode = CODE_TO_LANG[javaLocale];
 	if (localeMatchesLangCode) {
-		log.debug(`localeMatchesLangCode javaLocale:${javaLocale}`);
+		//log.debug(`localeMatchesLangCode javaLocale:${javaLocale}`);
 		return javaLocale;
 	}
 
 	const known = KNOWN_LOCALES[javaLocale];
 	if (known) {
-		log.debug(`known:${known} javaLocale:${javaLocale}`);
+		//log.debug(`known:${known} javaLocale:${javaLocale}`);
 		return known;
 	}
 
@@ -54,7 +54,7 @@ export function javaLocaleToSupportedLanguage(javaLocale :string) :string {
 	for (let lang of Object.keys(LANG_TO_CODE)) {
 		if (locales[0].displayName.includes(lang)) {
 			firstMatch = LANG_TO_CODE[lang];
-			log.debug(`firstMatch:${firstMatch} javaLocale:${javaLocale} locales:${toStr(locales)}`);
+			//log.debug(`firstMatch:${firstMatch} javaLocale:${javaLocale} locales:${toStr(locales)}`);
 			break;
 		}
 	}
