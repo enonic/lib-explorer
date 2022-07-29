@@ -82,7 +82,7 @@ export function buildSynonymIndexConfig({
 			fulltext: true,
 			includeInAllText: true,
 			nGram: true,
-			path: false,
+			path: false
 		}
 
 		let stemmingLanguage :string;
