@@ -4,6 +4,8 @@ import type {
 	OneOrMore,
 	RequiredNodeProperties
 } from '/lib/explorer/types/index.d';
+import type {HighlightResult} from '@enonic/js-utils/src/types/node/query/Highlight';
+
 
 //──────────────────────────────────────────────────────────────────────────
 // SynonymNode
@@ -92,13 +94,11 @@ export type SynonymGUIState = Synonym_Common
 export type Synonym = ExplorerAdminGQLInterfaceNodeCommonProps<Synonym_Specific>
 
 export type QueriedSynonym = Synonym & {
-	_highlight ?:{
-		[name: string]: ReadonlyArray<string>;
-	}
+	_highlight :HighlightResult
 	_score :number
 }
 
-
+/*
 //@ts-ignore Initializers are not allowed in ambient contexts.
 const EXAMPLE_SYNONYM_NODE :SynonymNode = {
 	//_childOrder: '...',
@@ -158,3 +158,4 @@ const EXAMPLE_SYNONYM_OBJECT :Synonym = {
 	//thesaurus: '...'
 	//thesaurusReference: '...'
 }
+*/
