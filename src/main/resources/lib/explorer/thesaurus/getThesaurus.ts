@@ -39,9 +39,8 @@ export function getThesaurus({
 		_nodeType
 	} = node;
 	if (_nodeType !== NT_THESAURUS) {
-		const msg = `Node with id:${_id} and _path:${_path} is not a thesaurus! rather _nodeType:${_nodeType}`;
-		log.error(msg);
-		throw new Error(msg);
+		log.error(`getThesaurus: Node with id:${_id} and _path:${_path} is not a thesaurus! rather _nodeType:${_nodeType}`);
+		throw new Error(`getThesaurus: Node with key:${key} is not a thesaurus!`);
 	}
 
 	return coerceThesaurus(node);
