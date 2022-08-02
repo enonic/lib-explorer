@@ -89,13 +89,38 @@ type Synonym_Specific = Synonym_Common & {
 	thesaurusReference :string
 }
 
-export type SynonymGUIState = Synonym_Common
 
 export type Synonym = ExplorerAdminGQLInterfaceNodeCommonProps<Synonym_Specific>
 
 export type QueriedSynonym = Synonym & {
 	_highlight :HighlightResult
 	_score :number
+}
+
+//──────────────────────────────────────────────────────────────────────────
+// Synonym (GUI)
+//──────────────────────────────────────────────────────────────────────────
+export type SynonymUse = 'both'|'from'|'to'
+
+export type SynonymGUI_LanguagesSynonymObject = Synonym_LanguagesSynonymObject & {
+	use :SynonymUse
+}
+
+export type SynonymGUI_Language = {
+	// Required
+	comment :string
+	disabledInInterfaces :Array<string>
+	enabled :boolean
+	locale :string
+	synonyms :Array<SynonymGUI_LanguagesSynonymObject>
+}
+
+export type SynonymGUI = {
+	// Required
+	comment :string
+	enabled :boolean
+	disabledInInterfaces :Array<string>
+	languages :Array<SynonymGUI_Language>
 }
 
 /*
