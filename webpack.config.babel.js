@@ -30,6 +30,8 @@ const SS_ALIAS = {
 const SS_EXTERNALS = [
 	'/lib/cache',
 	'/lib/graphql',
+	'/lib/graphql-connection',
+	/^\/lib\/guillotine/,
 	'/lib/http-client',
 	'/lib/license',
 	'/lib/router',
