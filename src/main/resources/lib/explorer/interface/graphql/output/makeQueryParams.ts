@@ -35,24 +35,32 @@ import {resolveFieldShortcuts} from './resolveFieldShortcuts';
 
 export function makeQueryParams({
 	aggregationsArg,
-	count,
 	fields,
 	filtersArg,
 	highlightArg,
+	interfaceId,
+	languages,
+	localesInSelectedThesauri,
 	searchString = '',
-	start,
 	stopWords,
-	thesauriNames
+	thesauriNames,
+	// Optional
+	count, // default is undefined which means 10
+	start // default is undefined which means 0
 } :{
 	aggregationsArg :Array<AnyObject>
-	count ?:number
 	fields :Array<InterfaceField>
 	filtersArg ?:Array<AnyObject>
 	highlightArg ?:Highlight
+	interfaceId :string
+	languages :Array<string>
+	localesInSelectedThesauri :Array<string>
 	searchString :string
-	start ?:number
 	stopWords :Array<string>
 	thesauriNames :Array<string>
+	// Optional
+	count ?:number
+	start ?:number
 }) {
 	//log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
 
@@ -115,6 +123,9 @@ export function makeQueryParams({
 		//expand,
 		//explain,
 		explorerRepoReadConnection,
+		defaultLocales: localesInSelectedThesauri,
+		interfaceId,
+		locales: languages,
 		searchString: searchStringWithoutStopWords,
 		showSynonyms: true,
 		thesauri: thesauriNames

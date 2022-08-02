@@ -10,6 +10,7 @@ import {connect} from '/lib/explorer/repo/connect';
 import {getCollectionIds} from '/lib/explorer/collection/getCollectionIds';
 import {get as getInterface} from '/lib/explorer/interface/get';
 import {coerseInterfaceType} from '/lib/explorer/interface/coerseInterfaceType';
+import {getThesaurus} from '/lib/explorer/thesaurus/getThesaurus';
 
 
 export function getInterfaceInfo({
@@ -27,6 +28,7 @@ export function getInterfaceInfo({
 	const filteredInterfaceNode = coerseInterfaceType(interfaceNode);
 
 	const {
+		_id: interfaceId,
 		fields = [],// = DEFAULT_INTERFACE_FIELDS, TODO This wont work when fields = [] which filter does
 		stopWords,
 		synonymIds
@@ -52,11 +54,12 @@ export function getInterfaceInfo({
 	//const collectionIdToName :Record<string,string> = {};
 	const collectionNameToId :Record<string,string> = {};
 	for (let i = 0; i < collectionIdsWithNames.length; i++) {
-	    const {_id, _name} = collectionIdsWithNames[i];
+		const {_id, _name} = collectionIdsWithNames[i];
 		//collectionIdToName[_id] = _name;
 		collectionNameToId[_name] = _id;
 	}
 
+	const localesInSelectedThesauri :Array<string> = [];
 	const thesauriNames = synonymIds.length // Avoid: Cannot build empty 'IN' statements"
 		? explorerRepoReadConnection.query({
 			count: -1,
@@ -71,20 +74,33 @@ export function getInterfaceInfo({
 				}
 			}
 		}).hits.map(({id}) => {
-			const thesauriNode = explorerRepoReadConnection.get(id);
-			//log.debug('thesauriNode:%s', toStr(thesauriNode));
-			if (thesauriNode) {
+			try {
+				const thesauriNode = getThesaurus({ // Will throw on error
+					connection: explorerRepoReadConnection,
+					_id: id
+				});
+				//log.debug('thesauriNode:%s', toStr(thesauriNode));
+				const {allowedLanguages} = thesauriNode;
+				for (let i = 0; i < allowedLanguages.length; i++) {
+					const locale = allowedLanguages[i];
+					if (!localesInSelectedThesauri.includes(locale)) {
+						localesInSelectedThesauri.push(locale);
+					}
+				}
 				return thesauriNode._name;
-			} else {
-				log.error(`Interface ${interfaceName} refers to an thesarusId ${synonymIds} that doesn't exist!`);
+			} catch (e) {
+				log.error(`Interface ${interfaceName} refers to an thesarusId:${synonymIds} that doesn't exist?!`);
 			}
 		}).filter((x) => x)
 		: []; // Remove missing thesauri.
 	//log.debug('thesauriNames:%s', toStr(thesauriNames));
+	//log.debug('localesInSelectedThesauri:%s', toStr(localesInSelectedThesauri));
 
 	return {
 		collectionNameToId,
 		fields,
+		interfaceId,
+		localesInSelectedThesauri,
 		stopWords,
 		thesauriNames
 	};
