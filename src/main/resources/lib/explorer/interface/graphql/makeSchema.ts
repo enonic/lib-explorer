@@ -33,10 +33,8 @@ import {addObjectTypeSearchConnection} from '/lib/explorer/interface/graphql/out
 import {addObjectTypeSearchResult} from '/lib/explorer/interface/graphql/output/addObjectTypeSearchResult';
 
 
-const schemaGenerator = newSchemaGenerator();
-
-
 export function makeSchema() {
+	const schemaGenerator = newSchemaGenerator();
 	const glue = constructGlue({schemaGenerator});
 
 	const documentTypeObjectTypes = {}; // Defined before addDynamicInterfaceTypes, populated after
