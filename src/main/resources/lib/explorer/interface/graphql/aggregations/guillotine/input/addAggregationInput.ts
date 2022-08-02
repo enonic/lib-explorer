@@ -11,7 +11,7 @@ import {
 import {
 	GQL_INPUT_TYPE_AGGREGATION//,
 	//GQL_INPUT_TYPE_AGGREGATION_RANGE,
-	//GQL_INPUT_TYPE_AGGREGATION_DATE_HISTORGAM,
+	//GQL_INPUT_TYPE_AGGREGATION_DATE_HISTOGRAM,
 	//GQL_INPUT_TYPE_AGGREGATION_DATE_RANGE,
 	//GQL_INPUT_TYPE_AGGREGATION_GEO_DISTANCE,
 	//GQL_INPUT_TYPE_AGGREGATION_MAX,
@@ -72,7 +72,7 @@ export function addAggregationInput({
 			},
 			dateHistogram: {
 				type: addDateHistogramAggregationInput({fieldType, glue})
-				//type: glue.getInputType(GQL_INPUT_TYPE_AGGREGATION_DATE_HISTORGAM)
+				//type: glue.getInputType(GQL_INPUT_TYPE_AGGREGATION_DATE_HISTOGRAM)
 			},
 			geoDistance: {
 				type: addGeoDistanceAggregationInput({fieldType, glue})

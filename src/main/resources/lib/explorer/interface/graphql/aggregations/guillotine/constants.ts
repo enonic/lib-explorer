@@ -1,6 +1,6 @@
 export const GQL_INPUT_TYPE_AGGREGATION = 'AggregationInput';
 export const GQL_INPUT_TYPE_AGGREGATION_RANGE = 'RangeAggregationInput';
-export const GQL_INPUT_TYPE_AGGREGATION_DATE_HISTORGAM = 'DateHistogramAggregationInput';
+export const GQL_INPUT_TYPE_AGGREGATION_DATE_HISTOGRAM = 'DateHistogramAggregationInput';
 export const GQL_INPUT_TYPE_AGGREGATION_DATE_RANGE = 'DateRangeAggregationInput';
 export const GQL_INPUT_TYPE_AGGREGATION_GEO_DISTANCE = 'GeoDistanceAggregationInput';
 export const GQL_INPUT_TYPE_AGGREGATION_MAX = 'MaxAggregationInput';
