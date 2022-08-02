@@ -23,10 +23,6 @@ dependencies {
 	//compile "com.enonic.xp:portal-api:${xpVersion}" // Just for apps?
 
 	//──────────────────────────────────────────────────────────────────────────
-	// Core libs (com.enonic.xp)
-	//──────────────────────────────────────────────────────────────────────────
-
-	//──────────────────────────────────────────────────────────────────────────
 	// New lib-explorer-4.0.0
 	//──────────────────────────────────────────────────────────────────────────
 	compile "com.enonic.xp:lib-auth:${xpVersion}"
@@ -34,6 +30,8 @@ dependencies {
 	compile "com.enonic.xp:lib-io:${xpVersion}"
 	compile "com.enonic.xp:lib-scheduler:${xpVersion}"
 	compile "com.enonic.xp:lib-value:${xpVersion}"
+	compile 'com.enonic.lib:lib-graphql:2.0.1'
+	compile 'com.enonic.lib:lib-guillotine:5.5.0'
 
 	//──────────────────────────────────────────────────────────────────────────
 	// Same as lib-explorer-3.x.x
@@ -45,6 +43,9 @@ dependencies {
 	compile "com.enonic.xp:lib-portal:${xpVersion}"
 	compile "com.enonic.xp:lib-repo:${xpVersion}"
 	compile "com.enonic.xp:lib-task:${xpVersion}"
+	compile 'com.enonic.lib:lib-cache:2.1.1'
+	compile 'com.enonic.lib:lib-http-client:3.1.0'
+	compile 'com.enonic.lib:lib-license:3.0.0'
 
 	//──────────────────────────────────────────────────────────────────────────
 	// No longer needed in lib-explorer-4.0.0
@@ -55,13 +56,7 @@ dependencies {
 	//──────────────────────────────────────────────────────────────────────────
 	// Other enonic libs (com.enonic.lib)
 	//──────────────────────────────────────────────────────────────────────────
-	compile 'com.enonic.lib:lib-cache:2.1.1'
-
-	compile 'com.enonic.lib:lib-http-client:3.1.0'
-
-	compile 'com.enonic.lib:lib-license:3.0.0'
 	compile 'com.enonic.lib:lib-router:2.1.0'
-	//compile 'com.enonic.lib:menu:1.3.3'
 
 	//compile 'com.enonic.lib:text-encoding:1.2.0'
 	compile 'com.enonic.lib:lib-util:3.0.0'
