@@ -78,6 +78,7 @@ export function makeSchema() {
 			//fieldType: highlightFieldsEnumType,
 			glue
 		}),
+		languages: list(GraphQLString),
 		searchString: GraphQLString,
 	}
 
@@ -96,6 +97,7 @@ export function makeSchema() {
 				filters,
 				first = 10, // count
 				highlight,
+				languages,
 				searchString
 			} = env.args;
 			//log.debug('after:%s', toStr(after));
@@ -113,6 +115,7 @@ export function makeSchema() {
 					count: first,
 					filters,
 					highlight,
+					languages,
 					searchString,
 					start
 				},

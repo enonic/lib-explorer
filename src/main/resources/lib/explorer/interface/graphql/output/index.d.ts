@@ -21,6 +21,7 @@ type SearchCommonArgs = {
 	aggregations ?:AggregationsArg
 	filters ?:FiltersArg
 	highlight ?:Highlight
+	languages ?:Array<string>
 	searchString :string
 }
 

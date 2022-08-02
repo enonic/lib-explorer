@@ -31,6 +31,7 @@ export function searchResolver({
 		count, // ?:number
 		filters: filtersArg,
 		highlight: highlightArg,
+		languages,
 		searchString = '', // :string
 		start = 0
 	},
@@ -46,6 +47,8 @@ export function searchResolver({
 	const {
 		collectionNameToId,
 		fields,
+		interfaceId,
+		localesInSelectedThesauri,
 		stopWords,
 		thesauriNames
 	} = getInterfaceInfo({
@@ -69,6 +72,9 @@ export function searchResolver({
 		fields,
 		filtersArg,
 		highlightArg,
+		interfaceId,
+		languages,
+		localesInSelectedThesauri,
 		searchString,
 		start,
 		stopWords,
