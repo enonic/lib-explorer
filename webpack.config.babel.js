@@ -37,7 +37,7 @@ const SS_EXTERNALS = [
 	'/lib/router',
 	/^\/lib\/xp\//,
 	// Avoid bundling and transpile library files seperately:
-	/^\/lib\/explorer\//
+	/^\/lib\/explorer\// // Could it be this that destroys d3-dsv??? Nope still doesn't work!!!
 ];
 
 if (MODE === 'production') {

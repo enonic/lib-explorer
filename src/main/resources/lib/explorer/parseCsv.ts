@@ -1,11 +1,5 @@
 //import {toStr} from '@enonic/js-utils';
-//import {csvParseRows} from 'd3-dsv/src/csv';
-
-// This has resolve problems when building development build of app-explorer
-// But only when aliasing to build rather than src
 import {csvParseRows} from 'd3-dsv';
-
-//import {csvParseRows} from '../../../../../node_modules/d3-dsv/dist/d3-dsv.js';
 
 
 export function parseCsv({
@@ -21,12 +15,11 @@ export function parseCsv({
 	start :number
 }) {
 	let columnNames = Array.isArray(columns) ? columns : null;
-	const records = [];
-	csvParseRows(csvString, (data :Array<string>, i :number) => {
-		//log.info(toStr({data, i}));
+	return csvParseRows(csvString, (data :Array<string>, i :number) => {
+		//log.debug('i:%s data:%s', toStr(i), toStr(data));
 		if (!columnNames && columns && i === 0) {
 			columnNames = data;
-			//log.info(toStr({columnNames}));
+			//log.debug('columnNames:%s', toStr(columnNames));
 			return;
 		}
 		if (i < start) { return; }
@@ -37,8 +30,7 @@ export function parseCsv({
 				obj[`${columnName}`] = data[j];
 			}
 		}
-		//log.info(toStr({obj}));
-		records.push(obj);
-	}); //log.info(toStr({records}));
-	return records;
+		//log.debug('obj:%s', toStr(obj));
+		return obj;
+	}).filter((x)=> x);
 } // function parseCsv
