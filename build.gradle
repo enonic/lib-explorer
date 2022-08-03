@@ -113,6 +113,16 @@ task webpack(type:NodeTask) {
 	outputs.dir './build/resources/main/lib/' // processResources will delete the directory if this is not present
 }
 
+//──────────────────────────────────────────────────────────────────────────────
+// Esbuild (with bundle) -> Swc (transpile to commonjs)
+//──────────────────────────────────────────────────────────────────────────────
+task swc(type:YarnTask) {
+	dependsOn webpack
+	mustRunAfter webpack
+	args = ['swc:parseCsv']
+	outputs.dir './build/resources/main' // processResources will delete the directory if this is not present
+}
+
 
 processResources {
 	exclude '**/.gitkeep'
@@ -126,10 +136,10 @@ processResources {
 	exclude '**/*.sass'
 	exclude '**/*.scss'
 	exclude '**/*.styl'
-	//exclude '**/*.ts'
+	exclude '**/*.ts'
 
 	//include '**/*.d.ts'
 }
 
-processResources.mustRunAfter webpack
-processResources.dependsOn webpack
+processResources.mustRunAfter swc
+processResources.dependsOn swc
