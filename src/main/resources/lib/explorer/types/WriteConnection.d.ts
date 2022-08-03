@@ -1,7 +1,7 @@
 import type {RepoConnection} from '/lib/explorer/types/index.d';
 
 
-export interface WriteConnection extends RepoConnection {
+export type WriteConnection = RepoConnection & {
 	//create :<N>(node :N) => N
 	//get :(idOrPath :string) => Node
 	/*modify :<N>(paramObject :{

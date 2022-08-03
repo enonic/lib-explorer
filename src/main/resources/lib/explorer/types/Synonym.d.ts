@@ -6,6 +6,31 @@ import type {
 } from '/lib/explorer/types/index.d';
 import type {HighlightResult} from '@enonic/js-utils/src/types/node/query/Highlight';
 
+//──────────────────────────────────────────────────────────────────────────
+// Input types
+//──────────────────────────────────────────────────────────────────────────
+export type InputTypeLanguageSynonym = {
+	// Required
+	synonym :string
+	// Optional
+	comment ?:string
+	disabledInInterfaces ?:Array<string>
+	enabled ?:boolean
+}
+
+export type InputTypeSynonymLanguage = {
+	// Required
+	locale :string
+	// Optional
+	both ?:Array<InputTypeLanguageSynonym>
+	comment ?:string
+	disabledInInterfaces ?:Array<string>
+	enabled ?:boolean
+	from ?:Array<InputTypeLanguageSynonym>
+	to ?:Array<InputTypeLanguageSynonym>
+}
+
+export type InputTypeSynonymLanguages = Array<InputTypeSynonymLanguage>
 
 //──────────────────────────────────────────────────────────────────────────
 // SynonymNode
