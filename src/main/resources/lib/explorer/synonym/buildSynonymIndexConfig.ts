@@ -172,6 +172,19 @@ export function buildSynonymIndexConfig({
 			path: `languages.${locale}.to.synonym`
 		});
 	} // for locales
+
+	indexConfig.configs.push({
+		config: {
+			decideByType: false, // number
+			enabled: true,
+			fulltext: false,
+			includeInAllText: false,
+			nGram: false,
+			path: false
+		},
+		path: 'nodeTypeVersion'
+	});
+
 	indexConfig.configs = sortByProperty(indexConfig.configs, 'path');
 
 	//log.debug('indexConfig:%s', toStr(indexConfig));
