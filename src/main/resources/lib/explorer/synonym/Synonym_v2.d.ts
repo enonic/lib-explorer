@@ -63,6 +63,7 @@ export type SynonymNode_Languages = Record<string,SynonymNode_Language>
 
 type SynonymNode_Specific = {
 	// Required
+	nodeTypeVersion :number // TODO Make common across "all" nodeTypes?
 	//thesaurus :string // Not stored on the SynonymNode
 	thesaurusReference :string
 	// Optional
@@ -76,9 +77,7 @@ type SynonymNode_Specific = {
 	modifier ?:string
 }
 
-export type SynonymNode = RequiredNodeProperties & {
-	nodeTypeVersion :number // TODO Make common across "all" nodeTypes?
-} & SynonymNode_Specific;
+export type SynonymNode = RequiredNodeProperties & SynonymNode_Specific;
 
 export type SynonymNodeCreateParams = NodeCreate<SynonymNode_Specific>;
 
@@ -121,7 +120,9 @@ type Synonym_Specific = Synonym_Common & {
 }
 
 
-export type Synonym = ExplorerAdminGQLInterfaceNodeCommonProps<Synonym_Specific>
+export type Synonym = ExplorerAdminGQLInterfaceNodeCommonProps<Synonym_Specific & {
+	_nodeTypeVersion :number
+}>
 
 export type QueriedSynonym = Synonym & {
 	_highlight :HighlightResult

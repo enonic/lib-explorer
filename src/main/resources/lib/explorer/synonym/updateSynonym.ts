@@ -17,6 +17,8 @@ import {
 	moldInputTypeLanguages
 } from '/lib/explorer/synonym/createSynonym';
 //@ts-ignore
+import {getUser} from '/lib/xp/auth';
+//@ts-ignore
 import {reference as referenceValue} from '/lib/xp/value';
 
 
@@ -76,6 +78,9 @@ export function updateSynonym({
 				interfaceIdsChecked,
 				languagesArg,
 			});
+			//node.nodeTypeVersion = 2;
+			node.modifiedTime = new Date();
+			node.modifier = getUser().key;
 			node._indexConfig = buildSynonymIndexConfig({
 				partialSynonymNode: node
 			});

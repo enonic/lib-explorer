@@ -23,6 +23,8 @@ import {buildSynonymIndexConfig} from '/lib/explorer/synonym/buildSynonymIndexCo
 import {moldSynonymNode} from '/lib/explorer/synonym/moldSynonymNode';
 import {getThesaurus} from '/lib/explorer/thesaurus/getThesaurus';
 //@ts-ignore
+import {getUser} from '/lib/xp/auth';
+//@ts-ignore
 import {reference as referenceValue} from '/lib/xp/value';
 
 
@@ -215,6 +217,8 @@ export function createSynonym({
 		_nodeType: NT_SYNONYM,
 		_parentPath: `/${FOLDER_THESAURI}/${thesaurusName}`,
 		comment: commentArg,
+		createdTime: new Date(),
+		creator: getUser().key,
 		disabledInInterfaces: checkInterfaceIds
 			? getValidInterfaceIds({
 				explorerRepoReadConnection: explorerRepoWriteConnection,
@@ -231,6 +235,7 @@ export function createSynonym({
 			interfaceIdsChecked,
 			languagesArg
 		}),
+		nodeTypeVersion: 2,
 		thesaurusReference: referenceValue(thesaurusId),
 	};
 	createSynonymParams._indexConfig = buildSynonymIndexConfig({

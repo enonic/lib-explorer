@@ -18,12 +18,14 @@ export function moldSynonymNode({
 	enabled = true,
 	disabledInInterfaces = [],
 	languages: languagesObject = {},
+	nodeTypeVersion,
 	thesaurusReference
 } :SynonymNode) :Synonym {
 	return {
 		_id,
 		_name,
 		_nodeType,
+		_nodeTypeVersion: nodeTypeVersion,
 		_path,
 		_versionKey,
 		comment,
