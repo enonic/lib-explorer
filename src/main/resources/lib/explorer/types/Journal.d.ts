@@ -6,18 +6,13 @@ import type {
 
 export type JournalError = {
 	message :string
-	uri :string
 };
+
 
 export type JournalSuccess = {
-	message ?:string // For example 'deleted'
-	uri :string
+	message :string // For example 'deleted'
 };
 
-export type MsgUri = {
-	message :string
-	uri :string
-}
 
 export type Journal = {
 	name :string

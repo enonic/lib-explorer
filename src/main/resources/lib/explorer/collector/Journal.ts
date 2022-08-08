@@ -34,21 +34,14 @@ export class Journal implements JournalInterface {
 		this.successes = [];
 	} // constructor
 
-	addError({uri, message} :{
-		message :string
-		uri :string
-	}) {
-		if (!(uri || message)) { throw new Error('addError: Missing required parameter uri or message!'); }
-		this.errors.push({uri, message});
+	addError({message} :JournalError) {
+		if (!(message)) { throw new Error('addError: Missing required parameter message!'); }
+		this.errors.push({message});
 	}
 
-	addSuccess({uri, message} :{
-		message ?:string
-		uri :string
-	}) {
-		//if (!(uri || message)) { throw new Error('addSuccess: Missing required parameter uri or message!'); }
-		if (!(uri)) { throw new Error('addSuccess: Missing required parameter uri!'); }
-		this.successes.push({uri, message});
+	addSuccess({message} :JournalSuccess) {
+		if (!(message)) { throw new Error('addSuccess: Missing required parameter message!'); }
+		this.successes.push({message});
 	}
 
 	create() {
