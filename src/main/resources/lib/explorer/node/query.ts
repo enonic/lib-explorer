@@ -14,7 +14,9 @@ import {addQueryFilter} from '@enonic/js-utils';
 import {hasValue} from '/lib/explorer/query/hasValue';
 
 
-export function query({
+export function query/*<
+	AggregationKey extends undefined|string = undefined
+>*/({
 	// Required
 	connection,
 	// Optional
@@ -56,10 +58,7 @@ export function query({
 			filters
 		});
 	}
-	return connection.query<{
-		id :string
-		score :number
-	}>({
+	return connection.query/*<AggregationKey>*/({
 		//aggregations,
 		count,
 		filters,
