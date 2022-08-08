@@ -1,4 +1,4 @@
-import type {AnyObject} from '/lib/explorer/types';
+import type {AnyObject} from '/lib/explorer/types/';
 
 
 export type Branch<Leaf = string> = {
