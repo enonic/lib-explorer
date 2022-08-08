@@ -1,25 +1,55 @@
-import type {RepoConnection} from '/lib/explorer/types/index.d';
+import type {
+	QueryDSL,
+	SortDSLExpression
+} from '@enonic/js-utils/src/types';
+//import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
+import type {
+	//Highlight,
+	QueryFilters,
+	RepoConnection
+} from '/lib/explorer/types/index.d';
 
-import {
-	addQueryFilter/*,
-	toStr*/
-} from '@enonic/js-utils';
+
+//import {toStr} from '@enonic/js-utils';
 import {coerseDocumentType} from '/lib/explorer/documentType/coerseDocumentType';
 import {NT_DOCUMENT_TYPE} from '/lib/explorer/documentType/constants';
-import {hasValue} from '/lib/explorer/query/hasValue';
+import {query} from '/lib/explorer/node/query';
 
 
 export function queryDocumentTypes({
-	readConnection
+	// Required
+	readConnection,
+	// Optional
+	//aggregations,
+	count = -1,
+	filters = {},
+	//highlight,
+	query: queryArg,
+	sort = {
+		field: '_name',
+		direction: 'ASC'
+	},
+	start
 } :{
+	// Required
 	readConnection :RepoConnection
+	// Optional
+	//aggregations ?:Aggregations<AggregationKeys>
+	count ?:number
+	filters ?:QueryFilters
+	//highlight ?:Highlight
+	query ?:QueryDSL|string,
+	sort ?:SortDSLExpression|string
+	start ?:number
 }) {
-	const qr = readConnection.query({
-		count: -1,
-		filters: addQueryFilter({
-			filter: hasValue('_nodeType', [NT_DOCUMENT_TYPE])
-		}),
-		query: ''
+	const qr = query({
+		connection: readConnection,
+		count,
+		filters,
+		nodeTypes: [NT_DOCUMENT_TYPE],
+		query: queryArg,
+		sort,
+		start
 	});
 	const rv = {
 		count: qr.count,
