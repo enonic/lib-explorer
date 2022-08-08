@@ -68,7 +68,6 @@ import {progress} from '../task/progress';
 import {get as getTask} from '../task/get';
 import {modify as modifyTask} from '../task/modify';
 //import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
-//import {Document} from '/lib/explorer/model/2/nodeTypes/document';
 
 //import {getTotalCount} from '/lib/explorer/collection/getTotalCount';
 
@@ -104,46 +103,12 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		collectionId,
 		collectorId, // Present in lib-explorer-3.x
 		configJson, // Present in lib-explorer-3.x
-		/*documentTypeObj = {
-			properties: [{
-				enabled: true,
-				fulltext: true,
-				includeInAllText: true,
-				max: 0,
-				min: 0,
-				name: 'text',
-				nGram: true,
-				path: false,
-				valueType: VALUE_TYPE_STRING
-			}, {
-				enabled: true,
-				fulltext: true,
-				includeInAllText: true,
-				max: 0,
-				min: 0,
-				name: 'title',
-				nGram: true,
-				path: false,
-				valueType: VALUE_TYPE_STRING
-			}, {
-				enabled: true,
-				fulltext: true,
-				includeInAllText: true,
-				max: 0,
-				min: 0,
-				name: 'uri',
-				nGram: true,
-				path: false,
-				valueType: VALUE_TYPE_STRING
-			}]
-		},*/
 		language, // Present in lib-explorer-3.x
 		name // Present in lib-explorer-3.x
 	} :{
 		collectionId? :string
 		collectorId :string
 		configJson :string
-		//documentTypeObj :FieldsObject
 		language? :string
 		name? :string
 	}) {
@@ -195,9 +160,6 @@ export class Collector<Config extends AnyObject = AnyObject> {
 
 		this._collectorId = collectorId;
 		//log.debug(`this._collectorId:${this._collectorId}`);
-
-		//this._documentTypeObj = documentTypeObj;
-		//this._documentTypesObj = {};
 
 		if (language) {
 			//this._language = javaLocaleToSupportedLanguage(language);
@@ -410,7 +372,6 @@ export class Collector<Config extends AnyObject = AnyObject> {
 			data: documentToPersist,
 			//documentTypeId // Perhaps later
 			documentTypeName,
-			//documentTypeObj: this._documentTypeObj,
 			//fields: // Perhaps later
 			language: this._language,
 			//stemmingLanguage: // Perhaps later
