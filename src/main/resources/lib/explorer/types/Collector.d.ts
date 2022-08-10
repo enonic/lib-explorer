@@ -47,8 +47,8 @@ export type CollectorProps<
 		siteOptions :SiteOptions
 	}
 	initialCollectorConfig :CollectorConfig
-	setCollectorConfig :(collectorConfig: CollectorConfig) => void
-	setCollectorConfigErrorCount :(collectorConfigErrorCount :number) => void
+	setCollectorConfig :React.Dispatch<React.SetStateAction<CollectorConfig>>
+	setCollectorConfigErrorCount :React.Dispatch<React.SetStateAction<number>>
 };
 
 //──────────────────────────────────────────────────────────────────────────────
