@@ -1,6 +1,7 @@
 import {
 	forceArray,
 	isString,
+	lpad as pad,
 	toStr
 } from '@enonic/js-utils';
 
@@ -39,10 +40,8 @@ import {localizeFacets} from '/lib/explorer/client/localizeFacets';
 import {mapMultiRepoQueryHits} from '/lib/explorer/client/mapMultiRepoQueryHits';
 
 import {query as queryThesauri} from '/lib/explorer/thesaurus/query';
+import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 
-//import {pad} from '/lib/explorer/string/pad';
-
-//const {currentTimeMillis} = Java.type('java.lang.System');
 
 //──────────────────────────────────────────────────────────────────────────────
 // Private constants
@@ -63,8 +62,7 @@ const NODE_CACHE = newCache({
 // Public function
 //──────────────────────────────────────────────────────────────────────────────
 export function search(params) {
-	log.debug(`params:${toStr({params})}`);
-	//const times = [{label: 'start', time: currentTimeMillis()}];
+	//log.debug(`params:${toStr({params})}`);
 
 	if (!params.interface) {
 		throw new Error('Missing required parameter interface!');
@@ -78,13 +76,18 @@ export function search(params) {
 		locale = getLocale(),
 		logQuery = false,
 		logQueryResults = false,
+		logProfiling = false,
 		//logSynonyms = false,
 		name = 'q',
 		searchString = params[name] || '',
 		showSynonyms = false
 	} = params;
-	log.debug(`clearCache:${toStr({clearCache})}`);
-	log.debug(`explain:${toStr({explain})}`);
+	//log.debug(`clearCache:${toStr({clearCache})}`);
+	//log.debug(`explain:${toStr({explain})}`);
+	const times = [];
+	if (logProfiling) {
+		times.push({label: 'start', time: currentTimeMillis()});
+	}
 
 	//log.info(`facetsParam:${toStr(facetsParam)}`);
 	Object.keys(facetsParam).forEach((facet) => {
@@ -100,14 +103,14 @@ export function search(params) {
 		}
 		//log.info(`facetsParam['${facet}']:${toStr(facetsParam[facet])}`);
 	});
-	log.debug(`facetsParam:${toStr({facetsParam})}`);
+	//log.debug(`facetsParam:${toStr({facetsParam})}`);
 
-	log.debug(`interfaceName:${toStr({interfaceName})}`);
-	log.debug(`locale:${toStr({locale})}`);
-	log.debug(`logQuery:${toStr({logQuery})}`);
-	log.debug(`logQueryResults:${toStr({logQueryResults})}`);
-	log.debug(`name:${toStr({name})}`);
-	log.debug(`searchString:${toStr({searchString})}`);
+	//log.debug(`interfaceName:${toStr({interfaceName})}`);
+	//log.debug(`locale:${toStr({locale})}`);
+	//log.debug(`logQuery:${toStr({logQuery})}`);
+	//log.debug(`logQueryResults:${toStr({logQueryResults})}`);
+	//log.debug(`name:${toStr({name})}`);
+	//log.debug(`searchString:${toStr({searchString})}`);
 
 	if (clearCache) {
 		log.info('Clearing node cache.');
@@ -119,7 +122,7 @@ export function search(params) {
 	});
 
 	const config = getCachedConfigFromInterface({interfaceName});
-	log.debug(`config:${toStr({config})}`);
+	//log.debug(`config:${toStr({config})}`);
 
 	const {
 		facets: facetConfig,
@@ -129,28 +132,30 @@ export function search(params) {
 		stopWords//,
 		//thesauri
 	} = config.interfaceNode;
-	log.debug(`facetConfig:${toStr({facetConfig})}`);
-	log.debug(`queryConfig:${toStr({queryConfig})}`);
-	log.debug(`resultMappings:${toStr({resultMappings})}`);
-	log.debug(`stopWords:${toStr({stopWords})}`);
+	//log.debug(`facetConfig:${toStr({facetConfig})}`);
+	//log.debug(`queryConfig:${toStr({queryConfig})}`);
+	//log.debug(`resultMappings:${toStr({resultMappings})}`);
+	//log.debug(`stopWords:${toStr({stopWords})}`);
 
 	let page = params.page ? parseInt(params.page, 10) : 1; // NOTE First index is 1 not 0
-	log.debug(`page:${toStr({page})}`);
+	//log.debug(`page:${toStr({page})}`);
 
 	const count = params.count ? parseInt(params.count, 10) : 10;
 	//const count = 1; // DEBUG
-	log.debug(`count:${toStr({count})}`);
+	//log.debug(`count:${toStr({count})}`);
 
 	const start = params.start ? parseInt(params.start, 10) : (page - 1) * count; // NOTE First index is 0 not 1
-	log.debug(`start:${toStr({start})}`);
+	//log.debug(`start:${toStr({start})}`);
 
 	if (!page) { page = Math.floor(start / count) + 1; }
-	log.debug(`page:${toStr({page})}`);
+	//log.debug(`page:${toStr({page})}`);
 
 	const washedSearchString = wash({string: searchString});
-	log.debug(`washedSearchString:${toStr({washedSearchString})}`);
+	//log.debug(`washedSearchString:${toStr({washedSearchString})}`);
 
-	//times.push({label: 'various', time: currentTimeMillis()});
+	if (logProfiling) {
+		times.push({label: 'various', time: currentTimeMillis()});
+	}
 
 	// TODO stopWords could be cached:
 	const listOfStopWords = [];
@@ -168,7 +173,7 @@ export function search(params) {
 			});
 		});
 	}
-	log.debug(`listOfStopWords:${toStr({listOfStopWords})}`);
+	//log.debug(`listOfStopWords:${toStr({listOfStopWords})}`);
 
 	const removedStopWords = [];
 	const searchStringWithoutStopWords = removeStopWords({
@@ -176,12 +181,14 @@ export function search(params) {
 		stopWords: listOfStopWords,
 		string: washedSearchString
 	});
-	log.debug(`searchStringWithoutStopWords:${toStr({searchStringWithoutStopWords})}`);
+	//log.debug(`searchStringWithoutStopWords:${toStr({searchStringWithoutStopWords})}`);
 	/*log.info(toStr({
 		washedSearchString,
 		removedStopWords
 	}));*/
-	//times.push({label: 'stopwords', time: currentTimeMillis()});
+	if (logProfiling) {
+		times.push({label: 'stopwords', time: currentTimeMillis()});
+	}
 
 	const synonyms = []; // Gets modified
 	const expand = false;
@@ -201,18 +208,21 @@ export function search(params) {
 		languages,
 		logQuery,
 		logQueryResults,
+		logProfiling,
 		//logSynonyms,
 		//searchString: washedSearchString,
 		searchString: searchStringWithoutStopWords,
 		showSynonyms,
-		synonyms//, // Gets modified
-		//times
+		synonyms, // Gets modified
+		times
 	});
-	log.debug(`query:${toStr({query})}`);
+	//log.debug(`query:${toStr({query})}`);
 
 	//if (logSynonyms) { log.info(`synonyms:${toStr(synonyms)}`); }
 	//log.info(toStr({query}));
-	//times.push({label: 'query', time: currentTimeMillis()});
+	if (logProfiling) {
+		times.push({label: 'build query', time: currentTimeMillis()});
+	}
 
 	const thesauriMap = {};
 	queryThesauri({
@@ -224,8 +234,11 @@ export function search(params) {
 	}).hits.forEach(({name, displayName}) => {
 		thesauriMap[name] = displayName;
 	});
-	log.debug(`thesauriMap:${toStr({thesauriMap})}`);
-	//times.push({label: 'thesauri', time: currentTimeMillis()});
+	//log.debug(`thesauriMap:${toStr({thesauriMap})}`);
+
+	if (logProfiling) {
+		times.push({label: 'thesauri', time: currentTimeMillis()});
+	}
 
 	/*const flattenedSynonyms = [searchString];
 	flattenSynonyms({
@@ -265,7 +278,9 @@ export function search(params) {
 			}
 		});
 		//log.info(`synonymsObj:${toStr({synonymsObj})}`);
-		//times.push({label: 'synonyms', time: currentTimeMillis()});
+		if (logProfiling) {
+			times.push({label: 'synonyms', time: currentTimeMillis()});
+		}
 	} // if (showSynonyms)
 
 
@@ -279,16 +294,21 @@ export function search(params) {
 			nodeCache: NODE_CACHE
 		});
 	}
-	log.debug(`localizedFacets:${toStr({localizedFacets})}`);
-	//times.push({label: 'localize', time: currentTimeMillis()});
+	if (logProfiling) {
+		times.push({label: 'localize', time: currentTimeMillis()});
+	}
+	//log.debug(`localizedFacets:${toStr({localizedFacets})}`);
 
 	const filters = buildFiltersFromParams({
 		facetsParam,
 		facetsObj: config.facetsObj,
 		staticFilters: config.filters
 	});
-	log.debug(`filters:${toStr({filters})}`);
-	//times.push({label: 'buildFiltersFromParams', time: currentTimeMillis()});
+	//log.debug(`filters:${toStr({filters})}`);
+
+	if (logProfiling) {
+		times.push({label: 'buildFiltersFromParams', time: currentTimeMillis()});
+	}
 
 	/*addCommonTermsFilter({
 		commonWords: listOfStopWords,
@@ -303,15 +323,16 @@ export function search(params) {
 	};
 	if(logQuery) {
 		log.info(`multiConnectParams:${toStr(multiConnectParams)}`);
-	} else {
-		log.debug(`multiConnectParams:${toStr(multiConnectParams)}`);
 	}
 
 	const readConnections = multiConnect(multiConnectParams);
-	//times.push({label: 'multiConnect', time: currentTimeMillis()});
+
+	if (logProfiling) {
+		times.push({label: 'multiConnect', time: currentTimeMillis()});
+	}
 
 	const numberOfActiveFacetCategories = Object.keys(facetsParam).filter(k => facetsParam[k]).length;
-	log.debug(`numberOfActiveFacetCategories:${toStr({numberOfActiveFacetCategories})}`);
+	//log.debug(`numberOfActiveFacetCategories:${toStr({numberOfActiveFacetCategories})}`);
 
 	const queryParams = {
 		count,
@@ -330,15 +351,15 @@ export function search(params) {
 	//log.info(toStr({count}));
 	if (logQuery) {
 		log.info(`queryParams:${toStr(queryParams)}`);
-	} else {
-		log.debug(`queryParams:${toStr({queryParams})}`);
 	}
 
 	const queryRes = readConnections.query(queryParams);
+	if (logProfiling) {
+		times.push({label: 'main query', time: currentTimeMillis()});
+	}
+
 	if (logQueryResults) {
 		log.info(`queryRes:${toStr(queryRes)}`);
-	} else {
-		log.debug(`queryRes:${toStr({queryRes})}`);
 	}
 
 	const aggregationsCacheObj = {};
@@ -346,11 +367,13 @@ export function search(params) {
 		const aggregationCacheKey = hash(filters, 52);
 		aggregationsCacheObj[aggregationCacheKey] = queryRes.aggregations;
 	}
-	log.debug(`aggregationsCacheObj:${toStr({aggregationsCacheObj})}`);
+	//log.debug(`aggregationsCacheObj:${toStr({aggregationsCacheObj})}`);
 
 	const {hits, total} = queryRes;
 	//log.info(toStr({total}));
-	//times.push({label: 'result', time: currentTimeMillis()});
+	if (logProfiling) {
+		times.push({label: 'result', time: currentTimeMillis()});
+	}
 
 	// If there are no selected facets we can fetch all facet numbers from main query.
 	//
@@ -379,12 +402,14 @@ export function search(params) {
 		query//,
 		//times
 	});
-	log.debug(`facetCategories:${toStr({facetCategories})}`);
-	//times.push({label: 'facets', time: currentTimeMillis()});
+	if (logProfiling) {
+		times.push({label: 'facets', time: currentTimeMillis()});
+	}
+	//log.debug(`facetCategories:${toStr({facetCategories})}`);
 	//log.info(toStr({aggregationsCacheObj}));
 
 	const pages = Math.ceil(total / count);
-	log.debug(`pages:${toStr({pages})}`);
+	//log.debug(`pages:${toStr({pages})}`);
 
 	const pagination = buildPagination({
 		facets: facetsParam,
@@ -395,11 +420,13 @@ export function search(params) {
 		//paginationConfig,
 		searchString: washedSearchString
 	});
-	log.debug(`pagination:${toStr({pagination})}`);
-	//times.push({label: 'pagination', time: currentTimeMillis()});
+	//log.debug(`pagination:${toStr({pagination})}`);
 
-	//const response = {
-	return {
+	if (logProfiling) {
+		times.push({label: 'pagination', time: currentTimeMillis()});
+	}
+
+	const response = {
 		params: {
 			count,
 			facets: facetsParam,
@@ -420,22 +447,27 @@ export function search(params) {
 			facets: facetsParam,
 			hits,
 			locale,
+			logProfiling,
 			urlQueryParameterNameContainingSearchString: name,
 			nodeCache: NODE_CACHE,
 			resultMappings,
-			searchString: washedSearchString
-			//times
+			searchString: washedSearchString,
+			times
 		}),
 		facetCategories,
 		pagination
 	};
-	/*times.push({label: 'mapMultiRepoQueryHits', time: currentTimeMillis()});
-	for (let i = 0; i < times.length - 1; i += 1) {
-		const dur = times[i + 1].time - times[i].time;
-		log.info(`${searchStringWithoutStopWords} ${pad(dur, 4)} ${pad(times[i + 1].time - times[0].time, 4)} ${times[i + 1].label}`);
+
+	if (logProfiling) {
+		times.push({label: 'mapMultiRepoQueryHits', time: currentTimeMillis()});
+		for (let i = 0; i < times.length - 1; i += 1) {
+			const dur = times[i + 1].time - times[i].time;
+			log.info(`${searchStringWithoutStopWords} ${pad(dur, 4)} ${pad(times[i + 1].time - times[0].time, 4)} ${times[i + 1].label}`);
+		}
+		//const dur = times[times.length - 1].time - times[0].time;
+		//log.info(`${searchStringWithoutStopWords} ${pad(dur, 4)} total`);
+		log.info('────────────────────────────────────────────────────────────────────────────────');
 	}
-	//const dur = times[times.length - 1].time - times[0].time;
-	//log.info(`${searchStringWithoutStopWords} ${pad(dur, 4)} total`);
-	log.info('────────────────────────────────────────────────────────────────────────────────');
-	return response;*/
+
+	return response;
 } // function search

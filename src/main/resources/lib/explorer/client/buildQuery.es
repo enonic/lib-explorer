@@ -1,7 +1,8 @@
 import {
 	QUERY_FUNCTION_FULLTEXT,
 	QUERY_FUNCTION_NGRAM,
-	QUERY_FUNCTION_STEMMED//,
+	QUERY_FUNCTION_STEMMED,
+	ngram//,
 	//toStr
 } from '@enonic/js-utils';
 
@@ -12,7 +13,7 @@ import {getSynonyms} from '/lib/explorer/client/getSynonyms';
 import {flattenSynonyms} from '/lib/explorer/client/flattenSynonyms';
 //import {partitionOnScore} from '/lib/explorer/search/synonyms/partitionOnScore';
 
-//const {currentTimeMillis} = Java.type('java.lang.System');
+const {currentTimeMillis} = Java.type('java.lang.System');
 
 
 const buildFields = (fields/*, score*/) => {
@@ -38,11 +39,12 @@ export function buildQuery({
 	languages = [],
 	logQuery = false,
 	logQueryResults = false,
+	logProfiling = false,
 	//logSynonyms = false,
 	searchString,
 	showSynonyms = false,
-	synonyms//, // Gets modified
-	//times
+	synonyms, // Gets modified
+	times // Gets modified
 }) {
 	/*log.info(toStr({
 		connection,
@@ -61,11 +63,20 @@ export function buildQuery({
 		break;
 	case QUERY_FUNCTION_FULLTEXT:
 		query = `fulltext(${buildFields(params.fields)}, '${searchString}', '${operator}')`;
-		//times.push({label: 'fulltext', time: currentTimeMillis()});
+		if (logProfiling) {
+			times.push({label: 'fulltext', time: currentTimeMillis()});
+		}
 		break;
 	case QUERY_FUNCTION_NGRAM:
-		query = `ngram(${buildFields(params.fields)}, '${searchString}', '${operator}')`;
-		//times.push({label: 'ngram', time: currentTimeMillis()});
+		//query = `ngram(${buildFields(params.fields)}, '${searchString}', '${operator}')`;
+		query = ngram(
+			params.fields,
+			searchString,
+			operator
+		);
+		if (logProfiling) {
+			times.push({label: 'ngram', time: currentTimeMillis()});
+		}
 		break;
 	case 'synonyms': {
 		const thesauri = params.thesauri;
@@ -81,7 +92,9 @@ export function buildQuery({
 			showSynonyms,
 			thesauri
 		});
-		//times.push({label: 'getSynonyms', time: currentTimeMillis()});
+		if (logProfiling) {
+			times.push({label: 'getSynonyms', time: currentTimeMillis()});
+		}
 		//log.info(toStr({localSynonyms}));
 		if (!localSynonyms.length) { return null; }
 		localSynonyms.forEach(l => synonyms.push(l)); // Modify passed in array
@@ -106,13 +119,17 @@ export function buildQuery({
 			synonyms: localSynonyms
 		}).map(s => `${s}`); // Removed double quotes https://enonic.zendesk.com/agent/tickets/3714
 
-		//times.push({label: 'flattenSynonyms', time: currentTimeMillis()});
+		if (logProfiling) {
+			times.push({label: 'flattenSynonyms', time: currentTimeMillis()});
+		}
 		//log.info(toStr({flattenedSynonyms}));
 		/*const fields = buildFields(params.fields);
 		query = `(${flattenedSynonyms.map(s => `fulltext(${fields}, '${s}', 'AND')`).join(' OR ')})`;*/
 
 		query = `fulltext(${buildFields(params.fields)}, '${flattenedSynonyms.join(' ')}', 'OR')`;
-		//times.push({label: 'synonyms', time: currentTimeMillis()});
+		if (logProfiling) {
+			times.push({label: 'synonyms', time: currentTimeMillis()});
+		}
 		break;
 	}
 	case 'group':

@@ -4,8 +4,8 @@ import '@enonic/nashorn-polyfills'; // Quickfix for support #5004 Number.isInteg
 // Node modules (webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 import {
-	forceArray//,
-	//toStr
+	forceArray,
+	toStr
 } from '@enonic/js-utils';
 //import highlightSearchResult from 'highlight-search-result';
 //import {get, set} from 'lodash'; // Cannot read property "Array" from undefined
@@ -31,25 +31,55 @@ import {connect} from '/lib/explorer/repo/connect';
 import {cachedNode} from '/lib/explorer/client/cachedNode';
 //import {highlight as highlightSearchResult} from '/lib/explorer/client/highlight';
 
-//const {currentTimeMillis} = Java.type('java.lang.System');
+const {currentTimeMillis} = Java.type('java.lang.System');
 
 
 export function mapMultiRepoQueryHits({
 	facets,
 	hits,
 	//locale,
+	logProfiling = false,
 	urlQueryParameterNameContainingSearchString,
 	nodeCache,
-	resultMappings,
-	searchString//,
-	//times
+	resultMappings = [{
+		field: 'title',
+		highlight: true,
+		highlightFragmenter: 'span',
+		highlightNumberOfFragments: 1,
+		highlightOrder: 'none',
+		highlightPostTag: '</b>',
+		highlightPreTag: '<b>',
+		lengthLimit: 255,
+		to: 'title',
+		type: 'string'
+	}, {
+		field: 'text',
+		highlight: true,
+		highlightFragmenter: 'span',
+		highlightNumberOfFragments: 1,
+		highlightOrder: 'none',
+		highlightPostTag: '</b>',
+		highlightPreTag: '<b>',
+		lengthLimit: 255,
+		to: 'text',
+		type: 'string'
+	}, {
+		field: 'uri',
+		highlight: false,
+		to: 'href',
+		type: 'string'
+	}],
+	searchString,
+	times
 }) {
-	//times.push({label: 'mapMultiRepoQueryHits start', time: currentTimeMillis()});
+	if (logProfiling) {
+		times.push({label: 'mapMultiRepoQueryHits start', time: currentTimeMillis()});
+	}
 	const connectionsObj = {};
 
 	//log.info(toStr({searchString}));
-	//const res = hits.map(hit => {
-	return hits.map(hit => {
+	const res = hits.map(hit => {
+	//return hits.map(hit => {
 		const {
 			repoId,
 			branch,
@@ -80,12 +110,14 @@ export function mapMultiRepoQueryHits({
 			field,
 			highlight,
 			join = true,
-			lengthLimit,
+			lengthLimit = 255,
 			separator = ' ',
 			to,
 			type = 'string'
 		}) => {
-			//times.push({label: 'resultMappings start', time: currentTimeMillis()});
+			if (logProfiling) {
+				times.push({label: 'resultMappings start', time: currentTimeMillis()});
+			}
 			/*log.info(toStr({
 				field,
 				highlight,
@@ -97,19 +129,39 @@ export function mapMultiRepoQueryHits({
 			//log.info(`node:${toStr({node})}`);
 			//log.info(`field:${toStr({field})}`);
 			const value = get(node, field);
+			/*if (logProfiling) {
+				times.push({label: 'get', time: currentTimeMillis()});
+			}*/
 			//log.info(`value:${toStr({value})}`);
 
 			let mappedValue = value;
 			if (type === 'string') {
 				const maybeArray = value || '';
-				const textToHighlight = striptags((join && Array.isArray(maybeArray))
+				//log.debug('maybeArray:%s', toStr(maybeArray));
+				//log.debug('lengthLimit:%s', toStr(lengthLimit));
+				//log.debug('join:%s', toStr(join));
+				//log.debug('separator:%s', toStr(separator));
+
+				const string = (join && Array.isArray(maybeArray))
 					? maybeArray.join(separator)
-					: maybeArray);
+					: maybeArray;
+				/*if (logProfiling) {
+					times.push({label: 'striptags', time: currentTimeMillis()});
+				}
+				log.debug('string:%s', toStr(string));*/
+
+				// WARNING: This takes a looong time on a long text, so I shorten it...
+				const textToHighlight = striptags(string.substring(0, lengthLimit));
+				/*if (logProfiling) {
+					times.push({label: 'striptags', time: currentTimeMillis()});
+				}*/
 				//log.info(toStr({textToHighlight}));
 				mappedValue = textToHighlight;
 
 				if (highlight) {
-
+					/*if (logProfiling) {
+						times.push({label: 'highlight start', time: currentTimeMillis()});
+					}*/
 
 					if (highlightedFields && Array.isArray(highlightedFields[field]) && highlightedFields[field][0]) {
 						mappedValue = highlightedFields[field][0];
@@ -143,16 +195,18 @@ export function mapMultiRepoQueryHits({
 							mappedValue = `${mappedValue.substring(0, lengthLimit)}${ELLIPSIS}`;
 						}
 						//mappedValue = mappedValue.substring(0, lengthLimit);
-						//times.push({label: 'highlight start', time: currentTimeMillis()});
+
 						/*mappedValue = highlightSearchResult(
 							textToHighlight,
 							searchString,
 							lengthLimit || textToHighlight.length,
 							str => `<b>${str}</b>`
 						);*/
-						//times.push({label: 'highlight end', time: currentTimeMillis()});
 						//log.info(toStr({mappedValue}));
 					}
+					/*if (logProfiling) {
+						times.push({label: 'highlight end', time: currentTimeMillis()});
+					}*/
 					//log.info(toStr({mappedValue}));
 				} else {
 					mappedValue = lengthLimit
@@ -161,7 +215,9 @@ export function mapMultiRepoQueryHits({
 					//log.info(toStr({v}));
 				}
 			} else if (type === 'tags') {
-				//times.push({label: 'tag start', time: currentTimeMillis()});
+				/*if (logProfiling) {
+					times.push({label: 'tag start', time: currentTimeMillis()});
+				}*/
 				mappedValue = (value ? forceArray(value) : [])
 					.map(name => {
 						const path = `/fields/${field}/${name}`;
@@ -203,14 +259,20 @@ export function mapMultiRepoQueryHits({
 							field
 						};
 					});
-				//times.push({label: 'tag end', time: currentTimeMillis()});
+					/*if (logProfiling) {
+						times.push({label: 'tag end', time: currentTimeMillis()});
+					}*/
 			}
 			set(obj, to, mappedValue);
-			//times.push({label: 'resultMappings end', time: currentTimeMillis()});
+			if (logProfiling) {
+				times.push({label: 'resultMappings end', time: currentTimeMillis()});
+			}
 		}); // resultMappings.forEach
 		//log.info(toStr({obj}));
 		return obj;
 	}).filter(x => x); // Remove missing nodes
-	//times.push({label: 'mapMultiRepoQueryHits end', time: currentTimeMillis()});
-	//return res;
+	if (logProfiling) {
+		times.push({label: 'mapMultiRepoQueryHits end', time: currentTimeMillis()});
+	}
+	return res;
 } // function mapMultiRepoQueryHits
