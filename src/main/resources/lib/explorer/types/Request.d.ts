@@ -23,7 +23,7 @@ export type HttpClientRequest = {
 		user :string
 		password :string
 	}
-	body ?:string|AnyObject
+	body ?:string|AnyObject // (string | object) Body content to send with the request, usually for POST or PUT requests. It can be of type string or stream.
 	certificates ?:unknown
 	clientCertificate ?:unknown
 	connectionTimeout ?:number
