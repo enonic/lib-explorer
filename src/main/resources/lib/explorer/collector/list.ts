@@ -1,3 +1,5 @@
+import type {Collector} from '/lib/explorer/types/index.d';
+
 //import {toStr} from '@enonic/js-utils';
 
 import {list as getApplications} from '/lib/explorer/application';
@@ -17,7 +19,7 @@ export function list() {
 	});
 	//log.debug(`startedNonSytemApps:${toStr(startedNonSytemApps)}`);
 
-	const collectors = [];
+	const collectors :Array<Collector> = [];
 	startedNonSytemApps.forEach((appKey) => {
 		const filePath = 'collectors.json';
 		const resourcePath = `${appKey}:${filePath}`;
@@ -26,11 +28,9 @@ export function list() {
 			const resourceJson :string = readText(resource.getStream());
 			//log.debug(`resourcePath:${resourcePath} resourceJson:${resourceJson}`);
 			try {
-				const resourceData = JSON.parse(resourceJson);
+				const resourceData :Array<Collector> = JSON.parse(resourceJson);
 				//log.debug(`resourcePath:${resourcePath} resourceData:${toStr(resourceData)}`);
-				resourceData.forEach((item :{
-					appName :string
-				}) => {
+				resourceData.forEach((item) => {
 					item.appName = appKey as string;
 					collectors.push(item);
 				});

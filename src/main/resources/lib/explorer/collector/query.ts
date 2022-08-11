@@ -41,14 +41,15 @@ export function query({
 	} = {};
 	collectorArray.forEach(({
 		appName,
-		collectTaskName,
+		//@ts-ignore
+		collectTaskName: taskName, // WARNING: The collector nodes had collectTaskName, not taskName
 		componentPath,
 		configAssetPath,
 		displayName
 	}) => {
-		collectorsObj[`${appName}:${collectTaskName}`] = {
+		collectorsObj[`${appName}:${taskName}`] = {
 			appName,
-			collectTaskName,
+			taskName,
 			componentPath,
 			configAssetPath,
 			displayName
@@ -63,15 +64,15 @@ export function query({
 		componentPath,
 		configAssetPath,
 		displayName,
-		taskName: collectTaskName,
+		taskName,
 		appName
 	}) => {
-		collectorsObj[`${appName}:${collectTaskName}`] = {
+		collectorsObj[`${appName}:${taskName}`] = {
 			appName,
-			collectTaskName,
 			componentPath,
 			configAssetPath,
-			displayName
+			displayName,
+			taskName
 		};
 	});
 	//log.info(`collectorsObj:${toStr({collectorsObj})}`);
