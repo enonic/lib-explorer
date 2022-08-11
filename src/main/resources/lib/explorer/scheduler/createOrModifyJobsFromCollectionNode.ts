@@ -43,12 +43,12 @@ export function getCollectors({
 		connection: connection as RepoConnection
 	}).hits.forEach(({
 		appName,
-		collectTaskName
+		taskName
 	} :{
 		appName :Application.Key
-		collectTaskName :TaskName
+		taskName :TaskName
 	}) => {
-		collectors[`${appName}:${collectTaskName}` as TaskDescriptor] = true;
+		collectors[`${appName}:${taskName}` as TaskDescriptor] = true;
 	});
 	return collectors;
 }

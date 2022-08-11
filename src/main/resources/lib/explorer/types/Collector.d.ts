@@ -68,8 +68,8 @@ export type CollectorReactComponentParams = {
 
 export type Collector = {
 	appName :Application.Key
-	collectTaskName :TaskName
 	componentPath :string
 	configAssetPath :string
 	displayName :string
+	taskName :TaskName // Used to be collectTaskName in register
 }
