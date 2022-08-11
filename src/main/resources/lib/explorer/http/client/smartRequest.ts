@@ -1,8 +1,12 @@
-//import {toStr} from '@enonic/js-utils';
+import type {
+	HttpClientRequest,
+	Response
+} from '/lib/explorer/types/';
 
+
+//import {toStr} from '@enonic/js-utils';
 //@ts-ignore
 import {request as httpClientRequest} from '/lib/http-client';
-
 //@ts-ignore
 import {sleep} from '/lib/xp/task';
 
@@ -15,6 +19,13 @@ interface StateRef {
 //@ts-ignore
 const {currentTimeMillis} = Java.type('java.lang.System');
 
+
+type SmartRequestParams = HttpClientRequest & {
+	delay? :number
+	retries? :number
+	retryCount? :number
+	stateRef? :StateRef
+};
 
 export function smartRequest({
 	auth,
@@ -32,43 +43,9 @@ export function smartRequest({
 	retryCount = 0, // Gets incremented on recursion
 	stateRef = { prevReqFinishedAtMillis: null },
 	url
-} :{
-	url :string
-
-	auth? :string
-	body? :unknown // TODO?
-	connectionTimeout? :number
-	contentType? :string
-	delay? :number
-	headers? :{}
-	method? :string
-	multipart? :unknown // TODO?
-	params? :{}
-	proxy? :unknown // TODO?
-	readTimeout? :number
-	retries? :number
-	retryCount? :number
-	stateRef? :StateRef
-}) {
+} :SmartRequestParams) {
 	//log.info(toStr({delay, retries, retryCount}));
-	const reqParams :{
-		connectionTimeout :number
-		headers :{}
-		method :string
-		params :{}
-		readTimeout :number
-		url :string
-
-		auth? :string
-		body? :unknown // TODO?
-		contentType? :string
-		delay? :number
-		multipart? :unknown // TODO?
-		proxy? :unknown // TODO?
-		retries? :number
-		retryCount? :number
-		stateRef? :StateRef
-	} = {
+	const reqParams :SmartRequestParams = {
 		connectionTimeout,
 		headers,
 		method,
@@ -84,7 +61,7 @@ export function smartRequest({
 	if (proxy) { reqParams.proxy = proxy; }
 	//log.info(toStr({reqParams}));
 
-	let response;
+	let response :Response;
 	try {
 		if (stateRef && stateRef.prevReqFinishedAtMillis && delay) {
 			const msToSleep = delay - (currentTimeMillis() - stateRef.prevReqFinishedAtMillis);
