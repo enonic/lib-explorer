@@ -1,7 +1,4 @@
-import type {
-	HttpClientRequest,
-	Response
-} from '/lib/explorer/types/';
+import type {HttpClient} from '/lib/explorer/types/';
 
 
 //import {toStr} from '@enonic/js-utils';
@@ -20,7 +17,7 @@ interface StateRef {
 const {currentTimeMillis} = Java.type('java.lang.System');
 
 
-type SmartRequestParams = HttpClientRequest & {
+type SmartRequestParams = HttpClient.Request & {
 	delay? :number
 	retries? :number
 	retryCount? :number
@@ -61,7 +58,7 @@ export function smartRequest({
 	if (proxy) { reqParams.proxy = proxy; }
 	//log.info(toStr({reqParams}));
 
-	let response :Response;
+	let response :HttpClient.Response;
 	try {
 		if (stateRef && stateRef.prevReqFinishedAtMillis && delay) {
 			const msToSleep = delay - (currentTimeMillis() - stateRef.prevReqFinishedAtMillis);
