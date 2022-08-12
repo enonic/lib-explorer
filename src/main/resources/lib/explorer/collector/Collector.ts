@@ -201,6 +201,18 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		}
 	} // constructor
 
+	deleteDocument<T extends string|Array<string>>(keys :T) :T
+	deleteDocument(...keys :Array<string>) {
+		return this.collection.connection.delete(...keys) as string|Array<string>;
+	}
+
+	getDocumentNode<
+		DocumentNode extends AnyObject,
+		T extends string|Array<string>
+	>(keys :T) :T extends string ? DocumentNode : Array<DocumentNode>
+	getDocumentNode<DocumentNode = unknown>(...keys :Array<string>) :DocumentNode|Array<DocumentNode> {
+		return this.collection.connection.get<DocumentNode>(...keys);
+	}
 
 	progress() {
 		TRACE && log.debug(`Collector.progress this.taskProgressObj:${toStr(this.taskProgressObj)}`);
