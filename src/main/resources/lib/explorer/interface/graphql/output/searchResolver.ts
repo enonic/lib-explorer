@@ -7,8 +7,8 @@ import type {
 
 
 import {
-	getIn//,
-	//toStr
+	getIn,
+	toStr
 } from '@enonic/js-utils';
 import {
 	COLLECTION_REPO_PREFIX,
@@ -23,6 +23,10 @@ import {makeQueryParams} from './makeQueryParams';
 /*import {
 	queryResHighlightObjToArray
 } from '../highlight/output/queryResHighlightObjToArray';*/
+
+
+const DEBUG = false;
+const TRACE = false;
 
 
 export function searchResolver({
@@ -42,7 +46,7 @@ export function searchResolver({
 	//log.debug('searchResolver aggregationsArg:%s', toStr(aggregationsArg));
 	//log.debug('searchResolver filtersArg:%s', toStr(filtersArg));
 	//log.debug('searchResolver highlightArg:%s', toStr(highlightArg));
-	//log.debug('searchResolver interfaceName:%s searchString:%s', interfaceName, searchString);
+	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', interfaceName, searchString);
 
 	const {
 		collectionNameToId,
@@ -80,11 +84,11 @@ export function searchResolver({
 		stopWords,
 		thesauriNames,
 	});
-	//log.debug('searchResolver queryParams:%s', toStr(queryParams));
+	DEBUG && log.debug('searchResolver queryParams:%s', toStr(queryParams));
 
 	//@ts-ignore filters type supports array too
 	const queryRes = multiRepoReadConnection.query(queryParams);
-	//log.debug('searchResolver queryRes:%s', toStr(queryRes));
+	TRACE && log.debug('searchResolver queryRes:%s', toStr(queryRes));
 	//log.debug('searchResolver queryRes.aggregations:%s', toStr(queryRes.aggregations));
 
 	const rv :SearchResolverReturnType = {
@@ -103,10 +107,10 @@ export function searchResolver({
 				principals: [PRINCIPAL_EXPLORER_READ],
 				repoId
 			}).get<DocumentNode>(id);
-			//log.debug('collectionNode:%s', toStr(collectionNode));
+			TRACE && log.debug('collectionNode:%s', toStr(collectionNode));
 
 			const washedNode = washDocumentNode(collectionNode);
-			//log.debug('washedNode:%s', toStr(washedNode));
+			TRACE && log.debug('washedNode:%s', toStr(washedNode));
 
 			const hit :Hit = {
 				...washedNode, // Needed for ... on DocumentType_...
@@ -132,7 +136,7 @@ export function searchResolver({
 				>(collectionNode, [FIELD_PATH_META, 'modifiedTime'], undefined),
 				_score: score
 			}
-			//log.debug('hit:%s', toStr(hit));
+			DEBUG && log.debug('hit:%s', toStr(hit));
 
 			return hit;
 		}),
@@ -140,5 +144,6 @@ export function searchResolver({
 		synonyms,
 		total: queryRes.total
 	};
+	DEBUG && log.debug('rv:%s', toStr(rv));
 	return rv
 }
