@@ -11,6 +11,7 @@ import {
 	//toStr
 } from '@enonic/js-utils';
 import {
+	FIELD_PATH_META,
 	NT_DOCUMENT,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/constants';
@@ -76,8 +77,15 @@ export function makeQueryParams({
 	}
 
 	const staticFilter = addQueryFilter({
-		filter: hasValue('_nodeType', [NT_DOCUMENT]),
-		filters: {}
+		filter: {
+			exists: {
+				field: `${FIELD_PATH_META}.documentType` // Avoid nullpointer exception, this is needed in interfaceTypeResolver
+			}
+		},
+		filters: addQueryFilter({
+			filter: hasValue('_nodeType', [NT_DOCUMENT])//,
+			//filters: {}
+		})
 	});
 	//log.debug('staticFilter:%s', toStr(staticFilter));
 
