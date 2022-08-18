@@ -71,7 +71,9 @@ export function objToGraphQL({
 
 					// max:0 could be list, definetly is when min>1
 					// max:1 is NOT list
-					if (_max > 1 || _min > 1) {
+					//if (_max > 1 || _min > 1) {
+					// 2020-08-18 It's been decided that anything but max=1 is an array
+					if (_max !== 1) {
 						type = list(type); // list(type) or list(nonNull(type))
 						if (_min > 0) {
 							// When this if was one scope out, I got this error:

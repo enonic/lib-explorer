@@ -15,6 +15,8 @@ import {
 	FIELD_PATH_META,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/constants';
+import {applyDocumentTypeToDocumentNode} from '/lib/explorer/_uncoupled/document/applyDocumentTypeToDocumentNode';
+import {getDocumentTypeByName} from '/lib/explorer/documentType/getDocumentTypeByName';
 import {connect} from '/lib/explorer/repo/connect';
 import {multiConnect} from '/lib/explorer/repo/multiConnect';
 import {washDocumentNode} from '../utils/washDocumentNode';
@@ -102,18 +104,30 @@ export function searchResolver({
 			score
 		}) => {
 			const collectionName = repoId.replace(COLLECTION_REPO_PREFIX, '');
-			const collectionNode = connect({
+			const explorerRepoReadConnection = connect({
 				branch,
 				principals: [PRINCIPAL_EXPLORER_READ],
 				repoId
-			}).get<DocumentNode>(id);
-			TRACE && log.debug('collectionNode:%s', toStr(collectionNode));
+			});
+			const collectionNode = explorerRepoReadConnection.get<DocumentNode>(id);
+			log.debug('collectionNode:%s', toStr(collectionNode));
 
 			const washedNode = washDocumentNode(collectionNode);
 			TRACE && log.debug('washedNode:%s', toStr(washedNode));
 
+			const documentTypeName = getIn<
+				DocumentNode, keyof DocumentNode, DocumentNode[typeof FIELD_PATH_META]['documentType'], undefined
+			>(collectionNode, [FIELD_PATH_META, 'documentType'], undefined);
+
+			const documentType = getDocumentTypeByName({documentTypeName}); // TODO cache...
+
+			const typedDocumentNode = applyDocumentTypeToDocumentNode({
+				documentType,
+				documentNode: washedNode
+			});
+
 			const hit :Hit = {
-				...washedNode, // Needed for ... on DocumentType_...
+				...typedDocumentNode, // Needed for ... on DocumentType_...
 				_collection: collectionName,
 				_createdTime: getIn<
 					DocumentNode,
@@ -123,9 +137,9 @@ export function searchResolver({
 					string,
 					undefined
 				>(collectionNode, [FIELD_PATH_META, 'createdTime'], undefined),
-				_documentType: getIn<DocumentNode, keyof DocumentNode, DocumentNode[typeof FIELD_PATH_META]['documentType'], undefined>(collectionNode, [FIELD_PATH_META, 'documentType'], undefined),
+				_documentType: documentTypeName,
 				_highlight: highlightObj, //queryResHighlightObjToArray({highlightObj}),
-				_json: washedNode,
+				_json: typedDocumentNode, //washedNode,
 				_modifiedTime: getIn<
 					DocumentNode,
 					//[typeof FIELD_PATH_META, 'modifiedTime'] // not keyof DocumentNode

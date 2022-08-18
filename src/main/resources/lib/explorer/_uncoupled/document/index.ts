@@ -1,4 +1,5 @@
 export {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
+export {applyDocumentTypeToDocumentNode} from './applyDocumentTypeToDocumentNode';
 export {cleanData} from './cleanData';
 export {constrainPropertyNames} from './constrainPropertyNames';
 export {create} from './create';
