@@ -110,7 +110,7 @@ export function searchResolver({
 				repoId
 			});
 			const collectionNode = explorerRepoReadConnection.get<DocumentNode>(id);
-			log.debug('collectionNode:%s', toStr(collectionNode));
+			TRACE && log.debug('collectionNode:%s', toStr(collectionNode));
 
 			const washedNode = washDocumentNode(collectionNode);
 			TRACE && log.debug('washedNode:%s', toStr(washedNode));
