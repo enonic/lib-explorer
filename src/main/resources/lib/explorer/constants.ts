@@ -147,3 +147,13 @@ export const EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED = 'explorer.do
 
 export const EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED = `${EVENT_TYPE_PREFIX_CUSTOM}.${EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED}` as const;
 export const EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED = `${EVENT_TYPE_PREFIX_CUSTOM}.${EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED}` as const;
+
+//──────────────────────────────────────────────────────────────────────────────
+// Default values
+//──────────────────────────────────────────────────────────────────────────────
+
+// NOTE: This constant is duplicated in app-explorer/src/main/resources/assets/react/constants.ts
+export const DEFAULT_INTERFACE_FIELDS = [{
+	name: '_alltext',
+	boost: 1
+}];

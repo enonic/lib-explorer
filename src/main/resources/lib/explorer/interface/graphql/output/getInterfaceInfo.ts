@@ -1,11 +1,16 @@
+import type {InterfaceField} from '/lib/explorer/types/';
 import type {CollectionNode} from '/lib/explorer/types/Collection.d';
 
 
 import {
-	forceArray//,
+	forceArray,
+	isSet//,
 	//toStr
 } from '@enonic/js-utils';
-import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/constants';
+import {
+	DEFAULT_INTERFACE_FIELDS,
+	PRINCIPAL_EXPLORER_READ
+} from '/lib/explorer/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {getCollectionIds} from '/lib/explorer/collection/getCollectionIds';
 import {get as getInterface} from '/lib/explorer/interface/get';
@@ -27,13 +32,28 @@ export function getInterfaceInfo({
 
 	const filteredInterfaceNode = coerseInterfaceType(interfaceNode);
 
+
 	const {
 		_id: interfaceId,
-		fields = [],// = DEFAULT_INTERFACE_FIELDS, TODO This wont work when fields = [] which filter does
 		stopWords,
 		synonymIds
 	} = filteredInterfaceNode;
 	//log.debug('synonymIds:%s', toStr(synonymIds));
+
+	let {fields} = filteredInterfaceNode
+	if (isSet(fields)) {
+		if (Array.isArray(fields)) {
+			if (!fields.length) { // Empty array
+				fields = DEFAULT_INTERFACE_FIELDS;
+			} /*else {
+				// Everything is fine, so no-op
+			}*/
+		} else { // Not an array
+			fields = [fields as unknown as InterfaceField];
+		}
+	} else {
+		fields = DEFAULT_INTERFACE_FIELDS;
+	}
 
 	let {
 		collectionIds,
