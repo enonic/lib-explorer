@@ -8,8 +8,8 @@ import {
 	addQueryFilter,
 	forceArray,
 	isSet,
-	storage//,
-	//toStr
+	storage,
+	toStr
 } from '@enonic/js-utils';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {replaceSyntax} from '/lib/explorer/query/replaceSyntax';
@@ -40,7 +40,8 @@ export function getSynonymsFromSearchString({
 	expand = false,
 	explain = false,
 	locales,
-	searchString,
+	logQuery = false,
+	searchString = '',
 	stemming = true,
 	showSynonyms = false,
 	thesauri,
@@ -55,6 +56,7 @@ export function getSynonymsFromSearchString({
 	expand ?:boolean
 	explain ?:boolean
 	locales ?:string|Array<string>
+	logQuery ?:boolean
 	searchString ?:string
 	showSynonyms ?:boolean
 	stemming ?:boolean
@@ -73,7 +75,7 @@ export function getSynonymsFromSearchString({
 	}).hits.map(({_name}) => _name);
 	//log.debug('activeThesauri:%s', toStr(activeThesauri));
 
-	const washedSearchString = ws(replaceSyntax({string: searchString}));
+	const washedSearchString = ws(replaceSyntax({string: searchString.toLowerCase()}));
 
 	const useArray :Array<SynonymUse> = ['both', 'from'];
 	const resultUseArray :Array<SynonymUse> = [
@@ -93,11 +95,19 @@ export function getSynonymsFromSearchString({
 	const stemmedShouldQueries = [];
 	const ngramShouldQueries = [];
 	const rootShouldQueries = [];
+	const highlightProperties = {};
 
 	if (localesArray) {
 		const fields :Array<string> = [];
 		for (let i = 0; i < localesArray.length; i++) {
 			const locale = localesArray[i];
+			if (showSynonyms) {
+				highlightProperties[`languages.${locale}.both.synonym`] = {};
+				highlightProperties[`languages.${locale}.from.synonym`] = {};
+				if (expand) {
+					highlightProperties[`languages.${locale}.to.synonym`] = {};
+				}
+			}
 			useArray.forEach((use) => {
 				fields.push(`languages.${locale}.${use}.synonym`);
 			});
@@ -196,36 +206,40 @@ export function getSynonymsFromSearchString({
 			direction: 'DESC'
 		}
 	};
-	//log.debug('querySynonymsParams:%s', toStr(querySynonymsParams));
 
-	if (showSynonyms) {
+	if (Object.keys(highlightProperties).length) {
 		querySynonymsParams.highlight = {
-			numberOfFragments: 10,
+			numberOfFragments: 1,
 			postTag: '</b>',
 			preTag: '<b>',
-			properties: {
-				from: {}
-			}
+			properties: highlightProperties
 		};
-		if (expand) {
-			querySynonymsParams.highlight.properties['to'] = {};
-		}
 	}
-	//log.debug('querySynonymsParams:%s', toStr(querySynonymsParams));
+
+	if (logQuery) {
+		log.info('querySynonymsParams:%s', toStr(querySynonymsParams));
+	}
 
 	const querySynonymsRes = querySynonyms(querySynonymsParams);
 	//log.debug('querySynonymsRes:%s', toStr(querySynonymsRes));
 
-	return querySynonymsRes.hits.map(({
-		_highlight,
-		_score,
-		languages,
-		thesaurus: thesaurusName,
-	}) => {
+	const synonyms :SynonymsArray = [];
+	for (let i = 0; i < querySynonymsRes.hits.length; i++) {
+		const {
+			_highlight,
+			_score,
+			languages,
+			thesaurus: thesaurusName,
+		} = querySynonymsRes.hits[i];
 		//log.debug('_highlight:%s', toStr(_highlight));
 		//log.debug('languages:%s', toStr(languages));
-		const from :Array<string> = [];
-		const to :Array<string> = [];
+
+		//const from :Array<string> = [];
+		//const to :Array<string> = [];
+		const synonymsToApply :{
+			locale :string
+			synonym :string
+		}[]= [];
 		for (let i = 0; i < languages.length; i++) {
 			const language = languages[i];
 			const {
@@ -258,13 +272,23 @@ export function getSynonymsFromSearchString({
 							//log.debug('washedSynonym:%s', toStr(washedSynonym));
 							if (!washedSearchString.includes(washedSynonym)) {
 								if (use === 'from') {
-									if (!from.includes(washedSynonym)) {
-										from.push(washedSynonym)
-									}
-								} else {
-									if (!to.includes(washedSynonym)) {
-										to.push(washedSynonym)
-									}
+									//if (!from.includes(washedSynonym)) {
+										//from.push(washedSynonym);
+										if (expand) {
+											synonymsToApply.push({
+												locale,
+												synonym: washedSynonym
+											});
+										}
+									//}
+								} else {  // both, to
+									//if (!to.includes(washedSynonym)) {
+										//to.push(washedSynonym);
+										synonymsToApply.push({
+											locale,
+											synonym: washedSynonym
+										});
+									//}
 								}
 							}
 						}
@@ -274,12 +298,14 @@ export function getSynonymsFromSearchString({
 		} // for languages
 		//log.debug('from:%s', toStr(from));
 		//log.debug('to:%s', toStr(to));
-		return {
-			from,
+		synonyms.push({
+			//from,
 			_highlight,
 			_score,
+			synonyms: synonymsToApply,
 			thesaurusName,
-			to
-		};
-	});
+			//to
+		});
+	}; // for
+	return synonyms;
 } // getSynonymsFromSearchString

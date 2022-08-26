@@ -9,6 +9,8 @@ export type Headers = {
 	'Accept-Charset' ?:string
 	'Accept-Encoding' ?:string
 	Authorization ?:string
+	'Explorer-Log-Query' ?:'1'
+	'Explorer-Log-Synonyms-Query' ?:'1'
 	'If-None-Match' ?:string
 	'User-Agent' ?:string
 }

@@ -42,12 +42,15 @@ export function searchResolver({
 		start = 0
 	},
 	context: {
-		interfaceName
+		interfaceName,
+		logQuery = false,
+		logSynonymsQuery = false
 	}
 } :SearchResolverEnv) :SearchResolverReturnType {
 	//log.debug('searchResolver aggregationsArg:%s', toStr(aggregationsArg));
 	//log.debug('searchResolver filtersArg:%s', toStr(filtersArg));
 	//log.debug('searchResolver highlightArg:%s', toStr(highlightArg));
+	//log.debug('searchResolver logQuery:%s', toStr(logQuery));
 	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', interfaceName, searchString);
 
 	const {
@@ -81,12 +84,15 @@ export function searchResolver({
 		interfaceId,
 		languages,
 		localesInSelectedThesauri,
+		logSynonymsQuery,
 		searchString,
 		start,
 		stopWords,
 		thesauriNames,
 	});
-	DEBUG && log.debug('searchResolver queryParams:%s', toStr(queryParams));
+	if (logQuery) {
+		log.info('searchResolver interfaceName:%s queryParams:%s', interfaceName, toStr(queryParams));
+	}
 
 	//@ts-ignore filters type supports array too
 	const queryRes = multiRepoReadConnection.query(queryParams);

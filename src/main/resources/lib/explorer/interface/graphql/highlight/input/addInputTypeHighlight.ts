@@ -31,7 +31,6 @@ export function addInputTypeHighlight({
 	addInputFieldsHighlightPropertyOptions({glue}); // Initializes GQL_INPUT_FIELDS_HIGHLIGHT_PROPERTY_OPTIONS
 	return glue.addInputType({
 		name: GQL_INPUT_TYPE_HIGHLIGHT,
-		//description: '',
 		fields: {
 			encoder: { // Global only
 				type: addEnumHighlightOptionEncoders({glue})

@@ -21,7 +21,8 @@ import {removeStopWords} from '/lib/explorer/query/removeStopWords';
 import {wash} from '/lib/explorer/query/wash';
 import {get as getStopWordsList} from '/lib/explorer/stopWords/get';
 import {getSynonymsFromSearchString} from '/lib/explorer/synonym/getSynonymsFromSearchString';
-import {flattenSynonyms} from '/lib/explorer/synonym/flattenSynonyms';
+import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
+//import {flattenSynonyms} from '/lib/explorer/synonym/flattenSynonyms';
 import {
 	createAggregation,
 	createFilters
@@ -47,6 +48,7 @@ export function makeQueryParams({
 	thesauriNames,
 	// Optional
 	count, // default is undefined which means 10
+	logSynonymsQuery = false,
 	start // default is undefined which means 0
 } :{
 	aggregationsArg :Array<AnyObject>
@@ -61,6 +63,7 @@ export function makeQueryParams({
 	thesauriNames :Array<string>
 	// Optional
 	count ?:number
+	logSynonymsQuery ?:boolean
 	start ?:number
 }) {
 	//log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
@@ -127,6 +130,13 @@ export function makeQueryParams({
 		string: washedSearchString
 	});
 
+	//log.debug('fields:%s', toStr(fields));
+	const query = makeQuery({
+		fields,
+		searchStringWithoutStopWords
+	});
+	//log.debug('query:%s', toStr(query));
+
 	const synonyms = getSynonymsFromSearchString({
 		//expand,
 		//explain,
@@ -134,24 +144,60 @@ export function makeQueryParams({
 		defaultLocales: localesInSelectedThesauri,
 		interfaceId,
 		locales: languages,
+		logQuery: logSynonymsQuery,
 		searchString: searchStringWithoutStopWords,
 		showSynonyms: true,
 		thesauri: thesauriNames
 	});
 	//log.debug('synonyms:%s', toStr(synonyms));
 
-	const flattenedSynonyms = flattenSynonyms({
+	const appliedFulltext = [];
+	for (let i = 0; i < synonyms.length; i++) {
+		const {
+			synonyms: synonymsToApply
+		} = synonyms[i];
+		for (let j = 0; j < synonymsToApply.length; j++) {
+			const {
+				locale,
+				synonym
+			} = synonymsToApply[j];
+			if (!appliedFulltext.includes(synonym)) {
+				const aSynonymFulltextQuery = {
+					fulltext: {
+						fields: fields.map(({name}) => name), // NOTE: No boosting
+						operator: 'AND',
+						query: synonym
+					}
+				};
+				//@ts-ignore // We know it's a list
+				query.boolean.should.push(aSynonymFulltextQuery);
+				appliedFulltext.push(synonym);
+			}
+			if (locale !== 'zxx') {
+				const stemmingLanguage = stemmingLanguageFromLocale(locale);
+				if (stemmingLanguage) {
+					const aSynonymStemmedQuery = {
+						stemmed: {
+							fields: fields.map(({name}) => name), // NOTE: No boosting
+							operator: 'AND',
+							query: synonym,
+							language: stemmingLanguageFromLocale(locale)
+						}
+					};
+					//@ts-ignore // We know it's a list
+					query.boolean.should.push(aSynonymStemmedQuery);
+				} else {
+					log.warning(`Unable to guess stemmingLanguage from locale:${locale}`);
+				} // stemmingLanguage
+			} // !zxx
+		} // for synonymsToApply[j]
+	} // for synonyms[i]
+
+	/*const flattenedSynonyms = flattenSynonyms({
 		//expand,
 		synonyms
 	}).map(s => `${s}`); // Removed double quotes https://enonic.zendesk.com/agent/tickets/3714
 	//log.debug('flattenedSynonyms:%s', toStr(flattenedSynonyms));
-
-	//log.debug('fields:%s', toStr(fields));
-	const query = makeQuery({
-		fields,
-		searchStringWithoutStopWords
-	});
-	//log.debug('query:%s', toStr(query));
 
 	if (flattenedSynonyms) {
 		for (let i = 0; i < flattenedSynonyms.length; i++) {
@@ -169,7 +215,7 @@ export function makeQueryParams({
 			query.boolean.should.push(aSynonymQuery);
 			//log.debug('after query.boolean.should:%s', toStr(query.boolean.should));
 		} // for flattenedSynonyms
-	}
+	}*/
 	//log.debug('query:%s', toStr(query));
 
 	return {

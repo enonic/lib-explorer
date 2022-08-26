@@ -12,6 +12,8 @@ export type {EmptyObject} from '/lib/explorer/types/index.d';
 
 export type GraphQLContext = {
 	interfaceName :string
+	logQuery ?:boolean
+	logSynonymsQuery ?:boolean
 }
 
 type AggregationsArg = Array<AnyObject> // TODO?
