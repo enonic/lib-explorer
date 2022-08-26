@@ -15,9 +15,7 @@
     "diff": "^5",
     "fast-deep-equal": "^3",
     "human-object-diff": "^2",
-    "jquery": "^3",
     "jsuri": "^1",
-    "semver": "^7",
     "traverse": "^0",
     "uri-js": "^4",
     "uuid": "^8"
@@ -96,7 +94,6 @@
     "eslint-plugin-react": "^7",
     "eslint-plugin-react-hooks": "^4",
     "glob": "^8",
-    "is-uuid": "^1",
     "mocha": "^10",
     "parallel": "^1",
     "path": "^0",
