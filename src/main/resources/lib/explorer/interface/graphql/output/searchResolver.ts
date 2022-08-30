@@ -39,7 +39,8 @@ export function searchResolver({
 		highlight: highlightArg,
 		languages,
 		searchString = '', // :string
-		start = 0
+		start = 0,
+		//synonyms: synonymsArg
 	},
 	context: {
 		interfaceName,
@@ -51,6 +52,7 @@ export function searchResolver({
 	//log.debug('searchResolver filtersArg:%s', toStr(filtersArg));
 	//log.debug('searchResolver highlightArg:%s', toStr(highlightArg));
 	//log.debug('searchResolver logQuery:%s', toStr(logQuery));
+	//log.debug('searchResolver synonymsArg:%s', toStr(synonymsArg));
 	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', interfaceName, searchString);
 
 	const {

@@ -38,7 +38,7 @@ export function getInterfaceInfo({
 		stopWords,
 		synonymIds
 	} = filteredInterfaceNode;
-	//log.debug('synonymIds:%s', toStr(synonymIds));
+	//log.debug('getInterfaceInfo synonymIds:%s', toStr(synonymIds));
 
 	let {fields} = filteredInterfaceNode
 	if (isSet(fields)) {
@@ -113,8 +113,8 @@ export function getInterfaceInfo({
 			}
 		}).filter((x) => x)
 		: []; // Remove missing thesauri.
-	//log.debug('thesauriNames:%s', toStr(thesauriNames));
-	//log.debug('localesInSelectedThesauri:%s', toStr(localesInSelectedThesauri));
+	//log.debug('getInterfaceInfo thesauriNames:%s', toStr(thesauriNames));
+	//log.debug('getInterfaceInfo localesInSelectedThesauri:%s', toStr(localesInSelectedThesauri));
 
 	return {
 		collectionNameToId,
