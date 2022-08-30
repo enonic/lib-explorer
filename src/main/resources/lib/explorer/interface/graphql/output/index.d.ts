@@ -25,6 +25,10 @@ type SearchCommonArgs = {
 	highlight ?:Highlight
 	languages ?:Array<string>
 	searchString :string
+	/*synonyms ?:Array<{
+		locale :string
+		synonym :string
+	}>*/
 }
 
 export type SearchConnectionResolverEnv = {

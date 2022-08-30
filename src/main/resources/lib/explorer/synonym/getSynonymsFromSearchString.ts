@@ -63,6 +63,8 @@ export function getSynonymsFromSearchString({
 	thesauri ?:Array<string>
 	useNgram ?:boolean
 }) :SynonymsArray {
+	//log.debug('getSynonymsFromSearchString defaultLocales:%s', toStr(defaultLocales));
+
 	if (!searchString || !thesauri) {
 		return [];
 	}
@@ -87,9 +89,10 @@ export function getSynonymsFromSearchString({
 		useArray.push('to');
 		//resultUseArray.push('from'); // expand handeled in flattenSynonyms
 	}
+	//log.debug('getSynonymsFromSearchString useArray:%s', toStr(useArray));
 
 	const localesArray = isSet(locales) ? forceArray(locales) : defaultLocales;
-	//log.debug('localesArray:%s', toStr(localesArray));
+	//log.debug('getSynonymsFromSearchString localesArray:%s', toStr(localesArray));
 
 	const fulltextShouldQueries = [];
 	const stemmedShouldQueries = [];
@@ -97,7 +100,7 @@ export function getSynonymsFromSearchString({
 	const rootShouldQueries = [];
 	const highlightProperties = {};
 
-	if (localesArray) {
+	if (localesArray && localesArray.length) {
 		const fields :Array<string> = [];
 		for (let i = 0; i < localesArray.length; i++) {
 			const locale = localesArray[i];
@@ -273,21 +276,21 @@ export function getSynonymsFromSearchString({
 							if (!washedSearchString.includes(washedSynonym)) {
 								if (use === 'from') {
 									//if (!from.includes(washedSynonym)) {
-										//from.push(washedSynonym);
-										if (expand) {
-											synonymsToApply.push({
-												locale,
-												synonym: washedSynonym
-											});
-										}
-									//}
-								} else {  // both, to
-									//if (!to.includes(washedSynonym)) {
-										//to.push(washedSynonym);
+									//from.push(washedSynonym);
+									if (expand) {
 										synonymsToApply.push({
 											locale,
 											synonym: washedSynonym
 										});
+									}
+									//}
+								} else {  // both, to
+									//if (!to.includes(washedSynonym)) {
+									//to.push(washedSynonym);
+									synonymsToApply.push({
+										locale,
+										synonym: washedSynonym
+									});
 									//}
 								}
 							}
@@ -306,6 +309,10 @@ export function getSynonymsFromSearchString({
 			thesaurusName,
 			//to
 		});
-	}; // for
+	} // for
+	/*log.debug(
+		'count:%s expand:%s locales:%s searchString:%s stemming:%s thesauri:%s useNgram:%s synonyms:%s',
+		count, expand, locales, searchString, stemming, toStr(thesauri), useNgram, toStr(synonyms)
+	);*/
 	return synonyms;
 } // getSynonymsFromSearchString
