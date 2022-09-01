@@ -7,6 +7,7 @@ import type {
 
 //import {toStr} from '@enonic/js-utils';
 import {
+	GraphQLBoolean,
 	GraphQLInt,
 	GraphQLString,
 	newSchemaGenerator,
@@ -32,6 +33,8 @@ import {searchResolver} from '/lib/explorer/interface/graphql/output/searchResol
 import {addDocumentTypeObjectTypes} from '/lib/explorer/interface/graphql/output/addDocumentTypeObjectTypes';
 import {addObjectTypeSearchConnection} from '/lib/explorer/interface/graphql/output/addObjectTypeSearchConnection';
 import {addObjectTypeSearchResult} from '/lib/explorer/interface/graphql/output/addObjectTypeSearchResult';
+
+import {addQueryFieldQuerySynonyms} from '/lib/explorer/interface/graphql/queries/addQueryFieldQuerySynonyms';
 
 
 export function makeSchema() {
@@ -80,8 +83,8 @@ export function makeSchema() {
 			glue
 		}),
 		languages: list(GraphQLString),
-		searchString: GraphQLString,
-		//synonyms: list(addInputTypeSynonyms({glue}))
+		profiling: GraphQLBoolean,
+		searchString: GraphQLString // Can't be nonNull when used as subQuery
 	}
 
 	glue.addQueryField<SearchConnectionResolverEnv, SearchResolverReturnType>({
@@ -100,6 +103,7 @@ export function makeSchema() {
 				first = 10, // count
 				highlight,
 				languages,
+				profiling,
 				searchString//,
 				//synonyms
 			} = env.args;
@@ -119,11 +123,13 @@ export function makeSchema() {
 					filters,
 					highlight,
 					languages,
+					profiling,
 					searchString,
 					start//,
 					//synonyms
 				},
-				context: env.context
+				context: env.context,
+				source: env.source
 			});
 			return res;
 		},
@@ -140,6 +146,8 @@ export function makeSchema() {
 		resolve: (env) => searchResolver(env),
 		type: addObjectTypeSearchResult({glue})
 	}); // addQueryField search
+
+	addQueryFieldQuerySynonyms({glue});
 
 	return glue.buildSchema();
 } // makeSchema

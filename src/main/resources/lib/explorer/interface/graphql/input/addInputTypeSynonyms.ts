@@ -14,7 +14,7 @@ export function addInputTypeSynonyms({
 } :{
 	glue :Glue
 }) {
-	glue.addInputType({
+	return glue.addInputType({
 		name: GQL_INPUT_TYPE_SYNOYMS,
 		fields: {
 			locale: { type: nonNull(GraphQLString) },

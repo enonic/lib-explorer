@@ -2,12 +2,15 @@ import type {
 	AnyObject,
 	InterfaceField
 } from '/lib/explorer/types/index.d';
+import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
+import {SynonymsArray} from '/lib/explorer/synonym/index.d';
 import type {Highlight} from '../highlight/input/index.d';
 
 
 import {
 	addQueryFilter,
-	forceArray//,
+	forceArray,
+	isSet//,
 	//toStr
 } from '@enonic/js-utils';
 import {
@@ -22,7 +25,7 @@ import {wash} from '/lib/explorer/query/wash';
 import {get as getStopWordsList} from '/lib/explorer/stopWords/get';
 import {getSynonymsFromSearchString} from '/lib/explorer/synonym/getSynonymsFromSearchString';
 import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
-//import {flattenSynonyms} from '/lib/explorer/synonym/flattenSynonyms';
+//import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 import {
 	createAggregation,
 	createFilters
@@ -45,25 +48,35 @@ export function makeQueryParams({
 	localesInSelectedThesauri,
 	searchString = '',
 	stopWords,
+	synonymsSource,
 	thesauriNames,
 	// Optional
 	count, // default is undefined which means 10
+	doProfiling = false,
 	logSynonymsQuery = false,
+	logSynonymsQueryResult = false,
+	profilingArray = [],
+	profilingLabel = '',
 	start // default is undefined which means 0
 } :{
 	aggregationsArg :Array<AnyObject>
+	doProfiling ?:boolean
 	fields :Array<InterfaceField>
 	filtersArg ?:Array<AnyObject>
 	highlightArg ?:Highlight
 	interfaceId :string
 	languages :Array<string>
 	localesInSelectedThesauri :Array<string>
+	profilingArray ?:Array<Profiling>
+	profilingLabel ?:string
 	searchString :string
 	stopWords :Array<string>
+	synonymsSource :SynonymsArray
 	thesauriNames :Array<string>
 	// Optional
 	count ?:number
 	logSynonymsQuery ?:boolean
+	logSynonymsQueryResult ?:boolean
 	start ?:number
 }) {
 	//log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
@@ -137,18 +150,24 @@ export function makeQueryParams({
 	});
 	//log.debug('query:%s', toStr(query));
 
-	const synonyms = getSynonymsFromSearchString({
-		//expand,
-		//explain,
-		explorerRepoReadConnection,
-		defaultLocales: localesInSelectedThesauri,
-		interfaceId,
-		locales: languages,
-		logQuery: logSynonymsQuery,
-		searchString: searchStringWithoutStopWords,
-		showSynonyms: true,
-		thesauri: thesauriNames
-	});
+	const synonyms = isSet(synonymsSource)
+		? synonymsSource
+		: getSynonymsFromSearchString({
+			//expand,
+			//explain,
+			explorerRepoReadConnection,
+			defaultLocales: localesInSelectedThesauri,
+			doProfiling,
+			interfaceId,
+			locales: languages,
+			logQuery: logSynonymsQuery,
+			logQueryResult: logSynonymsQueryResult,
+			profilingArray,
+			profilingLabel,
+			searchString: searchStringWithoutStopWords,
+			showSynonyms: true, // TODO hardcode
+			thesauri: thesauriNames
+		});
 	//log.debug('synonyms:%s', toStr(synonyms));
 
 	const appliedFulltext = [];
@@ -192,31 +211,6 @@ export function makeQueryParams({
 			} // !zxx
 		} // for synonymsToApply[j]
 	} // for synonyms[i]
-
-	/*const flattenedSynonyms = flattenSynonyms({
-		//expand,
-		synonyms
-	}).map(s => `${s}`); // Removed double quotes https://enonic.zendesk.com/agent/tickets/3714
-	//log.debug('flattenedSynonyms:%s', toStr(flattenedSynonyms));
-
-	if (flattenedSynonyms) {
-		for (let i = 0; i < flattenedSynonyms.length; i++) {
-			//log.debug(`flattenedSynonyms[${i}]:%s`, flattenedSynonyms[i]);
-			//log.debug('before query.boolean.should:%s', toStr(query.boolean.should));
-			const aSynonymQuery = {
-				fulltext: {
-					fields: fields.map(({name}) => name), // NOTE: No boosting
-					operator: 'AND',
-					query: flattenedSynonyms[i]
-				}
-			};
-			//log.debug('aSynonymQuery:%s', toStr(aSynonymQuery));
-			//@ts-ignore // We know it's a list
-			query.boolean.should.push(aSynonymQuery);
-			//log.debug('after query.boolean.should:%s', toStr(query.boolean.should));
-		} // for flattenedSynonyms
-	}*/
-	//log.debug('query:%s', toStr(query));
 
 	return {
 		queryParams: {
