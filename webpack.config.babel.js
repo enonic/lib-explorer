@@ -168,7 +168,8 @@ const WEBPACK_CONFIG = [{
 	plugins: [
 		new webpack.ProvidePlugin({
 			// Not always polyfilled only when identifier global found
-			global: path.resolve(__dirname, 'src/main/resources/lib/nashorn/global.es')
+			global: path.resolve(__dirname, 'src/main/resources/lib/nashorn/global.es')//,
+			//process: 'process/browser' // Needed by graphql-parse-fields
 		})
 	],
 	resolve: {

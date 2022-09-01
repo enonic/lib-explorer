@@ -8,7 +8,7 @@ import type {
 } from '/lib/explorer/interface/graphql/output/index.d';
 
 
-import {toStr} from '@enonic/js-utils';
+//import {toStr} from '@enonic/js-utils';
 //import {parse as parseGraphqlFields} from 'parse-graphql';
 //import parseGraphqlAst from 'graphql-parse-fields'; // Needs polyfill for process
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/constants';

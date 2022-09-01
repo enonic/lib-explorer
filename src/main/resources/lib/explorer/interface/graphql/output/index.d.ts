@@ -77,7 +77,7 @@ type SearchCommonArgs = {
 export type SearchResolverSource = {
 	interfaceInfo ?:InterfaceInfo // Used in backend, not returned to client
 	languages ?:Array<string>
-	profiling ?:boolean
+	profiling ?:Array<Profiling>
 	searchString ?:string
 	synonyms ?:SynonymsArray
 }
