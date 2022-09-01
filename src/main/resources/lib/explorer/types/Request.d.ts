@@ -11,6 +11,7 @@ export type Headers = {
 	Authorization ?:string
 	'Explorer-Log-Query' ?:'1'
 	'Explorer-Log-Synonyms-Query' ?:'1'
+	'Explorer-Log-Synonyms-Query-Result' ?:'1'
 	'If-None-Match' ?:string
 	'User-Agent' ?:string
 }

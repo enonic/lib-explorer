@@ -1,18 +1,18 @@
 import type {Glue} from '../utils/Glue';
 
 
-import {toStr} from '@enonic/js-utils';
+//import {toStr} from '@enonic/js-utils';
 import {
 	Json as GraphQLJson,
-	GraphQLFloat,
 	GraphQLInt,
-	GraphQLString,
 	nonNull,
 	list//,
 	//reference
 	//@ts-ignore
 } from '/lib/graphql';
 import {GQL_INTERFACE_TYPE_DOCUMENT} from './constants';
+import {addObjectTypeProfiling} from '/lib/explorer/interface/graphql/output/addObjectTypeProfiling';
+import {addObjectTypeSearchResultSynonym} from '/lib/explorer/interface/graphql/output/addObjectTypeSearchResultSynonym';
 
 
 export function addObjectTypeSearchResult({glue} :{glue :Glue}) {
@@ -39,33 +39,11 @@ export function addObjectTypeSearchResult({glue} :{glue :Glue}) {
 					}
 				})
 			},*/
+			profiling: {
+				type: list(addObjectTypeProfiling({glue}))
+			},
 			start: { type: nonNull(GraphQLInt) }, // Used in search connection
-			synonyms: { type: list(glue.addObjectType({
-				name: 'SearchResultSynonyms',
-				fields: {
-					_highlight: { type: GraphQLJson
-						/*glue.addObjectType({
-						name: 'SearchResultSynonymsHighlight',
-						fields: {
-							from: { type: list(GraphQLString) },
-							to: { type: list(GraphQLString) } // Only when expand = true
-						}
-					})*/},
-					_score: { type: GraphQLFloat },
-					//from: { type: nonNull(list(GraphQLString)) },
-					synonyms: {
-						type: list(glue.addObjectType({
-							name: 'SearchResultSynonym',
-							fields: {
-								locale: { type: nonNull(GraphQLString) },
-								synonym: { type: nonNull(GraphQLString) }
-							}
-						}))
-					},
-					thesaurusName: { type: nonNull(GraphQLString) },
-					//to: { type: nonNull(list(GraphQLString)) }
-				}
-			}))},
+			synonyms: { type: list(addObjectTypeSearchResultSynonym({glue}))},
 			total: { type: nonNull(GraphQLInt) }
 		}
 	});

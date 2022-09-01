@@ -40,7 +40,7 @@ export function getInterfaceInfo({
 	} = filteredInterfaceNode;
 	//log.debug('getInterfaceInfo synonymIds:%s', toStr(synonymIds));
 
-	let {fields} = filteredInterfaceNode
+	let {fields} = filteredInterfaceNode;
 	if (isSet(fields)) {
 		if (Array.isArray(fields)) {
 			if (!fields.length) { // Empty array

@@ -10,7 +10,10 @@ import type {
 } from './index.d';
 
 
-import {hasOwnProperty} from '@enonic/js-utils';
+import {
+	isSet,
+	hasOwnProperty
+} from '@enonic/js-utils';
 
 
 /*
@@ -34,6 +37,9 @@ function addEnumType({
 	values :GraphQL.EnumValues
 }) :GraphQL.EnumType {
 	//log.debug(`addEnumType({ name: ${name} })`);
+	if (isSet(this.enumTypes[name])) {
+		return this.enumTypes[name];
+	}
 	if(this.uniqueNames[name]) {
 		throw new Error(`Name ${name} already used as ${this.uniqueNames[name]}!`);
 	}
@@ -61,8 +67,10 @@ function addInputFields<InputFields extends AnyObject = AnyObject>({
 	name :string
 	fields :InputFields
 }) {
-	if (this.inputFields[name]) {
-		throw new Error(`InputFields ${name} already added!`);
+	if (isSet(this.inputFields[name])) {
+		//log.debug(`InputFields ${name} already added :)`);
+		return this.inputFields[name];
+		//throw new Error(`InputFields ${name} already added!`);
 	}
 	this.inputFields[name] = fields;
 	return this.inputFields[name];
@@ -85,6 +93,10 @@ function addInputType({
 	name :string
 }) {
 	//log.debug(`addInputType({ name: ${name} })`);
+	if (isSet(this.inputTypes[name])) {
+		//log.debug(`Name ${name} already added as ${this.uniqueNames[name]} :)`);
+		return this.inputTypes[name];
+	}
 	if(this.uniqueNames[name]) {
 		throw new Error(`Name ${name} already used as ${this.uniqueNames[name]}!`);
 	}
@@ -116,7 +128,7 @@ function addObjectType({
 	name :string
 }) {
 	//log.debug('Glue addObjectType({ name: %s })', name);
-	if(this.objectTypes[name]) {
+	if(isSet(this.objectTypes[name])) {
 		//log.debug('objectType "%s" already added, returning previous', name);
 		return this.objectTypes[name].type;
 	}
@@ -150,7 +162,7 @@ function addOutputFields<OutputFields extends AnyObject = AnyObject>({
 	name :string
 	fields :OutputFields
 }) {
-	if (this.outputFields[name]) {
+	if (isSet(this.outputFields[name])) {
 		//throw new Error(`OutputFields ${name} already added!`);
 		//log.error('OutputFields "%s" already added, returning previous', name)
 		return this.outputFields[name];
@@ -176,6 +188,10 @@ function addUnionType({
 	types :Types
 }) {
 	//log.debug(`addUnionType({ name: ${name} })`);
+	if (isSet(this.unionTypes[name])) {
+		//log.debug(`Name ${name} already used as ${this.uniqueNames[name]} :)`);
+		return this.unionTypes[name].type;
+	}
 	if(this.uniqueNames[name]) {
 		throw new Error(`Name ${name} already used as ${this.uniqueNames[name]}!`);
 	}
@@ -220,7 +236,7 @@ function addInterfaceType<Node extends AnyObject = AnyObject>({
 	name :string
 	typeResolver :TypeResolver<Node>
 }) {
-	if(this.interfaceTypes[name]) {
+	if(isSet(this.interfaceTypes[name])) {
 		//log.debug('interfaceType "%s" already added, returning previous', name);
 		return this.interfaceTypes[name].type;
 	}
@@ -271,8 +287,9 @@ function addQueryField<
 	type :GraphQLObjectType
 }) {
 	//log.debug('Glue addQueryField({ name: %s })', name);
-	if(this.queryFields[name]) {
-		throw new Error(`Name ${name} already added!`);
+	if(isSet(this.queryFields[name])) {
+		//throw new Error(`Name ${name} already added!`);
+		return this.queryFields[name];
 	}
 	this.queryFields[name] = {
 		args,

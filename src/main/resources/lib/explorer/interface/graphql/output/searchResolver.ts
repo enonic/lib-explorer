@@ -1,13 +1,15 @@
 import type {DocumentNode} from '/lib/explorer/types/index.d';
 import type {
 	Hit,
+	Profiling,
 	SearchResolverEnv,
 	SearchResolverReturnType
-} from './index.d';
+} from '/lib/explorer/interface/graphql/output/index.d';
 
 
 import {
 	getIn,
+	//isSet,
 	toStr
 } from '@enonic/js-utils';
 import {
@@ -19,6 +21,7 @@ import {applyDocumentTypeToDocumentNode} from '/lib/explorer/_uncoupled/document
 import {getDocumentTypeByName} from '/lib/explorer/documentType/getDocumentTypeByName';
 import {connect} from '/lib/explorer/repo/connect';
 import {multiConnect} from '/lib/explorer/repo/multiConnect';
+import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 import {washDocumentNode} from '../utils/washDocumentNode';
 import {getInterfaceInfo} from './getInterfaceInfo';
 import {makeQueryParams} from './makeQueryParams';
@@ -32,28 +35,56 @@ const TRACE = false;
 
 
 export function searchResolver({
+	//args,
+	//context,
+	//source,
+	source: {
+		profiling: profilingSource,// = false, // null and undefined is false, not need to initialize
+	},
 	args: {
 		aggregations: aggregationsArg,
 		count, // ?:number
 		filters: filtersArg,
 		highlight: highlightArg,
-		languages,
-		searchString = '', // :string
+		languages: languagesArg,
+		profiling: profilingArg = profilingSource,
+		searchString: searchStringArg = '', // :string
 		start = 0,
 		//synonyms: synonymsArg
 	},
 	context: {
 		interfaceName,
 		logQuery = false,
-		logSynonymsQuery = false
+		logSynonymsQuery = false,
+		logSynonymsQueryResult = false
+	},
+	source: {
+		interfaceInfo,
+		languages = languagesArg,
+		searchString = searchStringArg,
+		synonyms: synonymsSource
 	}
 } :SearchResolverEnv) :SearchResolverReturnType {
+	//log.debug('searchResolver args:%s', toStr(args));
+	//log.debug('searchResolver source:%s', toStr(source));
+	//log.debug('searchResolver profilingSource:%s', toStr(profilingSource));
+	//log.debug('searchResolver profilingArg:%s', toStr(profilingArg));
+
 	//log.debug('searchResolver aggregationsArg:%s', toStr(aggregationsArg));
 	//log.debug('searchResolver filtersArg:%s', toStr(filtersArg));
 	//log.debug('searchResolver highlightArg:%s', toStr(highlightArg));
 	//log.debug('searchResolver logQuery:%s', toStr(logQuery));
 	//log.debug('searchResolver synonymsArg:%s', toStr(synonymsArg));
 	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', interfaceName, searchString);
+	let profiling :Array<Profiling> = [];
+	if (profilingArg) {
+		profiling.push({
+			currentTimeMillis: currentTimeMillis(),
+			label: 'search',
+			operation: 'start'
+		});
+		//log.debug('profiling:%s', toStr(profiling));
+	}
 
 	const {
 		collectionNameToId,
@@ -62,7 +93,7 @@ export function searchResolver({
 		localesInSelectedThesauri,
 		stopWords,
 		thesauriNames
-	} = getInterfaceInfo({
+	} = interfaceInfo || getInterfaceInfo({
 		interfaceName
 	});
 	const multiRepoReadConnection = multiConnect({
@@ -80,6 +111,7 @@ export function searchResolver({
 	} = makeQueryParams({
 		aggregationsArg,
 		count,
+		doProfiling: profilingArg,
 		fields,
 		filtersArg,
 		highlightArg,
@@ -87,17 +119,37 @@ export function searchResolver({
 		languages,
 		localesInSelectedThesauri,
 		logSynonymsQuery,
+		logSynonymsQueryResult,
+		profilingArray: profiling,
+		profilingLabel: 'search',
 		searchString,
 		start,
 		stopWords,
+		synonymsSource,
 		thesauriNames,
 	});
+	if (profilingArg) {
+		profiling.push({
+			currentTimeMillis: currentTimeMillis(),
+			label: 'search',
+			operation: 'makeQueryParams'
+		});
+		//log.debug('profiling:%s', toStr(profiling));
+	}
 	if (logQuery) {
 		log.info('searchResolver interfaceName:%s queryParams:%s', interfaceName, toStr(queryParams));
 	}
 
 	//@ts-ignore filters type supports array too
 	const queryRes = multiRepoReadConnection.query(queryParams);
+	if (profilingArg) {
+		profiling.push({
+			currentTimeMillis: currentTimeMillis(),
+			label: 'search',
+			operation: 'query'
+		});
+		//log.debug('profiling:%s', toStr(profiling));
+	}
 	TRACE && log.debug('searchResolver queryRes:%s', toStr(queryRes));
 	//log.debug('searchResolver queryRes.aggregations:%s', toStr(queryRes.aggregations));
 
@@ -166,6 +218,15 @@ export function searchResolver({
 		synonyms,
 		total: queryRes.total
 	};
+	if (profilingArg) {
+		profiling.push({
+			currentTimeMillis: currentTimeMillis(),
+			label: 'search',
+			operation: 'process search results'
+		});
+		rv.profiling = profiling;
+		//log.debug('profiling:%s', toStr(profiling));
+	}
 	DEBUG && log.debug('rv:%s', toStr(rv));
 	return rv
 }

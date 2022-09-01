@@ -1,8 +1,8 @@
 import type {RepoConnection} from '/lib/explorer/types/index.d';
 import type {SynonymUse} from '/lib/explorer/types/Synonym.d';
+import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
 import type {QuerySynonymsParams} from '/lib/explorer/synonym/query';
 import type {SynonymsArray} from './index.d';
-
 
 import {
 	addQueryFilter,
@@ -18,6 +18,7 @@ import {query as querySynonyms} from '/lib/explorer/synonym/query';
 import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
 import {washSynonyms} from '/lib/explorer/synonym/washSynonyms';
 import {query as queryThesauri} from '/lib/explorer/thesaurus/query';
+import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 
 
 const fulltext = storage.query.dsl.fulltext;
@@ -37,10 +38,14 @@ export function getSynonymsFromSearchString({
 	interfaceId,
 	// Optional
 	count = MAX_COUNT,
+	doProfiling = false,
 	expand = false,
 	explain = false,
 	locales,
 	logQuery = false,
+	logQueryResult = false,
+	profilingArray = [],
+	profilingLabel = '',
 	searchString = '',
 	stemming = true,
 	showSynonyms = false,
@@ -53,10 +58,14 @@ export function getSynonymsFromSearchString({
 	interfaceId :string
 	// Optional
 	count ?:number
+	doProfiling ?:boolean
 	expand ?:boolean
 	explain ?:boolean
 	locales ?:string|Array<string>
 	logQuery ?:boolean
+	logQueryResult ?:boolean
+	profilingArray ?:Array<Profiling>
+	profilingLabel ?:string
 	searchString ?:string
 	showSynonyms ?:boolean
 	stemming ?:boolean
@@ -75,6 +84,14 @@ export function getSynonymsFromSearchString({
 		getSynonymsCount: false,
 		thesauri
 	}).hits.map(({_name}) => _name);
+	if (doProfiling) {
+		profilingArray.push({
+			currentTimeMillis: currentTimeMillis(),
+			label: profilingLabel,
+			operation: 'queryThesauri'
+		});
+		//log.debug('profilingArray:%s', toStr(profilingArray));
+	}
 	//log.debug('activeThesauri:%s', toStr(activeThesauri));
 
 	const washedSearchString = ws(replaceSyntax({string: searchString.toLowerCase()}));
@@ -219,11 +236,27 @@ export function getSynonymsFromSearchString({
 		};
 	}
 
+	if (doProfiling) {
+		profilingArray.push({
+			currentTimeMillis: currentTimeMillis(),
+			label: profilingLabel,
+			operation: 'querySynonymsParams'
+		});
+		//log.debug('profilingArray:%s', toStr(profilingArray));
+	}
 	if (logQuery) {
 		log.info('querySynonymsParams:%s', toStr(querySynonymsParams));
 	}
 
 	const querySynonymsRes = querySynonyms(querySynonymsParams);
+	if (doProfiling) {
+		profilingArray.push({
+			currentTimeMillis: currentTimeMillis(),
+			label: profilingLabel,
+			operation: 'query'
+		});
+		//log.debug('profilingArray:%s', toStr(profilingArray));
+	}
 	//log.debug('querySynonymsRes:%s', toStr(querySynonymsRes));
 
 	const synonyms :SynonymsArray = [];
@@ -310,9 +343,19 @@ export function getSynonymsFromSearchString({
 			//to
 		});
 	} // for
-	/*log.debug(
-		'count:%s expand:%s locales:%s searchString:%s stemming:%s thesauri:%s useNgram:%s synonyms:%s',
-		count, expand, locales, searchString, stemming, toStr(thesauri), useNgram, toStr(synonyms)
-	);*/
+	if (doProfiling) {
+		profilingArray.push({
+			currentTimeMillis: currentTimeMillis(),
+			label: profilingLabel,
+			operation: 'process synonyms'
+		});
+		//log.debug('profilingArray:%s', toStr(profilingArray));
+	}
+	if (logQueryResult) {
+		log.info(
+			'count:%s expand:%s locales:%s searchString:%s stemming:%s thesauri:%s useNgram:%s synonyms:%s',
+			count, expand, locales, searchString, stemming, toStr(thesauri), useNgram, toStr(synonyms)
+		);
+	}
 	return synonyms;
 } // getSynonymsFromSearchString
