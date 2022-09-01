@@ -9,7 +9,7 @@ import type {
 
 import {
 	getIn,
-	//isSet,
+	isSet,
 	toStr
 } from '@enonic/js-utils';
 import {
@@ -34,47 +34,56 @@ const DEBUG = false;
 const TRACE = false;
 
 
-export function searchResolver({
-	//args,
-	//context,
-	//source,
-	source: {
-		profiling: profilingSource,// = false, // null and undefined is false, not need to initialize
-	},
-	args: {
-		aggregations: aggregationsArg,
-		count, // ?:number
-		filters: filtersArg,
-		highlight: highlightArg,
-		languages: languagesArg,
-		profiling: profilingArg = profilingSource,
-		searchString: searchStringArg = '', // :string
-		start = 0,
-		//synonyms: synonymsArg
-	},
-	context: {
-		interfaceName,
-		logQuery = false,
-		logSynonymsQuery = false,
-		logSynonymsQueryResult = false
-	},
-	source: {
-		interfaceInfo,
-		languages = languagesArg,
-		searchString = searchStringArg,
-		synonyms: synonymsSource
+export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType {
+	//log.debug('searchResolver env:%s', toStr(env));
+	const {
+		args,
+		args: {
+			aggregations: aggregationsArg,
+			count, // ?:number
+			filters: filtersArg,
+			highlight: highlightArg,
+			languages: languagesArg,
+			searchString: searchStringArg = '', // :string
+			start = 0
+		},
+		context: {
+			interfaceName,
+			logQuery = false,
+			logSynonymsQuery = false,
+			logSynonymsQueryResult = false
+		}//,
+		//source// = {} // Doesn't handle null!!!
+	} = env; // avoid deconstrution error when source is null
+
+	let {source} = env;
+	if (!isSet(source)) { // handles null :)
+		source = {};
 	}
-} :SearchResolverEnv) :SearchResolverReturnType {
 	//log.debug('searchResolver args:%s', toStr(args));
 	//log.debug('searchResolver source:%s', toStr(source));
-	//log.debug('searchResolver profilingSource:%s', toStr(profilingSource));
-	//log.debug('searchResolver profilingArg:%s', toStr(profilingArg));
-
 	//log.debug('searchResolver aggregationsArg:%s', toStr(aggregationsArg));
 	//log.debug('searchResolver filtersArg:%s', toStr(filtersArg));
 	//log.debug('searchResolver highlightArg:%s', toStr(highlightArg));
 	//log.debug('searchResolver logQuery:%s', toStr(logQuery));
-	//log.debug('searchResolver synonymsArg:%s', toStr(synonymsArg));
+
+	const {
+		profiling: profilingArraySource = []
+	} = source;
+	//log.debug('searchResolver profilingArraySource:%s', toStr(profilingArraySource));
+
+	const {
+		profiling: profilingArg = Array.isArray(profilingArraySource) && profilingArraySource.length ? true : false
+	} = args;
+	//log.debug('searchResolver profilingArg:%s', toStr(profilingArg));
+
+	const {
+		interfaceInfo,
+		languages = languagesArg,
+		searchString = searchStringArg,
+		synonyms: synonymsSource
+	} = source;
+
 	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', interfaceName, searchString);
 	let profiling :Array<Profiling> = [];
 	if (profilingArg) {
