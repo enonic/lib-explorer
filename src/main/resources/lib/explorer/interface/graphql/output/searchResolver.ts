@@ -108,9 +108,14 @@ export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType
 	});
 
 
+	const collectionNames = Object.keys(collectionNameToId);
+	if (!collectionNames.length) {
+		throw new Error(`interface:${interfaceName} has no collections!`);
+	}
+
 	const multiRepoReadConnectParams = {
 		principals: [PRINCIPAL_EXPLORER_READ],
-		sources: Object.keys(collectionNameToId).map((collectionName) => ({
+		sources: collectionNames.map((collectionName) => ({
 			repoId: `${COLLECTION_REPO_PREFIX}${collectionName}`,
 			branch: 'master', // NOTE Hardcoded
 			principals: [PRINCIPAL_EXPLORER_READ]

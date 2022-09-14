@@ -102,5 +102,9 @@ export function multiConnect({
 		log.info(`${pad(times[i + 1].time - times[i].time, 4)} ${pad(times[i + 1].time - times[0].time, 4)} ${times[i + 1].label}`);
 	}*/
 
+	if (!sourcesWithExtendedPrincipals.length) {
+		throw new Error(`multiConnect: empty sources is not allowed!`);
+	}
+
 	return multiRepoConnect({sources: sourcesWithExtendedPrincipals});
 } // function multiConnect

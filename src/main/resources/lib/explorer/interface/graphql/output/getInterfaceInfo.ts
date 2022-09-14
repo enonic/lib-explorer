@@ -70,6 +70,10 @@ export function getInterfaceInfo({
 		});
 	}
 
+	if (!collectionIds.length) {
+		throw new Error(`interface:${interfaceName} has no collections!`);
+	}
+
 	const collectionIdsWithNames = forceArray(
 		explorerRepoReadConnection.get<CollectionNode>(...collectionIds) as CollectionNode
 	)
