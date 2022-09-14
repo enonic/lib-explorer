@@ -126,7 +126,7 @@ export function buildIndexConfig(
 
 	const fieldKeys = Object.keys(fieldsObj);
 	for (let i = 0; i < fieldKeys.length; i++) {
-	    const fieldPath = fieldKeys[i];
+		const fieldPath = fieldKeys[i];
 		//log.debug('fieldPath %s', fieldPath);
 
 		const {
