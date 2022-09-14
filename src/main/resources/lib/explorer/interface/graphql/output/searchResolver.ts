@@ -101,8 +101,9 @@ export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType
 		interfaceId,
 		localesInSelectedThesauri,
 		stopWords,
+		stemmingLanguages,
 		thesauriNames
-	} = interfaceInfo || getInterfaceInfo({
+	} = interfaceInfo || getInterfaceInfo({
 		interfaceName
 	});
 	const multiRepoReadConnection = multiConnect({
@@ -133,6 +134,7 @@ export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType
 		profilingLabel: 'search',
 		searchString,
 		start,
+		stemmingLanguages,
 		stopWords,
 		synonymsSource,
 		thesauriNames,
