@@ -334,7 +334,7 @@ function buildSchema() {
 		//dictionary: Object.keys(this.objectTypes).map((k) => this.objectTypes[k].type), // No need to add all objectTypes...
 		dictionary: objectTypesWithInterfaces,
 
-		//mutation:,
+		//mutation:, // NOTE: Since this is typically a publicly available API, it should not contain any mutations!
 		query: this.addObjectType({
 			name: 'Query',
 			fields: this.queryFields
