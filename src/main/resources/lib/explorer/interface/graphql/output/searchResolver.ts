@@ -106,14 +106,20 @@ export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType
 	} = interfaceInfo || getInterfaceInfo({
 		interfaceName
 	});
-	const multiRepoReadConnection = multiConnect({
+
+
+	const multiRepoReadConnectParams = {
 		principals: [PRINCIPAL_EXPLORER_READ],
 		sources: Object.keys(collectionNameToId).map((collectionName) => ({
 			repoId: `${COLLECTION_REPO_PREFIX}${collectionName}`,
 			branch: 'master', // NOTE Hardcoded
 			principals: [PRINCIPAL_EXPLORER_READ]
 		}))
-	});
+	};
+	if (logQuery) {
+		log.info('searchResolver interfaceName:%s multiRepoReadConnectParams:%s', interfaceName, toStr(multiRepoReadConnectParams));
+	}
+	const multiRepoReadConnection = multiConnect(multiRepoReadConnectParams);
 
 	const {
 		queryParams,
