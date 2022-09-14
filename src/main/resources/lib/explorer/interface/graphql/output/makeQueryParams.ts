@@ -57,7 +57,8 @@ export function makeQueryParams({
 	logSynonymsQueryResult = false,
 	profilingArray = [],
 	profilingLabel = '',
-	start // default is undefined which means 0
+	start, // default is undefined which means 0
+	stemmingLanguages = [],
 } :{
 	aggregationsArg :Array<AnyObject>
 	doProfiling ?:boolean
@@ -78,6 +79,7 @@ export function makeQueryParams({
 	logSynonymsQuery ?:boolean
 	logSynonymsQueryResult ?:boolean
 	start ?:number
+	stemmingLanguages ?:Array<string>
 }) {
 	//log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
 
@@ -146,7 +148,8 @@ export function makeQueryParams({
 	//log.debug('fields:%s', toStr(fields));
 	const query = makeQuery({
 		fields,
-		searchStringWithoutStopWords
+		searchStringWithoutStopWords,
+		stemmingLanguages
 	});
 	//log.debug('query:%s', toStr(query));
 

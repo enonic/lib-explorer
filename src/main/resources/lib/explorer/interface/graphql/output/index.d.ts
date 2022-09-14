@@ -32,12 +32,13 @@ type AggregationsArg = Array<AnyObject> // TODO?
 type FiltersArg = Array<AnyObject> // TODO?
 
 export type InterfaceInfo = {
-	collectionNameToId :Record<string,string>
-	fields :Array<InterfaceField>
-	interfaceId :string
-	localesInSelectedThesauri :Array<string>
-	stopWords :Array<string>
-	thesauriNames :Array<string>
+	collectionNameToId        : Record<string,string>
+	fields                    : Array<InterfaceField>
+	interfaceId               : string
+	localesInSelectedThesauri : Array<string>
+	stemmingLanguages         : Array<string> // Can be an empty array
+	stopWords                 : Array<string>
+	thesauriNames             : Array<string>
 };
 
 //──────────────────────────────────────────────────────────────────────────────
