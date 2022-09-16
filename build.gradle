@@ -18,34 +18,34 @@ repositories {
 
 
 dependencies {
-	//compile "com.enonic.xp:script-api:${xpVersion}" // Only needed if you lib has java code
-	//compile "com.enonic.xp:core-api:${xpVersion}" // Just for apps?
-	//compile "com.enonic.xp:portal-api:${xpVersion}" // Just for apps?
+	//implementation "com.enonic.xp:script-api:${xpVersion}" // Only needed if you lib has java code
+	//implementation "com.enonic.xp:core-api:${xpVersion}" // Just for apps?
+	//implementation "com.enonic.xp:portal-api:${xpVersion}" // Just for apps?
 
 	//──────────────────────────────────────────────────────────────────────────
 	// New lib-explorer-4.0.0
 	//──────────────────────────────────────────────────────────────────────────
-	compile "com.enonic.xp:lib-auth:${xpVersion}"
-	compile "com.enonic.xp:lib-common:${xpVersion}"
-	compile "com.enonic.xp:lib-io:${xpVersion}"
-	compile "com.enonic.xp:lib-scheduler:${xpVersion}"
-	compile "com.enonic.xp:lib-value:${xpVersion}"
-	compile 'com.enonic.lib:lib-graphql:2.0.1'
-	compile 'com.enonic.lib:lib-guillotine:5.5.0'
+	implementation "com.enonic.xp:lib-auth:${xpVersion}"
+	implementation "com.enonic.xp:lib-common:${xpVersion}"
+	implementation "com.enonic.xp:lib-io:${xpVersion}"
+	implementation "com.enonic.xp:lib-scheduler:${xpVersion}"
+	implementation "com.enonic.xp:lib-value:${xpVersion}"
+	implementation 'com.enonic.lib:lib-graphql:2.0.1'
+	implementation 'com.enonic.lib:lib-guillotine:5.5.0'
 
 	//──────────────────────────────────────────────────────────────────────────
 	// Same as lib-explorer-3.x.x
 	//──────────────────────────────────────────────────────────────────────────
-	compile "com.enonic.xp:lib-context:${xpVersion}"
-	compile "com.enonic.xp:lib-event:${xpVersion}"
-	compile "com.enonic.xp:lib-mail:${xpVersion}"
-	compile "com.enonic.xp:lib-node:${xpVersion}"
-	compile "com.enonic.xp:lib-portal:${xpVersion}"
-	compile "com.enonic.xp:lib-repo:${xpVersion}"
-	compile "com.enonic.xp:lib-task:${xpVersion}"
-	compile 'com.enonic.lib:lib-cache:2.1.1'
-	compile 'com.enonic.lib:lib-http-client:3.1.0'
-	compile 'com.enonic.lib:lib-license:3.0.0'
+	implementation "com.enonic.xp:lib-context:${xpVersion}"
+	implementation "com.enonic.xp:lib-event:${xpVersion}"
+	implementation "com.enonic.xp:lib-mail:${xpVersion}"
+	implementation "com.enonic.xp:lib-node:${xpVersion}"
+	implementation "com.enonic.xp:lib-portal:${xpVersion}"
+	implementation "com.enonic.xp:lib-repo:${xpVersion}"
+	implementation "com.enonic.xp:lib-task:${xpVersion}"
+	implementation 'com.enonic.lib:lib-cache:2.1.1'
+	implementation 'com.enonic.lib:lib-http-client:3.1.0'
+	implementation 'com.enonic.lib:lib-license:3.0.0'
 
 	//──────────────────────────────────────────────────────────────────────────
 	// No longer needed in lib-explorer-4.0.0
@@ -56,10 +56,10 @@ dependencies {
 	//──────────────────────────────────────────────────────────────────────────
 	// Other enonic libs (com.enonic.lib)
 	//──────────────────────────────────────────────────────────────────────────
-	compile 'com.enonic.lib:lib-router:2.1.0'
+	implementation 'com.enonic.lib:lib-router:2.1.0'
 
-	//compile 'com.enonic.lib:text-encoding:1.2.0'
-	compile 'com.enonic.lib:lib-util:3.0.0'
+	//implementation 'com.enonic.lib:text-encoding:1.2.0'
+	implementation 'com.enonic.lib:lib-util:3.0.0'
 
 	// WARNING: Do NOT use compile files, jar file will be missing dependencies!
 }
