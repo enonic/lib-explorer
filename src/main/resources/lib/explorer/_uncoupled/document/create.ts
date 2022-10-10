@@ -261,7 +261,7 @@ export function create(
 			if (!documentTypeNode) {
 				throw new Error(`Something went wrong when trying to get documentTypeId from documentTypeName:${documentTypeName} via path:${documentTypeNodePath}`);
 			}
-			documentTypeId = documentTypeNode._id;
+			documentTypeId = documentTypeNode._id; // NOTE: documentTypeId is needed when adding extra fields
 			log.debug('document.create: sat documentTypeId:%s from documentTypeName:%s', documentTypeId, documentTypeName);
 		}
 		// At this point:
@@ -326,10 +326,14 @@ export function create(
 				}
 
 				if (notSet(documentTypeName)) {
-					// Get documentTypeName from documentTypeId
-					documentTypeNode = explorerReadConnection.get(collectionNode['documentTypeId']);
+					// Get documentTypeName from default documentTypeId
+
+					documentTypeId = collectionNode['documentTypeId']; // NOTE: documentTypeId is needed when adding extra fields
+					log.debug('document.create: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
+
+					documentTypeNode = explorerReadConnection.get(documentTypeId);
 					if (!documentTypeNode) {
-						throw new Error(`Unable to get documentTypeNode with id:${collectionNode['documentTypeId']}`);
+						throw new Error(`Unable to get documentTypeNode with id:${documentTypeId}`);
 					}
 					documentTypeName = documentTypeNode._name;
 					log.debug('document.create: sat documentTypeName:%s from collectionNode.documentTypeId._name', documentTypeName);
@@ -362,12 +366,12 @@ export function create(
 
 	//let myFields = JSON.parse(JSON.stringify(fields));
 	let fieldsObj = fieldsArrayToObj(fields, javaBridge);
-	//log.debug('document.create: fieldsObj:%s', toStr(fieldsObj));
+	log.debug('document.create: fieldsObj:%s', toStr(fieldsObj));
 
 	const dataWithConstrainedPropertyNames = constrainPropertyNames({
 		data
 	}, javaBridge);
-	//log.debug('document.create: dataWithConstrainedPropertyNames:%s', toStr(dataWithConstrainedPropertyNames));
+	log.debug('document.create: dataWithConstrainedPropertyNames:%s', toStr(dataWithConstrainedPropertyNames));
 
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({
@@ -376,14 +380,14 @@ export function create(
 			fieldsObj,
 		}, javaBridge);
 	}
-	//log.debug(`fieldsObj:${toStr(fieldsObj)}`);
+	log.debug(`fieldsObj:${toStr(fieldsObj)}`);
 
 	const cleanedData = cleanData({
 		cleanExtraFields,
 		data :dataWithConstrainedPropertyNames,
 		fieldsObj
 	}, javaBridge);
-	//log.debug(`cleanedData:${toStr(cleanedData)}`);
+	log.debug(`cleanedData:${toStr(cleanedData)}`);
 
 	const isValid = validate({
 		data: cleanedData,
@@ -391,7 +395,7 @@ export function create(
 		validateOccurrences,
 		validateTypes
 	}, javaBridge);
-	//log.debug(`isValid:${toStr(isValid)}`);
+	log.debug(`isValid:${toStr(isValid)}`);
 	if (requireValid && !isValid) {
 		throw new Error(`validation failed! requireValid:${requireValid} validateOccurrences:${validateOccurrences} validateTypes:${validateTypes} cleanedData:${toStr(cleanedData)} fieldsObj:${toStr(fieldsObj)}`);
 	}
@@ -400,7 +404,7 @@ export function create(
 		data: cleanedData,
 		fieldsObj
 	}, javaBridge);
-	//log.debug('dataWithJavaTypes %s', dataWithJavaTypes);
+	log.debug('dataWithJavaTypes %s', dataWithJavaTypes);
 
 	const languages :string[] = [];
 	if (stemmingLanguage) {
@@ -412,7 +416,7 @@ export function create(
 		fieldsObj,
 		languages
 	}/*, javaBridge*/);
-	//log.debug('indexConfig %s', indexConfig);
+	log.debug('indexConfig %s', indexConfig);
 	dataWithJavaTypes['_indexConfig'] = indexConfig;
 
 	dataWithJavaTypes[FIELD_PATH_META] = {
@@ -430,18 +434,18 @@ export function create(
 	dataWithJavaTypes._nodeType = NT_DOCUMENT;
 
 	const sortedDataWithIndexConfig = sortKeys(dataWithJavaTypes);
-	//log.debug('sortedDataWithIndexConfig %s', sortedDataWithIndexConfig);
+	log.debug('sortedDataWithIndexConfig %s', sortedDataWithIndexConfig);
 
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
-	//log.debug('repoId:%s', repoId);
+	log.debug('repoId:%s', repoId);
 
-	//log.debug('document.create: connecting to repoId:%s branch:%s with principals:%s', repoId, 'master', toStr([PRINCIPAL_EXPLORER_WRITE]));
+	log.debug('document.create: connecting to repoId:%s branch:%s with principals:%s', repoId, 'master', toStr([PRINCIPAL_EXPLORER_WRITE]));
 	const collectionRepoWriteConnection = javaBridge.connect({
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_WRITE],
 		repoId
 	});
 
-	//log.debug('creating node:%s', sortedDataWithIndexConfig);
+	log.debug('creating node:%s', sortedDataWithIndexConfig);
 	return collectionRepoWriteConnection.create(sortedDataWithIndexConfig);
 }

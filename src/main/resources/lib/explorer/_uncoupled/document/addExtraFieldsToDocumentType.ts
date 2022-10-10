@@ -101,7 +101,7 @@ export function addExtraFieldsToDocumentType(
 				this.block();
 			} else { // Value is useful*/
 
-			//javaBridge.log.debug('this.path:%s', toStr(this.path)); When last path item is inside array it's a string of a number
+			// javaBridge.log.debug('this.path:%s', toStr(this.path)); // When last path item is inside array it's a string of a number
 			//const lastPathItem = this.path[this.path.length - 1];
 			//javaBridge.log.debug('lastPathItem:%s', lastPathItem);
 
@@ -138,7 +138,8 @@ export function addExtraFieldsToDocumentType(
 			//} // Useful value
 		} // if notRoot...
 	}); // traverse
-	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: boolModified:%s', boolModified);
+	// javaBridge.log.debug('document.addExtraFieldsToDocumentType: boolModified:%s', boolModified);
+
 	if (boolModified) {
 		updateDocumentType({
 			_id: documentTypeId,
