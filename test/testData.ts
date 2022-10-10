@@ -465,19 +465,16 @@ export const NOT_STRINGS = [].concat(
 export const COLLECTIONS_FOLDER_NAME = 'collections';
 export const COLLECTIONS_FOLDER_PATH = `/${COLLECTIONS_FOLDER_NAME}`;
 export const COLLECTIONS_FOLDER = {
-	_name: COLLECTIONS_FOLDER_NAME,
-	_path: COLLECTIONS_FOLDER_PATH
+	_name: COLLECTIONS_FOLDER_NAME
 };
 
 export const DOCUMENT_TYPES_FOLDER_NAME = 'documentTypes';
 export const DOCUMENT_TYPES_FOLDER_PATH = `/${DOCUMENT_TYPES_FOLDER_NAME}`;
 export const DOCUMENT_TYPES_FOLDER = {
-	_name: DOCUMENT_TYPES_FOLDER_NAME,
-	_path: DOCUMENT_TYPES_FOLDER_PATH
+	_name: DOCUMENT_TYPES_FOLDER_NAME
 };
 
 export const COLLECTION_NAME = 'myCollectionName';
-export const COLLECTION_PATH = `${COLLECTIONS_FOLDER_PATH}/${COLLECTION_NAME}`;
 export const COLLECTION_LANGUAGE = 'en-GB';
 export const COLLECTION_STEMMING_LANGUAGE = 'en';
 
@@ -499,7 +496,7 @@ export const DOCUMENT_TYPE_FIELDS = [{
 
 export const COLLECTION = {
 	_name: COLLECTION_NAME,
-	_path: COLLECTION_PATH,
+	_parentPath: COLLECTIONS_FOLDER_PATH,
 	language: COLLECTION_LANGUAGE
 };
 

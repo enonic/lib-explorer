@@ -4,7 +4,8 @@ import type {JavaBridge} from '../../_coupling/types.d';
 import {
 	fold,
 	hasOwnProperty,
-	isObject
+	isObject,
+	// toStr
 } from '@enonic/js-utils';
 const traverse = require('traverse');
 import {
@@ -44,6 +45,7 @@ export function constrainPropertyNames({
 					//javaBridge.log.info('keys:%s', keys);
 					for (let i = 0; i < keys.length; i++) {
 						const key = keys[i];
+						// javaBridge.log.debug('document.constrainPropertyNames: key:%s', toStr(key));
 						if (
 							this.level !== 0
 							|| /* if level is 0 and */ !(

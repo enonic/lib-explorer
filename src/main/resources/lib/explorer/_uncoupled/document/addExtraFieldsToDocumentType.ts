@@ -10,9 +10,9 @@ import {
 	VALUE_TYPE_GEO_POINT,
 	VALUE_TYPE_SET,
 	detectValueType,
-	isNonNegativeIntegerString//,
+	isNonNegativeIntegerString,
 	//isNotSet,
-	//toStr
+	// toStr
 } from '@enonic/js-utils';
 
 //import traverse from 'traverse'; //[!] Error: 'default' is not exported by node_modules/traverse/index.js
@@ -79,6 +79,8 @@ export function addExtraFieldsToDocumentType(
 	const returnFieldsObj = JSON.parse(JSON.stringify(fieldsObj));
 	let boolModified = false;
 	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
+		// javaBridge.log.debug('document.addExtraFieldsToDocumentType: this.path:%s', toStr(this.path));
+		// javaBridge.log.debug('document.addExtraFieldsToDocumentType: this.path[0]:%s', toStr(this.path[0]));
 		if (
 			this.notRoot
 			&& !this.path[0].startsWith('_')

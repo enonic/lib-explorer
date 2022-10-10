@@ -3,7 +3,7 @@ import type {
 	CollectionWithCron
 } from '/lib/explorer/types/Collection.d';
 
-//import {toStr} from '@enonic/js-utils';
+// import {toStr} from '@enonic/js-utils';
 
 import {coerseCollectionType} from '/lib/explorer/collection/coerseCollectionType';
 import {createDocumentType} from '/lib/explorer/documentType/createDocumentType';
@@ -111,6 +111,8 @@ export function updateCollection({
 		//log.debug(`createdDocumentTypeNode:${toStr(createdDocumentTypeNode)}`);
 		documentTypeId = createdDocumentTypeNode._id;
 	}
+
+	// log.debug('collection.updateCollection: documentTypeId:%s', toStr(documentTypeId));
 	if (documentTypeId && !documentTypeId.startsWith('_')) {
 		propertiesToBeUpdated.documentTypeId = reference(documentTypeId);
 	} else {

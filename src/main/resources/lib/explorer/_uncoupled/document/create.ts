@@ -51,6 +51,7 @@ import {
 	COLLECTION_REPO_PREFIX,
 	FIELD_PATH_META,
 	NT_DOCUMENT,
+	PATH_COLLECTIONS,
 	PRINCIPAL_EXPLORER_READ,
 	PRINCIPAL_EXPLORER_WRITE,
 	REPO_ID_EXPLORER
@@ -125,10 +126,12 @@ export function create(
 	//──────────────────────────────────────────────────────────────────────────
 	if ( // Need to know which documentTypeNode to expand.
 		addExtraFields
+		&& notSet(collectionId)
+		&& notSet(collectionName)
 		&& notSet(documentTypeName)
 		&& notSet(documentTypeId)
 	) {
-		throw new Error("create: when addExtraFields=true either documentTypeName or documentTypeId must be provided!");
+		throw new Error("create: when addExtraFields=true either (documentTypeName or documentTypeId) must be provided or (collectionName or collectionId and the collectionNode must contain a default documentTypeId)!");
 	}
 
 	if ( // Need to know what to clean or validate on.
@@ -138,11 +141,13 @@ export function create(
 			|| cleanExtraFields
 			//|| requireValid
 		)
+		&& notSet(collectionId)
+		&& notSet(collectionName)
 		&& notSet(documentTypeName)
 		&& notSet(documentTypeId)
 		&& notSet(fields)
 	) {
-		throw new Error('create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided!');
+		throw new Error('create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided or (collectionName or collectionId and the collectionNode must contain a default documentTypeId)!');
 	}
 
 	if (requireValid && !(validateTypes || validateOccurrences)) {
@@ -210,13 +215,12 @@ export function create(
 	// At this point the required parameters are provided and of the correct
 	// type. From the provided parameters we now get derived parameters.
 	//
-	// if documentTypeId is provided it supersedes documentTypeName
+	// if documentTypeId is provided it supersedes documentTypeName (and default documentTypeId from collectionNode)
 	// if documentTypeName is provided it supersedes 'Default document type' aka collectionNode.documentTypeId
 
 	if (
-		documentTypeId ||
-		notSet(collectionName) ||
-		notSet(documentTypeName) ||
+		documentTypeId || notSet(documentTypeName) ||
+		collectionId || notSet(collectionName) ||
 		notSet(fields) ||
 		notSet(language)
 	) {
@@ -226,12 +230,14 @@ export function create(
 			principals: [PRINCIPAL_EXPLORER_READ],
 			repoId: REPO_ID_EXPLORER
 		});
+		log.debug('document.create: connected to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
 
 		// There are many valid ways to call document.create with regards to documentTypeId and documentTypeName.
 		// 1. Only documentTypeId provided.
 		// 2. Only documentTypeName provided (typical for collectors).
 		// 3. Both documentTypeId and documentTypeName provided.
-		// 4. Neither documentTypeId nor documentTypeName provided (only valid when addExtraFields is false and validation is off, or fields provided).
+		// 4. Neither documentTypeId nor documentTypeName provided, but collectionName or collectionId provided and default documentTypeId in collectionNode
+		// 5. Neither documentTypeId nor documentTypeName provided (only valid when addExtraFields is false and validation is off, or fields provided).
 		//
 		// documentTypeName is always required, since it's stored on the node for aggregation purposes.
 		// documentTypeId is only? required when addExtraFields is true
@@ -246,7 +252,7 @@ export function create(
 			documentTypeName = documentTypeNode._name;
 			log.debug('document.create: sat documentTypeName:%s from documentTypeId:%s', documentTypeName, documentTypeId);
 		} else if(
-			//!documentTypeId &&
+			// !documentTypeId &&
 			documentTypeName
 		) {
 			const documentTypeNodePath = documentTypeNameToPath(documentTypeName);
@@ -258,54 +264,84 @@ export function create(
 			documentTypeId = documentTypeNode._id;
 			log.debug('document.create: sat documentTypeId:%s from documentTypeName:%s', documentTypeId, documentTypeName);
 		}
-		// At this point both documentTypeId and documentTypeName can still be undefined.
+		// At this point:
+		//  * either both documentTypeId and documentTypeName are undefined (so try default documentTypeId from collectionNode)
+		//  * or both documentTypeId and documentTypeName are defined.
 
-		if (notSet(collectionName) || notSet(documentTypeId) || notSet(language)) {
-			//log.debug('collectionId:%s', collectionId);
-
-			const collectionNode = explorerReadConnection.get(collectionId) as CollectionNode;
-			//log.debug('collectionNode:%s', collectionNode);
-
-			if (notSet(collectionName)) {
-				collectionName = collectionNode['_name'];
-				log.debug('document.create: sat collectionName:%s from collectionNode._name', collectionName);
+		let collectionNode :CollectionNode;
+		if (collectionId) {
+			collectionNode = explorerReadConnection.get(collectionId) as CollectionNode;
+			log.debug('collectionNode:%s', collectionNode);
+			if (collectionName && collectionName !== collectionNode._name) {
+				log.warning('collectionNode._name:%s from collectionId:%s supersedes passed in collectionName:%s', collectionNode._name, collectionId, collectionName);
 			}
+			collectionName = collectionNode._name;
+			log.debug('document.create: sat collectionName:%s from collectionId:%s', collectionName, collectionId);
+		}
 
-			if (notSet(documentTypeId)) {
-				if (collectionNode['documentTypeId']) {
-					documentTypeId = collectionNode['documentTypeId'];
-					log.debug('document.create: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
-				} else {
-					// collectionNode.documentTypeId is now called 'Default document type' in the GUI, and can be set to 'none'.
-					log.debug('document.create: collectionNode.documentTypeId is undefined');
+		if (!collectionName) {
+			throw new Error(`collectionName is required to create nodes (and also for aggregation on collectionName)!`);
+		}
+
+		// When do we need to read from the collectionNode?
+		//  * When !language
+		//  * When addExtraFields === true && !documentTypeName // fields it not good enough when addExtraFields === true
+		//  * When addExtraFields === false && !(documentTypeName || fields)
+		if (
+			notSet(language)
+			|| (addExtraFields && notSet(documentTypeName))
+			|| (
+				!addExtraFields && !(
+					isSet(documentTypeName) || isSet(fields)
+				)
+			)
+		) {
+			if (notSet(collectionNode)) {
+				if (notSet(collectionName)) {
+					throw new Error('!collectionName && !collectionId: This should never happen!');
 				}
+				const collectionPath = `${PATH_COLLECTIONS}/${collectionName}`;
+				log.debug('collectionPath:%s', collectionPath);
+				collectionNode = explorerReadConnection.get(collectionPath);
+				log.debug('collectionNode:%s', collectionNode);
 			}
 
 			if(notSet(language)) {
 				language = collectionNode['language'];
 				log.debug('document.create: sat language:%s from collectionNode.language', language);
 			}
-		}
-		// At this point both documentTypeId and documentTypeName (and thus documentTypeNode) can still be undefined.
 
-		if (notSet(documentTypeName) || notSet(fields)) {
-			if (!documentTypeNode) {
-				if (!documentTypeId) {
-					throw new Error(`Can't get documentTypeName or fields from documentTypeNode, since documentTypeId is undefined!`);
+			// When do I need to read default documentTypeId from collectionNode?
+			//  * When addExtraFields === true && !documentTypeName
+			//  * When addExtraFields === false && !(documentTypeName || fields)
+			if (
+				(addExtraFields && notSet(documentTypeName))
+				||
+				(!addExtraFields && !(isSet(documentTypeName) || isSet(fields)))
+			) {
+				if (addExtraFields && notSet(documentTypeName)) {
+					if (!collectionNode['documentTypeId']) {
+						throw new Error(`addExtraFields is true, but documentTypeName nor documentTypeId provided and no default documentTypeId in collectionNode!`);
+					}
 				}
-				documentTypeNode = explorerReadConnection.get(documentTypeId); // This only happens when documentTypeId is gotten from fallback to 'Default document type'.
-				//log.debug("document.create: documentTypeNode(C):%s", toStr(documentTypeNode));
-			}
-			if (notSet(documentTypeName)) {
-				documentTypeName = documentTypeNode['_name'];
-				log.debug('document.create: sat documentTypeName:%s from documentTypeNode._name', documentTypeName);
-			}
-			if (notSet(fields)) {
-				//log.debug("document.create: documentTypeNode:%s", toStr(documentTypeNode));
-				//log.debug("document.create: documentTypeNode['properties']:%s", toStr(documentTypeNode['properties'])); // undefined
-				fields = isSet(documentTypeNode['properties']) ? forceArray(documentTypeNode['properties']) : [];
-				log.debug('document.create: sat fields:%s from documentTypeNode.properties', toStr(fields));
-			}
+
+				if (notSet(documentTypeName)) {
+					// Get documentTypeName from documentTypeId
+					documentTypeNode = explorerReadConnection.get(collectionNode['documentTypeId']);
+					if (!documentTypeNode) {
+						throw new Error(`Unable to get documentTypeNode with id:${collectionNode['documentTypeId']}`);
+					}
+					documentTypeName = documentTypeNode._name;
+					log.debug('document.create: sat documentTypeName:%s from collectionNode.documentTypeId._name', documentTypeName);
+				}
+			} // if need to read default documentTypeId from collectionNode
+		} // if need to read from collectionNode
+
+		if (notSet(fields)) {
+			//log.debug("document.create: documentTypeNode:%s", toStr(documentTypeNode));
+			//log.debug("document.create: documentTypeNode['properties']:%s", toStr(documentTypeNode['properties'])); // undefined
+			fields = isSet(documentTypeNode['properties']) ? forceArray(documentTypeNode['properties']) : [];
+			log.debug('document.create: sat fields:%s from documentTypeNode.properties', toStr(fields));
 		}
 	}
 

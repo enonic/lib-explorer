@@ -3,7 +3,7 @@ import type {JavaBridge} from '../../_coupling/types.d';
 import type {DocumentTypeField} from '../../types/index.d';
 import type {CleanDataParameters} from './types';
 
-//import {toStr} from '@enonic/js-utils';
+// import {toStr} from '@enonic/js-utils';
 //import {toStr} from '@enonic/js-utils/src';
 //import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
 
@@ -44,6 +44,8 @@ export function cleanData(
 
 	if (cleanExtraFields) {
 		traverse(cleanedData).forEach(function(/*value*/) { // Fat arrow destroys this
+			// javaBridge.log.debug('document.cleanData: this.path:%s', toStr(this.path));
+			// javaBridge.log.debug('document.cleanData: this.path[0]:%s', toStr(this.path[0]));
 			if (
 				this.notRoot
 				&& !this.path[0].startsWith('_')

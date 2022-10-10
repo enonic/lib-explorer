@@ -31,7 +31,7 @@ import {
 	DOCUMENT_TYPE_FIELDS,
 	DOCUMENT_TYPE_NAME,
 	DOCUMENT_TYPES_FOLDER,
-	DOCUMENT_TYPES_FOLDER_PATH,
+	// DOCUMENT_TYPES_FOLDER_PATH,
 	INDEX_CONFIG
 } from '../../../testData';
 import {log} from '../../../dummies';
@@ -110,18 +110,6 @@ describe('document', () => {
 				);
 			}); // it
 
-			it(`if addExtraFields=true and both documentTypeName and documentTypeId are missing`, () => {
-				throws(
-					() => create({
-						addExtraFields: true
-					}, javaBridge),
-					{
-						message: "create: when addExtraFields=true either documentTypeName or documentTypeId must be provided!",
-						name: 'Error'
-					}
-				);
-			}); // it
-
 			it(`if at least one of (validateTypes), validateOccurrences or cleanExtraFields is true and none of documentTypeName, documentTypeId or fields is provided`, () => {
 				throws(
 					() => create({
@@ -129,7 +117,7 @@ describe('document', () => {
 						validateTypes: true
 					}, javaBridge),
 					{
-						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided!",
+						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided or (collectionName or collectionId and the collectionNode must contain a default documentTypeId)!",
 						name: 'Error'
 					}
 				);
@@ -141,7 +129,7 @@ describe('document', () => {
 						validateOccurrences: true
 					}, javaBridge),
 					{
-						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided!",
+						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided or (collectionName or collectionId and the collectionNode must contain a default documentTypeId)!",
 						name: 'Error'
 					}
 				);
@@ -153,7 +141,7 @@ describe('document', () => {
 						cleanExtraFields: true
 					}, javaBridge),
 					{
-						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided!",
+						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided or (collectionName or collectionId and the collectionNode must contain a default documentTypeId)!",
 						name: 'Error'
 					}
 				);
@@ -284,6 +272,7 @@ describe('document', () => {
 				//javaBridge.log.info('nodes:%s', nodes);
 			}); // it
 		}); // describe throws
+
 		describe('creates', () => {
 			it(`is able to get collectionName, language and stemmmingLanguage from collectionId`, () => {
 				const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
