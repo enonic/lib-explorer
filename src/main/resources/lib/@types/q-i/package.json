@@ -1,0 +1,16 @@
+{
+  "contributors": [
+      "Christian Westgaard <cwe@enonic.com>"
+  ],
+  "dependencies": {},
+  "description": "Description",
+  "files": [
+      "q-i.d.ts"
+  ],
+  "name": "@types/q-i",
+  "license": "Apache-2.0",
+  "main": "",
+  "scripts": {},
+  "types": "q-i.d.ts",
+  "version": "0.0.1"
+}

@@ -3,6 +3,7 @@
 		"allowSyntheticDefaultImports": true,
 		"allowJs": true,
 		"baseUrl": "./",
+		"checkJs": false,
 		"declaration": false,
 		"declarationMap": false,
 		"downlevelIteration": true,
@@ -28,8 +29,8 @@
 		"paths": {
 			"@enonic/js-utils": ["../enonic-js-utils/src"], // Use this or npm link ../enonic-js-utils
 			"@enonic/js-utils/*": ["../enonic-js-utils/*"],
-			//"@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
-			//"@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],
+			// "@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
+			// "@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],
 			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
 		},
 		"preserveWatchOutput": false,
@@ -48,9 +49,15 @@
 		"strictFunctionTypes": false,
 		"strictNullChecks": false,
 		"target": "es5",
+		"typeRoots": [
+			"src/main/resources/lib/@types",
+			"node_modules/@types",
+			"node_modules/@enonic-types",
+		],
 		"types": [
 			"mocha",
 			"node",
+			"q-i",
 			"react",
 			"traverse"
 		]
@@ -68,6 +75,6 @@
 	"include": [
 		"src/main/resources/**/*.ts",
 		"src/main/resources/**/*.es",
-		//"test/**/*.ts"
+		// "test/**/*.ts"
   ]
 }
