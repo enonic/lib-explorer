@@ -1,10 +1,10 @@
-import type {LooseObject} from '../../../types';
+// import type {LooseObject} from '../../../types';
 
-import {
-	VALUE_TYPE_BOOLEAN,
-	VALUE_TYPE_DOUBLE,
-	VALUE_TYPE_STRING
-} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
+// import {
+// 	VALUE_TYPE_BOOLEAN,
+// 	VALUE_TYPE_DOUBLE,
+// 	VALUE_TYPE_STRING
+// } from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
 import {JavaBridge} from '@enonic/mock-xp';
 import {
 	deepStrictEqual,
@@ -24,7 +24,7 @@ import {
 	COLLECTION_NAME,
 	COLLECTION_STEMMING_LANGUAGE,
 	COLLECTIONS_FOLDER,
-	COLLECTIONS_FOLDER_PATH,
+	// COLLECTIONS_FOLDER_PATH,
 	COLLECTOR_ID,
 	COLLECTOR_VERSION,
 	DOCUMENT_TYPE,
@@ -62,8 +62,25 @@ const connection = javaBridge.connect({
 	branch: 'master'
 });
 connection.create(COLLECTIONS_FOLDER);
+
+//──────────────────────────────────────────────────────────────────────────────
+// Create a documentType to use in all tests
+//──────────────────────────────────────────────────────────────────────────────
+// javaBridge.log.info('DOCUMENT_TYPES_FOLDER:%s', DOCUMENT_TYPES_FOLDER);
 connection.create(DOCUMENT_TYPES_FOLDER);
+
+// javaBridge.log.info('DOCUMENT_TYPE:%s', DOCUMENT_TYPE);
 const CREATED_DOCUMENT_TYPE_NODE = connection.create(DOCUMENT_TYPE);
+// javaBridge.log.info('CREATED_DOCUMENT_TYPE_NODE:%s', CREATED_DOCUMENT_TYPE_NODE);
+
+// const documentTypeNodePath = `${DOCUMENT_TYPES_FOLDER_PATH}/${DOCUMENT_TYPE_NAME}`;
+// javaBridge.log.info('documentTypeNodePath:%s', documentTypeNodePath);
+
+// const documentTypeNode = connection.get(documentTypeNodePath);
+// javaBridge.log.info('documentTypeNode:%s', documentTypeNode);
+
+//──────────────────────────────────────────────────────────────────────────────
+
 const CREATED_COLLECTION_NODE = connection.create({
 	...COLLECTION,
 	documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
@@ -237,6 +254,8 @@ describe('document', () => {
 					}
 				);
 			}); // it
+
+
 			it(`when the document already exists (_name)`, () => {
 				const createParam = {
 					collectionId: CREATED_COLLECTION_NODE._id,
@@ -269,29 +288,29 @@ describe('document', () => {
 			it(`is able to get collectionName, language and stemmmingLanguage from collectionId`, () => {
 				const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
 				_indexConfig.configs.push({
-						path: 'extra',
-						config: {
-							decideByType: false,
-							enabled: true,
-							fulltext: false,
-							includeInAllText: false,
-							languages: [COLLECTION_STEMMING_LANGUAGE],
-							nGram: false,
-							path: false
-						}
-					});
+					path: 'extra',
+					config: {
+						decideByType: false,
+						enabled: true,
+						fulltext: false,
+						includeInAllText: false,
+						languages: [COLLECTION_STEMMING_LANGUAGE],
+						nGram: false,
+						path: false
+					}
+				});
 				_indexConfig.configs.push({
-						path: 'mystring',
-						config: {
-							decideByType: false,
-							enabled: true,
-							fulltext: true,
-							includeInAllText: true,
-							languages: [COLLECTION_STEMMING_LANGUAGE],
-							nGram: true,
-							path: false
-						}
-					});
+					path: 'mystring',
+					config: {
+						decideByType: false,
+						enabled: true,
+						fulltext: true,
+						includeInAllText: true,
+						languages: [COLLECTION_STEMMING_LANGUAGE],
+						nGram: true,
+						path: false
+					}
+				});
 				//javaBridge.log.info('_indexConfig:%s', _indexConfig);
 				const createRes = create({
 					// Input
@@ -345,37 +364,37 @@ describe('document', () => {
 			it("is able to do it's thing without connecting to the explorer repo WHEN enough info is provided in the parameters", () => {
 				const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
 				_indexConfig.configs.push({
-						path: 'mystring',
-						config: {
-							decideByType: false,
-							enabled: true,
-							fulltext: true,
-							includeInAllText: true,
-							languages: [COLLECTION_STEMMING_LANGUAGE],
-							nGram: true,
-							path: false
-						}
-					});
-					const createRes = create({
-						collectionName: COLLECTION_NAME,
-						collectorId: COLLECTOR_ID,
-						collectorVersion: COLLECTOR_VERSION,
-						data: {
-							[FIELD_PATH_META]: {
-								shouldBeStripped: 'shouldBeStripped'
-							},
-							global: {
-								shouldBeStripped: 'shouldBeStripped'
-							},
-							myString: 'string',
-							extra: 'extra'
+					path: 'mystring',
+					config: {
+						decideByType: false,
+						enabled: true,
+						fulltext: true,
+						includeInAllText: true,
+						languages: [COLLECTION_STEMMING_LANGUAGE],
+						nGram: true,
+						path: false
+					}
+				});
+				const createRes = create({
+					collectionName: COLLECTION_NAME,
+					collectorId: COLLECTOR_ID,
+					collectorVersion: COLLECTOR_VERSION,
+					data: {
+						[FIELD_PATH_META]: {
+							shouldBeStripped: 'shouldBeStripped'
 						},
-						documentTypeName: DOCUMENT_TYPE_NAME,
-						fields: DOCUMENT_TYPE_FIELDS,
-						language: COLLECTION_LANGUAGE,
-						// Options
-						cleanExtraFields: true, // default is false
-					}, javaBridge); // create
+						global: {
+							shouldBeStripped: 'shouldBeStripped'
+						},
+						myString: 'string',
+						extra: 'extra'
+					},
+					documentTypeName: DOCUMENT_TYPE_NAME,
+					fields: DOCUMENT_TYPE_FIELDS,
+					language: COLLECTION_LANGUAGE,
+					// Options
+					cleanExtraFields: true, // default is false
+				}, javaBridge); // create
 				deepStrictEqual(
 					{
 						_id: createRes._id,

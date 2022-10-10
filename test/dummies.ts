@@ -32,12 +32,12 @@ export const log = { //console.log console.trace
 	},
 	//@ts-ignore
 	info: (format :string, ...s :unknown[]) :void => {
-		/*if (s.length) {
-			const colored = s.map(i => stringify(i, { maxItems: Infinity }));
-			console.info(`${white(`INFO  ${format}`)}`, ...colored);
-		} else {
-			console.info(white(`INFO  ${format}`));
-		}*/
+		// if (s.length) {
+		// 	const colored = s.map(i => stringify(i, { maxItems: Infinity }));
+		// 	console.info(`${white(`INFO  ${format}`)}`, ...colored);
+		// } else {
+		// 	console.info(white(`INFO  ${format}`));
+		// }
 	},
 	//@ts-ignore
 	warning: (format :string, ...s :unknown[]) :void => {

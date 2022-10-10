@@ -485,7 +485,6 @@ export const COLLECTOR_ID = 'todo-collectorId';
 export const COLLECTOR_VERSION = 'todo-collectorVersion';
 
 export const DOCUMENT_TYPE_NAME = 'myDocumentTypeName';
-export const DOCUMENT_TYPE_PATH = `${DOCUMENT_TYPES_FOLDER_PATH}/${DOCUMENT_TYPE_NAME}`;
 export const DOCUMENT_TYPE_FIELDS = [{
 	enabled: true,
 	fulltext: true,
@@ -506,7 +505,7 @@ export const COLLECTION = {
 
 export const DOCUMENT_TYPE = {
 	_name: DOCUMENT_TYPE_NAME,
-	_path: DOCUMENT_TYPE_PATH,
+	_parentPath: DOCUMENT_TYPES_FOLDER_PATH,
 	properties: DOCUMENT_TYPE_FIELDS
 };
 
