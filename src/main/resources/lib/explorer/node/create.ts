@@ -146,7 +146,11 @@ export function create<N extends NodeCreateParams & {
 	const CREATE_PARAMS = {
 		_indexConfig,
 		_inheritsPermissions, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
-		_name: sanitize ? doSanitize(_name) : _name,
+		_name: _name
+			? sanitize
+				? doSanitize(_name)
+				: _name
+			: undefined,
 		_parentPath,
 		_permissions,
 		creator,
