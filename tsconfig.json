@@ -34,8 +34,11 @@
 			// "@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
 			// "@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],
 			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"],
+			"/lib/xp/auth": ["node_modules/@enonic-types/lib-auth"],
 			"/lib/xp/node": ["node_modules/@enonic-types/lib-node"],
-			"/lib/xp/repo": ["node_modules/@enonic-types/lib-repo"]
+			"/lib/xp/repo": ["node_modules/@enonic-types/lib-repo"],
+			"/lib/xp/task": ["node_modules/@enonic-types/lib-task"],
+			"/lib/xp/value": ["node_modules/@enonic-types/lib-value"]
 		},
 		"preserveWatchOutput": false,
 		"pretty": true,
@@ -60,8 +63,11 @@
 		],
 		"types": [
 			"@enonic-types/global",
+			"@enonic-types/lib-auth",
 			"@enonic-types/lib-node",
 			"@enonic-types/lib-repo",
+			"@enonic-types/lib-task",
+			"@enonic-types/lib-value",
 			"mocha",
 			"node",
 			"q-i",

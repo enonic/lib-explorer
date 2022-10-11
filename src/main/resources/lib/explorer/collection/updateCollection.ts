@@ -3,24 +3,23 @@ import type {
 	CollectionWithCron
 } from '/lib/explorer/types/Collection.d';
 
-// import {toStr} from '@enonic/js-utils';
 
+import {toStr} from '@enonic/js-utils';
 import {coerseCollectionType} from '/lib/explorer/collection/coerseCollectionType';
 import {createDocumentType} from '/lib/explorer/documentType/createDocumentType';
 import {
+	COLLECTION_REPO_PREFIX,
 	//NT_COLLECTION,
 	PRINCIPAL_EXPLORER_WRITE
 } from '/lib/explorer/constants';
 import {exists} from '/lib/explorer/node/exists';
 import {connect} from '/lib/explorer/repo/connect';
+import {rename} from '/lib/explorer/repo/rename';
+import {runAsSu} from '/lib/explorer/runAsSu';
 import {createOrModifyJobsFromCollectionNode} from '/lib/explorer/scheduler/createOrModifyJobsFromCollectionNode';
-
-//@ts-ignore
 import {getUser} from '/lib/xp/auth';
-
-//@ts-ignore
+import {executeFunction} from '/lib/xp/task';
 import {reference} from '/lib/xp/value';
-
 
 
 export function updateCollection({
@@ -57,6 +56,21 @@ export function updateCollection({
 			throw new Error(`Unable to move/rename _id:${_id} from _path:${oldNode._path} to _name:${_name}!`);
 		}
 		writeConnection.refresh(); // So the data becomes immidiately searchable
+
+		const fromRepoId = `${COLLECTION_REPO_PREFIX}${oldNode._name}`;
+		const toRepoId = `${COLLECTION_REPO_PREFIX}${_name}`;
+		executeFunction({
+			description: `Renaming repo ${fromRepoId} -> ${toRepoId}`,
+			func: () => {
+				runAsSu(() => {
+					const rv = rename({
+						fromRepoId,
+						toRepoId
+					});
+					log.debug('Renaming repo %s -> %s status:%s', fromRepoId, toRepoId, toStr(rv));
+				})
+			}
+		});
 	}
 
 	const propertiesToBeUpdated :Partial<CollectionNode> = {
