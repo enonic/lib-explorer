@@ -1032,6 +1032,28 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
+"@enonic-types/core@7.11.0-B3":
+  version "7.11.0-B3"
+  resolved "https://registry.yarnpkg.com/@enonic-types/core/-/core-7.11.0-B3.tgz#11ad7c52b046350aa247731fef703a1748fb108b"
+  integrity sha512-7kPTGjkodUjRwxguUBzXrL9ha9NZqvSWpPwHp5e8FISozbpb2VyeAMU3u62NNlnb6Znb8G1gwcw1u7RYgqI3rg==
+
+"@enonic-types/global@^7.11.0-B3":
+  version "7.11.0-B3"
+  resolved "https://registry.yarnpkg.com/@enonic-types/global/-/global-7.11.0-B3.tgz#fe80161acdcc39928cd888dd97422ad9e52375f8"
+  integrity sha512-6F4m7J0u4Hc9GfluQDhCVtkTIcNjzuvcpG5YVqy/jXnZkf1uikZtmbV/N27Hu9DNUdAmjCY/jBgaUUj5QmF35w==
+
+"@enonic-types/lib-node@^7.11.0-B3":
+  version "7.11.0-B3"
+  resolved "https://registry.yarnpkg.com/@enonic-types/lib-node/-/lib-node-7.11.0-B3.tgz#88f986d161d6567673d412616061f61aa42f25dc"
+  integrity sha512-RAizB3cbKy49yYcbKzTTfVdzyJbEoo0pwDpwXVHOzx2Nd0ojy6slOIv7UhQdbX2FzlK0FgIDupCV+DAR/0lPTg==
+  dependencies:
+    "@enonic-types/core" "7.11.0-B3"
+
+"@enonic-types/lib-repo@^7.11.0-B3":
+  version "7.11.0-B3"
+  resolved "https://registry.yarnpkg.com/@enonic-types/lib-repo/-/lib-repo-7.11.0-B3.tgz#be90a0748f331de6da7135acdc856d17b023cde0"
+  integrity sha512-JKMYdbMU7s5i2cJtJosE8JatWGy7Mdb0jJY+QtEyo9b3/+2JeZ5jLDL2UBcG6hN2ckNc0k+4fXeZV9Q9t1GWIA==
+
 "@enonic/fnv-plus@^1":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@enonic/fnv-plus/-/fnv-plus-1.3.0.tgz#be65a7b128a3b544f60aea3ef978d938e85869f3"

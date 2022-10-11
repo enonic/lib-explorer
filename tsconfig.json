@@ -27,11 +27,15 @@
 		"noUnusedParameters": true,
 		"outDir": "build/rollup",
 		"paths": {
+			// Development (should be commented out when commiting)
 			"@enonic/js-utils": ["../enonic-js-utils/src"], // Use this or npm link ../enonic-js-utils
 			"@enonic/js-utils/*": ["../enonic-js-utils/*"],
+			// Production (should be commented in when commiting)
 			// "@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
 			// "@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],
-			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"]
+			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"],
+			"/lib/xp/node": ["node_modules/@enonic-types/lib-node"],
+			"/lib/xp/repo": ["node_modules/@enonic-types/lib-repo"]
 		},
 		"preserveWatchOutput": false,
 		"pretty": true,
@@ -55,6 +59,9 @@
 			"node_modules/@enonic-types",
 		],
 		"types": [
+			"@enonic-types/global",
+			"@enonic-types/lib-node",
+			"@enonic-types/lib-repo",
 			"mocha",
 			"node",
 			"q-i",
