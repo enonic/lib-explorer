@@ -30,6 +30,7 @@
 			// Development (should be commented out when commiting)
 			"@enonic/js-utils": ["../enonic-js-utils/src"], // Use this or npm link ../enonic-js-utils
 			"@enonic/js-utils/*": ["../enonic-js-utils/*"],
+			// "/lib/xp/node": ["../xp/modules/lib/lib-node/src/main/resources/lib/xp/node.ts"],
 			// Production (should be commented in when commiting)
 			// "@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
 			// "@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],

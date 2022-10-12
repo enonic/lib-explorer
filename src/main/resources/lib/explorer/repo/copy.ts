@@ -1,8 +1,14 @@
 import type {
 	CreateNodeParams,
 	Node
-} from '/lib/xp/node'
+} from '/lib/xp/node';
 
+
+import {
+	PRINCIPAL_ROLE_SYSTEM_ADMIN,
+	isSet//,
+	// toStr
+} from '@enonic/js-utils';
 import {
 	connect
 } from '/lib/xp/node';
@@ -11,10 +17,6 @@ import {
 	createBranch,
 	get as getRepo
 } from '/lib/xp/repo';
-import {
-	PRINCIPAL_ROLE_SYSTEM_ADMIN//,
-	// toStr
-} from '@enonic/js-utils';
 import {
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/constants'
@@ -30,12 +32,14 @@ export function copy({
 	fromRepoId,
 	toRepoId,
 	// Optional
-	branchId = 'master'
+	branchId = 'master',
+	editor
 }: {
 	fromRepoId :string
 	toRepoId :string
 	// Optional
 	branchId ?:string
+	editor ?:(node: Node) => Node
 }) {
 	//──────────────────────────────────────────────────────────────────────────
 	// Check params
@@ -172,13 +176,16 @@ export function copy({
 	};
 	for (let i = 0; i < nodeIds.length; i++) {
 		const nodeId = nodeIds[i];
-		const fromNode = fromRepoReadConnection.get(nodeId) as Node;
+		let fromNode = fromRepoReadConnection.get(nodeId) as Node;
 		if (!fromNode) {
 			log.error(`repo.copy: Unable to get node:${nodeId} on branch:${branchId} in fromRepo:${fromRepoId}, ignoring...`);
 			rv.getErrors += 1;
 		} else {
 			const _parentPath = dirname(fromNode._path);
 			// log.debug('repo.copy: _path:%s _parentPath:%s', fromNode._path, _parentPath);
+			if (isSet(editor)) {
+				fromNode = editor(fromNode);
+			}
 			delete fromNode._id;
 			delete fromNode._path;
 			const createNodeParams = JSON.parse(JSON.stringify(fromNode)) as CreateNodeParams;

@@ -1,24 +1,25 @@
 import type {
+	// Node,
+	RepoConnection
+} from '/lib/xp/node';
+import type {
 	CollectionNode,
 	CollectionWithCron
 } from '/lib/explorer/types/Collection.d';
 
 
-import {toStr} from '@enonic/js-utils';
+// import {toStr} from '@enonic/js-utils';
 import {coerseCollectionType} from '/lib/explorer/collection/coerseCollectionType';
 import {createDocumentType} from '/lib/explorer/documentType/createDocumentType';
 import {
-	COLLECTION_REPO_PREFIX,
 	//NT_COLLECTION,
 	PRINCIPAL_EXPLORER_WRITE
 } from '/lib/explorer/constants';
 import {exists} from '/lib/explorer/node/exists';
+import {rename} from '/lib/explorer/collection/rename';
 import {connect} from '/lib/explorer/repo/connect';
-import {rename} from '/lib/explorer/repo/rename';
-import {runAsSu} from '/lib/explorer/runAsSu';
 import {createOrModifyJobsFromCollectionNode} from '/lib/explorer/scheduler/createOrModifyJobsFromCollectionNode';
 import {getUser} from '/lib/xp/auth';
-import {executeFunction} from '/lib/xp/task';
 import {reference} from '/lib/xp/value';
 
 
@@ -40,36 +41,16 @@ export function updateCollection({
 
 	const writeConnection = connect({
 		principals: [PRINCIPAL_EXPLORER_WRITE]
-	});
+	}); // as RepoConnection;
 
-	const oldNode = writeConnection.get(_id);
+	const oldNode = writeConnection.get(_id); // as Node;
 	//log.debug(`oldNode:${toStr(oldNode)}`);
 
 	if (_name !== oldNode._name) {
-		const moveParams = {
-			source: _id,
-			target: _name
-		};
-		//log.debug(`moveParams:${toStr({moveParams})}`);
-		const boolMoved = writeConnection.move(moveParams);
-		if (!boolMoved) {
-			throw new Error(`Unable to move/rename _id:${_id} from _path:${oldNode._path} to _name:${_name}!`);
-		}
-		writeConnection.refresh(); // So the data becomes immidiately searchable
-
-		const fromRepoId = `${COLLECTION_REPO_PREFIX}${oldNode._name}`;
-		const toRepoId = `${COLLECTION_REPO_PREFIX}${_name}`;
-		executeFunction({
-			description: `Renaming repo ${fromRepoId} -> ${toRepoId}`,
-			func: () => {
-				runAsSu(() => {
-					const rv = rename({
-						fromRepoId,
-						toRepoId
-					});
-					log.debug('Renaming repo %s -> %s status:%s', fromRepoId, toRepoId, toStr(rv));
-				})
-			}
+		rename({
+			fromName: oldNode._name,
+			toName: _name,
+			writeConnection: writeConnection as RepoConnection
 		});
 	}
 

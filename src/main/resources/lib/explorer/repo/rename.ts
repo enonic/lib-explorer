@@ -1,3 +1,8 @@
+import type {
+	Node
+} from '/lib/xp/node';
+
+
 import {toStr} from '@enonic/js-utils';
 import {copy} from '/lib/explorer/repo/copy';
 import {
@@ -12,12 +17,14 @@ export function rename({
 	fromRepoId,
 	toRepoId,
 	// Optional
-	branchId = 'master'
+	branchId = 'master',
+	editor
 }: {
 	fromRepoId :string
 	toRepoId :string
 	// Optional
 	branchId ?:string
+	editor ?:(node: Node) => Node
 }) {
 	const {
 		created,
@@ -26,7 +33,8 @@ export function rename({
 	} = copy({
 		fromRepoId,
 		toRepoId,
-		branchId
+		branchId,
+		editor
 	});
 	if (createErrors || getErrors) {
 		throw new Error(`repo.rename: Aborting due to: getErrors:${getErrors} createErrors:${createErrors}!`);
