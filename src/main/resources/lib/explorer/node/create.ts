@@ -143,14 +143,14 @@ export function create<N extends NodeCreateParams & {
 		}
 	}
 
+	//log.debug('node.create doSanitize(%s):%s', _name, doSanitize(_name)); // Turns _ into - :(
+	if (_name && sanitize) {
+		_name = doSanitize(_name).replace(/-/g, '_');
+	}
 	const CREATE_PARAMS = {
 		_indexConfig,
 		_inheritsPermissions, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
-		_name: _name
-			? sanitize
-				? doSanitize(_name)
-				: _name
-			: undefined,
+		_name,
 		_parentPath,
 		_permissions,
 		creator,

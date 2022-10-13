@@ -41,7 +41,7 @@ export function exists({
 		if (!_name) {
 			throw new Error('_path or _name is a required parameter!');
 		}
-		_path = join(_parentPath, sanitize(_name)) as Path;
+		_path = join(_parentPath, sanitize(_name)) as Path; // TODO Why is sanitize used here??? It probably shouldn't. Don't know the consequences of chainging it, so leaving it for later.
 	}
 	//log.info(toStr({_path}));
 	const queryParams = {

@@ -20,7 +20,7 @@ export function modify<N extends {
 	_name? :string
 	_parentPath? :ParentPath
 	displayName? :string
-	modifiedTime?: Date | string
+	modifiedTime?: Date | string
 }>({
 	_id, // So it doesn't end up in rest.
 	_parentPath = '/',
@@ -67,7 +67,7 @@ export function modify<N extends {
 		log.warning(`node.modify: Ignored options:${toStr(ignoredOptions)}`);
 	}
 
-	const key = _id || join(_parentPath, sanitize ? doSanitize(_name) : _name);
+	const key = _id || join(_parentPath, sanitize ? doSanitize(_name) : _name); // TODO Why is sanitize used here??? It probably shouldn't. Don't know the consequences of chainging it, so leaving it for later.
 	//log.info(`key:${key}`);
 	return connection.modify({
 		key,
