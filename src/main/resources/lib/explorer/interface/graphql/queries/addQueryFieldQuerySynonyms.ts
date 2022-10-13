@@ -8,7 +8,7 @@ import type {
 } from '/lib/explorer/interface/graphql/output/index.d';
 
 
-//import {toStr} from '@enonic/js-utils';
+// import {toStr} from '@enonic/js-utils';
 //import {parse as parseGraphqlFields} from 'parse-graphql';
 //import parseGraphqlAst from 'graphql-parse-fields'; // Needs polyfill for process
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/constants';
@@ -63,7 +63,9 @@ export function addQueryFieldQuerySynonyms({glue} :{glue :Glue}) {
 			}//,
 			//source
 		}) {
-			let profiling :Array<Profiling> = [];
+			// log.debug('querySynonyms resolver interfaceName: %s', toStr(interfaceName));
+
+			const profiling :Array<Profiling> = [];
 			if (profilingArg) {
 				profiling.push({
 					currentTimeMillis: currentTimeMillis(),
@@ -93,6 +95,7 @@ export function addQueryFieldQuerySynonyms({glue} :{glue :Glue}) {
 			const interfaceInfo = getInterfaceInfo({
 				interfaceName
 			});
+			// log.debug('querySynonyms resolver interfaceInfo: %s', toStr(interfaceInfo));
 
 			const {
 				//collectionNameToId,
@@ -102,6 +105,7 @@ export function addQueryFieldQuerySynonyms({glue} :{glue :Glue}) {
 				//stopWords,
 				thesauriNames
 			} = interfaceInfo;
+
 			if (profilingArg) {
 				profiling.push({
 					currentTimeMillis: currentTimeMillis(),
@@ -110,6 +114,7 @@ export function addQueryFieldQuerySynonyms({glue} :{glue :Glue}) {
 				});
 				//log.debug('profiling:%s', toStr(profiling));
 			}
+
 			// TODO reuse interface information?
 			const rv :QuerySynonymsReturnType = {
 				interfaceInfo,
@@ -137,6 +142,7 @@ export function addQueryFieldQuerySynonyms({glue} :{glue :Glue}) {
 				});*/
 				rv.profiling = profiling;
 			}
+			// log.debug('querySynonyms resolver rv: %s', toStr(rv));
 			return rv;
 		}, // resolve
 		type: glue.addObjectType({

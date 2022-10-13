@@ -3,10 +3,9 @@ import type {CollectionNode} from '/lib/explorer/types/Collection.d';
 
 
 import {
-	forceArray,
 	getIn,
-	isSet//,
-	//toStr
+	isSet,
+	toStr
 } from '@enonic/js-utils';
 import {
 	COLLECTION_REPO_PREFIX,
@@ -35,14 +34,14 @@ export function getInterfaceInfo({
 	});
 
 	const filteredInterfaceNode = coerseInterfaceType(interfaceNode);
-
+	// log.debug('getInterfaceInfo filteredInterfaceNode:%s', toStr(filteredInterfaceNode));
 
 	const {
 		_id: interfaceId,
 		stopWords,
 		synonymIds
 	} = filteredInterfaceNode;
-	//log.debug('getInterfaceInfo synonymIds:%s', toStr(synonymIds));
+	// log.debug('getInterfaceInfo synonymIds:%s', toStr(synonymIds));
 
 	let {fields} = filteredInterfaceNode;
 	if (isSet(fields)) {
@@ -58,6 +57,7 @@ export function getInterfaceInfo({
 	} else {
 		fields = DEFAULT_INTERFACE_FIELDS;
 	}
+	// log.debug('getInterfaceInfo fields:%s', toStr(fields));
 
 	let {
 		collectionIds,
@@ -74,10 +74,24 @@ export function getInterfaceInfo({
 		throw new Error(`interface:${interfaceName} has no collections!`);
 	}
 
-	const collectionIdsWithNames = forceArray(
-		explorerRepoReadConnection.get<CollectionNode>(...collectionIds) as CollectionNode
-	)
-		.map(({_id, _name}) => ({_id, _name}));
+	const collectionIdsWithNames :Array<{
+		_id :string
+		_name :string
+	}> = [];
+	for (let i = 0; i < collectionIds.length; i++) {
+		const collectionId = collectionIds[i];
+		const collectionNode = explorerRepoReadConnection.get<CollectionNode>(collectionId) as CollectionNode;
+		if (!collectionNode) {
+			log.error(`Interface ${interfaceName} with id ${interfaceId}, references a collection id ${collectionId} that doesn't exist!`);
+		} else {
+			const {_name: collectionName} = collectionNode;
+			collectionIdsWithNames.push({
+				_id: collectionId,
+				_name: collectionName
+			});
+		}
+	}
+	// log.debug('getInterfaceInfo collectionIdsWithNames:%s', toStr(collectionIdsWithNames));
 
 	//const collectionIdToName :Record<string,string> = {};
 	const collectionNameToId :Record<string,string> = {};
@@ -89,54 +103,57 @@ export function getInterfaceInfo({
 
 	//──────────────────────────────────────────────────────────────────────────
 
-	const multiRepoReadConnection = multiConnect({
-		principals: [PRINCIPAL_EXPLORER_READ],
-		sources: Object.keys(collectionNameToId).map((collectionName) => ({
-			repoId: `${COLLECTION_REPO_PREFIX}${collectionName}`,
-			branch: 'master', // NOTE Hardcoded
-			principals: [PRINCIPAL_EXPLORER_READ]
-		}))
-	});
+	// Multiconnect will fail when an interface has no existing collection nodes,
+	// or TODO: no collection repos.
+	const stemmingLanguages :Array<string> = [];
+	if (collectionIdsWithNames.length) {
+		const multiRepoReadConnection = multiConnect({
+			principals: [PRINCIPAL_EXPLORER_READ],
+			sources: Object.keys(collectionNameToId).map((collectionName) => ({
+				repoId: `${COLLECTION_REPO_PREFIX}${collectionName}`,
+				branch: 'master', // NOTE Hardcoded
+				principals: [PRINCIPAL_EXPLORER_READ]
+			}))
+		});
 
-	const languagesRes = multiRepoReadConnection.query({
-		aggregations: {
-			stemmingLanguages: {
-				terms: {
-					field: `${FIELD_PATH_META}.stemmingLanguage`,
-					minDocCount: 1,
-					order: '_count desc',
-					size: 1000,
-				}
-			}
-		},
-		count: 0,
-		filters: {
-			boolean: {
-				must: {
-					exists: {
-						field: `${FIELD_PATH_META}.stemmingLanguage`
+		const languagesRes = multiRepoReadConnection.query({
+			aggregations: {
+				stemmingLanguages: {
+					terms: {
+						field: `${FIELD_PATH_META}.stemmingLanguage`,
+						minDocCount: 1,
+						order: '_count desc',
+						size: 1000,
 					}
 				}
-			}
-		},
-		query: ''/*{
-			matchAll: {}
-		}*/,
-		//sort:
-		start: 0
-	});
-	//log.debug('languagesRes:%s', toStr(languagesRes));
-
-	const buckets :Array<{key :string}> = getIn(languagesRes, 'aggregations.stemmingLanguages.buckets');
-	const stemmingLanguages :Array<string> = [];
-	if (buckets) {
-		for (let i = 0; i < buckets.length; i++) {
-			const {key} = buckets[i];
-			if (!stemmingLanguages.includes(key)) {
-				stemmingLanguages.push(key);
+			},
+			count: 0,
+			filters: {
+				boolean: {
+					must: {
+						exists: {
+							field: `${FIELD_PATH_META}.stemmingLanguage`
+						}
+					}
+				}
+			},
+			query: ''/*{
+				matchAll: {}
+			}*/,
+			//sort:
+			start: 0
+		});
+		//log.debug('languagesRes:%s', toStr(languagesRes));
+		const buckets :Array<{key :string}> = getIn(languagesRes, 'aggregations.stemmingLanguages.buckets');
+		if (buckets) {
+			for (let i = 0; i < buckets.length; i++) {
+				const {key} = buckets[i];
+				if (!stemmingLanguages.includes(key)) {
+					stemmingLanguages.push(key);
+				}
 			}
 		}
-	}
+	} // if collectionIdsWithNames.length
 
 	//──────────────────────────────────────────────────────────────────────────
 

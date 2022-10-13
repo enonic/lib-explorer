@@ -49,7 +49,7 @@ export function getSynonymsFromSearchString({
 	searchString = '',
 	stemming = true,
 	showSynonyms = false,
-	thesauri,
+	thesauri = [],
 	useNgram = !stemming
 } :{
 	// Required
@@ -73,8 +73,9 @@ export function getSynonymsFromSearchString({
 	useNgram ?:boolean
 }) :SynonymsArray {
 	//log.debug('getSynonymsFromSearchString defaultLocales:%s', toStr(defaultLocales));
+	// log.debug('getSynonymsFromSearchString thesauri:%s', toStr(thesauri));
 
-	if (!searchString || !thesauri) {
+	if (!searchString || !thesauri.length) {
 		return [];
 	}
 
@@ -84,6 +85,8 @@ export function getSynonymsFromSearchString({
 		getSynonymsCount: false,
 		thesauri
 	}).hits.map(({_name}) => _name);
+	// log.debug('getSynonymsFromSearchString activeThesauri: %s', toStr(activeThesauri));
+
 	if (doProfiling) {
 		profilingArray.push({
 			currentTimeMillis: currentTimeMillis(),
@@ -185,6 +188,11 @@ export function getSynonymsFromSearchString({
 			}
 		});
 	}
+	// log.debug('getSynonymsFromSearchString fulltextShouldQueries: %s', toStr(fulltextShouldQueries));
+	// log.debug('getSynonymsFromSearchString highlightProperties: %s', toStr(highlightProperties));
+	// log.debug('getSynonymsFromSearchString ngramShouldQueries: %s', toStr(ngramShouldQueries));
+	// log.debug('getSynonymsFromSearchString rootShouldQueries: %s', toStr(rootShouldQueries));
+	// log.debug('getSynonymsFromSearchString stemmedShouldQueries: %s', toStr(stemmedShouldQueries));
 
 	const querySynonymsParams :QuerySynonymsParams = {
 		connection: explorerRepoReadConnection,
