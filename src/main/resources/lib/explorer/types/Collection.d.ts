@@ -1,4 +1,7 @@
 import type {
+	Reference
+} from '/lib/xp/value';
+import type {
 	ExplorerAdminGQLInterfaceNodeCommonProps,
 	Node,
 	NodeCreate,
@@ -24,7 +27,7 @@ export type CollectionFormValues<Config extends AnyObject = AnyObject> = {
 		hour :string
 	}>
 	doCollect :boolean
-	documentTypeId ?:string
+	documentTypeId ?:string // Reference
 	language :string
 };
 
@@ -43,7 +46,7 @@ export type CollectionNodeSpecific = {
 
 	// Typically a documentType will be created, if none is selected, but there
 	// might exist historical collections without a documentType
-	documentTypeId ?:string
+	documentTypeId ?:string | Reference
 
 	language :string
 	modifiedTime? :Date | string
@@ -72,7 +75,7 @@ export type Cron = {
 }
 
 export type CollectionWithCron = Collection & {
-	cron :Cron | Array<Cron>
+	cron :Cron | Array<Cron>
 };
 
 export type QueriedCollection = ScoreRequired<CollectionNode>

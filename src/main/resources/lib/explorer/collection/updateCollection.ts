@@ -1,8 +1,4 @@
 import type {
-	// Node,
-	RepoConnection
-} from '/lib/xp/node';
-import type {
 	CollectionNode,
 	CollectionWithCron
 } from '/lib/explorer/types/Collection.d';
@@ -16,17 +12,15 @@ import {
 	PRINCIPAL_EXPLORER_WRITE
 } from '/lib/explorer/constants';
 import {exists} from '/lib/explorer/node/exists';
-import {rename} from '/lib/explorer/collection/rename';
 import {connect} from '/lib/explorer/repo/connect';
 import {createOrModifyJobsFromCollectionNode} from '/lib/explorer/scheduler/createOrModifyJobsFromCollectionNode';
 import {getUser} from '/lib/xp/auth';
 import {reference} from '/lib/xp/value';
 
 
+// NOTE: Since collectionName is used in API's we do not allow renaming collections.
 export function updateCollection({
 	_id, // nonNull
-	_name, // nonNull
-	//_path, // nonNull
 	collector, // optional
 	cron, // This is no longer stored on the CollectionNode, but is passed in here from GraphQL mutation.
 	doCollect,
@@ -34,7 +28,6 @@ export function updateCollection({
 	language // optional
 } :CollectionWithCron ) {
 	//log.debug(`_id:${toStr(_id)}`);
-	//log.debug(`_name:${toStr(_name)}`);
 	//log.debug(`collector:${toStr(collector)}`);
 	//log.debug(`doCollect:${toStr(doCollect)}`);
 	//log.debug(`documentTypeId:${toStr(documentTypeId)}`);
@@ -43,16 +36,11 @@ export function updateCollection({
 		principals: [PRINCIPAL_EXPLORER_WRITE]
 	}); // as RepoConnection;
 
-	const oldNode = writeConnection.get(_id); // as Node;
-	//log.debug(`oldNode:${toStr(oldNode)}`);
-
-	if (_name !== oldNode._name) {
-		rename({
-			fromName: oldNode._name,
-			toName: _name,
-			writeConnection: writeConnection as RepoConnection
-		});
-	}
+	const collectionNode = writeConnection.get(_id); // as Node;
+	// log.debug('collectionNode:%s', toStr(collectionNode));
+	const {
+		_name
+	} = collectionNode;
 
 	const propertiesToBeUpdated :Partial<CollectionNode> = {
 		//_indexConfig: {default: 'byType'},
@@ -108,8 +96,8 @@ export function updateCollection({
 	}
 
 	// log.debug('collection.updateCollection: documentTypeId:%s', toStr(documentTypeId));
-	if (documentTypeId && !documentTypeId.startsWith('_')) {
-		propertiesToBeUpdated.documentTypeId = reference(documentTypeId);
+	if (documentTypeId && !(documentTypeId as string).startsWith('_')) {
+		propertiesToBeUpdated.documentTypeId = reference(documentTypeId as string);
 	} else {
 		propertiesToBeUpdated.documentTypeId = undefined; // So it can be changed to "_none"
 	}
