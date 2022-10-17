@@ -13,7 +13,6 @@ import {
 } from '/lib/explorer/constants';
 import {rename as renameRepo} from '/lib/explorer/repo/rename';
 import {runAsSu} from '/lib/explorer/runAsSu';
-import {executeFunction} from '/lib/xp/task';
 
 
 const FIELD_PATH_META_COLLECTION = `${FIELD_PATH_META}.collection`;
@@ -42,24 +41,19 @@ export function rename({
 
 	const fromRepoId = `${COLLECTION_REPO_PREFIX}${fromName}`;
 	const toRepoId = `${COLLECTION_REPO_PREFIX}${toName}`;
-	executeFunction({
-		description: `Renaming repo ${fromRepoId} -> ${toRepoId}`,
-		func: () => {
-			runAsSu(() => {
-				const rv = renameRepo({
-					fromRepoId,
-					toRepoId,
-					editor: (node) => {
-						// log.debug(`collection.rename: editor node:%s`, toStr(node));
-						if (node._nodeType === NT_DOCUMENT) {
-							setIn(node, FIELD_PATH_META_COLLECTION, toName);
-							// log.debug(`collection.rename: editor modified node:%s`, toStr(node));
-						}
-						return node;
-					} // editor
-				});
-				log.info('Renaming repo %s -> %s status:%s', fromRepoId, toRepoId, toStr(rv));
-			});
-		}
+	runAsSu(() => {
+		const rv = renameRepo({
+			fromRepoId,
+			toRepoId,
+			editor: (node) => {
+				// log.debug(`collection.rename: editor node:%s`, toStr(node));
+				if (node._nodeType === NT_DOCUMENT) {
+					setIn(node, FIELD_PATH_META_COLLECTION, toName);
+					// log.debug(`collection.rename: editor modified node:%s`, toStr(node));
+				}
+				return node;
+			} // editor
+		});
+		log.info('Renaming repo %s -> %s status:%s', fromRepoId, toRepoId, toStr(rv));
 	});
 }
