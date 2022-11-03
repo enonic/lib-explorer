@@ -1,4 +1,5 @@
 import type {PermissionsParams} from '@enonic/js-utils/src/types/Auth.d';
+import type {Explorer} from './Application';
 import type {IndexConfig} from './IndexConfig';
 import type {AnyObject} from './Utility';
 
@@ -8,7 +9,10 @@ export type Id = string;
 export type ChildOrder = `${string} ASC` | `${string} DESC`;
 export type Path = `/${string}`;
 export type State = string;
-export type NodeType = string;
+
+export type NodeType = `${Explorer.Application.Name}:${string}`;
+export type NodeTypeGeneric<S extends string> = `${Explorer.Application.Name}:${S}`;
+
 export type TimeStamp = string;
 export type VersionKey = string;
 
