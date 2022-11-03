@@ -51,7 +51,7 @@ export const FOLDERS = [
 // Node paths
 //──────────────────────────────────────────────────────────────────────────────
 export const PATH_API_KEYS :Path = `/${FOLDER_API_KEYS}`;
-export const PATH_COLLECTIONS :Path = `/${FOLDER_COLLECTIONS}`;
+export const PATH_COLLECTIONS = `/${FOLDER_COLLECTIONS}` as const;
 export const PATH_COLLECTORS :Path = `/${FOLDER_COLLECTORS}`;
 export const PATH_FIELDS :Path = `/${FOLDER_FIELDS}`;
 export const PATH_INTERFACES :Path = `/${INTERFACES_FOLDER}`;

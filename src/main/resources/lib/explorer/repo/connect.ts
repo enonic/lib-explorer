@@ -1,3 +1,4 @@
+// import type {RepoConnection} from '/lib/xp/node';
 import type {
 	GetContext,
 	PrincipalKey,

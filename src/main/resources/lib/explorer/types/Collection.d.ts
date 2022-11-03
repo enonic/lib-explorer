@@ -1,13 +1,18 @@
+import type {Node} from '/lib/xp/node';
 import type {
 	Reference
 } from '/lib/xp/value';
 import type {
 	ExplorerAdminGQLInterfaceNodeCommonProps,
-	Node,
+	//Node,
 	NodeCreate,
+	NodeTypeGeneric,
 	ScoreRequired
 } from './Node.d';
 import type {AnyObject} from './Utility';
+
+
+export type NodeTypeCollection = NodeTypeGeneric<'collection'>;
 
 
 export type CollectionFormValues<Config extends AnyObject = AnyObject> = {
@@ -34,6 +39,7 @@ export type CollectionFormValues<Config extends AnyObject = AnyObject> = {
 export type CollectionId = string
 
 export type CollectionNodeSpecific = {
+	_nodeType: NodeTypeCollection
 	collector ?:{ // Yes it's optional, a collection doesn't require a collector
 		config :AnyObject // Different for each Collector
 		name :string
