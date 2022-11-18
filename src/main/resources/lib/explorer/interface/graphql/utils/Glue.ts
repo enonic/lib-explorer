@@ -211,7 +211,7 @@ function addUnionType({
 function getUnionType(name :string) {
 	if (!hasOwnProperty(this.unionTypes, name)) { // true also when property is set to undefined
 		if (this.uniqueNames[name]) {
-			throw new Error(`name:${name} is not an unionType! but ${this.uniqueNames[name]}`);
+			throw new Error(`name:${name} is not a unionType! but ${this.uniqueNames[name]}`);
 		}
 		throw new Error(`name:${name} not found in unionTypes, perhaps you're trying to use it before it's defined?`);
 	}
