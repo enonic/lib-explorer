@@ -1,8 +1,9 @@
+import type {RepoConnection as WriteConnection} from '/lib/xp/node';
+import type {SynonymNode} from '/lib/explorer/types/';
 import type {
-	SynonymNode,
-	WriteConnection
-} from '/lib/explorer/types/';
-import type {InputTypeSynonymLanguages} from '/lib/explorer/types/Synonym';
+	InputTypeSynonymLanguages,
+	SynonymNodeModifyParams
+} from '/lib/explorer/types/Synonym';
 
 
 import {
@@ -16,9 +17,7 @@ import {
 	getValidInterfaceIds,
 	moldInputTypeLanguages
 } from '/lib/explorer/synonym/createSynonym';
-//@ts-ignore
 import {getUser} from '/lib/xp/auth';
-//@ts-ignore
 import {reference as referenceValue} from '/lib/xp/value';
 
 
@@ -32,12 +31,12 @@ export function updateSynonym({
 	languages: languagesArg = []
 } :{
 	// Required
-	_id :string
+	_id: string
 	// Optional
-	comment ?:string
-	disabledInInterfaces ?:Array<string>
-	enabled ?:boolean
-	languages ?:InputTypeSynonymLanguages
+	comment?: string
+	disabledInInterfaces?: string[]
+	enabled?: boolean
+	languages?: InputTypeSynonymLanguages
 }, {
 	// Required
 	explorerRepoWriteConnection,
@@ -47,13 +46,13 @@ export function updateSynonym({
 	refreshRepoIndexes = true // Set to false when bulk importing...
 } :{
 	// Required
-	explorerRepoWriteConnection :WriteConnection
+	explorerRepoWriteConnection: WriteConnection
 	// Optional
-	checkInterfaceIds ?:boolean
-	interfaceIdsChecked ?:Record<string,boolean>
-	refreshRepoIndexes ?:boolean
+	checkInterfaceIds?: boolean
+	interfaceIdsChecked?: Record<string,boolean>
+	refreshRepoIndexes?: boolean
 }) {
-	const modifyRes = explorerRepoWriteConnection.modify<SynonymNode>({
+	const modifyRes = explorerRepoWriteConnection.modify<SynonymNodeModifyParams>({
 		key: _id,
 		editor: (node) => {
 			//log.debug(`node:${toStr(node)}`);
@@ -87,7 +86,7 @@ export function updateSynonym({
 			//log.debug(`node:${toStr(node)}`);
 			return node;
 		}
-	});
+	}) as unknown as SynonymNode;
 	if (!modifyRes) {
 		throw new Error(`Something went wrong when trying to modify synonym _id:${_id}!`);
 	}

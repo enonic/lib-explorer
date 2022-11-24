@@ -1,6 +1,5 @@
-import type {Application} from '../../../index.d';
+import type {AnyObject} from '@enonic/js-utils/src/types';
 import type {TaskName} from './Task.d';
-import type {AnyObject} from './Utility.d';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Collector UI
@@ -67,7 +66,7 @@ export type CollectorReactComponentParams = {
 }
 
 export type Collector = {
-	appName :Application.Key
+	appName: typeof app.name
 	componentPath :string
 	configAssetPath :string
 	displayName :string

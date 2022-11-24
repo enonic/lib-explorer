@@ -1,11 +1,15 @@
 import type {
 	RepoConnection,
-	SynonymNodeCreateParams,
-	WriteConnection
+	RepoConnection as WriteConnection
+} from '/lib/xp/node';
+import type {
+	SynonymNode,
+	SynonymNodeCreateParams
 } from '/lib/explorer/types/';
 import type {
 	InputTypeLanguageSynonym,
-	InputTypeSynonymLanguages
+	InputTypeSynonymLanguages,
+	Write_SynonymNode_LanguagesSynonymObject
 } from '/lib/explorer/types/Synonym';
 
 
@@ -22,19 +26,8 @@ import {
 import {buildSynonymIndexConfig} from '/lib/explorer/synonym/buildSynonymIndexConfig';
 import {moldSynonymNode} from '/lib/explorer/synonym/moldSynonymNode';
 import {getThesaurus} from '/lib/explorer/thesaurus/getThesaurus';
-//@ts-ignore
 import {getUser} from '/lib/xp/auth';
-//@ts-ignore
 import {reference as referenceValue} from '/lib/xp/value';
-
-
-declare type CreateSynonymNodeLanguageSynonym = {
-	// Required
-	synonym :string
-	comment :string
-	disabledInInterfaces :Array<string>
-	enabled :boolean
-}
 
 
 export function getValidInterfaceIds({
@@ -76,12 +69,12 @@ function arrayOfInputTypeLanguageSynonymsToArrayOfSynonymNodeLanguageSynonyms({
 	explorerRepoReadConnection,
 	interfaceIdsChecked
 } :{
-	arrayOfInputTypeLanguageSynonyms :Array<InputTypeLanguageSynonym>
-	checkInterfaceIds :boolean
-	explorerRepoReadConnection :RepoConnection
-	interfaceIdsChecked :Record<string,boolean> // modified within
+	arrayOfInputTypeLanguageSynonyms: InputTypeLanguageSynonym[]
+	checkInterfaceIds: boolean
+	explorerRepoReadConnection: RepoConnection
+	interfaceIdsChecked: Record<string,boolean> // modified within
 }) {
-	const arrayOfSynonymNodeLanguageSynonyms :Array<CreateSynonymNodeLanguageSynonym> = [];
+	const arrayOfSynonymNodeLanguageSynonyms: Write_SynonymNode_LanguagesSynonymObject[] = [];
 	for (let j = 0; j < arrayOfInputTypeLanguageSynonyms.length; j++) {
 		const {
 			comment = '',
@@ -242,7 +235,7 @@ export function createSynonym({
 		partialSynonymNode: createSynonymParams
 	});
 
-	const createRes = explorerRepoWriteConnection.create(createSynonymParams);
+	const createRes = explorerRepoWriteConnection.create(createSynonymParams) as unknown as SynonymNode;
 	if (!createRes) {
 		log.error(`Something went wrong when trying to create synonym createSynonymParams:${toStr(createSynonymParams)} in thesaurus with id:${thesaurusId}`);
 		throw new Error(`Something went wrong when trying to create synonym in thesaurus with id:${thesaurusId}!`);

@@ -1,3 +1,4 @@
+import type {Reference} from '/lib/xp/value';
 import type {
 	ExplorerAdminGQLInterfaceNodeCommonProps,
 	NodeCreate,
@@ -11,23 +12,23 @@ import type {HighlightResult} from '@enonic/js-utils/src/types/node/query/Highli
 //──────────────────────────────────────────────────────────────────────────
 export type InputTypeLanguageSynonym = {
 	// Required
-	synonym :string
+	synonym: string
 	// Optional
-	comment ?:string
-	disabledInInterfaces ?:Array<string>
-	enabled ?:boolean
+	comment?: string
+	disabledInInterfaces?: string[]
+	enabled?: boolean
 }
 
 export type InputTypeSynonymLanguage = {
 	// Required
-	locale :string
+	locale: string
 	// Optional
-	both ?:Array<InputTypeLanguageSynonym>
-	comment ?:string
-	disabledInInterfaces ?:Array<string>
-	enabled ?:boolean
-	from ?:Array<InputTypeLanguageSynonym>
-	to ?:Array<InputTypeLanguageSynonym>
+	both?: Array<InputTypeLanguageSynonym>
+	comment?: string
+	disabledInInterfaces?: string[]
+	enabled?: boolean
+	from?: InputTypeLanguageSynonym[]
+	to?: InputTypeLanguageSynonym[]
 }
 
 export type InputTypeSynonymLanguages = Array<InputTypeSynonymLanguage>
@@ -35,23 +36,40 @@ export type InputTypeSynonymLanguages = Array<InputTypeSynonymLanguage>
 //──────────────────────────────────────────────────────────────────────────
 // SynonymNode
 //──────────────────────────────────────────────────────────────────────────
-export type SynonymNode_LanguagesSynonymObject = {
+interface SynonymNode_LanguagesSynonymObject_Common {
 	// Required
-	synonym :string
+	synonym: string
 	// Optional
-	comment ?:string
-	disabledInInterfaces ?:OneOrMore<string>
-	enabled ?:boolean
+	comment?: string
+	enabled?: boolean
 }
 
-type SynonymNode_Language = {
+export interface SynonymNode_LanguagesSynonymObject extends SynonymNode_LanguagesSynonymObject_Common {
+	disabledInInterfaces?: OneOrMore<string>
+}
+
+interface Write_SynonymNode_LanguagesSynonymObject extends SynonymNode_LanguagesSynonymObject_Common {
+	disabledInInterfaces?: OneOrMore<Reference>
+}
+
+
+interface SynonymNode_Language_Common {
 	// Optional
-	both ?:OneOrMore<SynonymNode_LanguagesSynonymObject>
-	comment ?:string
-	disabledInInterfaces ?:OneOrMore<string>
-	enabled ?:boolean
-	from ?:OneOrMore<SynonymNode_LanguagesSynonymObject>
-	to ?:OneOrMore<SynonymNode_LanguagesSynonymObject>
+	both?: OneOrMore<SynonymNode_LanguagesSynonymObject>
+	comment?: string
+	enabled?: boolean
+}
+
+interface SynonymNode_Language extends SynonymNode_Language_Common {
+	disabledInInterfaces?: OneOrMore<string>
+	from?: OneOrMore<SynonymNode_LanguagesSynonymObject>
+	to?: OneOrMore<SynonymNode_LanguagesSynonymObject>
+}
+
+interface Write_SynonymNode_Language extends SynonymNode_Language_Common {
+	disabledInInterfaces?: OneOrMore<Reference>
+	from?: OneOrMore<Write_SynonymNode_LanguagesSynonymObject>
+	to?: OneOrMore<Write_SynonymNode_LanguagesSynonymObject>
 }
 
 // In order to be able to:
@@ -60,73 +78,85 @@ type SynonymNode_Language = {
 // the locale (languageCode_countryCode) must be part of the field path.
 // Thus on the node layer, languages must be a record, not an array.
 export type SynonymNode_Languages = Record<string,SynonymNode_Language>
+type Write_SynonymNode_Languages = Record<string,Write_SynonymNode_Language>
 
-type SynonymNode_Specific = {
+type SynonymNode_Common = {
 	// Required
-	nodeTypeVersion :number // TODO Make common across "all" nodeTypes?
-	//thesaurus :string // Not stored on the SynonymNode
-	thesaurusReference :string
+	nodeTypeVersion: number // TODO Make common across "all" nodeTypes?
+	//thesaurus: string // Not stored on the SynonymNode
 	// Optional
-	comment ?:string
-	createdTime ?:Date | string
-	creator ?:string
-	enabled ?:boolean
-	disabledInInterfaces ?:OneOrMore<string>
-	languages ?:SynonymNode_Languages
-	modifiedTime ?:Date | string
-	modifier ?:string
+	comment?: string
+	createdTime?: Date | string
+	creator?: string
+	enabled?: boolean
+	modifiedTime?: Date | string
+	modifier?: string
 }
 
-export type SynonymNode = RequiredNodeProperties & SynonymNode_Specific;
+export type SynonymNode = RequiredNodeProperties & SynonymNode_Common & {
+	disabledInInterfaces?: OneOrMore<string>
+	languages?: SynonymNode_Languages
+	thesaurusReference: string
+};
 
-export type SynonymNodeCreateParams = NodeCreate<SynonymNode_Specific>;
+export type SynonymNodeCreateParams = NodeCreate<SynonymNode_Common & {
+	disabledInInterfaces?: OneOrMore<Reference>
+	languages?: Write_SynonymNode_Languages
+	thesaurusReference: Reference
+}>;
+
+export type SynonymNodeModifyParams = RequiredNodeProperties & SynonymNode_Common & {
+	disabledInInterfaces?: OneOrMore<Reference>
+	languages?: Write_SynonymNode_Languages
+	thesaurusReference: Reference
+};
 
 //──────────────────────────────────────────────────────────────────────────
 // Synonym (Model)
 //──────────────────────────────────────────────────────────────────────────
 export type Synonym_LanguagesSynonymObject = {
 	// Required
-	comment :string
-	disabledInInterfaces :Array<string>
-	enabled :boolean
-	synonym :string
+	comment: string
+	disabledInInterfaces: string[]
+	enabled: boolean
+	synonym: string
 }
 
 //export type Synonym_LanguagesSynonymObjects = Array<Synonym_LanguagesSynonymObject>
 
 type Synonym_Language = {
 	// Required
-	both :Array<Synonym_LanguagesSynonymObject>
-	comment :string
-	disabledInInterfaces :Array<string>
-	enabled :boolean
-	locale :string
-	from :Array<Synonym_LanguagesSynonymObject>
-	to :Array<Synonym_LanguagesSynonymObject>
+	both: Array<Synonym_LanguagesSynonymObject>
+	comment: string
+	disabledInInterfaces: string[]
+	enabled: boolean
+	locale: string
+	from: Array<Synonym_LanguagesSynonymObject>
+	to: Array<Synonym_LanguagesSynonymObject>
 }
 
 type Synonym_Common = {
 	// Required
-	comment :string
-	enabled :boolean
-	disabledInInterfaces :Array<string>
-	languages :Array<Synonym_Language>
+	comment: string
+	enabled: boolean
+	disabledInInterfaces: string[]
+	languages: Array<Synonym_Language>
 }
 
 type Synonym_Specific = Synonym_Common & {
 	// Required
-	thesaurus :string // Gotten from thesaurusReference
-	thesaurusReference :string
+	thesaurus: string // Gotten from thesaurusReference
+	thesaurusReference: string
 }
 
 
 export type Synonym = ExplorerAdminGQLInterfaceNodeCommonProps<Synonym_Specific & {
-	_nodeTypeVersion :number
+	_nodeTypeVersion: number
 }>
 
 export type QueriedSynonym = Synonym & {
-	_highlight :HighlightResult
-	_score :number
+	_highlight: HighlightResult
+	_score: number
 }
 
 //──────────────────────────────────────────────────────────────────────────
@@ -135,29 +165,29 @@ export type QueriedSynonym = Synonym & {
 export type SynonymUse = 'both'|'from'|'to'
 
 export type SynonymGUI_LanguagesSynonymObject = Synonym_LanguagesSynonymObject & {
-	use :SynonymUse
+	use: SynonymUse
 }
 
 export type SynonymGUI_Language = {
 	// Required
-	comment :string
-	disabledInInterfaces :Array<string>
-	enabled :boolean
-	locale :string
-	synonyms :Array<SynonymGUI_LanguagesSynonymObject>
+	comment: string
+	disabledInInterfaces: Array<string>
+	enabled: boolean
+	locale: string
+	synonyms: Array<SynonymGUI_LanguagesSynonymObject>
 }
 
 export type SynonymGUI = {
 	// Required
-	comment :string
-	enabled :boolean
-	disabledInInterfaces :Array<string>
-	languages :Array<SynonymGUI_Language>
+	comment: string
+	enabled: boolean
+	disabledInInterfaces: Array<string>
+	languages: Array<SynonymGUI_Language>
 }
 
 /*
 //@ts-ignore Initializers are not allowed in ambient contexts.
-const EXAMPLE_SYNONYM_NODE :SynonymNode = {
+const EXAMPLE_SYNONYM_NODE: SynonymNode = {
 	//_childOrder: '...',
 	//_id: '...',
 	//_indexConfig: {},
@@ -189,7 +219,7 @@ const EXAMPLE_SYNONYM_NODE :SynonymNode = {
 }
 
 //@ts-ignore Initializers are not allowed in ambient contexts.
-const EXAMPLE_SYNONYM_OBJECT :Synonym = {
+const EXAMPLE_SYNONYM_OBJECT: Synonym = {
 	//_id: '...',
 	//_name: '...',
 	//_path: '...',

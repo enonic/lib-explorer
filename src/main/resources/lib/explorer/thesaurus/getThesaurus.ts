@@ -1,4 +1,5 @@
-import type {RepoConnection} from '/lib/explorer/types/index.d';
+import type {RepoConnection} from '/lib/xp/node';
+import type {ThesaurusNode} from '/lib/explorer/types/Thesaurus.d';
 
 
 import {
@@ -26,7 +27,7 @@ export function getThesaurus({
 		throw new Error('getThesaurus(): Missing required named parameter _id or _name!');
 	}
 
-	const node = connection.get(key);
+	const node = connection.get<ThesaurusNode>(key);
 	if (!node) {
 		const msg = `Unable to get thesaurus with _id:${idParam} or _name:${nameParam}`;
 		log.error(msg);

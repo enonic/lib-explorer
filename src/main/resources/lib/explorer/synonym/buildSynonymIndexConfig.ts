@@ -1,9 +1,10 @@
 import type {
-	IndexConfig,
-	IndexConfigConfig,
-	//SynonymNode,
-	SynonymNodeCreateParams
-} from '/lib/explorer/types/index.d';
+	NodeConfigEntry,
+	NodeIndexConfigParams,
+	NodeIndexConfigTemplates
+} from '/lib/xp/node';
+import type {SynonymNodeCreateParams} from '/lib/explorer/types/index.d';
+
 
 import {
 	sortByProperty//,
@@ -43,9 +44,9 @@ const DISABLED_IN_INTERFACES_CONFIG = {
 export function buildSynonymIndexConfig({
 	partialSynonymNode
 } :{
-	partialSynonymNode :SynonymNodeCreateParams //Partial<SynonymNode>
+	partialSynonymNode: SynonymNodeCreateParams
 }) {
-	const indexConfig :IndexConfig = {
+	const indexConfig: NodeIndexConfigParams = {
 		configs: [{
 			config: COMMENT_CONFIG,
 			path: 'comment',
@@ -76,7 +77,7 @@ export function buildSynonymIndexConfig({
 	for (let i = 0; i < locales.length; i++) {
 		const locale = locales[i];
 
-		const synonymConfig :IndexConfigConfig = {
+		const synonymConfig: Partial<NodeConfigEntry> = {
 			decideByType: false, // string
 			enabled: true,
 			fulltext: true,
@@ -85,7 +86,7 @@ export function buildSynonymIndexConfig({
 			path: false
 		}
 
-		let stemmingLanguage :string;
+		let stemmingLanguage: string;
 		try {
 			stemmingLanguage = stemmingLanguageFromLocale(locale)
 		} catch (e) {

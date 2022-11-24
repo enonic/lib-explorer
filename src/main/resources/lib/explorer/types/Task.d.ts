@@ -1,17 +1,10 @@
-import type {Application} from '../../../index.d';
-import type {AnyObject} from './Utility';
+import type {TaskInfo} from '/lib/xp/task';
+import type {AnyObject} from '@enonic/js-utils/src/types';
 
 
 export type TaskName = string;
 
-export interface Task<InfoObj = AnyObject> {
-	description :string
-	id :string
-	name :string // TaskName
-	state :string
-	application :string // ApplicationKey
-	user :string
-	startTime :string
+export interface Task<InfoObj = AnyObject> extends TaskInfo {
 	progress: {
 		info :string // might be json :)
 		infoObj ?:InfoObj // Used in GraphQL as GraphQLJSON
@@ -20,4 +13,4 @@ export interface Task<InfoObj = AnyObject> {
 	}
 }
 
-export type TaskDescriptor = `${Application.Key}:${TaskName}`;
+export type TaskDescriptor = `${typeof app.name}:${TaskName}`;

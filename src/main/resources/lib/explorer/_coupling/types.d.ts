@@ -1,24 +1,22 @@
-import type {EventLib} from '@enonic/js-utils/src/types/index.d';
 import type {
-	App,
-	Log
-} from '../../../index.d';
-import type {
-	CreateRepoParams,
-	PrincipalKey,
+	ConnectParams,
 	RepoConnection,
-	RepositoryConfig
-} from '/lib/explorer/types/index.d';
+} from '/lib/xp/node';
+import type {EventLib} from '@enonic/js-utils/src/types/index.d';
+import type {PrincipalKey} from '@enonic/js-utils/src/types/Auth.d';
 
+// TODO Use instead of below
+// import type {RepoLibrary as RepoLib} from '@enonic-types/lib-repo';
+// import type {ValueLibrary} from '/lib/xp/value';
+// TODO Replace with above
+export type RepoLib = XpLibraries["/lib/xp/repo"];
+export type ValueLib = XpLibraries["/lib/xp/value"];
 
 export type Source = {
-	repoId: string;
-	branch: string;
-	user?: {
-		login: string;
-		idProvider?: string;
-	};
-	principals?: Array<PrincipalKey>;
+	repoId: ConnectParams['repoId']
+	branch: ConnectParams['branch'];
+	user?: ConnectParams['user'];
+	principals?: PrincipalKey[]; // With autocomplete
 }
 
 export type ConnectFunction = (params: Source) => RepoConnection;
@@ -35,30 +33,25 @@ export type GeoPointFunction = (lat :number, lon :number) => unknown;
 export type StringFunction = (v :string) => unknown;
 export type UnknownFunction = (v :unknown) => unknown;
 
-export type RepoLib = {
-	create(param :CreateRepoParams) :RepositoryConfig
-	get(repoId :string) :RepositoryConfig
-	list() :RepositoryConfig[]
-}
 
-export type ValueLib = {
-	geoPoint :GeoPointFunction
-	geoPointString :StringFunction
-	instant :UnknownFunction
-	localDate :UnknownFunction
-	localDateTime :UnknownFunction
-	localTime :UnknownFunction
-	reference :StringFunction
-}
+// export type ValueLib = {
+// 	geoPoint :GeoPointFunction
+// 	geoPointString :StringFunction
+// 	instant :UnknownFunction
+// 	localDate :UnknownFunction
+// 	localDateTime :UnknownFunction
+// 	localTime :UnknownFunction
+// 	reference :StringFunction
+// }
 
 export type StemmingLanguageFromLocaleFunction = (locale :string) => string;
 
 export type JavaBridge = {
-	app :App
-	connect :ConnectFunction
-	event :EventLib
-	log :Log
-	repo :RepoLib
-	value :ValueLib
-	stemmingLanguageFromLocale :StemmingLanguageFromLocaleFunction
+	app: typeof app
+	connect: ConnectFunction
+	event: EventLib
+	log: typeof log
+	repo: RepoLib
+	value: ValueLib
+	stemmingLanguageFromLocale: StemmingLanguageFromLocaleFunction
 }
