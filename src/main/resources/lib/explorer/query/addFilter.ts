@@ -1,18 +1,21 @@
-export function addFilter<Filter>({
+import type {
+	BooleanFilter,
+	Filter,
+} from '/lib/xp/node';
+
+
+export function addFilter({
 	clause = 'must',
 	filter,
 	filters = {} // Reference which gets modified
 } :{
-	clause? :'must'|'mustNot'|'should'
-	filter :Filter
-	filters? :{
-		boolean? :{
-			must? :Filter | Array<Filter>
-			mustNot? :Filter | Array<Filter>
-			should? :Filter | Array<Filter>
-		}
+	clause?: 'must'|'mustNot'|'should'
+	filter: Filter
+	filters?: {
+		boolean? :BooleanFilter['boolean']
 	}
 }) {
+	log.warning('/lib/explorer/query/addFilter is DEPRECATED, use @enonic/js-utils addQueryFilter instead!');
 	if (!filters.boolean) { filters.boolean = {}; }
 	if (!filters.boolean[clause]) { filters.boolean[clause] = []; }
 	if (!Array.isArray(filters.boolean[clause])) {

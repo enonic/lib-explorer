@@ -1,13 +1,8 @@
 import type {
-	QueryDSL,
-	SortDSLExpression
-} from '@enonic/js-utils/src/types';
+	QueryNodeParams,
+	RepoConnection,
+} from '/lib/xp/node';
 //import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
-import type {
-	//Highlight,
-	QueryFilters,
-	RepoConnection
-} from '/lib/explorer/types/index.d';
 
 
 import {addQueryFilter} from '@enonic/js-utils';
@@ -22,7 +17,7 @@ export function query/*<
 	// Optional
 	//aggregations,
 	count = -1,
-	filters = {},
+	filters,
 	//highlight,
 	nodeTypes = [],
 	parentPaths = [],
@@ -34,17 +29,17 @@ export function query/*<
 	start
 } :{
 	// Required
-	connection :RepoConnection
+	connection: RepoConnection
 	// Optional
 	//aggregations ?:Aggregations<AggregationKeys>
-	count ?:number
-	filters ?:QueryFilters
+	count?: QueryNodeParams['count']
+	filters?: QueryNodeParams['filters']
 	//highlight ?:Highlight
-	nodeTypes ?:Array<string>
-	parentPaths ?:Array<string>
-	query ?:QueryDSL|string
-	sort ?:SortDSLExpression|string
-	start ?:number
+	nodeTypes?: string[]
+	parentPaths?: string[]
+	query?: QueryNodeParams['query']
+	sort?: QueryNodeParams['sort']
+	start?: QueryNodeParams['start']
 }) {
 	if (nodeTypes.length) {
 		filters = addQueryFilter({

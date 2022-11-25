@@ -1,5 +1,7 @@
 import type {
 	Node,
+} from '/lib/xp/node';
+import type {
 	NodeCreate
 } from '/lib/explorer/types/Node.d';
 
@@ -25,7 +27,9 @@ export type Thesaurus = Omit<
 	'_childOrder'
 		| '_indexConfig'
 		| '_inheritsPermissions'
+		| '_manualOrderValue' // TODO: The Node Generic should make this optional
 		//| '_nodeType' // GraphQL Interface Node needs this
+		| '_parentPath' // TODO: The Node Generic should not have this
 		| '_permissions'
 		| '_state'
 		| '_ts'

@@ -25,9 +25,9 @@ export function run({
 	fromLocale,
 	toLocale
 } :{
-	thesaurusId :string
-	fromLocale :string
-	toLocale :string
+	thesaurusId: string
+	fromLocale: string
+	toLocale: string
 }) {
 	const progress = constructProgress({
 		message: `Checking parameters`
@@ -57,7 +57,7 @@ export function run({
 		principals:[PRINCIPAL_EXPLORER_WRITE]
 	});
 
-	let thesaurusNode :ReturnType<typeof getThesaurus>;
+	let thesaurusNode: ReturnType<typeof getThesaurus>;
 	try {
 		thesaurusNode = getThesaurus({
 			connection: explorerRepoWriteConnection,
@@ -94,7 +94,7 @@ export function run({
 			//const migratedSynonymNode :SynonymNodeV2 =
 			explorerRepoWriteConnection.modify<SynonymNodeV1>({
 				key: synonymId,
-				editor: (synonymNode_v1 :SynonymNodeV1) => migrateSynonymNode_v1_to_v2({
+				editor: (synonymNode_v1: SynonymNodeV1) => migrateSynonymNode_v1_to_v2({
 					fromLocale,
 					synonymNode_v1,
 					thesaurusId,

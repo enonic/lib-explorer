@@ -1,19 +1,18 @@
 import type {
-	QueryFilters,
-	RepoConnection
-} from '/lib/explorer/types/index.d';
+	QueryNodeParams,
+	RepoConnection,
+} from '/lib/xp/node';
 
 
 import {
+	addQueryFilter,
 	forceArray,
 	toStr
 } from '@enonic/js-utils';
-
 import {
 	FOLDER_THESAURI,
 	NT_THESAURUS
 } from '/lib/explorer/constants';
-import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {query as querySynonyms} from '/lib/explorer/synonym/query';
 import {coerceThesaurus} from '/lib/explorer/thesaurus/coerceThesaurus';
@@ -25,7 +24,7 @@ export function query({
 	// Optional
 	count = -1,
 	explain = false,
-	filters = {},
+	filters,
 	getSynonymsCount = true,
 	logQuery = false,
 	logQueryResults = false,
@@ -34,29 +33,29 @@ export function query({
 	thesauri
 } :{
 	// Required
-	connection :RepoConnection
+	connection: RepoConnection
 	// Optional
-	count ?:number
-	explain ?:boolean
-	filters ?:QueryFilters
-	getSynonymsCount ?:boolean
-	logQuery ?:boolean
-	logQueryResults ?:boolean
-	query ?:string
-	sort ?:string
+	count?: QueryNodeParams['count']
+	explain?: QueryNodeParams['explain']
+	filters?: QueryNodeParams['filters']
+	getSynonymsCount?: boolean
+	logQuery?: boolean
+	logQueryResults?: boolean
+	query?: string
+	sort?: string
 	thesauri ?:string|Array<string>
 }) {
-	addFilter({
+	filters = addQueryFilter({
 		filter: hasValue('_nodeType', [NT_THESAURUS]),
 		filters
 	});
 	if (thesauri) {
 		const thesauriArr = forceArray(thesauri);
 		if (thesauriArr.length) {
-			addFilter({
+			filters = addQueryFilter({
 				//clause: 'should', // Must clause works, the _name field simply needs to match one of the values in the array, not all of them :)
-				filters,
-				filter: hasValue('_name', thesauriArr)
+				filter: hasValue('_name', thesauriArr),
+				filters
 				//filter: hasValue('_parentPath', thesauriArr.map(n => `/thesauri/${n}`))
 			});
 		}

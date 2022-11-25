@@ -17,10 +17,10 @@ export function getThesaurus({
 	_name: nameParam
 } :{
 	// Required
-	connection :RepoConnection
+	connection: RepoConnection
 	// Optional
-	_id ?:string
-	_name ?:string
+	_id?: string
+	_name?: string
 }) {
 	const key = idParam || (nameParam ? `/${FOLDER_THESAURI}/${nameParam}` : null);
 	if (!key) {

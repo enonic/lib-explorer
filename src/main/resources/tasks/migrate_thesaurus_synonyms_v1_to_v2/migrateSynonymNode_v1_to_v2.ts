@@ -4,9 +4,9 @@
 
 import type {SynonymNode as SynonymNodeV1} from '/lib/explorer/synonym/Synonym_v1';
 import type {
-	InputTypeLanguageSynonym,
-	SynonymNode_Languages,
-	SynonymNodeModifyParams as SynonymNodeV2ModifyParams
+	SynonymNodeModifyParams as SynonymNodeV2ModifyParams,
+	Write_SynonymNode_Languages,
+	Write_SynonymNode_LanguagesSynonymObject,
 } from '/lib/explorer/synonym/Synonym_v2';
 
 import {
@@ -98,7 +98,7 @@ export function migrateSynonymNode_v1_to_v2({
 		cleanedToArr = notInA;
 	} // toLocale === fromLocale
 
-	const languages :SynonymNode_Languages = {
+	const languages :Write_SynonymNode_Languages = {
 		[fromLocale]: {
 			both: [],
 			comment: '',
@@ -113,7 +113,7 @@ export function migrateSynonymNode_v1_to_v2({
 			to: []
 		}
 	};
-	const t :Array<InputTypeLanguageSynonym> = cleanedToArr.map((synonym) => ({
+	const t: Write_SynonymNode_LanguagesSynonymObject[] = cleanedToArr.map((synonym) => ({
 		comment: '',
 		enabled: true,
 		disabledInInterfaces: [],

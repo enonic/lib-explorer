@@ -42,6 +42,7 @@
 			"@enonic/semantic-ui-react-form": ["node_modules/@enonic/semantic-ui-react-form/src"],
 			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"],
 			"/lib/xp/auth": ["node_modules/@enonic-types/lib-auth"],
+			"/lib/xp/context": ["node_modules/@enonic-types/lib-context"],
 			"/lib/xp/event": ["node_modules/@enonic-types/lib-event"],
 			"/lib/xp/node": ["node_modules/@enonic-types/lib-node"],
 			"/lib/xp/repo": ["node_modules/@enonic-types/lib-repo"],

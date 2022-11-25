@@ -1,17 +1,11 @@
-// import type {RepoConnection} from '/lib/xp/node';
-import type {
-	GetContext,
-	PrincipalKey,
-	RepoConnection
-} from '/lib/explorer/types/index.d';
+import type {Context} from '/lib/xp/context';
+import type {PrincipalKey} from '/lib/explorer/types/index.d';
 
 
 //import {toStr} from '@enonic/js-utils';
 
 //import {getUser} from '/lib/xp/auth';
-//@ts-ignore
 import {get as getContext} from '/lib/xp/context';
-//@ts-ignore
 import {connect as libConnect} from '/lib/xp/node';
 
 
@@ -26,7 +20,7 @@ import {
 
 
 export function connect({
-	context = getContext() as GetContext,
+	context = getContext(),
 	repoId = REPO_ID_EXPLORER,
 	branch = BRANCH_ID_EXPLORER,
 	principals: passedPrincipals = [PRINCIPAL_EXPLORER_READ],
@@ -39,17 +33,17 @@ export function connect({
 		idProvider
 	} : null
 } :{
-	branch? :string
-	context? :GetContext
-	idProvider? :string
-	login? :string
-	principals? :Array<PrincipalKey>
-	repoId? :string
-	user? :{
-		idProvider :string
-		login :string
+	branch?: string
+	context?: Context
+	idProvider?: string
+	login?: string
+	principals?: PrincipalKey[]
+	repoId?: string
+	user?: {
+		idProvider: string
+		login: string
 	}
-} = {}) :RepoConnection {
+} = {}) {
 	/*log.info(toStr({
 		//context,
 		repoId, branch, passedPrincipals, user

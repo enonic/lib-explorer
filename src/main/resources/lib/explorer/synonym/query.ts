@@ -1,22 +1,20 @@
 import type {
-	QueryDSL,
-	SortDSLExpression
-} from '@enonic/js-utils/src/types';
+	QueryNodeParams,
+	RepoConnection,
+} from '/lib/xp/node';
 import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
 import type {
 	Highlight,
-	QueryFilters,
-	RepoConnection,
 	SynonymNode
 } from '/lib/explorer/types/index.d';
 
 
 import {
+	addQueryFilter,
 	//forceArray,
 	toStr
 } from '@enonic/js-utils';
 import {NT_SYNONYM} from '/lib/explorer/constants';
-import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {moldQueriedSynonymNode} from '/lib/explorer/synonym/moldQueriedSynonymNode';
 
@@ -25,14 +23,14 @@ export type QuerySynonymsParams<
 	AggregationKeys extends undefined|string = undefined
 > = {
 	aggregations ?:Aggregations<AggregationKeys>
-	connection :RepoConnection
-	count ?:number
-	explain ?:boolean
-	filters ?:QueryFilters
-	highlight ?:Highlight
-	query ?:QueryDSL|string
-	sort ?:SortDSLExpression|string
-	start ?:number
+	connection: RepoConnection
+	count?: QueryNodeParams['count']
+	explain?: QueryNodeParams['explain']
+	filters?: QueryNodeParams['filters']
+	highlight?: Highlight
+	query?: QueryNodeParams['query']
+	sort?: QueryNodeParams['sort']
+	start?: QueryNodeParams['start']
 }
 
 
@@ -43,7 +41,7 @@ export function query<
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
 	explain = false,
-	filters = {},
+	filters,
 	highlight = {
 		/*numberOfFragments: 10,
 		postTag: '</b>',
@@ -70,7 +68,7 @@ export function query<
 	}));*/
 	//log.debug('highlight:%s', toStr(highlight));
 
-	addFilter({
+	filters = addQueryFilter({
 		filter: hasValue('_nodeType', [NT_SYNONYM]),
 		filters
 	});
