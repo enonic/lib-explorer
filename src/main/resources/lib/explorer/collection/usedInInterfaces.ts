@@ -1,7 +1,9 @@
-//import {toStr} from '@enonic/js-utils';
+import {
+	addQueryFilter,
+	// toStr
+} from '@enonic/js-utils';
 
 import {query} from '/lib/explorer/interface/query';
-import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 
 
@@ -11,7 +13,7 @@ export function usedInInterfaces({
 }) {
 	const res = query({
 		connection,
-		filters: addFilter({
+		filters: addQueryFilter({
 			filter: hasValue('collections', name)
 		})
 	});

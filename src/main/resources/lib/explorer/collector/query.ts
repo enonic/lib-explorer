@@ -3,14 +3,16 @@ import type {
 	RepoConnection
 } from '/lib/explorer/types/index.d';
 
-//import {toStr} from '@enonic/js-utils';
+import {
+	addQueryFilter,
+	// toStr
+} from '@enonic/js-utils';
 
 import {
 	NT_COLLECTOR//,
 	//PATH_COLLECTORS
 } from '/lib/explorer/model/2/constants';
 import {list as getInstalledCollectors} from '/lib/explorer/collector/list';
-import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 
 
@@ -20,7 +22,7 @@ export function query({
 	connection :RepoConnection
 }) {
 	//log.warning(`/lib/explorer/collector/query is deprecated. Use /lib/explorer/collector/list instead.`);
-	const filters = addFilter({
+	const filters = addQueryFilter({
 		filter: hasValue('_nodeType', [NT_COLLECTOR])
 	});
 	const queryParams = {

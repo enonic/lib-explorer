@@ -5,7 +5,10 @@ import type {
 } from '/lib/explorer/types/index.d';
 
 
-//import {toStr} from '@enonic/js-utils';
+import {
+	addQueryFilter,
+	// toStr
+} from '@enonic/js-utils';
 
 import {
 	REPO_JOURNALS,
@@ -13,7 +16,6 @@ import {
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
-import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 
 
@@ -38,7 +40,7 @@ export function query<
 		repoId: REPO_JOURNALS,
 		principals: [PRINCIPAL_EXPLORER_READ]
 	});
-	addFilter({
+	filters = addQueryFilter({
 		filter: hasValue('_nodeType', [NT_JOURNAL]),
 		filters
 	});

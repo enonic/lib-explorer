@@ -5,8 +5,8 @@ import type {
 } from '/lib/explorer/types/index.d';
 
 
+import {addQueryFilter} from '@enonic/js-utils';
 import {NT_INTERFACE} from '/lib/explorer/model/2/constants';
-import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 
 
@@ -23,7 +23,7 @@ export function query({
 	query ?:string
 	sort ?:string
 }) {
-	addFilter({
+	filters = addQueryFilter({
 		filter: hasValue('_nodeType', [NT_INTERFACE]),
 		filters
 	});

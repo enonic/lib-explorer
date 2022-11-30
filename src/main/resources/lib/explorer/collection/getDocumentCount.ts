@@ -1,6 +1,6 @@
+import {addQueryFilter} from '@enonic/js-utils';
 import {NT_DOCUMENT} from '/lib/explorer/constants';
 import {connectToCollection} from '/lib/explorer/repo/connectToCollection';
-import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {getTotal} from '/lib/explorer/query/getTotal';
 
@@ -10,7 +10,7 @@ export function getDocumentCount(name :string) {
 	try {
 		count = getTotal({
 			connection: connectToCollection(name),
-			filters: addFilter({
+			filters: addQueryFilter({
 				filter: hasValue('_nodeType', [NT_DOCUMENT])
 			})
 		});

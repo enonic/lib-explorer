@@ -6,6 +6,7 @@ import type {
 
 
 import {
+	addQueryFilter,
 	isStringLiteral,
 	toStr
 } from '@enonic/js-utils';
@@ -14,7 +15,6 @@ import {
 	SYSTEM_FIELDS
 } from '/lib/explorer/model/2/constants';
 import {coerceFieldType} from '/lib/explorer/field/coerceFieldType';
-import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 
 
@@ -27,7 +27,7 @@ export function getFields({
 	fields? :Array<string>
 	includeSystemFields? :boolean
 }) {
-	const filters = addFilter({
+	let filters = addQueryFilter({
 		filter: hasValue('_nodeType', [NT_FIELD])
 	});
 	if (fields) {
@@ -37,7 +37,7 @@ export function getFields({
 		if (!Array.isArray(fields)) {
 			throw new Error(`Invalid fields parameter! Must be string or Array<string> fields:${toStr(fields)}`);
 		}
-		addFilter({
+		filters = addQueryFilter({
 			filter: hasValue('key', fields),
 			filters // reference gets modified
 		});

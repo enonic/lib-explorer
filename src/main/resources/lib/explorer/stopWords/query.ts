@@ -7,10 +7,12 @@ import type {
 import type {QueriedStopword} from '../types/StopWord.d';
 
 
-//import {toStr} from '@enonic/js-utils';
+import {
+	addQueryFilter,
+	// toStr
+} from '@enonic/js-utils';
 
 import {NT_STOP_WORDS} from '/lib/explorer/model/2/constants';
-import {addFilter} from '/lib/explorer/query/addFilter';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {get} from '/lib/explorer/stopWords/get';
 
@@ -35,7 +37,7 @@ export function query<
 	sort? :string
 	start? :number
 }) {
-	addFilter({
+	filters = addQueryFilter({
 		filter: hasValue('_nodeType', [NT_STOP_WORDS]),
 		filters
 	});
