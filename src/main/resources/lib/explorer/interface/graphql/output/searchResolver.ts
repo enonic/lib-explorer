@@ -44,6 +44,7 @@ export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType
 			filters: filtersArg,
 			highlight: highlightArg,
 			languages: languagesArg,
+			query: queryArg,
 			searchString: searchStringArg = '', // :string
 			start = 0
 		},
@@ -153,6 +154,7 @@ export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType
 		logSynonymsQueryResult,
 		profilingArray: profiling,
 		profilingLabel: 'search',
+		queryArg,
 		searchString,
 		start,
 		stemmingLanguages,

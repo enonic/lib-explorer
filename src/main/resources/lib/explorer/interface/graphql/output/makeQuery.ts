@@ -1,3 +1,4 @@
+import type {QueryDsl} from '/lib/xp/node';
 import type {InterfaceField} from '/lib/explorer/types/index.d';
 
 
@@ -52,5 +53,5 @@ export function makeQuery({
 	));
 
 	const query = bool(or(arr));
-	return query;
+	return query as QueryDsl;
 }
