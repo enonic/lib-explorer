@@ -83,14 +83,14 @@ function getInputFields(name :string) {
 //──────────────────────────────────────────────────────────────────────────────
 // InputType
 //──────────────────────────────────────────────────────────────────────────────
-function addInputType({
+function addInputType<F extends Fields = Fields>({
 	description,
 	fields,
 	name
 } :{
-	description ?:string
-	fields :Fields
-	name :string
+	description?: string
+	fields: F
+	name: string
 }) {
 	//log.debug(`addInputType({ name: ${name} })`);
 	if (isSet(this.inputTypes[name])) {

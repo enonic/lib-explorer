@@ -1,3 +1,4 @@
+import type {QueryDsl} from '/lib/xp/node';
 import type {
 	AnyObject,
 	DocumentNode,
@@ -71,6 +72,7 @@ type SearchCommonArgs = {
 	highlight ?:Highlight
 	languages ?:Array<string>
 	profiling ?:boolean
+	query?: QueryDsl
 	searchString :string
 	//synonyms ?:SynonymsArray
 }
