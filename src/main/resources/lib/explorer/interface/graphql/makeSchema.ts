@@ -26,7 +26,7 @@ import {constructGlue} from './utils/Glue';
 import {addAggregationInput} from '/lib/explorer/interface/graphql/aggregations/guillotine/input/addAggregationInput';
 import {addFilterInput} from '/lib/explorer/interface/graphql/filters/guillotine/input/addFilterInput';
 import {addInputTypeHighlight} from '/lib/explorer/interface/graphql/highlight/input/addInputTypeHighlight';
-import {addQueryDSL} from '/lib/explorer/interface/graphql/queryDSL/addQueryDSL';
+// import {addQueryDSL} from '/lib/explorer/interface/graphql/queryDSL/addQueryDSL';
 //import {addInputTypeSynonyms} from '/lib/explorer/interface/graphql/input/addInputTypeSynonyms';
 
 // Output
@@ -85,7 +85,7 @@ export function makeSchema() {
 		}),
 		languages: list(GraphQLString),
 		profiling: GraphQLBoolean,
-		query: addQueryDSL({glue}),
+		// query: addQueryDSL({glue}),
 		searchString: GraphQLString // Can't be nonNull when used as subQuery
 	}
 

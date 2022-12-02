@@ -72,7 +72,7 @@ type SearchCommonArgs = {
 	highlight ?:Highlight
 	languages ?:Array<string>
 	profiling ?:boolean
-	query?: QueryDsl
+	// query?: QueryDsl
 	searchString :string
 	//synonyms ?:SynonymsArray
 }

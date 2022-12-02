@@ -58,7 +58,7 @@ export function makeQueryParams({
 	logSynonymsQueryResult = false,
 	profilingArray = [],
 	profilingLabel = '',
-	queryArg,
+	// queryArg,
 	start, // default is undefined which means 0
 	stemmingLanguages = [],
 } :{
@@ -80,7 +80,7 @@ export function makeQueryParams({
 	count ?:number
 	logSynonymsQuery ?:boolean
 	logSynonymsQueryResult ?:boolean
-	queryArg?: QueryDsl,
+	// queryArg?: QueryDsl,
 	start ?:number
 	stemmingLanguages ?:Array<string>
 }) {
@@ -121,106 +121,108 @@ export function makeQueryParams({
 		//log.debug('filtersArray:%s', toStr(filtersArray));
 	}
 
-	let query = queryArg;
-	let synonyms = [];
-	if (!queryArg) {
-		const explorerRepoReadConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
+	// let query = queryArg;
+	// let synonyms = [];
+	// if (!queryArg) {
+	const explorerRepoReadConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
 
-		const washedSearchString = wash({string: searchString});
-		const listOfStopWords = [];
-		if (stopWords && stopWords.length) {
-			//log.debug(`stopWords:${toStr(stopWords)}`);
-			stopWords.forEach((name) => {
-				const {words} = getStopWordsList({ // Not a query
-					connection: explorerRepoReadConnection,
-					name
-				});
-				//log.debug(`words:${toStr(words)}`);
-				words.forEach((word) => {
-					if (!listOfStopWords.includes(word)) {
-						listOfStopWords.push(word);
-					}
-				});
+	const washedSearchString = wash({string: searchString});
+	const listOfStopWords = [];
+	if (stopWords && stopWords.length) {
+		//log.debug(`stopWords:${toStr(stopWords)}`);
+		stopWords.forEach((name) => {
+			const {words} = getStopWordsList({ // Not a query
+				connection: explorerRepoReadConnection,
+				name
 			});
-		}
-		//log.debug(`listOfStopWords:${toStr({listOfStopWords})}`);
-		const removedStopWords = [];
-		const searchStringWithoutStopWords = removeStopWords({
-			removedStopWords,
-			stopWords: listOfStopWords,
-			string: washedSearchString
-		});
-
-		//log.debug('fields:%s', toStr(fields));
-		query = makeQuery({
-			fields,
-			searchStringWithoutStopWords,
-			stemmingLanguages
-		});
-		//log.debug('query:%s', toStr(query));
-
-		synonyms = isSet(synonymsSource)
-			? synonymsSource
-			: getSynonymsFromSearchString({
-				//expand,
-				//explain,
-				explorerRepoReadConnection,
-				defaultLocales: localesInSelectedThesauri,
-				doProfiling,
-				interfaceId,
-				locales: languages,
-				logQuery: logSynonymsQuery,
-				logQueryResult: logSynonymsQueryResult,
-				profilingArray,
-				profilingLabel,
-				searchString: searchStringWithoutStopWords,
-				showSynonyms: true, // TODO hardcode
-				thesauri: thesauriNames
+			//log.debug(`words:${toStr(words)}`);
+			words.forEach((word) => {
+				if (!listOfStopWords.includes(word)) {
+					listOfStopWords.push(word);
+				}
 			});
-		//log.debug('synonyms:%s', toStr(synonyms));
+		});
+	}
+	//log.debug(`listOfStopWords:${toStr({listOfStopWords})}`);
+	const removedStopWords = [];
+	const searchStringWithoutStopWords = removeStopWords({
+		removedStopWords,
+		stopWords: listOfStopWords,
+		string: washedSearchString
+	});
 
-		const appliedFulltext = [];
-		for (let i = 0; i < synonyms.length; i++) {
+	//log.debug('fields:%s', toStr(fields));
+	const query = searchStringWithoutStopWords ? makeQuery({
+		fields,
+		searchStringWithoutStopWords,
+		stemmingLanguages
+	}) : {
+		matchAll: {}
+	};
+	//log.debug('query:%s', toStr(query));
+
+	const synonyms = isSet(synonymsSource)
+		? synonymsSource
+		: getSynonymsFromSearchString({
+			//expand,
+			//explain,
+			explorerRepoReadConnection,
+			defaultLocales: localesInSelectedThesauri,
+			doProfiling,
+			interfaceId,
+			locales: languages,
+			logQuery: logSynonymsQuery,
+			logQueryResult: logSynonymsQueryResult,
+			profilingArray,
+			profilingLabel,
+			searchString: searchStringWithoutStopWords,
+			showSynonyms: true, // TODO hardcode
+			thesauri: thesauriNames
+		});
+	//log.debug('synonyms:%s', toStr(synonyms));
+
+	const appliedFulltext = [];
+	for (let i = 0; i < synonyms.length; i++) {
+		const {
+			synonyms: synonymsToApply
+		} = synonyms[i];
+		for (let j = 0; j < synonymsToApply.length; j++) {
 			const {
-				synonyms: synonymsToApply
-			} = synonyms[i];
-			for (let j = 0; j < synonymsToApply.length; j++) {
-				const {
-					locale,
-					synonym
-				} = synonymsToApply[j];
-				if (!appliedFulltext.includes(synonym)) {
-					const aSynonymFulltextQuery = {
-						fulltext: {
+				locale,
+				synonym
+			} = synonymsToApply[j];
+			if (!appliedFulltext.includes(synonym)) {
+				const aSynonymFulltextQuery = {
+					fulltext: {
+						fields: fields.map(({name}) => name), // NOTE: No boosting
+						operator: 'AND',
+						query: synonym
+					}
+				};
+				//@ts-ignore // We know it's a list
+				query.boolean.should.push(aSynonymFulltextQuery);
+				appliedFulltext.push(synonym);
+			}
+			if (locale !== 'zxx') {
+				const stemmingLanguage = stemmingLanguageFromLocale(locale);
+				if (stemmingLanguage) {
+					const aSynonymStemmedQuery = {
+						stemmed: {
 							fields: fields.map(({name}) => name), // NOTE: No boosting
 							operator: 'AND',
-							query: synonym
+							query: synonym,
+							language: stemmingLanguageFromLocale(locale)
 						}
 					};
 					//@ts-ignore // We know it's a list
-					query.boolean.should.push(aSynonymFulltextQuery);
-					appliedFulltext.push(synonym);
-				}
-				if (locale !== 'zxx') {
-					const stemmingLanguage = stemmingLanguageFromLocale(locale);
-					if (stemmingLanguage) {
-						const aSynonymStemmedQuery = {
-							stemmed: {
-								fields: fields.map(({name}) => name), // NOTE: No boosting
-								operator: 'AND',
-								query: synonym,
-								language: stemmingLanguageFromLocale(locale)
-							}
-						};
-						//@ts-ignore // We know it's a list
-						query.boolean.should.push(aSynonymStemmedQuery);
-					} else {
-						log.warning(`Unable to guess stemmingLanguage from locale:${locale}`);
-					} // stemmingLanguage
-				} // !zxx
-			} // for synonymsToApply[j]
-		} // for synonyms[i]
-	}
+					query.boolean.should.push(aSynonymStemmedQuery);
+				} else {
+					log.warning(`Unable to guess stemmingLanguage from locale:${locale}`);
+				} // stemmingLanguage
+			} // !zxx
+		} // for synonymsToApply[j]
+	} // for synonyms[i]
+	// }
 
 	return {
 		queryParams: {
