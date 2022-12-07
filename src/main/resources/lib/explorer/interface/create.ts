@@ -1,9 +1,10 @@
+import type {RepoConnection as WriteConnection} from '/lib/xp/node';
 import type {
 	InterfaceField,
 	InterfaceNode,
 	InterfaceNodeCreateParams,
-	WriteConnection
 } from '/lib/explorer/types/index.d';
+import type {TermQuery} from '/lib/explorer/types/Interface.d';
 
 
 import {
@@ -25,16 +26,18 @@ export function create({
 	collectionIds,
 	fields,
 	stopWords,
-	synonymIds
-} :{
-	_name :string
-	collectionIds ?:Array<string>
-	fields ?:Array<InterfaceField>
-	stopWords ?:Array<string>
-	synonymIds ?:Array<string>
+	synonymIds,
+	termQueries,
+}: {
+	_name: string
+	collectionIds?: string[]
+	fields?: InterfaceField[]
+	stopWords?: string[]
+	synonymIds?: string[]
+	termQueries?: TermQuery[]
 }, {
 	writeConnection
-} :{
+}: {
 	writeConnection: WriteConnection
 }) {
 	const createdInterface = writeConnection.create<InterfaceNodeCreateParams>({
@@ -53,7 +56,7 @@ export function create({
 		_inheritsPermissions: false, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 		_name,
 		_nodeType: NT_INTERFACE,
-		_parentPath :`/${INTERFACES_FOLDER}`,
+		_parentPath: `/${INTERFACES_FOLDER}`,
 		_permissions: ROOT_PERMISSIONS_EXPLORER,
 		collectionIds: isNotSet(collectionIds) ? [] : forceArray(collectionIds).map((collectionId) => reference(collectionId)), // empty array allowed,
 		fields: isNotSet(fields) ? [] : forceArray(fields).map(({ // empty array allowed
@@ -64,7 +67,8 @@ export function create({
 			name
 		})),
 		stopWords: isNotSet(stopWords) ? [] : forceArray(stopWords),
-		synonymIds: isNotSet(synonymIds) ? [] : forceArray(synonymIds).map((synonymId) => reference(synonymId)) // empty array allowed
+		synonymIds: isNotSet(synonymIds) ? [] : forceArray(synonymIds).map((synonymId) => reference(synonymId)), // empty array allowed
+		termQueries: isNotSet(termQueries) ? [] : forceArray(termQueries), // empty array allowed
 	}) as InterfaceNode;
 	writeConnection.refresh(); // So the data becomes immidiately searchable
 	return createdInterface;
