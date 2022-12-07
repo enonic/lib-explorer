@@ -83,8 +83,12 @@ export const PRINCIPAL_SYSTEM_ADMIN = `role:${ROLE_SYSTEM_ADMIN}` as const;
 //──────────────────────────────────────────────────────────────────────────────
 // Field paths (Namespaces)
 //──────────────────────────────────────────────────────────────────────────────
-export const FIELD_PATH_GLOBAL = 'global'; // TODO _global or _x ?
-export const FIELD_PATH_META = 'document_metadata'; // TODO _meta ?
+export const FIELD_PATH_GLOBAL = 'global' as const; // TODO _global or _x ?
+export const FIELD_PATH_META = 'document_metadata' as const; // TODO _meta ?
+export const FIELD_PATH_META_COLLECTION = `${FIELD_PATH_META}.collection` as const;
+export const FIELD_PATH_META_DOCUMENT_TYPE = `${FIELD_PATH_META}.documentType` as const;
+export const FIELD_PATH_META_LANGUAGE = `${FIELD_PATH_META}.language` as const;
+export const FIELD_PATH_META_STEMMING_LANGUAGE = `${FIELD_PATH_META}.stemmingLanguage` as const;
 
 //──────────────────────────────────────────────────────────────────────────────
 // Permissions
