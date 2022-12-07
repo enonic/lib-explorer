@@ -1,4 +1,4 @@
-import type {QueryDsl} from '/lib/xp/node';
+// import type {QueryDsl} from '/lib/xp/node';
 import type {
 	AnyObject,
 	DocumentNode,
