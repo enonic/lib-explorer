@@ -4,6 +4,9 @@ import {
 	InterfaceNode,
 	ZeroOrMore
 } from '/lib/explorer/types/index.d';
+import {
+	TermQuery
+} from '/lib/explorer/types/Interface.d';
 
 
 import {
@@ -16,15 +19,15 @@ import {NT_INTERFACE} from '/lib/explorer/constants';
 
 
 export function coerseInterfaceTypeCollectionIds(
-	collectionIds :ZeroOrMore<string>
-) :Array<string> {
+	collectionIds: ZeroOrMore<string>
+): string[] {
 	return isNotSet(collectionIds) ? [] : forceArray(collectionIds);
 }
 
 
 export function coerseInterfaceTypeFields(
-	fields :ZeroOrMore<InterfaceField>
-) :Array<InterfaceField> {
+	fields: ZeroOrMore<InterfaceField>
+): InterfaceField[] {
 	return isNotSet(fields) ? [] : forceArray(fields).map(({ // empty array allowed
 		boost, // undefined allowed
 		name
@@ -36,16 +39,23 @@ export function coerseInterfaceTypeFields(
 
 
 export function coerseInterfaceTypeStopWords(
-	stopWords :ZeroOrMore<string>
-) :Array<string> {
+	stopWords: ZeroOrMore<string>
+): string[] {
 	return isNotSet(stopWords) ? [] : forceArray(stopWords);
 }
 
 
 export function coerseInterfaceTypeSynonymIds(
-	synonymIds :ZeroOrMore<string>
-) :Array<string> {
+	synonymIds: ZeroOrMore<string>
+): string[] {
 	return isNotSet(synonymIds) ? [] : forceArray(synonymIds);
+}
+
+
+export function coerseInterfaceTypeTermQueries(
+	termQueries: ZeroOrMore<TermQuery>
+): TermQuery[] {
+	return isNotSet(termQueries) ? [] : forceArray(termQueries);
 }
 
 
@@ -62,9 +72,10 @@ export const coerseInterfaceType = ({
 	fields = [],
 	//stopWordIds = [],
 	stopWords,
-	synonymIds//,
+	synonymIds,
+	termQueries,
 	//...rest
-} :InterfaceNode ) :Interface => ({
+}: InterfaceNode): Interface => ({
 	_id,
 	_name,
 	_nodeType: NT_INTERFACE,  // GraphQL Interface Node needs this
@@ -74,5 +85,6 @@ export const coerseInterfaceType = ({
 	fields: coerseInterfaceTypeFields(fields),
 	//stopWordIds: forceArray(stopWordIds),//.map((stopWordId) => reference(stopWordId)), // empty array allowed,
 	stopWords: coerseInterfaceTypeStopWords(stopWords),
-	synonymIds: coerseInterfaceTypeSynonymIds(synonymIds)
+	synonymIds: coerseInterfaceTypeSynonymIds(synonymIds),
+	termQueries: coerseInterfaceTypeTermQueries(termQueries),
 });
