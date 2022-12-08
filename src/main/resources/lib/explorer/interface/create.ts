@@ -17,7 +17,6 @@ import {
 	NT_INTERFACE,
 	ROOT_PERMISSIONS_EXPLORER
 } from '/lib/explorer/constants';
-//@ts-ignore
 import {reference} from '/lib/xp/value';
 
 
