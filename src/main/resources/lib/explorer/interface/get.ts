@@ -1,7 +1,5 @@
-import type {
-	InterfaceNode,
-	RepoConnection
-} from '/lib/explorer/types/index.d';
+import type {RepoConnection} from '/lib/xp/node';
+import type {InterfaceNode} from '/lib/explorer/types/index.d';
 
 
 import {INTERFACES_FOLDER} from '/lib/explorer/constants';
@@ -12,9 +10,9 @@ export function get({
 	interfaceName,
 	key = `/${INTERFACES_FOLDER}/${interfaceName}`
 } :{
-	connection :RepoConnection,
-	interfaceName ?:string
-	key? :string
-}) :InterfaceNode {
+	connection: RepoConnection,
+	interfaceName?: string
+	key?: string
+}): InterfaceNode {
 	return connection.get<InterfaceNode>(key) as InterfaceNode;
 }

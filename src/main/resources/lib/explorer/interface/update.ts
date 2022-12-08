@@ -1,15 +1,15 @@
+import type {RepoConnection as WriteConnection} from '/lib/xp/node';
 import type {
 	InterfaceField,
 	InterfaceNode,
-	WriteConnection
 } from '/lib/explorer/types/index.d';
+import type {TermQuery} from '/lib/explorer/types/Interface.d';
 
 
 import {
 	forceArray,
 	isNotSet
 } from '@enonic/js-utils';
-//@ts-ignore
 import {reference} from '/lib/xp/value';
 
 
@@ -18,19 +18,21 @@ export function update({
 	collectionIds,
 	fields,
 	stopWords,
-	synonymIds
+	synonymIds,
+	termQueries,
 } :{
-	_id :string
-	collectionIds :Array<string>
-	fields :Array<InterfaceField>
-	stopWords :Array<string>
-	synonymIds :Array<string>
+	_id: string
+	collectionIds: string[]
+	fields: InterfaceField[]
+	stopWords: string[]
+	synonymIds: string[]
+	termQueries?: TermQuery[]
 }, {
 	writeConnection
 } :{
 	writeConnection: WriteConnection
 }) {
-	 const updatedInterface = writeConnection.modify<InterfaceNode>({
+	const updatedInterface = writeConnection.modify<InterfaceNode>({
 		key: _id,
 		editor: (interfaceNode) => {
 			interfaceNode.collectionIds = isNotSet(collectionIds) ? [] : forceArray(collectionIds).map((collectionId) => reference(collectionId)); // empty array allowed,
@@ -43,6 +45,7 @@ export function update({
 			}));
 			interfaceNode.stopWords = isNotSet(stopWords) ? [] : forceArray(stopWords);
 			interfaceNode.synonymIds = isNotSet(synonymIds) ? [] : forceArray(synonymIds).map((synonymId) => reference(synonymId)); // empty array allowed,
+			interfaceNode.termQueries = isNotSet(termQueries) ? [] : forceArray(termQueries); // empty array allowed
 			return interfaceNode;
 		}
 	});
