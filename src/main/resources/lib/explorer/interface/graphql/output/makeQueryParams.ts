@@ -1,10 +1,11 @@
-import type {QueryDsl} from '/lib/xp/node';
+// import type {QueryDsl} from '/lib/xp/node';
 import type {
 	AnyObject,
 	InterfaceField
 } from '/lib/explorer/types/index.d';
 import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
-import {SynonymsArray} from '/lib/explorer/synonym/index.d';
+import type {SynonymsArray} from '/lib/explorer/synonym/index.d';
+import type {TermQuery} from '/lib/explorer/types/Interface.d';
 import type {Highlight} from '../highlight/input/index.d';
 
 
@@ -61,6 +62,7 @@ export function makeQueryParams({
 	// queryArg,
 	start, // default is undefined which means 0
 	stemmingLanguages = [],
+	termQueries,
 } :{
 	aggregationsArg :Array<AnyObject>
 	doProfiling ?:boolean
@@ -83,6 +85,7 @@ export function makeQueryParams({
 	// queryArg?: QueryDsl,
 	start ?:number
 	stemmingLanguages ?:Array<string>
+	termQueries?: TermQuery[]
 }) {
 	//log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
 
@@ -155,7 +158,8 @@ export function makeQueryParams({
 	const query = searchStringWithoutStopWords ? makeQuery({
 		fields,
 		searchStringWithoutStopWords,
-		stemmingLanguages
+		stemmingLanguages,
+		termQueries
 	}) : {
 		matchAll: {}
 	};
@@ -228,6 +232,7 @@ export function makeQueryParams({
 		queryParams: {
 			aggregations,
 			count,
+			// explain: true,
 			filters: filtersArray ? filtersArray : staticFilter,
 			highlight: highlightArg
 				? highlightGQLArgToEnonicXPQuery({highlightArg})

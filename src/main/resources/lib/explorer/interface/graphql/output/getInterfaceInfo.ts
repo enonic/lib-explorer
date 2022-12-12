@@ -5,7 +5,7 @@ import type {CollectionNode} from '/lib/explorer/types/Collection.d';
 import {
 	getIn,
 	isSet,
-	toStr
+	// toStr,
 } from '@enonic/js-utils';
 import {
 	COLLECTION_REPO_PREFIX,
@@ -23,8 +23,8 @@ import {getThesaurus} from '/lib/explorer/thesaurus/getThesaurus';
 
 export function getInterfaceInfo({
 	interfaceName
-} :{
-	interfaceName :string
+}: {
+	interfaceName: string
 }) {
 	const explorerRepoReadConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
 
@@ -39,7 +39,8 @@ export function getInterfaceInfo({
 	const {
 		_id: interfaceId,
 		stopWords,
-		synonymIds
+		synonymIds,
+		termQueries,
 	} = filteredInterfaceNode;
 	// log.debug('getInterfaceInfo synonymIds:%s', toStr(synonymIds));
 
@@ -74,10 +75,10 @@ export function getInterfaceInfo({
 		throw new Error(`interface:${interfaceName} has no collections!`);
 	}
 
-	const collectionIdsWithNames :Array<{
-		_id :string
-		_name :string
-	}> = [];
+	const collectionIdsWithNames: {
+		_id: string
+		_name: string
+	}[] = [];
 	for (let i = 0; i < collectionIds.length; i++) {
 		const collectionId = collectionIds[i];
 		const collectionNode = explorerRepoReadConnection.get<CollectionNode>(collectionId) as CollectionNode;
@@ -93,8 +94,8 @@ export function getInterfaceInfo({
 	}
 	// log.debug('getInterfaceInfo collectionIdsWithNames:%s', toStr(collectionIdsWithNames));
 
-	//const collectionIdToName :Record<string,string> = {};
-	const collectionNameToId :Record<string,string> = {};
+	//const collectionIdToName: Record<string,string> = {};
+	const collectionNameToId: Record<string,string> = {};
 	for (let i = 0; i < collectionIdsWithNames.length; i++) {
 		const {_id, _name} = collectionIdsWithNames[i];
 		//collectionIdToName[_id] = _name;
@@ -105,7 +106,7 @@ export function getInterfaceInfo({
 
 	// Multiconnect will fail when an interface has no existing collection nodes,
 	// or TODO: no collection repos.
-	const stemmingLanguages :Array<string> = [];
+	const stemmingLanguages: string[] = [];
 	if (collectionIdsWithNames.length) {
 		const multiRepoReadConnection = multiConnect({
 			principals: [PRINCIPAL_EXPLORER_READ],
@@ -144,7 +145,7 @@ export function getInterfaceInfo({
 			start: 0
 		});
 		//log.debug('languagesRes:%s', toStr(languagesRes));
-		const buckets :Array<{key :string}> = getIn(languagesRes, 'aggregations.stemmingLanguages.buckets');
+		const buckets: {key: string}[] = getIn(languagesRes, 'aggregations.stemmingLanguages.buckets');
 		if (buckets) {
 			for (let i = 0; i < buckets.length; i++) {
 				const {key} = buckets[i];
@@ -157,7 +158,7 @@ export function getInterfaceInfo({
 
 	//──────────────────────────────────────────────────────────────────────────
 
-	const localesInSelectedThesauri :Array<string> = [];
+	const localesInSelectedThesauri: string[] = [];
 	const thesauriNames = synonymIds.length // Avoid: Cannot build empty 'IN' statements"
 		? explorerRepoReadConnection.query({
 			count: -1,
@@ -201,6 +202,7 @@ export function getInterfaceInfo({
 		localesInSelectedThesauri,
 		stemmingLanguages,
 		stopWords,
+		termQueries,
 		thesauriNames
 	};
 } // getInterfaceInfo
