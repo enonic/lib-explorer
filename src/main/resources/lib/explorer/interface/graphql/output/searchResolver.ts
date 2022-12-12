@@ -103,6 +103,7 @@ export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType
 		localesInSelectedThesauri,
 		stopWords,
 		stemmingLanguages,
+		termQueries,
 		thesauriNames
 	} = interfaceInfo || getInterfaceInfo({
 		interfaceName
@@ -161,6 +162,7 @@ export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType
 		stopWords,
 		synonymsSource,
 		thesauriNames,
+		termQueries,
 	});
 	if (profilingArg) {
 		profiling.push({
@@ -176,6 +178,8 @@ export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType
 
 	//@ts-ignore filters type supports array too
 	const queryRes = multiRepoReadConnection.query(queryParams);
+	// log.info('queryRes.hits:%s', toStr(queryRes.hits)); // Useful when explain is true
+
 	if (profilingArg) {
 		profiling.push({
 			currentTimeMillis: currentTimeMillis(),
