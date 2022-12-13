@@ -1,4 +1,4 @@
-import type {Highlight} from './index.d';
+import type {Highlight} from '/lib/explorer/types/GraphQL.d';
 
 
 //import {toStr} from '@enonic/js-utils';
@@ -15,7 +15,7 @@ export function highlightGQLArgToEnonicXPQuery({
 	};
 	const keys = Object.keys(highlightArg);
 	for (let i = 0; i < keys.length; i++) {
-	    const key = keys[i];
+		const key = keys[i];
 		//log.debug('highlightGQLArgToEnonicXPQuery i:%s key:%s', i, key);
 		if (key === 'fields') {
 			for (let j = 0; j < highlightArg.fields.length; j++) {
