@@ -34,9 +34,7 @@ import {
 	//@ts-ignore
 } from '/lib/guillotine/util/factory';
 import {makeQuery} from './makeQuery';
-import {
-	highlightGQLArgToEnonicXPQuery
-} from '../highlight/input/highlightGQLArgToEnonicXPQuery';
+import {highlightGQLArgToEnonicXPQuery} from '../highlight/input/highlightGQLArgToEnonicXPQuery';
 import {resolveFieldShortcuts} from './resolveFieldShortcuts';
 
 
