@@ -24,7 +24,8 @@ const SS_ALIAS = {
 	'@enonic/nashorn-polyfills': path.resolve(__dirname, 'src/main/resources/lib/nashorn/index'),
 	'@enonic/js-utils': BOOL_LOCAL_JS_UTILS
 		? path.resolve(__dirname, '../enonic-js-utils/src/')
-		: path.resolve(__dirname, './node_modules/@enonic/js-utils/src')
+		: path.resolve(__dirname, './node_modules/@enonic/js-utils/src'),
+	'@enonic/lib-explorer': path.resolve(__dirname, './packages/@enonic/lib-explorer/index.mts')
 };
 
 const SS_EXTERNALS = [

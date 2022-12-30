@@ -150,6 +150,7 @@
     "premocha": "yarn bundle",
     "preswc:parseCsv": "yarn esbuild:parseCsv",
     "pretest": "yarn bundle",
+    "prewebpack": "(cd packages/@enonic/lib-explorer && yarn build)",
     "profile": "time yarn buildEsEsm && time yarn buildSwc && time yarn buildTs",
     "swc:parseCsv": "npx swc --config-file ./.swcrc.server.json build/esbuild/lib/explorer/parseCsv.js -o build/resources/main/lib/explorer/parseCsv.js",
     "test": "npx mocha --config .swc.mocharc.cjs",
