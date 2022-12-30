@@ -1,10 +1,8 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  // entry: ['src/index.ts'], // We're using commandline instead
-  splitting: false,
-  sourcemap: false,
   clean: false,
+  // entry: ['src/index.ts'], // We're using commandline instead
   // format: ['cjs','esm'], // We're using commandline instead
   outDir: './',
   outExtension: ({ format }) => ({
@@ -14,4 +12,7 @@ export default defineConfig({
             : format // 'cjs' :) // iife :(
     }`,
   }),
+  silent: true,
+  sourcemap: false,
+  splitting: false,
 })

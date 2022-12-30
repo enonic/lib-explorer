@@ -28,6 +28,7 @@
 		"outDir": "build/rollup",
 		"paths": {
 			// Development (should be commented out when commiting)
+			"@enonic/lib-explorer": ["packages/@enonic/lib-explorer"],
 			// "@enonic/js-utils": ["../enonic-js-utils/src"], // Use this or npm link ../enonic-js-utils
 			// "@enonic/js-utils/*": ["../enonic-js-utils/*"],
 			// "@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],

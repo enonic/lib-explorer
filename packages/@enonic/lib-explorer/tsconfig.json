@@ -3,6 +3,9 @@
         "baseUrl": "./",
         "moduleResolution": "node",
         "outDir": "./",
+        "paths": {
+            "/lib/xp/node": ["node_modules/@enonic-types/lib-node"],
+        },
         "pretty": true,
         "removeComments": true,
 
