@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "moduleResolution": "node",
+        "outDir": "./",
+        "pretty": true,
+        "removeComments": true,
+
+        // When TypeScript compiles files, it keeps the same directory structure in the output directory as exists in the input directory.
+        // The inferred value for rootDir is the longest common path of all non-declaration input files.
+        "rootDir": "src",
+
+        "sourceMap": false,
+    },
+    "files": [
+        "src/index.ts"
+    ]
+}
