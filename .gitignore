@@ -1,7 +1,12 @@
+# Anywhere
+node_modules/
+.idea/
+yarn-error.log
+
+# On root
 /.build/
 /.enonic
 /.gradle/
+/bin/
 /build/
-/node_modules/
-/yarn-error.log
-.idea/
+
