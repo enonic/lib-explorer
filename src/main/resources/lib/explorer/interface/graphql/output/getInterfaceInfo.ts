@@ -124,7 +124,7 @@ export function getInterfaceInfo({
 						field: `${FIELD_PATH_META}.stemmingLanguage`,
 						minDocCount: 1,
 						order: '_count desc',
-						size: 1000,
+						size: 0, // Seems to mean infinite (undocumented)
 					}
 				}
 			},
