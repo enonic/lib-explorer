@@ -1,5 +1,12 @@
 import {
-	FOLDER_INTERFACES,
+	FieldPath,
+	Folder,
+	NodeType,
+	Path,
+	Principal,
+	Repo,
+	Role,
+	RootPermission
 } from '@enonic/lib-explorer';
 
 export {
@@ -11,50 +18,8 @@ export {
     EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
     EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED,
     EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
-	FIELD_PATH_GLOBAL,
-    FIELD_PATH_META,
-    FIELD_PATH_META_COLLECTION,
-    FIELD_PATH_META_DOCUMENT_TYPE,
-    FIELD_PATH_META_LANGUAGE,
-    FIELD_PATH_META_STEMMING_LANGUAGE,
-	FOLDER_API_KEYS,
-	FOLDER_COLLECTIONS,
-	FOLDER_COLLECTORS,
-	FOLDER_FIELDS,
-	FOLDER_INTERFACES,
-	FOLDER_NOTIFICATIONS,
-	FOLDER_STOPWORDS,
-	FOLDER_THESAURI,
     FOLDERS,
-	NT_API_KEY,
-    NT_COLLECTION,
-    NT_DOCUMENT,
-    NT_FIELD,
-    NT_FOLDER,
-    NT_INTERFACE,
-    NT_JOURNAL,
-    NT_STOP_WORDS,
-    NT_SYNONYM,
-    NT_THESAURUS,
-	PATH_API_KEYS,
-	PATH_COLLECTIONS,
-	PATH_COLLECTORS,
-	PATH_FIELDS,
-	PATH_INTERFACES,
 	PERMISSION_SYSTEM_ADMIN,
-	PRINCIPAL_EVERYONE,
-    PRINCIPAL_EXPLORER_READ,
-    PRINCIPAL_EXPLORER_WRITE,
-    PRINCIPAL_SYSTEM_ADMIN,
-	REPO_ID_EXPLORER,
-	REPO_JOURNALS,
-	ROLE_EXPLORER_READ,
-    ROLE_EXPLORER_WRITE,
-    ROLE_SYSTEM_ADMIN,
-    ROLE_SYSTEM_EVERYONE,
-	ROOT_PERMISSION_SYSTEM_ADMIN,
-	ROOT_PERMISSION_EXPLORER_READ,
-    ROOT_PERMISSION_EXPLORER_WRITE,
 	ROOT_PERMISSIONS_EXPLORER,
 } from '@enonic/lib-explorer';
 
@@ -62,7 +27,57 @@ export {
 //──────────────────────────────────────────────────────────────────────────────
 // Backwards compatibility
 //──────────────────────────────────────────────────────────────────────────────
-export const INTERFACES_FOLDER = FOLDER_INTERFACES;
+export const FIELD_PATH_GLOBAL = FieldPath.GLOBAL;
+export const FIELD_PATH_META = FieldPath.META;
+export const FIELD_PATH_META_COLLECTION = FieldPath.META_COLLECTION;
+export const FIELD_PATH_META_DOCUMENT_TYPE = FieldPath.META_DOCUMENT_TYPE;
+export const FIELD_PATH_META_LANGUAGE = FieldPath.META_LANGUAGE;
+export const FIELD_PATH_META_STEMMING_LANGUAGE = FieldPath.META_STEMMING_LANGUAGE;
+
+export const FOLDER_API_KEYS = Folder.API_KEYS;
+export const FOLDER_COLLECTIONS = Folder.COLLECTIONS;
+export const FOLDER_COLLECTORS = Folder.COLLECTORS;
+export const FOLDER_FIELDS = Folder.FIELDS;
+export const FOLDER_INTERFACES = Folder.INTERFACES;
+export const FOLDER_NOTIFICATIONS = Folder.NOTIFICATIONS;
+export const FOLDER_STOPWORDS = Folder.STOPWORDS;
+export const FOLDER_THESAURI = Folder.THESAURI;
+
+export const INTERFACES_FOLDER = Folder.INTERFACES;
+
+export const NT_API_KEY = NodeType.API_KEY;
+export const NT_COLLECTION = NodeType.COLLECTION;
+export const NT_DOCUMENT = NodeType.DOCUMENT;
+export const NT_FIELD = NodeType.FIELD;
+export const NT_FOLDER = NodeType.FOLDER;
+export const NT_INTERFACE = NodeType.INTERFACE;
+export const NT_JOURNAL = NodeType.JOURNAL;
+export const NT_STOP_WORDS = NodeType.STOP_WORDS;
+export const NT_SYNONYM = NodeType.SYNONYM;
+export const NT_THESAURUS = NodeType.THESAURUS;
+
+export const PATH_API_KEYS = Path.API_KEYS;
+export const PATH_COLLECTIONS = Path.COLLECTIONS;
+export const PATH_COLLECTORS = Path.COLLECTORS;
+export const PATH_FIELDS = Path.FIELDS;
+export const PATH_INTERFACES = Path.INTERFACES;
+
+export const PRINCIPAL_EVERYONE = Principal.EVERYONE;
+export const PRINCIPAL_EXPLORER_READ = Principal.EXPLORER_READ;
+export const PRINCIPAL_EXPLORER_WRITE = Principal.EXPLORER_WRITE;
+export const PRINCIPAL_SYSTEM_ADMIN = Principal.SYSTEM_ADMIN;
+
+export const REPO_ID_EXPLORER = Repo.EXPLORER;
+export const REPO_JOURNALS = Repo.JOURNALS;
+
+export const ROLE_EXPLORER_READ = Role.EXPLORER_READ;
+export const ROLE_EXPLORER_WRITE = Role.EXPLORER_WRITE;
+export const ROLE_SYSTEM_ADMIN = Role.SYSTEM_ADMIN;
+export const ROLE_SYSTEM_EVERYONE = Role.SYSTEM_EVERYONE;
+
+export const ROOT_PERMISSION_SYSTEM_ADMIN = RootPermission.SYSTEM_ADMIN;
+export const ROOT_PERMISSION_EXPLORER_READ = RootPermission.EXPLORER_READ;
+export const ROOT_PERMISSION_EXPLORER_WRITE = RootPermission.EXPLORER_WRITE;
 
 //──────────────────────────────────────────────────────────────────────────────
 // Default values

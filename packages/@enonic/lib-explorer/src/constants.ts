@@ -13,8 +13,10 @@ export const APP_EXPLORER = 'com.enonic.app.explorer';
 //──────────────────────────────────────────────────────────────────────────────
 // Repo
 //──────────────────────────────────────────────────────────────────────────────
-export const REPO_ID_EXPLORER = APP_EXPLORER;
-export const REPO_JOURNALS = `${APP_EXPLORER}${DOT_SIGN}journals`;
+export const Repo = {
+	EXPLORER: APP_EXPLORER,
+	JOURNALS: `${APP_EXPLORER}${DOT_SIGN}journals`,
+} as const;
 
 export const BRANCH_ID_EXPLORER = 'master';
 
@@ -23,120 +25,129 @@ export const COLLECTION_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}collection${DOT
 //──────────────────────────────────────────────────────────────────────────────
 // Folders
 //──────────────────────────────────────────────────────────────────────────────
-export const FOLDER_API_KEYS = 'api-keys';
-export const FOLDER_COLLECTIONS = 'collections';
-export const FOLDER_COLLECTORS = 'collectors';
-export const FOLDER_FIELDS = 'fields';
-export const FOLDER_INTERFACES = 'interfaces';
-export const FOLDER_NOTIFICATIONS = 'notifications';
-export const FOLDER_STOPWORDS = 'stopwords';
-export const FOLDER_THESAURI = 'thesauri';
+export enum Folder {
+	API_KEYS = 'api-keys',
+	COLLECTIONS = 'collections',
+	COLLECTORS = 'collectors',
+	FIELDS = 'fields',
+	INTERFACES = 'interfaces',
+	NOTIFICATIONS = 'notifications',
+	STOPWORDS = 'stopwords',
+	THESAURI = 'thesauri',
+}
 
 export const FOLDERS = [
-	FOLDER_API_KEYS,
-	FOLDER_COLLECTIONS,
-	FOLDER_COLLECTORS,
-	FOLDER_FIELDS,
-	FOLDER_INTERFACES,
-	FOLDER_NOTIFICATIONS,
-	FOLDER_STOPWORDS,
-	FOLDER_THESAURI
-];
+	Folder.API_KEYS,
+	Folder.COLLECTIONS,
+	Folder.COLLECTORS,
+	Folder.FIELDS,
+	Folder.INTERFACES,
+	Folder.NOTIFICATIONS,
+	Folder.STOPWORDS,
+	Folder.THESAURI
+] as const;
 
 //──────────────────────────────────────────────────────────────────────────────
 // Node paths
 //──────────────────────────────────────────────────────────────────────────────
-export const PATH_API_KEYS = `/${FOLDER_API_KEYS}` as const;
-export const PATH_COLLECTIONS = `/${FOLDER_COLLECTIONS}` as const;
-export const PATH_COLLECTORS = `/${FOLDER_COLLECTORS}` as const;
-export const PATH_FIELDS = `/${FOLDER_FIELDS}` as const;
-export const PATH_INTERFACES = `/${FOLDER_INTERFACES}` as const;
+export const Path = {
+	API_KEYS: `/${Folder.API_KEYS}` as const,
+	COLLECTIONS: `/${Folder.COLLECTIONS}` as const,
+	COLLECTORS: `/${Folder.COLLECTORS}` as const,
+	FIELDS: `/${Folder.FIELDS}` as const,
+	INTERFACES: `/${Folder.INTERFACES}` as const,
+} as const;
 
 //──────────────────────────────────────────────────────────────────────────────
 // Node types
 //──────────────────────────────────────────────────────────────────────────────
-export const NT_API_KEY = `${APP_EXPLORER}${COLON_SIGN}api-key` as const;
-export const NT_COLLECTION = `${APP_EXPLORER}${COLON_SIGN}collection` as const;
-export const NT_DOCUMENT = `${APP_EXPLORER}${COLON_SIGN}document` as const;
-export const NT_FIELD = `${APP_EXPLORER}${COLON_SIGN}field` as const;
-export const NT_FOLDER = `${APP_EXPLORER}${COLON_SIGN}folder` as const;
-export const NT_INTERFACE = `${APP_EXPLORER}${COLON_SIGN}interface` as const;
-export const NT_JOURNAL = `${APP_EXPLORER}${COLON_SIGN}journal` as const;
-export const NT_STOP_WORDS = `${APP_EXPLORER}${COLON_SIGN}stop-words` as const;
-export const NT_SYNONYM = `${APP_EXPLORER}${COLON_SIGN}synonym` as const;
-export const NT_THESAURUS = `${APP_EXPLORER}${COLON_SIGN}thesaurus` as const;
+export const NodeType = {
+	API_KEY: `${APP_EXPLORER}${COLON_SIGN}api-key` as const,
+	COLLECTION: `${APP_EXPLORER}${COLON_SIGN}collection` as const,
+	DOCUMENT: `${APP_EXPLORER}${COLON_SIGN}document` as const,
+	FIELD: `${APP_EXPLORER}${COLON_SIGN}field` as const,
+	FOLDER: `${APP_EXPLORER}${COLON_SIGN}folder` as const,
+	INTERFACE: `${APP_EXPLORER}${COLON_SIGN}interface` as const,
+	JOURNAL: `${APP_EXPLORER}${COLON_SIGN}journal` as const,
+	STOP_WORDS: `${APP_EXPLORER}${COLON_SIGN}stop-words` as const,
+	SYNONYM: `${APP_EXPLORER}${COLON_SIGN}synonym` as const,
+	THESAURUS: `${APP_EXPLORER}${COLON_SIGN}thesaurus` as const,
+} as const;
 
 //──────────────────────────────────────────────────────────────────────────────
 // Roles
 //──────────────────────────────────────────────────────────────────────────────
-export const ROLE_EXPLORER_READ = `${APP_EXPLORER}.read` as const;
-export const ROLE_EXPLORER_WRITE = `${APP_EXPLORER}.write` as const;
-export const ROLE_SYSTEM_ADMIN = 'system.admin' as const;
-export const ROLE_SYSTEM_EVERYONE = 'system.everyone' as const;
+export const Role = {
+	EXPLORER_READ: `${APP_EXPLORER}.read` as const,
+	EXPLORER_WRITE: `${APP_EXPLORER}.write` as const,
+	SYSTEM_ADMIN: 'system.admin' as const,
+	SYSTEM_EVERYONE: 'system.everyone' as const,
+} as const;
 
 //──────────────────────────────────────────────────────────────────────────────
 // Principals
 //──────────────────────────────────────────────────────────────────────────────
-export const PRINCIPAL_EXPLORER_READ = `role:${ROLE_EXPLORER_READ}` as const;
-export const PRINCIPAL_EXPLORER_WRITE = `role:${ROLE_EXPLORER_WRITE}` as const;
-export const PRINCIPAL_EVERYONE = `role:${ROLE_SYSTEM_EVERYONE}` as const;
-export const PRINCIPAL_SYSTEM_ADMIN = `role:${ROLE_SYSTEM_ADMIN}` as const;
+export const Principal = {
+	EXPLORER_READ: `role:${Role.EXPLORER_READ}` as const,
+	EXPLORER_WRITE: `role:${Role.EXPLORER_WRITE}` as const,
+	EVERYONE: `role:${Role.SYSTEM_EVERYONE}` as const,
+	SYSTEM_ADMIN: `role:${Role.SYSTEM_ADMIN}` as const,
+} as const;
 
 //──────────────────────────────────────────────────────────────────────────────
 // Field paths (Namespaces)
 //──────────────────────────────────────────────────────────────────────────────
-export const FIELD_PATH_GLOBAL = 'global' as const; // TODO _global or _x ?
-export const FIELD_PATH_META = 'document_metadata' as const; // TODO _meta ?
-export const FIELD_PATH_META_COLLECTION = `${FIELD_PATH_META}.collection` as const;
-export const FIELD_PATH_META_DOCUMENT_TYPE = `${FIELD_PATH_META}.documentType` as const;
-export const FIELD_PATH_META_LANGUAGE = `${FIELD_PATH_META}.language` as const;
-export const FIELD_PATH_META_STEMMING_LANGUAGE = `${FIELD_PATH_META}.stemmingLanguage` as const;
+const FIELD_PATH_META = 'document_metadata' as const; // TODO _meta ?
+export const FieldPath = {
+	GLOBAL: 'global' as const, // TODO _global or _x ?
+	META: 'document_metadata' as const, // TODO _meta ?
+	META_COLLECTION: `${FIELD_PATH_META}.collection` as const,
+	META_DOCUMENT_TYPE: `${FIELD_PATH_META}.documentType` as const,
+	META_LANGUAGE: `${FIELD_PATH_META}.language` as const,
+	META_STEMMING_LANGUAGE: `${FIELD_PATH_META}.stemmingLanguage` as const,
+} as const;
 
 //──────────────────────────────────────────────────────────────────────────────
 // Permissions
 //──────────────────────────────────────────────────────────────────────────────
 export const PERMISSION_SYSTEM_ADMIN :AccessControlEntry = {
-	principal: PRINCIPAL_EVERYONE,
+	principal: Principal.EVERYONE,
 	allow: ['READ'],
 	deny: []
 }
 
-export const ROOT_PERMISSION_SYSTEM_ADMIN :AccessControlEntry = {
-	principal: PRINCIPAL_SYSTEM_ADMIN,
-	allow: [
-		'READ',
-		'CREATE',
-		'MODIFY',
-		'DELETE',
-		'PUBLISH',
-		'READ_PERMISSIONS',
-		'WRITE_PERMISSIONS'
-	],
-	deny: []
-};
+export const RootPermission = {
+	EXPLORER_READ: {
+		principal: Principal.EXPLORER_READ,
+		allow: ['READ'],
+		deny: []
+	} as AccessControlEntry,
+	EXPLORER_WRITE: {
+		principal: Principal.EXPLORER_WRITE,
+		allow: [
+			'READ',
+			'CREATE',
+			'MODIFY',
+			'DELETE'
+		],
+		deny: []
+	} as AccessControlEntry,
+	SYSTEM_ADMIN: {
+		principal: Principal.SYSTEM_ADMIN,
+		allow: [
+			'READ',
+			'CREATE',
+			'MODIFY',
+			'DELETE',
+			'PUBLISH',
+			'READ_PERMISSIONS',
+			'WRITE_PERMISSIONS'
+		],
+		deny: []
+	} as AccessControlEntry
+} as const;
 
-export const ROOT_PERMISSION_EXPLORER_WRITE :AccessControlEntry = {
-	principal: PRINCIPAL_EXPLORER_WRITE,
-	allow: [
-		'READ',
-		'CREATE',
-		'MODIFY',
-		'DELETE'
-	],
-	deny: []
-};
-
-export const ROOT_PERMISSION_EXPLORER_READ :AccessControlEntry = {
-	principal: PRINCIPAL_EXPLORER_READ,
-	allow: ['READ'],
-	deny: []
-};
-
-export const ROOT_PERMISSIONS_EXPLORER = [
-	ROOT_PERMISSION_EXPLORER_READ,
-	ROOT_PERMISSION_EXPLORER_WRITE,
-	ROOT_PERMISSION_SYSTEM_ADMIN
-];
+export const ROOT_PERMISSIONS_EXPLORER = Object.values(RootPermission);
 
 //──────────────────────────────────────────────────────────────────────────────
 // Events
