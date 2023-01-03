@@ -21,6 +21,7 @@
     "require": "./index.cjs"
   },
   "files": [
+    "/src",
     "browser.cjs",
     "browser.mjs",
     "index.d.ts",
@@ -53,8 +54,9 @@
     "build:browser": "npx tsup --entry.browser src/index.ts --format cjs,esm --platform browser",
     "build:node:cjs:es5": "npx tsup --dts --format cjs --platform node --target es5 src/index.ts",
     "build:node:esm": "npx tsup --format esm --platform node src/index.ts",
-    "clean": "rimraf browser.cjs browser.mjs index.cjs index.d.ts index.mjs",
+    "clean": "rimraf browser.cjs browser.mjs index.cjs index.d.ts index.mjs enonic-lib-explorer-v*.tgz",
     "prebuild": "yarn clean",
+    "prepack": "yarn build",
     "watch": "npm-run-all --parallel watch:browser watch:node:cjs:es5 watch:node:esm",
     "watch:browser": "yarn build:browser --watch",
     "watch:node:cjs:es5": "yarn build:node:cjs:es5 --watch",
@@ -62,5 +64,5 @@
   },
   "type": "module",
   "types": "index.d.mts",
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
