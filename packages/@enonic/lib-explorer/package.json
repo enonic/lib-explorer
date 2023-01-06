@@ -1,46 +1,14 @@
 {
   "author": "Christian Andreas Westgaard <cwe@enonic.com>",
-  "browser": {
-    "index.cjs": "./browser.cjs",
-    "index.mjs": "./browser.mjs"
-  },
   "bugs": {
     "url": "https://github.com/enonic/lib-explorer/issues"
   },
   "description": "constants and functions that can be used both client- and server-side.",
-  "devDependencies": {
-    "@enonic-types/lib-node": "^7",
-    "@enonic/js-utils": "^0.44.1",
-    "npm-run-all": "^4",
-    "rimraf": "^3",
-    "tsup": "^6"
-  },
-  "exports": {
-    "types": "./index.d.ts",
-    "import": "./index.mjs",
-    "require": "./index.cjs"
-  },
   "files": [
-    "/src",
-    "browser.cjs",
-    "browser.mjs",
-    "index.d.ts",
-    "index.cjs",
-    "index.mjs",
-    "index.mts"
+    "README"
   ],
   "homepage": "https://github.com/enonic/lib-explorer/tree/master#readme",
-  "keywords": [
-    "commonjs",
-    "enonic",
-    "enonic-xp",
-    "es5",
-    "lib-explorer",
-    "typescript"
-  ],
   "license": "Apache-2.0",
-  "main": "./index.cjs",
-  "module": "./index.mjs",
   "name": "@enonic/lib-explorer",
   "publishConfig": {
     "access": "public"
@@ -49,20 +17,5 @@
     "type": "git",
     "url": "git+https://github.com/enonic/lib-explorer"
   },
-  "scripts": {
-    "build": "npm-run-all --parallel build:browser build:node:cjs:es5 build:node:esm",
-    "build:browser": "npx tsup --entry.browser src/index.ts --format cjs,esm --platform browser",
-    "build:node:cjs:es5": "npx tsup --dts --format cjs --platform node --target es5 src/index.ts",
-    "build:node:esm": "npx tsup --format esm --platform node src/index.ts",
-    "clean": "rimraf browser.cjs browser.mjs index.cjs index.d.ts index.mjs enonic-lib-explorer-v*.tgz",
-    "prebuild": "yarn clean",
-    "prepack": "yarn build",
-    "watch": "npm-run-all --parallel watch:browser watch:node:cjs:es5 watch:node:esm",
-    "watch:browser": "yarn build:browser --watch",
-    "watch:node:cjs:es5": "yarn build:node:cjs:es5 --watch",
-    "watch:node:esm": "yarn build:node:esm --watch"
-  },
-  "type": "module",
-  "types": "index.d.mts",
-  "version": "0.0.3"
+  "version": "0.0.4"
 }
