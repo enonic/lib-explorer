@@ -39,7 +39,6 @@
 			// "/lib/xp/repo": ["../xp/modules/lib/lib-repo/src/main/resources/lib/xp/repo.ts"],
 			// "/lib/xp/repo": ["../xp/modules/lib/lib-repo/build/typescript/lib/xp/repo.d.ts"],
 			// Production (should be commented in when commiting)
-			// "@enonic/explorer-utils": ["node_modules/@enonic/explorer-utils"],
 			"@enonic/js-utils": ["node_modules/@enonic/js-utils/dist/cjs"],
 			"@enonic/semantic-ui-react-form": ["node_modules/@enonic/semantic-ui-react-form/src"],
 			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"],
