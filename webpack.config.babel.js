@@ -25,7 +25,7 @@ const SS_ALIAS = {
 	'@enonic/js-utils': BOOL_LOCAL_JS_UTILS
 		? path.resolve(__dirname, '../enonic-js-utils/src/')
 		: path.resolve(__dirname, './node_modules/@enonic/js-utils/src'),
-	'@enonic/lib-explorer': path.resolve(__dirname, './packages/@enonic/lib-explorer/index.mts')
+	// '@enonic/explorer-utils': path.resolve(__dirname, './packages/@enonic/explorer-utils/index.mts'),
 };
 
 const SS_EXTERNALS = [
