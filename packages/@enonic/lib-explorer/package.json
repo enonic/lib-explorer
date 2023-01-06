@@ -5,7 +5,7 @@
   },
   "description": "constants and functions that can be used both client- and server-side.",
   "files": [
-    "README"
+    "README.md"
   ],
   "homepage": "https://github.com/enonic/lib-explorer/tree/master#readme",
   "license": "Apache-2.0",
@@ -17,5 +17,5 @@
     "type": "git",
     "url": "git+https://github.com/enonic/lib-explorer"
   },
-  "version": "0.0.4"
+  "version": "0.0.5"
 }
