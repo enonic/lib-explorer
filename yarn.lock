@@ -1079,9 +1079,9 @@
     "@enonic-types/core" "7.11.1"
 
 "@enonic/explorer-utils@^0":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@enonic/explorer-utils/-/explorer-utils-0.0.1.tgz#d7832932c2b3830c0fb9b5550fab995c4f5e7b0c"
-  integrity sha512-3+9JqFyZBnI/mOqI7J8HTP4WhamEoneRvPaHrx7wrxOQFqKYu33z8EErIZPGFNKzSdWG4nCc73l/WpZKh0kC/Q==
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@enonic/explorer-utils/-/explorer-utils-0.0.2.tgz#8e686bc4b6a3d0290e73b349501d6790e1c7bf77"
+  integrity sha512-RcX069HRawEyN1dfxFAgTpHvAkgtrJHeZMYqqPBfULgE8imxDPkCHtY5U4Zubcx9Y174I5UuYE7xkIBM49LrfA==
 
 "@enonic/fnv-plus@^1":
   version "1.3.0"
