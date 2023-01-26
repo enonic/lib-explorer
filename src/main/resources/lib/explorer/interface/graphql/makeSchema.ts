@@ -1,24 +1,14 @@
-import type {
-	SearchConnectionResolverEnv,
-	SearchResolverEnv,
-	SearchResolverReturnType
-} from '/lib/explorer/interface/graphql/output/index.d';
-
-
 //import {toStr} from '@enonic/js-utils';
 import {
 	GraphQLBoolean,
 	GraphQLInt,
 	GraphQLString,
 	newSchemaGenerator,
-	list
+	list,
+	nonNull,
 	//@ts-ignore
 } from '/lib/graphql';
-import {
-	decodeCursor//,
-	//encodeCursor // Just use to generate after for testing
-	//@ts-ignore
-} from '/lib/graphql-connection';
+
 
 import {constructGlue} from './utils/Glue';
 
@@ -30,12 +20,13 @@ import {addInputTypeHighlight} from '/lib/explorer/interface/graphql/highlight/i
 //import {addInputTypeSynonyms} from '/lib/explorer/interface/graphql/input/addInputTypeSynonyms';
 
 // Output
+import {searchConnectionResolver} from '/lib/explorer/interface/graphql/output/searchConnectionResolver';
 import {searchResolver} from '/lib/explorer/interface/graphql/output/searchResolver';
 import {addDocumentTypeObjectTypes} from '/lib/explorer/interface/graphql/output/addDocumentTypeObjectTypes';
 import {addObjectTypeSearchConnection} from '/lib/explorer/interface/graphql/output/addObjectTypeSearchConnection';
 import {addObjectTypeSearchResult} from '/lib/explorer/interface/graphql/output/addObjectTypeSearchResult';
-
-import {addQueryFieldQuerySynonyms} from '/lib/explorer/interface/graphql/queries/addQueryFieldQuerySynonyms';
+import {addObjectTypeQuerySynonymsResult} from '/lib/explorer/interface/graphql/output/addObjectTypeQuerySynonymsResult';
+import {querySynonymsResolver} from '/lib/explorer/interface/graphql/output/querySynonymsResolver';
 
 
 export function makeSchema() {
@@ -89,67 +80,47 @@ export function makeSchema() {
 		searchString: GraphQLString // Can't be nonNull when used as subQuery
 	}
 
-	glue.addQueryField<SearchConnectionResolverEnv, SearchResolverReturnType>({
-		args: {
-			...commonGQLInputFields,
-			after: GraphQLString,
-			first: GraphQLInt,
+	glue.addQueryField({
+		name: 'interface',
+		args: {},
+		resolve() {
+			return {};
 		},
-		name: 'getSearchConnection',
-		resolve(env) {
-			//log.debug(`env:${toStr({env})}`);
-			const {
-				after,// = encodeCursor('0'), // encoded representation of start
-				aggregations,
-				filters,
-				first = 10, // count
-				highlight,
-				languages,
-				profiling,
-				searchString//,
-				//synonyms
-			} = env.args;
-			//log.debug('after:%s', toStr(after));
-			//log.debug('first:%s', toStr(first));
-			//log.debug("encodeCursor('0'):%s", toStr(encodeCursor('0'))); // MA==
-			//log.debug("encodeCursor('1'):%s", toStr(encodeCursor('1'))); // MQ==
-			//log.debug("encodeCursor('2'):%s", toStr(encodeCursor('2'))); // Mg==
-
-			const start = after ? parseInt(decodeCursor(after)) + 1 : 0;
-			//log.debug('start:%s', toStr(start));
-
-			const res = searchResolver({
-				args: {
-					aggregations,
-					count: first,
-					filters,
-					highlight,
-					languages,
-					profiling,
-					searchString,
-					start//,
-					//synonyms
+		type: glue.addObjectType({
+			name: 'interfaceResults',
+			fields: {
+				getSearchConnection: {
+					args: {
+						...commonGQLInputFields,
+						after: GraphQLString,
+						first: GraphQLInt,
+					},
+					resolve: searchConnectionResolver,
+					type: addObjectTypeSearchConnection({glue}),
 				},
-				context: env.context,
-				source: env.source
-			});
-			return res;
-		},
-		type: addObjectTypeSearchConnection({glue})
+				querySynonyms: {
+					args: {
+						// Required
+						searchString: nonNull(GraphQLString), // "" satisfies nonNull :)
+						// Optional
+						languages: list(GraphQLString),
+						profiling: GraphQLBoolean
+					},
+					resolve: querySynonymsResolver,
+					type: addObjectTypeQuerySynonymsResult({glue})
+				},
+				search: {
+					args: { // GraphQL input types
+						...commonGQLInputFields,
+						count: GraphQLInt,
+						start: GraphQLInt
+					},
+					resolve: searchResolver,
+					type: addObjectTypeSearchResult({glue})
+				}
+			}
+		})
 	});
-
-	glue.addQueryField<SearchResolverEnv, SearchResolverReturnType>({
-		args: { // GraphQL input types
-			...commonGQLInputFields,
-			count: GraphQLInt,
-			start: GraphQLInt
-		},
-		name: 'search',
-		resolve: (env) => searchResolver(env),
-		type: addObjectTypeSearchResult({glue})
-	}); // addQueryField search
-
-	addQueryFieldQuerySynonyms({glue});
 
 	return glue.buildSchema();
 } // makeSchema
