@@ -34,7 +34,7 @@ const DEBUG = false;
 const TRACE = false;
 
 
-export function searchResolver(env :SearchResolverEnv) :SearchResolverReturnType {
+export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType {
 	//log.debug('searchResolver env:%s', toStr(env));
 	const {
 		args,
