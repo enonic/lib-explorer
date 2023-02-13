@@ -17,3 +17,5 @@ export type IsEmptyArray<T> = T extends any[]
     ? false
     : true
   : false
+
+export type Unwrapped<T> = T extends (Array<infer U> | ReadonlyArray<infer U>) ? U : T;

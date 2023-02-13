@@ -9,7 +9,7 @@ import {
 	addQueryFilter,
 	// toStr
 } from '@enonic/js-utils';
-
+import {coerceJournalType} from '/lib/explorer/journal/coerceJournalType';
 import {
 	REPO_JOURNALS,
 	NT_JOURNAL,
@@ -62,19 +62,9 @@ export function query<
 		count: queryRes.count,
 		hits: queryRes.hits.map(hit => {
 			//log.info(toStr({node}));
-			const node = connection.get<JournalNode>(hit.id);
-			if (!node.errors) {
-				node.errors = [];
-			} else if (!Array.isArray(node.errors)) {
-				node.errors = [node.errors];
-			}
-			if (!node.successes) {
-				node.successes = [];
-			} else if (!Array.isArray(node.successes)) {
-				node.successes = [node.successes];
-			}
-			//log.info(toStr({node}));
-			return node;
+			const journal = coerceJournalType(connection.get<JournalNode>(hit.id));
+			// log.info('journal:%s', toStr(journal));
+			return journal;
 		}),
 		total: queryRes.total
 	};

@@ -36,8 +36,7 @@ import type {
 	CollectionNode,
 	DocumentNode,
 	Id,
-	JournalError,
-	JournalSuccess,
+	JournalMessage,
 	Name,
 	NotificationsNode,
 	ParentPath,
@@ -405,15 +404,21 @@ export class Collector<Config extends AnyObject = AnyObject> {
 	} // persistDocument
 
 
-	addError(error :JournalError) {
+	addError(error: JournalMessage) {
 		this.journal.addError(error);
 	}
 
+	addInformation(information: JournalMessage) {
+		this.journal.addInformation(information);
+	}
 
-	addSuccess(success :JournalSuccess) {
+	addSuccess(success: JournalMessage) {
 		this.journal.addSuccess(success);
 	}
 
+	addWarning(warning: JournalMessage) {
+		this.journal.addWarning(warning);
+	}
 
 	stop() {
 		this.journal.create();

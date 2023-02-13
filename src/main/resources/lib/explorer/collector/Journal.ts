@@ -1,7 +1,6 @@
 import type {
-	Journal as JournalInterface,
-	JournalError,
-	JournalSuccess,
+	JournalInterface,
+	JournalMessage,
 	WriteConnection
 } from '/lib/explorer/types/index.d';
 
@@ -17,10 +16,12 @@ import {journal} from '../model/2/nodeTypes/journal';
 
 
 export class Journal implements JournalInterface {
-	name :string
-	startTime :number
-	public errors :Array<JournalError>
-	public successes :Array<JournalSuccess>
+	name: string
+	startTime: number
+	public errors: JournalMessage[]
+	public informations: JournalMessage[]
+	public successes: JournalMessage[]
+	public warnings: JournalMessage[]
 
 	constructor({
 		name,
@@ -31,17 +32,29 @@ export class Journal implements JournalInterface {
 		this.name = name;
 		this.startTime = startTime;
 		this.errors = [];
+		this.informations = [];
 		this.successes = [];
+		this.warnings = [];
 	} // constructor
 
-	addError({message} :JournalError) {
+	addError({message}: JournalMessage) {
 		if (!(message)) { throw new Error('addError: Missing required parameter message!'); }
 		this.errors.push({message});
 	}
 
-	addSuccess({message} :JournalSuccess) {
+	addInformation({message}: JournalMessage) {
+		if (!(message)) { throw new Error('addError: Missing required parameter message!'); }
+		this.informations.push({message});
+	}
+
+	addSuccess({message}: JournalMessage) {
 		if (!(message)) { throw new Error('addSuccess: Missing required parameter message!'); }
 		this.successes.push({message});
+	}
+
+	addWarning({message}: JournalMessage) {
+		if (!(message)) { throw new Error('addWarning: Missing required parameter message!'); }
+		this.warnings.push({message});
 	}
 
 	create() {
@@ -49,9 +62,11 @@ export class Journal implements JournalInterface {
 		createNode(
 			journal({
 				errors: this.errors,
+				informations: this.informations,
 				name: this.name,
 				startTime: this.startTime,
-				successes: this.successes
+				successes: this.successes,
+				warnings: this.warnings,
 			}),
 			{
 				connection: connect({
