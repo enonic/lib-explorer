@@ -125,10 +125,10 @@ export type {
 	IndexConfigTemplate
 } from './IndexConfig.d';
 export type {
-	Journal,
-	JournalError,
+	CreateJournalNodeParams,
+	JournalInterface,
+	JournalMessage,
 	JournalNode,
-	JournalSuccess,
 	JournalType
 } from './Journal.d';
 export type {

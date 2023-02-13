@@ -1,37 +1,42 @@
-import type {
-	ExplorerAdminGQLInterfaceNodeCommonProps,
-	Node
-} from './Node.d';
+import type {CreateNodeParams, Node} from '/lib/xp/node';
+import type {Instant} from '/lib/xp/value';
+import type {Explorer} from './Application.d';
+import type {ExplorerAdminGQLInterfaceNodeCommonProps} from './Node.d';
 
+export interface JournalMessage {
+	message: string
+}
 
-export type JournalError = {
-	message :string
-};
-
-
-export type JournalSuccess = {
-	message :string // For example 'deleted'
-};
-
-
-export type Journal = {
-	name :string
-	startTime :number
-	errors :Array<JournalError>
-	successes :Array<JournalSuccess>
+export interface JournalInterface {
+	// Required
+	name: string
+	startTime: number
+	// Optional
+	errors?: JournalMessage[]
+	informations?: JournalMessage[]
+	successes?: JournalMessage[]
+	warnings?: JournalMessage[]
 }
 
 export type JournalNodeSpecific = {
-	displayName :string
-	endTime :string|Date
-	errors :Array<JournalError>
-	errorCount :number
-	duration :number
-	name :string
-	startTime :string|Date
-	successCount :number
-	successes :Array<JournalSuccess>
+	// Required
+	duration: number // Calculated
+	endTime: string|Date|Instant
+	name: string
+	startTime: string|Date|Instant
+	// Optional
+	errors?: JournalMessage[] // For example 500 Internal Server Error
+	errorCount?: number // Calculated or 0
+	informations?: JournalMessage[] // For example NOFOLLOW, NOINDEX // or application/pdf is not html
+	successCount?: number // Calculated or 0
+	successes?: JournalMessage[] // For example 200 Ok // or Document deleted successfully
+	warningCount?: number // Calculated or 0
+	warnings?: JournalMessage[] // For example 404 Not Found
 }
 
 export type JournalNode = Node<JournalNodeSpecific>;
 export type JournalType = ExplorerAdminGQLInterfaceNodeCommonProps<JournalNodeSpecific>
+
+export type CreateJournalNodeParams = CreateNodeParams<JournalNodeSpecific> & {
+	_nodeType: `${Explorer.Application.Name}:journal`
+};

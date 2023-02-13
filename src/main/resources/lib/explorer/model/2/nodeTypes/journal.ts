@@ -1,57 +1,35 @@
 import type {
-	IndexConfig,
-	JournalError,
-	JournalSuccess,
-	ParentPath
+	CreateJournalNodeParams,
+	JournalInterface,
 } from '/lib/explorer/types/index.d';
 
 
-//@ts-ignore
 import {instant} from '/lib/xp/value';
-
-import {
-	NT_JOURNAL
-} from '/lib/explorer/constants';
+import {NT_JOURNAL} from '/lib/explorer/constants';
+import {coerceArray} from '/lib/explorer/array/coerceArray';
 
 
 //@ts-ignore
 const {currentTimeMillis} = Java.type('java.lang.System') as {
-	currentTimeMillis :() => number
+	currentTimeMillis: () => number
 };
-
-
-interface JournalInput {
-	name :string
-	startTime :number
-	errors? :Array<JournalError>
-	successes? :Array<JournalSuccess>
-}
-
-
-interface JournalNode extends JournalInput {
-	//_id :string
-	_indexConfig :IndexConfig
-	_name :string
-	_nodeType :string
-	_parentPath :ParentPath
-	//_path :string
-	//_permissions :Array<string>
-	endTime :number
-	duration :number
-	errorCount :number
-	successCount :number
-}
 
 
 export function journal({
 	name,
 	startTime,
-	errors = [],
-	successes = []
-} :JournalInput) :JournalNode {
+	errors, // = [], // This doesn't handle null
+	informations, // = [],
+	successes, // = [],
+	warnings, // = [],
+}: JournalInterface): CreateJournalNodeParams {
 	if (!name) { throw new Error('name is a required parameter'); }
 	if (!startTime) { throw new Error('startTime is a required parameter'); }
 	const endTime = currentTimeMillis();
+	const errorsArray = coerceArray(errors);
+	const informationsArray = coerceArray(informations);
+	const successesArray = coerceArray(successes);
+	const warningsArray = coerceArray(warnings);
 	return {
 		_indexConfig: {
 			default: 'minimal',
@@ -60,6 +38,9 @@ export function journal({
 				config: 'minimal'
 			},{
 				path: 'errorCount',
+				config: 'byType' // 'numeric'
+			},{
+				path: 'warningCount',
 				config: 'byType' // 'numeric'
 			},{
 				path: 'successCount',
@@ -82,12 +63,18 @@ export function journal({
 		_nodeType: NT_JOURNAL,
 		_parentPath: '/',
 		name,
-		errorCount: errors.length,
-		successCount: successes.length,
-		startTime: instant(new Date(startTime+0.0)) as number, // new Date works on double not integer
-		endTime: instant(new Date(endTime+0.0)) as number,
+
+		errorCount: errorsArray.length,
+		warningCount: warningsArray.length,
+		successCount: successesArray.length,
+
+		startTime: instant(new Date(startTime+0.0)), // new Date works on double not integer
+		endTime: instant(new Date(endTime+0.0)),
 		duration: endTime - startTime,
-		errors,
-		successes
+
+		errors: errorsArray,
+		warnings: warningsArray,
+		informations: informationsArray,
+		successes: successesArray,
 	};
 } // journal
