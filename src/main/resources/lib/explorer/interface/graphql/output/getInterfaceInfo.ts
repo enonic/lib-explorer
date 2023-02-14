@@ -83,7 +83,7 @@ export function getInterfaceInfo({
 		const collectionId = collectionIds[i];
 		const collectionNode = explorerRepoReadConnection.get<CollectionNode>(collectionId) as CollectionNode;
 		if (!collectionNode) {
-			log.error(`Interface ${interfaceName} with id ${interfaceId}, references a collection id ${collectionId} that doesn't exist!`);
+			log.warning(`Interface ${interfaceName} with id ${interfaceId}, references a collection id ${collectionId} that doesn't exist!`);
 		} else {
 			const {_name: collectionName} = collectionNode;
 			collectionIdsWithNames.push({
@@ -188,7 +188,7 @@ export function getInterfaceInfo({
 				}
 				return thesauriNode._name;
 			} catch (e) {
-				log.error(`Interface ${interfaceName} refers to an thesarusId:${synonymIds} that doesn't exist?!`);
+				log.warning(`Interface ${interfaceName} refers to an thesarusId:${synonymIds} that doesn't exist?!`);
 			}
 		}).filter((x) => x)
 		: []; // Remove missing thesauri.
