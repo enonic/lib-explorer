@@ -10,11 +10,11 @@ import {
 	// VALUE_TYPE_STRING,
 	QUERY_OPERATOR_AND,
 	storage,
-	toStr,
+	// toStr,
 } from '@enonic/js-utils';
 
 
-const and = storage.query.dsl.and;
+// const and = storage.query.dsl.and;
 const bool = storage.query.dsl.bool;
 const fulltext = storage.query.dsl.fulltext;
 const ngram = storage.query.dsl.ngram;
@@ -37,6 +37,12 @@ export function makeQuery({
 	termQueries?: TermQuery[]
 }) {
 	const fieldsArr = fields.map(({boost, name: field}) => ({boost, field}));
+	if (!fieldsArr.filter(({field}) => field === '_alltext').length) {
+		fieldsArr.push({
+			boost: 1,
+			field: '_alltext'
+		})
+	}
 	// log.info('fieldsArr:%s', toStr(fieldsArr));
 
 	const arr :Array<ReturnType<typeof fulltext | typeof stemmed | typeof ngram | typeof term>> = [fulltext(
