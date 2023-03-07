@@ -1,5 +1,5 @@
 import * as esbuild from 'esbuild'; // Use the installed esbuild, rather than the one shipped with esbuild-loader
-//import * as glob from 'glob';
+//import {globSync} from 'glob';
 import * as path from 'path';
 import * as webpack from 'webpack';
 import { ESBuildMinifyPlugin } from 'esbuild-loader';
@@ -15,7 +15,7 @@ const SRC_DIR = 'src/main/resources';
 const ESBUILD_TARGET = 'es2015';
 
 //const SPEC_EXTENSION_GLOB_BRACE = '*.spec.{ts}';
-//const ENTRY_SPEC_FILES = glob.sync(`${SRC_DIR}/**/${SPEC_EXTENSION_GLOB_BRACE}`);
+//const ENTRY_SPEC_FILES = globSync(`${SRC_DIR}/**/${SPEC_EXTENSION_GLOB_BRACE}`);
 
 /*const dict = (arr :string[]) :object => Object.assign(
 	//@ts-ignore
