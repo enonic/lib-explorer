@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import glob from 'glob';
+import {globSync} from 'glob';
 import path from 'path';
 import webpack from 'webpack';
 
@@ -53,11 +53,11 @@ const ASSETS_PATH_GLOB_BRACE = '{site/assets,assets}';
 
 const ALL_JS_ASSETS_GLOB = `${SRC_DIR}/${ASSETS_PATH_GLOB_BRACE}/**/${JS_EXTENSION_GLOB_BRACE}`;
 
-const ALL_JS_ASSETS_FILES = glob.sync(ALL_JS_ASSETS_GLOB);
-const TYPE_SCRIPT_DECLARATION_FILES = glob.sync(`${SRC_DIR}/**/*.d.ts`);
+const ALL_JS_ASSETS_FILES = globSync(ALL_JS_ASSETS_GLOB);
+const TYPE_SCRIPT_DECLARATION_FILES = globSync(`${SRC_DIR}/**/*.d.ts`);
 //print({TYPE_SCRIPT_DECLARATION_FILES}, { maxItems: Infinity }); process.exit();
 
-const SERVER_JS_FILES = glob.sync(`${SRC_DIR}/**/${JS_EXTENSION_GLOB_BRACE}`, {
+const SERVER_JS_FILES = globSync(`${SRC_DIR}/**/${JS_EXTENSION_GLOB_BRACE}`, {
 	ignore: [].concat(
 		ALL_JS_ASSETS_FILES,
 		TYPE_SCRIPT_DECLARATION_FILES
