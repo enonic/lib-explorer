@@ -31,7 +31,7 @@ dependencies {
 	implementation "com.enonic.xp:lib-scheduler:${xpVersion}"
 	implementation "com.enonic.xp:lib-value:${xpVersion}"
 	implementation 'com.enonic.lib:lib-graphql:2.0.1'
-	implementation 'com.enonic.lib:lib-guillotine:5.5.0'
+	implementation 'com.enonic.lib:lib-guillotine:6.1.0'
 
 	//──────────────────────────────────────────────────────────────────────────
 	// Same as lib-explorer-3.x.x
