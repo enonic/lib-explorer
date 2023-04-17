@@ -56,7 +56,7 @@ dependencies {
 	//──────────────────────────────────────────────────────────────────────────
 	// Other enonic libs (com.enonic.lib)
 	//──────────────────────────────────────────────────────────────────────────
-	implementation 'com.enonic.lib:lib-router:2.1.0'
+	implementation 'com.enonic.lib:lib-router:3.0.1'
 
 	//implementation 'com.enonic.lib:text-encoding:1.2.0'
 	implementation 'com.enonic.lib:lib-util:3.1.1'
