@@ -9,16 +9,16 @@ import {HTTP_HEADERS} from '@enonic/explorer-utils';
 
 
 export type Headers = {
-	Accept?: string
-	'Accept-Charset'?: string
-	'Accept-Encoding'?: string
-	Authorization?: string
+	accept?: string
+	'accept-charset'?: string
+	'accept-encoding'?: string
+	authorization?: string
 	[HTTP_HEADERS.EXPLORER_INTERFACE_NAME]?: string
-	'Explorer-Log-Query'?: '1'
-	'Explorer-Log-Synonyms-Query'?: '1'
-	'Explorer-Log-Synonyms-Query-Result'?: '1'
-	'If-None-Match'?: string
-	'User-Agent'?: string
+	'explorer-log-query'?: '1'
+	'explorer-log-synonyms-query'?: '1'
+	'explorer-log-synonyms-query-result'?: '1'
+	'if-none-match'?: string
+	'user-agent'?: string
 }
 
 export type Method = 'GET'|'POST'|'HEAD'|'PUT'|'DELETE'|'PATCH'
