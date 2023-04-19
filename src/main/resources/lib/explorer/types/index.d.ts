@@ -15,35 +15,35 @@ export namespace Explorer {
 export namespace HttpClient {
 	export type Method = 'GET'|'POST'|'PUT'|'DELETE'|'HEAD'|'PATCH'
 	export type Request = {
-		auth ?:{
-			user :string
-			password :string
+		auth?: {
+			user: string
+			password: string
 		}
-		body ?:string|AnyObject // (string | object) Body content to send with the request, usually for POST or PUT requests. It can be of type string or stream.
-		certificates ?:unknown
-		clientCertificate ?:unknown
-		connectionTimeout ?:number
-		contentType ?:string
-		followRedirects ?:boolean
-		headers ?:Record<string,string>
-		method ?:Method
-		multipart ?:Array<AnyObject>
-		params ?:StringObject
-		proxy ?:{
-			host :string
-			port :number
-			user :string
-			password :string
+		body?: string|AnyObject // (string | object) Body content to send with the request, usually for POST or PUT requests. It can be of type string or stream.
+		certificates?: unknown
+		clientCertificate?: unknown
+		connectionTimeout?: number
+		contentType?: string
+		followRedirects?: boolean
+		headers?: Record<string,string>
+		method?: Method
+		multipart?: Array<AnyObject>
+		params?: StringObject
+		proxy?: {
+			host: string
+			port: number
+			user: string
+			password: string
 		}
-		queryParams ?:StringObject
-		readTimeout ?:number
-		url :string
+		queryParams?: StringObject
+		readTimeout?: number
+		url: string
 	}
 	export type Response = {
-		body :string|null // Body of the response as string. Null if the response content-type is not of type text.
-		bodyStream ?:unknown
-		contentType :string
-		status :number
+		body: string|null // Body of the response as string. Null if the response content-type is not of type text.
+		bodyStream?: unknown
+		contentType: string
+		status: number
 	}
 } // namespace HttpClient
 
@@ -63,20 +63,20 @@ export type {
 	StatsAggregation,
 	TermsAggregation,
 	ValueCountAggregation
-} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
+} from '@enonic/js-utils/types/node/query/Aggregation.d';
 export type {
 	PermissionsParams,
 	PrincipalKey,
 	PrincipalKeyRole,
 	PrincipalKeyUser
-} from '@enonic/js-utils/src/types/Auth.d';
+} from '@enonic/js-utils/types/Auth.d';
 export type {
 	Highlight
-} from '@enonic/js-utils/src/types/node/query/Highlight.d';
+} from '@enonic/js-utils/types/node/query/Highlight.d';
 export type {
 	CreateRepoParams,
 	RepositoryConfig
-} from '@enonic/js-utils/src/types/Repo.d';
+} from '@enonic/js-utils/types/Repo.d';
 
 export type {
 	Collection,
