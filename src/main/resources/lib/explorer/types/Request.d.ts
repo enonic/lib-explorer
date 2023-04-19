@@ -8,7 +8,7 @@ import type {
 import {HTTP_HEADERS} from '@enonic/explorer-utils';
 
 
-export type Headers = {
+export type Headers = { // HTTP/2 uses lowercase header keys
 	accept?: string
 	'accept-charset'?: string
 	'accept-encoding'?: string
