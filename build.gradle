@@ -18,9 +18,8 @@ repositories {
 
 
 dependencies {
-	//implementation "com.enonic.xp:script-api:${xpVersion}" // Only needed if you lib has java code
-	//implementation "com.enonic.xp:core-api:${xpVersion}" // Just for apps?
-	//implementation "com.enonic.xp:portal-api:${xpVersion}" // Just for apps?
+	compileOnly "com.enonic.xp:script-api:${xpVersion}"
+	compileOnly "com.enonic.xp:core-api:${xpVersion}"
 
 	//──────────────────────────────────────────────────────────────────────────
 	// New lib-explorer-4.0.0
