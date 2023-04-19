@@ -12,9 +12,9 @@ export type Response<
 	body? :Body
 	contentType? :string
 	headers? :{
-		'Content-Type'? :string
-		'Cache-Control'? :string
-		ETag? :string|number
+		'content-type'? :string
+		'cache-control'? :string
+		etag? :string|number
 	}
 	pageContributions? :PageContributions
 	status? :number
