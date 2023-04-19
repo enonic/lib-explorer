@@ -1,21 +1,26 @@
 export type PageContributions = {
-	headBegin? :Array<string>
-	headEnd? :Array<string>
-	bodyBegin? :Array<string>
-	bodyEnd? :Array<string>
+	headBegin?: string[]
+	headEnd?: string[]
+	bodyBegin?: string[]
+	bodyEnd?: string[]
 }
 
+export type Http2ResponseHeaders = Record<Lowercase<string>, string|number>
+
+export interface DefaultResponseHeaders extends Http2ResponseHeaders {
+	// HTTP/2 uses lowercase header keys
+	'content-type'?: string
+	'cache-control'?: string
+	etag?: string|number
+}
 
 export type Response<
-	Body extends unknown = string
+	Body = string,
+	Headers extends Http2ResponseHeaders = DefaultResponseHeaders
 > = {
-	body? :Body
-	contentType? :string
-	headers? :{
-		'content-type'? :string
-		'cache-control'? :string
-		etag? :string|number
-	}
-	pageContributions? :PageContributions
-	status? :number
+	body?: Body
+	contentType?: string
+	headers?: Headers
+	pageContributions?: PageContributions
+	status?: number
 }
