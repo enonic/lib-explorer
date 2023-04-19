@@ -1088,9 +1088,9 @@
     "@enonic-types/core" "7.12.2"
 
 "@enonic/explorer-utils@^0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@enonic/explorer-utils/-/explorer-utils-0.1.0.tgz#50b8e5db523b8d20932533468bc7f52273be7b9c"
-  integrity sha512-5r6DWYTqIte+ITMuJilmCGp1nUHlhlDGj0ztpnDWgmiCB/9G8ZMUuXq+Y7gBRDgyzCVJqWQ7u2KN6tndFbpoDQ==
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@enonic/explorer-utils/-/explorer-utils-0.1.1.tgz#da4b7e364364803633029ec05e788f2bf7cdd431"
+  integrity sha512-MZANnXIbmDVaA8f5MpYwBOcJuQTzMDnRcBGU9/qfvpsk+5vxCO8IE+B2w53qICI2yFEUa9FORpawnrTEjv760Q==
 
 "@enonic/fnv-plus@^1":
   version "1.3.0"
@@ -1757,9 +1757,9 @@
     "@types/istanbul-lib-report" "*"
 
 "@types/jest@^29":
-  version "29.5.0"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.5.0.tgz#337b90bbcfe42158f39c2fb5619ad044bbb518ac"
-  integrity sha512-3Emr5VOl/aoBwnWcH/EFQvlSAmjV+XtV9GGu5mwdYew5vhQh0IUZx/60x0TzHDu09Bi7HMx10t/namdJw5QIcg==
+  version "29.5.1"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.5.1.tgz#83c818aa9a87da27d6da85d3378e5a34d2f31a47"
+  integrity sha512-tEuVcHrpaixS36w7hpsfLBLpjtMRJUE09/MHXn923LOVojDwyC14cWcfc0rDs0VEfUyYmt/+iX1kxxp+gZMcaQ==
   dependencies:
     expect "^29.0.0"
     pretty-format "^29.0.0"
