@@ -78,6 +78,10 @@ module.exports = {
 		//React: false
 	},
 
+	ignorePatterns: [
+		"build/**/*.*"
+	],
+
 	overrides: [{
 		files: [
 			//'**/*.es', // TODO Currently too many errors to include
