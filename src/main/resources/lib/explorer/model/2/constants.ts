@@ -1,3 +1,4 @@
+import { Role } from '@enonic/explorer-utils';
 import {
 	COLON_SIGN,
 	DOT_SIGN,
@@ -304,7 +305,7 @@ export const RESPONSES_REPO_PREFIX = `${APP_EXPLORER}${DOT_SIGN}responses${DOT_S
 //──────────────────────────────────────────────────────────────────────────────
 // Roles
 //──────────────────────────────────────────────────────────────────────────────
-export const ROLE_EXPLORER_ADMIN = `${APP_EXPLORER}.admin`;
+export const ROLE_EXPLORER_ADMIN = Role.EXPLORER_ADMIN; // Deprecated use @explorer-utils
 
 //──────────────────────────────────────────────────────────────────────────────
 // User
