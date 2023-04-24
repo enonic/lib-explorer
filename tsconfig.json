@@ -1,4 +1,4 @@
-{
+{ // This file is used by your code editor, and tsup during build
 	"compilerOptions": {
 		"allowSyntheticDefaultImports": true,
 		"allowJs": true,
@@ -67,7 +67,11 @@
 		"strict": false,
 		"strictFunctionTypes": false,
 		"strictNullChecks": false,
-		"target": "es5",
+
+		// tsup: ERROR Transforming const to the configured target environment ("es5") is not supported yet
+		// Set to es5 in tsup.config.js instead
+		"target": "ES2015", // aka ES6
+
 		"typeRoots": [
 			"src/main/resources/lib/@types",
 			"node_modules/@types",

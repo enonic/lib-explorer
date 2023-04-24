@@ -8,4 +8,4 @@ export {
 export {
 	AnyObject,
 	EmptyObject
-} from './Utility';
+} from './Utility.d';
