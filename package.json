@@ -66,7 +66,7 @@
     "@enonic-types/lib-repo": "^7.12.0-RC3",
     "@enonic-types/lib-task": "^7.12.0-RC3",
     "@enonic-types/lib-value": "^7.12.0-RC3",
-    "@enonic/explorer-utils": "^0",
+    "@enonic/explorer-utils": "^0.2.0",
     "@enonic/mock-xp": "^0",
     "@enonic/semantic-ui-react-form": "^2",
     "@enonic/test-data": "^0",
