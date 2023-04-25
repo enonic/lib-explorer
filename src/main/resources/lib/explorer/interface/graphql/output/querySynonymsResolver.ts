@@ -5,10 +5,19 @@ import type {
 
 
 import {Principal} from '@enonic/explorer-utils';
-import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
+
+// This fails when tsup code splitting: true
+// import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
+
 import {getInterfaceInfo} from '/lib/explorer/interface/graphql/output/getInterfaceInfo';
 import {getSynonymsFromSearchString} from '/lib/explorer/synonym/getSynonymsFromSearchString';
 import {connect} from '/lib/explorer/repo/connect';
+
+
+//@ts-ignore
+const {currentTimeMillis} = Java.type('java.lang.System') as {
+	currentTimeMillis: () => number
+}
 
 
 export function querySynonymsResolver({

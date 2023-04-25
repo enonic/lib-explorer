@@ -11,6 +11,7 @@ import type {Highlight} from '../highlight/input/index.d';
 
 import {
 	addQueryFilter,
+	arrayIncludes,
 	forceArray,
 	isSet//,
 	//toStr
@@ -27,7 +28,6 @@ import {wash} from '/lib/explorer/query/wash';
 import {get as getStopWordsList} from '/lib/explorer/stopWords/get';
 import {getSynonymsFromSearchString} from '/lib/explorer/synonym/getSynonymsFromSearchString';
 import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
-//import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 import {
 	createAggregation,
 	createFilters
@@ -138,7 +138,7 @@ export function makeQueryParams({
 			});
 			//log.debug(`words:${toStr(words)}`);
 			words.forEach((word) => {
-				if (!listOfStopWords.includes(word)) {
+				if (!arrayIncludes(listOfStopWords, word)) {
 					listOfStopWords.push(word);
 				}
 			});

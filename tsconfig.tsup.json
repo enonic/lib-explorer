@@ -1,0 +1,14 @@
+{ // This file is used by tsup during build
+	"compilerOptions": {
+		// "target": "es5",
+		// tsup: ERROR Transforming const to the configured target environment
+		// ("es5") is not supported yet
+		// So, set to "es5" in tsup.config.js instead
+		//
+		// https://tsup.egoist.dev/#es5-support
+		// You can use --target es5 to compile the code down to es5, in this
+		// target your code will be transpiled by esbuild to es2020 first, and
+		// then transpiled to es5 by SWC.
+		"target": "ES2020",
+	}
+}

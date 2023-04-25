@@ -2,7 +2,10 @@ import type {Context} from '/lib/xp/context';
 import type {PrincipalKey} from '/lib/explorer/types/index.d';
 
 
-//import {toStr} from '@enonic/js-utils';
+import {
+	arrayIncludes,
+	// toStr
+} from '@enonic/js-utils';
 
 //import {getUser} from '/lib/xp/auth';
 import {get as getContext} from '/lib/xp/context';
@@ -61,7 +64,7 @@ export function connect({
 
 	if (Array.isArray(passedPrincipals)) {
 		passedPrincipals.forEach(passedPrincipal => {
-			if(!principals.includes(passedPrincipal)) {
+			if(!arrayIncludes(principals,passedPrincipal)) {
 				principals.push(passedPrincipal);
 			}
 		});

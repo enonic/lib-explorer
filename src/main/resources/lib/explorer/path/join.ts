@@ -2,7 +2,7 @@
 //import {toStr} from '@enonic/js-utils';
 
 
-export function join(...paths :Array<string>) {
+export function join(...paths: string[]) {
 	//log.info(toStr({paths}));
 
 	// Split the inputs into a list of path commands.

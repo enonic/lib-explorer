@@ -1,7 +1,8 @@
+import type {RepoConnection} from '/lib/xp/node';
+
+
 //import {toStr} from '@enonic/js-utils';
-
 import {join} from '/lib/explorer/path/join';
-
 
 
 export function remove({
@@ -11,8 +12,15 @@ export function remove({
 	path = join(_parentPath, _name),
 	key = path,
 	keys = [key]
+}: {
+	_name?: string
+	_parentPath?: string
+	connection: RepoConnection
+	path?: string
+	key?: string
+	keys?: string[]
 }) {
-	//log.info(toStr({keys}));
+	// log.info('keys:%s', toStr(keys));
 	const res = connection.delete(keys); // Array
 	connection.refresh();
 	return res;

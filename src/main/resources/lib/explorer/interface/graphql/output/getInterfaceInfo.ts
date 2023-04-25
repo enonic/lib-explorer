@@ -3,6 +3,7 @@ import type {CollectionNode} from '/lib/explorer/types/Collection.d';
 
 
 import {
+	arrayIncludes,
 	getIn,
 	isSet,
 	// toStr,
@@ -149,7 +150,7 @@ export function getInterfaceInfo({
 		if (buckets) {
 			for (let i = 0; i < buckets.length; i++) {
 				const {key} = buckets[i];
-				if (!stemmingLanguages.includes(key)) {
+				if (!arrayIncludes(stemmingLanguages, key)) {
 					stemmingLanguages.push(key);
 				}
 			}

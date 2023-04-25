@@ -1,7 +1,7 @@
 import type {
 	MultiRepoConnection,
 	SourceWithPrincipals
-} from '@enonic/js-utils/src/types/node/multiRepoConnection.d';
+} from '@enonic/js-utils/types/node/multiRepoConnection.d';
 
 import type {
 	GetContext,
@@ -9,7 +9,10 @@ import type {
 } from '/lib/explorer/types/index.d';
 
 
-//import {toStr} from '@enonic/js-utils';
+import {
+	arrayIncludes,
+	// toStr
+} from '@enonic/js-utils';
 //@ts-ignore
 import {get as getContext} from '/lib/xp/context';
 //@ts-ignore
@@ -63,7 +66,7 @@ export function multiConnect({
 	const basePrincipals = [].concat(contextPrincipals); // Dereference
 	if (Array.isArray(passedPrincipals)) {
 		passedPrincipals.forEach(passedPrincipal => {
-			if(!basePrincipals.includes(passedPrincipal)) {
+			if(!arrayIncludes(basePrincipals, passedPrincipal)) {
 				basePrincipals.push(passedPrincipal);
 			}
 		});
@@ -82,7 +85,7 @@ export function multiConnect({
 			const principals = [].concat(basePrincipals); // Dereference
 			if (Array.isArray(sourcePrincipals)) {
 				sourcePrincipals.forEach(sourcePrincipal => {
-					if(!principals.includes(sourcePrincipal)) {
+					if(!arrayIncludes(principals, sourcePrincipal)) {
 						principals.push(sourcePrincipal);
 					}
 				});

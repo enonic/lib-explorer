@@ -18,7 +18,14 @@ import {query as querySynonyms} from '/lib/explorer/synonym/query';
 import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
 import {washSynonyms} from '/lib/explorer/synonym/washSynonyms';
 import {query as queryThesauri} from '/lib/explorer/thesaurus/query';
-import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
+
+// This fails when tsup code splitting: true
+// import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
+
+//@ts-ignore
+const {currentTimeMillis} = Java.type('java.lang.System') as {
+	currentTimeMillis: () => number
+}
 
 
 const fulltext = storage.query.dsl.fulltext;
