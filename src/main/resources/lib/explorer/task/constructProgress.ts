@@ -1,6 +1,14 @@
-import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
+// This fails when tsup code splitting: true
+// import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
+
 //@ts-ignore
 import {progress as reportProgress} from '/lib/xp/task';
+
+
+//@ts-ignore
+const {currentTimeMillis} = Java.type('java.lang.System') as {
+	currentTimeMillis: () => number
+}
 
 
 type Progress<Info> = {

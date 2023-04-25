@@ -7,6 +7,8 @@ import {
 	camelize//,
 	//toStr
 } from '@enonic/js-utils';
+import 'core-js/stable/number/is-integer';
+import 'core-js/stable/reflect'; // WARNING: Only works when treeshake: false
 import setIn from 'set-value'; // Number.isInteger and Reflect
 
 
@@ -14,16 +16,16 @@ export function mergeFields({
 	camelToFieldObj, // modified
 	globalFieldsObj, // just read
 	properties // just read
-} :{
-	camelToFieldObj :Record<string, string>
-	globalFieldsObj :Record<string,{
-		_max :number
-		_min :number
-		_valueType :string
+}: {
+	camelToFieldObj: Record<string, string>
+	globalFieldsObj: Record<string,{
+		_max: number
+		_min: number
+		_valueType: string
 	}>
-	properties :DocumentTypeFields
-}) :Branch {
-	const mergedglobalFieldsObj :Branch = JSON.parse(JSON.stringify(globalFieldsObj)); // deref
+	properties: DocumentTypeFields
+}): Branch {
+	const mergedglobalFieldsObj: Branch = JSON.parse(JSON.stringify(globalFieldsObj)); // deref
 	//log.debug(`documentTypeName:${toStr(documentTypeName)} mergedglobalFieldsObj:${toStr(mergedglobalFieldsObj)}`);
 
 	if (properties) {

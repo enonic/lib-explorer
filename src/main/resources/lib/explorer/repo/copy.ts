@@ -4,6 +4,7 @@ import type {
 } from '/lib/xp/node';
 
 
+import { Principal } from '@enonic/explorer-utils';
 import {
 	PRINCIPAL_ROLE_SYSTEM_ADMIN,
 	isSet//,
@@ -17,10 +18,7 @@ import {
 	createBranch,
 	get as getRepo
 } from '/lib/xp/repo';
-import {
-	PRINCIPAL_EXPLORER_READ
-} from '/lib/explorer/constants'
-import {dirname} from '/lib/explorer/path/dirname'
+import {dirname} from '/lib/explorer/path/dirname';
 
 
 const ROOT_NODE_ID = '000-000-000-000';
@@ -35,11 +33,11 @@ export function copy({
 	branchId = 'master',
 	editor
 }: {
-	fromRepoId :string
-	toRepoId :string
+	fromRepoId: string
+	toRepoId: string
 	// Optional
-	branchId ?:string
-	editor ?:(node: Node) => Node
+	branchId?: string
+	editor?: (node: Node) => Node
 }) {
 	//──────────────────────────────────────────────────────────────────────────
 	// Check params
@@ -110,7 +108,7 @@ export function copy({
 	const fromRepoReadConnection = connect({
 		branch: branchId,
 		repoId: fromRepoId,
-		principals: [PRINCIPAL_EXPLORER_READ]
+		principals: [Principal.EXPLORER_READ]
 	});
 
 	const toRepoWriteConnection = connect({

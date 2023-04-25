@@ -21,13 +21,22 @@ import {applyDocumentTypeToDocumentNode} from '/lib/explorer/_uncoupled/document
 import {getDocumentTypeByName} from '/lib/explorer/documentType/getDocumentTypeByName';
 import {connect} from '/lib/explorer/repo/connect';
 import {multiConnect} from '/lib/explorer/repo/multiConnect';
-import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
+
+// This fails when tsup code splitting: true
+// import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
+
 import {washDocumentNode} from '../utils/washDocumentNode';
 import {getInterfaceInfo} from './getInterfaceInfo';
 import {makeQueryParams} from './makeQueryParams';
 /*import {
 	queryResHighlightObjToArray
 } from '../highlight/output/queryResHighlightObjToArray';*/
+
+
+//@ts-ignore
+const {currentTimeMillis} = Java.type('java.lang.System') as {
+	currentTimeMillis: () => number
+}
 
 
 const DEBUG = false;

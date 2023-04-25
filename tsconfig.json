@@ -1,109 +1,117 @@
 { // This file is used by your code editor, and tsup during build
 	"compilerOptions": {
-		"allowSyntheticDefaultImports": true,
-		"allowJs": true,
-		"baseUrl": "./",
-		"checkJs": false,
-		"declaration": false,
-		"declarationMap": false,
-		"downlevelIteration": true,
-		"esModuleInterop": true,
-		"experimentalDecorators": true,
-		"importHelpers": true,
-		"importsNotUsedAsValues": "remove",
-		"inlineSourceMap": false,
-		"inlineSources": false,
-		"jsx": "react-jsx",
-		"listEmittedFiles": false,
-		"listFiles": false,
-		"module": "es6",
-		"moduleResolution": "node",
-		"noEmitOnError": false,
-		"noErrorTruncation": true,
-		"noImplicitAny": false,
-		"noPropertyAccessFromIndexSignature": true,
-		"noUncheckedIndexedAccess": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": true,
-		"outDir": "build/rollup",
+// 		"allowSyntheticDefaultImports": true,
+// 		"allowJs": true,
+// 		"baseUrl": "./",
+// 		"checkJs": false,
+// 		"declaration": false,
+// 		"declarationMap": false,
+// 		"downlevelIteration": true,
+// 		"esModuleInterop": true,
+// 		"experimentalDecorators": true,
+// 		"importHelpers": true,
+// 		"importsNotUsedAsValues": "remove",
+// 		"inlineSourceMap": false,
+// 		"inlineSources": false,
+// 		"jsx": "react-jsx",
+// 		"listEmittedFiles": false,
+// 		"listFiles": false,
+// 		"module": "es6",
+// 		"moduleResolution": "node",
+// 		"noEmitOnError": false,
+// 		"noErrorTruncation": true,
+// 		"noImplicitAny": false,
+// 		"noPropertyAccessFromIndexSignature": true,
+// 		"noUncheckedIndexedAccess": true,
+// 		"noUnusedLocals": false,
+// 		"noUnusedParameters": true,
+// 		"outDir": "build/rollup",
 		"paths": {
-			// Development (should be commented out when commiting)
-			// "@enonic/explorer-utils": ["../explorer-utils"],
-			//
-			// Use this or npm link ../enonic-js-utils
-			// "@enonic/js-utils": ["../enonic-js-utils"],
-			// "@enonic/js-utils/*": ["../enonic-js-utils/*"],
-			//
-			// "@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],
-			// "@enonic-types/lib-repo": ["../xp/modules/lib/lib-repo/src/main/resources/lib/xp/repo.ts"],
-			// "@enonic-types/lib-repo": ["../xp/modules/lib/lib-repo/build/typescript/lib/xp/repo.d.ts"],
-			// "/lib/xp/node": ["../xp/modules/lib/lib-node/src/main/resources/lib/xp/node.ts"],
-			// "/lib/xp/node": ["../xp/modules/lib/lib-node/build/typescript/lib/xp/node.d.ts"],
-			// "/lib/xp/repo": ["../xp/modules/lib/lib-repo/src/main/resources/lib/xp/repo.ts"],
-			// "/lib/xp/repo": ["../xp/modules/lib/lib-repo/build/typescript/lib/xp/repo.d.ts"],
-			// Production (should be commented in when commiting)
-			"@enonic/semantic-ui-react-form": ["node_modules/@enonic/semantic-ui-react-form/src"],
-			"/lib/explorer/*": ["src/main/resources/lib/explorer/*"],
-			"/lib/xp/auth": ["node_modules/@enonic-types/lib-auth"],
-			"/lib/xp/context": ["node_modules/@enonic-types/lib-context"],
-			"/lib/xp/event": ["node_modules/@enonic-types/lib-event"],
-			"/lib/xp/node": ["node_modules/@enonic-types/lib-node"],
-			"/lib/xp/repo": ["node_modules/@enonic-types/lib-repo"],
-			"/lib/xp/task": ["node_modules/@enonic-types/lib-task"],
-			"/lib/xp/value": ["node_modules/@enonic-types/lib-value"]
+// 			// Development (should be commented out when commiting)
+// 			// "@enonic/explorer-utils": ["../explorer-utils"],
+// 			//
+// 			// Use this or npm link ../enonic-js-utils
+// 			// "@enonic/js-utils": ["../enonic-js-utils"],
+// 			// "@enonic/js-utils/*": ["../enonic-js-utils/*"],
+// 			//
+// 			// "@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],
+// 			// "@enonic-types/lib-repo": ["../xp/modules/lib/lib-repo/src/main/resources/lib/xp/repo.ts"],
+// 			// "@enonic-types/lib-repo": ["../xp/modules/lib/lib-repo/build/typescript/lib/xp/repo.d.ts"],
+// 			// "/lib/xp/node": ["../xp/modules/lib/lib-node/src/main/resources/lib/xp/node.ts"],
+// 			// "/lib/xp/node": ["../xp/modules/lib/lib-node/build/typescript/lib/xp/node.d.ts"],
+// 			// "/lib/xp/repo": ["../xp/modules/lib/lib-repo/src/main/resources/lib/xp/repo.ts"],
+// 			// "/lib/xp/repo": ["../xp/modules/lib/lib-repo/build/typescript/lib/xp/repo.d.ts"],
+// 			// Production (should be commented in when commiting)
+// 			"@enonic/semantic-ui-react-form": ["node_modules/@enonic/semantic-ui-react-form/src"],
+			"/lib/explorer/*": ["./src/main/resources/lib/explorer/*"],
+// 			// "/lib/xp/auth": ["node_modules/@enonic-types/lib-auth"],
+// 			// "/lib/xp/context": ["node_modules/@enonic-types/lib-context"],
+// 			// "/lib/xp/event": ["node_modules/@enonic-types/lib-event"],
+// 			// "/lib/xp/node": ["node_modules/@enonic-types/lib-node"],
+// 			// "/lib/xp/repo": ["node_modules/@enonic-types/lib-repo"],
+// 			// "/lib/xp/task": ["node_modules/@enonic-types/lib-task"],
+// 			// "/lib/xp/value": ["node_modules/@enonic-types/lib-value"]
+// 			"/lib/xp/*": ["node_modules/@enonic-types/lib-*"]
 		},
-		"preserveWatchOutput": false,
-		"pretty": true,
-		"removeComments": true,
-		"resolveJsonModule": true,
-		"rootDir": "../",
-		"rootDirs": [
-			"src/main/resources",
-			"node_modules",
-			"../enonic-js-utils/src",
-			"test"
-		],
-		"sourceMap": false,
-		"strict": false,
-		"strictFunctionTypes": false,
-		"strictNullChecks": false,
+// 		"preserveWatchOutput": false,
+// 		"pretty": true,
+// 		"removeComments": true,
+// 		"resolveJsonModule": true,
+// 		"rootDir": "../",
+// 		// "rootDirs": [
+// 		// 	"src/main/resources",
+// 		// 	"node_modules",
+// 		// 	"../enonic-js-utils/src",
+// 		// 	"test"
+// 		// ],
+// 		"sourceMap": false,
+// 		"strict": false,
+// 		"strictFunctionTypes": false,
+// 		"strictNullChecks": false,
 
-		// tsup: ERROR Transforming const to the configured target environment ("es5") is not supported yet
-		// Set to es5 in tsup.config.js instead
-		"target": "ES2015", // aka ES6
+// 		// "target": "es5",
+// 		// tsup: ERROR Transforming const to the configured target environment
+// 		// ("es5") is not supported yet
+// 		// So, set to "es5" in tsup.config.js instead
+// 		//
+// 		// https://tsup.egoist.dev/#es5-support
+// 		// You can use --target es5 to compile the code down to es5, in this
+// 		// target your code will be transpiled by esbuild to es2020 first, and
+// 		// then transpiled to es5 by SWC.
+// 		"target": "ES2020",
 
-		"typeRoots": [
-			"src/main/resources/lib/@types",
-			"node_modules/@types",
-			"node_modules/@enonic-types",
-		],
-		"types": [
-			"@enonic-types/global",
-			// "@enonic-types/lib-auth",
-			// "@enonic-types/lib-node",
-			// "@enonic-types/lib-repo",
-			// "@enonic-types/lib-task",
-			// "@enonic-types/lib-value",
-			"mocha",
-			"node",
-			"q-i",
-			"react",
-			"traverse"
-		]
+// 		"typeRoots": [
+// 			"src/main/resources/lib/@types",
+// 			"node_modules/@types",
+// 			"node_modules/@enonic-types",
+// 		],
+// 		"types": [
+// 			"@enonic-types/global",
+// 			// "@enonic-types/lib-auth",
+// 			// "@enonic-types/lib-node",
+// 			// "@enonic-types/lib-repo",
+// 			// "@enonic-types/lib-task",
+// 			// "@enonic-types/lib-value",
+// 			"mocha",
+// 			"node",
+// 			"q-i",
+// 			"react",
+// 			"traverse"
+// 		]
 	},
-	"exclude": [
-		"../enonic-js-utils/**/*",
-		"build/**/*",
-		"node_modules/**/*"
-	],
-	"files": [
-		"src/main/resources/index.d.ts",
-		"src/main/resources/lib/explorer/index.ts",
-		"src/main/resources/lib/explorer/_uncoupled/index.ts"
-	],
-	"include": [
-		"src/main/resources/**/*.ts",
-		"src/main/resources/**/*.es",
-		// "test/**/*.ts"
-  ]
+// 	"exclude": [
+// 		"../enonic-js-utils/**/*",
+// 		"build/**/*",
+// 		"node_modules/**/*"
+// 	],
+// 	"files": [
+// 		"src/main/resources/index.d.ts",
+// 		"src/main/resources/lib/explorer/index.ts",
+// 		"src/main/resources/lib/explorer/_uncoupled/index.ts"
+// 	],
+// 	"include": [
+// 		"src/main/resources/**/*.ts",
+// 		"src/main/resources/**/*.es",
+// 		// "test/**/*.ts"
+//   ]
 }
