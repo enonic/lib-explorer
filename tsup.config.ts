@@ -102,16 +102,17 @@ export default defineConfig((options: MyOptions) => {
 			minify: false, // Minifying server files makes debugging harder
 			noExternal: [ // TODO: These might need Polyfills for global to run in Nashorn:
 				'@enonic/explorer-utils', // several places
-				'@enonic/fnv-plus', // src/main/resources/lib/explorer/string/hash.ts
+				'@enonic/fnv-plus', // lib/explorer/string/hash.ts
 				'@enonic/js-utils', // many places
-				'core-js', // src/main/resources/lib/explorer/interface/graphql/mergeFields.ts
-				'd3-dsv', // src/main/resources/lib/explorer/parseCsv.ts
+				'core-js', // lib/explorer/interface/graphql/mergeFields.ts
+				'd3-dsv', // lib/explorer/parseCsv.ts
 				'deep-object-diff', // several places
-				'diff', // src/main/resources/lib/explorer/_uncoupled/document/documentUnchanged.ts
+				'diff', // lib/explorer/_uncoupled/document/documentUnchanged.ts
 				'fast-deep-equal', // several places
 				'human-object-diff', // several places
+				'set-value', // lib/explorer/interface/graphql/mergeFields.ts
 				'traverse', // many places
-				'uri-js', // src/main/resources/lib/explorer/url/normalize.ts resolve.ts
+				'uri-js', // lib/explorer/url/normalize.ts resolve.ts
 			],
 			platform: 'neutral',
 
