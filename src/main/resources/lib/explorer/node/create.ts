@@ -28,21 +28,21 @@ import {
 
 
 /*interface NodeProperties {
-	_indexConfig? :{
-		default :string
+	_indexConfig?: {
+		default: string
 	}
-	_inheritsPermissions? :boolean
-	_name :string
-	_parentPath? :ParentPath
-	_permissions? :Array<string>
-	creator? :string
-	displayName? :string
+	_inheritsPermissions?: boolean
+	_name: string
+	_parentPath?: ParentPath
+	_permissions?: string[]
+	creator?: string
+	displayName?: string
 }*/
 
 
 export function create<N extends NodeCreateParams & {
-	creator? :string
-	displayName? :string
+	creator?: string
+	displayName?: string
 }>({
 	// It appears that properties that starts with an undescore are ignored, except the standard ones.
 	// These doesn't work: _displayName _creator _createdTime _type
@@ -66,18 +66,18 @@ export function create<N extends NodeCreateParams & {
 	//type,
 
 	...rest
-} :N, {
+}: N, {
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	sanitize,
 	user,
 	...ignoredOptions
-} :{
-	connection :WriteConnection
-	sanitize? :boolean
-	user? :{
-		key :string
+}: {
+	connection: WriteConnection
+	sanitize?: boolean
+	user?: {
+		key: string
 	}
-}) :N & {_id :string} {
+}): N & {_id: string} {
 	/*log.info(toStr({
 		_parentPath, _name, displayName, rest
 	}));*/
@@ -145,7 +145,27 @@ export function create<N extends NodeCreateParams & {
 
 	//log.debug('node.create doSanitize(%s):%s', _name, doSanitize(_name)); // Turns _ into - :(
 	if (_name && sanitize) {
-		_name = doSanitize(_name).replace(/-/g, '_');
+		_name = doSanitize(_name)
+			// Fix #210 Duplicate collection uses - rather than _
+			// caused #258 Cannot create node with name test, parent '/api-keys' not found
+			//
+			// The GraphQL specification names uses /[_A-Za-z][_0-9A-Za-z]*/
+			// https://spec.graphql.org/June2018/#sec-Names
+			//
+			// Enonic XP node ids are uuidv4 which is /[0-9a-f-]/
+			// When you create a node without a _name it becomes the same as the _id
+			// node.type:document names shouldn't be exposed in GraphQL, so the mismatch isn't a problem.
+			//
+			// In Explorer UI collection names are limited to /^[a-z][0-9a-zA-Z_]/
+			// This is because collection names, are used as repo names and in interface GraphQL API schema.
+			//
+			// #258 can be fixed in multiple ways:
+			// 1. In app-explorer/tasks/migrate use create with sanitize: false
+			// 2.
+			// 2.1 Change Folder.API_KEYS from 'api-keys' to 'api_keys' in @enonic/explorer-utils
+			// 2.2 Create new migration to move /api-keys/* to /api_keys/
+			// I think I will do 1 for now, maybe 2 later.
+			.replace(/-/g, '_');
 	}
 	const CREATE_PARAMS = {
 		_indexConfig,
@@ -161,5 +181,5 @@ export function create<N extends NodeCreateParams & {
 	//log.info(toStr(CREATE_PARAMS));
 	const createRes = connection.create(CREATE_PARAMS);
 	connection.refresh(); // So the data becomes immidiately searchable
-	return createRes as unknown as N & {_id :string};
+	return createRes as unknown as N & {_id: string};
 }
