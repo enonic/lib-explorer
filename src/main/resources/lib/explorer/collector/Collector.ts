@@ -29,7 +29,7 @@
 import type {
 	QueryDSL,
 	SortDSLExpression
-} from '@enonic/js-utils/src/types';
+} from '@enonic/js-utils/types';
 import type {
 	Aggregations,
 	AnyObject,
@@ -77,8 +77,10 @@ import {Journal} from './Journal';
 const DEBUG = false;
 const TRACE = false;
 
-//@ts-ignore
-const {currentTimeMillis} = Java.type('java.lang.System');
+// @ts-ignore
+const {currentTimeMillis} = Java.type('java.lang.System') as {
+	currentTimeMillis: () => number
+};
 
 
 export class Collector<Config extends AnyObject = AnyObject> {
