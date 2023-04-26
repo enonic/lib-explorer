@@ -126,7 +126,7 @@ wrapper {
 // TSUP
 //──────────────────────────────────────────────────────────────────────────────
 task tsup(
-	// dependsOn: yarn_install,
+	dependsOn: yarn_install,
 	type: YarnTask
 ) {
 	args = ['build:tsup']
@@ -135,7 +135,7 @@ task tsup(
 
 processResources {
 	exclude '**/*.es' // Skip /lib/nashorn/
-	exclude '**/*.json' //  Skip lib/@types/q-i/package.json
+	exclude '**/*.json' // Skip lib/@types/q-i/package.json
 	exclude '**/*.ts' // Handeled by tsup
 }
 
