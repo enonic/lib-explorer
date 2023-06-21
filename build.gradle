@@ -120,6 +120,18 @@ wrapper {
 // 	outputs.dir './build/resources/main' // processResources will delete the directory if this is not present
 // }
 
+task yarnCheck(type: YarnTask) {
+	dependsOn yarn_install
+	args = [
+		'run',
+		'check'
+	]
+	environment = [
+		'FORCE_COLOR': 'true',
+	]
+}
+// check.dependsOn yarnCheck
+
 //──────────────────────────────────────────────────────────────────────────────
 // TSUP
 //──────────────────────────────────────────────────────────────────────────────
@@ -144,3 +156,4 @@ processResources {
 }
 
 jar.dependsOn tsup
+javadoc.dependsOn tsup

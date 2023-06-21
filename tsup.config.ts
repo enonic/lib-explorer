@@ -27,17 +27,14 @@ export default defineConfig((options: MyOptions) => {
 		return {
 			entry: SERVER_FILES,
 			esbuildOptions(options, context) {
+				options.banner = {
+					js: `const globalThis = (1, eval)('this');` // buffer polyfill needs this
+				};
 				options.chunkNames = 'lib/explorer/_chunks/[name]-[hash]'
-				// options.tsconfig = 'tsconfig.tsup.json'
-// 				options.tsconfig = `{
-// 	"compilerOptions": {
-// 		"target": "ES2020"
-// 	}
-// }`,
 			},
 			external: [ // All these are available runtime in the jar file:
 				'/lib/cache',
-				// /^\/lib\/explorer/, // Not certain if this is a good idea?
+				/^\/lib\/explorer/,
 				/^\/lib\/guillotine/,
 				'/lib/graphql',
 				'/lib/graphql-connection',
@@ -73,7 +70,6 @@ export default defineConfig((options: MyOptions) => {
 			],
 			format: 'cjs',
 			inject: [
-				'src/main/resources/lib/nashorn/global.ts',
 				// TODO: Maybe use this instead?
 				//'node_modules/core-js/stable/global-this.js',
 
@@ -126,7 +122,6 @@ export default defineConfig((options: MyOptions) => {
 
 			shims: false, // https://tsup.egoist.dev/#inject-cjs-and-esm-shims
 			sourcemap: false,
-			target: 'es5',
 
 			// https://tsup.egoist.dev/#tree-shaking
 			// Tree shaking
@@ -137,12 +132,7 @@ export default defineConfig((options: MyOptions) => {
 			// https://rollupjs.org/configuration-options/#treeshake
 			// treeshake: true // This fails after 1m 19s
 
-			// tsconfig: 'tsconfig.tsup.json',
-// 			tsconfig: `{
-// 	"compilerOptions": {
-// 		"target": "ES2020"
-// 	}
-// }`,
+			tsconfig: 'tsconfig.tsup.json',
 		};
 	}
 	throw new Error(`Unconfigured directory:${options.d}!`)

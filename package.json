@@ -144,6 +144,7 @@
     "bundle:tests": "yarn bundle:tests:sync",
     "bundle:tests:sync": "for f in $(find test -name '*.test.ts'); do npx rollup -c rollup.config.tests.js -o build/rollup/test/$(echo $f| cut -d'/' -f2- | sed 's/\\.[^.]*$//').js $f ; done",
     "bundle:tests:async": "find test -name '*.test.ts'|cut -d'/' -f2-|npx parallel npx rollup -c rollup.config.tests.js -o build/rollup/test/{.}.js test/{}",
+    "check": "npx tsc --noEmit",
     "clean": "rimraf build dist",
     "esbuild:parseCsv": "npx esbuild --bundle --external:/lib/cache --external:/lib/explorer* --external:/lib/galimatias --external:/lib/graphql* --external:/lib/guillotine* --external:/lib/http-client --external:/lib/license --external:/lib/router --external:/lib/util/* --external:/lib/xp/* --format=cjs --outbase=src/main/resources --outdir=build/esbuild --tsconfig=tsconfig.esbuild.json src/main/resources/lib/explorer/parseCsv.ts",
     "lint": "npx eslint src/main/resources test",
