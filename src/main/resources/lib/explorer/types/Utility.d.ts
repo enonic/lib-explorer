@@ -5,7 +5,12 @@
 export type AnyObject = Record<string, unknown>;
 export type EmptyObject = Record<string, never>;
 export type StringObject = Record<string, string>;
-
+export interface NestedRecordInterface {
+	[propertyKey: PropertyKey]: NestedRecordInterface | unknown;
+}
+export type NestedRecordType = {
+	[propertyKey: PropertyKey]: NestedRecordType | unknown;
+}
 
 export type OneOrMore<T> = T | T[];
 export type Unset = undefined | null;

@@ -189,10 +189,12 @@ export type {
 	StopwordNode
 } from './Stopword.d';
 export type {
-	QueriedSynonym,
-	Synonym,
-	SynonymNode,
-	SynonymNodeCreateParams
+	Synonym_Common,
+	Synonym_Language,
+	SynonymGUI,
+	SynonymGUI_Language,
+	SynonymGUI_LanguagesSynonymObject,
+	SynonymUse
 } from './Synonym.d';
 export type {
 	Task,
@@ -208,6 +210,8 @@ export type {
 export type {
 	AnyObject,
 	EmptyObject,
+	NestedRecordInterface,
+	NestedRecordType,
 	OneOrMore,
 	ZeroOrMore
 } from './Utility.d';

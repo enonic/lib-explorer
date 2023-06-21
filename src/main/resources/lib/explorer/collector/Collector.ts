@@ -32,12 +32,12 @@ import type {
 } from '@enonic/js-utils/types';
 import type {
 	Aggregations,
-	AnyObject,
 	CollectionNode,
 	DocumentNode,
 	Id,
 	JournalMessage,
 	Name,
+	NestedRecordType,
 	NotificationsNode,
 	ParentPath,
 	QueryFilters//,
@@ -83,22 +83,22 @@ const {currentTimeMillis} = Java.type('java.lang.System') as {
 };
 
 
-export class Collector<Config extends AnyObject = AnyObject> {
-	public collection :Collection // Public in lib-explorer-3.x
-	public config :Config // Public in lib-explorer-3.x // TODO
-	public journal :Journal // Public in lib-explorer-3.x
-	public startTime :number // Public in lib-explorer-3.x
-	public taskProgressObj :Progress // Public in lib-explorer-3.x
+export class Collector<Config extends NestedRecordType = NestedRecordType> {
+	public collection: Collection // Public in lib-explorer-3.x
+	public config: Config // Public in lib-explorer-3.x // TODO
+	public journal: Journal // Public in lib-explorer-3.x
+	public startTime: number // Public in lib-explorer-3.x
+	public taskProgressObj: Progress // Public in lib-explorer-3.x
 
 	// "#" is js runtime and better than "private" typescript compiletime
 	// but cannot be used when target < "es6"
 	//_collectionDefaultDocumentTypeId;
-	private _collectionId :string; // New in lib-explorer-4.0.0
-	private _collectionName :string; // Private from lib-explorer-4.0.0
-	private _collectorId :string; // Private from lib-explorer-4.0.0
-	//_documentTypeObj :FieldsObject;
+	private _collectionId: string; // New in lib-explorer-4.0.0
+	private _collectionName: string; // Private from lib-explorer-4.0.0
+	private _collectorId: string; // Private from lib-explorer-4.0.0
+	//_documentTypeObj: FieldsObject;
 	//_documentTypesObj;
-	private _language :string; // Private in lib-explorer-3.x
+	private _language: string; // Private in lib-explorer-3.x
 
 	constructor({
 		collectionId,
@@ -106,12 +106,12 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		configJson, // Present in lib-explorer-3.x
 		language, // Present in lib-explorer-3.x
 		name // Present in lib-explorer-3.x
-	} :{
-		collectionId? :string
-		collectorId :string
-		configJson :string
-		language? :string
-		name? :string
+	}: {
+		collectionId?: string
+		collectorId: string
+		configJson: string
+		language?: string
+		name?: string
 	}) {
 		log.debug('Collector.constructor: collectionId:%s', collectionId);
 		//log.debug('Collector.constructor: collectorId:%s', collectorId);
@@ -132,7 +132,7 @@ export class Collector<Config extends AnyObject = AnyObject> {
 			principals: [PRINCIPAL_EXPLORER_READ]
 		});
 
-		let collectionNode :CollectionNode;
+		let collectionNode: CollectionNode;
 		if (collectionId) {
 			collectionNode = explorerRepoReadConnection.get(collectionId);
 			if (!collectionNode) {
@@ -202,16 +202,16 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		}
 	} // constructor
 
-	deleteDocument<T extends string|Array<string>>(keys :T) :T
-	deleteDocument(...keys :Array<string>) {
+	deleteDocument<T extends string|Array<string>>(keys: T): T
+	deleteDocument(...keys: Array<string>) {
 		return this.collection.connection.delete(...keys) as string|Array<string>;
 	}
 
 	getDocumentNode<
-		DocumentNode extends AnyObject,
+		DocumentNode extends NestedRecordType,
 		T extends string|Array<string>
-	>(keys :T) :T extends string ? DocumentNode : Array<DocumentNode>
-	getDocumentNode<DocumentNode = unknown>(...keys :Array<string>) :DocumentNode|Array<DocumentNode> {
+	>(keys: T): T extends string ? DocumentNode: Array<DocumentNode>
+	getDocumentNode<DocumentNode = unknown>(...keys: Array<string>): DocumentNode|Array<DocumentNode> {
 		return this.collection.connection.get<DocumentNode>(...keys);
 	}
 
@@ -229,13 +229,13 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		query,
 		sort,
 		start
-	} :{
-		aggregations ?:Aggregations<AggregationKey>
-		count ?:number
-		filters ?:QueryFilters
-		query ?:QueryDSL
-		sort? :SortDSLExpression
-		start ?:number
+	}: {
+		aggregations?: Aggregations<AggregationKey>
+		count?: number
+		filters?: QueryFilters
+		query?: QueryDSL
+		sort?: SortDSLExpression
+		start?: number
 	}) {
 		return queryDocuments({
 			aggregations,
@@ -293,10 +293,10 @@ export class Collector<Config extends AnyObject = AnyObject> {
 			...document_metadata_props
 		} = {},*/
 		...rest // Slurps properties
-	} :{
-		_id? :Id
-		_name? :Name
-		_parentPath? :ParentPath
+	}: {
+		_id?: Id
+		_name?: Name
+		_parentPath?: ParentPath
 	}, {
 		//cleanExtraFields // TODO Perhaps later
 		//addExtraFields // TODO Perhaps later
@@ -310,9 +310,9 @@ export class Collector<Config extends AnyObject = AnyObject> {
 		//validateOccurrences, // TODO Perhaps later
 		//validateTypes // TODO Perhaps later
 		...ignoredOptions
-	} :{
-		boolRequireValid ?:boolean
-		documentTypeName :string
+	}: {
+		boolRequireValid?: boolean
+		documentTypeName: string
 	}) {
 		//log.debug(`document_metadata_props:${toStr(document_metadata_props)}`);
 		//log.debug(`rest:${toStr(rest)}`);
@@ -346,10 +346,10 @@ export class Collector<Config extends AnyObject = AnyObject> {
 			throw new Error('persistDocument(): Missing required parameter documentTypeName!');
 		}
 
-		const documentToPersist :{
-			_id? :Id
-			_name? :Name
-			_parentPath :ParentPath
+		const documentToPersist: {
+			_id?: Id
+			_name?: Name
+			_parentPath: ParentPath
 		} = {
 			...rest,
 
