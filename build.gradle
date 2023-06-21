@@ -3,8 +3,6 @@ plugins {
 	id 'maven-publish' // Provides publishToMavenLocal
 	id 'com.enonic.xp.base' version '3.4.0'
 	id 'com.enonic.defaults' version '2.1.2' // Publishing
-
-	//id 'com.moowork.node' version '1.3.1'
 	id 'com.github.node-gradle.node' version '5.0.0'
 }
 
@@ -130,6 +128,12 @@ task tsup(
 	type: YarnTask
 ) {
 	args = ['build:tsup']
+	environment = [
+		'FORCE_COLOR': 'true',
+		'LOG_LEVEL_FROM_GRADLE': gradle.startParameter.logLevel.toString(),
+		'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
+	]
+	inputs.dir 'src/main/resources'
 	outputs.dir './build/resources/main' // processResources will delete the directory if this is not present
 }
 
@@ -139,5 +143,4 @@ processResources {
 	exclude '**/*.ts' // Handeled by tsup
 }
 
-processResources.mustRunAfter tsup
-processResources.dependsOn tsup
+jar.dependsOn tsup
