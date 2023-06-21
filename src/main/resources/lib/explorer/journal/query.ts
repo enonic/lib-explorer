@@ -1,4 +1,5 @@
-import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
+import type {Filter} from '/lib/xp/node';
+import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d';
 import type {
 	JournalNode,
 	QueryFilters
@@ -24,17 +25,17 @@ export function query<
 >({
 	aggregations,
 	count = 25,
-	filters = {},
+	filters = {} as Filter,
 	query = '',
 	sort = 'endTime DESC',
 	start = 10
 } :{
-	aggregations ?:Aggregations<AggregationKeys>
-	count ?:number
-	filters ?:QueryFilters
-	query ?:string
-	sort ?:string
-	start ?:number
+	aggregations?: Aggregations<AggregationKeys>
+	count?: number
+	filters?: QueryFilters
+	query?: string
+	sort?: string
+	start?: number
 } = {}) {
 	const connection = connect({
 		repoId: REPO_JOURNALS,
@@ -43,7 +44,7 @@ export function query<
 	filters = addQueryFilter({
 		filter: hasValue('_nodeType', [NT_JOURNAL]),
 		filters
-	});
+	}) as Filter;
 	const queryParams = {
 		aggregations,
 		count,

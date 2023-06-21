@@ -6,31 +6,31 @@ import type {
 
 
 export type DocumentTypeField = {
-	active ?:boolean // From GUI
-	enabled ?:boolean
-	decideByType ?:boolean
-	fulltext ?:boolean
-	includeInAllText ?:boolean
-	max ?:number
-	min ?:number
-	name :string
-	nGram ?:boolean
-	path ?:boolean
-	valueType ?:string
+	active?: boolean // From GUI
+	enabled?: boolean
+	decideByType?: boolean
+	fulltext?: boolean
+	includeInAllText?: boolean
+	max?: number
+	min?: number
+	name: string
+	nGram?: boolean
+	path?: boolean
+	valueType?: string
 }
 
 export type DocumentTypeFields = DocumentTypeField[];
 
 export type DocumentTypeFieldsObject = {
-	[name :string] :Required<Omit<DocumentTypeField, 'name'>>
+	[name: string]: Required<Omit<DocumentTypeField, 'name'>>
 }
 
 export type DocumentTypeNodeSpecific = {
-	addFields :boolean // Should default to true
-	managedBy ?:string // Default is undefined
-	properties :DocumentTypeFields
-	//createdTime? :Date | string
-	//modifiedTime? :string
+	addFields: boolean // Should default to true
+	managedBy?: string // Default is undefined
+	properties: DocumentTypeFields
+	//createdTime?: Date | string
+	//modifiedTime?: string
 }
 
 export type DocumentTypeCreateParams = NodeCreate<Partial<DocumentTypeNodeSpecific>>
