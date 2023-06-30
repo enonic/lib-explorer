@@ -3,7 +3,8 @@ import type {
 	Hit,
 	Profiling,
 	SearchResolverEnv,
-	SearchResolverReturnType
+	SearchResolverReturnType,
+	SearchResolverSource
 } from '/lib/explorer/interface/graphql/output/index.d';
 
 
@@ -66,7 +67,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 
 	let {source} = env;
 	if (!isSet(source)) { // handles null :)
-		source = {};
+		source = {} as SearchResolverSource;
 	}
 	//log.debug('searchResolver args:%s', toStr(args));
 	//log.debug('searchResolver source:%s', toStr(source));

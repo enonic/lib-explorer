@@ -5,7 +5,7 @@ import type {
 
 
 import {Principal} from '@enonic/explorer-utils';
-import { isSet } from '@enonic/js-utils/value/isSet';
+import { isSet } from '@enonic/js-utils'; // Fails to resolve during tests in app-explorer if /value/toStr is added to the import path.
 
 // This fails when tsup code splitting: true
 // import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
