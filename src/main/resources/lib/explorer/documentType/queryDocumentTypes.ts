@@ -1,7 +1,7 @@
 import type {
 	QueryDSL,
 	SortDSLExpression
-} from '@enonic/js-utils/src/types';
+} from '@enonic/js-utils/types';
 //import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
 import type {
 	//Highlight,
@@ -22,7 +22,7 @@ export function queryDocumentTypes({
 	// Optional
 	//aggregations,
 	count = -1,
-	filters = {},
+	filters = {} as QueryFilters,
 	//highlight,
 	query: queryArg,
 	sort = {
@@ -30,17 +30,17 @@ export function queryDocumentTypes({
 		direction: 'ASC'
 	},
 	start
-} :{
+}: {
 	// Required
-	readConnection :RepoConnection
+	readConnection: RepoConnection
 	// Optional
-	//aggregations ?:Aggregations<AggregationKeys>
-	count ?:number
-	filters ?:QueryFilters
-	//highlight ?:Highlight
-	query ?:QueryDSL|string,
-	sort ?:SortDSLExpression|string
-	start ?:number
+	//aggregations?: Aggregations<AggregationKeys>
+	count?: number
+	filters?: QueryFilters
+	//highlight?: Highlight
+	query?: QueryDSL|string,
+	sort?: SortDSLExpression|string
+	start?: number
 }) {
 	const qr = query({
 		connection: readConnection,

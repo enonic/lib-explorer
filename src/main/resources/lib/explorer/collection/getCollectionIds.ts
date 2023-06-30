@@ -1,4 +1,4 @@
-import type {RepoConnection} from '/lib/explorer/types/index.d';
+import type {RepoConnection} from '/lib/xp/node';
 
 
 import {addQueryFilter} from '@enonic/js-utils';
@@ -9,7 +9,7 @@ import {hasValue} from '/lib/explorer/query/hasValue';
 export function getCollectionIds({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 } :{
-	connection :RepoConnection
+	connection: RepoConnection
 }) {
 	const queryRes = connection.query({
 		count: -1,

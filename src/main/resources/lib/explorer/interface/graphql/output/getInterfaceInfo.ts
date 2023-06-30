@@ -146,6 +146,7 @@ export function getInterfaceInfo({
 			start: 0
 		});
 		//log.debug('languagesRes:%s', toStr(languagesRes));
+		// @ts-expect-error // TODO
 		const buckets: {key: string}[] = getIn(languagesRes, 'aggregations.stemmingLanguages.buckets');
 		if (buckets) {
 			for (let i = 0; i < buckets.length; i++) {

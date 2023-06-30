@@ -1,4 +1,5 @@
 import type {PrincipalKey} from '@enonic/js-utils/src/types/Auth.d';
+import type { Context } from '/lib/xp/context';
 
 
 export type ContextAttributes = Record<string, string | boolean | number>;
@@ -18,11 +19,12 @@ export interface AuthInfo {
 	readonly principals: ReadonlyArray<PrincipalKey>;
 }
 
-export interface GetContext<
-	Attributes extends ContextAttributes | undefined = undefined
-> {
-	readonly repository :string;
-	readonly branch: string;
-	readonly authInfo: AuthInfo;
-	readonly attributes?: Attributes;
-}
+export type GetContext = Context;
+// export interface GetContext<
+// 	Attributes extends ContextAttributes | undefined = undefined
+// > {
+// 	readonly repository :string;
+// 	readonly branch: string;
+// 	readonly authInfo: AuthInfo;
+// 	readonly attributes?: Attributes;
+// }

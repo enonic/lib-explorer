@@ -20,7 +20,7 @@ export function moldSynonymNode({
 	languages: languagesObject = {},
 	nodeTypeVersion,
 	thesaurusReference
-} :SynonymNode) :Synonym {
+}: SynonymNode): Synonym {
 	return {
 		_id,
 		_name,

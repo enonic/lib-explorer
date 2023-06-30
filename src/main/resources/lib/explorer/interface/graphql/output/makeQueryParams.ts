@@ -6,7 +6,7 @@ import type {
 import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
 import type {SynonymsArray} from '/lib/explorer/synonym/index.d';
 import type {TermQuery} from '/lib/explorer/types/Interface.d';
-import type {Highlight} from '../highlight/input/index.d';
+import type {Highlight} from '/lib/explorer/types/GraphQL.d';
 
 
 import {

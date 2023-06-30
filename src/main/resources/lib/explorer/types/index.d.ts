@@ -189,11 +189,17 @@ export type {
 	StopwordNode
 } from './Stopword.d';
 export type {
+	QueriedSynonym,
+	Synonym,
 	Synonym_Common,
 	Synonym_Language,
+	Synonym_LanguagesSynonymObject,
 	SynonymGUI,
 	SynonymGUI_Language,
 	SynonymGUI_LanguagesSynonymObject,
+	SynonymNode,
+	SynonymNode_Languages,
+	SynonymNode_LanguagesSynonymObject,
 	SynonymUse
 } from './Synonym.d';
 export type {

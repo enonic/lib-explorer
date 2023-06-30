@@ -1,4 +1,4 @@
-import type {EventLib} from '@enonic/js-utils/src/types/index.d';
+import type {EventLib} from '@enonic/js-utils/types/index.d';
 import type {JavaBridge} from './types.d';
 
 

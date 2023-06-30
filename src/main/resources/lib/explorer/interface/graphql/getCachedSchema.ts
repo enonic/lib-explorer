@@ -1,4 +1,4 @@
-import type {CustomEvent} from '@enonic/js-utils/src/types/index.d';
+import type {CustomEvent} from '@enonic/js-utils/types/index.d';
 import type {DocumentTypeNode} from '/lib/explorer/types/index.d';
 
 

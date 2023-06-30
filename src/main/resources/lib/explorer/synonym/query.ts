@@ -2,7 +2,7 @@ import type {
 	QueryNodeParams,
 	RepoConnection,
 } from '/lib/xp/node';
-import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
+import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d';
 import type {
 	Highlight,
 	SynonymNode
@@ -22,7 +22,7 @@ import {moldQueriedSynonymNode} from '/lib/explorer/synonym/moldQueriedSynonymNo
 export type QuerySynonymsParams<
 	AggregationKeys extends undefined|string = undefined
 > = {
-	aggregations ?:Aggregations<AggregationKeys>
+	aggregations?: Aggregations<AggregationKeys>
 	connection: RepoConnection
 	count?: QueryNodeParams['count']
 	explain?: QueryNodeParams['explain']
