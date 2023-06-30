@@ -5,11 +5,11 @@ import type {
 
 
 import {Principal} from '@enonic/explorer-utils';
+import { isSet } from '@enonic/js-utils/value/isSet';
 
 // This fails when tsup code splitting: true
 // import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 
-import {getInterfaceInfo} from '/lib/explorer/interface/graphql/output/getInterfaceInfo';
 import {getSynonymsFromSearchString} from '/lib/explorer/synonym/getSynonymsFromSearchString';
 import {connect} from '/lib/explorer/repo/connect';
 
@@ -20,21 +20,25 @@ const {currentTimeMillis} = Java.type('java.lang.System') as {
 }
 
 
-export function querySynonymsResolver({
-	args: {
-		languages,
-		profiling: profilingArg = false,
-		searchString
-	},
-	context: {
-		interfaceName,
-		//logQuery = false,
-		logSynonymsQuery = false,
-		logSynonymsQueryResult = false//,
-		//query: graphqlFieldsString
-	}//,
-	//source
-}) {
+export function querySynonymsResolver(env) {
+	const {
+		args: {
+			languages,
+			profiling: profilingArg = false,
+			searchString
+		},
+		context: {
+			//logQuery = false,
+			logSynonymsQuery = false,
+			logSynonymsQueryResult = false//,
+			//query: graphqlFieldsString
+		},
+		// source = {} // Doesn't handle null!!!
+	} = env;
+	let {source} = env;
+	if (!isSet(source)) { // handles null :)
+		source = {};
+	}
 	// log.debug('querySynonyms resolver interfaceName: %s', toStr(interfaceName));
 
 	const profiling :Array<Profiling> = [];
@@ -46,6 +50,8 @@ export function querySynonymsResolver({
 		});
 		//log.debug('profiling:%s', toStr(profiling));
 	}
+
+	const {interfaceInfo} = source;
 	//log.debug('querySynonyms resolver source: %s', toStr(source)); // null
 
 	//log.debug('querySynonyms resolver graphqlFieldsString: %s', toStr(graphqlFieldsString));
@@ -64,15 +70,11 @@ export function querySynonymsResolver({
 	});
 	log.debug('querySynonyms resolver graphqlFieldsObject: %s', toStr(graphqlFieldsObject));*/
 
-	const interfaceInfo = getInterfaceInfo({
-		interfaceName
-	});
-	// log.debug('querySynonyms resolver interfaceInfo: %s', toStr(interfaceInfo));
-
 	const {
 		//collectionNameToId,
 		//fields,
 		interfaceId,
+		// interfaceName,
 		localesInSelectedThesauri,
 		//stopWords,
 		thesauriNames
