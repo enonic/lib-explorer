@@ -22,6 +22,7 @@ export type Profiling = {
 
 export type GraphQLContext = {
 	// Required
+	allowedInterfaces: string[]
 	interfaceName: string
 	//query: string
 	// Optional
@@ -37,6 +38,7 @@ export type InterfaceInfo = {
 	collectionNameToId: Record<string,string>
 	fields: InterfaceField[]
 	interfaceId: string
+	interfaceName: string
 	localesInSelectedThesauri: string[]
 	stemmingLanguages: string[] // Can be an empty array
 	stopWords: string[]
@@ -80,7 +82,7 @@ type SearchCommonArgs = {
 }
 
 export type SearchResolverSource = {
-	interfaceInfo?: InterfaceInfo // Used in backend, not returned to client
+	interfaceInfo: InterfaceInfo // Used in backend, not returned to client
 	languages?: string[]
 	profiling?: Profiling[]
 	searchString?: string

@@ -201,6 +201,7 @@ export function getInterfaceInfo({
 		collectionNameToId,
 		fields,
 		interfaceId,
+		interfaceName,
 		localesInSelectedThesauri,
 		stemmingLanguages,
 		stopWords,

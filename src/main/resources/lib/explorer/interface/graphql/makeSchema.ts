@@ -8,8 +8,9 @@ import {
 	nonNull,
 	//@ts-ignore
 } from '/lib/graphql';
-
-
+import {Principal} from '@enonic/explorer-utils';
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
+import { toStr } from '@enonic/js-utils/value/toStr';
 import {constructGlue} from './utils/Glue';
 
 // Input
@@ -20,6 +21,9 @@ import {addInputTypeHighlight} from '/lib/explorer/interface/graphql/highlight/i
 //import {addInputTypeSynonyms} from '/lib/explorer/interface/graphql/input/addInputTypeSynonyms';
 
 // Output
+import {connect} from '/lib/explorer/repo/connect';
+import {exists as interfaceExists} from '/lib/explorer/interface/exists';
+import {getInterfaceInfo} from '/lib/explorer/interface/graphql/output/getInterfaceInfo';
 import {searchConnectionResolver} from '/lib/explorer/interface/graphql/output/searchConnectionResolver';
 import {searchResolver} from '/lib/explorer/interface/graphql/output/searchResolver';
 import {addDocumentTypeObjectTypes} from '/lib/explorer/interface/graphql/output/addDocumentTypeObjectTypes';
@@ -80,11 +84,58 @@ export function makeSchema() {
 		searchString: GraphQLString // Can't be nonNull when used as subQuery
 	}
 
-	glue.addQueryField({
+	glue.addQueryField<{
+		args: {
+			name?: string
+		}
+		context: {
+			allowedInterfaces: Record<number,string>
+			interfaceName?: string
+		}
+	}>({
 		name: 'interface',
-		args: {},
-		resolve() {
-			return {};
+		args: {
+			name: GraphQLString
+		},
+		resolve(env) {
+			// log.debug('env:%s', toStr(env));
+			const {
+				args,
+				context
+			} = env;
+			const {
+				allowedInterfaces,
+				interfaceName: contextInterfaceName
+			} = context;
+			const {name: interfaceName = contextInterfaceName} = args;
+			if (!interfaceName) {
+				throw new Error('interface name not provided via request headers or args!');
+			}
+			const nums = Object.keys(allowedInterfaces);
+			let found = false;
+			for (let i = 0; i < nums.length; i++) {
+				const num = nums[i];
+				if (allowedInterfaces[num] === interfaceName) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				throw new Error(`You don't have read access to interface:${interfaceName}!`);
+			}
+			const explorerRepoReadConnection = connect({ principals: [Principal.EXPLORER_READ] });
+			if (!interfaceExists({
+				connection: explorerRepoReadConnection,
+				name: interfaceName
+			})) {
+				throw new Error(`interface:${interfaceName} doesn't exist!`);
+			}
+			const interfaceInfo = getInterfaceInfo({
+				interfaceName
+			});
+			return {
+				interfaceInfo,
+			};
 		},
 		type: glue.addObjectType({
 			name: 'interfaceResults',

@@ -26,7 +26,6 @@ import {multiConnect} from '/lib/explorer/repo/multiConnect';
 // import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 
 import {washDocumentNode} from '../utils/washDocumentNode';
-import {getInterfaceInfo} from './getInterfaceInfo';
 import {makeQueryParams} from './makeQueryParams';
 /*import {
 	queryResHighlightObjToArray
@@ -58,12 +57,11 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 			start = 0
 		},
 		context: {
-			interfaceName,
 			logQuery = false,
 			logSynonymsQuery = false,
 			logSynonymsQueryResult = false
-		}//,
-		//source// = {} // Doesn't handle null!!!
+		},
+		// source = {} // Doesn't handle null!!!
 	} = env; // avoid deconstrution error when source is null
 
 	let {source} = env;
@@ -94,8 +92,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		synonyms: synonymsSource
 	} = source;
 
-	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', interfaceName, searchString);
-	const profiling :Array<Profiling> = [];
+	const profiling: Profiling[] = [];
 	if (profilingArg) {
 		profiling.push({
 			currentTimeMillis: currentTimeMillis(),
@@ -109,14 +106,14 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		collectionNameToId,
 		fields,
 		interfaceId,
+		interfaceName,
 		localesInSelectedThesauri,
 		stopWords,
 		stemmingLanguages,
 		termQueries,
 		thesauriNames
-	} = interfaceInfo || getInterfaceInfo({
-		interfaceName
-	});
+	} = interfaceInfo;
+	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', interfaceName, searchString);
 
 
 	const collectionNames = Object.keys(collectionNameToId);
