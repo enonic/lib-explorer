@@ -1,71 +1,70 @@
-import type {Node} from '/lib/xp/node';
 import type {
-	Reference
-} from '/lib/xp/value';
+	CreateNodeParams,
+	Node
+} from '/lib/xp/node';
+import type { Reference } from '/lib/xp/value';
 import type {
 	ExplorerAdminGQLInterfaceNodeCommonProps,
-	//Node,
-	NodeCreate,
 	NodeTypeGeneric,
 	ScoreRequired
 } from './Node.d';
-import type {AnyObject} from './Utility';
+import type { AnyObject } from './Utility';
 
 
 export type NodeTypeCollection = NodeTypeGeneric<'collection'>;
 
 
 export type CollectionFormValues<Config extends AnyObject = AnyObject> = {
-	_id ?:string
-	_name :string
-	_path :string
-	collector :{
-		configJson ?:string
-		config ?:Config
-		name :string
+	_id?: string
+	_name: string
+	_path: string
+	collector: {
+		configJson?: string
+		config?: Config
+		name: string
 	}
-	cron :Array<{
-		month :string
-		dayOfMonth :string
-		dayOfWeek :string
-		minute :string
-		hour :string
-	}>
-	doCollect :boolean
-	documentTypeId ?:string // Reference
-	language :string
+	cron: {
+		month: string
+		dayOfMonth: string
+		dayOfWeek: string
+		minute: string
+		hour: string
+	}[]
+	doCollect: boolean
+	documentTypeId?: string // Reference
+	language: string
 };
 
 export type CollectionId = string
 
 export type CollectionNodeSpecific = {
 	_nodeType: NodeTypeCollection
-	collector ?:{ // Yes it's optional, a collection doesn't require a collector
-		config :AnyObject // Different for each Collector
-		name :string
-		configJson :string
+	collector?: { // Yes it's optional, a collection doesn't require a collector
+		config: AnyObject // Different for each Collector
+		name: string
+		configJson: string
 	}
-	createdTime :Date | string
-	creator :string,
-	//cron :never // This is no longer stored on the CollectionNode but in the scheduling repo
-	doCollect? :boolean
+	createdTime: Date | string
+	creator: string,
+	//cron: never // This is no longer stored on the CollectionNode but in the scheduling repo
+	doCollect?: boolean
 
 	// Typically a documentType will be created, if none is selected, but there
 	// might exist historical collections without a documentType
-	documentTypeId ?:string | Reference
+	documentTypeId?: string | Reference
 
-	language :string
-	modifiedTime? :Date | string
-	modifier? :string
+	language: string
+	modifiedTime?: Date | string
+	modifier?: string
 }
 
 export type CollectionNode = Node<CollectionNodeSpecific>;
 
-export type CollectionNodeCreateParams = NodeCreate<CollectionNodeSpecific>
+export type CollectionNodeCreateParams = CreateNodeParams<CollectionNodeSpecific>
 
 export type CollectionGQLSpecific = {
-	documentCount :number // not stored, added by graphql
-	interfaces :Array<string> // not stored, added by graphql
+	documentCount: number // not stored, added by graphql
+	interfaces: string[] // not stored, added by graphql
 }
 
 export type Collection = ExplorerAdminGQLInterfaceNodeCommonProps<
@@ -73,15 +72,15 @@ export type Collection = ExplorerAdminGQLInterfaceNodeCommonProps<
 >
 
 export type Cron = {
-	minute :string,
-	hour :string,
-	dayOfMonth :string,
-	month :string,
-	dayOfWeek :string
+	minute: string,
+	hour: string,
+	dayOfMonth: string,
+	month: string,
+	dayOfWeek: string
 }
 
 export type CollectionWithCron = Collection & {
-	cron :Cron | Array<Cron>
+	cron: Cron | Cron[]
 };
 
 export type QueriedCollection = ScoreRequired<CollectionNode>

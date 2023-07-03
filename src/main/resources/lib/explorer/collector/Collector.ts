@@ -26,6 +26,7 @@
 // Later we can extend with all the document-layer support, but at the same time
 // leave the pitfalls in the hands of the Collector developer.
 //──────────────────────────────────────────────────────────────────────────────
+// import type { Node } from '/lib/xp/node';
 import type {
 	QueryDSL,
 	SortDSLExpression
@@ -33,6 +34,7 @@ import type {
 import type {
 	Aggregations,
 	CollectionNode,
+	// CollectionNodeSpecific,
 	DocumentNode,
 	Id,
 	JournalMessage,
@@ -147,7 +149,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 				collectionNode = getCollection({
 					connection: explorerRepoReadConnection,
 					name
-				});
+				}) as CollectionNode;
 				if (!collectionNode) {
 					throw new Error(`Collector.constructor: Unable to find collection from name:${name}!`);
 				}
@@ -428,12 +430,12 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		this.taskProgressObj.info.message = `Finished with ${this.journal.errors.length} errors.`;
 		this.progress(); // This also implicitly sets final currentTime and duration
 
-		const node = getNode<NotificationsNode>({
+		const node = (getNode<NotificationsNode>({
 			connection: connect({
 				principals: [PRINCIPAL_EXPLORER_READ]
 			}),
 			path: '/notifications'
-		}) || {} as NotificationsNode;
+		}) || {}) as NotificationsNode;
 		//log.info(`node:${toStr(node)}`);
 
 		const {emails = []} = node;
