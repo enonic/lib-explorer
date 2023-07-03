@@ -1,7 +1,10 @@
 import type {
+	CreateNodeParams,
+	Node
+} from '/lib/xp/node';
+import type {
 	ExplorerAdminGQLInterfaceNodeCommonProps,
-	Node,
-	NodeCreate
+	// Node,
 } from './Node.d';
 
 
@@ -9,7 +12,7 @@ export type NotificationsNodeSpecific = {
 	emails ?:Array<string>
 }
 
-export type NotificationsNodeCreateParams = NodeCreate<NotificationsNodeSpecific>
+export type NotificationsNodeCreateParams = CreateNodeParams<NotificationsNodeSpecific>
 
 export type NotificationsNode = Node<NotificationsNodeSpecific>;
 
