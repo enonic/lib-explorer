@@ -206,7 +206,9 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 
 	deleteDocument<T extends string|Array<string>>(keys: T): T
 	deleteDocument(...keys: Array<string>) {
-		return this.collection.connection.delete(...keys) as string|Array<string>;
+		const deleteRes = this.collection.connection.delete(...keys) as string|Array<string>;
+		this.collection.connection.refresh();
+		return deleteRes;
 	}
 
 	getDocumentNode<
