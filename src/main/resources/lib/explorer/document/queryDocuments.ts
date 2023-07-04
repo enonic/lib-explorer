@@ -1,7 +1,10 @@
 import type {
-	QueryDSL,
+	QueryDsl
+} from '@enonic-types/core';
+import type {
+	// QueryDSL,
 	SortDSLExpression
-} from '@enonic/js-utils/src/types';
+} from '@enonic/js-utils/types';
 import type {
 	Aggregations,
 	QueryFilters,
@@ -10,9 +13,12 @@ import type {
 
 
 import {
-	forceArray//,
+	forceArray,
+	isBooleanDslExpression,
+	hasOwnProperty
 	//toStr
 } from '@enonic/js-utils';
+// import { hasOwnProperty } from '@enonic/js-utils/object/hasOwnProperty'; // Causes ModuleNotFoundError: Cannot find module, when running tests in app-explorer
 import {NT_DOCUMENT} from '/lib/explorer/constants';
 
 
@@ -31,18 +37,18 @@ export function queryDocuments<
 		field: '_score'
 	}*/,
 	start
-} :{
+}: {
 	// Required
-	collectionRepoReadConnection :RepoConnection
+	collectionRepoReadConnection: RepoConnection
 	// Optional
-	aggregations ?:Aggregations<AggregationKey>
-	count ?:number
-	filters ?:QueryFilters
-	query ?:QueryDSL
-	sort? :SortDSLExpression
-	start ?:number
+	aggregations?: Aggregations<AggregationKey>
+	count?: number
+	filters?: QueryFilters
+	query?: QueryDsl
+	sort?: SortDSLExpression
+	start?: number
 }) {
-	const query :QueryDSL = {
+	const query: QueryDsl = {
 		boolean: {
 			must: [{
 				term: {
@@ -51,18 +57,25 @@ export function queryDocuments<
 				}
 			}]
 		}
-	};
-	if (queryParam && queryParam.boolean) {
-		if (queryParam.boolean.must) {
-			query.boolean.must = [].concat(
-				query.boolean.must,
-				forceArray(queryParam.boolean.must)
-			);
-		} else {
-			query.boolean = {
-				...query.boolean,
-				...queryParam.boolean
+	} // satisfies QueryDsl;
+	if (
+		queryParam
+		&& hasOwnProperty(queryParam, 'boolean')
+	) {
+		if (isBooleanDslExpression(queryParam['boolean'])) { // TODO: Overkill? Does this slow things down?
+			if (hasOwnProperty(queryParam.boolean, 'must')) {
+				query.boolean.must = [].concat(
+					query.boolean.must,
+					forceArray(queryParam.boolean.must)
+				);
+			} else {
+				query.boolean = {
+					...query.boolean,
+					...queryParam.boolean
+				}
 			}
+		} else {
+			throw new TypeError(`queryDocuments: query.boolean is not a BooleanDslExpression!`);
 		}
 	}
 
@@ -74,7 +87,8 @@ export function queryDocuments<
 		sort,
 		start
 	};
-	//log.debug('queryDocuments queryParams:%s', toStr(queryParams));
+	// log.debug('queryDocuments queryParams:%s', toStr(queryParams));
+	// log.error('queryDocuments queryParams:%s', queryParams); // Useful when running tests in app-explorer
 
 	const documentsRes = collectionRepoReadConnection.query(queryParams);
 	//log.debug('queryDocuments documentsRes:%s', toStr(documentsRes));

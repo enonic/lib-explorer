@@ -47,9 +47,9 @@ export function typeCastToJava(
 	{
 		data = {},
 		fieldsObj = {}
-	} :TypeCastToJavaParameters,
-	javaBridge :JavaBridge// = javaBridgeDummy
-) :DocumentNode {
+	}: TypeCastToJavaParameters,
+	javaBridge: JavaBridge// = javaBridgeDummy
+): DocumentNode {
 	const {
 		log,
 		value: {
@@ -64,8 +64,8 @@ export function typeCastToJava(
 	} = javaBridge;
 	//log.debug('typeCastToJava data:%s', toStr(data));
 	//log.debug('typeCastToJava fieldsObj:%s', toStr(fieldsObj));
-	const typeCastedData :DocumentNode = JSON.parse(JSON.stringify(data));
-	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
+	const typeCastedData: DocumentNode = JSON.parse(JSON.stringify(data));
+	traverse(data).forEach(function(value: unknown) { // Fat arrow destroys this
 		// javaBridge.log.debug('document.typeCastToJava: this.path:%s', toStr(this.path));
 		// javaBridge.log.debug('document.typeCastToJava: this.path[0]:%s', toStr(this.path[0]));
 		if (

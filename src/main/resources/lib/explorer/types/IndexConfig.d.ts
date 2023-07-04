@@ -15,6 +15,10 @@ export type {
 	NodeIndexConfigTemplates as IndexConfigTemplate
 } from '/lib/xp/node';
 
-export type IndexConfigConfig = NodeConfigEntry | NodeIndexConfigTemplates
+export type IndexConfigConfig = Omit<NodeConfigEntry,'indexValueProcessors'|'languages'> & {
+	indexValueProcessors?: string[];
+	languages?: string[];
+} | NodeIndexConfigTemplates
+
 
 export type IndexConfigConfigsEntry = IterableElement<NodeIndexConfig['configs']>

@@ -42,8 +42,8 @@ import {typeCastToJava} from './typeCastToJava';
 
 
 export function update(
-	updateParameterObject :UpdateParameterObject,
-	javaBridge :JavaBridge// = javaBridgeDummy
+	updateParameterObject: UpdateParameterObject,
+	javaBridge: JavaBridge// = javaBridgeDummy
 ) {
 	const {
 		//connect, // destructure destroys this
@@ -142,15 +142,16 @@ export function update(
 	const {
 		_id: documentNodeId,
 		//_name: documentNodeName,
-		//_parentPath : documentNodeParentPath = '/',
+		//_parentPath: documentNodeParentPath = '/',
 		//_path: documentNodePath = documentNodeName ? `${documentNodeParentPath}${documentNodeName}` : undefined
 	} = data;
 	//const documentNodeKey = documentNodeId || documentNodePath;
 
 	if (notSet(documentNodeId)) {
-		throw new Error("update: parameter data: missing required property '_id'!");
-	} else if (!isUuidV4String(documentNodeId)){
-		throw new TypeError("update: parameter data: property '_id' is not an uuidv4 string!");
+		throw new Error("update: missing required property '_id'!");
+	} else if (!isUuidV4String(documentNodeId)) {
+		log.error("update: parameter '_id' is not an uuidv4 string! _id:%s", toStr(documentNodeId));
+		throw new TypeError("update: parameter '_id' is not an uuidv4 string!");
 	}
 
 	if (
@@ -212,7 +213,7 @@ export function update(
 			repoId: REPO_ID_EXPLORER
 		});
 
-		let documentTypeNode :DocumentTypeNode;
+		let documentTypeNode: DocumentTypeNode;
 		if (documentTypeId) {
 			documentTypeNode = explorerReadConnection.get(documentTypeId);
 			//log.debug("document.update: documentTypeNode(A):%s", toStr(documentTypeNode));
@@ -245,7 +246,7 @@ export function update(
 
 			if (notSet(documentTypeId)) {
 				if (collectionNode['documentTypeId']) {
-					documentTypeId = collectionNode['documentTypeId'];
+					documentTypeId = collectionNode['documentTypeId'].toString();
 					log.debug('document.update: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
 				} else {
 					// collectionNode.documentTypeId is now called 'Default document type' in the GUI, and can be set to 'none'.
@@ -283,7 +284,7 @@ export function update(
 		principals: [PRINCIPAL_EXPLORER_READ],
 		repoId
 	});
-	const documentNode = collectionRepoReadConnection.get(documentNodeId) as DocumentNode;
+	const documentNode = collectionRepoReadConnection.get<DocumentNode>(documentNodeId);
 	if (!documentNode) {
 		throw new Error(`update: No document with _id:${documentNodeId}`);
 	}
@@ -374,7 +375,7 @@ export function update(
 	}, javaBridge);
 	//log.debug('dataWithJavaTypes %s', dataWithJavaTypes);
 
-	const languages :string[] = [];
+	const languages: string[] = [];
 	if (stemmingLanguage) {
 		languages.push(stemmingLanguage);
 	}

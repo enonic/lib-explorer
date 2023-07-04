@@ -139,7 +139,7 @@ export function buildIndexConfig(
 			valueType
 		} = fieldsObj[fieldPath];
 
-		const config :IndexConfigConfig = {
+		const config: IndexConfigConfig = {
 			decideByType: decideByTypeFromValueType(valueType),
 			enabled,
 			fulltext,

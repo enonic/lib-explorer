@@ -1,5 +1,9 @@
-import type {AnyObject} from '@enonic/js-utils/src/types';
-import type {TaskName} from './Task.d';
+import type {AnyObject} from '@enonic/js-utils/types';
+import type { TaskStateType } from '/lib/xp/task';
+import type {
+	TaskName,
+	TaskShouldType
+} from './Task.d';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Collector UI
@@ -71,4 +75,10 @@ export type Collector = {
 	configAssetPath :string
 	displayName :string
 	taskName :TaskName // Used to be collectTaskName in register
+}
+
+
+export interface CollectorStateData {
+	should: TaskShouldType
+	state: TaskStateType
 }

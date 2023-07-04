@@ -82,4 +82,3 @@ export type ParentPath = Node['_path'];
 export type NodeCreate = CreateNodeParams;
 export type NodeGetParams = GetNodeParams;
 export type NodeModifyParams = ModifyNodeParams;
-
