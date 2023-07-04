@@ -363,10 +363,11 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
 
 		if (_id) {
+			// log.debug('_id:%s', _id);
 			documentToPersist._id = _id;
 		} else if (_name) {
 			const path = `${_parentPath}${_name}`;
-			//log.debug(`path:${path}`);
+			// log.debug('path:%s', path);
 
 			const existingNode = this.collection.connection.get(path) as DocumentNode;
 			//log.debug(`existingNode:${toStr(existingNode)}`);

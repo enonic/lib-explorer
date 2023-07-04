@@ -268,7 +268,7 @@ export function create(
 		//  * either both documentTypeId and documentTypeName are undefined (so try default documentTypeId from collectionNode)
 		//  * or both documentTypeId and documentTypeName are defined.
 
-		let collectionNode :CollectionNode;
+		let collectionNode: CollectionNode;
 		if (collectionId) {
 			collectionNode = explorerReadConnection.get(collectionId) as CollectionNode;
 			log.debug('collectionNode:%s', collectionNode);
@@ -328,7 +328,7 @@ export function create(
 				if (notSet(documentTypeName)) {
 					// Get documentTypeName from default documentTypeId
 
-					documentTypeId = collectionNode['documentTypeId']; // NOTE: documentTypeId is needed when adding extra fields
+					documentTypeId = collectionNode['documentTypeId'].toString(); // NOTE: documentTypeId is needed when adding extra fields
 					log.debug('document.create: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
 
 					documentTypeNode = explorerReadConnection.get(documentTypeId);

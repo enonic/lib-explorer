@@ -94,7 +94,8 @@ export type {
 	CollectorComponentImperativeHandle,
 	CollectorComponentRef,
 	CollectorComponentValidateFunction,
-	CollectorProps
+	CollectorProps,
+	CollectorStateData
 } from './Collector.d';
 export type {
 	GetContext
@@ -205,7 +206,8 @@ export type {
 export type {
 	Task,
 	TaskDescriptor,
-	TaskName
+	TaskName,
+	TaskShouldType
 } from './Task.d';
 export type {
 	Thesaurus,

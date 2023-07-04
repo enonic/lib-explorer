@@ -1,4 +1,5 @@
-import type {Node} from '/lib/explorer/types/index.d';
+import type { ModifiedNode } from '/lib/xp/node';
+// import type {Node} from '/lib/explorer/types/index.d';
 import type {JavaBridge} from '/lib/explorer/_coupling/types.d';
 import type {DocumentNode} from '/lib/explorer/types/Document.d';
 
@@ -10,7 +11,7 @@ import {
 
 //import {detailedDiff} from 'deep-object-diff/dist/detailed'; // [!] Error: 'detailedDiff' is not exported by node_modules/deep-object-diff/dist/detailed/index.js
 /* as {
-	detailedDiff :(a: object, b:object) => object
+	detailedDiff: (a: object, b:object) => object
 };*/
 //import * as deepObjectDiff from 'deep-object-diff';
 
@@ -39,10 +40,10 @@ const { diff: diffDocument } = new HumanDiff({
 
 
 export function documentUnchanged(
-	exisitingDocument :DocumentNode,
-	maybeChangedDocument :Node<DocumentNode>,
-	javaBridge :JavaBridge
-) :boolean {
+	exisitingDocument: DocumentNode,
+	maybeChangedDocument: ModifiedNode<DocumentNode>,
+	javaBridge: JavaBridge
+): boolean {
 	const {log} = javaBridge;
 	const id = exisitingDocument._id;
 	const dereffedExisitingDocument = JSON.parse(JSON.stringify(exisitingDocument));
