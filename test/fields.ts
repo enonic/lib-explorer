@@ -11,7 +11,7 @@ import {
 	//VALUE_TYPE_REFERENCE,
 	VALUE_TYPE_SET,
 	VALUE_TYPE_STRING
-} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
+} from '@enonic/js-utils/storage/indexing/valueType/constants';
 
 
 export const FIELD_BOOLEAN = {

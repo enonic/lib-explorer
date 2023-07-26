@@ -1,7 +1,7 @@
 import {
 	DocumentNode,
 	DocumentType
-} from '/lib/explorer/types/'
+} from '/lib/explorer/types/';
 
 
 import {
@@ -18,8 +18,8 @@ export function applyDocumentTypeToDocumentNode({
 	documentType,
 	documentNode
 } :{
-	documentType :DocumentType
-	documentNode :DocumentNode
+	documentType: DocumentType
+	documentNode: DocumentNode
 }) {
 	const dereffedDocumentNode = JSON.parse(JSON.stringify(documentNode)) as DocumentNode;
 	for (let i = 0; i < documentType.properties.length; i++) {

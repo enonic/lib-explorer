@@ -1,9 +1,11 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../../../src/main/resources/lib/explorer/_coupling/types';
+
 import {JavaBridge} from '@enonic/mock-xp';
 import {throws} from 'assert';
 import {
 	COLLECTION_REPO_PREFIX,
-	document
-} from '../../../../../../build/rollup/index.js';
+} from '@enonic/explorer-utils';
+import { create } from '../../../../../../src/main/resources/lib/explorer/_uncoupled/document/create';
 import {
 	COLLECTION,
 	COLLECTION_NAME,
@@ -13,8 +15,6 @@ import {
 } from '../../../../../testData';
 import {log} from '../../../../../dummies';
 
-
-const {create} = document;
 
 
 const javaBridge = new JavaBridge({
@@ -52,9 +52,10 @@ describe('document', () => {
 			describe('addExtraFields===true', () => {
 				it(`if addExtraFields=true documentTypeName can't be determined`, () => {
 					throws(
+						// @ts-expect-error TS2345
 						() => create({
 							addExtraFields: true
-						}, javaBridge),
+						}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 						{
 							message: "create: when addExtraFields=true either (documentTypeName or documentTypeId) must be provided or (collectionName or collectionId and the collectionNode must contain a default documentTypeId)!",
 							name: 'Error'

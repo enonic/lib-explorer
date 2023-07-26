@@ -1,12 +1,14 @@
-import {VALUE_TYPE_BOOLEAN} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
-import {JavaBridge} from '@enonic/mock-xp';
-import {deepStrictEqual} from 'assert';
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+import type { DocumentTypeFieldsObject } from '/lib/explorer/types/';
 
-import {
-	FIELD_PATH_GLOBAL,
-	FIELD_PATH_META,
-	document
-} from '../../../../build/rollup/index.js';
+
+import { VALUE_TYPE_BOOLEAN } from '@enonic/js-utils/storage/indexing/valueType/constants';
+import { JavaBridge } from '@enonic/mock-xp';
+import { deepStrictEqual } from 'assert';
+import { FieldPath } from '@enonic/explorer-utils';
+import { addExtraFieldsToDocumentType } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/addExtraFieldsToDocumentType';
+import { constrainPropertyNames } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/constrainPropertyNames';
+import { fieldsArrayToObj } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/field';
 import {
 	FIELD_BOOLEAN,
 	FIELD_DOUBLE,
@@ -27,11 +29,6 @@ import {
 } from '../../../testData';
 import {log} from '../../../dummies';
 
-const {
-	addExtraFieldsToDocumentType,
-	constrainPropertyNames,
-	fieldsArrayToObj
-} = document;
 
 const javaBridge = new JavaBridge({
 	app: {
@@ -40,7 +37,7 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
 javaBridge.repo.create({
 	id: 'com.enonic.app.explorer'
 });
@@ -70,7 +67,7 @@ describe('document', () => {
 				mystring: {
 					valueType: 'string'
 				}
-			};
+			} as unknown as DocumentTypeFieldsObject;
 			deepStrictEqual(
 				{
 					mystring: {
@@ -96,8 +93,8 @@ describe('document', () => {
 							_name: '_name',
 							_path: '_path',
 							_versionKey: '_versionKey',
-							[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-							[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+							[FieldPath.GLOBAL]: `${FieldPath.GLOBAL}`,
+							[FieldPath.META]: `${FieldPath.META}`,
 							myString: 'myString',
 							myObject
 						}
@@ -121,8 +118,8 @@ describe('document', () => {
 							_name: '_name',
 							_path: '_path',
 							_versionKey: '_versionKey',
-							//[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-							//[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+							//[FieldPath.GLOBAL]: `${FieldPath.GLOBAL}`,
+							//[FieldPath.META]: `${FieldPath.META}`,
 							myArray: ['one', 'two'],
 							myObjArray: [{
 								key: 'a'
@@ -159,8 +156,8 @@ describe('document', () => {
 							_name: '_name',
 							_path: '_path',
 							_versionKey: '_versionKey',
-							//[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-							//[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+							//[FieldPath.GLOBAL]: `${FieldPath.GLOBAL}`,
+							//[FieldPath.META]: `${FieldPath.META}`,
 							myGeoPointArray: [
 								59.9090442,
 								10.7423389

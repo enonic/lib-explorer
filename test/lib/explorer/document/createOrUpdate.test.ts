@@ -1,3 +1,6 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+
+
 import {JavaBridge} from '@enonic/mock-xp';
 import {
 	deepStrictEqual,
@@ -5,10 +8,8 @@ import {
 } from 'assert';
 import {
 	COLLECTION_REPO_PREFIX,
-	//FIELD_PATH_GLOBAL,
-	//FIELD_PATH_META,
-	document
-} from '../../../../build/rollup/index.js';
+} from '@enonic/explorer-utils';
+import { createOrUpdate } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/createOrUpdate';
 import {
 	COLLECTION,
 	COLLECTION_NAME,
@@ -20,7 +21,6 @@ import {
 } from '../../../testData';
 import {log} from '../../../dummies';
 
-const {createOrUpdate} = document;
 
 const javaBridge = new JavaBridge({
 	app: {
@@ -29,7 +29,7 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
 //javaBridge.log.info('Yes this works!');
 javaBridge.repo.create({
 	id: 'com.enonic.app.explorer'

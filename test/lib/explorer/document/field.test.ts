@@ -1,23 +1,27 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+import type {
+	DocumentTypeField,
+	DocumentTypeFields,
+	DocumentTypeFieldsObject
+} from '/lib/explorer/types/';
+
+
 import {JavaBridge} from '@enonic/mock-xp';
-import {toStr} from '@enonic/js-utils/dist/cjs/value/toStr';
+import {toStr} from '@enonic/js-utils/value/toStr';
 import {
 	deepStrictEqual,
 	throws
 } from 'assert';
-
 import {
-	document
-} from '../../../../build/rollup/index.js';
-import {log} from '../../../dummies';
-
-const {
 	addMissingSetToFieldsArray,
 	applyDefaultsToField,
 	fieldsArrayToObj,
 	fieldsObjToArray,
 	isField,
 	isFields
-} = document;
+} from '../../../../src/main/resources/lib/explorer/_uncoupled/document/index';
+import {log} from '../../../dummies';
+
 
 const javaBridge = new JavaBridge({
 	app: {
@@ -26,7 +30,7 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
 
 //function toStr(v :unknown) { return JSON.stringify(v); }
 
@@ -181,7 +185,7 @@ describe('document', () => {
 		});
 		describe('--> throws', () => {
 			for (var i = 0; i < FIELDS_INVALID.length; i++) {
-				const field = FIELDS_INVALID[i]
+				const field = FIELDS_INVALID[i] as Partial<DocumentTypeField>;
 				it(`${toStr(field)}`, () => {
 					throws(
 						() => applyDefaultsToField(field, javaBridge),
@@ -199,16 +203,16 @@ describe('document', () => {
 			it(`${toStr(fields)}`, () => {
 				deepStrictEqual(
 					expected,
-					fieldsArrayToObj(fields, javaBridge)
+					fieldsArrayToObj(fields as DocumentTypeFields, javaBridge)
 				);
 			});
 		} // for
 		describe('--> throws', () => {
 			for (var i = 0; i < FIELDS_INVALID.length; i++) {
-				const field = FIELDS_INVALID[i]
-				it(`${toStr(field)}`, () => {
+				const fields = FIELDS_INVALID[i] as unknown as DocumentTypeFields;
+				it(`${toStr(fields)}`, () => {
 					throws(
-						() => fieldsArrayToObj(field, javaBridge),
+						() => fieldsArrayToObj(fields, javaBridge),
 						{
 							message: /fieldsArrayToObj: fields not of type Fields/,
 							name: 'TypeError'
@@ -223,7 +227,7 @@ describe('document', () => {
 			myString: {
 				valueType: 'string'
 			}
-		};
+		} as unknown as DocumentTypeFieldsObject;
 		it(`${toStr(fieldsObj)}`, () => {
 			deepStrictEqual(
 				[{

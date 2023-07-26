@@ -1,14 +1,11 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+
+
 import {JavaBridge} from '@enonic/mock-xp';
 import {deepStrictEqual} from 'assert';
-
-//import {VALUE_TYPE_STRING} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
-
-
-import {
-	document
-} from '../../../../build/rollup';
+//import {VALUE_TYPE_STRING} from '@enonic/js-utils/storage/indexing/valueType/constants';
+import { validateTypes } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/validateTypes';
 import {log} from '../../../dummies';
-
 import {
 	BOOLEANS,
 	GEOPOINTS,
@@ -35,7 +32,6 @@ import {
 } from '../../../testData';
 
 //const {VALUE_TYPE_STRING} = libExplorer;
-const {validateTypes} = document;
 
 
 const javaBridge = new JavaBridge({
@@ -45,7 +41,7 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
 
 //export const VALUE_TYPE_ANY:string = 'any';
 const VALUE_TYPE_BOOLEAN = 'boolean';
