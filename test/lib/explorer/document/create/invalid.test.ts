@@ -1,8 +1,11 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../../src/main/resources/lib/explorer/_coupling/types';
+
+
 import {
 	VALUE_TYPE_BOOLEAN,
 	VALUE_TYPE_DOUBLE,
 	VALUE_TYPE_STRING
-} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
+} from '@enonic/js-utils/storage/indexing/valueType/constants';
 import {JavaBridge} from '@enonic/mock-xp';
 import {
 	deepStrictEqual//,
@@ -11,11 +14,11 @@ import {
 
 import {
 	COLLECTION_REPO_PREFIX,
-	//FIELD_PATH_GLOBAL,
-	FIELD_PATH_META,
-	NT_DOCUMENT,
-	document
-} from '../../../../../build/rollup/index.js';
+	FieldPath,
+	NodeType,
+	ROOT_PERMISSIONS_EXPLORER
+} from '@enonic/explorer-utils';
+import { create } from '../../../../../src/main/resources/lib/explorer/_uncoupled/document/create';
 import {
 	COLLECTION_LANGUAGE,
 	COLLECTION_NAME,
@@ -29,8 +32,6 @@ import {
 } from '../../../../testData';
 import {log} from '../../../../dummies';
 
-const {create} = document;
-
 
 const javaBridge = new JavaBridge({
 	app: {
@@ -39,7 +40,7 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
 //javaBridge.log.info('Yes this works!');
 javaBridge.repo.create({
 	id: 'com.enonic.app.explorer'
@@ -140,19 +141,21 @@ describe('document', () => {
 					{
 						_id: createRes._id,
 						_indexConfig: createRes._indexConfig,
+						_inheritsPermissions: false,
 						_name: createRes._id,
-						_nodeType: NT_DOCUMENT,
+						_nodeType: NodeType.DOCUMENT,
 						_path: createRes._path,
+						_permissions: ROOT_PERMISSIONS_EXPLORER,
 						_state: 'DEFAULT',
 						_ts: createRes._ts,
 						_versionKey: createRes._versionKey,
-						[FIELD_PATH_META]: {
+						[FieldPath.META]: {
 							collection: 'myCollectionName2',
 							collector: {
 								id: COLLECTOR_ID,
 								version: COLLECTOR_VERSION
 							},
-							createdTime: createRes[FIELD_PATH_META].createdTime,
+							createdTime: createRes[FieldPath.META].createdTime,
 							documentType: 'myDocumentTypeName2',
 							language: COLLECTION_LANGUAGE,
 							stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
@@ -186,19 +189,21 @@ describe('document', () => {
 					{
 						_id: createRes._id,
 						_indexConfig: createRes._indexConfig,
+						_inheritsPermissions: false,
 						_name: createRes._id,
-						_nodeType: NT_DOCUMENT,
+						_nodeType: NodeType.DOCUMENT,
 						_path: createRes._path,
+						_permissions: ROOT_PERMISSIONS_EXPLORER,
 						_state: 'DEFAULT',
 						_ts: createRes._ts,
 						_versionKey: createRes._versionKey,
-						[FIELD_PATH_META]: {
+						[FieldPath.META]: {
 							collection: 'myCollectionName2',
 							collector: {
 								id: COLLECTOR_ID,
 								version: COLLECTOR_VERSION
 							},
-							createdTime: createRes[FIELD_PATH_META].createdTime,
+							createdTime: createRes[FieldPath.META].createdTime,
 							documentType: 'myDocumentTypeName2',
 							language: COLLECTION_LANGUAGE,
 							stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
