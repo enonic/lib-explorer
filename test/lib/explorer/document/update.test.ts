@@ -1,20 +1,28 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+
 //import type {LooseObject} from '../../../types.d';
 
 
-import {sortByProperty} from '@enonic/js-utils/dist/cjs/array/sortBy';
-import {JavaBridge} from '@enonic/mock-xp';
+import { sortByProperty } from '@enonic/js-utils/array/sortBy';
+import { JavaBridge } from '@enonic/mock-xp';
+import Log from '@enonic/mock-xp/src/Log';
 import {
 	deepStrictEqual,
 	throws
 } from 'assert';
-
+import {
+	describe,
+	expect,
+	test as it
+} from '@jest/globals';
 import {
 	COLLECTION_REPO_PREFIX,
-	FIELD_PATH_GLOBAL,
-	FIELD_PATH_META,
-	NT_DOCUMENT,
-	document
-} from '../../../../build/rollup/index.js';
+	FieldPath,
+	NodeType,
+	ROOT_PERMISSIONS_EXPLORER
+} from '@enonic/explorer-utils';
+import { create } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/create';
+import { update } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/update';
 import {
 	COLLECTION,
 	//COLLECTION_LANGUAGE,
@@ -29,12 +37,10 @@ import {
 	DOCUMENT_TYPES_FOLDER,
 	INDEX_CONFIG
 } from '../../../testData';
-import {log} from '../../../dummies';
 
-const {
-	create,
-	update
-} = document;
+const log = Log.createLogger({
+	loglevel: 'silent'
+});
 
 
 const javaBridge = new JavaBridge({
@@ -99,7 +105,7 @@ const CREATED_DOCUMENT_NODE = create({
 	requireValid: true, // default is false
 	//validateOccurrences: true, // default is false
 	//validateTypes: true // default is requireValid
-}, javaBridge);
+}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale);
 //javaBridge.log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
 
 /*const CREATED_INVALID_DOCUMENT_NODE = create({
@@ -113,7 +119,7 @@ const CREATED_DOCUMENT_NODE = create({
 	requireValid: false, // default is false
 	//validateOccurrences: true, // default is false
 	validateTypes: true // default is requireValid
-}, javaBridge);*/
+}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale);*/
 //javaBridge.log.info('CREATED_INVALID_DOCUMENT_NODE:%s', CREATED_INVALID_DOCUMENT_NODE);
 
 /*const queryRes = connection.query({});
@@ -122,10 +128,25 @@ javaBridge.log.info('nodes:%s', nodes);*/
 
 describe('document', () => {
 	describe('update()', () => {
+
+		it('leaves document node unchanged when diff is empty', () => {
+			const updateRes = update({
+				collectionId: CREATED_COLLECTION_NODE._id,
+				collectorId: COLLECTOR_ID,
+				collectorVersion: COLLECTOR_VERSION,
+				data: {
+					_id: CREATED_DOCUMENT_NODE._id,
+					myString: 'string'
+				},
+				partial: true
+			}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale);
+			expect(updateRes).toStrictEqual(CREATED_DOCUMENT_NODE);
+		}); // it
+
 		describe('throws', () => {
 			it(`on missing parameter object`, () => {
 				throws(
-					() => update(undefined, javaBridge),
+					() => update(undefined, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: 'update: parameter object is missing!',
 						name: 'Error'
@@ -140,7 +161,7 @@ describe('document', () => {
 						collectorVersion: COLLECTOR_VERSION,
 						data: null
 						//data: undefined // defauls to {}
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: missing required parameter data!",
 						name: 'Error'
@@ -153,8 +174,9 @@ describe('document', () => {
 						collectionId: CREATED_COLLECTION_NODE._id,
 						collectorId: COLLECTOR_ID,
 						collectorVersion: COLLECTOR_VERSION,
+						// @ts-expect-error 2322
 						data: 'string'
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: parameter 'data' is not an Object!",
 						name: 'TypeError'
@@ -171,7 +193,7 @@ describe('document', () => {
 						data: {},
 						fields: DOCUMENT_TYPE_FIELDS//,
 						//language: COLLECTION_LANGUAGE
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: parameter data: missing required property '_id'!",
 						name: 'Error'
@@ -190,7 +212,7 @@ describe('document', () => {
 						},
 						fields: DOCUMENT_TYPE_FIELDS//,
 						//language: COLLECTION_LANGUAGE
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: parameter data: property '_id' is not an uuidv4 string!",
 						name: 'TypeError'
@@ -200,8 +222,9 @@ describe('document', () => {
 			it(`if both collectionName and collectionId are missing`, () => {
 				throws(
 					() => update({
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: either provide collectionName or collectionId!",
 						name: 'Error'
@@ -212,8 +235,9 @@ describe('document', () => {
 				throws(
 					() => update({
 						collectionName: COLLECTION_NAME,
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: either provide documentTypeName, documentTypeId or collectionId!",
 						name: 'Error'
@@ -225,8 +249,9 @@ describe('document', () => {
 					() => update({
 						collectionName: COLLECTION_NAME,
 						documentTypeName: DOCUMENT_TYPE_NAME,
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: either provide fields, documentTypeId or collectionId!",
 						name: 'Error'
@@ -237,8 +262,9 @@ describe('document', () => {
 				throws(
 					() => update({
 						collectionId: CREATED_COLLECTION_NODE._id,
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: required parameter 'collectorId' is missing!",
 						name: 'Error'
@@ -249,10 +275,12 @@ describe('document', () => {
 				throws(
 					() => update({
 						collectionId: CREATED_COLLECTION_NODE._id,
+						// @ts-expect-error 2322 Type 'number' is not assignable to type 'string'
 						collectorId: 0,
 						collectorVersion: COLLECTOR_VERSION,
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: parameter 'collectorId' is not a string!",
 						name: 'TypeError'
@@ -264,8 +292,9 @@ describe('document', () => {
 					() => update({
 						collectionId: CREATED_COLLECTION_NODE._id,
 						collectorId: COLLECTOR_ID,
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: required parameter 'collectorVersion' is missing!",
 						name: 'Error'
@@ -277,9 +306,11 @@ describe('document', () => {
 					() => update({
 						collectionId: CREATED_COLLECTION_NODE._id,
 						collectorId: COLLECTOR_ID,
+						// @ts-expect-error 2322 Type 'number' is not assignable to type 'string'
 						collectorVersion: 0,
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: parameter 'collectorVersion' is not a string!",
 						name: 'TypeError'
@@ -292,8 +323,9 @@ describe('document', () => {
 						collectionId: '',
 						collectorId: COLLECTOR_ID,
 						collectorVersion: COLLECTOR_VERSION,
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: parameter 'collectionId' is not an uuidv4 string!",
 						name: 'TypeError'
@@ -303,13 +335,15 @@ describe('document', () => {
 			it(`when collectionName is not a string`, () => {
 				throws(
 					() => update({
+						// @ts-expect-error 2322 Type 'boolean' is not assignable to type 'string'
 						collectionName: true, // !string
 						collectorId: COLLECTOR_ID,
 						collectorVersion: COLLECTOR_VERSION,
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE,
 						documentTypeName: DOCUMENT_TYPE_NAME,
 						fields: DOCUMENT_TYPE_FIELDS
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: parameter 'collectionName' is not a string!",
 						name: 'TypeError'
@@ -322,10 +356,12 @@ describe('document', () => {
 						collectionName: COLLECTION_NAME,
 						collectorId: COLLECTOR_ID,
 						collectorVersion: COLLECTOR_VERSION,
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE,
+						// @ts-expect-error 2322 Type 'boolean' is not assignable to type 'string'
 						documentTypeName: true, // !string
 						fields: DOCUMENT_TYPE_FIELDS
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: parameter 'documentTypeName' is not a string!",
 						name: 'TypeError'
@@ -338,10 +374,12 @@ describe('document', () => {
 						collectionName: COLLECTION_NAME,
 						collectorId: COLLECTOR_ID,
 						collectorVersion: COLLECTOR_VERSION,
+						// @ts-expect-error 2322
 						data: CREATED_DOCUMENT_NODE,
+						// @ts-expect-error 2322 Type 'boolean' is not assignable to type 'string'
 						documentTypeId: true, // !string
 						fields: DOCUMENT_TYPE_FIELDS
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "update: parameter 'documentTypeId' is not a string!",
 						name: 'TypeError'
@@ -362,7 +400,7 @@ describe('document', () => {
 							myString: 0 // Should be string, thus fails validation as we want
 						},
 						requireValid: true
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: /validation failed/,
 						name: 'Error'
@@ -372,7 +410,7 @@ describe('document', () => {
 		}); // describe throws
 
 		describe('modifies document node', () => {
-			it(`modifies data, but not under ${FIELD_PATH_META} nor ${FIELD_PATH_GLOBAL}`, () => {
+			it(`modifies data, but not under ${FieldPath.META} nor ${FieldPath.GLOBAL}`, () => {
 				//javaBridge.log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
 				const updateRes = update({
 					collectionId: CREATED_COLLECTION_NODE._id,
@@ -380,36 +418,38 @@ describe('document', () => {
 					collectorVersion: COLLECTOR_VERSION,
 					data: {
 						_id: CREATED_DOCUMENT_NODE._id,
-						[FIELD_PATH_GLOBAL]: {
+						[FieldPath.GLOBAL]: {
 							illegal: 'shouldBeCleaned'
 						},
-						[FIELD_PATH_META]: {
+						[FieldPath.META]: {
 							createdTime: 'createdTime',
 							illegal: 'shouldBeCleaned'
 						},
 						myString: 'myStringChanged'
 					}
-				}, javaBridge);
+				}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale);
 				deepStrictEqual(
 					{
 						_id: CREATED_DOCUMENT_NODE._id,
 						_indexConfig: CREATED_DOCUMENT_NODE._indexConfig,
+						_inheritsPermissions: false,
 						_name: CREATED_DOCUMENT_NODE._id,
-						_nodeType: NT_DOCUMENT,
+						_nodeType: NodeType.DOCUMENT,
 						_path: updateRes._path,
+						_permissions: ROOT_PERMISSIONS_EXPLORER,
 						_state: 'DEFAULT',
 						_ts: updateRes._ts,
 						_versionKey: updateRes._versionKey,
-						[FIELD_PATH_META]: {
+						[FieldPath.META]: {
 							collection: 'myCollectionName',
 							collector: {
 								id: COLLECTOR_ID,
 								version: COLLECTOR_VERSION
 							},
-							createdTime: CREATED_DOCUMENT_NODE[FIELD_PATH_META].createdTime,
+							createdTime: CREATED_DOCUMENT_NODE[FieldPath.META].createdTime,
 							documentType: 'myDocumentTypeName',
 							language: 'en-GB',
-							modifiedTime: updateRes[FIELD_PATH_META].modifiedTime,
+							modifiedTime: updateRes[FieldPath.META].modifiedTime,
 							stemmingLanguage: 'en',
 							valid: true
 						},
@@ -427,13 +467,13 @@ describe('document', () => {
 					collectorVersion: COLLECTOR_VERSION,
 					data: {
 						_id: CREATED_DOCUMENT_NODE._id,
-						[FIELD_PATH_META]: {
+						[FieldPath.META]: {
 							createdTime: 'createdTime'
 						},
 						myString: 'myStringChanged',
 						extra: 'extraAdded'
 					}
-				}, javaBridge);
+				}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale);
 				const _indexConfig = JSON.parse(JSON.stringify(CREATED_DOCUMENT_NODE._indexConfig));
 				_indexConfig.configs.push({
 					path: 'extra',
@@ -452,22 +492,24 @@ describe('document', () => {
 					{
 						_id: CREATED_DOCUMENT_NODE._id,
 						_indexConfig,
+						_inheritsPermissions: false,
 						_name: CREATED_DOCUMENT_NODE._id,
-						_nodeType: NT_DOCUMENT,
+						_nodeType: NodeType.DOCUMENT,
 						_path: updateRes._path,
+						_permissions: ROOT_PERMISSIONS_EXPLORER,
 						_state: 'DEFAULT',
 						_ts: updateRes._ts,
 						_versionKey: updateRes._versionKey,
-						[FIELD_PATH_META]: {
+						[FieldPath.META]: {
 							collection: 'myCollectionName',
 							collector: {
 								id: COLLECTOR_ID,
 								version: COLLECTOR_VERSION
 							},
-							createdTime: CREATED_DOCUMENT_NODE[FIELD_PATH_META].createdTime,
+							createdTime: CREATED_DOCUMENT_NODE[FieldPath.META].createdTime,
 							documentType: 'myDocumentTypeName',
 							language: 'en-GB',
-							modifiedTime: updateRes[FIELD_PATH_META].modifiedTime,
+							modifiedTime: updateRes[FieldPath.META].modifiedTime,
 							stemmingLanguage: 'en',
 							valid: true
 						},
@@ -478,21 +520,6 @@ describe('document', () => {
 				) // deepStrictEqual
 			}); // it
 		}); // describe modifies document node
-		it('leaves document node unchanged when diff is empty', () => {
-			const updateRes = update({
-				collectionId: CREATED_COLLECTION_NODE._id,
-				collectorId: COLLECTOR_ID,
-				collectorVersion: COLLECTOR_VERSION,
-				data: {
-					_id: CREATED_DOCUMENT_NODE._id,
-					myString: 'string'
-				},
-				partial: true
-			}, javaBridge);
-			deepStrictEqual(
-				CREATED_DOCUMENT_NODE,
-				updateRes
-			);
-		}); // it
+
 	}); // describe update()
 }); // describe document

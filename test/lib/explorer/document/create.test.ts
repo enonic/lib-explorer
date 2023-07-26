@@ -1,3 +1,4 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
 // import type {LooseObject} from '../../../types';
 
 // import {
@@ -5,19 +6,24 @@
 // 	VALUE_TYPE_DOUBLE,
 // 	VALUE_TYPE_STRING
 // } from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
-import {JavaBridge} from '@enonic/mock-xp';
+import { JavaBridge } from '@enonic/mock-xp';
+import Log from '@enonic/mock-xp/src/Log';
 import {
 	deepStrictEqual,
 	throws
 } from 'assert';
-
+import {
+	describe,
+	// expect,
+	test as it
+} from '@jest/globals';
 import {
 	COLLECTION_REPO_PREFIX,
-	//FIELD_PATH_GLOBAL,
-	FIELD_PATH_META,
-	NT_DOCUMENT,
-	document
-} from '../../../../build/rollup/index.js';
+	FieldPath,
+	NodeType,
+	ROOT_PERMISSIONS_EXPLORER,
+} from '@enonic/explorer-utils';
+import { create } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/create';
 import {
 	COLLECTION,
 	COLLECTION_LANGUAGE,
@@ -34,10 +40,12 @@ import {
 	// DOCUMENT_TYPES_FOLDER_PATH,
 	INDEX_CONFIG
 } from '../../../testData';
-import {log} from '../../../dummies';
+// import {log} from '../../../dummies';
 
-const {create} = document;
 
+const log = Log.createLogger({
+	loglevel: 'info'
+});
 
 const javaBridge = new JavaBridge({
 	app: {
@@ -102,7 +110,7 @@ describe('document', () => {
 		describe('throws', () => {
 			it(`on missing parameter object`, () => {
 				throws(
-					() => create(undefined, javaBridge),
+					() => create(undefined, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: 'create: parameter object is missing!',
 						name: 'Error'
@@ -112,10 +120,11 @@ describe('document', () => {
 
 			it(`if at least one of (validateTypes), validateOccurrences or cleanExtraFields is true and none of documentTypeName, documentTypeId or fields is provided`, () => {
 				throws(
+					// @ts-expect-error TS2345
 					() => create({
 						addExtraFields: false, // To avoid previous error
 						validateTypes: true
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided or (collectionName or collectionId and the collectionNode must contain a default documentTypeId)!",
 						name: 'Error'
@@ -124,10 +133,11 @@ describe('document', () => {
 			}); // it
 			it(`if at least one of validateTypes, (validateOccurrences) or cleanExtraFields is true and none of documentTypeName, documentTypeId or fields is provided`, () => {
 				throws(
+					// @ts-expect-error TS2345
 					() => create({
 						addExtraFields: false, // To avoid previous error
 						validateOccurrences: true
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided or (collectionName or collectionId and the collectionNode must contain a default documentTypeId)!",
 						name: 'Error'
@@ -136,10 +146,11 @@ describe('document', () => {
 			}); // it
 			it(`if at least one of validateTypes, validateOccurrences or (cleanExtraFields) is true and none of documentTypeName, documentTypeId or fields is provided`, () => {
 				throws(
+					// @ts-expect-error TS2345
 					() => create({
 						addExtraFields: false, // To avoid previous error
 						cleanExtraFields: true
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "create: when at least one of validateTypes, validateOccurrences or cleanExtraFields is true, either documentTypeName, documentTypeId or fields must be provided or (collectionName or collectionId and the collectionNode must contain a default documentTypeId)!",
 						name: 'Error'
@@ -149,12 +160,13 @@ describe('document', () => {
 
 			it(`if requireValid=true and both validateTypes and validateOccurrences are false`, () => {
 				throws(
+					// @ts-expect-error TS2345
 					() => create({
 						documentTypeName: DOCUMENT_TYPE_NAME,
 						requireValid: true,
 						validateTypes: false,
 						validateOccurrences: false
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "create: when requireValid=true either validateTypes or validateOccurrences must be true!",
 						name: 'Error'
@@ -164,9 +176,10 @@ describe('document', () => {
 
 			it(`if both collectionName and collectionId are missing`, () => {
 				throws(
+					// @ts-expect-error TS2345
 					() => create({
 						documentTypeName: DOCUMENT_TYPE_NAME
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "create: either provide collectionName or collectionId!",
 						name: 'Error'
@@ -181,7 +194,7 @@ describe('document', () => {
 						collectorId: COLLECTOR_ID,
 						collectorVersion: COLLECTOR_VERSION,
 						documentTypeName: DOCUMENT_TYPE_NAME
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "create: parameter 'collectionId' is not an uuidv4 string!",
 						name: 'TypeError'
@@ -191,10 +204,11 @@ describe('document', () => {
 
 			it(`on missing collectorId`, () => {
 				throws(
+					// @ts-expect-error TS2345
 					() => create({
 						collectionId: CREATED_COLLECTION_NODE._id,
 						documentTypeName: DOCUMENT_TYPE_NAME
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "create: required parameter 'collectorId' is missing!",
 						name: 'Error'
@@ -205,10 +219,11 @@ describe('document', () => {
 				throws(
 					() => create({
 						collectionId: CREATED_COLLECTION_NODE._id,
+						// @ts-expect-error TS2322: Type 'number' is not assignable to type 'string'.
 						collectorId: 0,
 						collectorVersion: COLLECTOR_VERSION,
 						documentTypeName: DOCUMENT_TYPE_NAME
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "create: parameter 'collectorId' is not a string!",
 						name: 'TypeError'
@@ -217,11 +232,12 @@ describe('document', () => {
 			}); // it
 			it(`on missing collectorVersion`, () => {
 				throws(
+					// @ts-expect-error TS2345
 					() => create({
 						collectionId: CREATED_COLLECTION_NODE._id,
 						collectorId: COLLECTOR_ID,
 						documentTypeName: DOCUMENT_TYPE_NAME
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "create: required parameter 'collectorVersion' is missing!",
 						name: 'Error'
@@ -233,9 +249,10 @@ describe('document', () => {
 					() => create({
 						collectionId: CREATED_COLLECTION_NODE._id,
 						collectorId: COLLECTOR_ID,
+						// @ts-expect-error TS2322: Type 'number' is not assignable to type 'string'.
 						collectorVersion: 0,
 						documentTypeName: DOCUMENT_TYPE_NAME
-					}, javaBridge),
+					}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "create: parameter 'collectorVersion' is not a string!",
 						name: 'TypeError'
@@ -258,10 +275,10 @@ describe('document', () => {
 					}
 				};
 				//const createdDocument =
-				create(createParam, javaBridge);
+				create(createParam, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale);
 				//javaBridge.log.info('createdDocument:%s', createdDocument);
 				throws(
-					() => create(createParam, javaBridge),
+					() => create(createParam, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale),
 					{
 						message: "Node already exists at /a repository: com.enonic.app.explorer.collection.myCollectionName branch: master",
 						name: 'com.enonic.xp.node.NodeAlreadyExistAtPathException'
@@ -318,23 +335,25 @@ describe('document', () => {
 					requireValid: true,
 					validateOccurrences: true//, // default is false
 					//validateTypes: true // default is same as requireValid
-				}, javaBridge);
+				}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale);
 				const expected = {
 					_id: createRes._id,
 					_indexConfig,
+					_inheritsPermissions: false,
 					_name: createRes._id,
-					_nodeType: NT_DOCUMENT,
+					_nodeType: NodeType.DOCUMENT,
 					_path: createRes._path,
+					_permissions: ROOT_PERMISSIONS_EXPLORER,
 					_state: 'DEFAULT',
 					_ts: createRes._ts,
 					_versionKey: createRes._versionKey,
-					[FIELD_PATH_META]: {
+					[FieldPath.META]: {
 						collection: COLLECTION_NAME,
 						collector: {
 							id: COLLECTOR_ID,
 							version: COLLECTOR_VERSION
 						},
-						createdTime: createRes[FIELD_PATH_META].createdTime,
+						createdTime: createRes[FieldPath.META].createdTime,
 						documentType: DOCUMENT_TYPE_NAME,
 						language: COLLECTION_LANGUAGE,
 						stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
@@ -343,8 +362,8 @@ describe('document', () => {
 					extra: 'extra',
 					mystring: 'string'
 				};
-				//javaBridge.log.info('expected:%s', expected);
-				//javaBridge.log.info('createRes:%s', createRes);
+				// javaBridge.log.info('expected:%s', expected);
+				// javaBridge.log.info('createRes:%s', createRes);
 				deepStrictEqual(
 					expected,
 					createRes
@@ -369,7 +388,7 @@ describe('document', () => {
 					collectorId: COLLECTOR_ID,
 					collectorVersion: COLLECTOR_VERSION,
 					data: {
-						[FIELD_PATH_META]: {
+						[FieldPath.META]: {
 							shouldBeStripped: 'shouldBeStripped'
 						},
 						global: {
@@ -383,24 +402,26 @@ describe('document', () => {
 					language: COLLECTION_LANGUAGE,
 					// Options
 					cleanExtraFields: true, // default is false
-				}, javaBridge); // create
+				}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale); // create
 				deepStrictEqual(
 					{
 						_id: createRes._id,
 						_indexConfig,
+						_inheritsPermissions: false,
 						_name: createRes._id,
-						_nodeType: NT_DOCUMENT,
+						_nodeType: NodeType.DOCUMENT,
 						_path: createRes._path,
+						_permissions: ROOT_PERMISSIONS_EXPLORER,
 						_state: 'DEFAULT',
 						_ts: createRes._ts,
 						_versionKey: createRes._versionKey,
-						[FIELD_PATH_META]: {
+						[FieldPath.META]: {
 							collection: COLLECTION_NAME,
 							collector: {
 								id: COLLECTOR_ID,
 								version: COLLECTOR_VERSION
 							},
-							createdTime: createRes[FIELD_PATH_META].createdTime,
+							createdTime: createRes[FieldPath.META].createdTime,
 							documentType: DOCUMENT_TYPE_NAME,
 							language: COLLECTION_LANGUAGE,
 							stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,

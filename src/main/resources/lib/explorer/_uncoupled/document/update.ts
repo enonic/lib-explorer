@@ -26,7 +26,8 @@ import {
 	FIELD_PATH_META,
 	PRINCIPAL_EXPLORER_READ,
 	PRINCIPAL_EXPLORER_WRITE,
-	REPO_ID_EXPLORER
+	REPO_ID_EXPLORER,
+	ROOT_PERMISSIONS_EXPLORER
 } from '/lib/explorer/constants';
 
 //import {javaBridgeDummy} from '../dummies';
@@ -148,10 +149,10 @@ export function update(
 	//const documentNodeKey = documentNodeId || documentNodePath;
 
 	if (notSet(documentNodeId)) {
-		throw new Error("update: missing required property '_id'!");
+		throw new Error("update: parameter data: missing required property '_id'!");
 	} else if (!isUuidV4String(documentNodeId)) {
-		log.error("update: parameter '_id' is not an uuidv4 string! _id:%s", toStr(documentNodeId));
-		throw new TypeError("update: parameter '_id' is not an uuidv4 string!");
+		log.error("update: parameter data: property '_id' is not an uuidv4 string! _id:%s", toStr(documentNodeId));
+		throw new TypeError("update: parameter data: property '_id' is not an uuidv4 string!");
 	}
 
 	if (
@@ -387,6 +388,10 @@ export function update(
 	}/*, javaBridge*/);
 	//log.debug('indexConfig %s', indexConfig);
 	dataWithJavaTypes['_indexConfig'] = indexConfig;
+
+	// This is needed to fix old broken permissions on re-collect:
+	dataWithJavaTypes._inheritsPermissions = false; // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
+	dataWithJavaTypes._permissions = ROOT_PERMISSIONS_EXPLORER;
 
 	dataWithJavaTypes[FIELD_PATH_META] = {
 		collection: collectionName,

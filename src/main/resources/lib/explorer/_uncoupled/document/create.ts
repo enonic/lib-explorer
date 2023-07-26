@@ -54,7 +54,8 @@ import {
 	PATH_COLLECTIONS,
 	PRINCIPAL_EXPLORER_READ,
 	PRINCIPAL_EXPLORER_WRITE,
-	REPO_ID_EXPLORER
+	REPO_ID_EXPLORER,
+	ROOT_PERMISSIONS_EXPLORER
 } from '../../constants';
 import {documentTypeNameToPath} from '../documentType/documentTypeNameToPath';
 //import {javaBridgeDummy} from '../dummies';
@@ -418,6 +419,8 @@ export function create(
 	}/*, javaBridge*/);
 	// log.debug('indexConfig %s', indexConfig);
 	dataWithJavaTypes['_indexConfig'] = indexConfig;
+	dataWithJavaTypes._inheritsPermissions = false; // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
+	dataWithJavaTypes._permissions = ROOT_PERMISSIONS_EXPLORER;
 
 	dataWithJavaTypes[FIELD_PATH_META] = {
 		collection: collectionName,

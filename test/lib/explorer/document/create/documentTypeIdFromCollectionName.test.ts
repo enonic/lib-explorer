@@ -1,12 +1,16 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../../src/main/resources/lib/explorer/_coupling/types';
+
+
 import {JavaBridge} from '@enonic/mock-xp';
 import {deepStrictEqual} from 'assert';
 
 import {
 	COLLECTION_REPO_PREFIX,
-	FIELD_PATH_META,
-	NT_DOCUMENT,
-	document
-} from '../../../../../build/rollup/index.js';
+	ROOT_PERMISSIONS_EXPLORER,
+	FieldPath,
+	NodeType
+} from '@enonic/explorer-utils';
+import { create } from '../../../../../src/main/resources/lib/explorer/_uncoupled/document/create';
 import {
 	COLLECTION,
 	COLLECTION_LANGUAGE,
@@ -21,8 +25,6 @@ import {
 	INDEX_CONFIG
 } from '../../../../testData';
 import {log} from '../../../../dummies';
-
-const {create} = document;
 
 
 const javaBridge = new JavaBridge({
@@ -98,7 +100,7 @@ describe('document', () => {
 					requireValid: true,
 					validateOccurrences: true//, // default is false
 					//validateTypes: true // default is same as requireValid
-				}, javaBridge);
+				}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale);
 				// javaBridge.log.info('createdDocumentNode:%s', createdDocumentNode);
 				const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
 				_indexConfig.configs.push({
@@ -116,19 +118,21 @@ describe('document', () => {
 				const expected = {
 					_id: createdDocumentNode._id,
 					_indexConfig,
+					_inheritsPermissions: false,
 					_name: createdDocumentNode._id,
-					_nodeType: NT_DOCUMENT,
+					_nodeType: NodeType.DOCUMENT,
 					_path: createdDocumentNode._path,
+					_permissions: ROOT_PERMISSIONS_EXPLORER,
 					_state: 'DEFAULT',
 					_ts: createdDocumentNode._ts,
 					_versionKey: createdDocumentNode._versionKey,
-					[FIELD_PATH_META]: {
+					[FieldPath.META]: {
 						collection: COLLECTION_NAME,
 						collector: {
 							id: COLLECTOR_ID,
 							version: COLLECTOR_VERSION
 						},
-						createdTime: createdDocumentNode[FIELD_PATH_META].createdTime,
+						createdTime: createdDocumentNode[FieldPath.META].createdTime,
 						documentType: DOCUMENT_TYPE_NAME,
 						language: COLLECTION_LANGUAGE,
 						stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
@@ -160,7 +164,7 @@ describe('document', () => {
 					requireValid: true,
 					validateOccurrences: true//, // default is false
 					//validateTypes: true // default is same as requireValid
-				}, javaBridge);
+				}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale);
 				// javaBridge.log.info('createdDocumentNode:%s', createdDocumentNode);
 				const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
 				_indexConfig.configs.push({
@@ -178,19 +182,21 @@ describe('document', () => {
 				const expected = {
 					_id: createdDocumentNode._id,
 					_indexConfig,
+					_inheritsPermissions: false,
 					_name: createdDocumentNode._id,
-					_nodeType: NT_DOCUMENT,
+					_nodeType: NodeType.DOCUMENT,
 					_path: createdDocumentNode._path,
+					_permissions: ROOT_PERMISSIONS_EXPLORER,
 					_state: 'DEFAULT',
 					_ts: createdDocumentNode._ts,
 					_versionKey: createdDocumentNode._versionKey,
-					[FIELD_PATH_META]: {
+					[FieldPath.META]: {
 						collection: COLLECTION_NAME,
 						collector: {
 							id: COLLECTOR_ID,
 							version: COLLECTOR_VERSION
 						},
-						createdTime: createdDocumentNode[FIELD_PATH_META].createdTime,
+						createdTime: createdDocumentNode[FieldPath.META].createdTime,
 						documentType: DOCUMENT_TYPE_NAME,
 						language: COLLECTION_LANGUAGE,
 						stemmingLanguage: COLLECTION_STEMMING_LANGUAGE,
