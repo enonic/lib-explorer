@@ -1,15 +1,19 @@
-import {forceArray} from '@enonic/js-utils/dist/cjs/array/forceArray';
-import {sortByProperty} from '@enonic/js-utils/dist/cjs/array/sortBy';
-import {VALUE_TYPE_STRING} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../../src/main/resources/lib/explorer/_coupling/types';
+
+
+import {forceArray} from '@enonic/js-utils/array/forceArray';
+import {sortByProperty} from '@enonic/js-utils/array/sortBy';
+import {VALUE_TYPE_STRING} from '@enonic/js-utils/storage/indexing/valueType/constants';
 import {JavaBridge} from '@enonic/mock-xp';
 
 import {deepStrictEqual} from 'assert';
 
 import {
 	COLLECTION_REPO_PREFIX,
-	FIELD_PATH_META,
-	document
-} from '../../../../../build/rollup/index.js';
+	FieldPath
+} from '@enonic/explorer-utils';
+import { create } from '../../../../../src/main/resources/lib/explorer/_uncoupled/document/create';
+import { update } from '../../../../../src/main/resources/lib/explorer/_uncoupled/document/update';
 
 import {
 	COLLECTION,
@@ -23,10 +27,6 @@ import {
 } from '../../../../testData';
 import {log} from '../../../../dummies';
 
-const {
-	create,
-	update
-} = document;
 
 const javaBridge = new JavaBridge({
 	app: {
@@ -35,7 +35,7 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
 javaBridge.repo.create({
 	id: 'com.enonic.app.explorer'
 });
@@ -133,9 +133,9 @@ describe('document', () => {
 				{
 					...CREATED_DOCUMENT_NODE,
 					_indexConfig,
-					[FIELD_PATH_META]: {
-						...CREATED_DOCUMENT_NODE[FIELD_PATH_META],
-						modifiedTime: updateRes[FIELD_PATH_META].modifiedTime
+					[FieldPath.META]: {
+						...CREATED_DOCUMENT_NODE[FieldPath.META],
+						modifiedTime: updateRes[FieldPath.META].modifiedTime
 					}
 				},
 				updateRes

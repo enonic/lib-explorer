@@ -3,7 +3,7 @@ import {
 	//VALUE_TYPE_DOUBLE,
 	//VALUE_TYPE_LONG,
 	VALUE_TYPE_STRING
-} from '@enonic/js-utils/dist/cjs/storage/indexing/valueType/constants';
+} from '@enonic/js-utils/storage/indexing/valueType/constants';
 
 
 export const BOOLEANS = [

@@ -1,8 +1,10 @@
-import {deepStrictEqual} from 'assert';
 import {
-	document
-} from '../../../../build/rollup/index.js';
-//import {applyDocumentTy	peToDocumentNode} from '../../../../src/main/resources/lib/explorer/document/applyDocumentTypeToDocumentNode';
+	DocumentNode,
+	DocumentType
+} from '/lib/explorer/types/';
+
+import { deepStrictEqual } from 'assert';
+import { applyDocumentTypeToDocumentNode } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/applyDocumentTypeToDocumentNode';
 
 
 describe('document', () => {
@@ -12,16 +14,16 @@ describe('document', () => {
 				{
 					list: ['singleValue']
 				},
-				document.applyDocumentTypeToDocumentNode({
+				applyDocumentTypeToDocumentNode({
 					documentType: {
 						properties: [{
 							name: 'list',
 							max: 0
 						}]
-					},
+					} as DocumentType,
 					documentNode: {
 						list: 'singleValue'
-					}
+					} as unknown as DocumentNode
 				})
 			);
 		}); // it
@@ -30,16 +32,16 @@ describe('document', () => {
 				{
 					list: ['singleValue']
 				},
-				document.applyDocumentTypeToDocumentNode({
+				applyDocumentTypeToDocumentNode({
 					documentType: {
 						properties: [{
 							name: 'list',
 							max: 0
 						}]
-					},
+					} as DocumentType,
 					documentNode: {
 						list: ['singleValue']
-					}
+					} as unknown as DocumentNode
 				})
 			);
 		}); // it
@@ -48,30 +50,30 @@ describe('document', () => {
 				{
 					list: ['oneOfTwo', 'twoOfTwo']
 				},
-				document.applyDocumentTypeToDocumentNode({
+				applyDocumentTypeToDocumentNode({
 					documentType: {
 						properties: [{
 							name: 'list',
 							max: 0
 						}]
-					},
+					} as DocumentType,
 					documentNode: {
 						list: ['oneOfTwo', 'twoOfTwo']
-					}
+					} as unknown as DocumentNode
 				})
 			);
 		}); // it
 		it('Handles undefined value', () => {
 			deepStrictEqual(
 				{},
-				document.applyDocumentTypeToDocumentNode({
+				applyDocumentTypeToDocumentNode({
 					documentType: {
 						properties: [{
 							name: 'list',
 							max: 0
 						}]
-					},
-					documentNode: {}
+					} as DocumentType,
+					documentNode: {} as DocumentNode
 				})
 			);
 		}); // it

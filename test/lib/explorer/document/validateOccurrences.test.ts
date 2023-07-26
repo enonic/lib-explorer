@@ -1,12 +1,10 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+
+
 import {JavaBridge} from '@enonic/mock-xp';
 import {deepStrictEqual} from 'assert';
-
-import {
-	document
-} from '../../../../build/rollup/index.js';
+import { validateOccurrences } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/validateOccurrences';
 import {log} from '../../../dummies';
-
-const {validateOccurrences} = document;
 
 
 const javaBridge = new JavaBridge({
@@ -16,7 +14,7 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
 
 const TESTS_VALID = [{
 	/* No params :) */

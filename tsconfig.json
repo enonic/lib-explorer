@@ -1,4 +1,4 @@
-{
+{ // https://www.typescriptlang.org/tsconfig
 	// This file is used by your code editor,
 	// and bundle-require to transpile the tsup.config.ts file
 	"compilerOptions": {
@@ -79,24 +79,36 @@
 		// 2. The environment tsup transpiles to (set in tsconfig.tsup.json via tsup.config.ts)
 		"target": "ES2020", // What bundle-require inside tsup uses to load tsup.config.ts
 
+		// By default all visible ”@types” packages are included in your compilation.
+		// Packages in node_modules/@types of any enclosing folder are considered visible.
+		// For example, that means packages within ./node_modules/@types/,
+		// ../node_modules/@types/, ../../node_modules/@types/, and so on.
+		//
+		// If typeRoots is specified, only packages under typeRoots will be included.
 		"typeRoots": [
-			"src/main/resources/lib/@types",
-			"node_modules/@enonic-types",
-			"node_modules/@types",
+			"./src/main/resources/lib/@types",
+			"./node_modules/@types",
+			"./node_modules/@enonic-types",
 		],
-		"types": [
-			"global", // For some reason "@enonic-types/global" doesn't work
+
+		// By default all visible ”@types” packages are included in your compilation.
+		// Packages in node_modules/@types of any enclosing folder are considered visible.
+		// For example, that means packages within ./node_modules/@types/,
+		// ../node_modules/@types/, ../../node_modules/@types/, and so on.
+		//
+		// If types is specified, only packages listed will be included in the global scope.
+		// "types": [
+			// "@enonic-types/global",
 			// "@enonic-types/lib-auth",
 			// "@enonic-types/lib-node",
 			// "@enonic-types/lib-repo",
 			// "@enonic-types/lib-task",
 			// "@enonic-types/lib-value",
-			"mocha",
-			"node",
-			"q-i",
-			"react",
-			"traverse"
-		]
+			// "@types/node",
+			// "@types/q-i",
+			// "@types/react",
+			// "@types/traverse"
+		// ]
 	},
 	"exclude": [
 		"../enonic-js-utils/**/*",

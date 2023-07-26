@@ -1,20 +1,23 @@
-import {JavaBridge} from '@enonic/mock-xp';
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+
+import { JavaBridge } from '@enonic/mock-xp';
 
 import {
 	deepStrictEqual//,
 	//throws
 } from 'assert';
-
-import {documentType} from '../../../../build/rollup/index.js';
+import {
+	describe,
+	// expect,
+	test as it
+} from '@jest/globals';
+import { update } from '../../../../src/main/resources/lib/explorer/_uncoupled/documentType/update';
 import {
 	DOCUMENT_TYPE,
 	DOCUMENT_TYPES_FOLDER
 } from '../../../testData';
 import {log} from '../../../dummies';
 
-const {
-	update
-} = documentType;
 
 const javaBridge = new JavaBridge({
 	app: {
@@ -36,13 +39,21 @@ connection.create(DOCUMENT_TYPES_FOLDER);
 const CREATED_DOCUMENT_TYPE_NODE = connection.create(DOCUMENT_TYPE);
 //javaBridge.log.info('CREATED_DOCUMENT_TYPE_NODE:%s', CREATED_DOCUMENT_TYPE_NODE);
 
+//@ts-ignore
+javaBridge.stemmingLanguageFromLocale = (locale: string) => {
+	if (locale === 'en-GB') {
+		return 'en';
+	}
+	return 'en';
+}
+
 describe('documentType', () => {
 	describe('update()', () => {
 		it('modifies the documentType', () => {
 			const updateRes = update({
 				_id: CREATED_DOCUMENT_TYPE_NODE._id,
 				properties: []
-			}, javaBridge);
+			}, javaBridge as unknown as JavaBridgeWithStemmingLanguageFromLocale);
 			//javaBridge.log.info('updateRes:%s', updateRes);
 			const expected = {
 				...CREATED_DOCUMENT_TYPE_NODE,

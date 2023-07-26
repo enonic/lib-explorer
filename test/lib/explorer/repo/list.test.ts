@@ -1,15 +1,13 @@
-import {toStr} from '@enonic/js-utils/dist/cjs/value/toStr';
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+
+
+import {toStr} from '@enonic/js-utils/value/toStr';
 import {JavaBridge} from '@enonic/mock-xp';
 import {deepStrictEqual} from 'assert';
-
-import {
-	COLLECTION_REPO_PREFIX,
-	repo
-} from '../../../../build/rollup/index.js';
+import { COLLECTION_REPO_PREFIX } from '@enonic/explorer-utils';
+import { list } from '../../../../src/main/resources/lib/explorer/_uncoupled/repo/list';
 import {log} from '../../../dummies';
 import {COLLECTION_NAME} from '../../../testData';
-
-const {list} = repo;
 
 
 const javaBridge = new JavaBridge({
@@ -19,7 +17,7 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
 javaBridge.repo.create({
 	id: 'system-repo'
 });

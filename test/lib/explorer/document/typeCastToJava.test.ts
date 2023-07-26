@@ -1,15 +1,14 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+
+
 import {JavaBridge} from '@enonic/mock-xp';
 import {deepStrictEqual} from 'assert';
-
 import {
-	document
-} from '../../../../build/rollup/index.js';
-import {log} from '../../../dummies';
-
-const {
 	fieldsArrayToObj,
 	typeCastToJava
-} = document;
+} from '../../../../src/main/resources/lib/explorer/_uncoupled/document/index';
+import {log} from '../../../dummies';
+
 
 
 const javaBridge = new JavaBridge({
@@ -19,7 +18,7 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
 
 
 const VALUE_TYPE_ANY = 'any';

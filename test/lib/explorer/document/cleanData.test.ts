@@ -1,18 +1,12 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+import type { DocumentTypeFieldsObject } from '/lib/explorer/types/';
+
+
 import {JavaBridge} from '@enonic/mock-xp';
 import {deepStrictEqual} from 'assert';
-
-import {
-	FIELD_PATH_GLOBAL,
-	FIELD_PATH_META,
-	document
-} from '../../../../build/rollup/index.js';
-// Currently swc doesn't bundle, so import paths need to be relative to where the output file gets placed.
-// I don't think swc does dedup either, so it can't rewrite import paths.
-// I haven't found a way for mocha to resolve require paths either.
+import { FieldPath } from '@enonic/explorer-utils';
+import { cleanData } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/cleanData';
 import {log} from '../../../dummies';
-
-
-const {cleanData} = document;
 
 
 const javaBridge = new JavaBridge({
@@ -22,11 +16,12 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
+
 
 describe('document', () => {
 	describe('cleanData()', () => {
-		it(`cleanData() removes ${FIELD_PATH_GLOBAL} and ${FIELD_PATH_META}`, () => {
+		it(`cleanData() removes ${FieldPath.GLOBAL} and ${FieldPath.META}`, () => {
 			deepStrictEqual(
 				{
 					_id: '_id',
@@ -44,8 +39,8 @@ describe('document', () => {
 						_name: '_name',
 						_path: '_path',
 						_versionKey: '_versionKey',
-						[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-						[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+						[FieldPath.GLOBAL]: `${FieldPath.GLOBAL}`,
+						[FieldPath.META]: `${FieldPath.META}`,
 						myString: 'myString',
 						myObject: {
 							myProperty: 'myObject.myProperty'
@@ -71,8 +66,8 @@ describe('document', () => {
 						_name: '_name',
 						_path: '_path',
 						_versionKey: '_versionKey',
-						[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-						[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+						[FieldPath.GLOBAL]: `${FieldPath.GLOBAL}`,
+						[FieldPath.META]: `${FieldPath.META}`,
 						myString: 'myString',
 						myObject: {
 							myProperty: 'myObject.myProperty'
@@ -82,7 +77,7 @@ describe('document', () => {
 						'myString': {
 							valueType: 'string'
 						}
-					}
+					} as unknown as DocumentTypeFieldsObject
 				}, javaBridge)
 			);
 		});
@@ -104,8 +99,8 @@ describe('document', () => {
 						_name: '_name',
 						_path: '_path',
 						_versionKey: '_versionKey',
-						[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-						[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+						[FieldPath.GLOBAL]: `${FieldPath.GLOBAL}`,
+						[FieldPath.META]: `${FieldPath.META}`,
 						myString: 'myString',
 						myObject: {
 							myProperty: {
@@ -120,7 +115,7 @@ describe('document', () => {
 						'myObject': {
 							valueType: 'set'
 						}
-					}
+					} as unknown as DocumentTypeFieldsObject
 				}, javaBridge)
 			);
 		});
@@ -144,8 +139,8 @@ describe('document', () => {
 						_name: '_name',
 						_path: '_path',
 						_versionKey: '_versionKey',
-						[FIELD_PATH_GLOBAL]: `${FIELD_PATH_GLOBAL}`,
-						[FIELD_PATH_META]: `${FIELD_PATH_META}`,
+						[FieldPath.GLOBAL]: `${FieldPath.GLOBAL}`,
+						[FieldPath.META]: `${FieldPath.META}`,
 						myString: 'myString',
 						myObject: {
 							myProperty: {
@@ -163,7 +158,7 @@ describe('document', () => {
 						'myObject.myProperty': {
 							valueType: 'set'
 						}
-					}
+					} as unknown as DocumentTypeFieldsObject
 				}, javaBridge)
 			);
 		});

@@ -75,15 +75,15 @@ export function addExtraFieldsToDocumentType(
 		data,
 		documentTypeId,
 		fieldsObj
-	} :AddExtraFieldsToDocumentTypeParams,
-	javaBridge :JavaBridge// = javaBridgeDummy
-) :DocumentTypeFieldsObject {
+	}: AddExtraFieldsToDocumentTypeParams,
+	javaBridge: JavaBridge// = javaBridgeDummy
+): DocumentTypeFieldsObject {
 	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: data:%s', toStr(data));
 	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: documentTypeId:%s', documentTypeId);
 	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: fieldsObj:%s', toStr(fieldsObj));
 	const returnFieldsObj = JSON.parse(JSON.stringify(fieldsObj));
 	let boolModified = false;
-	traverse(data).forEach(function(value :unknown) { // Fat arrow destroys this
+	traverse(data).forEach(function(value: unknown) { // Fat arrow destroys this
 		// javaBridge.log.debug('document.addExtraFieldsToDocumentType: this.path:%s', toStr(this.path));
 		// javaBridge.log.debug('document.addExtraFieldsToDocumentType: this.path[0]:%s', toStr(this.path[0]));
 		if (
@@ -113,7 +113,7 @@ export function addExtraFieldsToDocumentType(
 			const pathStringWithoutArrayIndicies = (this.path as Array<string>).filter(s => !isNonNegativeIntegerString(s)).join('.');
 			//javaBridge.log.debug('pathStringWithoutArrayIndicies:%s', pathStringWithoutArrayIndicies);
 
-			const field :Omit<DocumentTypeField, 'name'> = fieldsObj[pathStringWithoutArrayIndicies];
+			const field: Omit<DocumentTypeField, 'name'> = fieldsObj[pathStringWithoutArrayIndicies];
 			if (field) {
 				const {valueType} = field;
 				//javaBridge.log.debug('field:%s valueType:%s', pathStringWithoutArrayIndicies, valueType);

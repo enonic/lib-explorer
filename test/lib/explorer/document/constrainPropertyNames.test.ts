@@ -1,14 +1,13 @@
+import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+
+
 import {JavaBridge} from '@enonic/mock-xp';
 //import {ASCII_PUNCTUATION} from '@enonic/test-data';
 import {deepStrictEqual} from 'assert';
 
-import {
-	FIELD_PATH_GLOBAL,
-	FIELD_PATH_META,
-	document
-} from '../../../../build/rollup/index.js';
+import { FieldPath } from '@enonic/explorer-utils';
+import { constrainPropertyNames } from '../../../../src/main/resources/lib/explorer/_uncoupled/document/constrainPropertyNames';
 import {log} from '../../../dummies';
-const {constrainPropertyNames} = document;
 
 
 const javaBridge = new JavaBridge({
@@ -18,7 +17,7 @@ const javaBridge = new JavaBridge({
 		version: '0.0.1-SNAPSHOT'
 	},
 	log
-});
+}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
 
 
 describe('document', () => {
@@ -27,8 +26,8 @@ describe('document', () => {
 			const constrainedData = constrainPropertyNames({
 				data: {
 					'_id': '_id',
-					[FIELD_PATH_GLOBAL]: FIELD_PATH_GLOBAL,
-					[FIELD_PATH_META]: FIELD_PATH_META,
+					[FieldPath.GLOBAL]: FieldPath.GLOBAL,
+					[FieldPath.META]: FieldPath.META,
 					'manycase#': 'NUMBER_SIGN',
 					manyCase: 'camelCase',
 					manycase: 'smallcase',
@@ -47,8 +46,8 @@ describe('document', () => {
 			//javaBridge.log.info('constrainedData:%s', constrainedData);
 			deepStrictEqual({
 				'_id': '_id',
-				[FIELD_PATH_GLOBAL]: FIELD_PATH_GLOBAL,
-				[FIELD_PATH_META]: FIELD_PATH_META,
+				[FieldPath.GLOBAL]: FieldPath.GLOBAL,
+				[FieldPath.META]: FieldPath.META,
 				manycase: 'smallcase',
 				nested: {
 					id: 'nested._id',

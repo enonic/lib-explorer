@@ -9,4 +9,5 @@ yarn-error.log
 /.gradle/
 /bin/
 /build/
+/coverage/
 
