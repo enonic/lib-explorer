@@ -1173,10 +1173,10 @@
   dependencies:
     "@enonic-types/core" "7.13.0"
 
-"@enonic/explorer-utils@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@enonic/explorer-utils/-/explorer-utils-0.2.0.tgz#3ee4ba77e4950128aaccbf4d3bd6c24e80586302"
-  integrity sha512-kPlb7MDAhIXcN4LM91rIP41kcagGlGswSLrQXOMFcP3/RgzdJWlbTxad0rr6nyJswa1vjGVrpb4y893/gaSehw==
+"@enonic/explorer-utils@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@enonic/explorer-utils/-/explorer-utils-0.3.0.tgz#51864e6c10243e159a73f95d3a2a53c1803b82e1"
+  integrity sha512-i6gOVzATlpBWUTVXAXY7eePo9YinmzzwTuYTu+DKcqbH0/02JuWogkbbMU+erLjXhFGOAc4vrvnvvNud0CwgjQ==
   dependencies:
     "@enonic/js-utils" "^1.1.0"
 

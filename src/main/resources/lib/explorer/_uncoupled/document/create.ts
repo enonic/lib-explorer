@@ -70,8 +70,8 @@ import {typeCastToJava} from './typeCastToJava';
 
 // dieOnError
 export function create(
-	createParameterObject :CreateParameterObject,
-	javaBridge :JavaBridge// = javaBridgeDummy
+	createParameterObject: CreateParameterObject,
+	javaBridge: JavaBridge// = javaBridgeDummy
 ) {
 	if (notSet(createParameterObject)) {
 		throw new Error('create: parameter object is missing!');
@@ -96,7 +96,7 @@ export function create(
 		documentTypeId, // If empty gotten from documentTypeName or fallback to collectionNode via collectionId
 		documentTypeName, // Is now a required parameter for collectors, but not the document API.
 		fields, // If empty gotten from documentTypeNode
-		language, // If empty gotten from collectionNode
+		language, // If empty gotten from collectionNode (or fallback to english)
 		stemmingLanguage, // If empty gotten from language
 	} = createParameterObject;
 
@@ -308,8 +308,14 @@ export function create(
 			}
 
 			if(notSet(language)) {
-				language = collectionNode['language'];
-				log.debug('document.create: sat language:%s from collectionNode.language', language);
+				const languageFromCollection = collectionNode['language']; // This can be undefined
+				if (languageFromCollection) {
+					language = languageFromCollection;
+					log.debug('document.create: sat language:%s from collectionNode.language', language);
+				} else {
+					language = 'en';
+					log.debug('document.create: collectionNode has no default language, falling back to english', language);
+				}
 			}
 
 			// When do I need to read default documentTypeId from collectionNode?
