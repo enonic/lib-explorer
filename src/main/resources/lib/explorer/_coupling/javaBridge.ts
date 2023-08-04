@@ -12,7 +12,7 @@ import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '/lib/
 //import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '../stemming/javaLocaleToSupportedLanguage';
 
 
-export const javaBridge :JavaBridge = {
+export const javaBridge: JavaBridge = {
 	app,
 	connect,
 	event: event as EventLib,

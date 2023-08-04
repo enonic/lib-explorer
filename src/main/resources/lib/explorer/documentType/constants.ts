@@ -1,10 +1,10 @@
-//import type {Path} from '/lib/explorer/types/index.d';
+import {
+	NodeType,
+	Folder,
+	Path
+} from '@enonic/explorer-utils';
 
-import {COLON_SIGN} from '@enonic/js-utils';
 
-import {APP_EXPLORER} from '/lib/explorer/model/2/constants';
-
-
-export const NT_DOCUMENT_TYPE = `${APP_EXPLORER}${COLON_SIGN}documentType`;
-export const NAME_DOCUMENT_TYPE_FOLDER = 'documentTypes';
-export const PATH_DOCUMENT_TYPE_FOLDER = `/${NAME_DOCUMENT_TYPE_FOLDER}` as const;
+export const NT_DOCUMENT_TYPE = NodeType.DOCUMENT_TYPE;
+export const NAME_DOCUMENT_TYPE_FOLDER = Folder.DOCUMENT_TYPES;
+export const PATH_DOCUMENT_TYPE_FOLDER = Path.DOCUMENT_TYPES;

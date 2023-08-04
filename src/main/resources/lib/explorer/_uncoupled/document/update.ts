@@ -256,7 +256,14 @@ export function update(
 			}
 
 			if(notSet(language)) {
-				language = collectionNode['language'];
+				const languageFromCollection = collectionNode['language']; // This can be undefined
+				if (languageFromCollection) {
+					language = languageFromCollection;
+					log.debug('document.update: sat language:%s from collectionNode.language', language);
+				} else {
+					language = 'en';
+					log.debug('document.update: collectionNode has no default language, falling back to english', language);
+				}
 			}
 		}
 		if (notSet(documentTypeName) || notSet(fields)) {
