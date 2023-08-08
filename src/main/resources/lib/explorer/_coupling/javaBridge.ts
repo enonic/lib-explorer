@@ -2,7 +2,7 @@ import type {EventLib} from '@enonic/js-utils/types/index.d';
 import type {JavaBridge} from './types.d';
 
 
-import event from '/lib/xp/event';
+import * as event from '/lib/xp/event';
 import {connect} from '/lib/xp/node';
 import * as repo from '/lib/xp/repo';
 import * as value from '/lib/xp/value';
