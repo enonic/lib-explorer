@@ -23,6 +23,7 @@ import {
 	NT_INTERFACE,
 	NT_SYNONYM
 } from '/lib/explorer/constants';
+import { create } from '/lib/explorer/node/create';
 import {buildSynonymIndexConfig} from '/lib/explorer/synonym/buildSynonymIndexConfig';
 import {moldSynonymNode} from '/lib/explorer/synonym/moldSynonymNode';
 import {getThesaurus} from '/lib/explorer/thesaurus/getThesaurus';
@@ -34,10 +35,10 @@ export function getValidInterfaceIds({
 	explorerRepoReadConnection,
 	interfaceIdsArray,
 	interfaceIdsChecked, // modified within
-} :{
-	explorerRepoReadConnection :RepoConnection|WriteConnection,
-	interfaceIdsArray :ReadonlyArray<string>
-	interfaceIdsChecked :Record<string,boolean> // modified within
+}: {
+	explorerRepoReadConnection: RepoConnection|WriteConnection,
+	interfaceIdsArray: ReadonlyArray<string>
+	interfaceIdsChecked: Record<string,boolean> // modified within
 }) {
 	const validInterfaceIds=[];
 	for (let i = 0; i < interfaceIdsArray.length; i++) {
@@ -68,7 +69,7 @@ function arrayOfInputTypeLanguageSynonymsToArrayOfSynonymNodeLanguageSynonyms({
 	checkInterfaceIds = false,
 	explorerRepoReadConnection,
 	interfaceIdsChecked
-} :{
+}: {
 	arrayOfInputTypeLanguageSynonyms: InputTypeLanguageSynonym[]
 	checkInterfaceIds: boolean
 	explorerRepoReadConnection: RepoConnection
@@ -108,11 +109,11 @@ export function moldInputTypeLanguages({
 	explorerRepoReadConnection,
 	interfaceIdsChecked,
 	languagesArg
-} :{
-	checkInterfaceIds :boolean
-	explorerRepoReadConnection :RepoConnection
-	interfaceIdsChecked :Record<string,boolean> // modified within
-	languagesArg :InputTypeSynonymLanguages
+}: {
+	checkInterfaceIds: boolean
+	explorerRepoReadConnection: RepoConnection
+	interfaceIdsChecked: Record<string,boolean> // modified within
+	languagesArg: InputTypeSynonymLanguages
 }) {
 	const languages = {};
 	for (let i = 0; i < languagesArg.length; i++) {
@@ -172,15 +173,15 @@ export function createSynonym({
 	enabled: enabledArg = true,
 	languages: languagesArg = [],
 	thesaurusName,
-} :{
+}: {
 	// Required
-	thesaurusId :string
+	thesaurusId: string
 	// Optional
-	comment ?:string
-	disabledInInterfaces ?:Array<string>
-	enabled ?:boolean
-	languages ?:InputTypeSynonymLanguages
-	thesaurusName ?:string
+	comment?: string
+	disabledInInterfaces?: string[]
+	enabled?: boolean
+	languages?: InputTypeSynonymLanguages
+	thesaurusName?: string
 }, {
 	// Required
 	explorerRepoWriteConnection,
@@ -189,14 +190,14 @@ export function createSynonym({
 	checkThesaurus = false,
 	interfaceIdsChecked = {}, // modified within
 	refreshRepoIndexes = true // Set to false when bulk importing...
-} :{
+}: {
 	// Required
-	explorerRepoWriteConnection :WriteConnection
+	explorerRepoWriteConnection: WriteConnection
 	// Optional
-	checkInterfaceIds ?:boolean
-	checkThesaurus ?:boolean
-	interfaceIdsChecked ?:Record<string,boolean>
-	refreshRepoIndexes ?:boolean
+	checkInterfaceIds?: boolean
+	checkThesaurus?: boolean
+	interfaceIdsChecked?: Record<string,boolean>
+	refreshRepoIndexes?: boolean
 }) {
 	if (!thesaurusName || checkThesaurus) {
 		const thesaurusNode = getThesaurus({ // Will throw on error
@@ -206,7 +207,7 @@ export function createSynonym({
 		thesaurusName = thesaurusNode._name;
 	} // if checkThesaurus
 
-	const createSynonymParams :SynonymNodeCreateParams = {
+	const createSynonymParams: SynonymNodeCreateParams = {
 		_nodeType: NT_SYNONYM,
 		_parentPath: `/${FOLDER_THESAURI}/${thesaurusName}`,
 		comment: commentArg,
@@ -235,7 +236,9 @@ export function createSynonym({
 		partialSynonymNode: createSynonymParams
 	});
 
-	const createRes = explorerRepoWriteConnection.create(createSynonymParams) as unknown as SynonymNode;
+	const createRes = create(createSynonymParams, {
+		connection: explorerRepoWriteConnection,
+	}) as unknown as SynonymNode;
 	if (!createRes) {
 		log.error(`Something went wrong when trying to create synonym createSynonymParams:${toStr(createSynonymParams)} in thesaurus with id:${thesaurusId}`);
 		throw new Error(`Something went wrong when trying to create synonym in thesaurus with id:${thesaurusId}!`);
