@@ -8,18 +8,13 @@ import type {
 
 
 import {
-	ROOT_PERMISSIONS_EXPLORER,
-	Principal,
-	RootPermission
-} from '@enonic/explorer-utils';
-import {
 	isNotSet,
 	toStr
 } from '@enonic/js-utils';
-import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {getUser} from '/lib/xp/auth';
 import {sanitize as doSanitize} from '/lib/xp/common';
 //import {get as getContext} from '/lib/xp/context';
+import cleanPermissions from '/lib/explorer/node/cleanPermissions';
 
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -160,40 +155,10 @@ export function create<N extends NodeCreateParams & {
 	};
 	//log.info(toStr(CREATE_PARAMS));
 
-	const safePermissions = [...ROOT_PERMISSIONS_EXPLORER]; // deref
-	if (!Array.isArray(_permissions)) {
-		_permissions = [_permissions];
-	}
-	for (let index = 0; index < _permissions.length; index++) {
-		let {
-			principal,
-			allow
-		} = _permissions[index];
-		if (!arrayIncludes([
-			Principal.EXPLORER_READ,
-			Principal.EXPLORER_WRITE,
-			Principal.SYSTEM_ADMIN
-		] as PrincipalKey[], principal)) {
-			// Other principals are not allowed write access
-			if (!Array.isArray(allow)) {
-				allow = [allow];
-			}
-			if (
-				allow.length > 0
-				&& (
-					allow.length > 1 || allow[0] !== 'READ'
-				)
-			) {
-				log.warning(`node.create: Principal:${principal} is not allowed write access! Tried to set allow:${toStr(allow)} CREATE_PARAMS:${toStr(CREATE_PARAMS)})}`);
-				if (arrayIncludes(allow, 'READ')) {
-					safePermissions.push({
-						principal,
-						allow: 'READ'
-					});
-				}
-			}
-		}
-	} // for
+	const safePermissions = cleanPermissions({
+		_permissions,
+		node: CREATE_PARAMS
+	});
 	CREATE_PARAMS['_permissions'] = safePermissions;
 
 	//const context = getContext(); log.info(toStr({context}));
