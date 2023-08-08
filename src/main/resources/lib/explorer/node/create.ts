@@ -1,3 +1,4 @@
+import type { PrincipalKey } from '/lib/xp/auth';
 import type {
 	IndexConfig,
 	NodeCreateParams,
@@ -7,13 +8,16 @@ import type {
 
 
 import {
+	ROOT_PERMISSIONS_EXPLORER,
+	Principal,
+	RootPermission
+} from '@enonic/explorer-utils';
+import {
 	isNotSet,
 	toStr
 } from '@enonic/js-utils';
-
-//@ts-ignore
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {getUser} from '/lib/xp/auth';
-//@ts-ignore
 import {sanitize as doSanitize} from '/lib/xp/common';
 //import {get as getContext} from '/lib/xp/context';
 
@@ -23,7 +27,6 @@ import {sanitize as doSanitize} from '/lib/xp/common';
 //──────────────────────────────────────────────────────────────────────────────
 import {
 	NT_FOLDER,
-	ROOT_PERMISSIONS_EXPLORER
 } from '/lib/explorer/constants';
 
 
@@ -54,7 +57,7 @@ export function create<N extends NodeCreateParams & {
 	//_manualOrderValue
 	_name,
 	_parentPath = '/',
-	_permissions = ROOT_PERMISSIONS_EXPLORER,
+	_permissions = [], // See safePermissions below
 	//_timestamp // Automatically added
 
 	// Our own standard properties (cannot start with underscore)
@@ -120,29 +123,6 @@ export function create<N extends NodeCreateParams & {
 		log.warning(`node.create: Ignored options:${toStr(ignoredOptions)}`);
 	}
 
-	//const context = getContext(); log.info(toStr({context}));
-	const pathParts = _parentPath.split('/'); //log.info(toStr({pathParts}));
-	for (let i = 1; i < pathParts.length; i += 1) {
-		const path = pathParts.slice(0, i + 1).join('/'); //log.info(toStr({path}));
-		const ancestor = connection.get(path); //log.info(toStr({ancestor}));
-		if (!ancestor) {
-			const folderParams = {
-				_indexConfig: {default: 'none'} as IndexConfig,
-				_inheritsPermissions: false,
-				_name: pathParts[i],
-				_parentPath: (pathParts.slice(0, i).join('/') || '/') as ParentPath,
-				_permissions,
-				creator,
-				createdTime: new Date(),
-				type: NT_FOLDER
-			};
-			//log.info(toStr({folderParams}));
-			//const folder =
-			connection.create(folderParams);
-			//log.info(toStr({folder}));
-		}
-	}
-
 	//log.debug('node.create doSanitize(%s):%s', _name, doSanitize(_name)); // Turns _ into - :(
 	if (_name && sanitize) {
 		_name = doSanitize(_name)
@@ -172,13 +152,73 @@ export function create<N extends NodeCreateParams & {
 		_inheritsPermissions, // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 		_name,
 		_parentPath,
-		_permissions,
+		//_permissions: safePermissions, // Added below
 		creator,
 		createdTime: new Date(),
 		displayName,
 		...rest
 	};
 	//log.info(toStr(CREATE_PARAMS));
+
+	const safePermissions = [...ROOT_PERMISSIONS_EXPLORER]; // deref
+	if (!Array.isArray(_permissions)) {
+		_permissions = [_permissions];
+	}
+	for (let index = 0; index < _permissions.length; index++) {
+		let {
+			principal,
+			allow
+		} = _permissions[index];
+		if (!arrayIncludes([
+			Principal.EXPLORER_READ,
+			Principal.EXPLORER_WRITE,
+			Principal.SYSTEM_ADMIN
+		] as PrincipalKey[], principal)) {
+			// Other principals are not allowed write access
+			if (!Array.isArray(allow)) {
+				allow = [allow];
+			}
+			if (
+				allow.length > 0
+				&& (
+					allow.length > 1 || allow[0] !== 'READ'
+				)
+			) {
+				log.warning(`node.create: Principal:${principal} is not allowed write access! Tried to set allow:${toStr(allow)} CREATE_PARAMS:${toStr(CREATE_PARAMS)})}`);
+				if (arrayIncludes(allow, 'READ')) {
+					safePermissions.push({
+						principal,
+						allow: 'READ'
+					});
+				}
+			}
+		}
+	} // for
+	CREATE_PARAMS['_permissions'] = safePermissions;
+
+	//const context = getContext(); log.info(toStr({context}));
+	const pathParts = _parentPath.split('/'); //log.info(toStr({pathParts}));
+	for (let i = 1; i < pathParts.length; i += 1) {
+		const path = pathParts.slice(0, i + 1).join('/'); //log.info(toStr({path}));
+		const ancestor = connection.get(path); //log.info(toStr({ancestor}));
+		if (!ancestor) {
+			const folderParams = {
+				_indexConfig: {default: 'none'} as IndexConfig,
+				_inheritsPermissions: false,
+				_name: pathParts[i],
+				_parentPath: (pathParts.slice(0, i).join('/') || '/') as ParentPath,
+				_permissions: safePermissions,
+				creator,
+				createdTime: new Date(),
+				type: NT_FOLDER
+			};
+			//log.info(toStr({folderParams}));
+			//const folder =
+			connection.create(folderParams);
+			//log.info(toStr({folder}));
+		}
+	}
+
 	const createRes = connection.create(CREATE_PARAMS);
 	connection.refresh(); // So the data becomes immidiately searchable
 	return createRes as unknown as N & {_id: string};
