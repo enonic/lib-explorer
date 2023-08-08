@@ -8,18 +8,16 @@ import {
 	isNotSet,
 	toStr
 } from '@enonic/js-utils';
-
-//@ts-ignore
+import cleanPermissions from '/lib/explorer/node/cleanPermissions';
 import {sanitize as doSanitize} from '/lib/xp/common';
-
 import {join} from '../path/join';
 
 
 export function modify<N extends {
-	_id? :string
-	_name? :string
-	_parentPath? :ParentPath
-	displayName? :string
+	_id?: string
+	_name?: string
+	_parentPath?: ParentPath
+	displayName?: string
 	modifiedTime?: Date | string
 }>({
 	_id, // So it doesn't end up in rest.
@@ -29,14 +27,14 @@ export function modify<N extends {
 		? _name.join(', ')
 		: _name, // Maybe undefined
 	...rest
-} :N, {
+}: N, {
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	sanitize,
 	...ignoredOptions
-} :{
-	connection :WriteConnection,
-	sanitize? :boolean
-}) :N {
+}: {
+	connection: WriteConnection,
+	sanitize?: boolean
+}): N {
 	//log.info(toStr({key, displayName, rest}));
 
 	Object.keys(rest).forEach((k) => {
@@ -80,6 +78,11 @@ export function modify<N extends {
 			Object.keys(rest).forEach((property) => {
 				const value = rest[property];
 				node[property] = value;
+			});
+			// TODO: Does this fail if connection/context principals doesn't have access to WRITE_PERMISSIONS?
+			node._permissions = cleanPermissions({
+				_permissions: node._permissions,
+				node
 			});
 			/* eslint-enable no-param-reassign */
 			//log.info(`modifiedNode:${toStr(node)}`);

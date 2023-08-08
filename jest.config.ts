@@ -2,8 +2,8 @@ export default {
 	collectCoverageFrom: [
 		'src/main/resources/**/*.ts'
 	],
-    
-    coveragePathIgnorePatterns: [
+
+	coveragePathIgnorePatterns: [
 		'/bin/',
 		'/node_modules/',
 		'/test/',
@@ -21,7 +21,7 @@ export default {
 	// It seems mocks doesn't apply to mapped modules?
 	moduleNameMapper: {
 		'@enonic/js-utils/(.*)': '<rootDir>/node_modules/@enonic/js-utils/$1',
-        '/lib/explorer/(.*)': '<rootDir>/src/main/resources/lib/explorer/$1'
+		'/lib/explorer/(.*)': '<rootDir>/src/main/resources/lib/explorer/$1'
 	},
 
 	preset: 'ts-jest/presets/js-with-babel-legacy',
