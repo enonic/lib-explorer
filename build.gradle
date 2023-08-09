@@ -136,6 +136,20 @@ task yarnCheck(type: YarnTask) {
 }
 // check.dependsOn yarnCheck
 
+task yarnTest(
+	dependsOn: yarn_install,
+	type: YarnTask
+) {
+	args = ['test']
+	environment = [
+		'FORCE_COLOR': 'true',
+	]
+	inputs.dir 'src/main/resources'
+	inputs.dir 'test'
+	outputs.dir 'coverage'
+}
+test.dependsOn yarnTest
+
 //──────────────────────────────────────────────────────────────────────────────
 // TSUP
 //──────────────────────────────────────────────────────────────────────────────
