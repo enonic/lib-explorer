@@ -150,6 +150,11 @@ task yarnTest(
 }
 test.dependsOn yarnTest
 
+task cleanCoverage(type:Delete) {
+	delete 'coverage'
+}
+clean.dependsOn cleanCoverage
+
 //──────────────────────────────────────────────────────────────────────────────
 // TSUP
 //──────────────────────────────────────────────────────────────────────────────
