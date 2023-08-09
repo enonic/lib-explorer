@@ -7,6 +7,7 @@ import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
 import type {SynonymsArray} from '/lib/explorer/synonym/index.d';
 import type {TermQuery} from '/lib/explorer/types/Interface.d';
 import type {Highlight} from '/lib/explorer/types/GraphQL.d';
+import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 
 import {
@@ -61,28 +62,28 @@ export function makeQueryParams({
 	start, // default is undefined which means 0
 	stemmingLanguages = [],
 	termQueries,
-} :{
-	aggregationsArg :Array<AnyObject>
-	doProfiling ?:boolean
-	fields :Array<InterfaceField>
-	filtersArg ?:Array<AnyObject>
-	highlightArg ?:Highlight
-	interfaceId :string
-	languages :Array<string>
-	localesInSelectedThesauri :Array<string>
-	profilingArray ?:Array<Profiling>
-	profilingLabel ?:string
-	searchString :string
-	stopWords :Array<string>
-	synonymsSource :SynonymsArray
-	thesauriNames :Array<string>
+}: {
+	aggregationsArg: AnyObject[]
+	doProfiling?: boolean
+	fields: InterfaceField[]
+	filtersArg?: AnyObject[]
+	highlightArg?: Highlight
+	interfaceId: string
+	languages: string[]
+	localesInSelectedThesauri: string[]
+	profilingArray?: Profiling[]
+	profilingLabel?: string
+	searchString: string
+	stopWords: string[]
+	synonymsSource: SynonymsArray
+	thesauriNames: string[]
 	// Optional
-	count ?:number
-	logSynonymsQuery ?:boolean
-	logSynonymsQueryResult ?:boolean
+	count?: number
+	logSynonymsQuery?: boolean
+	logSynonymsQueryResult?: boolean
 	// queryArg?: QueryDsl,
-	start ?:number
-	stemmingLanguages ?:Array<string>
+	start?: number
+	stemmingLanguages?: StemmingLanguageCode[]
 	termQueries?: TermQuery[]
 }) {
 	//log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
@@ -111,7 +112,7 @@ export function makeQueryParams({
 	});
 	//log.debug('staticFilter:%s', toStr(staticFilter));
 
-	let filtersArray :Array<AnyObject>;
+	let filtersArray: AnyObject[];
 	if (filtersArg) {
 		// This works magically because fieldType is an Enum?
 		filtersArray = createFilters(resolveFieldShortcuts({
@@ -153,14 +154,16 @@ export function makeQueryParams({
 	});
 
 	//log.debug('fields:%s', toStr(fields));
-	const query = searchStringWithoutStopWords ? makeQuery({
-		fields,
-		searchStringWithoutStopWords,
-		stemmingLanguages,
-		termQueries
-	}) : {
-		matchAll: {}
-	};
+	const query = searchStringWithoutStopWords
+		? makeQuery({
+			fields,
+			searchStringWithoutStopWords,
+			stemmingLanguages,
+			termQueries
+		})
+		: {
+			matchAll: {}
+		};
 	//log.debug('query:%s', toStr(query));
 
 	const synonyms = isSet(synonymsSource)

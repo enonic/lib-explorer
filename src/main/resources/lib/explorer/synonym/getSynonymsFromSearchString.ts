@@ -3,6 +3,7 @@ import type {SynonymUse} from '/lib/explorer/types/Synonym.d';
 import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
 import type {QuerySynonymsParams} from '/lib/explorer/synonym/query';
 import type {SynonymsArray} from './index.d';
+import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 import {
 	addQueryFilter,
@@ -146,7 +147,7 @@ export function getSynonymsFromSearchString({
 					useArray.map((use) => `languages.${locale}.${use}.synonym`),
 					washedSearchString,
 					'AND',
-					javaLocaleToSupportedLanguage(locale)
+					javaLocaleToSupportedLanguage(locale) as StemmingLanguageCode
 				));
 			}
 		} // for localesArray

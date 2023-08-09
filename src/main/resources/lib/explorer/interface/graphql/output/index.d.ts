@@ -8,6 +8,7 @@ import type {Highlight} from '../highlight/input/index.d';
 //import type {HighlightArray} from '../highlight/output/index.d';
 import type {SynonymsArray} from '/lib/explorer/synonym/index.d';
 import type {TermQuery} from '/lib/explorer/types/Interface.d';
+import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 
 export type {EmptyObject} from '/lib/explorer/types/index.d';
@@ -40,7 +41,7 @@ export type InterfaceInfo = {
 	interfaceId: string
 	interfaceName: string
 	localesInSelectedThesauri: string[]
-	stemmingLanguages: string[] // Can be an empty array
+	stemmingLanguages: StemmingLanguageCode[] // Can be an empty array
 	stopWords: string[]
 	thesauriNames: string[]
 	termQueries?: TermQuery[]

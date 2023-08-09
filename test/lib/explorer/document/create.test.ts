@@ -44,7 +44,8 @@ import {
 
 
 const log = Log.createLogger({
-	loglevel: 'info'
+	// loglevel: 'info'
+	loglevel: 'silent'
 });
 
 const javaBridge = new JavaBridge({

@@ -25,7 +25,7 @@ const KNOWN_LOCALES = {
 };
 
 
-export function javaLocaleToSupportedLanguage(javaLocale :string) :string {
+export function javaLocaleToSupportedLanguage(javaLocale: string): string {
 	//log.info(`javaLocale:${toStr(javaLocale)}`);
 
 	const localeMatchesLangCode = CODE_TO_LANG[javaLocale];
