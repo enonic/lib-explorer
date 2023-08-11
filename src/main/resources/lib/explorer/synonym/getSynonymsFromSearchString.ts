@@ -1,30 +1,32 @@
-import type {RepoConnection} from '/lib/explorer/types/index.d';
-import type {SynonymUse} from '/lib/explorer/types/Synonym.d';
-import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
-import type {QuerySynonymsParams} from '/lib/explorer/synonym/query';
-import type {SynonymsArray} from './index.d';
+import type { RepoConnection } from '/lib/explorer/types/index.d';
+import type { SynonymUse } from '/lib/explorer/types/Synonym.d';
+import type { Profiling } from '/lib/explorer/interface/graphql/output/index.d';
+import type { QuerySynonymsParams } from '/lib/explorer/synonym/query';
+import type { SynonymsArray } from './index.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 import {
+	arrayIncludes,
 	addQueryFilter,
 	forceArray,
 	isSet,
 	storage,
+	stringIncludes,
 	toStr
 } from '@enonic/js-utils';
-import {hasValue} from '/lib/explorer/query/hasValue';
-import {replaceSyntax} from '/lib/explorer/query/replaceSyntax';
-import {ws} from '/lib/explorer/string/ws';
-import {query as querySynonyms} from '/lib/explorer/synonym/query';
-import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
-import {washSynonyms} from '/lib/explorer/synonym/washSynonyms';
-import {query as queryThesauri} from '/lib/explorer/thesaurus/query';
+import { hasValue } from '/lib/explorer/query/hasValue';
+import { replaceSyntax } from '/lib/explorer/query/replaceSyntax';
+import { ws } from '/lib/explorer/string/ws';
+import { query as querySynonyms } from '/lib/explorer/synonym/query';
+import { javaLocaleToSupportedLanguage } from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
+import { washSynonyms } from '/lib/explorer/synonym/washSynonyms';
+import { query as queryThesauri } from '/lib/explorer/thesaurus/query';
 
 // This fails when tsup code splitting: true
-// import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
+// import { currentTimeMillis } from '/lib/explorer/time/currentTimeMillis';
 
 //@ts-ignore
-const {currentTimeMillis} = Java.type('java.lang.System') as {
+const { currentTimeMillis } = Java.type('java.lang.System') as {
 	currentTimeMillis: () => number
 }
 
@@ -92,7 +94,7 @@ export function getSynonymsFromSearchString({
 		//filters: , // TODO filter on languages?
 		getSynonymsCount: false,
 		thesauri
-	}).hits.map(({_name}) => _name);
+	}).hits.map(({ _name }) => _name);
 	// log.debug('getSynonymsFromSearchString activeThesauri: %s', toStr(activeThesauri));
 
 	if (doProfiling) {
@@ -105,7 +107,7 @@ export function getSynonymsFromSearchString({
 	}
 	//log.debug('activeThesauri:%s', toStr(activeThesauri));
 
-	const washedSearchString = ws(replaceSyntax({string: searchString.toLowerCase()}));
+	const washedSearchString = ws(replaceSyntax({ string: searchString.toLowerCase() }));
 
 	const useArray :Array<SynonymUse> = ['both', 'from'];
 	const resultUseArray :Array<SynonymUse> = [
@@ -302,8 +304,8 @@ export function getSynonymsFromSearchString({
 			//log.debug('locale:%s', toStr(locale));
 			if (
 				languageEnabled
-				&& !languageDisabledInInterfaces.includes(interfaceId)
-				&& localesArray.includes(locale)
+				&& !arrayIncludes(languageDisabledInInterfaces, interfaceId)
+				&& arrayIncludes(localesArray, locale)
 			) {
 				for (let j = 0; j < resultUseArray.length; j++) {
 					const use = resultUseArray[j];
@@ -318,11 +320,11 @@ export function getSynonymsFromSearchString({
 						} = synonymsArray[k];
 						if (
 							enabled
-							&& !disabledInInterfaces.includes(interfaceId)
+							&& !arrayIncludes(disabledInInterfaces, interfaceId)
 						) {
 							const washedSynonym = washSynonyms(synonym);
 							//log.debug('washedSynonym:%s', toStr(washedSynonym));
-							if (!washedSearchString.includes(washedSynonym)) {
+							if (!stringIncludes(washedSearchString, washedSynonym)) {
 								if (use === 'from') {
 									//if (!from.includes(washedSynonym)) {
 									//from.push(washedSynonym);
