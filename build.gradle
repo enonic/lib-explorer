@@ -3,7 +3,7 @@ plugins {
 	id 'maven-publish' // Provides publishToMavenLocal
 	id 'com.enonic.xp.base' version '3.4.0'
 	id 'com.enonic.defaults' version '2.1.2' // Publishing
-	id 'com.github.node-gradle.node' version '6.0.0'
+	id 'com.github.node-gradle.node' version '7.0.0'
 }
 
 // TODO: Can be removed when xpVersion is >=7.13.0
