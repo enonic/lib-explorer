@@ -1,17 +1,15 @@
-//import {toStr} from '@enonic/js-utils';
-
+// import { toStr } from '@enonic/js-utils';
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {
 	get as getRepo,
 	create as createRepo,
 	createBranch as createRepoBranch
 	//@ts-ignore
 } from '/lib/xp/repo';
-
-//import {create as createNode}  from '/lib/explorer/node/create';
-//import {get as getNode}  from '/lib/explorer/node/get';
+// import {create as createNode}  from '/lib/explorer/node/create';
+// import {get as getNode}  from '/lib/explorer/node/get';
 import {exists as nodeExists}  from '../node/exists';
 import {connect}  from '../repo/connect';
-
 import {
 	PRINCIPAL_EXPLORER_WRITE,
 	ROOT_PERMISSIONS_EXPLORER
@@ -41,9 +39,9 @@ export function maybeCreate({
 	} // !repo exists
 
 	getRepoRes = getRepo(repoId);
-	//log.info(`getRepoRes:${toStr(getRepoRes)}`);
+	// log.debug('getRepoRes:%s', toStr(getRepoRes));
 
-	const branchAlreadyExists = getRepoRes.branches.includes(branchId);
+	const branchAlreadyExists = arrayIncludes(getRepoRes.branches, branchId);
 	//log.info(`branchAlreadyExists:${toStr(branchAlreadyExists)}`);
 
 	if (branchAlreadyExists) {

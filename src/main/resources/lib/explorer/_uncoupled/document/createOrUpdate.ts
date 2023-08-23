@@ -9,7 +9,7 @@ import {
 	isUuidV4String,
 	toStr
 } from '@enonic/js-utils';
-
+// import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {
 	BRANCH_ID_EXPLORER,
 	COLLECTION_REPO_PREFIX,
@@ -103,7 +103,7 @@ export function createOrUpdate(
 	const existsRes = collectionRepoReadConnection.exists(_path);
 	//log.debug('document.createOrUpdate: existsRes:%s', existsRes);
 
-	if (existsRes /*&& existsRes.includes(_path)*/) { // TypeError: collectionRepoReadConnection.exists(_path).indexOf is not a function
+	if (existsRes /*&& arrayIncludes(existsRes, _path)*/) { // TypeError: collectionRepoReadConnection.exists(_path).indexOf is not a function
 		return update(createOrUpdateParameterObject, javaBridge);
 	}
 

@@ -10,6 +10,7 @@ import {
 	isSet//,
 	// toStr
 } from '@enonic/js-utils';
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {
 	connect
 } from '/lib/xp/node';
@@ -59,7 +60,7 @@ export function copy({
 	const {
 		branches: fromRepoBranches
 	} = fromRepo;
-	if (!fromRepoBranches.includes(branchId)) {
+	if (!arrayIncludes(fromRepoBranches, branchId)) {
 		throw new Error(`repo.copy: fromRepo with id:${fromRepoId} doesn't have a branch:${branchId}!`);
 	}
 
@@ -70,7 +71,7 @@ export function copy({
 		const {
 			branches: toRepoBranches
 		} = toRepo;
-		if (toRepoBranches.includes(branchId)) {
+		if (arrayIncludes(toRepoBranches, branchId)) {
 			// TODO this could be a warning instead
 			throw new Error(`repo.copy: fromRepo with id:${fromRepoId} already has a branch named ${branchId}!`);
 		}
@@ -91,7 +92,7 @@ export function copy({
 	const {
 		branches: toRepoBranches
 	} = toRepo;
-	if (!toRepoBranches.includes(branchId)) {
+	if (!arrayIncludes(toRepoBranches, branchId)) {
 		try {
 			createBranch({
 				branchId,

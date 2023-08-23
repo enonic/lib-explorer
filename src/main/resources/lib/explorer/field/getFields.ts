@@ -10,6 +10,7 @@ import {
 	isStringLiteral,
 	toStr
 } from '@enonic/js-utils';
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {
 	NT_FIELD,
 	SYSTEM_FIELDS
@@ -74,7 +75,7 @@ export function getFields({
 
 	// Add system fields
 	const maybeFilteredSystemFields = fields
-		? SYSTEM_FIELDS.filter(({key}) => fields.includes(key))
+		? SYSTEM_FIELDS.filter(({key}) => arrayIncludes(fields, key))
 		: SYSTEM_FIELDS;
 	getFieldsResponse.count += maybeFilteredSystemFields.length;
 	getFieldsResponse.total += maybeFilteredSystemFields.length;

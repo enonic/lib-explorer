@@ -9,7 +9,7 @@ import {
 	isNotSet,
 	toStr
 } from '@enonic/js-utils';
-
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 //──────────────────────────────────────────────────────────────────────────────
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
@@ -70,7 +70,7 @@ export function createOrModify<Node extends NodeCreateParams & {
 			_parentPath, _name, displayName, ...rest
 		}, {connection});
 	} catch (catchedError) {
-		if (catchedError.class && CATCH_CLASS_NAMES.includes(catchedError.class.name)) {
+		if (catchedError.class && arrayIncludes(CATCH_CLASS_NAMES, catchedError.class.name)) {
 			//@ts-ignore
 			rv = modify({
 				_parentPath, _name, displayName, ...rest

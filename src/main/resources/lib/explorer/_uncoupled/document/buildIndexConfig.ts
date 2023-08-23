@@ -23,16 +23,16 @@ import {
 	indexTemplateToConfig,
 	sortByProperty
 } from '@enonic/js-utils';
-
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {FIELD_PATH_META} from '../../constants';
 //import {javaBridgeDummy} from '../dummies';
 
 
 function decideByTypeFromValueType(valueType :string) :boolean {
-	if ([VALUE_TYPE_STRING].includes(valueType)) {
+	if (arrayIncludes([VALUE_TYPE_STRING], valueType)) {
 		return false;
 	}
-	/*if ([
+	/*if (arrayIncludes([
 		VALUE_TYPE_ANY,
 		VALUE_TYPE_BOOLEAN,
 		VALUE_TYPE_DOUBLE,
@@ -44,7 +44,7 @@ function decideByTypeFromValueType(valueType :string) :boolean {
 		VALUE_TYPE_LONG,
 		VALUE_TYPE_REFERENCE,
 		VALUE_TYPE_SET
-	].includes(valueType)) {
+	], valueType)) {
 		return true;
 	}*/
 	return true;

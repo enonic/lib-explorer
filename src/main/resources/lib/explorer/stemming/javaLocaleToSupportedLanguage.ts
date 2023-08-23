@@ -2,7 +2,7 @@ import {
 	STEMMING_LANGUAGES,
 	toStr
 } from '@enonic/js-utils';
-
+import { includes as stringIncludes } from '@enonic/js-utils/string/includes';
 import {getLocales} from '/lib/explorer/locale/getLocales';
 
 
@@ -52,7 +52,7 @@ export function javaLocaleToSupportedLanguage(javaLocale: string): string {
 
 	let firstMatch :string;
 	for (let lang of Object.keys(LANG_TO_CODE)) {
-		if (locales[0].displayName.includes(lang)) {
+		if (stringIncludes(locales[0].displayName, lang)) {
 			firstMatch = LANG_TO_CODE[lang];
 			//log.debug(`firstMatch:${firstMatch} javaLocale:${javaLocale} locales:${toStr(locales)}`);
 			break;

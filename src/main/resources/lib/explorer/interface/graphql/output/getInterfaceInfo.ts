@@ -3,11 +3,11 @@ import type {CollectionNode} from '/lib/explorer/types/Collection.d';
 
 
 import {
-	arrayIncludes,
 	getIn,
 	isSet,
 	// toStr,
 } from '@enonic/js-utils';
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {
 	COLLECTION_REPO_PREFIX,
 	DEFAULT_INTERFACE_FIELDS,
@@ -184,7 +184,7 @@ export function getInterfaceInfo({
 				const {allowedLanguages} = thesauriNode;
 				for (let i = 0; i < allowedLanguages.length; i++) {
 					const locale = allowedLanguages[i];
-					if (!localesInSelectedThesauri.includes(locale)) {
+					if (!arrayIncludes(localesInSelectedThesauri, locale)) {
 						localesInSelectedThesauri.push(locale);
 					}
 				}

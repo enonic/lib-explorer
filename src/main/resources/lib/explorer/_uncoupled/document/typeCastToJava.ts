@@ -31,6 +31,7 @@ import {
 	setIn,
 	toStr
 } from '@enonic/js-utils';
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 //import traverse from 'traverse'; //[!] Error: 'default' is not exported by node_modules/traverse/index.js
 //import * as traverse from 'traverse'; //(!) Cannot call a namespace ('traverse')
 
@@ -84,14 +85,14 @@ export function typeCastToJava(
 			} = fieldObjWithoutName;
 			//log.debug(`pathString:${toStr(pathString)} valueTypeForPath:${toStr(valueTypeForPath)}`);
 			if (valueTypeForPath) {
-				if ([
+				if (arrayIncludes([
 					VALUE_TYPE_ANY, // What is the data is a set?
 					VALUE_TYPE_BOOLEAN,
 					VALUE_TYPE_DOUBLE,
 					VALUE_TYPE_LONG,
 					//VALUE_TYPE_SET,
 					VALUE_TYPE_STRING
-				].includes(valueTypeForPath)) {
+				], valueTypeForPath)) {
 					setIn(typeCastedData, pathString, value);
 					//this.update(value, true); // I actually don't need to update the value, but it's the only way to stopHere?
 					this.block();
@@ -184,7 +185,7 @@ export function typeCastToJava(
 					}
 				}
 			} else { // !valueTypeForPath
-				if (![FIELD_PATH_GLOBAL, FIELD_PATH_META].includes(pathString)) {
+				if (!arrayIncludes([FIELD_PATH_GLOBAL, FIELD_PATH_META], pathString)) {
 					log.debug(`Field without valueType path:${pathString} value:${toStr(value)}`);
 				}
 				//this.update(value, true);

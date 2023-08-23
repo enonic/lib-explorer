@@ -12,11 +12,11 @@ import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 import {
 	addQueryFilter,
-	arrayIncludes,
 	forceArray,
 	isSet//,
 	//toStr
 } from '@enonic/js-utils';
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {
 	FIELD_PATH_META,
 	NT_DOCUMENT,
@@ -196,7 +196,7 @@ export function makeQueryParams({
 				locale,
 				synonym
 			} = synonymsToApply[j];
-			if (!appliedFulltext.includes(synonym)) {
+			if (!arrayIncludes(appliedFulltext, synonym)) {
 				const aSynonymFulltextQuery = {
 					fulltext: {
 						fields: fields.map(({name}) => name), // NOTE: No boosting

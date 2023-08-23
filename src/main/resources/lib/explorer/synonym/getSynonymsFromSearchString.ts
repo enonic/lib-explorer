@@ -6,14 +6,14 @@ import type { SynonymsArray } from './index.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 import {
-	arrayIncludes,
 	addQueryFilter,
 	forceArray,
 	isSet,
 	storage,
-	stringIncludes,
 	toStr
 } from '@enonic/js-utils';
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
+import { includes as stringIncludes } from '@enonic/js-utils/string/includes';
 import { hasValue } from '/lib/explorer/query/hasValue';
 import { replaceSyntax } from '/lib/explorer/query/replaceSyntax';
 import { ws } from '/lib/explorer/string/ws';
@@ -326,7 +326,7 @@ export function getSynonymsFromSearchString({
 							//log.debug('washedSynonym:%s', toStr(washedSynonym));
 							if (!stringIncludes(washedSearchString, washedSynonym)) {
 								if (use === 'from') {
-									//if (!from.includes(washedSynonym)) {
+									//if (!arrayIncludes(from, washedSynonym)) {
 									//from.push(washedSynonym);
 									if (expand) {
 										synonymsToApply.push({
@@ -335,8 +335,8 @@ export function getSynonymsFromSearchString({
 										});
 									}
 									//}
-								} else {  // both, to
-									//if (!to.includes(washedSynonym)) {
+								} else { // both, to
+									//if (!arrayIncludes(to, washedSynonym)) {
 									//to.push(washedSynonym);
 									synonymsToApply.push({
 										locale,

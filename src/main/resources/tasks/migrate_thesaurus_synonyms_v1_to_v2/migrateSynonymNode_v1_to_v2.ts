@@ -13,6 +13,7 @@ import {
 	forceArray//,
 	//toStr
 } from '@enonic/js-utils';
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {buildSynonymIndexConfig} from '/lib/explorer/synonym/buildSynonymIndexConfig';
 import {getUser} from '/lib/xp/auth';
 import {reference as referenceValue} from '/lib/xp/value';
@@ -31,7 +32,7 @@ function intersect({
 
 	for (let i = 0; i < a.length; i++) {
 		const itemInA = a[i];
-		if (b.includes(itemInA)) {
+		if (arrayIncludes(b, itemInA)) {
 			inBoth.push(itemInA);
 		} else {
 			notInB.push(itemInA);
@@ -42,7 +43,7 @@ function intersect({
 	// So what's left to do is to "keep" what's not in the intersection...
 	for (let i = 0; i < b.length; i++) {
 		const itemInB = b[i];
-		if (!inBoth.includes(itemInB)) {
+		if (!arrayIncludes(inBoth, itemInB)) {
 			notInA.push(itemInB);
 		}
 	}

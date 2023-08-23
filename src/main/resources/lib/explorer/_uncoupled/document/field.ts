@@ -31,7 +31,8 @@ import {
 	isString,
 	toStr
 } from '@enonic/js-utils';
-
+import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
+import { includes as stringIncludes } from '@enonic/js-utils/string/includes';
 //import {javaBridgeDummy} from '../dummies';
 
 
@@ -79,18 +80,18 @@ export function isField(
 		//log.debug('isField() i:%s', i);
 		const key = keys[i];
 		//log.debug('isField() i:%s key:%s', i, key);
-		if (!ALLOWED_PROPS.includes(key)) {
+		if (!arrayIncludes(ALLOWED_PROPS, key)) {
 			log.error(`key:${key} is not an allowed property on interface Field!`);
 			return false;
 		} else {
 			const property = value[key];
 			//log.debug('isField() i:%s key:%s property:%s', i, key, property);
-			if (BOOLEAN_PROPS.includes(key)) {
+			if (arrayIncludes(BOOLEAN_PROPS, key)) {
 				if (!isBoolean(property)) {
 					log.error(`key:${key} value:${toStr(property)} is not of type boolean on interface Field!`);
 					return false;
 				}
-			} else if (POSITIVE_INTEGER_PROPS.includes(key)) {
+			} else if (arrayIncludes(POSITIVE_INTEGER_PROPS, key)) {
 				if (!isPositiveInteger(property)) {
 					log.error(`key:${key} value:${toStr(property)} is not of type PositiveInteger on interface Field!`);
 					return false;
@@ -101,7 +102,7 @@ export function isField(
 					return false;
 				}
 			} else if (key === 'valueType') {
-				if (!VALUE_TYPES.includes(property)) {
+				if (!arrayIncludes(VALUE_TYPES, property)) {
 					log.error(`key:${key} value:${toStr(property)} is not of type ValueType on interface Field!`);
 					return false;
 				}
@@ -216,7 +217,7 @@ export function addMissingSetToFieldsArray(
 		const field = fields[i];
 		let {name: path} = field;
 		log.debug(`path:${path}`);
-		while (path.includes('.')) {
+		while (stringIncludes(path, '.')) {
 			path = path.split('.').slice(0,-1).join('.');
 			log.debug(`path:${path}`);
 			if (!fieldsObj[path]) {
