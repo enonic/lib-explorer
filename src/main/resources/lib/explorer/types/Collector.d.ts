@@ -69,12 +69,22 @@ export type CollectorReactComponentParams = {
 	path :string
 }
 
+export interface CollectorsJsonCollector {
+	appName: typeof app.name
+	displayName: string
+	taskName: TaskName // Used to be collectTaskName in register
+	componentPath?: string // Replaced by formLibraryName
+	configAssetPath?: string // Replaced by formAssetPath
+	formAssetPath?: string
+	formLibraryName?: string
+}
+
 export type Collector = {
 	appName: typeof app.name
-	componentPath :string
-	configAssetPath :string
-	displayName :string
-	taskName :TaskName // Used to be collectTaskName in register
+	componentPath: string
+	configAssetPath: string
+	displayName: string
+	taskName: TaskName // Used to be collectTaskName in register
 }
 
 
