@@ -1,4 +1,7 @@
-import type {Collector} from '/lib/explorer/types/index.d';
+import type {
+	Collector,
+	CollectorsJsonCollector,
+} from '/lib/explorer/types/Collector';
 
 //import {toStr} from '@enonic/js-utils';
 
@@ -19,20 +22,35 @@ export function list() {
 	});
 	//log.debug(`startedNonSytemApps:${toStr(startedNonSytemApps)}`);
 
-	const collectors :Array<Collector> = [];
+	const collectors: Collector[] = [];
 	startedNonSytemApps.forEach((appKey) => {
 		const filePath = 'collectors.json';
 		const resourcePath = `${appKey}:${filePath}`;
 		const resource = getResource(RESOURCE_KEY.from(resourcePath));
 		if (resource.exists()) {
-			const resourceJson :string = readText(resource.getStream());
+			const resourceJson: string = readText(resource.getStream());
 			//log.debug(`resourcePath:${resourcePath} resourceJson:${resourceJson}`);
 			try {
-				const resourceData :Array<Collector> = JSON.parse(resourceJson);
+				const resourceData: CollectorsJsonCollector[] = JSON.parse(resourceJson);
 				//log.debug(`resourcePath:${resourcePath} resourceData:${toStr(resourceData)}`);
 				resourceData.forEach((item) => {
-					item.appName = appKey as string;
-					collectors.push(item);
+					const {
+						formLibraryName,
+						componentPath = `window.${formLibraryName}.CollectorForm`,
+
+						formAssetPath,
+						configAssetPath = formAssetPath,
+
+						displayName,
+						taskName,
+					} = item;
+					collectors.push({
+						appName: appKey as string,
+						componentPath,
+						configAssetPath,
+						displayName,
+						taskName
+					});
 				});
 
 			} catch (e) {
