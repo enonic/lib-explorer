@@ -5,8 +5,8 @@ import {
 	fold,
 	hasOwnProperty,
 	isObject,
-	// toStr
 } from '@enonic/js-utils';
+// import {toStr} from '@enonic/js-utils/value/toStr';
 const traverse = require('traverse');
 import {
 	FIELD_PATH_GLOBAL,
@@ -22,14 +22,19 @@ import {
 // throw error or simply warn...
 export function constrainPropertyNames({
 	data
-} :{
-	data :unknown
-}, javaBridge :JavaBridge) {
-	const constrainedData = traverse(data).clone();
+}: {
+	data: unknown
+}, javaBridge: JavaBridge) {
+	// javaBridge.log.debug('constrainPropertyNames data:%s', toStr(data));
+
+	// Fix Bug #284 traverse.clone crashes, replace with JSON.parse(JSON.stringify())
+	const constrainedData = JSON.parse(JSON.stringify(data));
+
 	let dirty = true;
 	while (dirty) {
 		dirty = false;
-		traverse(constrainedData).forEach(function(value :unknown) { // Fat arrow destroys this
+		// javaBridge.log.debug('constrainPropertyNames constrainedData:%s', toStr(constrainedData));
+		traverse(constrainedData).forEach(function(value: unknown) { // Fat arrow destroys this
 			/*if (this.level === 0) {
 				javaBridge.log.info('────────────────────────────────────────────────────────────────────────────────');
 				javaBridge.log.info('root');
@@ -87,6 +92,6 @@ export function constrainPropertyNames({
 			} // !circular
 		}); // traverse
 	} // while dirty
-	//javaBridge.log.info('constrainedData:%s', constrainedData);
+	// javaBridge.log.debug('constrainPropertyNames constrainedData:%s', constrainedData);
 	return constrainedData;
 }
