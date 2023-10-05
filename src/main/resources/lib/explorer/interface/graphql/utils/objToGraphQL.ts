@@ -9,9 +9,9 @@ import type {
 import {
 	VALUE_TYPE_SET,
 	camelize,
-	//toStr,
 	ucFirst
 } from '@enonic/js-utils';
+// import {toStr} from '@enonic/js-utils/value/toStr';
 import traverse from 'traverse';
 import {
 	list,
@@ -25,12 +25,12 @@ export function objToGraphQL({
 	documentTypeName,
 	glue,
 	obj
-} :{
-	documentTypeName :string
-	glue :Glue
-	obj :Branch
-}) :Fields {
-	//log.debug('objToGraphQL documentTypeName:%s obj:%s', documentTypeName, toStr(obj));
+}: {
+	documentTypeName: string
+	glue: Glue
+	obj: Branch
+}): Fields {
+	// log.debug('objToGraphQL documentTypeName:%s obj:%s', documentTypeName, toStr(obj));
 
 	const emptyObj = {};
 	traverse(obj).forEach(function(value) { // Fat arrow destroys this
@@ -97,5 +97,6 @@ export function objToGraphQL({
 			} // if !leaf
 		} // if !root
 	}); // traverse
+	// log.debug('objToGraphQL emptyObj:%s', toStr(emptyObj));
 	return emptyObj;
 } // objToGraphQL
