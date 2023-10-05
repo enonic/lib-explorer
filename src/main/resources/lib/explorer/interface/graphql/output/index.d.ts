@@ -28,6 +28,7 @@ export type GraphQLContext = {
 	//query: string
 	// Optional
 	logQuery?: boolean
+	logQueryResult?: boolean
 	logSynonymsQuery?: boolean
 	logSynonymsQueryResult?: boolean
 }
