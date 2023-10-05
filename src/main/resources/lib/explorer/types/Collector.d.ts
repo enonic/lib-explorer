@@ -33,9 +33,6 @@ export type ContentTypeOptions = unknown[];
 
 export type Fields = Record<string,{
 	label: string
-	values: Record<string,{
-		label: string
-	}>
 }>;
 
 export type SiteOptions = Array<unknown>;
