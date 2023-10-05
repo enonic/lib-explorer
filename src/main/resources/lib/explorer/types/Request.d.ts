@@ -15,6 +15,7 @@ export type Headers = { // HTTP/2 uses lowercase header keys
 	authorization?: string
 	[HTTP_HEADERS.EXPLORER_INTERFACE_NAME]?: string
 	'explorer-log-query'?: '1'
+	'explorer-log-query-result'?: '1'
 	'explorer-log-synonyms-query'?: '1'
 	'explorer-log-synonyms-query-result'?: '1'
 	'if-none-match'?: string

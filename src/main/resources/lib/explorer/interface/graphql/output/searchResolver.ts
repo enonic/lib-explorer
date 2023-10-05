@@ -59,6 +59,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		},
 		context: {
 			logQuery = false,
+			logQueryResult = false,
 			logSynonymsQuery = false,
 			logSynonymsQueryResult = false
 		},
@@ -185,8 +186,6 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 
 	//@ts-ignore filters type supports array too
 	const queryRes = multiRepoReadConnection.query(queryParams);
-	// log.info('queryRes.hits:%s', toStr(queryRes.hits)); // Useful when explain is true
-
 	if (profilingArg) {
 		profiling.push({
 			currentTimeMillis: currentTimeMillis(),
@@ -195,8 +194,9 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		});
 		//log.debug('profiling:%s', toStr(profiling));
 	}
-	TRACE && log.debug('searchResolver queryRes:%s', toStr(queryRes));
-	//log.debug('searchResolver queryRes.aggregations:%s', toStr(queryRes.aggregations));
+	if (logQueryResult) {
+		log.debug('searchResolver queryRes:%s', toStr(queryRes));
+	}
 
 	const rv :SearchResolverReturnType = {
 		aggregationsAsJson: queryRes.aggregations, // GraphQL automatically converts to JSON
