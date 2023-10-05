@@ -11,9 +11,9 @@ import {
 	VALUE_TYPE_SET,
 	detectValueType,
 	isNonNegativeIntegerString,
-	//isNotSet,
-	// toStr
+	//isNotSet
 } from '@enonic/js-utils';
+// import {toStr} from '@enonic/js-utils/value/toStr';
 
 // [!] Error: 'default' is not exported by node_modules/traverse/index.js
 // import traverse from 'traverse';
@@ -78,9 +78,9 @@ export function addExtraFieldsToDocumentType(
 	}: AddExtraFieldsToDocumentTypeParams,
 	javaBridge: JavaBridge// = javaBridgeDummy
 ): DocumentTypeFieldsObject {
-	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: data:%s', toStr(data));
-	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: documentTypeId:%s', documentTypeId);
-	//javaBridge.log.debug('document.addExtraFieldsToDocumentType: fieldsObj:%s', toStr(fieldsObj));
+	// javaBridge.log.debug('document.addExtraFieldsToDocumentType: data:%s', toStr(data));
+	// javaBridge.log.debug('document.addExtraFieldsToDocumentType: documentTypeId:%s', documentTypeId);
+	// javaBridge.log.debug('document.addExtraFieldsToDocumentType: fieldsObj:%s', toStr(fieldsObj));
 	const returnFieldsObj = JSON.parse(JSON.stringify(fieldsObj));
 	let boolModified = false;
 	traverse(data).forEach(function(value: unknown) { // Fat arrow destroys this

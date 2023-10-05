@@ -3,9 +3,8 @@ import type {JavaBridge} from '../../_coupling/types.d';
 import type {DocumentTypeField} from '../../types/index.d';
 import type {CleanDataParameters} from './types';
 
-// import {toStr} from '@enonic/js-utils';
-//import {toStr} from '@enonic/js-utils/src';
-//import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
+
+// import {toStr} from '@enonic/js-utils/value/toStr';
 
 //import traverse from 'traverse'; //[!] Error: 'default' is not exported by node_modules/traverse/index.js
 //import * as traverse from 'traverse'; //(!) Cannot call a namespace ('traverse')
@@ -25,24 +24,24 @@ export function cleanData(
 		cleanExtraFields = false,
 		data,
 		fieldsObj = {}
-	} :CleanDataParameters,
-	javaBridge :JavaBridge// = javaBridgeDummy
-) :AnyObject {
-	const {log} = javaBridge;
-	//log.debug('cleanData() data:%s', data);
+	}: CleanDataParameters,
+	javaBridge: JavaBridge// = javaBridgeDummy
+): AnyObject {
+	// javaBridge.log.debug('document.cleanData() data:%s', toStr(data));
 	const cleanedData :AnyObject = JSON.parse(JSON.stringify(data));
 
 	if (cleanedData[FIELD_PATH_GLOBAL]) {
-		//log.debug('Cleaning path:%s from data:%s', FIELD_PATH_GLOBAL, cleanedData);
+		// javaBridge.log.debug('Cleaning path:%s from data:%s', FIELD_PATH_GLOBAL, cleanedData);
 		delete cleanedData[FIELD_PATH_GLOBAL];
 	}
 
 	if (cleanedData[FIELD_PATH_META]) {
-		//log.debug('Cleaning path:%s from data:%s', FIELD_PATH_META, cleanedData);
+		// javaBridge.log.debug('Cleaning path:%s from data:%s', FIELD_PATH_META, cleanedData);
 		delete cleanedData[FIELD_PATH_META];
 	}
 
 	if (cleanExtraFields) {
+		// javaBridge.log.debug('document.cleanData() cleanedData:%s', toStr(cleanedData));
 		traverse(cleanedData).forEach(function(/*value*/) { // Fat arrow destroys this
 			// javaBridge.log.debug('document.cleanData: this.path:%s', toStr(this.path));
 			// javaBridge.log.debug('document.cleanData: this.path[0]:%s', toStr(this.path[0]));
@@ -54,13 +53,13 @@ export function cleanData(
 				const pathString = this.path.join('.');
 				const field :Omit<DocumentTypeField, 'name'> = fieldsObj[pathString];
 				if (!field) {
-					//log.debug('Cleaning path:%s from data:%s', pathString, cleanedData);
+					// javaBridge.log.debug('Cleaning path:%s from data:%s', pathString, cleanedData);
 					this.remove(true);
 				}
 			}
 		}); // traverse
 	} // if cleanExtraFields
 
-	//log.debug(`cleanedData:${toStr(cleanedData)}`);
+	// javaBridge.log.debug(`cleanedData:${toStr(cleanedData)}`);
 	return cleanedData;
 }
