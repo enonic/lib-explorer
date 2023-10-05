@@ -12,13 +12,13 @@ export type CollectorComponentAfterResetFunction = () => void;
 
 export type CollectorComponentValidateFunction<
 	CollectorConfig extends AnyObject = AnyObject
-> = (collectorConfig :CollectorConfig) => boolean
+> = (collectorConfig: CollectorConfig) => boolean
 
 export type CollectorComponentImperativeHandle<
 	CollectorConfig extends AnyObject = AnyObject
 > = {
-	afterReset :CollectorComponentAfterResetFunction
-	validate :CollectorComponentValidateFunction<CollectorConfig>
+	afterReset: CollectorComponentAfterResetFunction
+	validate: CollectorComponentValidateFunction<CollectorConfig>
 };
 
 export type CollectorComponentRef<
@@ -29,12 +29,12 @@ export type CollectorComponentRef<
 	>
 >
 
-export type ContentTypeOptions = Array<unknown>;
+export type ContentTypeOptions = unknown[];
 
 export type Fields = Record<string,{
-	label :string
-	values :Record<string,{
-		label :string
+	label: string
+	values: Record<string,{
+		label: string
 	}>
 }>;
 
@@ -44,14 +44,14 @@ export type CollectorProps<
 	CollectorConfig extends AnyObject = AnyObject
 > = {
 	collectorConfig: CollectorConfig
-	explorer :{
-		contentTypeOptions :ContentTypeOptions
-		fields :Fields
-		siteOptions :SiteOptions
+	explorer: {
+		contentTypeOptions: ContentTypeOptions
+		fields: Fields
+		siteOptions: SiteOptions
 	}
-	initialCollectorConfig :CollectorConfig
-	setCollectorConfig :React.Dispatch<React.SetStateAction<CollectorConfig>>
-	setCollectorConfigErrorCount :React.Dispatch<React.SetStateAction<number>>
+	initialCollectorConfig: CollectorConfig
+	setCollectorConfig: React.Dispatch<React.SetStateAction<CollectorConfig>>
+	setCollectorConfigErrorCount: React.Dispatch<React.SetStateAction<number>>
 };
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -62,11 +62,11 @@ export type CollectorId = string
 
 
 export type CollectorReactComponentParams = {
-	context :{
-		values :unknown
+	context: {
+		values: unknown
 	}
-	dispatch :() => void
-	path :string
+	dispatch: () => void
+	path: string
 }
 
 export interface CollectorsJsonCollector {
