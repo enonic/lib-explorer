@@ -60,6 +60,7 @@
     "@enonic-types/lib-event": "^7.13.1",
     "@enonic-types/lib-node": "^7.13.1",
     "@enonic-types/lib-repo": "^7.13.1",
+    "@enonic-types/lib-scheduler": "^7.13.1",
     "@enonic-types/lib-task": "^7.13.1",
     "@enonic-types/lib-value": "^7.13.1",
     "@enonic/explorer-utils": "^0.3.0",
