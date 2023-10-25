@@ -35,6 +35,7 @@ import type {
 	Aggregations,
 	CollectionNode,
 	// CollectionNodeSpecific,
+	CollectorTaskConfig,
 	DocumentNode,
 	Id,
 	JournalMessage,
@@ -107,14 +108,9 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		collectorId, // Present in lib-explorer-3.x
 		configJson, // Present in lib-explorer-3.x
 		language, // Present in lib-explorer-3.x
-		name // Present in lib-explorer-3.x
-	}: {
-		collectionId?: string
-		collectorId: string
-		configJson: string
-		language?: string
-		name?: string
-	}) {
+		// @ts-expect-error Property 'name' does not exist on type 'CollectorTaskConfig'.ts(2339)
+		name // Removed in lib-explorer-4.x
+	}: CollectorTaskConfig) {
 		log.debug('Collector.constructor: collectionId:%s', collectionId);
 		//log.debug('Collector.constructor: collectorId:%s', collectorId);
 		//log.debug('Collector.constructor: configJson:%s', configJson);

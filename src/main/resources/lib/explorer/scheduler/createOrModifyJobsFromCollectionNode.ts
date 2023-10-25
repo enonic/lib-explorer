@@ -1,6 +1,6 @@
-import type {Application} from '../../../index.d';
 import type {
 	CollectionWithCron,
+	CollectorTaskConfig,
 	RepoConnection,
 	TaskDescriptor,
 	TaskName,
@@ -11,7 +11,7 @@ import type {
 import {
 	DOT_SIGN,
 	forceArray,
-	//toStr,
+	// toStr,
 	uniqueId
 } from '@enonic/js-utils';
 
@@ -23,8 +23,6 @@ import {
 } from '/lib/explorer/model/2/constants';
 import {createOrModifyJob} from '/lib/explorer/scheduler/createOrModifyJob';
 import {listExplorerJobsThatStartWithName} from '/lib/explorer/scheduler/listExplorerJobsThatStartWithName';
-
-//@ts-ignore
 import {delete as deleteJob} from '/lib/xp/scheduler';
 
 
@@ -33,20 +31,20 @@ const USER = `user:${USER_EXPLORER_APP_ID_PROVIDER}:${USER_EXPLORER_APP_NAME}`;
 
 export function getCollectors({
 	connection
-} :{
-	connection :RepoConnection | WriteConnection
+}: {
+	connection: RepoConnection | WriteConnection
 }) {
-	const collectors :{
-		[taskDescriptor :string] :boolean
+	const collectors: {
+		[taskDescriptor: string]: boolean
 	}= {};
 	queryCollectors({
 		connection: connection as RepoConnection
 	}).hits.forEach(({
 		appName,
 		taskName
-	} :{
-		appName :Application.Key
-		taskName :TaskName
+	}: {
+		appName: string
+		taskName: TaskName
 	}) => {
 		collectors[`${appName}:${taskName}` as TaskDescriptor] = true;
 	});
@@ -59,20 +57,20 @@ export function createOrModifyJobsFromCollectionNode({
 	collectors = getCollectors({connection}),
 	collectionNode,
 	timeZone = 'GMT+02:00' // CEST (Summer Time)
-	//timeZone = 'GMT+01:00' // CET
-} :{
-	connection :WriteConnection
-	collectors? :{
-		[taskDescriptor :string] :boolean
+	// timeZone = 'GMT+01:00' // CET
+}: {
+	connection: WriteConnection
+	collectors?: {
+		[taskDescriptor: string]: boolean
 	}
-	collectionNode :CollectionWithCron // cron, // cron is no longer stored on the CollectionNode, but is passed in here from GraphQL mutation.
-	timeZone :string
+	collectionNode: CollectionWithCron // cron, // cron is no longer stored on the CollectionNode, but is passed in here from GraphQL mutation.
+	timeZone: string
 }) {
-	//log.debug(`createOrModifyJobsFromCollectionNode collectionNode:${toStr(collectionNode)}`);
+	// log.debug(`createOrModifyJobsFromCollectionNode collectionNode:${toStr(collectionNode)}`);
 	const {
 		_id: collectionNodeId,
 		_name: collectionNodeName,
-		//_path: collectionNodePath,
+		// _path: collectionNodePath,
 		collector: {
 			name: collectorId,
 			config: collectorConfig
@@ -87,7 +85,7 @@ export function createOrModifyJobsFromCollectionNode({
 	})}${DOT_SIGN}`;
 
 	const existingJobs = listExplorerJobsThatStartWithName({name: jobPrefix});
-	//log.debug(`createOrModifyJobsFromCollectionNode collection name:${collectionNodeName} existingJobs:${toStr(existingJobs)}`);
+	// log.debug(`createOrModifyJobsFromCollectionNode collection name:${collectionNodeName} existingJobs:${toStr(existingJobs)}`);
 
 	if (!collectorId) {
 		log.debug(`Collection with name:${collectionNodeName} is missing a collector! (which may be ok)`);
@@ -134,13 +132,16 @@ export function createOrModifyJobsFromCollectionNode({
 		month = '*',
 		dayOfWeek = '*'
 	}, i) => {
+		const collectorTaskConfig: CollectorTaskConfig = {
+			collectionId: collectionNodeId,
+			collectorId,
+			configJson,
+		}
+		if (collectionNode.language) {
+			collectorTaskConfig.language = collectionNode.language;
+		}
 		const createdOrModifiedJob = createOrModifyJob({ // Since I'm deleting all first, create would have sufficed here
-			config: {
-				collectionId: collectionNodeId,
-				collectorId,
-				configJson,
-				name: collectionNodeName
-			},
+			config: collectorTaskConfig,
 			descriptor: collectorId,
 			enabled: doCollect,
 			name: `${jobPrefix}${i}`,
@@ -151,10 +152,10 @@ export function createOrModifyJobsFromCollectionNode({
 			},
 			user: USER
 		}); // createOrModifyJob
-		//log.info(`createdOrModifiedJob:${toStr(createdOrModifiedJob)}`);
+		// log.info(`createdOrModifiedJob:${toStr(createdOrModifiedJob)}`);
 		return createdOrModifiedJob;
 	}); // cronArray.forEach
 
-	//log.info(`createdOrModifiedJobs:${toStr(createdOrModifiedJobs)}`);
+	// log.info(`createdOrModifiedJobs:${toStr(createdOrModifiedJobs)}`);
 	return createdOrModifiedJobs;
 } // createOrModifyJobsFromCollectionNode

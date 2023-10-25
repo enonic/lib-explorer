@@ -95,7 +95,8 @@ export type {
 	CollectorComponentRef,
 	CollectorComponentValidateFunction,
 	CollectorProps,
-	CollectorStateData
+	CollectorStateData,
+	CollectorTaskConfig
 } from './Collector.d';
 export type {
 	GetContext
