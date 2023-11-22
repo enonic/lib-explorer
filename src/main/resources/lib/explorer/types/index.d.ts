@@ -1,9 +1,6 @@
 import type {CollectionId as ImportedCollectionId} from './Collection.d';
 import type {CollectorId as ImportedCollectorId} from './Collector.d';
-import type {
-	AnyObject,
-	StringObject
-} from './Utility.d';
+
 
 export namespace Explorer {
 	export type CollectionId = ImportedCollectionId
@@ -15,29 +12,32 @@ export namespace Explorer {
 export namespace HttpClient {
 	export type Method = 'GET'|'POST'|'PUT'|'DELETE'|'HEAD'|'PATCH'
 	export type Request = {
+		// Required
+		url: string
+		// Optional
 		auth?: {
 			user: string
 			password: string
 		}
-		body?: string|AnyObject // (string | object) Body content to send with the request, usually for POST or PUT requests. It can be of type string or stream.
+		body?: string|Record<string, unknown> // (string | object) Body content to send with the request, usually for POST or PUT requests. It can be of type string or stream.
 		certificates?: unknown
 		clientCertificate?: unknown
 		connectionTimeout?: number
 		contentType?: string
+		disableHttp2?: boolean
 		followRedirects?: boolean
 		headers?: Record<string,string>
-		method?: Method
-		multipart?: Array<AnyObject>
-		params?: StringObject
+		method?: 'GET'|'POST'|'PUT'|'DELETE'|'HEAD'|'PATCH'
+		multipart?: Record<string, unknown>[]
+		params?: Record<string, string>
 		proxy?: {
 			host: string
 			port: number
 			user: string
 			password: string
 		}
-		queryParams?: StringObject
+		queryParams?: Record<string, string>
 		readTimeout?: number
-		url: string
 	}
 	export type Response = {
 		body: string|null // Body of the response as string. Null if the response content-type is not of type text.
