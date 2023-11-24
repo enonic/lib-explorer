@@ -1,3 +1,5 @@
+import type {ByteSource} from '@enonic-types/core';
+
 export type PageContributions = {
 	headBegin?: string[]
 	headEnd?: string[]
@@ -19,6 +21,7 @@ export type Response<
 	Headers extends Http2ResponseHeaders = DefaultResponseHeaders
 > = {
 	body?: Body
+	bodyStream?: ByteSource
 	contentType?: string
 	headers?: Headers
 	pageContributions?: PageContributions
