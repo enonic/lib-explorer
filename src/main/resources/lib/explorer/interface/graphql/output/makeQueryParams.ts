@@ -1,4 +1,4 @@
-// import type {QueryDsl} from '/lib/xp/node';
+import type {FieldSortDsl} from '/lib/xp/node';
 import type {
 	AnyObject,
 	InterfaceField
@@ -13,8 +13,8 @@ import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 import {
 	addQueryFilter,
 	forceArray,
-	isSet//,
-	//toStr
+	isSet// ,
+	// toStr
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {
@@ -32,7 +32,7 @@ import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '/lib/
 import {
 	createAggregation,
 	createFilters
-	//@ts-ignore
+	// @ts-ignore
 } from '/lib/guillotine/util/factory';
 import {makeQuery} from './makeQuery';
 import {highlightGQLArgToEnonicXPQuery} from '../highlight/input/highlightGQLArgToEnonicXPQuery';
@@ -59,6 +59,7 @@ export function makeQueryParams({
 	profilingArray = [],
 	profilingLabel = '',
 	// queryArg,
+	sort,
 	start, // default is undefined which means 0
 	stemmingLanguages = [],
 	termQueries,
@@ -82,15 +83,16 @@ export function makeQueryParams({
 	logSynonymsQuery?: boolean
 	logSynonymsQueryResult?: boolean
 	// queryArg?: QueryDsl,
+	sort?: FieldSortDsl[]
 	start?: number
 	stemmingLanguages?: StemmingLanguageCode[]
 	termQueries?: TermQuery[]
 }) {
-	//log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
+	// log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
 
 	const aggregations = {};
 	if (aggregationsArg) {
-		//log.debug('makeQueryParams aggregationsArg:%s', toStr(aggregationsArg));
+		// log.debug('makeQueryParams aggregationsArg:%s', toStr(aggregationsArg));
 		forceArray(resolveFieldShortcuts({
 			basicObject: aggregationsArg
 		})).forEach(aggregation => {
@@ -106,11 +108,11 @@ export function makeQueryParams({
 			}
 		},
 		filters: addQueryFilter({
-			filter: hasValue('_nodeType', [NT_DOCUMENT])//,
-			//filters: {}
+			filter: hasValue('_nodeType', [NT_DOCUMENT])// ,
+			// filters: {}
 		})
 	});
-	//log.debug('staticFilter:%s', toStr(staticFilter));
+	// log.debug('staticFilter:%s', toStr(staticFilter));
 
 	let filtersArray: AnyObject[];
 	if (filtersArg) {
@@ -118,9 +120,9 @@ export function makeQueryParams({
 		filtersArray = createFilters(resolveFieldShortcuts({
 			basicObject: filtersArg
 		}));
-		//log.debug('filtersArray:%s', toStr(filtersArray));
+		// log.debug('filtersArray:%s', toStr(filtersArray));
 		filtersArray.push(staticFilter as unknown as AnyObject);
-		//log.debug('filtersArray:%s', toStr(filtersArray));
+		// log.debug('filtersArray:%s', toStr(filtersArray));
 	}
 
 	// let query = queryArg;
@@ -131,13 +133,13 @@ export function makeQueryParams({
 	const washedSearchString = wash({string: searchString});
 	const listOfStopWords = [];
 	if (stopWords && stopWords.length) {
-		//log.debug(`stopWords:${toStr(stopWords)}`);
+		// log.debug(`stopWords:${toStr(stopWords)}`);
 		stopWords.forEach((name) => {
 			const {words} = getStopWordsList({ // Not a query
 				connection: explorerRepoReadConnection,
 				name
 			});
-			//log.debug(`words:${toStr(words)}`);
+			// log.debug(`words:${toStr(words)}`);
 			words.forEach((word) => {
 				if (!arrayIncludes(listOfStopWords, word)) {
 					listOfStopWords.push(word);
@@ -145,7 +147,7 @@ export function makeQueryParams({
 			});
 		});
 	}
-	//log.debug(`listOfStopWords:${toStr({listOfStopWords})}`);
+	// log.debug(`listOfStopWords:${toStr({listOfStopWords})}`);
 	const removedStopWords = [];
 	const searchStringWithoutStopWords = removeStopWords({
 		removedStopWords,
@@ -153,7 +155,7 @@ export function makeQueryParams({
 		string: washedSearchString
 	});
 
-	//log.debug('fields:%s', toStr(fields));
+	// log.debug('fields:%s', toStr(fields));
 	const query = searchStringWithoutStopWords
 		? makeQuery({
 			fields,
@@ -164,13 +166,13 @@ export function makeQueryParams({
 		: {
 			matchAll: {}
 		};
-	//log.debug('query:%s', toStr(query));
+	// log.debug('query:%s', toStr(query));
 
 	const synonyms = isSet(synonymsSource)
 		? synonymsSource
 		: getSynonymsFromSearchString({
-			//expand,
-			//explain,
+			// expand,
+			// explain,
 			explorerRepoReadConnection,
 			defaultLocales: localesInSelectedThesauri,
 			doProfiling,
@@ -184,7 +186,7 @@ export function makeQueryParams({
 			showSynonyms: true, // TODO hardcode
 			thesauri: thesauriNames
 		});
-	//log.debug('synonyms:%s', toStr(synonyms));
+	// log.debug('synonyms:%s', toStr(synonyms));
 
 	const appliedFulltext = [];
 	for (let i = 0; i < synonyms.length; i++) {
@@ -204,7 +206,7 @@ export function makeQueryParams({
 						query: synonym
 					}
 				};
-				//@ts-ignore // We know it's a list
+				// @ts-ignore // We know it's a list
 				query.boolean.should.push(aSynonymFulltextQuery);
 				appliedFulltext.push(synonym);
 			}
@@ -219,7 +221,7 @@ export function makeQueryParams({
 							language: stemmingLanguageFromLocale(locale)
 						}
 					};
-					//@ts-ignore // We know it's a list
+					// @ts-ignore // We know it's a list
 					query.boolean.should.push(aSynonymStemmedQuery);
 				} else {
 					log.warning(`Unable to guess stemmingLanguage from locale:${locale}`);
@@ -239,6 +241,7 @@ export function makeQueryParams({
 				? highlightGQLArgToEnonicXPQuery({highlightArg})
 				: null,
 			query,
+			sort,
 			start,
 		},
 		synonyms

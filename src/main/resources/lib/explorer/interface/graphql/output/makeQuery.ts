@@ -30,7 +30,7 @@ export function makeQuery({
 	// Optional
 	stemmingLanguages = [],
 	termQueries = [],
-} :{
+}: {
 	fields: InterfaceField[]
 	searchStringWithoutStopWords: string
 	// Optional
@@ -46,7 +46,7 @@ export function makeQuery({
 	}
 	// log.info('fieldsArr:%s', toStr(fieldsArr));
 
-	const arr :Array<ReturnType<typeof fulltext | typeof stemmed | typeof ngram | typeof term>> = [fulltext(
+	const arr: Array<ReturnType<typeof fulltext | typeof stemmed | typeof ngram | typeof term>> = [fulltext(
 		// fields.map(({boost, name: field}) => ({boost: (
 		// 	parseInt(boost as unknown as string) // In case there are some old interface nodes with boost as string rather than number
 		// 	||1) + (fields.length * 2), field})),
