@@ -18,7 +18,8 @@ import {addAggregationInput} from '/lib/explorer/interface/graphql/aggregations/
 import {addFilterInput} from '/lib/explorer/interface/graphql/filters/guillotine/input/addFilterInput';
 import {addInputTypeHighlight} from '/lib/explorer/interface/graphql/highlight/input/addInputTypeHighlight';
 // import {addQueryDSL} from '/lib/explorer/interface/graphql/queryDSL/addQueryDSL';
-//import {addInputTypeSynonyms} from '/lib/explorer/interface/graphql/input/addInputTypeSynonyms';
+// import {addInputTypeSynonyms} from '/lib/explorer/interface/graphql/input/addInputTypeSynonyms';
+import {addInputTypeSort} from '/lib/explorer/interface/graphql/input/addInputTypeSort';
 
 // Output
 import {connect} from '/lib/explorer/repo/connect';
@@ -38,7 +39,7 @@ export function makeSchema() {
 	const glue = constructGlue({schemaGenerator});
 
 	const documentTypeObjectTypes = {}; // Defined before addDynamicInterfaceTypes, populated after
-	const camelToFieldObj :Record<string,string> = {};
+	const camelToFieldObj: Record<string,string> = {};
 	addDocumentTypeObjectTypes({ // Does addDynamicInterfaceTypes for us :)
 		camelToFieldObj, // modified within
 		documentTypeObjectTypes, // modified within
@@ -81,7 +82,8 @@ export function makeSchema() {
 		languages: list(GraphQLString),
 		profiling: GraphQLBoolean,
 		// query: addQueryDSL({glue}),
-		searchString: GraphQLString // Can't be nonNull when used as subQuery
+		searchString: GraphQLString, // Can't be nonNull when used as subQuery
+		sort: list(addInputTypeSort({glue}))
 	}
 
 	glue.addQueryField<{

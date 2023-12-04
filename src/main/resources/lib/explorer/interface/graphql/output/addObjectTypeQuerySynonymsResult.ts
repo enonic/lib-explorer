@@ -12,6 +12,7 @@ import {
 import {addAggregationInput} from '/lib/explorer/interface/graphql/aggregations/guillotine/input/addAggregationInput';
 import {addFilterInput} from '/lib/explorer/interface/graphql/filters/guillotine/input/addFilterInput';
 import {addInputTypeHighlight} from '/lib/explorer/interface/graphql/highlight/input/addInputTypeHighlight';
+import {addInputTypeSort} from '/lib/explorer/interface/graphql/input/addInputTypeSort';
 
 // Output
 import {searchResolver} from '/lib/explorer/interface/graphql/output/searchResolver';
@@ -36,6 +37,7 @@ export function addObjectTypeQuerySynonymsResult({glue} :{glue :Glue}) {
 					count: GraphQLInt,
 					filters: list(addFilterInput({glue})),
 					highlight: addInputTypeHighlight({glue}),
+					sort: list(addInputTypeSort({glue})),
 					start: GraphQLInt,
 				},
 				resolve: searchResolver,

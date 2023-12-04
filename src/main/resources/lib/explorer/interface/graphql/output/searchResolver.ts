@@ -54,7 +54,8 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 			highlight: highlightArg,
 			languages: languagesArg,
 			// query: queryArg,
-			searchString: searchStringArg = '', // :string
+			searchString: searchStringArg = '',
+			sort,
 			start = 0
 		},
 		context: {
@@ -165,6 +166,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		profilingLabel: 'search',
 		// queryArg,
 		searchString,
+		sort,
 		start,
 		stemmingLanguages,
 		stopWords,
@@ -198,7 +200,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		log.debug('searchResolver queryRes:%s', toStr(queryRes));
 	}
 
-	const rv :SearchResolverReturnType = {
+	const rv: SearchResolverReturnType = {
 		aggregationsAsJson: queryRes.aggregations, // GraphQL automatically converts to JSON
 		count: queryRes.count,
 		hits: queryRes.hits.map(({
@@ -231,7 +233,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 				documentNode: washedNode
 			});
 
-			const hit :Hit = {
+			const hit: Hit = {
 				...typedDocumentNode, // Needed for ... on DocumentType_...
 				_collection: collectionName,
 				_createdTime: getIn<

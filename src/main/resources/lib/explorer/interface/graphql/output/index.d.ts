@@ -1,4 +1,4 @@
-// import type {QueryDsl} from '/lib/xp/node';
+import type {FieldSortDsl} from '/lib/xp/node';
 import type {
 	AnyObject,
 	DocumentNode,
@@ -81,6 +81,7 @@ type SearchCommonArgs = {
 	// query?: QueryDsl
 	searchString: string
 	//synonyms?: SynonymsArray
+	sort?: FieldSortDsl[]
 }
 
 export type SearchResolverSource = {
