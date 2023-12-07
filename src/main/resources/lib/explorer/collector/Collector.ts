@@ -48,6 +48,8 @@ import type {
 } from '/lib/explorer/types/index.d';
 import type {Progress} from '../task/progress';
 
+
+import { APP_EXPLORER } from '@enonic/explorer-utils';
 import {
 	//VALUE_TYPE_STRING,
 	isNotSet,
@@ -57,12 +59,14 @@ import {
 
 //import {validateLicense} from '/lib/license';
 
-//@ts-ignore
-import {send} from '/lib/xp/mail';
+import { send } from '/lib/xp/mail';
+import { delete as deleteJob } from '/lib/xp/scheduler';
 
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/constants'; // Start with / so it stays an external bundle
 import {createOrUpdate} from '/lib/explorer/document'; // It's own bundle
 import {queryDocuments} from '/lib/explorer/document/queryDocuments';
+import { runAsSu } from '/lib/explorer/runAsSu';
+import { listExplorerJobsThatStartWithName } from '/lib/explorer/scheduler/listExplorerJobsThatStartWithName';
 import {get as getCollection} from '../collection/get';
 import {get as getNode} from '../node/get';
 import {connect} from '../repo/connect';
@@ -134,7 +138,18 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		if (collectionId) {
 			collectionNode = explorerRepoReadConnection.get(collectionId);
 			if (!collectionNode) {
-				throw new Error(`Collector.constructor: Unable to get collection node with id:${collectionId}!`);
+				log.error('Collector.constructor: Unable to get collection node with id:%s!', collectionId);
+
+				const jobName = `${APP_EXPLORER}.${collectionId}`;
+				const explorerJobsThatStartWithName = runAsSu(() => listExplorerJobsThatStartWithName({name: jobName}));
+				log.debug('collectionId:%s explorerJobsThatStartWithName:%s', collectionId, toStr(explorerJobsThatStartWithName));
+				explorerJobsThatStartWithName.forEach(({name}) => {
+					log.info(`Deleting job name:${name}, while deleting collection with id:${collectionId}`);
+					runAsSu(() => deleteJob({name}));
+				});
+
+				// If this is catched and added to journal.errors, then this message will end up in a notification email, so make the message understandable.
+				throw new Error(`Unable to get collection node with id:${collectionId}, while trying to run collector with id:${collectorId}! Removed ${explorerJobsThatStartWithName.length} schedule(s).`);
 			}
 			//log.debug(`collectionNode:${toStr(collectionNode)}`);
 			this._collectionId = collectionId;
