@@ -23,6 +23,7 @@ import {
 	VALUE_TYPE_STRING,
 	forceArray,
 	isNotSet,
+	isSet,
 	toStr
 } from '@enonic/js-utils';
 
@@ -101,7 +102,7 @@ export function coerseDocumentType({
 		properties: coerseDocumentTypeProperties(properties)
 	};
 	// Only managed documentTypes have documentTypeVersion
-	if (documentTypeVersion) {
+	if (isSet(documentTypeVersion)) { // 0 is valid, but falsy, so we need isSet
 		dt.documentTypeVersion = documentTypeVersion;
 	}
 	/*log.debug(`coerseDocumentType({
