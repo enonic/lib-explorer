@@ -1,4 +1,8 @@
-import type {DocumentTypeNode} from '/lib/explorer/types/DocumentType.d';
+import type {
+	DocumentTypeFields,
+	DocumentTypeNode,
+	DocumentTypeNodeSpecific
+} from '/lib/explorer/types/DocumentType.d';
 
 
 import {
@@ -44,7 +48,17 @@ export function updateDocumentType({
 	_name: newDocumentTypeName,
 	_versionKey,
 	addFields = true,
+	documentTypeVersion = 0,
+	managedBy, // If this method is used to update NON managed documentTypes, this should be undefined.
 	properties = []
+}: {
+	_id: string,
+	_name: string,
+	_versionKey: string,
+	addFields?: boolean,
+	documentTypeVersion?: number,
+	managedBy?: string,
+	properties: DocumentTypeFields
 }) {
 	//log.debug(`fields:${toStr(fields)}`);
 	const writeConnection = connect({ principals: [PRINCIPAL_EXPLORER_WRITE] });
@@ -82,19 +96,27 @@ export function updateDocumentType({
 		}
 	}
 
-	const oldNodePropertiesForDiff = {
+	const oldNodePropertiesForDiff: DocumentTypeNodeSpecific = {
 		addFields: isSet(oldNode.addFields) ? oldNode.addFields : true,
-		//fields: oldNode.fields,
+		documentTypeVersion: isSet(oldNode.documentTypeVersion) ? oldNode.documentTypeVersion : 0,
 		properties: oldNode.properties
 	};
+	if (isSet(oldNode.managedBy)) {
+		oldNodePropertiesForDiff.managedBy = oldNode.managedBy;
+	}
 
-	const nodePropertiesToUpdate = {
+	const nodePropertiesToUpdate: DocumentTypeNodeSpecific = {
 		addFields,
+		documentTypeVersion,
 
 		// No point in forceArray, since Enonic will "destroy" on store,
 		// but we're using forceArray so sort don't throw...
 		properties: forceArray(properties).sort((a, b) => (a.name > b.name) ? 1 : -1)
 	};
+	if (managedBy) {
+		nodePropertiesToUpdate.managedBy = managedBy;
+	}
+
 	//log.debug(`nodePropertiesToUpdate:${toStr(nodePropertiesToUpdate)}`);
 
 	const enonifiedNodePropertiesToUpdate = enonify(nodePropertiesToUpdate);
@@ -109,9 +131,12 @@ export function updateDocumentType({
 		// Pretty good. (can crash on complicated data, perhaps circular structures, which we shouldn't have anyway)
 		log.debug(`Changes detected diff:${toStr(diffDocumentTypeProperties(oldNodePropertiesForDiff, enonifiedNodePropertiesToUpdate))}`);
 
-		const updatedNode :DocumentTypeNode = writeConnection.modify({
+		const updatedNode: DocumentTypeNode = writeConnection.modify({
 			key: documentTypeId,
-			editor: (documentTypeNode :DocumentTypeNode) => {
+			editor: (documentTypeNode: DocumentTypeNode) => {
+				// NOTE: This overwrites documentTypeNode.properties, such that
+				// any properties not in nodePropertiesToUpdate will be deleted,
+				// which is what we want :)
 				Object.keys(nodePropertiesToUpdate).forEach((k) => {
 					documentTypeNode[k] = nodePropertiesToUpdate[k];
 				});

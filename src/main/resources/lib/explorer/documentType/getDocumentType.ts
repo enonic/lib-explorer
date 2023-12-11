@@ -12,9 +12,9 @@ import {coerseDocumentType} from '/lib/explorer/_uncoupled/documentType/coerseDo
 export function getDocumentType({
 	_id,
 	connection = connect({ principals: [PRINCIPAL_EXPLORER_READ] })
-} :{
-	_id :string
-	connection ?:RepoConnection
+}: {
+	_id: string
+	connection?: RepoConnection
 }) {
 	const documentTypeNode = connection.get(_id) as DocumentTypeNode;
 	if (!documentTypeNode) {

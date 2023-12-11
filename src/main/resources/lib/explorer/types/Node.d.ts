@@ -57,7 +57,7 @@ export type NodeCreateParams = {
 	_manualOrderValue?: CreateNodeParams['_manualOrderValue']; // Value used to order document when ordering by parent and child-order is set to manual
 	_name?: CreateNodeParams['_name']; // Name of content.
 	_nodeType?: Node['_nodeType'] // TODO: CreateNodeParams doesn't have this
-	_parentPath?: CreateNodeParams['_childOrder']; // Path to place content under.
+	_parentPath?: CreateNodeParams['_parentPath']; // Path to place content under.
 	_permissions?: CreateNodeParams['_permissions']; // The access control list for the node. By default the creator will have full access
 }
 

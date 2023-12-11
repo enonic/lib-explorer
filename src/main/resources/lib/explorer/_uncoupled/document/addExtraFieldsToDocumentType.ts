@@ -30,7 +30,7 @@ import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META
 } from '../../constants';
-import {update as updateDocumentType} from '../documentType/update'
+import {update as updateDocumentType} from '../documentType/update';
 import {
 	//addMissingSetToFieldsArray,
 	applyDefaultsToField,

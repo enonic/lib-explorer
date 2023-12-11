@@ -4,8 +4,8 @@ import {javaBridge} from '../_coupling/javaBridge';
 
 export function getDocumentTypeByName({
 	documentTypeName
-} :{
-	documentTypeName :string
+}: {
+	documentTypeName: string
 }) {
 	return pureTsGetDocumentTypeByName({documentTypeName}, javaBridge);
 }

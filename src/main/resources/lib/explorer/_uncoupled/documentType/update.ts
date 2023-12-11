@@ -14,16 +14,17 @@ import {
 //import {javaBridgeDummy} from '../dummies';
 
 
+// NOTE: This function is ONLY? used by ../document/addExtraFieldsToDocumentType
 export function update(
 	{
 		_id,
 		properties
-	} :{
-		_id :string
-		properties :DocumentTypeFields
+	}: {
+		_id: string
+		properties: DocumentTypeFields
 	},
-	javaBridge :JavaBridge// = javaBridgeDummy
-) :DocumentTypeNode {
+	javaBridge: JavaBridge// = javaBridgeDummy
+): DocumentTypeNode {
 	const connectParams = {
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_WRITE],
@@ -38,7 +39,7 @@ export function update(
 	// javaBridge.log.debug('documentType.update: properties:%s', toStr(properties));
 	const modifiedDocumentTypeNode = explorerWriteConnection.modify({
 		key: _id,
-		editor: (documentTypeNode :DocumentTypeNode) => {
+		editor: (documentTypeNode: DocumentTypeNode) => {
 			// javaBridge.log.debug('documentType.update: old documentTypeNode:%s', toStr(documentTypeNode));
 			documentTypeNode.properties = properties;
 			//documentTypeNode.modifiedTime = new Date() as string;
