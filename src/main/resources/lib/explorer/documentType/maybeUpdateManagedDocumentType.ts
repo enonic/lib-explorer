@@ -1,7 +1,7 @@
 import type { DocumentTypesJsonDocumentType } from '/lib/explorer/types/DocumentType.d';
 
 
-import { toStr } from '@enonic/js-utils/value/toStr';
+// import { toStr } from '@enonic/js-utils/value/toStr';
 import { getDocumentTypeByName } from './getDocumentTypeByName';
 import { updateDocumentType } from './updateDocumentType';
 
@@ -15,17 +15,17 @@ export function maybeUpdateManagedDocumentType({
 }: DocumentTypesJsonDocumentType & {
 	managedBy: string
 }) {
-	log.info('_name:%s', _name);
+	// log.info('_name:%s', _name);
 	const existingDocumentType = getDocumentTypeByName({
 		documentTypeName: _name
 	});
-	log.info('existingDocumentType:%s', toStr(existingDocumentType));
+	// log.info('existingDocumentType:%s', toStr(existingDocumentType));
 	const {
 		_id,
 		_versionKey,
 		documentTypeVersion: existingDocumentTypeVersion,
 	} = existingDocumentType;
-	log.info('documentTypeVersion:%s existingDocumentTypeVersion:%s', documentTypeVersion, existingDocumentTypeVersion);
+	// log.info('documentTypeVersion:%s existingDocumentTypeVersion:%s', documentTypeVersion, existingDocumentTypeVersion);
 	if (documentTypeVersion > existingDocumentTypeVersion) {
 		return updateDocumentType({
 			_id,
