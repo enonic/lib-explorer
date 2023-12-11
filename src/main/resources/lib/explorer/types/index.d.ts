@@ -110,7 +110,10 @@ export type {
 	DocumentTypeField,
 	DocumentTypeFields,
 	DocumentTypeFieldsObject,
-	DocumentTypeNode
+	DocumentTypeNode,
+	DocumentTypeNodeSpecific,
+	DocumentTypesJson,
+	DocumentTypesJsonDocumentType
 } from './DocumentType.d';
 export type {
 	Field,

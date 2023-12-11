@@ -9,12 +9,12 @@ import {documentTypeNameToPath} from '/lib/explorer/_uncoupled/documentType/docu
 
 export function exists({
 	_name
-} :{
-	_name :string
+}: {
+	_name: string
 }) {
-	//log.debug('exists({ _name:%s })', _name);
+	// log.debug('exists({ _name:%s })', _name);
 	const readConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] }) as RepoConnection;
 	const path = documentTypeNameToPath(_name);
-	//log.debug('exists({ _name:%s }) path:%s', _name, path);
+	// log.debug('exists({ _name:%s }) path:%s', _name, path);
 	return readConnection.exists(path);
 }

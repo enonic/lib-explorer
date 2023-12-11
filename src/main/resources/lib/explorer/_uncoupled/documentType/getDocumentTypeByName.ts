@@ -12,9 +12,9 @@ import {documentTypeNameToPath} from './documentTypeNameToPath';
 
 export function getDocumentTypeByName({
 	documentTypeName
-} :{
-	documentTypeName :string
-}, javaBridge :JavaBridge) {
+}: {
+	documentTypeName: string
+}, javaBridge: JavaBridge) {
 	const explorerReadConnection = javaBridge.connect({
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_READ],

@@ -1,10 +1,16 @@
 import type {
+	CreateNodeParams,
+	Node,
+} from '/lib/xp/node';
+import type {
 	DocumentTypeCreateParams,
 	DocumentTypeNode,
+	DocumentTypeNodeSpecific,
 	Path as PathType,
 	ParentPath,
 	WriteConnection
 } from '/lib/explorer/types/index.d';
+
 
 import {
 	Folder,
@@ -24,12 +30,18 @@ import { send } from '/lib/xp/event';
 import {coerseDocumentType} from './coerseDocumentType';
 
 
+export type CreateDocumentTypeParams = DocumentTypeNodeSpecific & {
+	_name: Node['_name']
+};
+
+
 export function createDocumentType({
 	_name,
 	addFields = true,
+	documentTypeVersion,
 	managedBy,
 	properties = []
-}: DocumentTypeCreateParams) {
+}: CreateDocumentTypeParams) {
 	//log.debug(`_name:${_name} addFields:${addFields} fields:${toStr(fields)} properties:${toStr(properties)}`);
 	const writeConnection = connect({ principals: [Principal.EXPLORER_WRITE] }) as WriteConnection;
 	if (!writeConnection.exists(Path.DOCUMENT_TYPES)) {
@@ -45,7 +57,10 @@ export function createDocumentType({
 	if (writeConnection.exists(_path)) {
 		throw new Error(`A documentType with _name:${_name} already exists!`);
 	}
-	const nodeToBeCreated = {
+	const nodeToBeCreated: CreateDocumentTypeParams & {
+		_nodeType: Node['_nodeType']
+		_parentPath?: CreateNodeParams['_parentPath']
+	} = {
 		_name,
 		_nodeType: NodeType.DOCUMENT_TYPE,
 		_parentPath,
@@ -56,6 +71,10 @@ export function createDocumentType({
 		// but we're using forceArray so sort don't throw...
 		properties: forceArray(properties).sort((a, b) => (a.name > b.name) ? 1 : -1)
 	};
+	if (documentTypeVersion) {
+		// Only managed documentTypes should have documentTypeVersion
+		nodeToBeCreated.documentTypeVersion = documentTypeVersion;
+	}
 	const createdNode = create<DocumentTypeCreateParams>(nodeToBeCreated, {
 		connection: writeConnection,
 	}) as DocumentTypeNode;
