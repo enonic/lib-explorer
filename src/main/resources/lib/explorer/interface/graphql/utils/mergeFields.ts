@@ -7,6 +7,7 @@ import {
 	camelize//,
 	//toStr
 } from '@enonic/js-utils';
+// import { toStr } from '@enonic/js-utils/value/toStr';
 import 'core-js/stable/number/is-integer';
 import 'core-js/stable/reflect'; // WARNING: Only works when treeshake: false
 import setIn from 'set-value'; // Number.isInteger and Reflect
@@ -25,8 +26,11 @@ export function mergeFields({
 	}>
 	properties: DocumentTypeFields
 }): Branch {
+	// log.info('camelToFieldObj:%s', toStr(camelToFieldObj));
+	// log.info('globalFieldsObj:%s', toStr(globalFieldsObj));
+	// log.info('properties:%s', toStr(properties));
 	const mergedglobalFieldsObj: Branch = JSON.parse(JSON.stringify(globalFieldsObj)); // deref
-	//log.debug(`documentTypeName:${toStr(documentTypeName)} mergedglobalFieldsObj:${toStr(mergedglobalFieldsObj)}`);
+	// log.info('mergedglobalFieldsObj:%s', toStr(mergedglobalFieldsObj));
 
 	if (properties) {
 		properties.forEach(({
@@ -39,13 +43,11 @@ export function mergeFields({
 
 			// In GraphQL Name must be non-null, non-empty and match /^[_A-Za-z][_0-9A-Za-z]*$/
 
-			/*
 			// In Explorer<2.0.0 a global field could contain a dash, which GraphQL Name can't contain, so this code camelized it away:
-			const camelizedFieldPath = name // 'nes-ted.na-me'
-				.split('.') // ['nes-ted', 'na-me']
-				.map((k) => camelize(k, /[-]/g)) // ['nesTed', 'naMe'] // This was done for old broken field names, which contained '-'
-				.join('.'); // 'nesTed.naMe'
-			*/
+			// const camelizedFieldPath = name // 'nes-ted.na-me'
+			// 	.split('.') // ['nes-ted', 'na-me']
+			// 	.map((k) => camelize(k, /[-]/g)) // ['nesTed', 'naMe'] // This was done for old broken field names, which contained '-'
+			// 	.join('.'); // 'nesTed.naMe'
 
 			// But the thing is a GraphQL can't contain a dot either, so if we camelize both [.-] there is no way to know which is correct:
 			// nesTedNaMe -> nes.ted.na.me or nes-ted-na-me ???
@@ -68,6 +70,6 @@ export function mergeFields({
 			camelToFieldObj[camelizedFieldKey] = name;
 		}); // properties.forEach
 	}
-	//log.debug('mergeFields mergedglobalFieldsObj:%s', toStr(mergedglobalFieldsObj));
+	// log.debug('mergeFields mergedglobalFieldsObj:%s', toStr(mergedglobalFieldsObj));
 	return mergedglobalFieldsObj;
 }
