@@ -322,12 +322,15 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		// Thus documentTypeName MUST be provided when persisting a document.
 		documentTypeName,
 
+		language,
+
 		//validateOccurrences, // TODO Perhaps later
 		//validateTypes // TODO Perhaps later
 		...ignoredOptions
 	}: {
 		boolRequireValid?: boolean
 		documentTypeName: string
+		language?: string
 	}) {
 		//log.debug(`document_metadata_props:${toStr(document_metadata_props)}`);
 		//log.debug(`rest:${toStr(rest)}`);
@@ -402,7 +405,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 			//documentTypeId // Perhaps later
 			documentTypeName,
 			//fields: // Perhaps later
-			language: this._language,
+			language: language || this._language,
 			//stemmingLanguage: // Perhaps later
 
 			//cleanExtraFields // TODO Perhaps later
