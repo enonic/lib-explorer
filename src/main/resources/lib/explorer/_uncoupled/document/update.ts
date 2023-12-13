@@ -260,10 +260,8 @@ export function update(
 				if (languageFromCollection) {
 					language = languageFromCollection;
 					log.debug('document.update: sat language:%s from collectionNode.language', language);
-				} else {
-					language = 'en';
-					log.debug('document.update: collectionNode has no default language, falling back to english', language);
 				}
+				// NOTE: When no language is provided anywhere, there should be no stemming.
 			}
 		}
 		if (notSet(documentTypeName) || notSet(fields)) {

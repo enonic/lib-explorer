@@ -48,7 +48,7 @@ export function updateDocumentType({
 	_name: newDocumentTypeName,
 	_versionKey,
 	addFields = true,
-	documentTypeVersion = 0,
+	documentTypeVersion, // Do not default to 0 here, see logic below
 	managedBy, // If this method is used to update NON managed documentTypes, this should be undefined.
 	properties = []
 }: {
@@ -107,7 +107,7 @@ export function updateDocumentType({
 
 	const nodePropertiesToUpdate: DocumentTypeNodeSpecific = {
 		addFields,
-		documentTypeVersion,
+		documentTypeVersion: isSet(documentTypeVersion) ? documentTypeVersion : oldNode.documentTypeVersion || 0,
 
 		// No point in forceArray, since Enonic will "destroy" on store,
 		// but we're using forceArray so sort don't throw...

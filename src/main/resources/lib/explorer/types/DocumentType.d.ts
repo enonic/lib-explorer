@@ -17,6 +17,7 @@ export type DocumentTypeField = {
 	name: string
 	nGram?: boolean
 	path?: boolean
+	stemmed?: boolean
 	valueType?: string
 }
 

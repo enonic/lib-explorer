@@ -47,6 +47,7 @@ export function coerseDocumentTypeProperties(properties?: DocumentTypeFields) {
 		name, // Required
 		nGram,
 		path,
+		stemmed,
 		valueType
 	}) => {
 		if (isNotSet(name)) {
@@ -63,6 +64,7 @@ export function coerseDocumentTypeProperties(properties?: DocumentTypeFields) {
 			name,
 			[INDEX_CONFIG_N_GRAM]: isNotSet(nGram) ? INDEX_CONFIG_N_GRAM_DEFAULT : nGram,
 			path: isNotSet(path) ? INDEX_CONFIG_PATH_DEFAULT : path,
+			stemmed: isNotSet(stemmed) ? false : stemmed,
 			valueType: isNotSet(valueType) ? VALUE_TYPE_STRING : valueType
 		};
 	});
