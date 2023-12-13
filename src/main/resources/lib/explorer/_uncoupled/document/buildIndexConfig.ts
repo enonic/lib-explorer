@@ -28,7 +28,7 @@ import {FIELD_PATH_META} from '../../constants';
 //import {javaBridgeDummy} from '../dummies';
 
 
-function decideByTypeFromValueType(valueType :string) :boolean {
+function decideByTypeFromValueType(valueType: string): boolean {
 	if (arrayIncludes([VALUE_TYPE_STRING], valueType)) {
 		return false;
 	}
@@ -55,11 +55,11 @@ export function buildIndexConfig(
 		//data,
 		fieldsObj,
 		languages = []
-	} :BuildIndexConfigParameterObject//,
-	//javaBridge :JavaBridge = javaBridgeDummy
-) :IndexConfig {
+	}: BuildIndexConfigParameterObject//,
+	//javaBridge: JavaBridge = javaBridgeDummy
+): IndexConfig {
 	//const {log} = javaBridge;
-	const indexConfig :IndexConfig = {
+	const indexConfig: IndexConfig = {
 		configs: [{
 			path: `${FIELD_PATH_META}.collection`,
 			config: {
@@ -120,7 +120,12 @@ export function buildIndexConfig(
 		default: indexTemplateToConfig({
 			template: 'byType', // TODO Perhaps minimal?
 			indexValueProcessors: [],
-			languages: languages as [] // TODO
+
+			// Default is no stemming.
+			// Does not affect stemming of _alltext, which isn't currently possible on the node layer.
+			// https://github.com/enonic/xp/issues/8876
+			// languages: languages as []
+
 		}) as IndexConfigObject
 	};
 
@@ -136,20 +141,22 @@ export function buildIndexConfig(
 			includeInAllText,
 			nGram,
 			path,
+			stemmed,
 			valueType
 		} = fieldsObj[fieldPath];
+		// log.info('buildIndexConfig fieldPath:%s stemmed:%s', fieldPath, stemmed);
 
 		const config: IndexConfigConfig = {
 			decideByType: decideByTypeFromValueType(valueType),
 			enabled,
-			fulltext,
+			fulltext: valueType === VALUE_TYPE_STRING ? fulltext : false,
 			includeInAllText,
-			nGram,
-			path
+			nGram: valueType === VALUE_TYPE_STRING ? nGram : false,
+			path: valueType === VALUE_TYPE_STRING ? path : false
 		};
 		//log.debug('config %s', config);
 
-		if (valueType === VALUE_TYPE_STRING) {
+		if (valueType === VALUE_TYPE_STRING && stemmed) {
 			config.languages = languages;
 		}
 		//log.debug('config %s', config);

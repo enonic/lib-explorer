@@ -243,7 +243,7 @@ export function create(
 		// documentTypeName is always required, since it's stored on the node for aggregation purposes.
 		// documentTypeId is only? required when addExtraFields is true
 
-		let documentTypeNode :DocumentTypeNode;
+		let documentTypeNode: DocumentTypeNode;
 		if (documentTypeId) { // This covers 1 and 3.
 			documentTypeNode = explorerReadConnection.get(documentTypeId);
 			//log.debug("document.create: documentTypeNode(A):%s", toStr(documentTypeNode));
@@ -312,10 +312,8 @@ export function create(
 				if (languageFromCollection) {
 					language = languageFromCollection;
 					log.debug('document.create: sat language:%s from collectionNode.language', language);
-				} else {
-					language = 'en';
-					log.debug('document.create: collectionNode has no default language, falling back to english', language);
 				}
+				// NOTE: When no language is provided anywhere, there should be no stemming.
 			}
 
 			// When do I need to read default documentTypeId from collectionNode?
@@ -391,7 +389,7 @@ export function create(
 
 	const cleanedData = cleanData({
 		cleanExtraFields,
-		data :dataWithConstrainedPropertyNames,
+		data: dataWithConstrainedPropertyNames,
 		fieldsObj
 	}, javaBridge);
 	// log.debug(`cleanedData:${toStr(cleanedData)}`);
@@ -413,7 +411,7 @@ export function create(
 	}, javaBridge);
 	// log.debug('dataWithJavaTypes %s', dataWithJavaTypes);
 
-	const languages :string[] = [];
+	const languages: string[] = [];
 	if (stemmingLanguage) {
 		languages.push(stemmingLanguage);
 	}

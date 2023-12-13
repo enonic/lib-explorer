@@ -38,7 +38,13 @@ import { includes as stringIncludes } from '@enonic/js-utils/string/includes';
 
 const BOOLEAN_PROPS = [
 	'active', // TODO: From GUI
-	'enabled', 'fulltext', 'includeInAllText', 'nGram','path'];
+	'enabled',
+	'fulltext',
+	'includeInAllText',
+	'nGram',
+	'path',
+	'stemmed'
+];
 Object.freeze(BOOLEAN_PROPS);
 
 const POSITIVE_INTEGER_PROPS = ['max', 'min'];
@@ -69,13 +75,13 @@ Object.freeze(VALUE_TYPES);
 
 
 export function isField(
-	value :unknown,
-	javaBridge :JavaBridge// = javaBridgeDummy
-) :value is DocumentTypeField {
+	value: unknown,
+	javaBridge: JavaBridge// = javaBridgeDummy
+): value is DocumentTypeField {
 	const {log} = javaBridge;
 	//log.debug('isField() value:%s', value);
 	if (!isObject(value)) { return false; }
-	const keys :string[] = Object.keys(value as Object);
+	const keys: string[] = Object.keys(value as Object);
 	for (let i = 0; i < keys.length; i++) {
 		//log.debug('isField() i:%s', i);
 		const key = keys[i];
@@ -114,9 +120,9 @@ export function isField(
 
 
 export function isFields(
-	fields :unknown,
-	javaBridge :JavaBridge// = javaBridgeDummy
-) :fields is DocumentTypeFields {
+	fields: unknown,
+	javaBridge: JavaBridge// = javaBridgeDummy
+): fields is DocumentTypeFields {
 	//const {log} = javaBridge;
 	//log.debug('isFields() fields:%s', fields);
 	if (!Array.isArray(fields)) { return false; }
@@ -133,9 +139,9 @@ export function isFields(
 
 
 export function applyDefaultsToField(
-	field :Partial<DocumentTypeField>,
-	javaBridge :JavaBridge// = javaBridgeDummy
-) :Readonly<Required<DocumentTypeField>> {
+	field: Partial<DocumentTypeField>,
+	javaBridge: JavaBridge// = javaBridgeDummy
+): Readonly<Required<DocumentTypeField>> {
 	//const {log} = javaBridge;
 	if (!isField(field, javaBridge)) {
 		throw new TypeError(`applyDefaultsToField: field not of type Field! field:${toStr(field)}`);
@@ -150,9 +156,10 @@ export function applyDefaultsToField(
 		name,
 		nGram = INDEX_CONFIG_N_GRAM_DEFAULT,
 		path = INDEX_CONFIG_PATH_DEFAULT,
+		stemmed = false,
 		valueType = VALUE_TYPE_STRING
 	} = field;
-	const FIELD :Partial<DocumentTypeField> = {
+	const FIELD: Partial<DocumentTypeField> = {
 		active,
 		enabled,
 		fulltext,
@@ -161,6 +168,7 @@ export function applyDefaultsToField(
 		min,
 		nGram,
 		path,
+		stemmed,
 		valueType
 	};
 	if (name) {
@@ -173,15 +181,15 @@ export function applyDefaultsToField(
 
 
 export function fieldsArrayToObj(
-	//field :Fields | Field,
-	fields :DocumentTypeFields,
-	javaBridge :JavaBridge// = javaBridgeDummy
-) :DocumentTypeFieldsObject {
+	//field: Fields | Field,
+	fields: DocumentTypeFields,
+	javaBridge: JavaBridge// = javaBridgeDummy
+): DocumentTypeFieldsObject {
 	//const fields = forceArray(field);
 	if (!isFields(fields, javaBridge)) { // NOTE Allowing empty array
 		throw new TypeError(`fieldsArrayToObj: fields not of type Fields! fields:${toStr(fields)}`);
 	}
-	const FIELDS_OBJ :DocumentTypeFieldsObject = {};
+	const FIELDS_OBJ: DocumentTypeFieldsObject = {};
 	for (let i = 0; i < fields.length; i++) {
 		const field = applyDefaultsToField(fields[i], javaBridge);
 		const {name, ...rest} = field;
@@ -193,9 +201,9 @@ export function fieldsArrayToObj(
 
 
 export function fieldsObjToArray(
-	fieldsObj :DocumentTypeFieldsObject,
-	javaBridge :JavaBridge// = javaBridgeDummy
-) :DocumentTypeFields {
+	fieldsObj: DocumentTypeFieldsObject,
+	javaBridge: JavaBridge// = javaBridgeDummy
+): DocumentTypeFields {
 	return Object.keys(fieldsObj).map(pathString => ({
 		...applyDefaultsToField(fieldsObj[pathString], javaBridge),
 		name: pathString
@@ -204,14 +212,14 @@ export function fieldsObjToArray(
 
 
 export function addMissingSetToFieldsArray(
-	fields :DocumentTypeFields,
-	javaBridge :JavaBridge// = javaBridgeDummy
-) :DocumentTypeFields {
+	fields: DocumentTypeFields,
+	javaBridge: JavaBridge// = javaBridgeDummy
+): DocumentTypeFields {
 	const {log} = javaBridge;
 	if (!isFields(fields, javaBridge)) { // NOTE Allowing empty array
 		throw new TypeError(`addMissingSetToFields: fields not of type Fields! fields:${toStr(fields)}`);
 	}
-	const returnFields :DocumentTypeFields = JSON.parse(JSON.stringify(fields));
+	const returnFields: DocumentTypeFields = JSON.parse(JSON.stringify(fields));
 	const fieldsObj = fieldsArrayToObj(fields, javaBridge);
 	for (let i = 0; i < fields.length; i++) {
 		const field = fields[i];
