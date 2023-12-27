@@ -23,6 +23,7 @@ export const FIELD_BOOLEAN = {
 	min: 0,
 	nGram: false,
 	path: false,
+	stemmed: false,
 	valueType: VALUE_TYPE_BOOLEAN
 }
 
@@ -35,6 +36,7 @@ export const FIELD_DOUBLE = {
 	min: 0,
 	nGram: false,
 	path: false,
+	stemmed: false,
 	valueType: VALUE_TYPE_DOUBLE
 }
 
@@ -47,6 +49,7 @@ export const FIELD_GEO_POINT = {
 	min: 0,
 	nGram: false,
 	path: false,
+	stemmed: false,
 	valueType: VALUE_TYPE_GEO_POINT
 }
 
@@ -59,6 +62,7 @@ export const FIELD_INSTANT = {
 	min: 0,
 	nGram: false,
 	path: false,
+	stemmed: false,
 	valueType: VALUE_TYPE_INSTANT
 }
 
@@ -71,6 +75,7 @@ export const FIELD_LOCAL_DATE = {
 	min: 0,
 	nGram: false,
 	path: false,
+	stemmed: false,
 	valueType: VALUE_TYPE_LOCAL_DATE
 }
 
@@ -83,6 +88,7 @@ export const FIELD_LOCAL_DATE_TIME = {
 	min: 0,
 	nGram: false,
 	path: false,
+	stemmed: false,
 	valueType: VALUE_TYPE_LOCAL_DATE_TIME
 }
 
@@ -95,6 +101,7 @@ export const FIELD_LOCAL_TIME = {
 	min: 0,
 	nGram: false,
 	path: false,
+	stemmed: false,
 	valueType: VALUE_TYPE_LOCAL_TIME
 }
 
@@ -107,6 +114,7 @@ export const FIELD_SET = {
 	min: 0,
 	nGram: false,
 	path: false,
+	stemmed: false,
 	valueType: VALUE_TYPE_SET
 }
 
@@ -119,5 +127,6 @@ export const FIELD_STRING = {
 	min: 0,
 	nGram: false,
 	path: false,
+	stemmed: false,
 	valueType: VALUE_TYPE_STRING
 }

@@ -47,6 +47,7 @@ const FIELDS_VALID = [{
 	//name: 'name', // Borks one test
 	nGram: false,
 	path: false,
+	stemmed: false,
 	valueType: 'string'
 }];
 
@@ -86,6 +87,7 @@ const TESTS = [[
 			min: 0,
 			nGram: false,
 			path: false,
+			stemmed: false,
 			valueType: 'string'
 		}
 	}
@@ -100,6 +102,7 @@ const TESTS = [[
 		name: 'b',
 		nGram: true,
 		path: true,
+		stemmed: false,
 		valueType: 'boolean'
 	}], {
 		a: {
@@ -111,6 +114,7 @@ const TESTS = [[
 			min: 0,
 			nGram: false,
 			path: false,
+			stemmed: false,
 			valueType: 'string'
 		},
 		b: {
@@ -122,6 +126,7 @@ const TESTS = [[
 			min: 1,
 			nGram: true,
 			path: true,
+			stemmed: false,
 			valueType: 'boolean'
 		}
 	}
@@ -135,8 +140,8 @@ describe('document', () => {
 				const field = FIELDS_VALID[i]
 				it(`${toStr(field)}`, () => {
 					deepStrictEqual(
-						true,
-						isField(field, javaBridge)
+						isField(field, javaBridge),
+						true
 					);
 				});
 			} // for
@@ -146,8 +151,8 @@ describe('document', () => {
 				const field = FIELDS_INVALID[i]
 				it(`${toStr(field)}`, () => {
 					deepStrictEqual(
-						false,
-						isField(field, javaBridge)
+						isField(field, javaBridge),
+						false
 					);
 				});
 			} // for
@@ -157,16 +162,16 @@ describe('document', () => {
 		describe('--> true', () => {
 			it(`${toStr(FIELDS_VALID)}`, () => {
 				deepStrictEqual(
-					true,
-					isFields(FIELDS_VALID, javaBridge)
+					isFields(FIELDS_VALID, javaBridge),
+					true
 				);
 			});
 		});
 		describe('--> false', () => {
 			it(`${toStr(FIELDS_INVALID)}`, () => {
 				deepStrictEqual(
-					false,
-					isFields(FIELDS_INVALID, javaBridge)
+					isFields(FIELDS_INVALID, javaBridge),
+					false
 				);
 			});
 		});
@@ -177,8 +182,8 @@ describe('document', () => {
 				const field = FIELDS_VALID[i]
 				it(`${toStr(field)}`, () => {
 					deepStrictEqual(
-						FIELDS_VALID[1],
-						applyDefaultsToField(field, javaBridge)
+						applyDefaultsToField(field, javaBridge),
+						FIELDS_VALID[1]
 					);
 				});
 			} // for
@@ -202,8 +207,8 @@ describe('document', () => {
 			const [fields, expected] = TESTS[i]
 			it(`${toStr(fields)}`, () => {
 				deepStrictEqual(
-					expected,
-					fieldsArrayToObj(fields as DocumentTypeFields, javaBridge)
+					fieldsArrayToObj(fields as DocumentTypeFields, javaBridge),
+					expected
 				);
 			});
 		} // for
@@ -229,63 +234,68 @@ describe('document', () => {
 			}
 		} as unknown as DocumentTypeFieldsObject;
 		it(`${toStr(fieldsObj)}`, () => {
+			const expected = [{
+				active: true,
+				enabled: true,
+				fulltext: false,
+				includeInAllText: false,
+				max: 0,
+				min: 0,
+				nGram: false,
+				name: 'myString',
+				path: false,
+				stemmed: false,
+				valueType: 'string'
+			}];
 			deepStrictEqual(
-				[{
-					active: true,
-					enabled: true,
-					fulltext: false,
-					includeInAllText: false,
-					max: 0,
-					min: 0,
-					nGram: false,
-					name: 'myString',
-					path: false,
-					valueType: 'string'
-				}],
-				fieldsObjToArray(fieldsObj, javaBridge)
+				fieldsObjToArray(fieldsObj, javaBridge),
+				expected
 			);
 		});
 	});
 	describe('addMissingSetToFieldsArray()', () => {
 		it('adds missing nested set in a sorted manner', () => {
+			const expected = [{ // fieldsWithMissingSetsAdded
+				active: true,
+				enabled: true,
+				fulltext: false,
+				includeInAllText: false,
+				max: 0,
+				min: 0,
+				name: 'obj',
+				nGram: false,
+				path: false,
+				stemmed: false,
+				valueType: 'set'
+			},{
+				active: true,
+				enabled: true,
+				fulltext: false,
+				includeInAllText: false,
+				max: 0,
+				min: 0,
+				name: 'obj.first',
+				nGram: false,
+				path: false,
+				stemmed: false,
+				valueType: 'set'
+			},{
+				// enabled: true,
+				// fulltext: false,
+				// includeInAllText: falsem
+				// max: 0,
+				// min: 0,
+				name: 'obj.first.second',
+				// nGram: false,
+				// path: false,
+				valueType: 'string'
+			}];
 			deepStrictEqual(
-				[{
-					active: true,
-					enabled: true,
-					fulltext: false,
-					includeInAllText: false,
-					max: 0,
-					min: 0,
-					name: 'obj',
-					nGram: false,
-					path: false,
-					valueType: 'set'
-				},{
-					active: true,
-					enabled: true,
-					fulltext: false,
-					includeInAllText: false,
-					max: 0,
-					min: 0,
-					name: 'obj.first',
-					nGram: false,
-					path: false,
-					valueType: 'set'
-				},{
-					//enabled: true,
-					//fulltext: false,
-					//includeInAllText: falsem
-					//max: 0,
-					//min: 0,
-					name: 'obj.first.second',
-					//nGram: false,
-					//path: false,
-					valueType: 'string'
-				}], // fieldsWithMissingSetsAdded
 				addMissingSetToFieldsArray([{
 					name: 'obj.first.second',
 					valueType: 'string'
-				}], javaBridge)
+				}], javaBridge),
+				expected
 			); // deepStrictEqual
 		}); // it
 	}); // describe addMissingSetToFieldsArray

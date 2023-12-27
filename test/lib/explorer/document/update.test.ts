@@ -79,8 +79,7 @@ _indexConfig.configs.push({
 		enabled: true,
 		fulltext: true,
 		includeInAllText: true,
-		languages: [COLLECTION_STEMMING_LANGUAGE],
-		//languages: COLLECTION_STEMMING_LANGUAGE, // enonified
+		// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language is passed.
 		nGram: true,
 		path: false
 	}
@@ -482,7 +481,7 @@ describe('document', () => {
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
-						languages: [COLLECTION_STEMMING_LANGUAGE],
+						// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language is passed.
 						nGram: false,
 						path: false
 					}

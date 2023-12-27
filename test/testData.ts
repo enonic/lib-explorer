@@ -596,8 +596,7 @@ export const INDEX_CONFIG = {
 		fulltext: false,
 		includeInAllText: false,
 		indexValueProcessors: [],
-		languages: [COLLECTION_STEMMING_LANGUAGE],
-		//languages: COLLECTION_STEMMING_LANGUAGE, // enonified
+		// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed = true and language passed.
 		nGram: false,
 		path: false
 	}

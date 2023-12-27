@@ -301,7 +301,7 @@ describe('document', () => {
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
-						languages: [COLLECTION_STEMMING_LANGUAGE],
+						// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language is passed
 						nGram: false,
 						path: false
 					}
@@ -313,7 +313,7 @@ describe('document', () => {
 						enabled: true,
 						fulltext: true,
 						includeInAllText: true,
-						languages: [COLLECTION_STEMMING_LANGUAGE],
+						// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language is passed
 						nGram: true,
 						path: false
 					}
@@ -366,10 +366,11 @@ describe('document', () => {
 				// javaBridge.log.info('expected:%s', expected);
 				// javaBridge.log.info('createRes:%s', createRes);
 				deepStrictEqual(
-					expected,
-					createRes
+					createRes,
+					expected
 				) // deepStrictEqual
 			}); // it
+
 			it("is able to do it's thing without connecting to the explorer repo WHEN enough info is provided in the parameters", () => {
 				const _indexConfig = JSON.parse(JSON.stringify(INDEX_CONFIG));
 				_indexConfig.configs.push({
@@ -379,7 +380,7 @@ describe('document', () => {
 						enabled: true,
 						fulltext: true,
 						includeInAllText: true,
-						languages: [COLLECTION_STEMMING_LANGUAGE],
+						// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language is passed
 						nGram: true,
 						path: false
 					}

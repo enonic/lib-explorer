@@ -113,7 +113,7 @@ describe('document', () => {
 					enabled: true,
 					fulltext: true,
 					includeInAllText: true,
-					languages: [COLLECTION_STEMMING_LANGUAGE],
+					// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language passed.
 					nGram: true,
 					path: false
 				}

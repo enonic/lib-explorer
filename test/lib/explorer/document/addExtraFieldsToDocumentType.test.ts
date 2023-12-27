@@ -50,6 +50,7 @@ const CREATED_DOCUMENT_TYPE_NODE = connection.create(DOCUMENT_TYPE);
 
 describe('document', () => {
 	describe('addExtraFieldsToDocumentType()', () => {
+
 		it(`handles all valueTypes`, () => {
 			const myObject = {
 				myBoolean: true,
@@ -68,42 +69,42 @@ describe('document', () => {
 					valueType: 'string'
 				}
 			} as unknown as DocumentTypeFieldsObject;
-			deepStrictEqual(
-				{
-					mystring: {
-						//active: true,
-						valueType: 'string'
-					},
-					myobject: FIELD_SET,
-					'myobject.myboolean': FIELD_BOOLEAN,
-					'myobject.mydateobj': FIELD_INSTANT,
-					'myobject.mygeopointarray': FIELD_GEO_POINT,
-					'myobject.mygeopointstring': FIELD_GEO_POINT,
-					'myobject.myinstantstring': FIELD_INSTANT,
-					'myobject.mylocaldatestring': FIELD_LOCAL_DATE,
-					'myobject.mylocaldatetimestring': FIELD_LOCAL_DATE_TIME,
-					'myobject.mylocaltimestring': FIELD_LOCAL_TIME,
-					'myobject.mynumber': FIELD_DOUBLE,
-					'myobject.mystring': FIELD_STRING
+			const actual = addExtraFieldsToDocumentType({
+				data: constrainPropertyNames({
+					data: {
+						_id: '_id',
+						_name: '_name',
+						_path: '_path',
+						_versionKey: '_versionKey',
+						[FieldPath.GLOBAL]: `${FieldPath.GLOBAL}`,
+						[FieldPath.META]: `${FieldPath.META}`,
+						myString: 'myString',
+						myObject
+					}
+				}, javaBridge),
+				documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
+				fieldsObj
+			}, javaBridge);
+			const expected = {
+				mystring: {
+					// active: true,
+					valueType: 'string'
 				},
-				addExtraFieldsToDocumentType({
-					data: constrainPropertyNames({
-						data: {
-							_id: '_id',
-							_name: '_name',
-							_path: '_path',
-							_versionKey: '_versionKey',
-							[FieldPath.GLOBAL]: `${FieldPath.GLOBAL}`,
-							[FieldPath.META]: `${FieldPath.META}`,
-							myString: 'myString',
-							myObject
-						}
-					}, javaBridge),
-					documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
-					fieldsObj
-				}, javaBridge)
-			);
+				myobject: FIELD_SET,
+				'myobject.myboolean': FIELD_BOOLEAN,
+				'myobject.mydateobj': FIELD_INSTANT,
+				'myobject.mygeopointarray': FIELD_GEO_POINT,
+				'myobject.mygeopointstring': FIELD_GEO_POINT,
+				'myobject.myinstantstring': FIELD_INSTANT,
+				'myobject.mylocaldatestring': FIELD_LOCAL_DATE,
+				'myobject.mylocaldatetimestring': FIELD_LOCAL_DATE_TIME,
+				'myobject.mylocaltimestring': FIELD_LOCAL_TIME,
+				'myobject.mynumber': FIELD_DOUBLE,
+				'myobject.mystring': FIELD_STRING
+			};
+			deepStrictEqual(actual, expected);
 		}); // it
+
 		it(`doesn't make an entry per item in an array`, () => {
 			deepStrictEqual(
 				{

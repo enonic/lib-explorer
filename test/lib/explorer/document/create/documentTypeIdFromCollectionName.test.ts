@@ -110,7 +110,7 @@ describe('document', () => {
 						enabled: true,
 						fulltext: true,
 						includeInAllText: true,
-						languages: [COLLECTION_STEMMING_LANGUAGE],
+						// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed = true and language passed.
 						nGram: true,
 						path: false
 					}
@@ -141,8 +141,8 @@ describe('document', () => {
 					mystring: 'string'
 				};
 				deepStrictEqual(
-					expected,
-					createdDocumentNode
+					createdDocumentNode,
+					expected
 				);
 			}); // it
 
@@ -174,7 +174,7 @@ describe('document', () => {
 						enabled: true,
 						fulltext: true,
 						includeInAllText: true,
-						languages: [COLLECTION_STEMMING_LANGUAGE],
+						// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed = true and language passed.
 						nGram: true,
 						path: false
 					}
@@ -205,8 +205,8 @@ describe('document', () => {
 					mystring: 'string'
 				};
 				deepStrictEqual(
-					expected,
-					createdDocumentNode
+					createdDocumentNode,
+					expected
 				);
 			}); // it
 
