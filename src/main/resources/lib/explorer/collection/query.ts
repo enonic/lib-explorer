@@ -1,25 +1,22 @@
 import type {
-	// Aggregation,
-	// AggregationToAggregationResult,
 	Aggregations,
 	AggregationsToAggregationResults,
-	// AggregationsResult
+	Filter
 } from '@enonic-types/core';
 import type {
 	CollectionNode,
 	QueriedCollection,
-	QueryFilters,
 	RepoConnection
 } from '/lib/explorer/types/index.d';
 
 
-import {
-	addQueryFilter,
-	isNotSet,
-	isSet//,
-	//toStr
-} from '@enonic/js-utils';
+import { addQueryFilter } from '@enonic/js-utils/storage/query/addQueryFilter';
 
+import { isNotSet } from '@enonic/js-utils';
+// import { isNotSet } from '@enonic/js-utils/value/isNotSet'; // TODO Not exported yet :(
+
+import { isSet } from '@enonic/js-utils/value/isSet';
+// import { toStr } from '@enonic/js-utils/value/toStr';
 import {NT_COLLECTION} from '/lib/explorer/constants';
 import {hasValue} from '/lib/explorer/query/hasValue';
 
@@ -28,7 +25,7 @@ export function query({
 	aggregations,
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count,// = -1, // This is almost the same as perPage.
-	filters = {},
+	filters = [],
 	query = '', //"_parentPath = '/collections'",
 	page,// = '1', // NOTE First index is 1 not 0
 	perPage = '10', // This is almost the same as count.
@@ -40,7 +37,7 @@ export function query({
 	// Optional
 	aggregations?: Aggregations
 	count?: number
-	filters?: QueryFilters
+	filters?: Filter | Filter[]
 	query?: string
 	page?: string//|number
 	perPage?: string//|number
@@ -65,7 +62,7 @@ export function query({
 			count=-1;
 		}
 	}
-	//log.info(toStr({count,sort,start}));
+	// log.info(toStr({count,sort,start}));
 
 	const queryParams = {
 		aggregations,
@@ -79,7 +76,7 @@ export function query({
 		sort,
 		start
 	};
-	//log.debug(`queryParams:${toStr(queryParams)}`);
+	// log.debug('queryParams:%s', toStr(queryParams));
 
 	const queryRes = connection.query(queryParams);
 
