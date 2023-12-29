@@ -1,4 +1,11 @@
 import type {
+	// Aggregation,
+	// AggregationToAggregationResult,
+	Aggregations,
+	AggregationsToAggregationResults,
+	// AggregationsResult
+} from '@enonic-types/core';
+import type {
 	CollectionNode,
 	QueriedCollection,
 	QueryFilters,
@@ -18,6 +25,7 @@ import {hasValue} from '/lib/explorer/query/hasValue';
 
 
 export function query({
+	aggregations,
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count,// = -1, // This is almost the same as perPage.
 	filters = {},
@@ -26,17 +34,18 @@ export function query({
 	perPage = '10', // This is almost the same as count.
 	sort = '_name ASC',
 	start = 0
-} :{
+}: {
 	// Required
-	connection :RepoConnection
+	connection: RepoConnection
 	// Optional
-	count? :number
-	filters? :QueryFilters
-	query? :string
-	page? :string//|number
-	perPage? :string//|number
-	sort? :string
-	start? :number
+	aggregations?: Aggregations
+	count?: number
+	filters?: QueryFilters
+	query?: string
+	page?: string//|number
+	perPage?: string//|number
+	sort?: string
+	start?: number
 }) {
 	//log.info(toStr({count,page,perPage,sort,start}));
 	// When neither count nor page is passed: count=-1 page=null
@@ -44,8 +53,8 @@ export function query({
 	// When only count is passed: page=null
 	// When only page is passed: count=perPage
 	// Summary: Count rules
-	let intPerPage :number;
-	let intPage :number;
+	let intPerPage: number;
+	let intPage: number;
 	if (isNotSet(count)) {
 		if(isSet(page)) {
 			intPerPage = parseInt(perPage, 10);
@@ -59,6 +68,7 @@ export function query({
 	//log.info(toStr({count,sort,start}));
 
 	const queryParams = {
+		aggregations,
 		count,
 		filters: addQueryFilter({
 			clause: 'must',
@@ -73,16 +83,18 @@ export function query({
 
 	const queryRes = connection.query(queryParams);
 
-	const collectionQueryRes :{
-		count :number
-		hits :Array<QueriedCollection>
-		total :number
+	const collectionQueryRes: {
+		aggregations: AggregationsToAggregationResults<Aggregations>
+		count: number
+		hits: QueriedCollection[]
+		total: number
 		// Optional
-		page? :number
-		pageStart? :number
-		pageEnd? :number
-		pagesTotal? :number
+		page?: number
+		pageStart?: number
+		pageEnd?: number
+		pagesTotal?: number
 	} = {
+		aggregations: queryRes.aggregations,
 		count: queryRes.count,
 		hits: queryRes.hits.map(({
 			id,
