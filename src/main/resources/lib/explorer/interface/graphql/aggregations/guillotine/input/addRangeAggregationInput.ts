@@ -4,8 +4,9 @@ import type {Glue} from '../../../utils/Glue';
 
 import {
 	GraphQLString,
+	list,
 	nonNull
-	//@ts-ignore
+	// @ts-expect-error No types yet
 } from '/lib/graphql';
 import {
 	GQL_INPUT_TYPE_AGGREGATION_RANGE,
@@ -16,9 +17,9 @@ import {
 export function addRangeAggregationInput({
 	fieldType = GraphQLString, // What guillotine uses
 	glue
-} :{
-	fieldType ?:GraphQL.ArgsType
-	glue :Glue
+}: {
+	fieldType?: GraphQL.ArgsType
+	glue: Glue
 }) {
 	return glue.addInputType({
 		name: GQL_INPUT_TYPE_AGGREGATION_RANGE,
@@ -28,7 +29,7 @@ export function addRangeAggregationInput({
 				type: nonNull(fieldType)
 			},
 			ranges: {
-				type: glue.getInputType(GQL_INPUT_TYPE_NUMBER_RANGE)
+				type: list(glue.getInputType(GQL_INPUT_TYPE_NUMBER_RANGE))
 			}
 		}
 	});

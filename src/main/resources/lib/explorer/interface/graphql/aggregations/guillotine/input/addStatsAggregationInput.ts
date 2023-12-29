@@ -5,7 +5,7 @@ import type {Glue} from '../../../utils/Glue';
 import {
 	GraphQLString,
 	nonNull
-	//@ts-ignore
+	// @ts-expect-error No types yet
 } from '/lib/graphql';
 import {GQL_INPUT_TYPE_AGGREGATION_STATS} from '../constants';
 
@@ -13,9 +13,9 @@ import {GQL_INPUT_TYPE_AGGREGATION_STATS} from '../constants';
 export function addStatsAggregationInput({
 	fieldType = GraphQLString, // What guillotine uses
 	glue
-} :{
-	fieldType ?:GraphQL.ArgsType
-	glue :Glue
+}: {
+	fieldType?: GraphQL.ArgsType
+	glue: Glue
 }) {
 	return glue.addInputType({
 		name: GQL_INPUT_TYPE_AGGREGATION_STATS,
