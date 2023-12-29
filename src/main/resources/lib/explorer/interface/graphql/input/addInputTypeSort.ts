@@ -41,6 +41,7 @@ export function addInputTypeSort({
 
 	});
 
+	// TODO Use addEnumTypeGeoDistanceUnit instead, but it's a breaking change...
 	const sortUnitEnumType = glue.addEnumType({
 		name: 'SortUnit',
 		description: 'Sort unit',

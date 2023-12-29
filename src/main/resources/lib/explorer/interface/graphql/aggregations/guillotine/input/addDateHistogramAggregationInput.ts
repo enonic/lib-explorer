@@ -6,7 +6,7 @@ import {
 	GraphQLInt,
 	GraphQLString,
 	nonNull
-	//@ts-ignore
+	// @ts-expect-error No types yet
 } from '/lib/graphql';
 import {
 	GQL_INPUT_TYPE_AGGREGATION_GEO_DISTANCE
@@ -16,9 +16,9 @@ import {
 export function addDateHistogramAggregationInput({
 	fieldType = GraphQLString, // What guillotine uses
 	glue
-} :{
-	fieldType ?:GraphQL.ArgsType
-	glue :Glue
+}: {
+	fieldType?: GraphQL.ArgsType
+	glue: Glue
 }) {
 	return glue.addInputType({
 		name: GQL_INPUT_TYPE_AGGREGATION_GEO_DISTANCE,

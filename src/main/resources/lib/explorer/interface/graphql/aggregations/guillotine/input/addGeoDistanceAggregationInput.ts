@@ -4,9 +4,11 @@ import type {Glue} from '../../../utils/Glue';
 
 import {
 	GraphQLString,
+	list,
 	nonNull
-	//@ts-ignore
+	// @ts-expect-error No types yet
 } from '/lib/graphql';
+import { addEnumTypeGeoDistanceUnit } from '../../../input/addEnumTypeGeoDistanceUnit';
 import {
 	GQL_INPUT_TYPE_AGGREGATION_DATE_HISTOGRAM,
 	GQL_INPUT_TYPE_GEO_POINT,
@@ -17,9 +19,9 @@ import {
 export function addGeoDistanceAggregationInput({
 	fieldType = GraphQLString, // What guillotine uses
 	glue
-} :{
-	fieldType ?:GraphQL.ArgsType
-	glue :Glue
+}: {
+	fieldType?: GraphQL.ArgsType
+	glue: Glue
 }) {
 	return glue.addInputType({
 		name: GQL_INPUT_TYPE_AGGREGATION_DATE_HISTOGRAM,
@@ -29,13 +31,13 @@ export function addGeoDistanceAggregationInput({
 				type: nonNull(fieldType)
 			},
 			unit: {
-				type: GraphQLString
+				type: addEnumTypeGeoDistanceUnit({glue}),
 			},
 			origin: {
 				type: glue.getInputType(GQL_INPUT_TYPE_GEO_POINT)
 			},
 			ranges: {
-				type: glue.getInputType(GQL_INPUT_TYPE_NUMBER_RANGE)
+				type: list(glue.getInputType(GQL_INPUT_TYPE_NUMBER_RANGE))
 			}
 		}
 	});

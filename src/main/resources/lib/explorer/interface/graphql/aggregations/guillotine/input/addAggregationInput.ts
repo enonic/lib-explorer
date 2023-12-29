@@ -37,9 +37,9 @@ import {addValueCountAggregationInput} from './addValueCountAggregationInput';
 export function addAggregationInput({
 	fieldType = GraphQLString, // What guillotine uses
 	glue
-} :{
-	fieldType ?:GraphQL.ArgsType
-	glue :Glue
+}: {
+	fieldType?: GraphQL.ArgsType
+	glue: Glue
 }) {
 	addDateRangeInput({glue});
 	addGeoPointInput({glue});
