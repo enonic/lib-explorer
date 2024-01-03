@@ -9,7 +9,7 @@ import { updateDocumentType } from './updateDocumentType';
 export function maybeUpdateManagedDocumentType({
 	_name,
 	addFields = true, // NOTE: Only overrides undefined, not null.
-	documentTypeVersion = 0, // NOTE: Only overrides undefined, not null.
+	version = 0, // NOTE: Only overrides undefined, not null.
 	managedBy,
 	properties = [] // NOTE: Only overrides undefined, not null.
 }: DocumentTypesJsonDocumentType & {
@@ -23,16 +23,16 @@ export function maybeUpdateManagedDocumentType({
 	const {
 		_id,
 		_versionKey,
-		documentTypeVersion: existingDocumentTypeVersion,
+		version: existingVersion = 0,
 	} = existingDocumentType;
-	// log.info('documentTypeVersion:%s existingDocumentTypeVersion:%s', documentTypeVersion, existingDocumentTypeVersion);
-	if (documentTypeVersion > existingDocumentTypeVersion) {
+	// log.info('version:%s existingVersion:%s', version, existingVersion);
+	if (version > existingVersion) {
 		return updateDocumentType({
 			_id,
 			_name,
 			_versionKey,
 			addFields,
-			documentTypeVersion,
+			version,
 			managedBy,
 			properties
 		});

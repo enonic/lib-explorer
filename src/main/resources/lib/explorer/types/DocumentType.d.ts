@@ -30,7 +30,7 @@ export type DocumentTypeFieldsObject = {
 export interface DocumentTypesJsonDocumentType {
 	_name: string
 	addFields?: boolean
-	documentTypeVersion?: number
+	version?: number
 	properties?: DocumentTypeFields
 }
 
@@ -38,7 +38,7 @@ export type DocumentTypesJson = DocumentTypesJsonDocumentType[];
 
 export type DocumentTypeNodeSpecific = {
 	addFields: boolean // Should default to true
-	documentTypeVersion?: number // undefined defaults to 0.
+	version?: number // undefined defaults to 0.
 	managedBy?: string // Default is undefined
 	properties: DocumentTypeFields
 	//createdTime?: Date | string
