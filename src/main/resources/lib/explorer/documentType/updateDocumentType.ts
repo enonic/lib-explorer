@@ -48,7 +48,7 @@ export function updateDocumentType({
 	_name: newDocumentTypeName,
 	_versionKey,
 	addFields = true,
-	documentTypeVersion, // Do not default to 0 here, see logic below
+	version, // Do not default to 0 here, see logic below
 	managedBy, // If this method is used to update NON managed documentTypes, this should be undefined.
 	properties = []
 }: {
@@ -56,7 +56,7 @@ export function updateDocumentType({
 	_name: string,
 	_versionKey: string,
 	addFields?: boolean,
-	documentTypeVersion?: number,
+	version?: number,
 	managedBy?: string,
 	properties: DocumentTypeFields
 }) {
@@ -98,7 +98,7 @@ export function updateDocumentType({
 
 	const oldNodePropertiesForDiff: DocumentTypeNodeSpecific = {
 		addFields: isSet(oldNode.addFields) ? oldNode.addFields : true,
-		documentTypeVersion: isSet(oldNode.documentTypeVersion) ? oldNode.documentTypeVersion : 0,
+		version: isSet(oldNode.version) ? oldNode.version : 0,
 		properties: oldNode.properties
 	};
 	if (isSet(oldNode.managedBy)) {
@@ -107,7 +107,7 @@ export function updateDocumentType({
 
 	const nodePropertiesToUpdate: DocumentTypeNodeSpecific = {
 		addFields,
-		documentTypeVersion: isSet(documentTypeVersion) ? documentTypeVersion : oldNode.documentTypeVersion || 0,
+		version: isSet(version) ? version : oldNode.version || 0,
 
 		// No point in forceArray, since Enonic will "destroy" on store,
 		// but we're using forceArray so sort don't throw...

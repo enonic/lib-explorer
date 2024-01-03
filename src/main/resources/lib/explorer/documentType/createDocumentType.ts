@@ -38,7 +38,7 @@ export type CreateDocumentTypeParams = DocumentTypeNodeSpecific & {
 export function createDocumentType({
 	_name,
 	addFields = true,
-	documentTypeVersion,
+	version,
 	managedBy,
 	properties = []
 }: CreateDocumentTypeParams) {
@@ -71,9 +71,9 @@ export function createDocumentType({
 		// but we're using forceArray so sort don't throw...
 		properties: forceArray(properties).sort((a, b) => (a.name > b.name) ? 1 : -1)
 	};
-	if (documentTypeVersion) {
-		// Only managed documentTypes should have documentTypeVersion
-		nodeToBeCreated.documentTypeVersion = documentTypeVersion;
+	if (version) {
+		// Only managed documentTypes should have version
+		nodeToBeCreated.version = version;
 	}
 	const createdNode = create<DocumentTypeCreateParams>(nodeToBeCreated, {
 		connection: writeConnection,

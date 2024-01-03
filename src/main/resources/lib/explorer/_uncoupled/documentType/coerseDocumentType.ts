@@ -80,7 +80,7 @@ export function coerseDocumentType({
 	_path,
 	_versionKey,
 	addFields,
-	documentTypeVersion,
+	version,
 	managedBy, // undefined is allowed
 	properties
 }: DocumentTypeNode) {
@@ -103,9 +103,9 @@ export function coerseDocumentType({
 		managedBy, // undefined is allowed
 		properties: coerseDocumentTypeProperties(properties)
 	};
-	// Only managed documentTypes have documentTypeVersion
-	if (isSet(documentTypeVersion)) { // 0 is valid, but falsy, so we need isSet
-		dt.documentTypeVersion = documentTypeVersion;
+	// Only managed documentTypes have version
+	if (isSet(version)) { // 0 is valid, but falsy, so we need isSet
+		dt.version = version;
 	}
 	/*log.debug(`coerseDocumentType({
 		_id:${_id},
