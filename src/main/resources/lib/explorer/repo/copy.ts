@@ -177,7 +177,7 @@ export function copy({
 		const nodeId = nodeIds[i];
 		let fromNode = fromRepoReadConnection.get(nodeId) as Node;
 		if (!fromNode) {
-			log.error(`repo.copy: Unable to get node:${nodeId} on branch:${branchId} in fromRepo:${fromRepoId}, ignoring...`);
+			log.warning(`repo.copy: Unable to get node:${nodeId} on branch:${branchId} in fromRepo:${fromRepoId}, ignoring...`);
 			rv.getErrors += 1;
 		} else {
 			const _parentPath = dirname(fromNode._path);

@@ -198,12 +198,12 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		if (collectionsTotalCount > 3) {
 			if (!licenseDetails) {
 				const errorMsg = 'No license found! Not allowed to have more than 3 collections without a valid license.'
-				log.error(errorMsg);
+				log.warning(errorMsg);
 				throw new Error(errorMsg);
 			}
 			if (licenseDetails.expired) {
 				const errorMsg = 'License expired! Not allowed to have more than 3 collections without a valid license.'
-				log.error(errorMsg);
+				log.warning(errorMsg);
 				throw new Error(errorMsg);
 			}
 		}*/
@@ -459,7 +459,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		//log.info(`emails:${toStr(emails)}`);
 
 		if (this.journal.errors.length) {
-			log.error('errors:%s',toStr(this.journal.errors));
+			log.warning('errors:%s',toStr(this.journal.errors));
 			modifyTask({
 				connection: this.collection.connection,
 				state: 'FAILED',
@@ -478,7 +478,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 					log.info(`emailParams:${toStr(emailParams)}`);
 					send(emailParams);
 				} catch (e) {
-					log.error(e.message, e);
+					log.warning(e.message, e);
 				}
 			}
 
@@ -504,7 +504,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 				log.info(`emailParams:${toStr(emailParams)}`);
 				send(emailParams);
 			} catch (e) {
-				log.error(e.message, e);
+				log.warning(e.message, e);
 			}
 		}
 	} // stop

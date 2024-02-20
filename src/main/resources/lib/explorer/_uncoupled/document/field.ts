@@ -87,29 +87,29 @@ export function isField(
 		const key = keys[i];
 		//log.debug('isField() i:%s key:%s', i, key);
 		if (!arrayIncludes(ALLOWED_PROPS, key)) {
-			log.error(`key:${key} is not an allowed property on interface Field!`);
+			log.warning(`key:${key} is not an allowed property on interface Field!`);
 			return false;
 		} else {
 			const property = value[key];
 			//log.debug('isField() i:%s key:%s property:%s', i, key, property);
 			if (arrayIncludes(BOOLEAN_PROPS, key)) {
 				if (!isBoolean(property)) {
-					log.error(`key:${key} value:${toStr(property)} is not of type boolean on interface Field!`);
+					log.warning(`key:${key} value:${toStr(property)} is not of type boolean on interface Field!`);
 					return false;
 				}
 			} else if (arrayIncludes(POSITIVE_INTEGER_PROPS, key)) {
 				if (!isPositiveInteger(property)) {
-					log.error(`key:${key} value:${toStr(property)} is not of type PositiveInteger on interface Field!`);
+					log.warning(`key:${key} value:${toStr(property)} is not of type PositiveInteger on interface Field!`);
 					return false;
 				}
 			} else if (key === 'name') {
 				if (!isString(property)) {
-					log.error(`key:${key} value:${toStr(property)} is not of type String on interface Field!`);
+					log.warning(`key:${key} value:${toStr(property)} is not of type String on interface Field!`);
 					return false;
 				}
 			} else if (key === 'valueType') {
 				if (!arrayIncludes(VALUE_TYPES, property)) {
-					log.error(`key:${key} value:${toStr(property)} is not of type ValueType on interface Field!`);
+					log.warning(`key:${key} value:${toStr(property)} is not of type ValueType on interface Field!`);
 					return false;
 				}
 			}

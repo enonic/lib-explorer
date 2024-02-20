@@ -98,15 +98,15 @@ export function smartRequest(smartRequestParams: SmartRequestParams) {
 
 		//@ts-ignore
 		if (e instanceof java.net.ConnectException) {
-			log.error(e.message + ': on url:' + url/*, e*/); // Don't want stacktrace
+			log.warning(e.message + ': on url:' + url/*, e*/); // Don't want stacktrace
 			//@ts-ignore
 		} else if (e instanceof java.net.SocketTimeoutException) {
 			if(e.message === 'connect timed out') {
-				log.error(e.message + ': connectionTimeout ' + connectionTimeout + 'ms exceeded on url ' + url/*, e*/); // Don't want stacktrace
+				log.warning(e.message + ': connectionTimeout ' + connectionTimeout + 'ms exceeded on url ' + url/*, e*/); // Don't want stacktrace
 			} else if (e.message === 'timeout') {
-				log.error(e.message + ': readTimeout ' + readTimeout + 'ms exceeded on url ' + url/*, e*/); // Don't want stacktrace
+				log.warning(e.message + ': readTimeout ' + readTimeout + 'ms exceeded on url ' + url/*, e*/); // Don't want stacktrace
 			} else {
-				log.error('java.net.SocketTimeoutException with unknown message:' + e.message, e);
+				log.warning('java.net.SocketTimeoutException with unknown message:' + e.message, e);
 			}
 			//@ts-ignore
 		} else if (e instanceof java.lang.NullPointerException) {

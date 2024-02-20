@@ -102,6 +102,10 @@ function setMessage(message :string) {
 	return this; // chainable
 }
 
+function warn() {
+	log.warning(`[${this._current}/${this._total}] ${this.getInfoString()}`);
+	return this; // chainable
+}
 
 export function constructProgress<Info extends Record<string,unknown> = Record<string,unknown>>({
 	message = 'Initializing'
