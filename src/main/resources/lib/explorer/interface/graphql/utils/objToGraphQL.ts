@@ -88,7 +88,7 @@ export function objToGraphQL({
 					// _max:0 is allowed with any size of _min (any to infinite)
 					//if (_min > 1 && _max === 1) {
 					if (_min !== 0 && _max !== 0 && _min > _max) {
-						log.error('Min:%s is larger than max:%s! Inconsistency in documentType:%s on key:%s', _min, _max, documentTypeName, this.key);
+						log.warning('Min:%s is larger than max:%s! Inconsistency in documentType:%s on key:%s', _min, _max, documentTypeName, this.key);
 					}
 
 					//log.debug('objToGraphQL documentTypeName:%s setting key:%s', documentTypeName, this.key);

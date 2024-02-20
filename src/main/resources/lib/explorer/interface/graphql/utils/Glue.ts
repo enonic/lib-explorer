@@ -163,8 +163,6 @@ function addOutputFields<OutputFields extends AnyObject = AnyObject>({
 	fields :OutputFields
 }) {
 	if (isSet(this.outputFields[name])) {
-		//throw new Error(`OutputFields ${name} already added!`);
-		//log.error('OutputFields "%s" already added, returning previous', name)
 		return this.outputFields[name];
 	}
 	this.outputFields[name] = fields;

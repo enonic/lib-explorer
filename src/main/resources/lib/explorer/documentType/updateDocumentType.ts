@@ -69,7 +69,7 @@ export function updateDocumentType({
 	//log.debug(`documentTypeId:${documentTypeId} newDocumentTypeName:${newDocumentTypeName} _versionKey:${_versionKey} activeVersionKey:${oldNode._versionKey}`);
 	if (_versionKey !== oldNode._versionKey) {
 		const msg = `Denying update! DocumentType changed since _versionKey:${_versionKey} activeVersionKey:${oldNode._versionKey} documentTypeId:${documentTypeId}`;
-		log.error(msg);
+		log.warning(msg);
 		throw new Error(msg);
 	}
 	const {

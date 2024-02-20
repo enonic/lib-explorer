@@ -121,8 +121,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 
 	const collectionNames = Object.keys(collectionNameToId);
 	if (!collectionNames.length) {
-		// throw new Error(`interface:${interfaceName} has no collections!`);
-		log.error(`interface:${interfaceName} has no collections, returing empty result!`);
+		log.warning(`interface:${interfaceName} has no collections, returing empty result!`);
 		return {
 			aggregationsAsJson: {},
 			count: 0,
