@@ -12,29 +12,30 @@ const {currentTimeMillis} = Java.type('java.lang.System') as {
 
 
 type Progress<Info> = {
-	_current :number
-	_currentTime :number
-	_infoObject :Info
-	_message :string
-	_startTime :number
-	_total :number
-	addItems :(count :number) => Progress<Info>
-	debug :() => Progress<Info>
-	error :() => Progress<Info>
-	finishItem :() => Progress<Info>
-	getInfoObject :() => Info & {
-		currentTime :number
-		message :string
-		startTime :number
+	_current: number
+	_currentTime: number
+	_infoObject: Info
+	_message: string
+	_startTime: number
+	_total: number
+	addItems: (count: number) => Progress<Info>
+	debug: () => Progress<Info>
+	error: () => Progress<Info>
+	warn: () => Progress<Info>
+	finishItem: () => Progress<Info>
+	getInfoObject: () => Info & {
+		currentTime: number
+		message: string
+		startTime: number
 	}
-	getInfoString :() => string
-	report :() => Progress<Info>
-	setInfo :(info :Info) => Progress<Info>
-	setMessage :(message :string) => Progress<Info>
+	getInfoString: () => string
+	report: () => Progress<Info>
+	setInfo: (info: Info) => Progress<Info>
+	setMessage: (message: string) => Progress<Info>
 }
 
 
-function addItems<Info>(count :number) :Progress<Info> {
+function addItems<Info>(count: number): Progress<Info> {
 	this._total += count;
 	return this; // chainable
 }
@@ -58,10 +59,10 @@ function finishItem() {
 }
 
 
-function getInfoObject<Info>() :Info & {
-	currentTime :number
-	message :string
-	startTime :number
+function getInfoObject<Info>(): Info & {
+	currentTime: number
+	message: string
+	startTime: number
 } {
 	this._currentTime = currentTimeMillis();
 	return {
@@ -88,7 +89,7 @@ function report() {
 }
 
 
-function setInfo<Info>(info :Info) {
+function setInfo<Info>(info: Info) {
 	this._infoObject = {
 		...this._infoObject,
 		info
@@ -97,7 +98,7 @@ function setInfo<Info>(info :Info) {
 }
 
 
-function setMessage(message :string) {
+function setMessage(message: string) {
 	this._message = message;
 	return this; // chainable
 }
@@ -109,11 +110,11 @@ function warn() {
 
 export function constructProgress<Info extends Record<string,unknown> = Record<string,unknown>>({
 	message = 'Initializing'
-} :{
-	message ?:string
+}: {
+	message?: string
 } = {}) {
 	const currentTime = currentTimeMillis();
-	const progress :Progress<Info> = {
+	const progress: Progress<Info> = {
 		_current: 0,
 		_currentTime: currentTime,
 		//@ts-ignore
@@ -130,6 +131,7 @@ export function constructProgress<Info extends Record<string,unknown> = Record<s
 		report,
 		setInfo,
 		setMessage,
+		warn,
 	};
 	return progress;
 } // constructProgress
