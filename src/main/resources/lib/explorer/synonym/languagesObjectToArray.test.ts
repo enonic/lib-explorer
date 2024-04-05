@@ -2,7 +2,7 @@
 import {deepStrictEqual} from 'assert';
 import {
 	languagesObjectToArray
-} from '../../../../src/main/resources/lib/explorer/synonym/languagesObjectToArray';
+} from './languagesObjectToArray';
 
 
 const A_COMMENT = 'a_comment';

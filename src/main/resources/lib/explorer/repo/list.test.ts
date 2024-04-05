@@ -1,40 +1,52 @@
-import type { JavaBridge as JavaBridgeWithStemmingLanguageFromLocale } from '../../../../src/main/resources/lib/explorer/_coupling/types';
+import type { list as listRepos } from '@enonic-types/lib-repo';
 
-
-import {toStr} from '@enonic/js-utils/value/toStr';
-import {JavaBridge} from '@enonic/mock-xp';
+// import {toStr} from '@enonic/js-utils/value/toStr';
+import {
+	LibRepo,
+	Log,
+	Server,
+} from '@enonic/mock-xp';
+import {
+	describe,
+	// expect,
+	jest,
+	test as it
+} from '@jest/globals';
 import {deepStrictEqual} from 'assert';
 import { COLLECTION_REPO_PREFIX } from '@enonic/explorer-utils';
-import { list } from '../../../../src/main/resources/lib/explorer/_uncoupled/repo/list';
-import {log} from '../../../dummies';
-import {COLLECTION_NAME} from '../../../testData';
+import { list } from './list';
+import {COLLECTION_NAME} from '../../../../../../test/testData';
 
 
-const javaBridge = new JavaBridge({
-	app: {
-		config: {},
-		name: 'com.enonic.app.explorer',
-		version: '0.0.1-SNAPSHOT'
-	},
-	log
-}) as unknown as JavaBridgeWithStemmingLanguageFromLocale;
-javaBridge.repo.create({
-	id: 'system-repo'
-});
-javaBridge.repo.create({
-	id: 'com.enonic.cms.default'
-});
-javaBridge.repo.createBranch({
-	branchId: 'draft',
-	repoId: 'com.enonic.cms.default'
-});
-javaBridge.repo.create({
-	id: 'com.enonic.app.explorer'
-});
 const REPO_ID = `${COLLECTION_REPO_PREFIX}${COLLECTION_NAME}`;
-javaBridge.repo.create({
+
+const server = new Server({
+	loglevel: 'silent'
+}).createProject({
+	projectName: 'default'
+}).createRepo({
+	id: 'com.enonic.app.explorer'
+}).createRepo({
 	id: REPO_ID
 });
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+declare module globalThis {
+	let log: Log
+}
+
+globalThis.log = server.log;
+
+const libRepo = new LibRepo({
+	server
+});
+
+jest.mock('/lib/xp/repo', () => {
+	return {
+		list: jest.fn<typeof listRepos>(() => libRepo.list()),
+	}
+}, { virtual: true });
+
 
 describe('repo', () => {
 	describe('list()', () => {
@@ -57,7 +69,7 @@ describe('repo', () => {
 					branches: ['master'],
 					settings: {}
 				}],
-				list({}, javaBridge)
+				list({})
 			);
 		});
 		it(`list({ branch: 'master' }) --> all repos`, () => {
@@ -81,7 +93,7 @@ describe('repo', () => {
 				}],
 				list({
 					branch: 'master',
-				}, javaBridge)
+				})
 			);
 		});
 		it(`list({ branches: ['master', 'draft'] }) --> all repos`, () => {
@@ -105,7 +117,7 @@ describe('repo', () => {
 				}],
 				list({
 					branches: ['master', 'draft'],
-				}, javaBridge)
+				})
 			);
 		});
 		it(`list({ branch: 'draft' }) --> only cms repo`, () => {
@@ -117,7 +129,7 @@ describe('repo', () => {
 				}],
 				list({
 					branch: 'draft'
-				}, javaBridge)
+				})
 			);
 		});
 		it(`list({ idStartsWith: 'com.enonic.app.explorer' }) --> only repos starting with com.enonic.app.explorer`, () => {
@@ -133,7 +145,7 @@ describe('repo', () => {
 				}],
 				list({
 					idStartsWith: 'com.enonic.app.explorer'
-				}, javaBridge)
+				})
 			);
 		});
 		it(`list({ branch: 'draft', idStartsWith: 'com.enonic.app.explorer' }) --> no repos`, () => {
@@ -142,7 +154,7 @@ describe('repo', () => {
 				list({
 					branch: 'draft',
 					idStartsWith: 'com.enonic.app.explorer'
-				}, javaBridge)
+				})
 			);
 		});
 	}); // describe list()

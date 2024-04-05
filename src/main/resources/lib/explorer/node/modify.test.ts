@@ -3,36 +3,34 @@ import type { WriteConnection } from '/lib/explorer/types/index.d';
 
 
 import { ROOT_PERMISSIONS_EXPLORER } from '@enonic/explorer-utils';
-import { JavaBridge } from '@enonic/mock-xp';
-import Log from '@enonic/mock-xp/src/Log';
+import {
+	Log,
+	Server,
+} from '@enonic/mock-xp';
 import {
 	describe,
 	expect,
 	jest,
 	test as it
 } from '@jest/globals';
-import { modify } from '../../../../src/main/resources/lib/explorer/node/modify';
+import { modify } from './modify';
 
 
-const log = Log.createLogger({
-	// loglevel: 'debug'
+const server = new Server({
 	loglevel: 'silent'
-});
-// @ts-expect-error TS2339: Property 'log' does not exist on type 'typeof globalThis'.
-global.log = log;
-const javaBridge = new JavaBridge({
-	app: {
-		config: {},
-		name: 'com.enonic.app.explorer',
-		version: '0.0.1-SNAPSHOT'
-	},
-	log
-});
-javaBridge.repo.create({
+}).createRepo({
 	id: 'com.enonic.app.explorer'
 });
-const writeConnection = javaBridge.connect({
-	branch: 'master',
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+declare module globalThis {
+	let log: Log
+}
+
+globalThis.log = server.log;
+
+const writeConnection = server.connect({
+	branchId: 'master',
 	repoId: 'com.enonic.app.explorer',
 }) as unknown as WriteConnection;
 
