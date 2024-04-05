@@ -2181,6 +2181,11 @@
   resolved "https://registry.yarnpkg.com/@types/d3-dsv/-/d3-dsv-3.0.7.tgz#0a351f996dc99b37f4fa58b492c2d1c04e3dac17"
   integrity sha512-n6QBF9/+XASqcKK6waudgL0pf/S5XHPPI8APyMLLUHd8NqouBGLsU8MgtO7NINGtPBtk9Kko/W4ea0oAspwh9g==
 
+"@types/diff@^5.0.9":
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-5.0.9.tgz#31977962175079c2048315febeb8fd5f520192c6"
+  integrity sha512-RWVEhh/zGXpAVF/ZChwNnv7r4rvqzJ7lYNSmZSVTxjV0PBLf6Qu7RNg+SUtkpzxmiNkjCx0Xn2tPp7FIkshJwQ==
+
 "@types/eslint-scope@^3.7.3":
   version "3.7.7"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.7.tgz#3108bd5f18b0cdb277c867b3dd449c9ed7079ac5"
@@ -2245,6 +2250,13 @@
   integrity sha512-SSrD0c1OQzlFX7pGu1eXxSEjemej64aaNPRhhVYUGqXh0BtldAAx37MG8btcumvpgKyZp1F5Gn3JkktdxiFv6w==
   dependencies:
     "@types/node" "*"
+
+"@types/human-object-diff@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/human-object-diff/-/human-object-diff-3.0.0.tgz#c995eff94e02bdff359c874d9c6430568b9c58b8"
+  integrity sha512-eBpl1e5jlWm16W1NbmIICV1Yq5bJBlCA/sLHItoOBQ47+x1ClwVm1PrJoswgrmLmMiVkM+dGlB42y+cjp15tgQ==
+  dependencies:
+    human-object-diff "*"
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.6"
@@ -5215,7 +5227,7 @@ https-proxy-agent@^5.0.1:
     agent-base "6"
     debug "4"
 
-human-object-diff@^3:
+human-object-diff@*, human-object-diff@^3:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/human-object-diff/-/human-object-diff-3.0.0.tgz#d6e91024c27e9a53414d7d700208c133f44034ad"
   integrity sha512-hNGFFJFQD3vslopToxZpCYdtAqL9bfhQVRfG4XWcHeCqMHo+cNe4rfq8kPkVas4x6H9pXJ9uRZbradBMfBOx7g==

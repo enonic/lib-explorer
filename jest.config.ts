@@ -1,6 +1,16 @@
+export const APP_NAME = 'com.enonic.lib.explorer';
+export const EXPLORER_VERSION = '4.4.3';
+
+const DIR_SRC = 'src/main/resources';
+const AND_BELOW = '**';
+const SOURCE_FILES = `*.{ts,tsx}`;
+const TEST_EXT = `{spec,test}.{ts,tsx}`;
+const TEST_FILES = `*.${TEST_EXT}`;
+
+
 export default {
 	collectCoverageFrom: [
-		'src/main/resources/**/*.ts'
+		`${DIR_SRC}/${AND_BELOW}/${SOURCE_FILES}`,
 	],
 
 	coveragePathIgnorePatterns: [
@@ -14,7 +24,8 @@ export default {
 
 	globals: {
 		app: {
-			name: 'com.enonic.app.explorer'
+			name: APP_NAME,
+			version: EXPLORER_VERSION
 		},
 	},
 
@@ -27,11 +38,12 @@ export default {
 	preset: 'ts-jest/presets/js-with-babel-legacy',
 	// preset: 'ts-jest/presets/js-with-babel',
 
-	// testEnvironment: 'jsdom', // Doesn't change Uncovered Lines
+	// testEnvironment: 'jsdom', // Clientside
 	testEnvironment: 'node',
 
 	testMatch: [
-		'<rootDir>/test/**/*.(spec|test).ts'
+		`<rootDir>/${DIR_SRC}/${AND_BELOW}/${TEST_FILES}`,
+		`<rootDir>/test/${AND_BELOW}/${TEST_FILES}`
 	],
 
 	transform: {
