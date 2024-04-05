@@ -62,7 +62,6 @@ import {
 	ROOT_PERMISSIONS_EXPLORER
 } from '../constants';
 import {documentTypeNameToPath} from '../documentType/documentTypeNameToPath';
-//import {javaBridgeDummy} from '../dummies';
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';
@@ -443,7 +442,7 @@ export function create(
 		//data,
 		fieldsObj,
 		languages
-	}/*, javaBridge*/);
+	});
 	// log.debug('indexConfig %s', indexConfig);
 	dataWithJavaTypes['_indexConfig'] = indexConfig;
 	dataWithJavaTypes._inheritsPermissions = false; // false is the default and the fastest, since it doesn't have to read parent to apply permissions.

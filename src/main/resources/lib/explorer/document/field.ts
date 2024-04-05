@@ -32,7 +32,6 @@ import {
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import { includes as stringIncludes } from '@enonic/js-utils/string/includes';
-//import {javaBridgeDummy} from '../dummies';
 
 
 const BOOLEAN_PROPS = [

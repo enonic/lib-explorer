@@ -1,4 +1,3 @@
-import type {JavaBridge} from '/lib/explorer/_coupling/types.d';
 import type {CollectionNode} from '/lib/explorer/types/Collection.d';
 import type {
 	DocumentNode,
@@ -397,10 +396,10 @@ export function update(
 	}
 
 	const indexConfig = buildIndexConfig({
-		//data,
+		// data,
 		fieldsObj,
 		languages
-	}/*, javaBridge*/);
+	});
 	// log.debug('indexConfig %s', indexConfig);
 	dataWithJavaTypes['_indexConfig'] = indexConfig;
 

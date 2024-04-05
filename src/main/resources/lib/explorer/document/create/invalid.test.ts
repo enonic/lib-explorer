@@ -6,7 +6,7 @@ import {
 	VALUE_TYPE_BOOLEAN,
 	VALUE_TYPE_DOUBLE,
 	VALUE_TYPE_STRING
-} from '@enonic/js-utils/storage/indexing/valueType/constants';
+} from '@enonic/js-utils/storage/indexing';
 import {
 	LibEvent,
 	LibNode,
@@ -93,9 +93,6 @@ jest.mock('/lib/xp/node', () => {
 
 jest.mock('/lib/xp/value', () => LibValue, { virtual: true });
 
-//const repos = javaBridge.repo.list();
-//javaBridge.log.info('repos:%s', repos);
-
 const connection = server.connect({
 	branchId: 'master',
 	repoId: 'com.enonic.app.explorer',
@@ -142,7 +139,7 @@ describe('document', () => {
 					valueType: VALUE_TYPE_STRING
 				}]
 			});
-			//javaBridge.log.info('myDocumentTypeNode2:%s', myDocumentTypeNode2);
+			// log.info('myDocumentTypeNode2:%s', myDocumentTypeNode2);
 
 			const myCollectionNode2 = connection.create({
 				_name: 'myCollectionName2',
@@ -150,8 +147,8 @@ describe('document', () => {
 				documentTypeId: myDocumentTypeNode2._id,
 				language: COLLECTION_LANGUAGE,
 			});
-			//javaBridge.log.info('myCollectionNode2:%s', myCollectionNode2);
-			//javaBridge.log.info('myDocumentTypeNode2.properties:%s', myDocumentTypeNode2['properties']);
+			// log.info('myCollectionNode2:%s', myCollectionNode2);
+			// log.info('myDocumentTypeNode2.properties:%s', myDocumentTypeNode2['properties']);
 
 			server.createRepo({
 				id: `${COLLECTION_REPO_PREFIX}myCollectionName2`
@@ -173,7 +170,7 @@ describe('document', () => {
 					validateOccurrences: true, // default is false
 					validateTypes: false // default is requireValid
 				});
-				//javaBridge.log.info('createRes:%s', createRes);
+				// log.info('createRes:%s', createRes);
 
 				deepStrictEqual(
 					{
@@ -221,7 +218,7 @@ describe('document', () => {
 					validateOccurrences: false, // default is false
 					validateTypes: true // default is requireValid
 				});
-				//javaBridge.log.info('createRes:%s', createRes);
+				// log.info('createRes:%s', createRes);
 
 				deepStrictEqual(
 					{

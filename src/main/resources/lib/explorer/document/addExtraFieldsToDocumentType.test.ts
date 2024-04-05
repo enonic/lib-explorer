@@ -212,10 +212,10 @@ describe('document', () => {
 				_path: `${DOCUMENT_TYPES_FOLDER_PATH}/b`,
 				properties: []
 			});
-			//javaBridge.log.debug('newDocumentTypeNode:%s', newDocumentTypeNode);
+			// log.debug('newDocumentTypeNode:%s', newDocumentTypeNode);
 
 			const fieldsObj = fieldsArrayToObj(emptyDocumentTypeNode['properties'] || []);
-			//javaBridge.log.debug('fieldsObj:%s', fieldsObj);
+			// log.debug('fieldsObj:%s', fieldsObj);
 
 			const setWithArrayValues = {
 				oneOrMoreBooleans: BOOLEANS,

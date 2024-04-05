@@ -8,14 +8,20 @@ interface MyOptions extends Options {
 }
 
 
-const RESOURCES_PATH = 'src/main/resources';
+const DIR_SRC = 'src/main/resources';
+const AND_BELOW = '**';
+const SOURCE_FILES = '*.ts';
+const TEST_EXT = `{spec,test}.{ts,tsx}`;
+const TEST_FILES = `*.${TEST_EXT}`;
+const TYPE_FILES = '*.d.ts';
 
 
 const SERVER_FILES = globSync(
-	`${RESOURCES_PATH}/**/*.ts`,
+	`${DIR_SRC}/${AND_BELOW}/${SOURCE_FILES}`,
 	{
 		absolute: false,
-		ignore: globSync(`${RESOURCES_PATH}/**/*.d.ts`)
+		ignore: globSync(`${DIR_SRC}/${AND_BELOW}/${TYPE_FILES}`)
+			.concat(globSync(`${DIR_SRC}/${AND_BELOW}/${TEST_FILES}`))
 	}
 );
 // print(SERVER_FILES, { maxItems: Infinity });

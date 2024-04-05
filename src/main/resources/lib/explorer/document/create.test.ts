@@ -93,9 +93,6 @@ jest.mock('/lib/xp/node', () => {
 
 jest.mock('/lib/xp/value', () => LibValue, { virtual: true });
 
-//const repos = javaBridge.repo.list();
-//javaBridge.log.info('repos:%s', repos);
-
 const connection = server.connect({
 	branchId: 'master',
 	repoId: 'com.enonic.app.explorer',
@@ -105,18 +102,18 @@ connection.create(COLLECTIONS_FOLDER);
 //──────────────────────────────────────────────────────────────────────────────
 // Create a documentType to use in all tests
 //──────────────────────────────────────────────────────────────────────────────
-// javaBridge.log.info('DOCUMENT_TYPES_FOLDER:%s', DOCUMENT_TYPES_FOLDER);
+// log.info('DOCUMENT_TYPES_FOLDER:%s', DOCUMENT_TYPES_FOLDER);
 connection.create(DOCUMENT_TYPES_FOLDER);
 
-// javaBridge.log.info('DOCUMENT_TYPE:%s', DOCUMENT_TYPE);
+// log.info('DOCUMENT_TYPE:%s', DOCUMENT_TYPE);
 const CREATED_DOCUMENT_TYPE_NODE = connection.create(DOCUMENT_TYPE);
-// javaBridge.log.info('CREATED_DOCUMENT_TYPE_NODE:%s', CREATED_DOCUMENT_TYPE_NODE);
+// log.info('CREATED_DOCUMENT_TYPE_NODE:%s', CREATED_DOCUMENT_TYPE_NODE);
 
 // const documentTypeNodePath = `${DOCUMENT_TYPES_FOLDER_PATH}/${DOCUMENT_TYPE_NAME}`;
-// javaBridge.log.info('documentTypeNodePath:%s', documentTypeNodePath);
+// log.info('documentTypeNodePath:%s', documentTypeNodePath);
 
 // const documentTypeNode = connection.get(documentTypeNodePath);
-// javaBridge.log.info('documentTypeNode:%s', documentTypeNode);
+// log.info('documentTypeNode:%s', documentTypeNode);
 
 //──────────────────────────────────────────────────────────────────────────────
 
@@ -298,9 +295,9 @@ describe('document', () => {
 						//_path:
 					}
 				};
-				//const createdDocument =
+				// const createdDocument =
 				create(createParam);
-				//javaBridge.log.info('createdDocument:%s', createdDocument);
+				// log.info('createdDocument:%s', createdDocument);
 				throws(
 					() => create(createParam),
 					{
@@ -308,9 +305,9 @@ describe('document', () => {
 						name: 'com.enonic.xp.node.NodeAlreadyExistAtPathException'
 					}
 				);
-				//const queryRes = connection.query({});
-				//const nodes = queryRes.hits.map(({id}) => connection.get(id));
-				//javaBridge.log.info('nodes:%s', nodes);
+				// const queryRes = connection.query({});
+				// const nodes = queryRes.hits.map(({id}) => connection.get(id));
+				// log.info('nodes:%s', nodes);
 			}); // it
 		}); // describe throws
 
@@ -341,7 +338,7 @@ describe('document', () => {
 						path: false
 					}
 				});
-				//javaBridge.log.info('_indexConfig:%s', _indexConfig);
+				// log.info('_indexConfig:%s', _indexConfig);
 				const createRes = create({
 					// Input
 					collectionId: CREATED_COLLECTION_NODE._id,
@@ -386,8 +383,8 @@ describe('document', () => {
 					extra: 'extra',
 					mystring: 'string'
 				};
-				// javaBridge.log.info('expected:%s', expected);
-				// javaBridge.log.info('createRes:%s', createRes);
+				// log.info('expected:%s', expected);
+				// log.info('createRes:%s', createRes);
 				deepStrictEqual(
 					createRes,
 					expected

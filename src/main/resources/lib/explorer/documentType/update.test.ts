@@ -66,14 +66,6 @@ jest.mock('/lib/xp/node', () => {
     }
 }, { virtual: true });
 
-// TODO was this used for nothing?
-// @ts-ignore
-// javaBridge.stemmingLanguageFromLocale = (locale: string) => {
-// 	if (locale === 'en-GB') {
-// 		return 'en';
-// 	}
-// 	return 'en';
-// }
 
 describe('documentType', () => {
 	describe('update()', () => {

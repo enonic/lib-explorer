@@ -18,7 +18,7 @@ import {
 	FIELD_PATH_META,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/constants';
-import {applyDocumentTypeToDocumentNode} from '/lib/explorer/_uncoupled/document/applyDocumentTypeToDocumentNode';
+import {applyDocumentTypeToDocumentNode} from '/lib/explorer/document/applyDocumentTypeToDocumentNode';
 import {getDocumentTypeByName} from '/lib/explorer/documentType/getDocumentTypeByName';
 import {connect} from '/lib/explorer/repo/connect';
 import {multiConnect} from '/lib/explorer/repo/multiConnect';

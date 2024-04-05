@@ -2,7 +2,7 @@ import type { send } from '@enonic-types/lib-event';
 import type { connect } from '@enonic-types/lib-node';
 
 
-import { sortByProperty } from '@enonic/js-utils/array/sortBy';
+import { sortByProperty } from '@enonic/js-utils/array';
 import {
 	LibEvent,
 	LibNode,
@@ -92,9 +92,6 @@ jest.mock('/lib/xp/node', () => {
 
 jest.mock('/lib/xp/value', () => LibValue, { virtual: true });
 
-//const repos = javaBridge.repo.list();
-//javaBridge.log.info('repos:%s', repos);
-
 const connection = server.connect({
 	branchId: 'master',
 	repoId: 'com.enonic.app.explorer',
@@ -134,23 +131,23 @@ const CREATED_DOCUMENT_NODE = create({
 });
 // log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
 
-/*const CREATED_INVALID_DOCUMENT_NODE = create({
-	collectionId: CREATED_COLLECTION_NODE._id,
-	collectorId: COLLECTOR_ID,
-	collectorVersion: COLLECTOR_VERSION,
-	data: {
-		myString: 0
-	},
-	documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
-	requireValid: false, // default is false
-	//validateOccurrences: true, // default is false
-	validateTypes: true // default is requireValid
-});*/
-//javaBridge.log.info('CREATED_INVALID_DOCUMENT_NODE:%s', CREATED_INVALID_DOCUMENT_NODE);
+// const CREATED_INVALID_DOCUMENT_NODE = create({
+// 	collectionId: CREATED_COLLECTION_NODE._id,
+// 	collectorId: COLLECTOR_ID,
+// 	collectorVersion: COLLECTOR_VERSION,
+// 	data: {
+// 		myString: 0
+// 	},
+// 	documentTypeId: CREATED_DOCUMENT_TYPE_NODE._id,
+// 	requireValid: false, // default is false
+// 	//validateOccurrences: true, // default is false
+// 	validateTypes: true // default is requireValid
+// });
+// log.info('CREATED_INVALID_DOCUMENT_NODE:%s', CREATED_INVALID_DOCUMENT_NODE);
 
-/*const queryRes = connection.query({});
-const nodes = queryRes.hits.map(({id}) => connection.get(id));
-javaBridge.log.info('nodes:%s', nodes);*/
+// const queryRes = connection.query({});
+// const nodes = queryRes.hits.map(({id}) => connection.get(id));
+// log.info('nodes:%s', nodes);
 
 describe('document', () => {
 	describe('update()', () => {
@@ -413,9 +410,9 @@ describe('document', () => {
 				);
 			}); // it
 			it(`when requireValid=true and invalid`, () => {
-				//javaBridge.log.info('CREATED_COLLECTION_NODE:%s', CREATED_COLLECTION_NODE);
-				//javaBridge.log.info('CREATED_DOCUMENT_TYPE_NODE:%s', CREATED_DOCUMENT_TYPE_NODE);
-				//javaBridge.log.info("CREATED_DOCUMENT_TYPE_NODE['properties']:%s", CREATED_DOCUMENT_TYPE_NODE['properties']);
+				// log.info('CREATED_COLLECTION_NODE:%s', CREATED_COLLECTION_NODE);
+				// log.info('CREATED_DOCUMENT_TYPE_NODE:%s', CREATED_DOCUMENT_TYPE_NODE);
+				// log.info("CREATED_DOCUMENT_TYPE_NODE['properties']:%s", CREATED_DOCUMENT_TYPE_NODE['properties']);
 				throws(
 					() => update({
 						collectionId: CREATED_COLLECTION_NODE._id,
@@ -437,7 +434,7 @@ describe('document', () => {
 
 		describe('modifies document node', () => {
 			it(`modifies data, but not under ${FieldPath.META} nor ${FieldPath.GLOBAL}`, () => {
-				//javaBridge.log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
+				// log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
 				const updateRes = update({
 					collectionId: CREATED_COLLECTION_NODE._id,
 					collectorId: COLLECTOR_ID,
@@ -485,8 +482,8 @@ describe('document', () => {
 				) // deepStrictEqual
 			}); // it
 			it(`adds indexconfig for new fields`, () => {
-				//javaBridge.log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
-				//javaBridge.log.info('CREATED_DOCUMENT_NODE._indexConfig.configs:%s', CREATED_DOCUMENT_NODE._indexConfig.configs);
+				// log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
+				// log.info('CREATED_DOCUMENT_NODE._indexConfig.configs:%s', CREATED_DOCUMENT_NODE._indexConfig.configs);
 				const updateRes = update({
 					collectionId: CREATED_COLLECTION_NODE._id,
 					collectorId: COLLECTOR_ID,
