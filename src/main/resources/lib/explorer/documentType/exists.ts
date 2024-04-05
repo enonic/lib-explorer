@@ -4,7 +4,7 @@ import type {RepoConnection} from '/lib/explorer/types/index.d';
 //import {toStr} from '@enonic/js-utils';
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/constants';
 import {connect} from '/lib/explorer/repo/connect';
-import {documentTypeNameToPath} from '/lib/explorer/_uncoupled/documentType/documentTypeNameToPath';
+import {documentTypeNameToPath} from '/lib/explorer/documentType/documentTypeNameToPath';
 
 
 export function exists({

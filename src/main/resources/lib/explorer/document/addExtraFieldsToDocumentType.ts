@@ -34,7 +34,6 @@ import {
 	applyDefaultsToField,
 	fieldsObjToArray
 } from './field';
-//import {javaBridgeDummy} from '../dummies';
 
 
 interface AddExtraFieldsToDocumentTypeParams {

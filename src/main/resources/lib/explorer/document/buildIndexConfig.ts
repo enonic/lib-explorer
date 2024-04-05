@@ -57,13 +57,11 @@ function decideByTypeFromValueType(valueType: string): boolean {
 
 export function buildIndexConfig(
 	{
-		//data,
+		// data,
 		fieldsObj,
 		languages = []
-	}: BuildIndexConfigParameterObject//,
-	//javaBridge: JavaBridge = javaBridgeDummy
+	}: BuildIndexConfigParameterObject,
 ): IndexConfig {
-	//const {log} = javaBridge;
 	const indexConfig: IndexConfig = {
 		configs: [{
 			path: `${FIELD_PATH_META}.collection`,

@@ -48,7 +48,7 @@ describe('document', () => {
 					'not.nested': 'not.nested'
 				}
 			});
-			//javaBridge.log.info('constrainedData:%s', constrainedData);
+			// log.info('constrainedData:%s', constrainedData);
 			expect(constrainedData).toStrictEqual({
 				'_id': '_id',
 				[FieldPath.GLOBAL]: FieldPath.GLOBAL,

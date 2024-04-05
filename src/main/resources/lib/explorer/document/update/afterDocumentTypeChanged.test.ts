@@ -3,8 +3,8 @@ import type { connect } from '@enonic-types/lib-node';
 
 
 import {forceArray} from '@enonic/js-utils/array/forceArray';
-import {sortByProperty} from '@enonic/js-utils/array/sortBy';
-import {VALUE_TYPE_STRING} from '@enonic/js-utils/storage/indexing/valueType/constants';
+import {sortByProperty} from '@enonic/js-utils/array';
+import {VALUE_TYPE_STRING} from '@enonic/js-utils/storage/indexing';
 import {
 	LibEvent,
 	LibNode,
@@ -92,7 +92,7 @@ connection.create(COLLECTIONS_FOLDER);
 connection.create(DOCUMENT_TYPES_FOLDER);
 
 const CREATED_DOCUMENT_TYPE_NODE = connection.create(DOCUMENT_TYPE);
-//javaBridge.log.info('CREATED_DOCUMENT_TYPE_NODE:%s', CREATED_DOCUMENT_TYPE_NODE);
+// log.info('CREATED_DOCUMENT_TYPE_NODE:%s', CREATED_DOCUMENT_TYPE_NODE);
 
 const CREATED_COLLECTION_NODE = connection.create({
 	...COLLECTION,
@@ -116,9 +116,9 @@ const CREATED_DOCUMENT_NODE = create({
 const MODIFIED_DOCUMENT_TYPE_NODE = connection.modify({
 	key: CREATED_DOCUMENT_TYPE_NODE._id,
 	editor: (node) => {
-		//javaBridge.log.info('node:%s', node);
+		// log.info('node:%s', node);
 		const properties = forceArray(node['properties']);
-		//javaBridge.log.info('properties:%s', properties);
+		// log.info('properties:%s', properties);
 		properties.push({
 			enabled: true,
 			fulltext: true,
@@ -129,17 +129,17 @@ const MODIFIED_DOCUMENT_TYPE_NODE = connection.modify({
 			valueType: VALUE_TYPE_STRING
 		});
 		node['properties'] = properties;
-		//javaBridge.log.info('node:%s', node);
+		// log.info('node:%s', node);
 		return node;
 	}
 });
-//javaBridge.log.info('MODIFIED_DOCUMENT_TYPE_NODE:%s', MODIFIED_DOCUMENT_TYPE_NODE);
+// log.info('MODIFIED_DOCUMENT_TYPE_NODE:%s', MODIFIED_DOCUMENT_TYPE_NODE);
 
 describe('document', () => {
 	describe('update()', () => {
 		it('modifies indexConfig when documentType is changed, even though data is unchanged', () => {
 			const _indexConfig = JSON.parse(JSON.stringify(CREATED_DOCUMENT_NODE._indexConfig));
-			//javaBridge.log.info('_indexConfig:%s', _indexConfig);
+			// log.info('_indexConfig:%s', _indexConfig);
 			_indexConfig.configs.push({
 				path: 'newStringField',
 				config: {
@@ -153,7 +153,7 @@ describe('document', () => {
 				}
 			});
 			_indexConfig.configs = sortByProperty(_indexConfig.configs, 'path');
-			//javaBridge.log.info('_indexConfig:%s', _indexConfig);
+			// log.info('_indexConfig:%s', _indexConfig);
 			const updateRes = update({
 				collectionId: CREATED_COLLECTION_NODE._id,
 				collectorId: COLLECTOR_ID,

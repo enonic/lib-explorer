@@ -6,7 +6,7 @@ import type {
 
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
-import {coerseDocumentType} from '/lib/explorer/_uncoupled/documentType/coerseDocumentType';
+import {coerseDocumentType} from '/lib/explorer/documentType/coerseDocumentType';
 
 
 export function getDocumentType({

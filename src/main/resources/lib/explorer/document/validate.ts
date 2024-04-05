@@ -24,7 +24,7 @@ export interface ValidateParameters {
 	partial?: boolean
 	validateOccurrences?: boolean
 	validateTypes?: boolean
-	//documentType?: AnyObject
+	// documentType?: AnyObject
 }
 
 
@@ -37,10 +37,9 @@ export function validate(
 		validateTypes: boolValidateTypes = true
 	}: ValidateParameters,
 ) {
-	//const {log} = javaBridge;
-	//log.debug(`data:${toStr(data)}`);
-	//log.debug(`fields:${toStr(fields)}`);
-	//log.debug(`boolValidateOccurrences:${toStr(boolValidateOccurrences)}`);
+	// log.debug(`data:${toStr(data)}`);
+	// log.debug(`fields:${toStr(fields)}`);
+	// log.debug(`boolValidateOccurrences:${toStr(boolValidateOccurrences)}`);
 	const fields = fieldsObjToArray(fieldsObj);
 
 	if (boolValidateOccurrences) {
@@ -48,7 +47,7 @@ export function validate(
 			return false;
 		}
 	}
-	//log.debug(`boolValidateTypes:${toStr(boolValidateTypes)}`);
+	// log.debug(`boolValidateTypes:${toStr(boolValidateTypes)}`);
 	if (boolValidateTypes) {
 		return validateTypes({ data, fields });
 	}
