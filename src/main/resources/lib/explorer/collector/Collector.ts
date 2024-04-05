@@ -442,6 +442,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 	}
 
 	stop() {
+		DEBUG && log.debug('Collector.stop');
 		this.journal.create();
 		this.taskProgressObj.current = this.taskProgressObj.total; // Make sure it ends at 100%
 		this.taskProgressObj.info.message = `Finished with ${this.journal.errors.length} errors.`;
@@ -453,13 +454,13 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 			}),
 			path: '/notifications'
 		}) || {}) as NotificationsNode;
-		//log.info(`node:${toStr(node)}`);
+		DEBUG && log.debug('Collector.stop node:%s', toStr(node));
 
 		const {emails = []} = node;
-		//log.info(`emails:${toStr(emails)}`);
+		DEBUG && log.debug('Collector.stop emails:%s', toStr(emails));
 
 		if (this.journal.errors.length) {
-			log.warning('errors:%s',toStr(this.journal.errors));
+			log.warning('Collector.stop errors:%s', toStr(this.journal.errors));
 			modifyTask({
 				connection: this.collection.connection,
 				state: 'FAILED',
@@ -475,22 +476,25 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 						subject: `Collecting to ${this._collectionName} had ${this.journal.errors.length} errors!`,
 						body: `${toStr(this.journal.errors)}`
 					};
-					log.info(`emailParams:${toStr(emailParams)}`);
+					log.info(`Collector.stop emailParams:${toStr(emailParams)}`);
 					send(emailParams);
 				} catch (e) {
 					log.warning(e.message, e);
 				}
 			}
 
-			DEBUG && log.debug(`Collector.stop this.taskProgressObj:${toStr(this.taskProgressObj)}`);
+			DEBUG && log.debug('Collector.stop this.taskProgressObj:%s', toStr(this.taskProgressObj));
 			throw new Error(JSON.stringify(this.taskProgressObj.info)); // Throw so task state becomes FAILED.
 			//throw new Error(this.taskProgressObj.info.message); // Throw so task state becomes FAILED.
 		}
+
+		DEBUG && log.debug('Collector.stop before modifyTask state:FINISHED');
 		modifyTask({
 			connection: this.collection.connection,
 			state: 'FINISHED',
 			should: 'STOP'
 		});
+		DEBUG && log.debug('Collector.stop after modifyTask state:FINISHED');
 
 		// Success Notifications
 		if (emails.length) {
