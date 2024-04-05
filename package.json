@@ -76,6 +76,8 @@
     "@swc/core": "^1",
     "@types/bluebird": "*",
     "@types/d3-dsv": "^3",
+    "@types/diff": "^5.0.9",
+    "@types/human-object-diff": "^3.0.0",
     "@types/jest": "^29",
     "@types/node": "^20",
     "@types/react": "^18",
