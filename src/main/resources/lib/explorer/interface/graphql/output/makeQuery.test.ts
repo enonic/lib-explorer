@@ -4,8 +4,12 @@ import {
 	// jest,
 	test as it
 } from '@jest/globals';
+import {Log} from '@enonic/mock-xp';
 import {makeQuery} from './makeQuery';
 
+const logger = Log.createLogger({
+	loglevel: 'debug'
+});
 
 describe('makeQuery', () => {
 	it('should make a minimal query for minimal input', () => {
@@ -123,7 +127,7 @@ describe('makeQuery', () => {
 	});
 
 	it('should handle term boosting', () => {
-		expect(makeQuery({
+		const res = makeQuery({
 			fields: [],
 			searchStringWithoutStopWords: 'god',
 			termQueries: [{
@@ -147,7 +151,9 @@ describe('makeQuery', () => {
 				stringValue: 'Jesus',
 				type: 'string'
 			}]
-		})).toEqual({
+		});
+		// logger.debug('res:%s', res);
+		const mainQuery = {
 			boolean: {
 				should: [{
 					fulltext: {
@@ -162,37 +168,58 @@ describe('makeQuery', () => {
 						operator: 'AND',
 						query: 'god'
 					}
-				}, {
-					term: {
-						boost: 1.2,
-						field: 'divine',
-						value: true
-					}
-				}, {
-					term: {
-						boost: 1.3,
-						field: 'verse',
-						value: 3.16
-					}
-				}, {
-					term: {
-						boost: 1.4,
-						field: 'age',
-						value: 33
-					}
-				}, {
-					term: {
-						boost: 1.5,
-						field: 'name',
-						value: 'Jesus'
-					}
 				}]
+			}
+		};
+		const termQueries = [{
+			term: {
+				boost: 1.2,
+				field: 'divine',
+				value: true
+			}
+		}, {
+			term: {
+				boost: 1.3,
+				field: 'verse',
+				value: 3.16
+			}
+		}, {
+			term: {
+				boost: 1.4,
+				field: 'age',
+				value: 33
+			}
+		}, {
+			term: {
+				boost: 1.5,
+				field: 'name',
+				value: 'Jesus'
+			}
+		}];
+		const termQuery = {
+			boolean: {
+				should: termQueries
+			}
+		};
+		expect(res).toEqual({
+			boolean: {
+				should: [
+					mainQuery,
+					{
+						boolean: {
+							must: [
+								mainQuery,
+								termQuery
+							]
+						}
+					}
+				]
 			}
 		});
 	});
 
 	it('should handle everything all at once', () => {
-		expect(makeQuery({
+		const res = makeQuery({
 			fields: [{
 				boost: 1.1,
 				name: 'title',
@@ -220,7 +247,9 @@ describe('makeQuery', () => {
 				stringValue: 'Jesus',
 				type: 'string'
 			}]
-		})).toEqual({
+		});
+		// logger.debug('res:%s', res);
+		const mainQuery = {
 			boolean: {
 				should: [{
 					boolean: {
@@ -297,32 +326,53 @@ describe('makeQuery', () => {
 							}
 						}]
 					}
-				},{
-					term: {
-						boost: 1.2,
-						field: 'divine',
-						value: true
+				}]
+			}
+		}
+		const termQueries = [{
+			term: {
+				boost: 1.2,
+				field: 'divine',
+				value: true
+			}
+		}, {
+			term: {
+				boost: 1.3,
+				field: 'verse',
+				value: 3.16
+			}
+		}, {
+			term: {
+				boost: 1.4,
+				field: 'age',
+				value: 33
+			}
+		}, {
+			term: {
+				boost: 1.5,
+				field: 'name',
+				value: 'Jesus'
+			}
+		}];
+		const termQuery = {
+			boolean: {
+				should: termQueries
+			}
+		};
+		expect(res).toEqual({
+			boolean: {
+				should: [
+					mainQuery,
+					{
+						boolean: {
+							must: [
+								mainQuery,
+								termQuery
+							]
+						}
 					}
-				}, {
-					term: {
-						boost: 1.3,
-						field: 'verse',
-						value: 3.16
-					}
-				}, {
-					term: {
-						boost: 1.4,
-						field: 'age',
-						value: 33
-					}
-				}, {
-					term: {
-						boost: 1.5,
-						field: 'name',
-						value: 'Jesus'
-					}
-				}] // root should
-			} // root boolean
-		}); // expect
+				]
+			}
+		});
 	}); // it
 }); // describe makeQuery
