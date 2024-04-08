@@ -15,11 +15,11 @@ import {
 } from '@enonic/js-utils';
 
 
-// const and = storage.query.dsl.and;
 const bool = storage.query.dsl.bool;
 const fulltext = storage.query.dsl.fulltext;
+const all = storage.query.dsl.must;
 const ngram = storage.query.dsl.ngram;
-const or = storage.query.dsl.or;
+const some = storage.query.dsl.should;
 const stemmed = storage.query.dsl.stemmed;
 const term = storage.query.dsl.term;
 
@@ -77,8 +77,13 @@ export function makeQuery({
 		0.8
 	));
 
+	const mainQuery = bool(some(arr)) as QueryDsl;
 
-	// const expressions = [];
+	if (!termQueries.length) {
+		return mainQuery;
+	}
+
+	const expressions = [];
 	for (let i = 0; i < termQueries.length; i++) {
 		const {
 			booleanValue,
@@ -96,33 +101,23 @@ export function makeQuery({
 				: type === VALUE_TYPE_LONG
 					? longValue
 					: stringValue
-		arr.push(term(
+					expressions.push(term(
 			field,
 			value,
 			boost
 		));
 	}
 
-	// let query: QueryDsl;
-	// if (!expressions.length) {
-	const query = bool(or(arr));
-	// } else {
-	// 	// A: normal results
-	// 	// B: everything with source:specific
-	// 	// A || B would give too much results (stuff outside A)
-	// 	// A && B would give too few results (exclude everything without source:specific)
-	// 	// A || ((A && B) negative boost) might be the way to go.
-	// 	query = bool(
-	// 		or(
-	// 			bool(or(arr)),
-	// 			bool(and(
-	// 				bool(or(arr)),
-	// 				bool(or(expressions))
-	// 			))
-	// 		)
-	// 	)
-	// }
-	// log.info('query:%s', toStr(query));
-
-	return query as QueryDsl;
+	// A: normal results
+	// B: everything with source:specific
+	// A || B would give too much results (stuff outside A)
+	// A && B would give too few results (exclude everything without source:specific)
+	// A || (A && B) is the way to go.
+	return bool(some(
+		mainQuery,
+		bool(all(
+			mainQuery,
+			bool(some(expressions))
+		))
+	)) as QueryDsl;
 }
