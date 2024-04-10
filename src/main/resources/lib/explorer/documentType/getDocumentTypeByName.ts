@@ -1,11 +1,11 @@
-import type {DocumentTypeNode} from '/lib/explorer/types/index.d';
+import type {DocumentTypeNode} from '@enonic-types/lib-explorer';
 
 
 import {connect} from '/lib/xp/node';
 import {
 	PRINCIPAL_EXPLORER_READ,
 	REPO_ID_EXPLORER
-} from '../constants';
+} from '/lib/explorer/constants';
 import {coerseDocumentType} from './coerseDocumentType';
 import {documentTypeNameToPath} from './documentTypeNameToPath';
 

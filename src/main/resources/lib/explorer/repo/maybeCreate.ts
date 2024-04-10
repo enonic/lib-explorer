@@ -8,8 +8,8 @@ import {
 } from '/lib/xp/repo';
 // import {create as createNode}  from '/lib/explorer/node/create';
 // import {get as getNode}  from '/lib/explorer/node/get';
-import {exists as nodeExists} from '../node/exists';
-import {connect} from '../repo/connect';
+import {exists as nodeExists} from '/lib/explorer/node/exists';
+import {connect} from '/lib/explorer/repo/connect';
 import {
 	PRINCIPAL_EXPLORER_WRITE,
 	ROOT_PERMISSIONS_EXPLORER

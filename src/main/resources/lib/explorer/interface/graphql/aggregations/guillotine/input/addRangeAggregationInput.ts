@@ -1,5 +1,5 @@
-import type {GraphQL} from '../../../index.d';
-import type {Glue} from '../../../utils/Glue';
+import type {GraphQL} from '/lib/explorer/interface/graphql/index.d';
+import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 
 
 import {
@@ -11,7 +11,7 @@ import {
 import {
 	GQL_INPUT_TYPE_AGGREGATION_RANGE,
 	GQL_INPUT_TYPE_NUMBER_RANGE
-} from '../constants';
+} from '/lib/explorer/interface/graphql/aggregations/guillotine/constants';
 
 
 export function addRangeAggregationInput({

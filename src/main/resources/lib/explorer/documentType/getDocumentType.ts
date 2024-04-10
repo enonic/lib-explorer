@@ -1,7 +1,7 @@
 import type {
 	DocumentTypeNode,
 	RepoConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';

@@ -1,7 +1,7 @@
 import type {
 	Collection,
 	CollectionNode
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 // This function is currently used when creating or modifying a CollectionNode.

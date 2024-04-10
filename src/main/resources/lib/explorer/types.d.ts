@@ -9,11 +9,11 @@ export type {
 	NodeConfigEntry as IndexConfigObject,
 	NodeIndexConfigParams as IndexConfig
 } from '/lib/xp/node';
-export type {PrincipalKey} from '@enonic/js-utils/src/types/Auth.d';
+export type {PrincipalKey} from '@enonic/js-utils/types/Auth.d';
 export type {
 	CreateRepoParams,
 	RepositoryConfig
-} from '@enonic/js-utils/src/types/Repo.d';
+} from '@enonic/js-utils/types/Repo.d';
 export type {RequiredNodeProperties} from './types/index.d';
 
 

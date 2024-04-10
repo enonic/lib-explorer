@@ -1,17 +1,20 @@
+import type {
+	// Highlight, // Not GraphQL
+	HighlightResult
+} from '@enonic-types/core';
 import type {FieldSortDsl} from '/lib/xp/node';
 import type {
 	AnyObject,
 	DocumentNode,
 	InterfaceField
-} from '/lib/explorer/types/index.d';
-import type {Highlight} from '../highlight/input/index.d';
-//import type {HighlightArray} from '../highlight/output/index.d';
+} from '@enonic-types/lib-explorer';
+import type {Highlight} from '@enonic-types/lib-explorer';
 import type {SynonymsArray} from '/lib/explorer/synonym/index.d';
-import type {TermQuery} from '/lib/explorer/types/Interface.d';
+import type {TermQuery} from '@enonic-types/lib-explorer/Interface.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 
-export type {EmptyObject} from '/lib/explorer/types/index.d';
+export type {EmptyObject} from '@enonic-types/lib-explorer';
 
 
 export type Profiling = {
@@ -116,8 +119,7 @@ export type Hit = {
 	//_collectorVersion?: string  // from FIELD_PATH_META
 	_createdTime?: string // from FIELD_PATH_META
 	_documentType?: string // from FIELD_PATH_META
-	_highlight?: Record<string,string[]>
-	//_highlight?: HighlightArray
+	_highlight?: HighlightResult
 	_json: DocumentNode
 	_modifiedTime?: string // from FIELD_PATH_META
 	//_language?: string // from FIELD_PATH_META

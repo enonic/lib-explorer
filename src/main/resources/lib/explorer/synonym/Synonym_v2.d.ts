@@ -4,8 +4,8 @@ import type {
 	NodeCreate,
 	OneOrMore,
 	RequiredNodeProperties
-} from '/lib/explorer/types/index.d';
-import type {HighlightResult} from '@enonic/js-utils/src/types/node/query/Highlight';
+} from '@enonic-types/lib-explorer';
+import type {HighlightResult} from '@enonic/js-utils/types/node/query/Highlight';
 
 //──────────────────────────────────────────────────────────────────────────
 // Input types

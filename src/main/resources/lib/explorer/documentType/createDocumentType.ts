@@ -9,7 +9,7 @@ import type {
 	Path as PathType,
 	ParentPath,
 	WriteConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {

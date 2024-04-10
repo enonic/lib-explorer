@@ -1,4 +1,4 @@
-import type {Glue} from '../../../utils/Glue';
+import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 
 
 import {
@@ -9,7 +9,7 @@ import {
 import {
 	GQL_INPUT_TYPE_FILTER,
 	GQL_INPUT_TYPE_FILTER_BOOLEAN
-} from '../constants';
+} from '/lib/explorer/interface/graphql/filters/guillotine/constants';
 
 
 export function addBooleanFilterInput({glue} :{glue :Glue}) {

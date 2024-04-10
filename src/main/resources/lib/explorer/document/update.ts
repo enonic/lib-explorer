@@ -1,13 +1,13 @@
-import type {CollectionNode} from '/lib/explorer/types/Collection.d';
+import type {CollectionNode} from '@enonic-types/lib-explorer/Collection.d';
 import type {
 	DocumentNode,
 	RequiredMetaData
-} from '/lib/explorer/types/Document.d';
+} from '@enonic-types/lib-explorer/Document.d';
 import {
 	DocumentTypeNode,
 	Path,
 	ParentPath
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 import type {CreateParameterObject} from './create';
 
 
@@ -34,7 +34,7 @@ import {
 	ROOT_PERMISSIONS_EXPLORER
 } from '/lib/explorer/constants';
 import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
-import {documentTypeNameToPath} from '../documentType/documentTypeNameToPath';
+import {documentTypeNameToPath} from '/lib/explorer/documentType/documentTypeNameToPath';
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';

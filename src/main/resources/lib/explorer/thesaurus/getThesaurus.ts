@@ -1,5 +1,5 @@
 import type {RepoConnection} from '/lib/xp/node';
-import type {ThesaurusNode} from '/lib/explorer/types/Thesaurus.d';
+import type {ThesaurusNode} from '@enonic-types/lib-explorer/Thesaurus.d';
 
 
 import {

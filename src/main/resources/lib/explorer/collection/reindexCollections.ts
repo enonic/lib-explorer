@@ -1,4 +1,4 @@
-import type {CollectionNode} from '/lib/explorer/types/Collection.d';
+import type {CollectionNode} from '@enonic-types/lib-explorer/Collection.d';
 
 
 import {
@@ -14,7 +14,7 @@ import {
 	//@ts-ignore
 } from '/lib/xp/task';
 
-import {getDocumentType} from '../documentType/getDocumentType';
+import {getDocumentType} from '/lib/explorer/documentType/getDocumentType';
 
 
 export function reindexCollections({collectionIds}) {

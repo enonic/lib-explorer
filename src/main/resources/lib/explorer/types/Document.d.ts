@@ -1,4 +1,4 @@
-import type { RequiredNodeProperties } from '../types';
+import type { RequiredNodeProperties } from '@enonic-types/lib-explorer';
 
 export interface RequiredMetaData {
 	collection: string

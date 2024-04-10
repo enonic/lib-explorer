@@ -190,6 +190,7 @@ export type {
 	ScheduledJob
 } from './Scheduler.d';
 export type {
+	QueriedStopword,
 	Stopword,
 	StopwordNode
 } from './Stopword.d';

@@ -1,4 +1,4 @@
-import type {AnyObject} from '../../../types/index.d';
+import type {AnyObject} from '@enonic-types/lib-explorer';
 
 //──────────────────────────────────────────────────────────────────────────────
 // Polyfill
@@ -19,7 +19,7 @@ if (!Math.trunc) { Math.trunc = mathTrunc; } // Needed by pretty-ms
 import {progress as _progress} from '/lib/xp/task';
 
 // This fails when tsup code splitting: true
-// import {currentTimeMillis} from '../time/currentTimeMillis';
+// import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 
 
 //@ts-ignore

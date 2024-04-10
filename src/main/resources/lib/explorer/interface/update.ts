@@ -2,8 +2,8 @@ import type {RepoConnection as WriteConnection} from '/lib/xp/node';
 import type {
 	InterfaceField,
 	InterfaceNode,
-} from '/lib/explorer/types/index.d';
-import type {TermQuery} from '/lib/explorer/types/Interface.d';
+} from '@enonic-types/lib-explorer';
+import type {TermQuery} from '@enonic-types/lib-explorer/Interface.d';
 
 
 import {

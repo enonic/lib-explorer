@@ -2,11 +2,11 @@ import type { TaskStateType } from '/lib/xp/task';
 import type {
 	TaskShouldType,
 	WriteConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 import { TASK_STATE_RUNNING } from '@enonic/js-utils';
-import {modify as modifyNode} from '../node/modify';
+import {modify as modifyNode} from '/lib/explorer/node/modify';
 import { SHOULD_RUN } from './constants';
 
 

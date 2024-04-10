@@ -1,4 +1,4 @@
-import type {AnyObject} from '/lib/explorer/types/';
+import type {AnyObject} from '@enonic-types/lib-explorer/';
 
 
 export type Branch<Leaf = string> = {

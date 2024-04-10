@@ -2,7 +2,7 @@ import type {
 	DocumentTypeField,
 	DocumentTypeFields,
 	DocumentTypeFieldsObject
-} from '../types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {

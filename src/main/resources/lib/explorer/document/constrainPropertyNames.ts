@@ -7,7 +7,7 @@ import {
 import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META
-} from '../constants';
+} from '/lib/explorer/constants';
 
 
 // @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.

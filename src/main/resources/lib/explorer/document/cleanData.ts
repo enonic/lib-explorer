@@ -1,8 +1,8 @@
-import type {DocumentTypeFieldsObject} from '/lib/explorer/types/index.d';
+import type {DocumentTypeFieldsObject} from '@enonic-types/lib-explorer';
 import type {
 	AnyObject,
 	DocumentTypeField
-} from '../types/index.d'
+} from '@enonic-types/lib-explorer/index.d'
 
 
 // import {toStr} from '@enonic/js-utils/value/toStr';
@@ -14,7 +14,7 @@ import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META
 //} from '/lib/explorer/constants';
-} from '../constants';
+} from '/lib/explorer/constants';
 
 // @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
 import traverse = require('traverse');

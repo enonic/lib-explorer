@@ -26,7 +26,7 @@ import {
 	//@ts-ignore
 } from '/lib/graphql';
 
-import {VALUE_TYPE_JSON} from '../constants';
+import {VALUE_TYPE_JSON} from '/lib/explorer/interface/graphql/constants';
 
 
 export function valueTypeToGraphQLType(valueType) {

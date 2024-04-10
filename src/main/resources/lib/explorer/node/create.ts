@@ -4,7 +4,7 @@ import type {
 	NodeCreateParams,
 	ParentPath,
 	WriteConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {
@@ -76,9 +76,10 @@ export function create<N extends NodeCreateParams & {
 		key: string
 	}
 }): N & {_id: string} {
-	/*log.info(toStr({
-		_parentPath, _name, displayName, rest
-	}));*/
+	// For Jest notice no toStr
+	// log.error('/lib/explorer/node/create params:%s', {
+	// 	_parentPath, _name, displayName, rest
+	// });
 	Object.keys(rest).forEach((k) => {
 		if (k.startsWith('__')) {
 			log.warning(`Deprecation: Function signature changed. Added second argument for options.

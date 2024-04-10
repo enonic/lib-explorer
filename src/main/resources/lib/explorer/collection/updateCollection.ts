@@ -1,7 +1,7 @@
 import type {
 	CollectionNode,
 	CollectionWithCron
-} from '/lib/explorer/types/Collection.d';
+} from '@enonic-types/lib-explorer/Collection.d';
 
 
 // import {toStr} from '@enonic/js-utils';

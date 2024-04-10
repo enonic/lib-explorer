@@ -1,8 +1,8 @@
 import type {
 	CollectionNode,
 	CollectionNodeSpecific
-} from '/lib/explorer/types/Collection';
-import type {OneOrMore} from '/lib/explorer/types/Utility';
+} from '@enonic-types/lib-explorer/Collection';
+import type {OneOrMore} from '@enonic-types/lib-explorer/Utility';
 import type {RepoConnection} from '/lib/xp/node';
 
 

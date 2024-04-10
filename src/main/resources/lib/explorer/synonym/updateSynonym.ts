@@ -1,9 +1,9 @@
 import type {RepoConnection as WriteConnection} from '/lib/xp/node';
-import type {SynonymNode} from '/lib/explorer/types/';
+import type {SynonymNode} from '@enonic-types/lib-explorer/';
 import type {
 	InputTypeSynonymLanguages,
 	SynonymNodeModifyParams
-} from '/lib/explorer/types/Synonym';
+} from '@enonic-types/lib-explorer/Synonym';
 
 
 import {

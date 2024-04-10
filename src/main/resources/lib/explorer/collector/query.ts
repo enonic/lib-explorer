@@ -1,7 +1,7 @@
 import type {
 	Collector,
 	RepoConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 import {
 	addQueryFilter,

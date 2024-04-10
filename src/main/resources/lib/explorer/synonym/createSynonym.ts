@@ -5,12 +5,12 @@ import type {
 import type {
 	SynonymNode,
 	SynonymNodeCreateParams
-} from '/lib/explorer/types/';
+} from '@enonic-types/lib-explorer/';
 import type {
 	InputTypeLanguageSynonym,
 	InputTypeSynonymLanguages,
 	Write_SynonymNode_LanguagesSynonymObject
-} from '/lib/explorer/types/Synonym';
+} from '@enonic-types/lib-explorer/Synonym';
 
 
 import {

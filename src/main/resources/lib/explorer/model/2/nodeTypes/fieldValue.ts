@@ -4,7 +4,7 @@ import type {
 	Name,
 	Path,
 	ParentPath
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 import type {PermissionsParams} from '/lib/explorer/types.d';
 
 import {

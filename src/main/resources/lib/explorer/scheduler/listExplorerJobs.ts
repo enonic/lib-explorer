@@ -1,4 +1,4 @@
-import type {CollectorTaskConfig} from '/lib/explorer/types/index.d';
+import type {CollectorTaskConfig} from '@enonic-types/lib-explorer';
 
 // import {toStr} from '@enonic/js-utils';
 import {APP_EXPLORER} from '/lib/explorer/model/2/constants';

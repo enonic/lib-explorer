@@ -1,9 +1,9 @@
-import type {DocumentTypeFieldsObject} from '/lib/explorer/types/index.d';
+import type {DocumentTypeFieldsObject} from '@enonic-types/lib-explorer';
 import type {
 	IndexConfig,
 	IndexConfigConfig,
 	IndexConfigObject
-} from '../types/IndexConfig';
+} from '@enonic-types/lib-explorer/IndexConfig';
 
 
 import {
@@ -23,7 +23,7 @@ import {
 	sortByProperty
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
-import {FIELD_PATH_META} from '../constants';
+import {FIELD_PATH_META} from '/lib/explorer/constants';
 
 
 export interface BuildIndexConfigParameterObject {

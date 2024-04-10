@@ -10,8 +10,8 @@ import type {
 	ExplorerAdminGQLInterfaceNodeCommonProps,
 	Node,
 	NodeCreate
-} from '/lib/explorer/types/Node.d';
-import type {OneOrMore} from '/lib/explorer/types/Utility.d';
+} from '@enonic-types/lib-explorer/Node.d';
+import type {OneOrMore} from '@enonic-types/lib-explorer/Utility.d';
 
 
 import {

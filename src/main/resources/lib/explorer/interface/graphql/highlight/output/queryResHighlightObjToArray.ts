@@ -1,4 +1,4 @@
-import type {HighlightArray} from './index.d';
+import type {HighlightArray} from '/lib/explorer/interface/graphql/highlight/output/index.d';
 
 
 export function queryResHighlightObjToArray({

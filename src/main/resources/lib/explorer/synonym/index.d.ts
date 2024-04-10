@@ -1,4 +1,4 @@
-import type {HighlightResult} from '@enonic/js-utils/src/types/node/index.d';
+import type {HighlightResult} from '@enonic/js-utils/types/node/index.d';
 
 
 export type SynonymsArrayItem = {

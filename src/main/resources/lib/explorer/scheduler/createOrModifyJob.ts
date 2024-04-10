@@ -1,4 +1,4 @@
-import type {CollectorTaskConfig} from '/lib/explorer/types/index.d';
+import type {CollectorTaskConfig} from '@enonic-types/lib-explorer';
 import type {CreateScheduledJobParams} from '/lib/xp/scheduler';
 
 import {toStr} from '@enonic/js-utils';

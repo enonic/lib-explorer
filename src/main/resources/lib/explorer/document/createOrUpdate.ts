@@ -15,7 +15,7 @@ import {
 	COLLECTION_REPO_PREFIX,
 	PRINCIPAL_EXPLORER_READ,
 	REPO_ID_EXPLORER
-} from '../constants';
+} from '/lib/explorer/constants';
 import {create} from './create';
 import {update} from './update';
 

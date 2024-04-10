@@ -2,12 +2,12 @@ import type {
 	QueryDSL,
 	SortDSLExpression
 } from '@enonic/js-utils/types';
-//import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
+//import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d';
 import type {
 	//Highlight,
 	QueryFilters,
 	RepoConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 //import {toStr} from '@enonic/js-utils';

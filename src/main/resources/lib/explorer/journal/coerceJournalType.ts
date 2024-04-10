@@ -1,7 +1,7 @@
 import type {
 	JournalNode,
 	JournalType
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 import {coerceArray} from '/lib/explorer/array/coerceArray';
 import {zeroIfUnset} from '/lib/explorer/number/zeroIfUnset';

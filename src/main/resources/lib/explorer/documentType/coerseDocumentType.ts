@@ -2,7 +2,7 @@ import type {
 	DocumentType,
 	DocumentTypeFields,
 	DocumentTypeNode
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 // It seems scoped packages are not resolved in *.mjs files,

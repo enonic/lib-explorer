@@ -1,7 +1,7 @@
 import {
 	DocumentNode,
 	DocumentType
-} from '/lib/explorer/types/';
+} from '@enonic-types/lib-explorer';
 
 
 import {

@@ -1,5 +1,5 @@
-import type {GraphQL} from '../../../index.d';
-import type {Glue} from '../../../utils/Glue';
+import type {GraphQL} from '/lib/explorer/interface/graphql/index.d';
+import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 
 //@ts-ignore
 import {GraphQLString} from '/lib/graphql';
@@ -10,7 +10,7 @@ import {
 	//GQL_INPUT_TYPE_FILTER_HAS_VALUE,
 	//GQL_INPUT_TYPE_FILTER_IDS,
 	//GQL_INPUT_TYPE_FILTER_NOT_EXISTS
-} from '../constants';
+} from '/lib/explorer/interface/graphql/filters/guillotine/constants';
 import {addBooleanFilterInput} from './addBooleanFilterInput';
 import {addExistsFilterInput} from './addExistsFilterInput';
 import {addNotExistsFilterInput} from './addNotExistsFilterInput';

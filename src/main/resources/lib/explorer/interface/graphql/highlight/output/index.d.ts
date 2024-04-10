@@ -1,4 +1,4 @@
-export type HighlightArray = Array<{
-	field :string
-	highlights :Array<string>
-}>
+export type HighlightArray = {
+	field: string
+	highlights: string[]
+}[]

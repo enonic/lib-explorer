@@ -1,4 +1,4 @@
-import type {Glue} from '../../../utils/Glue';
+import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 
 
 import {
@@ -6,7 +6,7 @@ import {
 	nonNull
 	// @ts-expect-error No types yet
 } from '/lib/graphql';
-import {GQL_INPUT_TYPE_AGGREGATION_VALUE_COUNT} from '../constants';
+import {GQL_INPUT_TYPE_AGGREGATION_VALUE_COUNT} from '/lib/explorer/interface/graphql/aggregations/guillotine/constants';
 
 
 export function addValueCountAggregationInput({

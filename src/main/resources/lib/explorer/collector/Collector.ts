@@ -45,8 +45,8 @@ import type {
 	ParentPath,
 	QueryFilters//,
 	//RequiredNodeProperties
-} from '/lib/explorer/types/index.d';
-import type {Progress} from '../task/progress';
+} from '@enonic-types/lib-explorer';
+import type {Progress} from '/lib/explorer/task/progress';
 
 
 import { APP_EXPLORER } from '@enonic/explorer-utils';
@@ -67,12 +67,12 @@ import {createOrUpdate} from '/lib/explorer/document'; // It's own bundle
 import {queryDocuments} from '/lib/explorer/document/queryDocuments';
 import { runAsSu } from '/lib/explorer/runAsSu';
 import { listExplorerJobsThatStartWithName } from '/lib/explorer/scheduler/listExplorerJobsThatStartWithName';
-import {get as getCollection} from '../collection/get';
-import {get as getNode} from '../node/get';
-import {connect} from '../repo/connect';
-import {progress} from '../task/progress';
-import {get as getTask} from '../task/get';
-import {modify as modifyTask} from '../task/modify';
+import {get as getCollection} from '/lib/explorer/collection/get';
+import {get as getNode} from '/lib/explorer/node/get';
+import {connect} from '/lib/explorer/repo/connect';
+import {progress} from '/lib/explorer/task/progress';
+import {get as getTask} from '/lib/explorer/task/get';
+import {modify as modifyTask} from '/lib/explorer/task/modify';
 //import {javaLocaleToSupportedLanguage} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
 
 //import {getTotalCount} from '/lib/explorer/collection/getTotalCount';

@@ -1,7 +1,7 @@
 import type {
 	ParentPath,
 	WriteConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {
@@ -10,7 +10,7 @@ import {
 } from '@enonic/js-utils';
 import cleanPermissions from '/lib/explorer/node/cleanPermissions';
 import {sanitize as doSanitize} from '/lib/xp/common';
-import {join} from '../path/join';
+import {join} from '/lib/explorer/path/join';
 
 
 export function modify<N extends {

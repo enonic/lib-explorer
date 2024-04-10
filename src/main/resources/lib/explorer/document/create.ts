@@ -33,11 +33,11 @@ import type {
 	DocumentTypeFields,
 	ParentPath,
 	Path,
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 import type {
 	CollectionNode,
 	DocumentTypeNode
-} from '../types/index.d';
+} from '@enonic-types/lib-explorer/index.d';
 
 import {connect} from '/lib/xp/node';
 import {
@@ -60,8 +60,8 @@ import {
 	PRINCIPAL_EXPLORER_WRITE,
 	REPO_ID_EXPLORER,
 	ROOT_PERMISSIONS_EXPLORER
-} from '../constants';
-import {documentTypeNameToPath} from '../documentType/documentTypeNameToPath';
+} from '/lib/explorer/constants';
+import {documentTypeNameToPath} from '/lib/explorer/documentType/documentTypeNameToPath';
 import {addExtraFieldsToDocumentType} from './addExtraFieldsToDocumentType';
 import {buildIndexConfig} from './buildIndexConfig';
 import {cleanData} from './cleanData';

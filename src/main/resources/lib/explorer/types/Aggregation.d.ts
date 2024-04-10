@@ -13,4 +13,4 @@ export type {
 	StatsAggregation,
 	TermsAggregation,
 	ValueCountAggregation
-} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
+} from '@enonic/js-utils/types/node/query/Aggregation.d';

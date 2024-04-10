@@ -2,11 +2,11 @@ import type {FieldSortDsl} from '/lib/xp/node';
 import type {
 	AnyObject,
 	InterfaceField
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
 import type {SynonymsArray} from '/lib/explorer/synonym/index.d';
-import type {TermQuery} from '/lib/explorer/types/Interface.d';
-import type {Highlight} from '/lib/explorer/types/GraphQL.d';
+import type {TermQuery} from '@enonic-types/lib-explorer/Interface.d';
+import type {Highlight} from '@enonic-types/lib-explorer/GraphQL.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 
@@ -35,7 +35,7 @@ import {
 	// @ts-ignore
 } from '/lib/guillotine/util/factory';
 import {makeQuery} from './makeQuery';
-import {highlightGQLArgToEnonicXPQuery} from '../highlight/input/highlightGQLArgToEnonicXPQuery';
+import {highlightGQLArgToEnonicXPQuery} from '/lib/explorer/interface/graphql/highlight/input/highlightGQLArgToEnonicXPQuery';
 import {resolveFieldShortcuts} from './resolveFieldShortcuts';
 
 

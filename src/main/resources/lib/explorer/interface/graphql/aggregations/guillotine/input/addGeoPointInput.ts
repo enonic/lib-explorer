@@ -1,9 +1,9 @@
-import type {Glue} from '../../../utils/Glue';
+import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 
 
 // @ts-expect-error No types yet
 import {GraphQLString} from '/lib/graphql';
-import {GQL_INPUT_TYPE_GEO_POINT} from '../constants';
+import {GQL_INPUT_TYPE_GEO_POINT} from '/lib/explorer/interface/graphql/aggregations/guillotine/constants';
 
 
 export function addGeoPointInput({

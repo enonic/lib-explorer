@@ -2,7 +2,7 @@ import type {
 	IndexConfig,
 	Name,
 	ParentPath
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {

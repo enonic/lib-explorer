@@ -1,7 +1,7 @@
 import type {
 	DocumentTypeField,
 	DocumentTypeFieldsObject
-} from '../types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {
@@ -27,8 +27,8 @@ import {
 import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META
-} from '../constants';
-import {update as updateDocumentType} from '../documentType/update';
+} from '/lib/explorer/constants';
+import {update as updateDocumentType} from '/lib/explorer/documentType/update';
 import {
 	//addMissingSetToFieldsArray,
 	applyDefaultsToField,

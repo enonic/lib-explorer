@@ -1,6 +1,6 @@
 import type {QueryDsl} from '/lib/xp/node';
-import type {InterfaceField} from '/lib/explorer/types/index.d';
-import type {TermQuery} from '/lib/explorer/types/Interface.d';
+import type {InterfaceField} from '@enonic-types/lib-explorer';
+import type {TermQuery} from '@enonic-types/lib-explorer/Interface.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 
