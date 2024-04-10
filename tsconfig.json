@@ -1,129 +1,21 @@
-{ // https://www.typescriptlang.org/tsconfig
-	// This file is used by your code editor,
-	// and bundle-require to transpile the tsup.config.ts file
+{
+	// This file is used by bundle-require to transpile the tsup.config.ts file
+	// https://www.typescriptlang.org/tsconfig
 	"compilerOptions": {
-		"allowSyntheticDefaultImports": true,
-		"allowJs": true,
-		"baseUrl": "./",
-		"checkJs": false,
-		"declaration": false,
-		"declarationMap": false,
-		"downlevelIteration": true,
-		"esModuleInterop": true,
-		"experimentalDecorators": true,
-		"importHelpers": true,
-		"importsNotUsedAsValues": "remove",
-		"inlineSourceMap": false,
-		"inlineSources": false,
-		"jsx": "react-jsx",
-		"listEmittedFiles": false,
-		"listFiles": false,
-		"module": "es6",
-		"moduleResolution": "node",
-		"noEmitOnError": false,
-		"noErrorTruncation": true,
-		"noImplicitAny": false,
-		"noPropertyAccessFromIndexSignature": true,
-		"noUncheckedIndexedAccess": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": true,
-		"outDir": "build/rollup",
-		"paths": {
-			// Development (should be commented out when commiting)
-			// "@enonic/explorer-utils": ["../explorer-utils"],
-			//
-			// Use this or npm link ../enonic-js-utils
-			// "@enonic/js-utils": ["../enonic-js-utils"],
-			// "@enonic/js-utils/*": ["../enonic-js-utils/*"],
-			//
-			// "@enonic/semantic-ui-react-form": ["../semantic-ui-react-form/src"],
-			// "@enonic-types/lib-repo": ["../xp/modules/lib/lib-repo/src/main/resources/lib/xp/repo.ts"],
-			// "@enonic-types/lib-repo": ["../xp/modules/lib/lib-repo/build/typescript/lib/xp/repo.d.ts"],
-			// "/lib/xp/node": ["../xp/modules/lib/lib-node/src/main/resources/lib/xp/node.ts"],
-			// "/lib/xp/node": ["../xp/modules/lib/lib-node/build/typescript/lib/xp/node.d.ts"],
-			// "/lib/xp/repo": ["../xp/modules/lib/lib-repo/src/main/resources/lib/xp/repo.ts"],
-			// "/lib/xp/repo": ["../xp/modules/lib/lib-repo/build/typescript/lib/xp/repo.d.ts"],
-			// Production (should be commented in when commiting)
-			"@enonic/semantic-ui-react-form": ["node_modules/@enonic/semantic-ui-react-form/src"],
-			"@enonic-types/lib-explorer": ["./src/main/resources/lib/explorer/types/index.d"],
-			"@enonic-types/lib-explorer/*": ["./src/main/resources/lib/explorer/types/*"],
-			"/lib/explorer/*": ["./src/main/resources/lib/explorer/*"],
-			// "/lib/xp/auth": ["node_modules/@enonic-types/lib-auth"],
-			// "/lib/xp/context": ["node_modules/@enonic-types/lib-context"],
-			// "/lib/xp/event": ["node_modules/@enonic-types/lib-event"],
-			// "/lib/xp/node": ["node_modules/@enonic-types/lib-node"],
-			// "/lib/xp/repo": ["node_modules/@enonic-types/lib-repo"],
-			// "/lib/xp/task": ["node_modules/@enonic-types/lib-task"],
-			// "/lib/xp/value": ["node_modules/@enonic-types/lib-value"]
-			"/lib/xp/*": ["node_modules/@enonic-types/lib-*"]
-		},
-		"preserveWatchOutput": false,
-		"pretty": true,
-		"removeComments": true,
-		"resolveJsonModule": true,
-
-		// Only when using @enonic/js-utils from filesystem, perhaps a better solution is symlinks under PROJECT_DIR
-		"rootDir": "../",
-
-		// "rootDirs": [
-		// 	"src/main/resources",
-		// 	"node_modules",
-		// 	"../enonic-js-utils/src",
-		// 	"test"
-		// ],
-		"sourceMap": false,
-		"strict": false,
-		"strictFunctionTypes": false,
-		"strictNullChecks": false,
-
 		// There are actually two "targets"
 		// 1. The environment tsup runs in (set in this file)
-		// 2. The environment tsup transpiles to (set in tsconfig.tsup.json via tsup.config.ts)
+		// 2. The environment tsup transpiles to (set in src/main/resources/tsconfig.json via tsup.config.ts)
 		"target": "ES2020", // What bundle-require inside tsup uses to load tsup.config.ts
-
-		// By default all visible ”@types” packages are included in your compilation.
-		// Packages in node_modules/@types of any enclosing folder are considered visible.
-		// For example, that means packages within ./node_modules/@types/,
-		// ../node_modules/@types/, ../../node_modules/@types/, and so on.
-		//
-		// If typeRoots is specified, only packages under typeRoots will be included.
-		"typeRoots": [
-			"./src/main/resources/lib/@types",
-			"./node_modules/@types",
-			"./node_modules/@enonic-types",
-		],
-
-		// By default all visible ”@types” packages are included in your compilation.
-		// Packages in node_modules/@types of any enclosing folder are considered visible.
-		// For example, that means packages within ./node_modules/@types/,
-		// ../node_modules/@types/, ../../node_modules/@types/, and so on.
-		//
-		// If types is specified, only packages listed will be included in the global scope.
-		// "types": [
-			// "@enonic-types/global",
-			// "@enonic-types/lib-auth",
-			// "@enonic-types/lib-node",
-			// "@enonic-types/lib-repo",
-			// "@enonic-types/lib-task",
-			// "@enonic-types/lib-value",
-			// "@types/node",
-			// "@types/q-i",
-			// "@types/react",
-			// "@types/traverse"
-		// ]
 	},
-	"exclude": [
-		"../enonic-js-utils/**/*",
-		"build/**/*",
-		"node_modules/**/*"
-	],
+
+	// Specifies an allowlist of files to include in the program. An error
+	// occurs if any of the files can’t be found. This is useful when you only
+	// have a small number of files and don’t need to use a glob to reference
+	// many files. If you need that then use include.
 	"files": [
-		"src/main/resources/index.d.ts",
-		"src/main/resources/lib/explorer/index.ts",
+		"tsup.config.ts",
 	],
-	"include": [
-		"src/main/resources/**/*.ts",
-		"src/main/resources/**/*.es",
-		// "test/**/*.ts"
-	]
+
+	// "include": [],
+	// "exclude": [],
 }

@@ -1,20 +1,18 @@
+import type {User} from '@enonic-types/core';
+import type {AccessControlEntry} from '/lib/xp/node';
 import type {
 	Id,
-	//IndexConfig,
+	// IndexConfig,
 	Name,
 	Path,
 	ParentPath
 } from '@enonic-types/lib-explorer';
-import type {PermissionsParams} from '/lib/explorer/types.d';
 
 import {
 	isNotSet,
 	toStr
 } from '@enonic/js-utils';
-
-//@ts-ignore
 import {getUser} from '/lib/xp/auth';
-
 import {
 	NT_FOLDER,
 	ROOT_PERMISSIONS_EXPLORER
@@ -31,26 +29,18 @@ export function folder({
 	_permissions = ROOT_PERMISSIONS_EXPLORER,
 	_name,
 	...rest
-} :{
-	_id? :Id
-	_name :Name
-	_path? :Path
-	_parentPath? :ParentPath
-	_permissions? :Array<PermissionsParams>
+}: {
+	_id?: Id
+	_name: Name
+	_path?: Path
+	_parentPath?: ParentPath
+	_permissions?: AccessControlEntry[]
 }, {
 	user,
 	...ignoredOptions
-} :{
-	user? :{
-		disabled :boolean
-		displayName :string
-		email :string
-		idProvider :string
-		key :string
-		login :string
-		type :string
-	}
-}={}) {
+}: {
+	user?: User
+} = {}) {
 	Object.keys(rest).forEach((k) => {
 		if (k.startsWith('__')) {
 			log.warning(`Deprecation: Function signature changed. Added second argument for options.

@@ -1,3 +1,4 @@
+import type {Filter} from '/lib/xp/node';
 import type {
 	DocumentTypeFields,
 	DocumentTypeNode,
@@ -12,11 +13,11 @@ import {
 	isSet,
 	toStr
 } from '@enonic/js-utils';
-//import {detailedDiff} from 'deep-object-diff';
+// import {detailedDiff} from 'deep-object-diff';
 import deepEqual from 'fast-deep-equal';
 
 import HumanDiff from 'human-object-diff';
-//import * as HumanDiff from 'human-object-diff'; // This fails when doing app-explorer development build
+// import * as HumanDiff from 'human-object-diff'; // This fails when doing app-explorer development build
 
 // @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
 // import HumanDiff = require('human-object-diff');
@@ -30,9 +31,7 @@ import {
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {connect} from '/lib/explorer/repo/connect';
 
-//@ts-ignore
 import {send} from '/lib/xp/event';
-//@ts-ignore
 //import {reference} from '/lib/xp/value';
 
 import {reindexCollections} from '/lib/explorer/collection/reindexCollections';
@@ -165,7 +164,7 @@ export function updateDocumentType({
 				filters: addQueryFilter({
 					clause: 'must',
 					filter: hasValue('documentTypeId', [documentTypeId]),
-					filters: {}
+					filters: {} as Filter
 				})
 			}),
 			query: ''

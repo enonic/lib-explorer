@@ -1,4 +1,4 @@
-import type {Highlight} from '@enonic-types/lib-explorer/GraphQL.d';
+import type {GQL_InputType_Highlight} from '@enonic-types/lib-explorer';
 
 
 //import {toStr} from '@enonic/js-utils';
@@ -7,7 +7,7 @@ import type {Highlight} from '@enonic-types/lib-explorer/GraphQL.d';
 export function highlightGQLArgToEnonicXPQuery({
 	highlightArg
 }: {
-	highlightArg: Highlight
+	highlightArg: GQL_InputType_Highlight
 }) {
 	//log.debug('highlightGQLArgToEnonicXPQuery highlightArg:%s', toStr(highlightArg));
 	const highlight = {

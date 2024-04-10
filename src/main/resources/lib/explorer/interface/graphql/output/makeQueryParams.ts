@@ -6,15 +6,15 @@ import type {
 import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
 import type {SynonymsArray} from '/lib/explorer/synonym/index.d';
 import type {TermQuery} from '@enonic-types/lib-explorer/Interface.d';
-import type {Highlight} from '@enonic-types/lib-explorer/GraphQL.d';
+import type {GQL_InputType_Highlight} from '@enonic-types/lib-explorer/GraphQL.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 
 import {
 	addQueryFilter,
 	forceArray,
-	isSet// ,
-	// toStr
+	isSet,
+	// toStr,
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {
@@ -68,7 +68,7 @@ export function makeQueryParams({
 	doProfiling?: boolean
 	fields: InterfaceField[]
 	filtersArg?: AnyObject[]
-	highlightArg?: Highlight
+	highlightArg?: GQL_InputType_Highlight
 	interfaceId: string
 	languages: string[]
 	localesInSelectedThesauri: string[]

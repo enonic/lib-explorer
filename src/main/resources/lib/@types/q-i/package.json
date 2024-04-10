@@ -11,6 +11,6 @@
   "license": "Apache-2.0",
   "main": "",
   "scripts": {},
-  "types": "q-i.d.ts",
+  "types": "index.d.ts",
   "version": "0.0.1"
 }

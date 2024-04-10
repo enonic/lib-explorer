@@ -1,14 +1,17 @@
-import type {RepoConnection as WriteConnection} from '/lib/xp/node';
-import type {SynonymNode} from '@enonic-types/lib-explorer/';
+import type {
+	ModifiedNode,
+	RepoConnection as WriteConnection,
+} from '/lib/xp/node';
 import type {
 	InputTypeSynonymLanguages,
+	SynonymNode,
 	SynonymNodeModifyParams
-} from '@enonic-types/lib-explorer/Synonym';
+} from '@enonic-types/lib-explorer';
 
 
 import {
-	forceArray//,
-	//toStr
+	forceArray,
+	// toStr,
 } from '@enonic/js-utils';
 import {NT_SYNONYM} from '/lib/explorer/constants';
 import {buildSynonymIndexConfig} from '/lib/explorer/synonym/buildSynonymIndexConfig';
@@ -29,7 +32,7 @@ export function updateSynonym({
 	disabledInInterfaces: disabledInInterfacesArg = [],
 	enabled: enabledArg = true,
 	languages: languagesArg = []
-} :{
+}: {
 	// Required
 	_id: string
 	// Optional
@@ -44,7 +47,7 @@ export function updateSynonym({
 	checkInterfaceIds = false,
 	interfaceIdsChecked = {}, // modified within
 	refreshRepoIndexes = true // Set to false when bulk importing...
-} :{
+}: {
 	// Required
 	explorerRepoWriteConnection: WriteConnection
 	// Optional
@@ -54,14 +57,15 @@ export function updateSynonym({
 }) {
 	const modifyRes = explorerRepoWriteConnection.modify<SynonymNodeModifyParams>({
 		key: _id,
-		editor: (node) => {
-			//log.debug(`node:${toStr(node)}`);
-			if (node._nodeType !== NT_SYNONYM) {
-				log.error(`Node with _id:${_id} is not a synonym, but rather _nodeType:${node._nodeType}`);
+		editor: (originalNode) => {
+			// log.debug('originalNode:%s', toStr(originalNode));
+			if (originalNode._nodeType !== NT_SYNONYM) {
+				log.error(`Node with _id:${_id} is not a synonym, but rather _nodeType:${originalNode._nodeType}`);
 				throw new Error(`Node with _id:${_id} is not a synonym!`);
 			}
-			node.comment = commentArg;
-			node.disabledInInterfaces = checkInterfaceIds
+			const modifiedNode: ModifiedNode<SynonymNodeModifyParams> = originalNode;
+			modifiedNode.comment = commentArg;
+			modifiedNode.disabledInInterfaces = checkInterfaceIds
 				? getValidInterfaceIds({
 					explorerRepoReadConnection: explorerRepoWriteConnection,
 					interfaceIdsArray: disabledInInterfacesArg,
@@ -70,21 +74,21 @@ export function updateSynonym({
 				: disabledInInterfacesArg
 					? forceArray(disabledInInterfacesArg).map((uncheckedInterfaceId) => referenceValue(uncheckedInterfaceId))
 					: [];
-			node.enabled = enabledArg;
-			node.languages = moldInputTypeLanguages({
+					modifiedNode.enabled = enabledArg;
+					modifiedNode.languages = moldInputTypeLanguages({
 				checkInterfaceIds,
 				explorerRepoReadConnection: explorerRepoWriteConnection,
 				interfaceIdsChecked,
 				languagesArg,
 			});
-			//node.nodeTypeVersion = 2;
-			node.modifiedTime = new Date();
-			node.modifier = getUser().key;
-			node._indexConfig = buildSynonymIndexConfig({
-				partialSynonymNode: node
+			// modifiedNode.nodeTypeVersion = 2;
+			modifiedNode.modifiedTime = new Date();
+			modifiedNode.modifier = getUser().key;
+			modifiedNode._indexConfig = buildSynonymIndexConfig({
+				partialSynonymNode: modifiedNode
 			});
-			//log.debug(`node:${toStr(node)}`);
-			return node;
+			// log.debug('modifiedNode:%s', toStr(modifiedNode));
+			return modifiedNode;
 		}
 	}) as unknown as SynonymNode;
 	if (!modifyRes) {

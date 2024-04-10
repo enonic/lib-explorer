@@ -1,20 +1,17 @@
 import type {
-	// Highlight, // Not GraphQL
 	HighlightResult
 } from '@enonic-types/core';
 import type {FieldSortDsl} from '/lib/xp/node';
 import type {
 	AnyObject,
 	DocumentNode,
-	InterfaceField
+	EmptyObject,
+	GQL_InputType_Highlight,
+	InterfaceField,
+	SynonymsArray,
+	TermQuery,
 } from '@enonic-types/lib-explorer';
-import type {Highlight} from '@enonic-types/lib-explorer';
-import type {SynonymsArray} from '/lib/explorer/synonym/index.d';
-import type {TermQuery} from '@enonic-types/lib-explorer/Interface.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
-
-
-export type {EmptyObject} from '@enonic-types/lib-explorer';
 
 
 export type Profiling = {
@@ -22,7 +19,6 @@ export type Profiling = {
 	label: string
 	operation: string
 }
-
 
 export type GraphQLContext = {
 	// Required
@@ -78,7 +74,7 @@ export type QuerySynonymsReturnType = {
 type SearchCommonArgs = {
 	aggregations?: AggregationsArg
 	filters?: FiltersArg
-	highlight?: Highlight
+	highlight?: GQL_InputType_Highlight
 	languages?: string[]
 	profiling?: boolean
 	// query?: QueryDsl

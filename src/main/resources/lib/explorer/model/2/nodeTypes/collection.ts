@@ -3,7 +3,7 @@ import type {ParentPath} from '@enonic-types/lib-explorer';
 import type {CollectionNode} from '@enonic-types/lib-explorer/Collection.d';
 
 
-import {indexTemplateToConfig} from '@enonic/js-utils/storage/indexing/indexTemplateToConfig';
+import {indexTemplateToConfig} from '@enonic/js-utils/storage';
 import {
 	NT_COLLECTION
 } from '/lib/explorer/model/2/constants';

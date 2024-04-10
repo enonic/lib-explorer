@@ -2,16 +2,15 @@ import type {CollectionNode} from '@enonic-types/lib-explorer/Collection.d';
 
 
 import {
-	forceArray//,
+	forceArray,
 	//toStr
 } from '@enonic/js-utils';
 
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
 import {connect} from '/lib/explorer/repo/connect';
 import {
-	//list as listTasks
+	// list as listTasks
 	submitTask
-	//@ts-ignore
 } from '/lib/xp/task';
 
 import {getDocumentType} from '/lib/explorer/documentType/getDocumentType';
@@ -33,8 +32,9 @@ export function reindexCollections({collectionIds}) {
 		} else {
 			const {
 				_name,
-				documentTypeId
+				documentTypeId // Can it be Reference on get?
 			} = collectionNode;
+			const documentTypeIdStr = documentTypeId ? documentTypeId.toString() : '';
 			if(!documentTypeId) {
 				const message = `Collection _id:${collectionId} _name:${_name} has no documentTypeId!`;
 				log.warning(message);
@@ -44,11 +44,11 @@ export function reindexCollections({collectionIds}) {
 					message
 				});
 			} else { // has documentType
-				if (!seenDocumentTypes[documentTypeId]) {
-					seenDocumentTypes[documentTypeId] = getDocumentType({_id:documentTypeId});
+				if (!seenDocumentTypes[documentTypeIdStr]) {
+					seenDocumentTypes[documentTypeIdStr] = getDocumentType({_id: documentTypeIdStr});
 				}
-				const documentType = seenDocumentTypes[documentTypeId];
-				//log.info(`documentType:${toStr(documentType)}`);
+				const documentType = seenDocumentTypes[documentTypeIdStr];
+				// log.info(`documentType:${toStr(documentType)}`);
 				if (!documentType) {
 					const message = `Unable to get documentTypeId:${documentTypeId} for collection _id:${collectionId} _name:${_name}!`;
 					log.error(message);

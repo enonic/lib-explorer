@@ -19,18 +19,18 @@ import {
 	Principal
 } from '@enonic/explorer-utils'
 import {
-	forceArray//,
+	forceArray,
 	//toStr
 } from '@enonic/js-utils';
 import { EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED } from '/lib/explorer/constants';
 import { connect } from '/lib/explorer/repo/connect';
 import { create } from '/lib/explorer/node/create';
 import { send } from '/lib/xp/event';
-//import {reference} from '/lib/xp/value';
+// import {reference} from '/lib/xp/value';
 import {coerseDocumentType} from './coerseDocumentType';
 
 
-export type CreateDocumentTypeParams = DocumentTypeNodeSpecific & {
+export type CreateDocumentTypeParams = Partial<DocumentTypeNodeSpecific> & {
 	_name: Node['_name']
 };
 

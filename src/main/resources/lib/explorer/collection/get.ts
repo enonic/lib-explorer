@@ -1,9 +1,9 @@
+import type {RepoConnection} from '/lib/xp/node';
 import type {
 	CollectionNode,
-	CollectionNodeSpecific
-} from '@enonic-types/lib-explorer/Collection';
-import type {OneOrMore} from '@enonic-types/lib-explorer/Utility';
-import type {RepoConnection} from '/lib/xp/node';
+	CollectionNodeSpecific,
+	OneOrMore,
+} from '@enonic-types/lib-explorer';
 
 
 import {forceArray} from '@enonic/js-utils';

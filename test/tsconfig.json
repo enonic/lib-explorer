@@ -1,4 +1,6 @@
-{ // https://www.typescriptlang.org/tsconfig
+{
+	// This file is used by jest when running tests
+	// https://www.typescriptlang.org/tsconfig
 	"compilerOptions": {
 		"allowJs": true,
 		"baseUrl": ".",

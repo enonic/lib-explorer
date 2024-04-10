@@ -1,4 +1,6 @@
 export {
+	InputTypeLanguageSynonym,
+	InputTypeSynonymLanguages,
 	QueriedSynonym,
 	Synonym,
 	Synonym_Common,
@@ -11,5 +13,7 @@ export {
 	SynonymNode_Languages,
 	SynonymNode_LanguagesSynonymObject,
 	SynonymNodeCreateParams,
-	SynonymUse
+	SynonymNodeModifyParams,
+	SynonymUse,
+	Write_SynonymNode_LanguagesSynonymObject
 } from '/lib/explorer/synonym/Synonym_v2.d';

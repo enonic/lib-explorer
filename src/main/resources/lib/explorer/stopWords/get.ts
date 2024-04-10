@@ -2,14 +2,14 @@ import type {
 	Key,
 	ParentPath,
 	Path,
-	RepoConnection
+	RepoConnection,
+	StopwordNode,
 } from '@enonic-types/lib-explorer';
-import type {StopwordNode} from '@enonic-types/lib-explorer/StopWord.d';
 
-//import {toStr} from '@enonic/js-utils';
-
+// import {toStr} from '@enonic/js-utils';
 import {join} from '/lib/explorer/path/join';
 import {coerseStopWordType} from '/lib/explorer/stopWords/coerseStopWordType';
+
 
 export function get({
 	connection,
@@ -19,12 +19,12 @@ export function get({
 	path = join(parentPath, name) as Path,
 	key = id || path
 } :{
-	connection :RepoConnection
-	id? :string
-	parentPath? :ParentPath
-	name? :string
-	path? :Path
-	key? :Key
+	connection: RepoConnection
+	id?: string
+	parentPath?: ParentPath
+	name?: string
+	path?: Path
+	key?: Key
 }) {
 	const node = connection.get(key) as StopwordNode;
 	if (!node) { // Handle ghost nodes

@@ -1,3 +1,4 @@
+import type {Reference} from '@enonic-types/core';
 import type {
 	TermDslExpression,
 	// InDslExpression,
@@ -43,11 +44,11 @@ export type TermQuery = {
 }
 
 export type InterfaceNodeSpecific = {
-	collectionIds?: OneOrMore<string>
+	collectionIds?: OneOrMore<string|Reference>
 	fields?: OneOrMore<InterfaceField>
 	modifiedTime?: Date|string
 	stopWords?: OneOrMore<string>
-	synonymIds?: OneOrMore<string>
+	synonymIds?: OneOrMore<string|Reference>
 	termQueries?: OneOrMore<TermQuery>
 }
 
@@ -56,10 +57,10 @@ export type InterfaceNode = Node<InterfaceNodeSpecific>
 export type InterfaceNodeCreateParams = NodeCreate<InterfaceNodeSpecific>
 
 export type InterfaceSpecific = {
-	collectionIds?: string[]
+	collectionIds?: (string|Reference)[]
 	fields?: InterfaceField[]
 	stopWords?: string[]
-	synonymIds?: string[]
+	synonymIds?: (string|Reference)[]
 	termQueries?: TermQuery[]
 }
 
