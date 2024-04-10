@@ -6,7 +6,6 @@ import type {AnyObject} from '@enonic-types/lib-explorer';
 /*if (Number.isFinite === undefined) { // Needed by pretty-ms
 	Number.isFinite = value => typeof value === 'number' && isFinite(value); // eslint-disable-line no-restricted-globals
 }*/
-/* eslint-disable import/first */
 /*import mathTrunc from 'math-trunc';
 
 if (!Math.trunc) { Math.trunc = mathTrunc; } // Needed by pretty-ms

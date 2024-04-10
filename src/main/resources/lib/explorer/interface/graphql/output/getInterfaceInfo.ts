@@ -189,7 +189,7 @@ export function getInterfaceInfo({
 					}
 				}
 				return thesauriNode._name;
-			} catch (e) {
+			} catch (_e) {
 				log.warning(`Interface ${interfaceName} refers to an thesarusId:${synonymIds} that doesn't exist?!`);
 			}
 		}).filter((x) => x)

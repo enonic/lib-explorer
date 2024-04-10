@@ -1,7 +1,7 @@
 import type {
 	NodeConfigEntry,
 	NodeIndexConfigParams,
-	NodeIndexConfigTemplates
+	// NodeIndexConfigTemplates
 } from '/lib/xp/node';
 import type {SynonymNodeCreateParams} from '@enonic-types/lib-explorer';
 
@@ -89,7 +89,7 @@ export function buildSynonymIndexConfig({
 		let stemmingLanguage: string;
 		try {
 			stemmingLanguage = stemmingLanguageFromLocale(locale)
-		} catch (e) {
+		} catch (_e) {
 			// no-op
 		}
 		//log.debug('locale:%s stemmingLanguage:%s', locale, stemmingLanguage);

@@ -4,12 +4,12 @@ import {
 	// jest,
 	test as it
 } from '@jest/globals';
-import {Log} from '@enonic/mock-xp';
+// import {Log} from '@enonic/mock-xp';
 import {makeQuery} from './makeQuery';
 
-const logger = Log.createLogger({
-	loglevel: 'debug'
-});
+// const logger = Log.createLogger({
+// 	loglevel: 'debug'
+// });
 
 describe('makeQuery', () => {
 	it('should make a minimal query for minimal input', () => {

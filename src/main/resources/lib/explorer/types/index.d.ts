@@ -206,6 +206,7 @@ export type {
 	SynonymNode,
 	SynonymNode_Languages,
 	SynonymNode_LanguagesSynonymObject,
+	SynonymNodeCreateParams,
 	SynonymUse
 } from './Synonym.d';
 export type {

@@ -79,6 +79,6 @@ export type VersionKey = Node['_versionKey'];
 export type Key = Node['_id']|Node['_path'];
 export type ParentPath = Node['_path'];
 
-export type NodeCreate = CreateNodeParams;
+export type NodeCreate<Nodedata = unknown> = CreateNodeParams<Nodedata>;
 export type NodeGetParams = GetNodeParams;
 export type NodeModifyParams = ModifyNodeParams;

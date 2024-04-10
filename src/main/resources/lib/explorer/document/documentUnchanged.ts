@@ -29,7 +29,8 @@ import {FIELD_PATH_META} from '/lib/explorer/constants';
 // @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
 import Diff = require('diff');
 
-const fastDeepEqual = require('fast-deep-equal') as (a: any, b: any) => boolean;
+// @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
+import fastDeepEqual = require('fast-deep-equal');
 
 // @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
 import HumanDiff = require('human-object-diff');
@@ -66,13 +67,13 @@ export function documentUnchanged(
 		// log.debug(`Changes detected in document with id:${id}`);
 		// log.debug(`Changes detected in document with id:${id} exisitingDocument:${toStr(exisitingDocument)} maybeChangedDocument:${toStr(maybeChangedDocument)}`);
 		log.debug(`Changes detected in document with id:${id} diff:${toStr(detailedDiff(exisitingDocument, maybeChangedDocument))}`);
-	} catch (e) {
+	} catch (_e) {
 		try {
 			log.debug(`Changes detected in document with id:${id} diff:${toStr(diffDocument(exisitingDocument, maybeChangedDocument))}`);
-		} catch (e) {
+		} catch (_e) {
 			try {
 				log.debug(`Changes detected in document with id:${id} diff:${toStr(diffJson(exisitingDocument, maybeChangedDocument))}`);
-			} catch (e) {
+			} catch (_e) {
 				// No-op :)
 			} // catch3
 		} // catch2

@@ -1,6 +1,6 @@
 import type { PrincipalKey } from '@enonic-types/lib-auth';
 import type {
-	Node,
+	// Node,
 	AccessControlEntry
 } from '@enonic-types/lib-node';
 
@@ -25,8 +25,10 @@ export default function cleanPermissions({
 		_permissions = [_permissions];
 	}
 	for (let index = 0; index < _permissions.length; index++) {
-		let {
+		const {
 			principal,
+		} = _permissions[index];
+		let {
 			allow
 		} = _permissions[index];
 		if (!arrayIncludes([

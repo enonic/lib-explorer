@@ -21,7 +21,6 @@ import {
 	jest,
 	test as it
 } from '@jest/globals';
-import {deepStrictEqual} from 'assert';
 import {
 	fieldsArrayToObj,
 	typeCastToJava
@@ -131,9 +130,6 @@ const FIELDS = [{
 
 
 const FIELDS_OBJ = fieldsArrayToObj(FIELDS);
-
-
-function toStr(v :unknown) { return JSON.stringify(v); }
 
 
 describe('document', () => {

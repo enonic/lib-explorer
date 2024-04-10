@@ -80,7 +80,7 @@ export interface ElasticSearchIndexSettings {
 
 export interface IndexDefinition {
 	settings: ElasticSearchIndexSettings;
-	mapping: any;
+	mapping: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface RepositorySettings {

@@ -10,5 +10,6 @@ export {
 	SynonymNode,
 	SynonymNode_Languages,
 	SynonymNode_LanguagesSynonymObject,
+	SynonymNodeCreateParams,
 	SynonymUse
 } from '/lib/explorer/synonym/Synonym_v2.d';

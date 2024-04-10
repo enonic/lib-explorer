@@ -16,16 +16,16 @@ export const persistResponse = ({
 	request,
 	response,
 	...rest
-} :{
-	_name :string
-	request :{}
-	response :{}
-	_parentPath? :string
+}: {
+	_name: string
+	request: Record<string,unknown>
+	response: Record<string,unknown>
+	_parentPath?: string
 }, {
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	...ignoredOptions
-} :{
-	connection :WriteConnection
+}: {
+	connection: WriteConnection
 }) => {
 	//log.info(toStr({_parentPath, _name, request, response}));
 	Object.keys(rest).forEach((k) => {

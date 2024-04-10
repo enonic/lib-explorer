@@ -51,7 +51,7 @@ export function javaLocaleToSupportedLanguage(javaLocale: string): string {
 	}
 
 	let firstMatch :string;
-	for (let lang of Object.keys(LANG_TO_CODE)) {
+	for (const lang of Object.keys(LANG_TO_CODE)) {
 		if (stringIncludes(locales[0].displayName, lang)) {
 			firstMatch = LANG_TO_CODE[lang];
 			//log.debug(`firstMatch:${firstMatch} javaLocale:${javaLocale} locales:${toStr(locales)}`);

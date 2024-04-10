@@ -9,10 +9,6 @@ import {
 	Server
 } from '@enonic/mock-xp';
 import {
-	deepStrictEqual//,
-	//throws
-} from 'assert';
-import {
 	describe,
 	// expect,
 	jest,

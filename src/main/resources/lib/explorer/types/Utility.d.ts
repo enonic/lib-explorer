@@ -17,10 +17,10 @@ export type Unset = undefined | null;
 export type ZeroOrMore<T> = Unset | OneOrMore<T>;
 
 export type NonEmptyArray<T> = [T, ...T[]]
-export type IsEmptyArray<T> = T extends any[]
-  ? T extends NonEmptyArray<any>
-    ? false
-    : true
-  : false
+export type IsEmptyArray<T> = T extends any[] // eslint-disable-line @typescript-eslint/no-explicit-any
+	? T extends NonEmptyArray<any> // eslint-disable-line @typescript-eslint/no-explicit-any
+		? false
+		: true
+	: false
 
 export type Unwrapped<T> = T extends (Array<infer U> | ReadonlyArray<infer U>) ? U : T;

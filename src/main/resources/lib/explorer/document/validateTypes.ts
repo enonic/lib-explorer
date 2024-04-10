@@ -169,6 +169,7 @@ export function validateTypes(
 			} // for
 			break;
 		}
+
 		case VALUE_TYPE_SET: {
 			const valueArray = forceArray(value);
 			log.debug('valueArray', valueArray);
@@ -185,11 +186,12 @@ export function validateTypes(
 						data
 					);
 					return false;
-				}
+				} // if !isObject
 				break;
-			}
-		}
-		case VALUE_TYPE_GEO_POINT: {
+			} // for
+		} // case VALUE_TYPE_SET
+
+		case VALUE_TYPE_GEO_POINT: { // eslint-disable-line no-fallthrough
 			const customValueArray = isGeoPointArray(value) ? [value] : forceArray(value);
 			for (let j = 0; j < customValueArray.length; j++) {
 				if (!isGeoPoint(customValueArray[j])) {
@@ -242,7 +244,7 @@ export function validateTypes(
 			} // for
 			break;
 		}
-		case VALUE_TYPE_LOCAL_DATE_TIME:
+		case VALUE_TYPE_LOCAL_DATE_TIME: {
 			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
 				if (!(isDate(valueArray[j]) || isLocalDateTimeString(valueArray[j]))) {
@@ -259,6 +261,7 @@ export function validateTypes(
 				} // if !localDate
 			} // for
 			break;
+		}
 		case VALUE_TYPE_LOCAL_TIME: {
 			const valueArray = forceArray(value);
 			for (let j = 0; j < valueArray.length; j++) {
