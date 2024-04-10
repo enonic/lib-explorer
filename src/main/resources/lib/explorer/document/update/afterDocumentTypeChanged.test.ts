@@ -113,7 +113,8 @@ const CREATED_DOCUMENT_NODE = create({
 	//validateTypes: true // default is requireValid
 });
 
-const MODIFIED_DOCUMENT_TYPE_NODE = connection.modify({
+// const MODIFIED_DOCUMENT_TYPE_NODE =
+connection.modify({
 	key: CREATED_DOCUMENT_TYPE_NODE._id,
 	editor: (node) => {
 		// log.info('node:%s', node);

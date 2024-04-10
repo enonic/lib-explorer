@@ -128,30 +128,11 @@
     "url": "git+https://github.com/enonic/lib-explorer"
   },
   "scripts": {
-    "build": "yarn build:swc:test",
-    "build:es:esm": "find src/main/resources/lib/explorer -name '*.ts' | xargs npx esbuild --bundle --format=esm --outbase=src/main/resources --outdir=build/esbuild/esm --out-extension:.js=.mjs --platform=node --target=es2015 --tsconfig=tsconfig.json",
-    "build:swc": "yarn build:swc:src & yarn build:swc:test",
-    "build:swc:src": "find src -name '*.ts' | xargs npx swc --config-file ./.swcrc.json -d build/swc/src --source-root src",
-    "build:swc:test": "find test -name '*.ts' | xargs npx swc --config-file ./.swcrc.json -d build/swc/test --source-root test",
-    "build:ts": "npx tsc",
-    "build:tsup": "npx tsup -d build/resources/main",
-    "bundle": "npx rollup -c && yarn bundle:tests:async",
-    "bundle:tests": "yarn bundle:tests:sync",
-    "bundle:tests:sync": "for f in $(find test -name '*.test.ts'); do npx rollup -c rollup.config.tests.js -o build/rollup/test/$(echo $f| cut -d'/' -f2- | sed 's/\\.[^.]*$//').js $f ; done",
-    "bundle:tests:async": "find test -name '*.test.ts'|cut -d'/' -f2-|npx parallel npx rollup -c rollup.config.tests.js -o build/rollup/test/{.}.js test/{}",
+    "build": "npx tsup -d build/resources/main",
     "check": "npx tsc --noEmit",
-    "clean": "rimraf build dist",
+    "clean": "rimraf build",
     "cov": "jest --no-cache --coverage",
-    "esbuild:parseCsv": "npx esbuild --bundle --external:/lib/cache --external:/lib/explorer* --external:/lib/galimatias --external:/lib/graphql* --external:/lib/guillotine* --external:/lib/http-client --external:/lib/license --external:/lib/router --external:/lib/util/* --external:/lib/xp/* --format=cjs --outbase=src/main/resources --outdir=build/esbuild --tsconfig=tsconfig.esbuild.json src/main/resources/lib/explorer/parseCsv.ts",
     "lint": "npx eslint src/main/resources test",
-    "prebuild": "yarn clean",
-    "prebundle": "yarn clean",
-    "preswc:parseCsv": "yarn esbuild:parseCsv",
-    "prewebpack": "(cd packages/@enonic/lib-explorer && yarn build)",
-    "profile": "time yarn buildEsEsm && time yarn buildSwc && time yarn buildTs",
-    "swc:parseCsv": "npx swc --config-file ./.swcrc.server.json build/esbuild/lib/explorer/parseCsv.js -o build/resources/main/lib/explorer/parseCsv.js",
-    "test": "jest --no-cache",
-    "watch": "webpack -w --stdin",
-    "webpack": "webpack"
+    "test": "jest --no-cache"
   }
 }

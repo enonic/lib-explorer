@@ -77,7 +77,7 @@ export function isField(
 ): value is DocumentTypeField {
 	// log.debug('isField() value:%s', value);
 	if (!isObject(value)) { return false; }
-	const keys: string[] = Object.keys(value as Object);
+	const keys: string[] = Object.keys(value as object);
 	for (let i = 0; i < keys.length; i++) {
 		// log.debug('isField() i:%s', i);
 		const key = keys[i];

@@ -139,6 +139,15 @@ module.exports = {
 			'ts-check': true
 		}],
 		'@typescript-eslint/no-inferrable-types': ['off'],
+		'@typescript-eslint/no-unused-vars': ['error', {
+			args: 'all',
+			argsIgnorePattern: '^_',
+			caughtErrors: 'all',
+			caughtErrorsIgnorePattern: '^_',
+			destructuredArrayIgnorePattern: '^_',
+			varsIgnorePattern: '^_',
+			ignoreRestSiblings: true
+		}],
 		'comma-dangle': ['error', {
 			// never (default) disallows trailing commas
 			// always requires trailing commas
@@ -185,6 +194,7 @@ module.exports = {
 				'_nodeType', // node property
 				'_parentPath', // node create property
 				'_permissions', // node property
+				'_score', // custom query res property
 				'_ts', // node property
 				'_versionKey' // node property
 			],

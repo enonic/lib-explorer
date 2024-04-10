@@ -210,7 +210,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 
 		try {
 			this.config = JSON.parse(configJson); //log.info(toStr({config}));
-		} catch (e) {
+		} catch (_e) {
 			throw new Error(`${name}: JSON.parse(configJson) failed!`);
 		}
 	} // constructor

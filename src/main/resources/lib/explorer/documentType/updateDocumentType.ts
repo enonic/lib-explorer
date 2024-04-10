@@ -18,6 +18,9 @@ import deepEqual from 'fast-deep-equal';
 import HumanDiff from 'human-object-diff';
 //import * as HumanDiff from 'human-object-diff'; // This fails when doing app-explorer development build
 
+// @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
+// import HumanDiff = require('human-object-diff');
+
 //import {getCachedDocumentType} from '/lib/explorer/documentType/documentTypesCache';
 import {
 	EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,

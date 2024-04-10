@@ -50,7 +50,7 @@ export function mergeFields({
 			// 	.join('.'); // 'nesTed.naMe'
 
 			// But the thing is a GraphQL can't contain a dot either, so if we camelize both [.-] there is no way to know which is correct:
-			// nesTedNaMe -> nes.ted.na.me or nes-ted-na-me ???
+			// nesTedNaMe -> nes.ted.na.me or nes-ted-na-me ???
 			// So let's forget about old BORKEN names with dash in them, and only care about the dot.
 
 			// Because of how Enonic XP indexes fields, our DocumentType fieldPaths are actually /^[a-z][_0-9a-z]*(.[a-z][_0-9a-z]*)*$/

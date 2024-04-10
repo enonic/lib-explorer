@@ -1,5 +1,5 @@
 import type {
-	InterfaceNode,
+	// InterfaceNode,
 	InterfaceNodeCreateParams,
 	WriteConnection
 } from '@enonic-types/lib-explorer';

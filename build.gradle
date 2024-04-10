@@ -162,7 +162,7 @@ task tsup(
 	dependsOn: yarn_install,
 	type: YarnTask
 ) {
-	args = ['build:tsup']
+	args = ['build']
 	environment = [
 		'FORCE_COLOR': 'true',
 		'LOG_LEVEL_FROM_GRADLE': gradle.startParameter.logLevel.toString(),

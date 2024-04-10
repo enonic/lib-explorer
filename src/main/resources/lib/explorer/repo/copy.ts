@@ -98,7 +98,7 @@ export function copy({
 				branchId,
 				repoId: toRepoId
 			});
-		} catch (e) {
+		} catch (_e) {
 			throw new Error(`repo.copy: Unable to create branch ${branchId} in repo:${toRepoId}!`);
 		}
 	}

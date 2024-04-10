@@ -1,4 +1,4 @@
-import type { PrincipalKey } from '/lib/xp/auth';
+// import type { PrincipalKey } from '/lib/xp/auth';
 import type {
 	IndexConfig,
 	NodeCreateParams,

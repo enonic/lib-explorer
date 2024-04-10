@@ -1,6 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
-
 // This implementation has been profiled. If you want to change it,
 // duplicate it and profile old and new too see if your changes are faster...
 export function sortAndRemoveDups<T>(arr :Array<T>) {

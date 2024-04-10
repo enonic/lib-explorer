@@ -6,7 +6,7 @@ export function ignoreErrors<
 	let rv :ReturnValue;
 	try {
 		rv = fn();
-	} catch (e) {
+	} catch (_e) {
 		// no-op we don't want to log anything here
 	}
 	return rv;

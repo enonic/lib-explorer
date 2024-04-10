@@ -31,4 +31,4 @@ export function get<T>({
 		keys
 	}));*/
 	return connection.get<T>(...keys);
-}; // get
+} // get

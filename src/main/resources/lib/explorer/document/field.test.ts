@@ -139,7 +139,7 @@ const TESTS = [[
 describe('document', () => {
 	describe('isField()', () => {
 		describe('--> true', () => {
-			for (var i = 0; i < FIELDS_VALID.length; i++) {
+			for (let i = 0; i < FIELDS_VALID.length; i++) {
 				const field = FIELDS_VALID[i]
 				it(`${toStr(field)}`, () => {
 					deepStrictEqual(
@@ -150,7 +150,7 @@ describe('document', () => {
 			} // for
 		});
 		describe('--> false', () => {
-			for (var i = 0; i < FIELDS_INVALID.length; i++) {
+			for (let i = 0; i < FIELDS_INVALID.length; i++) {
 				const field = FIELDS_INVALID[i]
 				it(`${toStr(field)}`, () => {
 					deepStrictEqual(
@@ -181,7 +181,7 @@ describe('document', () => {
 	});
 	describe('applyDefaultsToField()', () => {
 		describe('--> true', () => {
-			for (var i = 0; i < FIELDS_VALID.length; i++) {
+			for (let i = 0; i < FIELDS_VALID.length; i++) {
 				const field = FIELDS_VALID[i]
 				it(`${toStr(field)}`, () => {
 					deepStrictEqual(
@@ -192,7 +192,7 @@ describe('document', () => {
 			} // for
 		});
 		describe('--> throws', () => {
-			for (var i = 0; i < FIELDS_INVALID.length; i++) {
+			for (let i = 0; i < FIELDS_INVALID.length; i++) {
 				const field = FIELDS_INVALID[i] as Partial<DocumentTypeField>;
 				it(`${toStr(field)}`, () => {
 					throws(
@@ -206,7 +206,7 @@ describe('document', () => {
 		});
 	});
 	describe('fieldsArrayToObj()', () => {
-		for (var i = 0; i < TESTS.length; i++) {
+		for (let i = 0; i < TESTS.length; i++) {
 			const [fields, expected] = TESTS[i]
 			it(`${toStr(fields)}`, () => {
 				deepStrictEqual(
@@ -216,7 +216,7 @@ describe('document', () => {
 			});
 		} // for
 		describe('--> throws', () => {
-			for (var i = 0; i < FIELDS_INVALID.length; i++) {
+			for (let i = 0; i < FIELDS_INVALID.length; i++) {
 				const fields = FIELDS_INVALID[i] as unknown as DocumentTypeFields;
 				it(`${toStr(fields)}`, () => {
 					throws(

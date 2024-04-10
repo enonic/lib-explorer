@@ -1,7 +1,7 @@
+import type {CreateNodeParams} from '@enonic-types/lib-node';
 import type {Reference} from '/lib/xp/value';
 import type {
 	ExplorerAdminGQLInterfaceNodeCommonProps,
-	NodeCreate,
 	OneOrMore,
 	RequiredNodeProperties
 } from '@enonic-types/lib-explorer';
@@ -23,7 +23,7 @@ export type InputTypeSynonymLanguage = {
 	// Required
 	locale: string
 	// Optional
-	both?: Array<InputTypeLanguageSynonym>
+	both?: InputTypeLanguageSynonym[]
 	comment?: string
 	disabledInInterfaces?: string[]
 	enabled?: boolean
@@ -31,7 +31,7 @@ export type InputTypeSynonymLanguage = {
 	to?: InputTypeLanguageSynonym[]
 }
 
-export type InputTypeSynonymLanguages = Array<InputTypeSynonymLanguage>
+export type InputTypeSynonymLanguages = InputTypeSynonymLanguage[]
 
 //──────────────────────────────────────────────────────────────────────────
 // SynonymNode
@@ -99,7 +99,7 @@ export type SynonymNode = RequiredNodeProperties & SynonymNode_Common & {
 	thesaurusReference: string
 };
 
-export type SynonymNodeCreateParams = NodeCreate<SynonymNode_Common & {
+export type SynonymNodeCreateParams = CreateNodeParams<SynonymNode_Common & {
 	disabledInInterfaces?: OneOrMore<Reference>
 	languages?: Write_SynonymNode_Languages
 	thesaurusReference: Reference

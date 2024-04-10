@@ -1,24 +1,24 @@
 // import type {LooseObject} from './types';
 
-import {
-	//@ts-ignore
-	brightRed,
-	//@ts-ignore
-	brightYellow,
-	grey,
-	white
-} from 'colors/safe';
+// import {
+// 	//@ts-ignore
+// 	brightRed,
+// 	//@ts-ignore
+// 	brightYellow,
+// 	grey,
+// 	white
+// } from 'colors/safe';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
-import {stringify} from 'q-i';
+// import {stringify} from 'q-i';
 // Avoid: could not find declaration file for module
 // const {stringify} = require('q-i'); // eslint-disable-line @typescript-eslint/no-var-requires
 
 
 export const log = { //console.log console.trace
 	//@ts-ignore
-	debug: (format :string, ...s :unknown[]) :void => {
+	debug: (_format: string, ..._s: unknown[]): void => {
 		// if (s.length) {
 		// 	const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 		// 	console.debug(grey(`DEBUG ${format}`), ...colored);
@@ -27,7 +27,7 @@ export const log = { //console.log console.trace
 		// }
 	},
 	//@ts-ignore
-	error: (format :string, ...s :unknown[]) :void => {
+	error: (_format: string, ..._s: unknown[]): void => {
 		// if (s.length) {
 		// 	const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 		// 	console.error(`${brightRed(`ERROR ${format}`)}`, ...colored);
@@ -36,7 +36,7 @@ export const log = { //console.log console.trace
 		// }
 	},
 	//@ts-ignore
-	info: (format :string, ...s :unknown[]) :void => {
+	info: (_format: string, ..._s: unknown[]): void => {
 		// if (s.length) {
 		// 	const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 		// 	console.info(`${white(`INFO  ${format}`)}`, ...colored);
@@ -45,7 +45,7 @@ export const log = { //console.log console.trace
 		// }
 	},
 	//@ts-ignore
-	warning: (format :string, ...s :unknown[]) :void => {
+	warning: (_format: string, ..._s: unknown[]): void => {
 		// if (s.length) {
 		// 	const colored = s.map(i => stringify(i, { maxItems: Infinity }));
 		// 	console.warn(`${brightYellow(`WARN  ${format}`)}`, ...colored);

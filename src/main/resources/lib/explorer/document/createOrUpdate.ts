@@ -24,9 +24,11 @@ export function createOrUpdate(
 	createOrUpdateParameterObject: UpdateParameterObject,
 ) {
 	// log.info('createOrUpdateParameterObject:%s', createOrUpdateParameterObject);
+	const {
+		collectionId,
+	} = createOrUpdateParameterObject;
 
 	let {
-		collectionId,
 		collectionName
 	} = createOrUpdateParameterObject;
 
