@@ -1,3 +1,4 @@
+import type {Filter} from '/lib/xp/node';
 import type {
 	InterfaceNode,
 	QueryFilters,
@@ -13,15 +14,15 @@ import {hasValue} from '/lib/explorer/query/hasValue';
 export function query({
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
-	filters = {},
+	filters = {} as Filter,
 	query = '', //"_parentPath = '/interfaces'",
 	sort = '_name ASC'
 } :{
-	connection :RepoConnection
-	count ?:number
-	filters ?:QueryFilters
-	query ?:string
-	sort ?:string
+	connection: RepoConnection
+	count?: number
+	filters?: Filter | Filter[]
+	query?: string
+	sort?: string
 }) {
 	filters = addQueryFilter({
 		filter: hasValue('_nodeType', [NT_INTERFACE]),

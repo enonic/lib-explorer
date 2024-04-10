@@ -123,6 +123,9 @@ export type {
 	QueryFilters
 } from './Filters.d';
 export type {
+	GQL_InputType_Highlight
+} from './GraphQL.d';
+export type {
 	IndexConfig,
 	IndexConfigConfig,
 	IndexConfigConfigsEntry,
@@ -170,7 +173,8 @@ export type {
 	InterfaceField,
 	InterfaceNode,
 	InterfaceNodeCreateParams,
-	InterfaceNodeSpecific
+	InterfaceNodeSpecific,
+	TermQuery,
 } from './Interface.d';
 export type {
 	Repo
@@ -195,6 +199,8 @@ export type {
 	StopwordNode
 } from './Stopword.d';
 export type {
+	InputTypeLanguageSynonym,
+	InputTypeSynonymLanguages,
 	QueriedSynonym,
 	Synonym,
 	Synonym_Common,
@@ -207,7 +213,9 @@ export type {
 	SynonymNode_Languages,
 	SynonymNode_LanguagesSynonymObject,
 	SynonymNodeCreateParams,
-	SynonymUse
+	SynonymNodeModifyParams,
+	SynonymUse,
+	Write_SynonymNode_LanguagesSynonymObject
 } from './Synonym.d';
 export type {
 	Task,

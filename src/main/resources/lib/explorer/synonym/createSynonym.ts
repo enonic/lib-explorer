@@ -3,14 +3,12 @@ import type {
 	RepoConnection as WriteConnection
 } from '/lib/xp/node';
 import type {
-	SynonymNode,
-	SynonymNodeCreateParams
-} from '@enonic-types/lib-explorer/';
-import type {
 	InputTypeLanguageSynonym,
 	InputTypeSynonymLanguages,
+	SynonymNode,
+	SynonymNodeCreateParams,
 	Write_SynonymNode_LanguagesSynonymObject
-} from '@enonic-types/lib-explorer/Synonym';
+} from '@enonic-types/lib-explorer';
 
 
 import {

@@ -1,5 +1,7 @@
-import type {InterfaceField} from '@enonic-types/lib-explorer/';
-import type {CollectionNode} from '@enonic-types/lib-explorer/Collection.d';
+import type {
+	CollectionNode,
+	InterfaceField,
+} from '@enonic-types/lib-explorer';
 
 
 import {

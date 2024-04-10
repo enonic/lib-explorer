@@ -41,8 +41,8 @@ export type DocumentTypeNodeSpecific = {
 	version?: number // undefined defaults to 0.
 	managedBy?: string // Default is undefined
 	properties: DocumentTypeFields
-	//createdTime?: Date | string
-	//modifiedTime?: string
+	// createdTime?: Date | string
+	// modifiedTime?: string
 }
 
 export type DocumentTypeCreateParams = CreateNodeParams<Partial<DocumentTypeNodeSpecific>>

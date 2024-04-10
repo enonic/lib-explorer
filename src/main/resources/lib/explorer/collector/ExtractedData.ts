@@ -1,26 +1,28 @@
-//@ts-ignore
-const BEAN = __.newBean('com.enonic.explorer.BinaryExtractorProvider');
+interface JavaObj {
+	get: (name: string) => unknown
+	getMetadata: () => unknown
+	getText: () => string
+	names: () => unknown
+}
+
+
+const BEAN = __.newBean<{
+	extract: (source :unknown) => JavaObj
+}>('com.enonic.explorer.BinaryExtractorProvider');
 
 
 export class ExtractedData {
-	javaObj :{
-		get :(name :string) => unknown
-		getMetadata :() => unknown
-		getText :() => string
-		names :() => unknown
-	}
+	javaObj: JavaObj
 
 	constructor(source :unknown) {
 		this.javaObj = BEAN.extract(source);
 	}
 
-	get(name :string) {
-		//@ts-ignore
+	get(name: string) {
 		return __.toNativeObject(this.javaObj.get(name));
 	}
 
 	getMetadata() {
-		//@ts-ignore
 		return __.toNativeObject(this.javaObj.getMetadata());
 	}
 
@@ -29,7 +31,6 @@ export class ExtractedData {
 	}
 
 	names() {
-		//@ts-ignore
 		return __.toNativeObject(this.javaObj.names());
 	}
 } // class ExtractedData

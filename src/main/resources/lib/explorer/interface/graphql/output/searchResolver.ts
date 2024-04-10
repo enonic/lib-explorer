@@ -28,12 +28,10 @@ import {multiConnect} from '/lib/explorer/repo/multiConnect';
 
 import {washDocumentNode} from '/lib/explorer/interface/graphql/utils/washDocumentNode';
 import {makeQueryParams} from './makeQueryParams';
-/*import {
-	queryResHighlightObjToArray
-} from '/lib/explorer/interface/graphql/highlight/output/queryResHighlightObjToArray';*/
+// import {queryResHighlightObjToArray} from '/lib/explorer/interface/graphql/highlight/output/queryResHighlightObjToArray';
 
 
-//@ts-ignore
+// @ts-ignore
 const {currentTimeMillis} = Java.type('java.lang.System') as {
 	currentTimeMillis: () => number
 }
@@ -44,7 +42,7 @@ const TRACE = false;
 
 
 export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType {
-	//log.debug('searchResolver env:%s', toStr(env));
+	// log.debug('searchResolver env:%s', toStr(env));
 	const {
 		args,
 		args: {
@@ -71,22 +69,22 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 	if (!isSet(source)) { // handles null :)
 		source = {} as SearchResolverSource;
 	}
-	//log.debug('searchResolver args:%s', toStr(args));
-	//log.debug('searchResolver source:%s', toStr(source));
-	//log.debug('searchResolver aggregationsArg:%s', toStr(aggregationsArg));
-	//log.debug('searchResolver filtersArg:%s', toStr(filtersArg));
-	//log.debug('searchResolver highlightArg:%s', toStr(highlightArg));
-	//log.debug('searchResolver logQuery:%s', toStr(logQuery));
+	// log.debug('searchResolver args:%s', toStr(args));
+	// log.debug('searchResolver source:%s', toStr(source));
+	// log.debug('searchResolver aggregationsArg:%s', toStr(aggregationsArg));
+	// log.debug('searchResolver filtersArg:%s', toStr(filtersArg));
+	// log.debug('searchResolver highlightArg:%s', toStr(highlightArg));
+	// log.debug('searchResolver logQuery:%s', toStr(logQuery));
 
 	const {
 		profiling: profilingArraySource = []
 	} = source;
-	//log.debug('searchResolver profilingArraySource:%s', toStr(profilingArraySource));
+	// log.debug('searchResolver profilingArraySource:%s', toStr(profilingArraySource));
 
 	const {
 		profiling: profilingArg = Array.isArray(profilingArraySource) && profilingArraySource.length ? true : false
 	} = args;
-	//log.debug('searchResolver profilingArg:%s', toStr(profilingArg));
+	// log.debug('searchResolver profilingArg:%s', toStr(profilingArg));
 
 	const {
 		interfaceInfo,
@@ -102,7 +100,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 			label: 'search',
 			operation: 'start'
 		});
-		//log.debug('profiling:%s', toStr(profiling));
+		// log.debug('profiling:%s', toStr(profiling));
 	}
 
 	const {
@@ -126,7 +124,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 			aggregationsAsJson: {},
 			count: 0,
 			hits: [],
-			profiling,//: [],
+			profiling, //: [],
 			start,
 			synonyms: [],
 			total: 0
@@ -179,13 +177,13 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 			label: 'search',
 			operation: 'makeQueryParams'
 		});
-		//log.debug('profiling:%s', toStr(profiling));
+		// log.debug('profiling:%s', toStr(profiling));
 	}
 	if (logQuery) {
 		log.info('searchResolver interfaceName:%s queryParams:%s', interfaceName, toStr(queryParams));
 	}
 
-	//@ts-ignore filters type supports array too
+	// @ts-ignore filters type supports array too
 	const queryRes = multiRepoReadConnection.query(queryParams);
 	if (profilingArg) {
 		profiling.push({
@@ -193,7 +191,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 			label: 'search',
 			operation: 'query'
 		});
-		//log.debug('profiling:%s', toStr(profiling));
+		// log.debug('profiling:%s', toStr(profiling));
 	}
 	if (logQueryResult) {
 		log.debug('searchResolver queryRes:%s', toStr(queryRes));
@@ -237,20 +235,20 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 				_collection: collectionName,
 				_createdTime: getIn<
 					DocumentNode,
-					//[typeof FIELD_PATH_META, 'createdTime'] // not keyof DocumentNode
+					// [typeof FIELD_PATH_META, 'createdTime'] // not keyof DocumentNode
 					keyof DocumentNode,
-					//DocumentNode[typeof FIELD_PATH_META]['createdTime'], // string|Date
+					// DocumentNode[typeof FIELD_PATH_META]['createdTime'], // string|Date
 					string,
 					undefined
 				>(collectionNode, [FIELD_PATH_META, 'createdTime'], undefined),
 				_documentType: documentTypeName,
-				_highlight: highlightObj, //queryResHighlightObjToArray({highlightObj}),
-				_json: typedDocumentNode, //washedNode,
+				_highlight: highlightObj, // queryResHighlightObjToArray({highlightObj}),
+				_json: typedDocumentNode, // washedNode,
 				_modifiedTime: getIn<
 					DocumentNode,
-					//[typeof FIELD_PATH_META, 'modifiedTime'] // not keyof DocumentNode
+					// [typeof FIELD_PATH_META, 'modifiedTime'] // not keyof DocumentNode
 					keyof DocumentNode,
-					//DocumentNode[typeof FIELD_PATH_META]['modifiedTime'], // string|Date
+					// DocumentNode[typeof FIELD_PATH_META]['modifiedTime'], // string|Date
 					string,
 					undefined
 				>(collectionNode, [FIELD_PATH_META, 'modifiedTime'], undefined),
@@ -271,7 +269,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 			operation: 'process search results'
 		});
 		rv.profiling = profiling;
-		//log.debug('profiling:%s', toStr(profiling));
+		// log.debug('profiling:%s', toStr(profiling));
 	}
 	DEBUG && log.debug('rv:%s', toStr(rv));
 	return rv

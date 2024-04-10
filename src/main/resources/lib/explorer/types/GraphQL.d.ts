@@ -3,7 +3,7 @@ import type {
 } from '/lib/xp/node';
 
 
-interface CommonHighlightOptions {
+interface GQL_InputType_CommonHighlightOptions {
 	fragmenter?: LibNodeHighlight['fragmenter']
 	fragmentSize?: LibNodeHighlight['fragmentSize']
 	noMatchSize?: LibNodeHighlight['noMatchSize']
@@ -14,7 +14,7 @@ interface CommonHighlightOptions {
 	requireFieldMatch?: LibNodeHighlight['requireFieldMatch']
 }
 
-export type Highlight = CommonHighlightOptions & {
+export type GQL_InputType_Highlight = GQL_InputType_CommonHighlightOptions & {
 	encoder?: LibNodeHighlight['encoder']
 	fields: CommonHighlightOptions & {
 		field: string

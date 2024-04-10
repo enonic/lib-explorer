@@ -3,8 +3,8 @@ import type {
 	InterfaceField,
 	InterfaceNode,
 	InterfaceNodeCreateParams,
+	TermQuery
 } from '@enonic-types/lib-explorer';
-import type {TermQuery} from '@enonic-types/lib-explorer/Interface.d';
 
 
 import {

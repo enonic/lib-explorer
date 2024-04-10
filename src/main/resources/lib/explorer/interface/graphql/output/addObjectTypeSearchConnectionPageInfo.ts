@@ -1,8 +1,6 @@
+import type {EmptyObject} from '@enonic-types/lib-explorer';
 import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
-import type {
-	EmptyObject,
-	GraphQLContext
-} from './index.d';
+import type {GraphQLContext} from './index.d';
 
 
 //import {toStr} from '@enonic/js-utils';

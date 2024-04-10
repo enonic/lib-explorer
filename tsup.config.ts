@@ -138,7 +138,7 @@ export default defineConfig((options: MyOptions) => {
 			// https://rollupjs.org/configuration-options/#treeshake
 			// treeshake: true // This fails after 1m 19s
 
-			tsconfig: 'tsconfig.tsup.json',
+			tsconfig: 'src/main/resources/tsconfig.json',
 		};
 	}
 	throw new Error(`Unconfigured directory:${options.d}!`)

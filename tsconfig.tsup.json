@@ -1,5 +1,0 @@
-{ // This file is used by tsup during build
-	"compilerOptions": {
-		"target": "es5",
-	}
-}

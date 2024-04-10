@@ -1,31 +1,31 @@
+import type {EmptyObject} from '@enonic-types/lib-explorer';
 import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 import type {
-	EmptyObject,
 	GraphQLContext,
 	SearchResolverReturnType
 } from './index.d';
 
 
-//import {toStr} from '@enonic/js-utils';
+// import {toStr} from '@enonic/js-utils';
 import {
 	Json as GraphQLJson,
 	GraphQLInt,
 	nonNull,
 	list
-	//@ts-ignore
+	// @ts-ignore
 } from '/lib/graphql';
 import {addObjectTypeSearchConnectionEdge} from './addObjectTypeSearchConnectionEdge';
 import {addObjectTypeSearchConnectionPageInfo} from './addObjectTypeSearchConnectionPageInfo';
 
 
 type SearchConnectionEnv = {
-	args :EmptyObject
-	context :GraphQLContext,
-	source :SearchResolverReturnType
+	args: EmptyObject
+	context: GraphQLContext,
+	source: SearchResolverReturnType
 }
 
 
-export function addObjectTypeSearchConnection({glue} :{glue :Glue}) {
+export function addObjectTypeSearchConnection({glue}: {glue: Glue}) {
 	return glue.addObjectType({
 		name: 'SearchConnection',
 		fields: {

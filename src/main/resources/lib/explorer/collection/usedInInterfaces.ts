@@ -17,8 +17,8 @@ export function usedInInterfaces({
 			filter: hasValue('collections', name)
 		})
 	});
-	//log.info(toStr({res}));
+	// log.info(toStr({res}));
 	const rv = res.hits.map(({_name}) => _name);
-	//log.info(toStr({rv}));
+	// log.info(toStr({rv}));
 	return rv;
 }

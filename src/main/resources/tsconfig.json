@@ -1,0 +1,87 @@
+{
+	// This file is used by your code editor and tsup when builing
+	// https://www.typescriptlang.org/tsconfig
+	"compilerOptions": {
+
+		// Sets a base directory from which to resolve bare specifier module names.
+		// This resolution has higher priority than lookups from node_modules.
+		// This feature was designed for use in conjunction with AMD module
+		// loaders in the browser, and is not recommended in any other context.
+		// As of TypeScript 4.1, baseUrl is no longer required to be set when
+		// using paths.
+		"baseUrl": ".",
+		"checkJs": false,
+		"declaration": false,
+		"declarationMap": false,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"inlineSourceMap": false,
+		"inlineSources": false,
+		"listEmittedFiles": false,
+		"listFiles": false,
+
+		// A series of entries which re-map imports to lookup locations relative
+		// to the baseUrl if set, or to the tsconfig file itself otherwise.
+		"paths": {
+			"@enonic-types/lib-explorer": ["./lib/explorer/types/index.d"],
+			"@enonic-types/lib-explorer/*": ["./lib/explorer/types/*"],
+			"/lib/xp/*": ["../../../node_modules/@enonic-types/lib-*"],
+			// So one can import local files using absolute path (same as Enonic does during runtime).
+			"/*": ["./*"],
+		},
+
+		"skipLibCheck": true,
+		"sourceMap": false,
+
+		// Build for Nashorn
+		"target": "es5",
+
+		// By default all visible ”@types” packages are included in your compilation.
+		// Packages in node_modules/@types of any enclosing folder are considered visible.
+		// For example, that means packages within ./node_modules/@types/,
+		// ../node_modules/@types/, ../../node_modules/@types/, and so on.
+		// If typeRoots is specified, only packages under typeRoots will be included.
+		// All paths are relative to the tsconfig.json
+		// "typeRoots": [
+		// 	"../../../node_modules/@enonic-types",
+		// 	"../../../node_modules/@types"
+		// ],
+
+		// By default all visible ”@types” packages are included in your
+		// compilation. Packages in node_modules/@types of any enclosing folder
+		// are considered visible. For example, that means packages within
+		// ./node_modules/@types/, ../node_modules/@types/,
+		// ../../node_modules/@types/, and so on.
+		// If types is specified, only packages listed will be included in the
+		// global scope.
+		// This feature differs from typeRoots in that it is about specifying
+		// only the exact types you want included, whereas typeRoots supports
+		// saying you want particular folders.
+		"types": [
+			// Without typeroots:
+			"@enonic-types/global",
+			"react",
+			// With typeroots:
+			// "global", // Already added via typeRoots? nope, doesn't work that way
+		],
+	}, // compilerOptions
+
+	// Specifies an array of filenames or patterns to include in the program.
+	// These filenames are resolved relative to the directory containing the
+	// tsconfig.json file.
+	"include": [
+		"**/*.ts"
+	],
+
+	// Specifies an array of filenames or patterns that should be skipped when
+	// resolving include.
+	// Important: exclude only changes which files are included as a result of
+	// the include setting. A file specified by exclude can still become part of
+	// your codebase due to an import statement in your code, a types inclusion,
+	// a /// <reference directive, or being specified in the files list.
+	// It is not a mechanism that prevents a file from being included in the
+	// codebase - it simply changes what the include setting finds.
+	"exclude": [
+		"**/*.test.ts"
+	],
+}

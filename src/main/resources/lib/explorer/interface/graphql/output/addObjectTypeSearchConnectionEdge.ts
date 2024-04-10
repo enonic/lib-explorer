@@ -1,6 +1,6 @@
+import type {EmptyObject} from '@enonic-types/lib-explorer';
 import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 import type {
-	EmptyObject,
 	GraphQLContext,
 	Hit
 } from './index.d';

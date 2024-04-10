@@ -90,7 +90,9 @@ export function updateCollection({
 			i++;
 			documentTypeName = `${_name}_${i}`; // /^[a-z][a-zA-Z0-9_]*$/
 		}
-		const createdDocumentTypeNode = createDocumentType({_name: documentTypeName});
+		const createdDocumentTypeNode = createDocumentType({
+			_name: documentTypeName
+		});
 		//log.debug(`createdDocumentTypeNode:${toStr(createdDocumentTypeNode)}`);
 		documentTypeId = createdDocumentTypeNode._id;
 	}

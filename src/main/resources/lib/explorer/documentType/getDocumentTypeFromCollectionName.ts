@@ -1,4 +1,8 @@
-//import {toStr} from '@enonic/js-utils';
+import type {
+	CollectionNode,
+} from '@enonic-types/lib-explorer';
+
+// import {toStr} from '@enonic/js-utils';
 import {get as getCollection} from '/lib/explorer/collection/get';
 import {connect} from '/lib/explorer/repo/connect';
 import {getDocumentType} from '/lib/explorer/documentType/getDocumentType';
@@ -11,7 +15,7 @@ export function getDocumentTypeFromCollectionName({collectionName}) {
 	const collectionNode = getCollection({
 		connection: readConnection,
 		name: collectionName
-	});
+	}) as CollectionNode;
 	//log.debug(`getDocumentTypeFromCollectionName collectionNode:${toStr(collectionNode)}`);
 
 	const {documentTypeId} = collectionNode;
@@ -21,7 +25,7 @@ export function getDocumentTypeFromCollectionName({collectionName}) {
 	}
 
 	const documentTypeNode = getDocumentType({
-		_id: documentTypeId,
+		_id: documentTypeId.toString(),
 		connection: readConnection
 	});
 
