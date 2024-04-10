@@ -1,5 +1,5 @@
-import type {AnyObject} from '/lib/explorer/types/index.d';
-import type {GraphQL} from '../index.d';
+import type {AnyObject} from '@enonic-types/lib-explorer';
+import type {GraphQL} from '/lib/explorer/interface/graphql/index.d';
 import type {
 	FieldResolver,
 	Fields,

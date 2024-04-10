@@ -9,7 +9,7 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
-import type {DocumentTypeFieldsObject} from '/lib/explorer/types/index.d';
+import type {DocumentTypeFieldsObject} from '@enonic-types/lib-explorer';
 
 
 // import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';

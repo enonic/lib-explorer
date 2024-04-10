@@ -2,7 +2,7 @@ import type {
 	QueryNodeParams,
 	RepoConnection,
 } from '/lib/xp/node';
-//import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
+//import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d';
 
 
 import {addQueryFilter} from '@enonic/js-utils';

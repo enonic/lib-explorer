@@ -1,4 +1,4 @@
-import type {Glue} from '../utils/Glue';
+import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 
 
 //import {toStr} from '@enonic/js-utils';

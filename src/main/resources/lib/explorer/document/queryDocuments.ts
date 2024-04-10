@@ -9,7 +9,7 @@ import type {
 	Aggregations,
 	QueryFilters,
 	RepoConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {

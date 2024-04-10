@@ -2,8 +2,8 @@ export type {RepoConnection} from '/lib/xp/node';
 // import type {
 // 	QueryDSL,
 // 	SortDSLExpression
-// } from '@enonic/js-utils/src/types';
-// import type {Highlight} from '@enonic/js-utils/src/types/node/query/Highlight.d';
+// } from '@enonic/js-utils/types';
+// import type {Highlight} from '@enonic/js-utils/types/node/query/Highlight.d';
 // import type {
 // 	Aggregations,
 // 	AggregationsResponse

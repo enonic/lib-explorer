@@ -3,7 +3,7 @@ import type {
 	NodeIndexConfigParams,
 	NodeIndexConfigTemplates
 } from '/lib/xp/node';
-import type {SynonymNodeCreateParams} from '/lib/explorer/types/index.d';
+import type {SynonymNodeCreateParams} from '@enonic-types/lib-explorer';
 
 
 import {

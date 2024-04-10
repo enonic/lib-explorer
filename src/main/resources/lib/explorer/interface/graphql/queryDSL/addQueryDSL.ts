@@ -1,5 +1,5 @@
 // import type {QueryDsl} from '/lib/xp/node';
-import type {Glue} from '../utils/Glue';
+import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 
 
 import {

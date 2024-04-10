@@ -3,7 +3,7 @@ import type {
 } from '/lib/xp/node';
 import type {
 	NodeCreate
-} from '/lib/explorer/types/Node.d';
+} from '@enonic-types/lib-explorer/Node.d';
 
 
 /*export type ThesaurusLanguage = {

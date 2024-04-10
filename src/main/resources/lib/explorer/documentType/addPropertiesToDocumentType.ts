@@ -1,4 +1,4 @@
-import type {DocumentTypeNode} from '/lib/explorer/types/DocumentType.d';
+import type {DocumentTypeNode} from '@enonic-types/lib-explorer/DocumentType.d';
 
 
 import {

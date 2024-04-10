@@ -1,11 +1,11 @@
 import type {
 	CollectorStateData,
 	RepoConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 // import { toStr } from '@enonic/js-utils';
-import {get as getNode} from '../node/get';
+import {get as getNode} from '/lib/explorer/node/get';
 
 
 export function get({

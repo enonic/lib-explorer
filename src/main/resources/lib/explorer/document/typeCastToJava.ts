@@ -2,7 +2,7 @@ import type {
 	DocumentNode,
 	DocumentTypeField,
 	DocumentTypeFieldsObject,
-} from '/lib/explorer/types/index.d'
+} from '@enonic-types/lib-explorer'
 
 import {
 	geoPoint,
@@ -45,7 +45,7 @@ import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {
 	FIELD_PATH_GLOBAL,
 	FIELD_PATH_META
-} from '../constants';
+} from '/lib/explorer/constants';
 
 // @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
 import traverse = require('traverse');

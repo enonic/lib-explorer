@@ -1,4 +1,4 @@
-import type {FieldNode} from '/lib/explorer/types/index.d';
+import type {FieldNode} from '@enonic-types/lib-explorer';
 
 import {
 	VALUE_TYPE_STRING,

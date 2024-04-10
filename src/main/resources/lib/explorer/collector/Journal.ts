@@ -2,17 +2,17 @@ import type {
 	JournalInterface,
 	JournalMessage,
 	WriteConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {
 	REPO_JOURNALS,
 	PRINCIPAL_EXPLORER_WRITE
 } from '/lib/explorer/constants';
-import {connect} from '../repo/connect';
-import {create as createNode} from '../node/create';
-import {maybeCreate as maybeCreateRepoAndBranch} from '../repo/maybeCreate';
-import {journal} from '../model/2/nodeTypes/journal';
+import {connect} from '/lib/explorer/repo/connect';
+import {create as createNode} from '/lib/explorer/node/create';
+import {maybeCreate as maybeCreateRepoAndBranch} from '/lib/explorer/repo/maybeCreate';
+import {journal} from '/lib/explorer/model/2/nodeTypes/journal';
 
 
 export class Journal implements JournalInterface {

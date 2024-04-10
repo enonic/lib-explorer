@@ -1,6 +1,6 @@
 import type { ModifiedNode } from '/lib/xp/node';
-// import type {Node} from '/lib/explorer/types/index.d';
-import type {DocumentNode} from '/lib/explorer/types/Document.d';
+// import type {Node} from '@enonic-types/lib-explorer';
+import type {DocumentNode} from '@enonic-types/lib-explorer/Document.d';
 
 
 import {
@@ -22,7 +22,7 @@ import { detailedDiff } from 'deep-object-diff';
 //import HumanDiff from 'human-object-diff'; // [!] Error: 'default' is not exported by node_modules/human-object-diff/index.js
 //import * as HumanDiff from 'human-object-diff'; // This fails when doing app-explorer development build
 
-import {FIELD_PATH_META} from '../constants';
+import {FIELD_PATH_META} from '/lib/explorer/constants';
 
 // const deepObjectDiff = require('deep-object-diff');
 

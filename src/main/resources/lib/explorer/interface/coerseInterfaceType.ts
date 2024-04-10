@@ -3,10 +3,10 @@ import {
 	InterfaceField,
 	InterfaceNode,
 	ZeroOrMore
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 import {
 	TermQuery
-} from '/lib/explorer/types/Interface.d';
+} from '@enonic-types/lib-explorer/Interface.d';
 
 
 import {

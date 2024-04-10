@@ -3,7 +3,7 @@ import type {
 	ParentPath,
 	Path,
 	RepoConnection
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 //import {toStr} from '@enonic/js-utils';
 
 //──────────────────────────────────────────────────────────────────────────────
@@ -17,7 +17,7 @@ import {sanitize} from '/lib/xp/common';
 // Local libs (Absolute path without extension so it doesn't get webpacked)
 //──────────────────────────────────────────────────────────────────────────────
 //import {dirname} from '/lib/explorer/path/dirname';
-import {join} from '../path/join';
+import {join} from '/lib/explorer/path/join';
 
 
 //──────────────────────────────────────────────────────────────────────────────

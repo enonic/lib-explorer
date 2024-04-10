@@ -1,5 +1,5 @@
-import type {GraphQL} from '../../../index.d';
-import type {Glue} from '../../../utils/Glue';
+import type {GraphQL} from '/lib/explorer/interface/graphql/index.d';
+import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 
 
 import {
@@ -8,7 +8,7 @@ import {
 	nonNull
 	// @ts-expect-error No types yet
 } from '/lib/graphql';
-import {GQL_INPUT_TYPE_AGGREGATION_TERMS} from '../constants';
+import {GQL_INPUT_TYPE_AGGREGATION_TERMS} from '/lib/explorer/interface/graphql/aggregations/guillotine/constants';
 
 
 export function addTermsAggregationInput({

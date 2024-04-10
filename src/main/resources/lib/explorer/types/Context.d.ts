@@ -1,4 +1,4 @@
-import type {PrincipalKey} from '@enonic/js-utils/src/types/Auth.d';
+import type {PrincipalKey} from '@enonic/js-utils/types/Auth.d';
 import type { Context } from '/lib/xp/context';
 
 

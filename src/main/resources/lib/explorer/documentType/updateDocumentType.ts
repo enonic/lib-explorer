@@ -2,7 +2,7 @@ import type {
 	DocumentTypeFields,
 	DocumentTypeNode,
 	DocumentTypeNodeSpecific
-} from '/lib/explorer/types/DocumentType.d';
+} from '@enonic-types/lib-explorer/DocumentType.d';
 
 
 import {
@@ -32,7 +32,7 @@ import {send} from '/lib/xp/event';
 //@ts-ignore
 //import {reference} from '/lib/xp/value';
 
-import {reindexCollections} from '../collection/reindexCollections';
+import {reindexCollections} from '/lib/explorer/collection/reindexCollections';
 import {coerseDocumentType} from './coerseDocumentType';
 
 

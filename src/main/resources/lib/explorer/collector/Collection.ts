@@ -1,12 +1,12 @@
-import type {WriteConnection} from '/lib/explorer/types/index.d';
+import type {WriteConnection} from '@enonic-types/lib-explorer';
 
 
 import {
 	COLLECTION_REPO_PREFIX,
 	PRINCIPAL_EXPLORER_WRITE
 } from '/lib/explorer/constants';
-import {maybeCreate as maybeCreateRepoAndBranch} from '../repo/maybeCreate';
-import {connect} from '../repo/connect';
+import {maybeCreate as maybeCreateRepoAndBranch} from '/lib/explorer/repo/maybeCreate';
+import {connect} from '/lib/explorer/repo/connect';
 
 
 export class Collection {

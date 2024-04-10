@@ -45,6 +45,8 @@
 			// "/lib/xp/repo": ["../xp/modules/lib/lib-repo/build/typescript/lib/xp/repo.d.ts"],
 			// Production (should be commented in when commiting)
 			"@enonic/semantic-ui-react-form": ["node_modules/@enonic/semantic-ui-react-form/src"],
+			"@enonic-types/lib-explorer": ["./src/main/resources/lib/explorer/types/index.d"],
+			"@enonic-types/lib-explorer/*": ["./src/main/resources/lib/explorer/types/*"],
 			"/lib/explorer/*": ["./src/main/resources/lib/explorer/*"],
 			// "/lib/xp/auth": ["node_modules/@enonic-types/lib-auth"],
 			// "/lib/xp/context": ["node_modules/@enonic-types/lib-context"],
@@ -118,7 +120,6 @@
 	"files": [
 		"src/main/resources/index.d.ts",
 		"src/main/resources/lib/explorer/index.ts",
-		"src/main/resources/lib/explorer/_uncoupled/index.ts"
 	],
 	"include": [
 		"src/main/resources/**/*.ts",

@@ -1,5 +1,5 @@
-import type {GraphQLObjectType} from '../utils/index.d';
-import type {Glue} from '../utils/Glue';
+import type {GraphQLObjectType} from '/lib/explorer/interface/graphql/utils/index.d';
+import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 
 
 import {
@@ -15,10 +15,10 @@ import {
 	Json as GraphQLJson
 	//@ts-ignore
 } from '/lib/graphql';
-import {VALUE_TYPE_JSON} from '../constants';
-import {documentTypeNameToGraphQLObjectTypeName} from '../utils/documentTypeNameToGraphQLObjectTypeName';
-import {mergeFields} from '../utils/mergeFields';
-import {objToGraphQL} from '../utils/objToGraphQL';
+import {VALUE_TYPE_JSON} from '/lib/explorer/interface/graphql/constants';
+import {documentTypeNameToGraphQLObjectTypeName} from '/lib/explorer/interface/graphql/utils/documentTypeNameToGraphQLObjectTypeName';
+import {mergeFields} from '/lib/explorer/interface/graphql/utils/mergeFields';
+import {objToGraphQL} from '/lib/explorer/interface/graphql/utils/objToGraphQL';
 import {addInterfaceTypeDocument} from './addInterfaceTypeDocument';
 
 

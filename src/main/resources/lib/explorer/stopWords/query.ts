@@ -1,10 +1,10 @@
-import type {Aggregations} from '@enonic/js-utils/src/types/node/query/Aggregation.d';
+import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d';
 import type {
 	Highlight,
 	QueryFilters,
+	QueriedStopword,
 	RepoConnection
-} from '/lib/explorer/types/index.d';
-import type {QueriedStopword} from '../types/StopWord.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {

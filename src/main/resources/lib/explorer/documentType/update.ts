@@ -1,7 +1,7 @@
 import type {
 	DocumentTypeFields,
 	DocumentTypeNode
-} from '../types/index.d';
+} from '@enonic-types/lib-explorer/index.d';
 
 import {send} from '/lib/xp/event';
 import {connect} from '/lib/xp/node';
@@ -10,10 +10,10 @@ import {
 	EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
 	PRINCIPAL_EXPLORER_WRITE,
 	REPO_ID_EXPLORER
-} from '../constants';
+} from '/lib/explorer/constants';
 
 
-// NOTE: This function is ONLY? used by ../document/addExtraFieldsToDocumentType
+// NOTE: This function is ONLY? used by /lib/explorer/document/addExtraFieldsToDocumentType
 export function update(
 	{
 		_id,

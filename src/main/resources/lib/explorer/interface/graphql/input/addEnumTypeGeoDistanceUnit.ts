@@ -1,4 +1,4 @@
-import type {Glue} from '../utils/Glue';
+import type {Glue} from '/lib/explorer/interface/graphql/utils/Glue';
 import { GQL_ENUM_TYPE_NAME_GEO_DISTANCE_UNIT } from './constants';
 
 export function addEnumTypeGeoDistanceUnit({

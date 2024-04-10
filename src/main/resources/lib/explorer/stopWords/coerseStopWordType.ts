@@ -1,7 +1,7 @@
 import type {
 	Stopword,
 	StopwordNode
-} from '../types/StopWord.d';
+} from '@enonic-types/lib-explorer';
 
 
 import {forceArray} from '@enonic/js-utils';

@@ -1,4 +1,4 @@
-import type {DocumentNode} from '/lib/explorer/types/index.d';
+import type {DocumentNode} from '@enonic-types/lib-explorer';
 
 
 export function washDocumentNode(node :DocumentNode) {

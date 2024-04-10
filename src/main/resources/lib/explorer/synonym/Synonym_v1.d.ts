@@ -2,7 +2,7 @@ import type {
 	NodeCreate,
 	OneOrMore,
 	RequiredNodeProperties
-} from '/lib/explorer/types/index.d';
+} from '@enonic-types/lib-explorer';
 
 
 export interface SynonymSpecific {

@@ -1,4 +1,4 @@
-import type {DocumentNode} from '/lib/explorer/types/index.d';
+import type {DocumentNode} from '@enonic-types/lib-explorer';
 import type {
 	Hit,
 	Profiling,
@@ -26,11 +26,11 @@ import {multiConnect} from '/lib/explorer/repo/multiConnect';
 // This fails when tsup code splitting: true
 // import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 
-import {washDocumentNode} from '../utils/washDocumentNode';
+import {washDocumentNode} from '/lib/explorer/interface/graphql/utils/washDocumentNode';
 import {makeQueryParams} from './makeQueryParams';
 /*import {
 	queryResHighlightObjToArray
-} from '../highlight/output/queryResHighlightObjToArray';*/
+} from '/lib/explorer/interface/graphql/highlight/output/queryResHighlightObjToArray';*/
 
 
 //@ts-ignore

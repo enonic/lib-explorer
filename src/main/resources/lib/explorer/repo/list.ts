@@ -1,4 +1,4 @@
-// import type {Repo} from '/lib/explorer/types/index.d';
+// import type {Repo} from '@enonic-types/lib-explorer';
 
 import {list as listRepos} from '/lib/xp/repo';
 import {

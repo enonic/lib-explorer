@@ -3,8 +3,8 @@ import type {
 	ParentPath,
 	Path,
 	RepoConnection
-} from '/lib/explorer/types/index.d';
-import type {StopwordNode} from '../types/StopWord.d';
+} from '@enonic-types/lib-explorer';
+import type {StopwordNode} from '@enonic-types/lib-explorer/StopWord.d';
 
 //import {toStr} from '@enonic/js-utils';
 

@@ -1,12 +1,12 @@
 import type {
 	OneOrMore
-} from '/lib/explorer/types/';
+} from '@enonic-types/lib-explorer';
 import type {
 	Synonym_Language,
 	Synonym_LanguagesSynonymObject,
 	SynonymNode_Languages,
 	SynonymNode_LanguagesSynonymObject
-} from '/lib/explorer/types/Synonym';
+} from '@enonic-types/lib-explorer/Synonym';
 
 
 import {

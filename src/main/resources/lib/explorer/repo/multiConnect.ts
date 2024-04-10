@@ -1,5 +1,5 @@
 import type { SourceWithPrincipals } from '@enonic/js-utils/types/node/multiRepoConnection.d';
-import type { PrincipalKey } from '/lib/explorer/types/index.d';
+import type { PrincipalKey } from '@enonic-types/lib-explorer';
 import type { Context } from '/lib/xp/context';
 import type { MultiRepoConnection } from '/lib/xp/node';
 
