@@ -44,7 +44,7 @@ dependencies {
 	implementation "com.enonic.xp:lib-portal:${xpVersion}"
 	implementation "com.enonic.xp:lib-repo:${xpVersion}"
 	implementation "com.enonic.xp:lib-task:${xpVersion}"
-	implementation 'com.enonic.lib:lib-cache:2.2.0'
+	implementation 'com.enonic.lib:lib-cache:2.2.1'
 	implementation 'com.enonic.lib:lib-http-client:3.2.2'
 	implementation 'com.enonic.lib:lib-license:3.1.0'
 
