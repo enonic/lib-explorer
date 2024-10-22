@@ -11,11 +11,19 @@ compileJava {
 	options.release = 11
 }
 
+// java {
+// 	toolchain {
+// 		languageVersion = JavaLanguageVersion.of(11)
+// 	}
+// }
+
+// sourceCompatibility = JavaVersion.VERSION_11
+// targetCompatibility = sourceCompatibility
+
 repositories {
 	mavenLocal()
 	xp.enonicRepo('dev') // Not provided by com.enonic.defaults
 	mavenCentral()
-	//maven {url 'http://repo.enonic.com/public'}
 }
 
 
@@ -70,25 +78,17 @@ tasks.withType(Copy) {
 	includeEmptyDirs = false
 }
 
-
-//──────────────────────────────────────────────────────────────────────────────
-// Gradle wrapper
-//──────────────────────────────────────────────────────────────────────────────
 wrapper {
 	distributionUrl = "${gradleDistributionUrl}"
 }
 
-
-//──────────────────────────────────────────────────────────────────────────────
-// Gradle node plugin
-//──────────────────────────────────────────────────────────────────────────────
 node {
 	download = true
 	version = "${nodeVersion}"
 }
 
-task yarnCheck(type: YarnTask) {
-	dependsOn yarn_install
+tasks.register('npmCheck', NpmTask) {
+	dependsOn npmInstall
 	args = [
 		'run',
 		'check'
@@ -97,12 +97,10 @@ task yarnCheck(type: YarnTask) {
 		'FORCE_COLOR': 'true',
 	]
 }
-check.dependsOn yarnCheck
+check.dependsOn npmCheck
 
-task yarnTest(
-	dependsOn: yarn_install,
-	type: YarnTask
-) {
+tasks.register('npmTest', NpmTask) {
+	dependsOn npmInstall
 	args = ['test']
 	environment = [
 		'FORCE_COLOR': 'true',
@@ -111,28 +109,26 @@ task yarnTest(
 	inputs.dir 'test'
 	outputs.dir 'coverage'
 }
-test.dependsOn yarnTest
+test.dependsOn npmTest
 
 task cleanCoverage(type:Delete) {
 	delete 'coverage'
 }
 clean.dependsOn cleanCoverage
 
-//──────────────────────────────────────────────────────────────────────────────
-// TSUP
-//──────────────────────────────────────────────────────────────────────────────
-task tsup(
-	dependsOn: yarn_install,
-	type: YarnTask
-) {
-	args = ['build']
+tasks.register('npmBuild', NpmTask) {
+	args = [
+		'run',
+		'build'
+	]
+	dependsOn npmInstall
 	environment = [
 		'FORCE_COLOR': 'true',
 		'LOG_LEVEL_FROM_GRADLE': gradle.startParameter.logLevel.toString(),
 		'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
 	]
 	inputs.dir 'src/main/resources'
-	outputs.dir './build/resources/main' // processResources will delete the directory if this is not present
+	outputs.dir 'build/resources/main' // processResources will delete the directory if this is not present
 }
 
 processResources {
@@ -141,5 +137,5 @@ processResources {
 	exclude '**/*.ts' // Handeled by tsup
 }
 
-jar.dependsOn tsup
-javadoc.dependsOn tsup
+jar.dependsOn npmBuild
+javadoc.dependsOn npmBuild
