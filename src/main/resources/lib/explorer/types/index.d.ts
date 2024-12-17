@@ -1,3 +1,4 @@
+import type { RequestMethod } from '@enonic-types/core';
 import type {CollectionId as ImportedCollectionId} from './Collection.d';
 import type {CollectorId as ImportedCollectorId} from './Collector.d';
 
@@ -10,7 +11,6 @@ export namespace Explorer {
 
 
 export namespace HttpClient {
-	export type Method = 'GET'|'POST'|'PUT'|'DELETE'|'HEAD'|'PATCH'
 	export type Request = {
 		// Required
 		url: string
@@ -27,7 +27,7 @@ export namespace HttpClient {
 		disableHttp2?: boolean
 		followRedirects?: boolean
 		headers?: Record<string,string>
-		method?: 'GET'|'POST'|'PUT'|'DELETE'|'HEAD'|'PATCH'
+		method?: RequestMethod
 		multipart?: Record<string, unknown>[]
 		params?: Record<string, string>
 		proxy?: {
@@ -182,14 +182,8 @@ export type {
 export type {
 	RepoConnection
 } from './RepoConnection.d';
-export type {
-	EnonicXpRequest,
-	HttpClientRequest
-} from './Request.d';
-export type {
-	PageContributions,
-	Response
-} from './Response.d';
+export type { HttpClientRequest } from './Request.d';
+export type { Http2Response } from './Response.d';
 export type {
 	ScheduledJob
 } from './Scheduler.d';

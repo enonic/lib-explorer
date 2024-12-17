@@ -1,6 +1,6 @@
+import type { RequestMethod } from '@enonic-types/core';
 import type {
 	AnyObject,
-	EmptyObject,
 	StringObject
 } from './Utility';
 
@@ -22,10 +22,6 @@ export type Headers = { // HTTP/2 uses lowercase header keys
 	'user-agent'?: string
 }
 
-export type Method = 'GET'|'POST'|'HEAD'|'PUT'|'DELETE'|'PATCH'
-
-export type Mode = 'edit'|'inline'|'live'|'preview'
-
 
 export type HttpClientRequest = {
 	auth?: {
@@ -39,7 +35,7 @@ export type HttpClientRequest = {
 	contentType?: string
 	followRedirects?: boolean
 	headers?: Headers
-	method?: Method
+	method?: RequestMethod
 	multipart?: Array<AnyObject>
 	params?: StringObject
 	proxy?: {
@@ -51,21 +47,4 @@ export type HttpClientRequest = {
 	queryParams?: StringObject
 	readTimeout?: number
 	url: string
-}
-
-
-export type EnonicXpRequest<
-	Params extends StringObject = EmptyObject,
-	PathParams extends StringObject = EmptyObject
-> = {
-	body?: string
-	contextPath?: string
-	headers?: Headers
-	host?: string
-	method?: Method
-	mode?: Mode
-	params?: Params
-	path?: string
-	pathParams?: PathParams
-	rawPath?: string
 }
