@@ -6,26 +6,11 @@ plugins {
 	id 'com.github.node-gradle.node' version '7.1.0'
 }
 
-// TODO: Can be removed when xpVersion is >=7.13.0
-compileJava {
-	options.release = 11
-}
-
-// java {
-// 	toolchain {
-// 		languageVersion = JavaLanguageVersion.of(11)
-// 	}
-// }
-
-// sourceCompatibility = JavaVersion.VERSION_11
-// targetCompatibility = sourceCompatibility
-
 repositories {
 	mavenLocal()
 	xp.enonicRepo('dev') // Not provided by com.enonic.defaults
 	mavenCentral()
 }
-
 
 dependencies {
 	compileOnly "com.enonic.xp:script-api:${xpVersion}"
@@ -73,8 +58,7 @@ dependencies {
 	// WARNING: Do NOT use compile files, jar file will be missing dependencies!
 }
 
-
-tasks.withType(Copy) {
+tasks.withType( Copy ).configureEach {
 	includeEmptyDirs = false
 }
 
@@ -111,7 +95,7 @@ tasks.register('npmTest', NpmTask) {
 }
 test.dependsOn npmTest
 
-task cleanCoverage(type:Delete) {
+tasks.register('cleanCoverage', Delete) {
 	delete 'coverage'
 }
 clean.dependsOn cleanCoverage

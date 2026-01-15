@@ -33,7 +33,6 @@ module.exports = {
 	// https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/style.js
 	extends: [
 		'eslint:recommended',
-		//'airbnb-base',
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:react/recommended',
@@ -125,7 +124,6 @@ module.exports = {
 	plugins: [
 		//'import',
 		'react',
-		'jsx-a11y',
 		'@typescript-eslint'
 	],
 
