@@ -14,6 +14,7 @@
 		"declaration": false,
 		"declarationMap": false,
 		"esModuleInterop": true,
+		"lib": ["ES2015", "DOM"],
 		"moduleResolution": "node",
 		"inlineSourceMap": false,
 		"inlineSources": false,
@@ -23,8 +24,10 @@
 		// A series of entries which re-map imports to lookup locations relative
 		// to the baseUrl if set, or to the tsconfig file itself otherwise.
 		"paths": {
-			"@enonic-types/lib-explorer": ["./lib/explorer/types/index.d"],
+			"@enonic-types/lib-explorer": ["./lib/explorer/types/index.d.ts"],
 			"@enonic-types/lib-explorer/*": ["./lib/explorer/types/*"],
+			"@enonic-types/lib-*": ["../../../node_modules/@enonic-types/lib-*"],
+			"/lib/explorer/*": ["./lib/explorer/*"],
 			"/lib/xp/*": ["../../../node_modules/@enonic-types/lib-*"],
 			// So one can import local files using absolute path (same as Enonic does during runtime).
 			"/*": ["./*"],
