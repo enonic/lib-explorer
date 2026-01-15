@@ -48,6 +48,7 @@ jest.mock('/lib/xp/auth', () => ({
 		modifiedTime: '1970-01-01T00:00:00Z',
 		idProvider: 'system',
 		type: 'user' as const,
+		hasPassword: false
 	})
 }), { virtual: true });
 
