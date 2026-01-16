@@ -27,7 +27,7 @@ import {FIELD_PATH_META} from '/lib/explorer/constants';
 // const deepObjectDiff = require('deep-object-diff');
 
 // @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
-import Diff = require('diff');
+//import Diff = require('diff');
 
 // @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
 import fastDeepEqual = require('fast-deep-equal');
@@ -37,7 +37,7 @@ import HumanDiff = require('human-object-diff');
 
 // const {detailedDiff} = deepObjectDiff;
 
-const {diffJson} = Diff;
+//const {diffJson} = Diff;
 
 const { diff: diffDocument } = new HumanDiff({
 	objectName: 'document'
@@ -72,7 +72,7 @@ export function documentUnchanged(
 			log.debug(`Changes detected in document with id:${id} diff:${toStr(diffDocument(exisitingDocument, maybeChangedDocument))}`);
 		} catch (_e) {
 			try {
-				log.debug(`Changes detected in document with id:${id} diff:${toStr(diffJson(exisitingDocument, maybeChangedDocument))}`);
+				//log.debug(`Changes detected in document with id:${id} diff:${toStr(diffJson(exisitingDocument, maybeChangedDocument))}`);
 			} catch (_e) {
 				// No-op :)
 			} // catch3

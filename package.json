@@ -7,7 +7,6 @@
     "cross-env": "^7",
     "d3-dsv": "^3",
     "deep-object-diff": "^1",
-    "diff": "^8.0.3",
     "fast-deep-equal": "^3",
     "human-object-diff": "^3",
     "set-value": "^4.1.0",
