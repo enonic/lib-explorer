@@ -6,7 +6,7 @@ import {
 	VALUE_TYPE_BOOLEAN,
 	VALUE_TYPE_DOUBLE,
 	VALUE_TYPE_STRING
-} from '@enonic/js-utils/storage/indexing';
+} from '@enonic/js-utils/storage/indexing/index';
 import {
 	LibEvent,
 	LibNode,
