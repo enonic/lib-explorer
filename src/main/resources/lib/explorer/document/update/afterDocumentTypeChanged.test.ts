@@ -3,8 +3,8 @@ import type { connect } from '@enonic-types/lib-node';
 
 
 import {forceArray} from '@enonic/js-utils/array/forceArray';
-import {sortByProperty} from '@enonic/js-utils/array';
-import {VALUE_TYPE_STRING} from '@enonic/js-utils/storage/indexing';
+import {sortByProperty} from '@enonic/js-utils/array/sortBy';
+import {VALUE_TYPE_STRING} from '@enonic/js-utils/storage/indexing/index';
 import {
 	LibEvent,
 	LibNode,

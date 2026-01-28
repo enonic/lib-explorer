@@ -108,8 +108,6 @@ export default defineConfig((options: MyOptions) => {
 				'@enonic/js-utils', // many places
 				'core-js', // lib/explorer/interface/graphql/mergeFields.ts
 				'd3-dsv', // lib/explorer/parseCsv.ts
-				'deep-object-diff', // several places
-				'diff', // lib/explorer/_uncoupled/document/documentUnchanged.ts
 				'fast-deep-equal', // several places
 				'human-object-diff', // several places
 				'set-value', // lib/explorer/interface/graphql/mergeFields.ts
