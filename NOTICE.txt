@@ -9,10 +9,6 @@ Licenses used by lib-explorer
 	BSD 3-Clause
 	https://github.com/d3/d3-dsv/blob/master/LICENSE
 
-	deep-object-diff
-	MIT License
-	https://github.com/mattphillips/deep-object-diff/blob/main/LICENSE
-
 	fast-deep-equal
 	MIT License
 	https://github.com/epoberezkin/fast-deep-equal/blob/master/LICENSE

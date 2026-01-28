@@ -13,16 +13,9 @@ import {
 	isSet,
 	toStr
 } from '@enonic/js-utils';
-// import {detailedDiff} from 'deep-object-diff';
 import deepEqual from 'fast-deep-equal';
 
 import HumanDiff from 'human-object-diff';
-// import * as HumanDiff from 'human-object-diff'; // This fails when doing app-explorer development build
-
-// @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
-// import HumanDiff = require('human-object-diff');
-
-//import {getCachedDocumentType} from '/lib/explorer/documentType/documentTypesCache';
 import {
 	EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
 	NT_COLLECTION,
@@ -32,13 +25,9 @@ import {hasValue} from '/lib/explorer/query/hasValue';
 import {connect} from '/lib/explorer/repo/connect';
 
 import {send} from '/lib/xp/event';
-//import {reference} from '/lib/xp/value';
 
 import {reindexCollections} from '/lib/explorer/collection/reindexCollections';
 import {coerseDocumentType} from './coerseDocumentType';
-
-
-//const Diff = require('diff');
 
 const { diff: diffDocumentTypeProperties } = new HumanDiff({
 	objectName: 'documentTypeProperties'
