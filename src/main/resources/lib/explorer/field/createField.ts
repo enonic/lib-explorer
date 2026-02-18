@@ -1,4 +1,4 @@
-import type {FieldNode} from '@enonic-types/lib-explorer';
+import type { FieldNode, WriteConnection } from '../types.d';
 
 import {
 	VALUE_TYPE_STRING,
@@ -70,7 +70,7 @@ export function createField({
 	//log.debug(`nodeToCreate:${toStr(nodeToCreate)}`);
 
 	const createdNode = create(nodeToCreate, {
-		connection: connect({principals: [PRINCIPAL_EXPLORER_WRITE]})
+		connection: connect({principals: [PRINCIPAL_EXPLORER_WRITE]}) as WriteConnection
 	}) as unknown as FieldNode;
 	//log.debug(`createdNode:${toStr(createdNode)}`);
 

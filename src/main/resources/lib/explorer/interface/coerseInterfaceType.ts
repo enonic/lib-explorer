@@ -2,11 +2,9 @@ import {
 	Interface,
 	InterfaceField,
 	InterfaceNode,
+	TermQuery,
 	ZeroOrMore
-} from '@enonic-types/lib-explorer';
-import {
-	TermQuery
-} from '@enonic-types/lib-explorer/Interface.d';
+} from '../types.d';
 
 
 import {

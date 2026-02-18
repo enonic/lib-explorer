@@ -1,7 +1,8 @@
 import type {
 	CollectionNode,
-	CollectionWithCron
-} from '@enonic-types/lib-explorer/Collection.d';
+	CollectionWithCron,
+	WriteConnection
+} from '../types.d';
 
 
 // import {toStr} from '@enonic/js-utils';
@@ -26,7 +27,7 @@ export function updateCollection({
 	doCollect,
 	documentTypeId, // optional
 	language // optional
-} :CollectionWithCron ) {
+}: CollectionWithCron ) {
 	//log.debug(`_id:${toStr(_id)}`);
 	//log.debug(`collector:${toStr(collector)}`);
 	//log.debug(`doCollect:${toStr(doCollect)}`);
@@ -34,7 +35,7 @@ export function updateCollection({
 
 	const writeConnection = connect({
 		principals: [PRINCIPAL_EXPLORER_WRITE]
-	}); // as RepoConnection;
+	}) as WriteConnection;
 
 	const collectionNode = writeConnection.get(_id); // as Node;
 	// log.debug('collectionNode:%s', toStr(collectionNode));

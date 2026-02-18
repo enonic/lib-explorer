@@ -1,4 +1,4 @@
-import type {WriteConnection} from '@enonic-types/lib-explorer';
+import type { WriteConnection } from '../types.d';
 
 
 import {
@@ -10,8 +10,8 @@ import {connect} from '/lib/explorer/repo/connect';
 
 
 export class Collection {
-	connection :WriteConnection
-	repoId :string
+	connection: WriteConnection;
+	repoId: string;
 
 	constructor({
 		name
@@ -23,6 +23,6 @@ export class Collection {
 			repoId: this.repoId,
 			branch: 'master',
 			principals: [PRINCIPAL_EXPLORER_WRITE]
-		});
+		}) as WriteConnection;
 	} // constructor
 } // class Collection

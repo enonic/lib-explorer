@@ -1,7 +1,7 @@
 import type {
 	ParentPath,
 	RepoConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 //import {toStr} from '@enonic/js-utils';

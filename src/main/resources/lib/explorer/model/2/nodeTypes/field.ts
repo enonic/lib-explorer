@@ -1,9 +1,9 @@
 import type {
 	IndexConfig,
 	ParentPath,
-	Path
-} from '@enonic-types/lib-explorer';
-import type {PermissionsParams} from '/lib/explorer/types.d';
+	Path,
+	PermissionsParams
+} from '../../../types.d';
 
 
 import {VALUE_TYPE_STRING} from '@enonic/js-utils';

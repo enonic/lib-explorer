@@ -1,4 +1,3 @@
-import type {AnyObject} from '@enonic/js-utils/types';
 import type { TaskStateType } from '/lib/xp/task';
 import type {
 	TaskName,
@@ -11,18 +10,18 @@ import type {
 export type CollectorComponentAfterResetFunction = () => void;
 
 export type CollectorComponentValidateFunction<
-	CollectorConfig extends AnyObject = AnyObject
+	CollectorConfig extends Record<string, unknown> = Record<string, unknown>
 > = (collectorConfig: CollectorConfig) => boolean
 
 export type CollectorComponentImperativeHandle<
-	CollectorConfig extends AnyObject = AnyObject
+	CollectorConfig extends Record<string, unknown> = Record<string, unknown>
 > = {
 	afterReset: CollectorComponentAfterResetFunction
 	validate: CollectorComponentValidateFunction<CollectorConfig>
 };
 
 export type CollectorComponentRef<
-	CollectorConfig extends AnyObject = AnyObject
+	CollectorConfig extends Record<string, unknown> = Record<string, unknown>
 > = React.MutableRefObject<
 	CollectorComponentImperativeHandle<
 		CollectorConfig
@@ -38,7 +37,7 @@ export type Fields = Record<string,{
 export type SiteOptions = Array<unknown>;
 
 export type CollectorProps<
-	CollectorConfig extends AnyObject = AnyObject
+	CollectorConfig extends Record<string, unknown> = Record<string, unknown>
 > = {
 	collectorConfig: CollectorConfig
 	explorer: {

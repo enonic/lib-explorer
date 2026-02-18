@@ -1,5 +1,5 @@
-import type {PrincipalKey} from '@enonic/js-utils/types/Auth.d';
-import type { Context } from '/lib/xp/context';
+import type { Context } from '@enonic-types/lib-context';
+import type { PrincipalKey } from '@enonic/js-utils/types/Auth.d';
 
 
 export type ContextAttributes = Record<string, string | boolean | number>;

@@ -1,8 +1,7 @@
-import {
-	fold,
-	hasOwnProperty,
-	isObject,
-} from '@enonic/js-utils';
+import { hasOwnProperty } from '@enonic/js-utils/object/hasOwnProperty';
+import { fold } from '@enonic/js-utils/string/fold';
+import { startsWith } from '@enonic/js-utils/string/startsWith';
+import { isObject } from '@enonic/js-utils/value/isObject';
 // import {toStr} from '@enonic/js-utils/value/toStr';
 import {
 	FIELD_PATH_GLOBAL,
@@ -54,9 +53,9 @@ export function constrainPropertyNames({
 						if (
 							this.level !== 0
 							|| /* if level is 0 and */ !(
-								key.startsWith('_')
-								|| key.startsWith(FIELD_PATH_GLOBAL)
-								|| key.startsWith(FIELD_PATH_META)
+								startsWith(key, '_')
+								|| startsWith(key, FIELD_PATH_GLOBAL)
+								|| startsWith(key, FIELD_PATH_META)
 							)
 						) {
 							const constrainedKey = fold(key)

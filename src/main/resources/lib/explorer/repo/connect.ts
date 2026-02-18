@@ -1,5 +1,5 @@
-import type {Context} from '/lib/xp/context';
-import type {PrincipalKey} from '@enonic-types/lib-explorer';
+import type { Context } from '/lib/xp/context';
+import type { PrincipalKey } from '../types.d';
 
 
 import {

@@ -2,7 +2,7 @@ import type {
 	GetContext,
 	PrincipalKey,
 	RepoConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {getModel} from '/lib/explorer/model/getModel';

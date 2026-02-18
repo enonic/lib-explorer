@@ -1,12 +1,11 @@
 import type {FieldSortDsl} from '/lib/xp/node';
 import type {
-	AnyObject,
-	InterfaceField
-} from '@enonic-types/lib-explorer';
+	GQL_InputType_Highlight,
+	InterfaceField,
+	TermQuery,
+} from '../../../types.d';
 import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
 import type {SynonymsArray} from '/lib/explorer/synonym/index.d';
-import type {TermQuery} from '@enonic-types/lib-explorer/Interface.d';
-import type {GQL_InputType_Highlight} from '@enonic-types/lib-explorer/GraphQL.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 
@@ -64,10 +63,10 @@ export function makeQueryParams({
 	stemmingLanguages = [],
 	termQueries,
 }: {
-	aggregationsArg: AnyObject[]
+	aggregationsArg: Record<string, unknown>[]
 	doProfiling?: boolean
 	fields: InterfaceField[]
-	filtersArg?: AnyObject[]
+	filtersArg?: Record<string, unknown>[]
 	highlightArg?: GQL_InputType_Highlight
 	interfaceId: string
 	languages: string[]
@@ -114,14 +113,14 @@ export function makeQueryParams({
 	});
 	// log.debug('staticFilter:%s', toStr(staticFilter));
 
-	let filtersArray: AnyObject[];
+	let filtersArray: Record<string, unknown>[];
 	if (filtersArg) {
 		// This works magically because fieldType is an Enum?
 		filtersArray = createFilters(resolveFieldShortcuts({
 			basicObject: filtersArg
 		}));
 		// log.debug('filtersArray:%s', toStr(filtersArray));
-		filtersArray.push(staticFilter as unknown as AnyObject);
+		filtersArray.push(staticFilter as unknown as Record<string, unknown>);
 		// log.debug('filtersArray:%s', toStr(filtersArray));
 	}
 

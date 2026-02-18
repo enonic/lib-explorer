@@ -2,7 +2,7 @@ import type {
 	Field,
 	FieldNode,
 	RepoConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {

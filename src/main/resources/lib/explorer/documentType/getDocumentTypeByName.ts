@@ -1,4 +1,4 @@
-import type {DocumentTypeNode} from '@enonic-types/lib-explorer';
+import type {DocumentTypeNode} from '../types.d';
 
 
 import {connect} from '/lib/xp/node';

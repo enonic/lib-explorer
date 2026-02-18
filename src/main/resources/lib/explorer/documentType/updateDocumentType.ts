@@ -3,7 +3,7 @@ import type {
 	DocumentTypeFields,
 	DocumentTypeNode,
 	DocumentTypeNodeSpecific
-} from '@enonic-types/lib-explorer/DocumentType.d';
+} from '../types.d';
 
 
 import {

@@ -7,7 +7,7 @@ import type {
 	CollectionNode,
 	QueriedCollection,
 	RepoConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import { addQueryFilter } from '@enonic/js-utils/storage/query/addQueryFilter';

@@ -4,7 +4,7 @@ import type {
 	Highlight,
 	QueriedStopword,
 	RepoConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {

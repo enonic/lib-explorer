@@ -1,12 +1,10 @@
 import type {
-	OneOrMore
-} from '@enonic-types/lib-explorer';
-import type {
+	OneOrMore,
 	Synonym_Language,
 	Synonym_LanguagesSynonymObject,
 	SynonymNode_Languages,
 	SynonymNode_LanguagesSynonymObject
-} from '@enonic-types/lib-explorer/Synonym';
+} from '../types.d';
 
 
 import {

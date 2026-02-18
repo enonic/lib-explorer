@@ -1,5 +1,5 @@
 import type {CustomEvent} from '@enonic/js-utils/types/index.d';
-import type {DocumentTypeNode} from '@enonic-types/lib-explorer';
+import type {DocumentTypeNode} from '../../types.d';
 
 
 //@ts-ignore

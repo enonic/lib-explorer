@@ -6,7 +6,7 @@ import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d
 import type {
 	Highlight,
 	SynonymNode
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {

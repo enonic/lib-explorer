@@ -1,4 +1,4 @@
-import type {DocumentNode} from '@enonic-types/lib-explorer';
+import type {DocumentNode} from '../../../types.d';
 import type {
 	Hit,
 	Profiling,

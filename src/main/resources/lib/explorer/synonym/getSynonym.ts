@@ -1,7 +1,7 @@
 import type {
 	RepoConnection,
 	SynonymNode
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {NT_SYNONYM} from '/lib/explorer/constants';
@@ -11,9 +11,9 @@ import {moldSynonymNode} from '/lib/explorer/synonym/moldSynonymNode';
 export function getSynonym({
 	explorerRepoReadConnection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	_id
-} :{
-	explorerRepoReadConnection :RepoConnection
-	_id :string
+}: {
+	explorerRepoReadConnection: RepoConnection;
+	_id: string;
 }) {
 	const node = explorerRepoReadConnection.get(_id);
 	if (!node) {
@@ -24,5 +24,5 @@ export function getSynonym({
 		log.error(`Node with _id:${_id} is not a synonym, but rather _nodeType:${_nodeType}`);
 		throw new Error(`Node with _id:${_id} is not a synonym!`);
 	}
-	return moldSynonymNode(node as SynonymNode);
+	return moldSynonymNode(node as unknown as SynonymNode); // TODO Forced Conversion
 }

@@ -1,4 +1,4 @@
-import type { WriteConnection } from '/lib/explorer/types/index.d';
+import type { WriteConnection } from '../types.d';
 import type {
 	UserKey,
 	getUser

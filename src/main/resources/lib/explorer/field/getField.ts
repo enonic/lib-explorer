@@ -1,7 +1,7 @@
 import type {
 	FieldNode,
 	RepoConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {get} from '/lib/explorer/node/get';

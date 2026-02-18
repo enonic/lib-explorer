@@ -1,0 +1,46 @@
+{
+    "author": "Christian Andreas Westgaard <cwe@enonic.com>",
+    "bugs": {
+      "url": "https://github.com/enonic/lib-explorer/issues"
+    },
+    "dependencies": {
+        "@enonic-types/core": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-auth": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-common": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-context": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-event": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-io": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-mail": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-node": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-portal": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-repo": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-scheduler": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-task": "%XP_TYPES_VERSION%",
+        "@enonic-types/lib-value": "%XP_TYPES_VERSION%",
+        "@enonic/js-utils": "%JS_UTILS_VERSION%",
+        "type-fest": "%TYPE_FEST_VERSION%"
+    },
+    "description": "Type definitions for lib-explorer.",
+    "files": [
+      "*"
+    ],
+    "homepage": "https://github.com/enonic/lib-explorer/tree/master#readme",
+    "keywords": [
+      "lib-explorer",
+      "enonic",
+      "enonic-xp",
+      "types",
+      "typescript"
+    ],
+    "license": "Apache-2.0",
+    "name": "@enonic-types/lib-explorer",
+    "publishConfig": {
+      "access": "public"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/enonic/lib-explorer.git#master"
+    },
+    "types": "index.d.ts",
+    "version": "%VERSION%"
+  }

@@ -1,12 +1,5 @@
-import type {RepoConnection} from '@enonic-types/lib-explorer';
+import type { Brand } from '@enonic-types/core';
+import type { RepoConnection } from '@enonic-types/lib-node';
 
 
-export type WriteConnection = RepoConnection & {
-	//create :<N>(node :N) => N
-	//get :(idOrPath :string) => Node
-	/*modify :<N>(paramObject :{
-		key :string,
-		editor :(node :N) => N
-	}) => N*/
-	//refresh :() => void
-}
+export type WriteConnection = Brand<RepoConnection, 'WriteConnection'>;

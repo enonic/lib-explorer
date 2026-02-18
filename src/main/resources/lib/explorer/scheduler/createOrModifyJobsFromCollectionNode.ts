@@ -5,7 +5,7 @@ import type {
 	TaskDescriptor,
 	TaskName,
 	WriteConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {

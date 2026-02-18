@@ -4,7 +4,7 @@ import type {
 	Path,
 	RepoConnection,
 	StopwordNode,
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 // import {toStr} from '@enonic/js-utils';
 import {join} from '/lib/explorer/path/join';

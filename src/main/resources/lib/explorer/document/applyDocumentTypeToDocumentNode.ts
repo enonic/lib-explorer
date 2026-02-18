@@ -1,7 +1,7 @@
 import {
 	DocumentNode,
 	DocumentType
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import { getIn } from '@enonic/js-utils/object/getIn';

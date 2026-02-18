@@ -9,7 +9,7 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
-import type {DocumentTypeFieldsObject} from '@enonic-types/lib-explorer';
+import type { DocumentTypeFieldsObject } from '../types.d';
 
 
 // import {toStr} from '@enonic/js-utils/dist/esm/index.mjs';
@@ -24,7 +24,7 @@ export interface ValidateParameters {
 	partial?: boolean
 	validateOccurrences?: boolean
 	validateTypes?: boolean
-	// documentType?: AnyObject
+	// documentType?: Record<string, unknown>;
 }
 
 

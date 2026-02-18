@@ -1,4 +1,4 @@
-import type {HttpClient} from '@enonic-types/lib-explorer';
+import type {HttpClient} from '../../types.d';
 
 
 import {toStr} from '@enonic/js-utils/value/toStr';

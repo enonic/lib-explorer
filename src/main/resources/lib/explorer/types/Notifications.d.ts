@@ -9,7 +9,7 @@ import type {
 
 
 export type NotificationsNodeSpecific = {
-	emails ?:Array<string>
+	emails?: string[];
 }
 
 export type NotificationsNodeCreateParams = CreateNodeParams<NotificationsNodeSpecific>

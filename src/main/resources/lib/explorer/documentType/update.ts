@@ -1,7 +1,7 @@
 import type {
 	DocumentTypeFields,
 	DocumentTypeNode
-} from '@enonic-types/lib-explorer/index.d';
+} from '../types.d';
 
 import {send} from '/lib/xp/event';
 import {connect} from '/lib/xp/node';

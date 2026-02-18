@@ -1,8 +1,5 @@
 import type { RequestMethod } from '@enonic-types/core';
-import type {
-	AnyObject,
-	StringObject
-} from './Utility';
+import type { StringObject } from './Utility';
 
 
 import {HTTP_HEADERS} from '@enonic/explorer-utils';
@@ -28,7 +25,7 @@ export type HttpClientRequest = {
 		user: string
 		password: string
 	}
-	body?: string|AnyObject // (string | object) Body content to send with the request, usually for POST or PUT requests. It can be of type string or stream.
+	body?: string|Record<string, unknown> // (string | object) Body content to send with the request, usually for POST or PUT requests. It can be of type string or stream.
 	certificates?: unknown
 	clientCertificate?: unknown
 	connectionTimeout?: number
@@ -36,7 +33,7 @@ export type HttpClientRequest = {
 	followRedirects?: boolean
 	headers?: Headers
 	method?: RequestMethod
-	multipart?: Array<AnyObject>
+	multipart?: Record<string, unknown>[];
 	params?: StringObject
 	proxy?: {
 		host: string

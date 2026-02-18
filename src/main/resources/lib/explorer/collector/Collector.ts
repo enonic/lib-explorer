@@ -26,15 +26,9 @@
 // Later we can extend with all the document-layer support, but at the same time
 // leave the pitfalls in the hands of the Collector developer.
 //──────────────────────────────────────────────────────────────────────────────
-// import type { Node } from '/lib/xp/node';
+import type { Aggregations } from '@enonic-types/core';
 import type {
-	QueryDSL,
-	SortDSLExpression
-} from '@enonic/js-utils/types';
-import type {
-	Aggregations,
 	CollectionNode,
-	// CollectionNodeSpecific,
 	CollectorTaskConfig,
 	DocumentNode,
 	Id,
@@ -43,28 +37,24 @@ import type {
 	NestedRecordType,
 	NotificationsNode,
 	ParentPath,
-	QueryFilters//,
-	//RequiredNodeProperties
-} from '@enonic-types/lib-explorer';
-import type {Progress} from '/lib/explorer/task/progress';
+	QueryDocumentsParams,
+	TaskProgressParams
+} from '../types.d';
 
 
 import { APP_EXPLORER } from '@enonic/explorer-utils';
-import {
-	//VALUE_TYPE_STRING,
-	isNotSet,
-	toStr//,
-	//uniqueId
-} from '@enonic/js-utils';
+import { startsWith } from '@enonic/js-utils/string/startsWith';
+import { isNotSet } from '@enonic/js-utils/value/isNotSet';
+import { toStr } from '@enonic/js-utils/value/toStr';
 
-//import {validateLicense} from '/lib/license';
+// import { validateLicense } from '/lib/license';
 
 import { send } from '/lib/xp/mail';
 import { delete as deleteJob } from '/lib/xp/scheduler';
 
 import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/constants'; // Start with / so it stays an external bundle
 import {createOrUpdate} from '/lib/explorer/document'; // It's own bundle
-import {queryDocuments} from '/lib/explorer/document/queryDocuments';
+import { queryDocuments } from '/lib/explorer/document/queryDocuments';
 import { runAsSu } from '/lib/explorer/runAsSu';
 import { listExplorerJobsThatStartWithName } from '/lib/explorer/scheduler/listExplorerJobsThatStartWithName';
 import {get as getCollection} from '/lib/explorer/collection/get';
@@ -91,27 +81,27 @@ const {currentTimeMillis} = Java.type('java.lang.System') as {
 
 
 export class Collector<Config extends NestedRecordType = NestedRecordType> {
-	public collection: Collection // Public in lib-explorer-3.x
-	public config: Config // Public in lib-explorer-3.x // TODO
-	public journal: Journal // Public in lib-explorer-3.x
-	public startTime: number // Public in lib-explorer-3.x
-	public taskProgressObj: Progress // Public in lib-explorer-3.x
+	public collection: Collection;
+	public config: Config;
+	public journal: Journal;
+	public startTime: number;
+	public taskProgressObj: TaskProgressParams;
 
 	// "#" is js runtime and better than "private" typescript compiletime
 	// but cannot be used when target < "es6"
 	//_collectionDefaultDocumentTypeId;
-	private _collectionId: string; // New in lib-explorer-4.0.0
-	private _collectionName: string; // Private from lib-explorer-4.0.0
-	private _collectorId: string; // Private from lib-explorer-4.0.0
+	private _collectionId: string;
+	private _collectionName: string;
+	private _collectorId: string;
 	//_documentTypeObj: FieldsObject;
 	//_documentTypesObj;
-	private _language: string; // Private in lib-explorer-3.x
+	private _language: string;
 
 	constructor({
 		collectionId,
-		collectorId, // Present in lib-explorer-3.x
-		configJson, // Present in lib-explorer-3.x
-		language, // Present in lib-explorer-3.x
+		collectorId,
+		configJson,
+		language,
 		// @ts-expect-error Property 'name' does not exist on type 'CollectorTaskConfig'.ts(2339)
 		name // Removed in lib-explorer-4.x
 	}: CollectorTaskConfig) {
@@ -236,7 +226,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 	}
 
 	queryDocuments<
-		AggregationKey extends undefined|string = undefined
+		AggregationInput extends Aggregations = never
 	>({
 		aggregations,
 		count,
@@ -244,14 +234,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		query,
 		sort,
 		start
-	}: {
-		aggregations?: Aggregations<AggregationKey>
-		count?: number
-		filters?: QueryFilters
-		query?: QueryDSL
-		sort?: SortDSLExpression
-		start?: number
-	}) {
+	}: QueryDocumentsParams<AggregationInput>) {
 		return queryDocuments({
 			aggregations,
 			collectionRepoReadConnection: this.collection.connection,
@@ -337,7 +320,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		//log.debug(`ignoredOptions:${toStr(ignoredOptions)}`);
 
 		Object.keys(rest).forEach((k) => {
-			if (k.startsWith('__')) {
+			if (startsWith(k, '__')) {
 				log.warning(`Deprecation: Function signature changed. Added second argument for options.
 			Old: collector.persistDocument({${k}, ...})
 			New: collector.persistDocument({...}, {${k.substring(2)}})`);

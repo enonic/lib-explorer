@@ -24,8 +24,6 @@
 		// A series of entries which re-map imports to lookup locations relative
 		// to the baseUrl if set, or to the tsconfig file itself otherwise.
 		"paths": {
-			"@enonic-types/lib-explorer": ["./lib/explorer/types/index.d.ts"],
-			"@enonic-types/lib-explorer/*": ["./lib/explorer/types/*"],
 			"@enonic-types/lib-*": ["../../../node_modules/@enonic-types/lib-*"],
 			"/lib/explorer/*": ["./lib/explorer/*"],
 			"/lib/xp/*": ["../../../node_modules/@enonic-types/lib-*"],
@@ -33,7 +31,7 @@
 			"/*": ["./*"],
 		},
 
-		"skipLibCheck": true,
+		"skipLibCheck": false,
 		"sourceMap": false,
 
 		// Build for Nashorn

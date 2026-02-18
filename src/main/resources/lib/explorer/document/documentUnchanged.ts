@@ -1,6 +1,5 @@
 import type { ModifiedNode } from '/lib/xp/node';
-// import type {Node} from '@enonic-types/lib-explorer';
-import type {DocumentNode} from '@enonic-types/lib-explorer/Document.d';
+import type { DocumentNode } from '../types.d';
 
 
 import {

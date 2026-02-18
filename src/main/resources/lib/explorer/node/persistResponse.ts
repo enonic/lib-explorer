@@ -1,4 +1,4 @@
-import type {WriteConnection} from '@enonic-types/lib-explorer';
+import type {WriteConnection} from '../types.d';
 
 
 import {

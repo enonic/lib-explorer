@@ -1,4 +1,4 @@
-import type {GQL_InputType_Highlight} from '@enonic-types/lib-explorer';
+import type {GQL_InputType_Highlight} from '../../../../types.d';
 
 
 //import {toStr} from '@enonic/js-utils';

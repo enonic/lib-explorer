@@ -2,7 +2,7 @@ import type {
 	// InterfaceNode,
 	InterfaceNodeCreateParams,
 	WriteConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {INTERFACES_FOLDER} from '/lib/explorer/index';

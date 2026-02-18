@@ -1,6 +1,3 @@
-import type {AnyObject} from '@enonic-types/lib-explorer';
-
-
 // import {toStr} from '@enonic/js-utils/value/toStr';
 import traverse from 'traverse';
 import {FIELD_PATH_META} from '/lib/explorer/constants';
@@ -19,7 +16,7 @@ export function resolveFieldShortcuts({
 	shortcuts?: Record<string,string>
 }) {
 	// log.debug('resolveFieldShortcuts basicObject:%s ', toStr(basicObject));
-	const derefBasicObj: AnyObject = JSON.parse(JSON.stringify(basicObject));
+	const derefBasicObj: Record<string, unknown> = JSON.parse(JSON.stringify(basicObject));
 	traverse(derefBasicObj)
 		.forEach(function(value) { // forEach updates the object in-place
 			if (shortcuts[value] && this.path[this.path.length - 1] === 'field') {

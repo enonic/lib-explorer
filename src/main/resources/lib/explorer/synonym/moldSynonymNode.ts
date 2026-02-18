@@ -1,7 +1,7 @@
 import type {
 	Synonym,
 	SynonymNode
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {forceArray} from '@enonic/js-utils';

@@ -1,14 +1,12 @@
-import type {CollectionNode} from '@enonic-types/lib-explorer/Collection.d';
 import type {
+	CollectionNode,
 	DocumentNode,
-	RequiredMetaData
-} from '@enonic-types/lib-explorer/Document.d';
-import {
 	DocumentTypeNode,
 	Path,
-	ParentPath
-} from '@enonic-types/lib-explorer';
-import type {CreateParameterObject} from './create';
+	ParentPath,
+	RequiredMetaData
+} from '../types.d';
+import type { CreateParameterObject } from './create';
 
 
 import {connect} from '/lib/xp/node';

@@ -1,7 +1,18 @@
 import type { RequestMethod } from '@enonic-types/core';
-import type {CollectionId as ImportedCollectionId} from './Collection.d';
-import type {CollectorId as ImportedCollectorId} from './Collector.d';
+import type { CollectionId as ImportedCollectionId } from './Collection.d';
+import type { CollectorId as ImportedCollectorId } from './Collector.d';
 
+export type {
+	Aggregation,
+	AggregationsResult as AggregationsResponse, // TODO Replace AggregationsResponse with AggregationsResult and remove AggregationsResponse.
+	RoleKey as PrincipalKeyRole, // TODO Replace PrincipalKeyRole with RoleKey and remove PrincipalKeyRole.
+	UserKey as PrincipalKeyUser, // TODO Replace PrincipalKeyUser with UserKey and remove PrincipalKeyUser.
+} from '@enonic-types/core';
+export type {
+	AccessControlEntry as PermissionsParams,
+	NodeConfigEntry as IndexConfigObject,
+	NodeIndexConfigParams as IndexConfig,
+} from '@enonic-types/lib-node';
 
 export namespace Explorer {
 	export type CollectionId = ImportedCollectionId
@@ -27,7 +38,7 @@ export namespace HttpClient {
 		disableHttp2?: boolean
 		followRedirects?: boolean
 		headers?: Record<string,string>
-		method?: RequestMethod
+		method?: RequestMethod;
 		multipart?: Record<string, unknown>[]
 		params?: Record<string, string>
 		proxy?: {
@@ -49,9 +60,7 @@ export namespace HttpClient {
 
 
 export type {
-	Aggregation,
 	Aggregations,
-	AggregationsResponse,
 	AggregationsResponseBucket,
 	AggregationsResponseEntry,
 	DateHistogramAggregation,
@@ -64,12 +73,10 @@ export type {
 	TermsAggregation,
 	ValueCountAggregation
 } from '@enonic/js-utils/types/node/query/Aggregation.d';
-export type {
-	PermissionsParams,
-	PrincipalKey,
-	PrincipalKeyRole,
-	PrincipalKeyUser
-} from '@enonic/js-utils/types/Auth.d';
+
+// Useful Literal Union, which is better than @enonic-types/core
+export type { PrincipalKey } from '@enonic/js-utils/types/Auth.d';
+
 export type {
 	Highlight
 } from '@enonic/js-utils/types/node/query/Highlight.d';
@@ -102,7 +109,10 @@ export type {
 	GetContext
 } from './Context.d';
 export type {
-	DocumentNode
+	DocumentNode,
+	QueryDocumentsParams,
+	QueryDocumentsParamsWithConnection,
+	RequiredMetaData,
 } from './Document.d';
 export type {
 	DocumentType,
@@ -126,10 +136,8 @@ export type {
 	GQL_InputType_Highlight
 } from './GraphQL.d';
 export type {
-	IndexConfig,
 	IndexConfigConfig,
 	IndexConfigConfigsEntry,
-	IndexConfigObject,
 	IndexConfigTemplate
 } from './IndexConfig.d';
 export type {
@@ -215,6 +223,7 @@ export type {
 	Task,
 	TaskDescriptor,
 	TaskName,
+	TaskProgressParams,
 	TaskShouldType
 } from './Task.d';
 export type {

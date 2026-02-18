@@ -30,14 +30,12 @@
 //           └ documentTypeNode (modified) (if created need to update collectionNode too, since we have the collectionId, that is actually possible)
 //──────────────────────────────────────────────────────────────────────────────
 import type {
+	CollectionNode,
+	DocumentTypeNode,
 	DocumentTypeFields,
 	ParentPath,
 	Path,
-} from '@enonic-types/lib-explorer';
-import type {
-	CollectionNode,
-	DocumentTypeNode
-} from '@enonic-types/lib-explorer/index.d';
+} from '../types.d';
 
 import {connect} from '/lib/xp/node';
 import {

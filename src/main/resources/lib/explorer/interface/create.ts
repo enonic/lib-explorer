@@ -4,7 +4,7 @@ import type {
 	InterfaceNode,
 	InterfaceNodeCreateParams,
 	TermQuery
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {

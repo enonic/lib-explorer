@@ -1,7 +1,7 @@
 import type {
 	Thesaurus,
 	ThesaurusNode
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {forceArray} from '@enonic/js-utils';

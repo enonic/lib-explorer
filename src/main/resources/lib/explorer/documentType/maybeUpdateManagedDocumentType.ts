@@ -1,4 +1,4 @@
-import type { DocumentTypesJsonDocumentType } from '@enonic-types/lib-explorer/DocumentType.d';
+import type { DocumentTypesJsonDocumentType } from '../types.d';
 
 
 // import { toStr } from '@enonic/js-utils/value/toStr';

@@ -1,4 +1,4 @@
-import type {RepoConnection} from '@enonic-types/lib-explorer';
+import type {RepoConnection} from '../types.d';
 
 
 //import {toStr} from '@enonic/js-utils';

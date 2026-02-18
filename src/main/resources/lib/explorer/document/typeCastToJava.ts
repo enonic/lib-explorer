@@ -1,8 +1,8 @@
 import type {
-	DocumentNode,
+	// DocumentNode,
 	DocumentTypeField,
 	DocumentTypeFieldsObject,
-} from '@enonic-types/lib-explorer'
+} from '../types.d';
 
 import {
 	geoPoint,
@@ -35,10 +35,11 @@ import {
 	isLocalDateTimeString,
 	isTimeString,
 	isUuidV4String,
-	setIn
+	setIn,
 } from '@enonic/js-utils';
-import {toStr} from '@enonic/js-utils/value/toStr';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
+import { startsWith } from '@enonic/js-utils/string/startsWith';
+import { toStr } from '@enonic/js-utils/value/toStr';
 // import traverse from 'traverse'; // [!] Error: 'default' is not exported by node_modules/traverse/index.js
 // import * as traverse from 'traverse'; // (!) Cannot call a namespace ('traverse')
 
@@ -51,27 +52,31 @@ import {
 import traverse = require('traverse');
 
 
-export interface TypeCastToJavaParameters {
-	data?: Record<string, unknown>
-	fieldsObj: DocumentTypeFieldsObject
+export interface TypeCastToJavaParameters<
+	DATA extends Record<string, unknown> = Record<string, unknown>
+> {
+	data: DATA;
+	fieldsObj: DocumentTypeFieldsObject;
 }
 
 
-export function typeCastToJava(
+export function typeCastToJava<
+	DATA extends Record<string, unknown> = Record<string, unknown>
+>(
 	{
-		data = {},
+		data = {} as DATA,
 		fieldsObj = {}
-	}: TypeCastToJavaParameters,
-): DocumentNode {
+	}: TypeCastToJavaParameters<DATA>,
+): DATA {
 	// log.debug('typeCastToJava data:%s', toStr(data));
 	// log.debug('typeCastToJava fieldsObj:%s', toStr(fieldsObj));
-	const typeCastedData: DocumentNode = JSON.parse(JSON.stringify(data));
+	const typeCastedData: DATA = JSON.parse(JSON.stringify(data));
 	traverse(data).forEach(function(value: unknown) { // Fat arrow destroys this
 		// log.debug('document.typeCastToJava: this.path:%s', toStr(this.path));
 		// log.debug('document.typeCastToJava: this.path[0]:%s', toStr(this.path[0]));
 		if (
 			this.notRoot
-			&& !this.path[0].startsWith('_')
+			&& !startsWith(this.path[0], '_')
 			&& !this.circular // Why?
 		) {
 			const pathString = this.path.join('.');

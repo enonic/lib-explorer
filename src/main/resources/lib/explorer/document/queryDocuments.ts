@@ -1,15 +1,8 @@
 import type {
-	QueryDsl
-} from '@enonic-types/core';
-import type {
-	// QueryDSL,
-	SortDSLExpression
-} from '@enonic/js-utils/types';
-import type {
 	Aggregations,
-	QueryFilters,
-	RepoConnection
-} from '@enonic-types/lib-explorer';
+	QueryDsl,
+} from '@enonic-types/core';
+import type { QueryDocumentsParams, QueryDocumentsParamsWithConnection } from '../types.d';
 
 
 import {
@@ -19,11 +12,11 @@ import {
 	//toStr
 } from '@enonic/js-utils';
 // import { hasOwnProperty } from '@enonic/js-utils/object/hasOwnProperty'; // Causes ModuleNotFoundError: Cannot find module, when running tests in app-explorer
-import {NT_DOCUMENT} from '/lib/explorer/constants';
+import { NT_DOCUMENT } from '/lib/explorer/constants';
 
 
 export function queryDocuments<
-	AggregationKey extends undefined|string = undefined
+	AggregationInput extends Aggregations = never
 >({
 	// Required
 	collectionRepoReadConnection,
@@ -37,17 +30,7 @@ export function queryDocuments<
 		field: '_score'
 	}*/,
 	start
-}: {
-	// Required
-	collectionRepoReadConnection: RepoConnection
-	// Optional
-	aggregations?: Aggregations<AggregationKey>
-	count?: number
-	filters?: QueryFilters
-	query?: QueryDsl
-	sort?: SortDSLExpression
-	start?: number
-}) {
+}: QueryDocumentsParamsWithConnection<AggregationInput>) {
 	const query: QueryDsl = {
 		boolean: {
 			must: [{
@@ -79,7 +62,7 @@ export function queryDocuments<
 		}
 	}
 
-	const queryParams = {
+	const queryParams: QueryDocumentsParams<AggregationInput> = {
 		aggregations,
 		count,
 		filters,

@@ -1,4 +1,4 @@
-import type {Task} from '@enonic-types/lib-explorer';
+import type {Task} from '../types.d';
 
 
 //import {toStr} from '@enonic/js-utils';

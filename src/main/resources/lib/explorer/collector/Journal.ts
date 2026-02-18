@@ -2,7 +2,7 @@ import type {
 	JournalInterface,
 	JournalMessage,
 	WriteConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {

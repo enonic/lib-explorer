@@ -9,7 +9,7 @@
 // only need to validate the DocumentType.
 //
 //──────────────────────────────────────────────────────────────────────────────
-import type {DocumentTypeFields} from '@enonic-types/lib-explorer';
+import type { DocumentTypeFields } from '../types.d';
 
 
 import {

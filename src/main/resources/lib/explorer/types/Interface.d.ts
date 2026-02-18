@@ -1,4 +1,4 @@
-import type {Reference} from '@enonic-types/core';
+import type { Reference } from '@enonic-types/lib-value';
 import type {
 	TermDslExpression,
 	// InDslExpression,
@@ -11,8 +11,8 @@ import type {
 	ExplorerAdminGQLInterfaceNodeCommonProps,
 	Node,
 	NodeCreate
-} from '@enonic-types/lib-explorer/Node.d';
-import type {OneOrMore} from '@enonic-types/lib-explorer/Utility.d';
+} from './Node.d';
+import type {OneOrMore} from './Utility.d';
 
 
 import {

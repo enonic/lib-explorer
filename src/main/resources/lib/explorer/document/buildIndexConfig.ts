@@ -1,9 +1,9 @@
-import type {DocumentTypeFieldsObject} from '@enonic-types/lib-explorer';
 import type {
+	DocumentTypeFieldsObject,
 	IndexConfig,
 	IndexConfigConfig,
 	IndexConfigObject
-} from '@enonic-types/lib-explorer/IndexConfig';
+} from '../types.d';
 
 
 import {
@@ -27,9 +27,9 @@ import {FIELD_PATH_META} from '/lib/explorer/constants';
 
 
 export interface BuildIndexConfigParameterObject {
-	//data: AnyObject
-	fieldsObj: DocumentTypeFieldsObject
-	languages: string[]
+	// data: Record<string, unknown>;
+	fieldsObj: DocumentTypeFieldsObject;
+	languages: string[];
 }
 
 

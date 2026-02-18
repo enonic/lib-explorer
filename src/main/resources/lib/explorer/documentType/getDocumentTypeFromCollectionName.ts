@@ -1,6 +1,6 @@
 import type {
 	CollectionNode,
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 // import {toStr} from '@enonic/js-utils';
 import {get as getCollection} from '/lib/explorer/collection/get';

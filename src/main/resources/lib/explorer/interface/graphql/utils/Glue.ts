@@ -1,4 +1,3 @@
-import type {AnyObject} from '@enonic-types/lib-explorer';
 import type {GraphQL} from '/lib/explorer/interface/graphql/index.d';
 import type {
 	FieldResolver,
@@ -60,7 +59,7 @@ function getEnumType(name :string) :GraphQL.EnumType {
 //──────────────────────────────────────────────────────────────────────────────
 // InputFields
 //──────────────────────────────────────────────────────────────────────────────
-function addInputFields<InputFields extends AnyObject = AnyObject>({
+function addInputFields<InputFields extends Record<string, unknown> = Record<string, unknown>>({
 	name,
 	fields
 } : {
@@ -155,7 +154,7 @@ function getObjectType(name :string) {
 //──────────────────────────────────────────────────────────────────────────────
 // OutputFields
 //──────────────────────────────────────────────────────────────────────────────
-function addOutputFields<OutputFields extends AnyObject = AnyObject>({
+function addOutputFields<OutputFields extends Record<string, unknown> = Record<string, unknown>>({
 	name,
 	fields
 } : {
@@ -223,7 +222,7 @@ function getUnionType(name :string) {
 //──────────────────────────────────────────────────────────────────────────────
 // InterfaceType
 //──────────────────────────────────────────────────────────────────────────────
-function addInterfaceType<Node extends AnyObject = AnyObject>({
+function addInterfaceType<Node extends Record<string, unknown> = Record<string, unknown>>({
 	description,
 	fields,
 	name,
@@ -271,18 +270,18 @@ function getInterfaceTypeObject(name :string) {
 // QueryField
 //──────────────────────────────────────────────────────────────────────────────
 function addQueryField<
-	Env extends AnyObject = AnyObject,
-	ResultGraph extends AnyObject = AnyObject
+	Env extends Record<string, unknown> = Record<string, unknown>,
+	ResultGraph extends Record<string, unknown> = Record<string, unknown>
 >({
 	args = {},
 	name,
 	resolve,// = () => {},
 	type
-} : {
-	args ?:AnyObject
-	name :string
-	resolve :FieldResolver<Env, ResultGraph>
-	type :GraphQLObjectType
+}: {
+	args?: Record<string, unknown>;
+	name: string;
+	resolve: FieldResolver<Env, ResultGraph>;
+	type: GraphQLObjectType;
 }) {
 	//log.debug('Glue addQueryField({ name: %s })', name);
 	if(isSet(this.queryFields[name])) {

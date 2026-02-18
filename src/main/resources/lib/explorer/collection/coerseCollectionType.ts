@@ -1,7 +1,7 @@
 import type {
 	Collection,
 	CollectionNode
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 // This function is currently used when creating or modifying a CollectionNode.
@@ -20,7 +20,7 @@ export function coerseCollectionType({
 	language,
 	modifiedTime,
 	modifier
-} :CollectionNode) :Collection {
+}: CollectionNode): Collection {
 	return {
 		_id,
 		_name,

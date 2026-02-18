@@ -1,7 +1,7 @@
 import type {
 	CreateJournalNodeParams,
 	JournalInterface,
-} from '@enonic-types/lib-explorer';
+} from '../../../types.d';
 
 
 import {instant} from '/lib/xp/value';

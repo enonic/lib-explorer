@@ -1,4 +1,4 @@
-import type {DocumentTypeFields} from '@enonic-types/lib-explorer';
+import type {DocumentTypeFields} from '../../../types.d';
 import type {Branch} from './index.d';
 
 

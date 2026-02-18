@@ -1,4 +1,4 @@
-import type {CollectionNode} from '@enonic-types/lib-explorer/Collection.d';
+import type {CollectionNode} from '../types/Collection.d';
 
 
 import {

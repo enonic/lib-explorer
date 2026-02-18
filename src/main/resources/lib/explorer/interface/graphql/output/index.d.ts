@@ -3,14 +3,12 @@ import type {
 } from '@enonic-types/core';
 import type {FieldSortDsl} from '/lib/xp/node';
 import type {
-	AnyObject,
 	DocumentNode,
-	EmptyObject,
 	GQL_InputType_Highlight,
 	InterfaceField,
-	SynonymsArray,
 	TermQuery,
-} from '@enonic-types/lib-explorer';
+} from '../../../types.d';
+import type { SynonymsArray } from '/lib/explorer/synonym/index.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 
@@ -32,8 +30,8 @@ export type GraphQLContext = {
 	logSynonymsQueryResult?: boolean
 }
 
-type AggregationsArg = AnyObject[] // TODO?
-type FiltersArg = AnyObject[] // TODO?
+type AggregationsArg = Record<string, unknown>[] // TODO?
+type FiltersArg = Record<string, unknown>[] // TODO?
 
 export type InterfaceInfo = {
 	collectionNameToId: Record<string,string>
@@ -58,7 +56,7 @@ export type QuerySynonymsResolverEnv = {
 		profiling?: boolean
 	}
 	context: GraphQLContext
-	source?: AnyObject // Currently null
+	source?: Record<string, unknown>; // Currently null
 }
 
 export type QuerySynonymsReturnType = {
@@ -125,7 +123,7 @@ export type Hit = {
 
 export type SearchResolverReturnType = {
 	// Required
-	aggregationsAsJson: AnyObject
+	aggregationsAsJson: Record<string, unknown>;
 	count: number
 	hits: Hit[]
 	start: number

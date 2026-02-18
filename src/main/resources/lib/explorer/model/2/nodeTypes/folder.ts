@@ -6,7 +6,7 @@ import type {
 	Name,
 	Path,
 	ParentPath
-} from '@enonic-types/lib-explorer';
+} from '../../../types.d';
 
 import {
 	isNotSet,

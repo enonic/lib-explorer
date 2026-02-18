@@ -1,4 +1,5 @@
 import type {
+	CommonNodeProperties,
 	CreateNodeParams,
 	GetNodeParams,
 	ModifyNodeParams,
@@ -7,7 +8,7 @@ import type {
 	NodeIndexConfigParams,
 	NodeMultiRepoQueryResult,
 	NodeQueryResultHit,
-} from '/lib/xp/node';
+} from '@enonic-types/lib-node';
 import type {Explorer} from './Application';
 import type {Unwrapped} from './Utility';
 
@@ -17,25 +18,17 @@ export type {
 
 
 export type ExplorerAdminGQLInterfaceNodeCommonProps<T> = {
-	_id: Node['_id']
-	_name:  Node['_name']
-	_path: Node['_path'] // Yes _path is also part of Explorer Admin GQL Interface Node
-	_nodeType: Node['_nodeType']
-	_versionKey: Node['_versionKey']
-} & T
+	_id: Node['_id'];
+	_name:  Node['_name'];
+	_path: Node['_path']; // Yes _path is also part of Explorer Admin GQL Interface Node
+	_nodeType: Node['_nodeType'];
+	_versionKey: Node['_versionKey'];
+} & T;
 
-export type RequiredNodeProperties = ExplorerAdminGQLInterfaceNodeCommonProps<{
-	_childOrder: Node['_childOrder']
-
-	// Node['_indexConfig']: NodeIndexConfig
-	// CreateNodeParams['_indexConfig']: Partial<NodeIndexConfigParams>
-	_indexConfig: NodeIndexConfigParams
-
-	_inheritsPermissions: Node['_inheritsPermissions']
-	_permissions: Node['_permissions']
-	_state: Node['_state']
-	_ts: Node['_ts']
-}>
+export interface RequiredNodeProperties extends Omit<CommonNodeProperties, '_manualOrderValue'> {
+	_id: Node['_id'];
+	_indexConfig: NodeIndexConfigParams;
+}
 
 export type ScoreOptional<T> = Omit<T,'_score'> & {
 	_score?: NodeQueryResultHit['score']

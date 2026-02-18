@@ -1,7 +1,7 @@
 import type {
 	Collector,
 	CollectorsJsonCollector,
-} from '@enonic-types/lib-explorer/Collector';
+} from '../types/Collector';
 
 //import {toStr} from '@enonic/js-utils';
 

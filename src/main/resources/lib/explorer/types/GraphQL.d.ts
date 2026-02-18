@@ -1,6 +1,6 @@
 import type {
 	Highlight as LibNodeHighlight
-} from '/lib/xp/node';
+} from '@enonic-types/lib-node';
 
 
 interface GQL_InputType_CommonHighlightOptions {
@@ -16,7 +16,7 @@ interface GQL_InputType_CommonHighlightOptions {
 
 export type GQL_InputType_Highlight = GQL_InputType_CommonHighlightOptions & {
 	encoder?: LibNodeHighlight['encoder']
-	fields: CommonHighlightOptions & {
+	fields: GQL_InputType_CommonHighlightOptions & {
 		field: string
 	}[]
 	tagsSchema?: LibNodeHighlight['tagsSchema']

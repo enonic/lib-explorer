@@ -4,7 +4,7 @@ import type {
 	ExplorerAdminGQLInterfaceNodeCommonProps,
 	OneOrMore,
 	RequiredNodeProperties
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 import type {HighlightResult} from '@enonic/js-utils/types/node/query/Highlight';
 
 //──────────────────────────────────────────────────────────────────────────

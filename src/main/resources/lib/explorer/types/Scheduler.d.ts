@@ -1,9 +1,8 @@
 import type {PrincipalKeyUser} from '@enonic/js-utils/types/Auth.d';
-import type {TaskDescriptor} from '@enonic-types/lib-explorer/Task.d';
-import type {AnyObject} from '@enonic-types/lib-explorer/Utility.d';
+import type {TaskDescriptor} from './Task.d';
 
 
-export interface ScheduledJob<Config extends AnyObject = AnyObject> {
+export interface ScheduledJob<Config extends Record<string, unknown> = Record<string, unknown>> {
 	config :Config
 	creator :PrincipalKeyUser
 	createdTime :Date|string

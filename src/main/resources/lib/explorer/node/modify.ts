@@ -1,16 +1,15 @@
 import type {
 	ParentPath,
 	WriteConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
-import {
-	isNotSet,
-	toStr
-} from '@enonic/js-utils';
+import { isNotSet } from '@enonic/js-utils/value/isNotSet';
+import { startsWith } from '@enonic/js-utils/string/startsWith';
+import { toStr } from '@enonic/js-utils/value/toStr';
 import cleanPermissions from '/lib/explorer/node/cleanPermissions';
-import {sanitize as doSanitize} from '/lib/xp/common';
-import {join} from '/lib/explorer/path/join';
+import { sanitize as doSanitize } from '/lib/xp/common';
+import { join } from '/lib/explorer/path/join';
 
 
 export function modify<N extends {
@@ -38,7 +37,7 @@ export function modify<N extends {
 	//log.info(toStr({key, displayName, rest}));
 
 	Object.keys(rest).forEach((k) => {
-		if (k.startsWith('__')) {
+		if (startsWith(k, '__')) {
 			log.warning(`Deprecation: Function signature changed. Added second argument for options.
 		Old: node.modify({${k}, ...})
 		New: node.modify({...}, {${k.substring(2)}})`);

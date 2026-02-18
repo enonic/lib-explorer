@@ -1,9 +1,8 @@
 import type {Filter} from '/lib/xp/node';
 import type {
 	InterfaceNode,
-	QueryFilters,
 	RepoConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {addQueryFilter} from '@enonic/js-utils';

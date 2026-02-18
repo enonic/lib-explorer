@@ -1,4 +1,4 @@
-import type {FieldNode} from '@enonic-types/lib-explorer';
+import type { FieldNode, WriteConnection } from '../types.d';
 
 
 import {
@@ -73,7 +73,7 @@ export function updateField({
 	//log.debug(`propertiesToUpdate:${toStr(propertiesToUpdate)}`);
 
 	const updatedNode = modify(propertiesToUpdate, {
-		connection: connect({principals: [PRINCIPAL_EXPLORER_WRITE]})
+		connection: connect({principals: [PRINCIPAL_EXPLORER_WRITE]}) as WriteConnection
 	}) as FieldNode;
 	//log.debug(`updatedNode:${toStr(updatedNode)}`);
 

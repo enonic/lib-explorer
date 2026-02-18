@@ -8,13 +8,12 @@ import type {
 	NodeTypeGeneric,
 	ScoreRequired
 } from './Node.d';
-import type { AnyObject } from './Utility';
 
 
 export type NodeTypeCollection = NodeTypeGeneric<'collection'>;
 
 
-export type CollectionFormValues<Config extends AnyObject = AnyObject> = {
+export type CollectionFormValues<Config extends Record<string, unknown> = Record<string, unknown>> = {
 	_id?: string
 	_name: string
 	_path: string
@@ -40,9 +39,9 @@ export type CollectionId = string
 export type CollectionNodeSpecific = {
 	_nodeType: NodeTypeCollection
 	collector?: { // Yes it's optional, a collection doesn't require a collector
-		config: AnyObject // Different for each Collector
-		name: string
-		configJson: string
+		config: Record<string, unknown>; // Different for each Collector
+		name: string;
+		configJson: string;
 	}
 	createdTime: Date | string
 	creator: string,

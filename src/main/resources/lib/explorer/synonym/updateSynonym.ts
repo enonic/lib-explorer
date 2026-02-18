@@ -6,7 +6,7 @@ import type {
 	InputTypeSynonymLanguages,
 	SynonymNode,
 	SynonymNodeModifyParams
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {

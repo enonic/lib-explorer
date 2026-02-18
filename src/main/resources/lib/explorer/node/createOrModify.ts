@@ -2,7 +2,7 @@ import type {
 	NodeCreateParams,
 	//NodeModifyParams,
 	WriteConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {

@@ -1,6 +1,8 @@
 // import type {Reference} from '@enonic-types/lib-value';
-import type {ParentPath} from '@enonic-types/lib-explorer';
-import type {CollectionNode} from '@enonic-types/lib-explorer/Collection.d';
+import type {
+	CollectionNode,
+	ParentPath,
+} from '../../../types.d';
 
 
 import {indexTemplateToConfig} from '@enonic/js-utils/storage';

@@ -1,5 +1,5 @@
 import type {RepoConnection} from '/lib/xp/node';
-import type {InterfaceNode} from '@enonic-types/lib-explorer';
+import type {InterfaceNode} from '../types.d';
 
 
 import {INTERFACES_FOLDER} from '/lib/explorer/constants';

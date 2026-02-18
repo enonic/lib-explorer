@@ -1,5 +1,5 @@
 import type { sanitize } from '@enonic-types/lib-common';
-import type { WriteConnection } from '/lib/explorer/types/index.d';
+import type { WriteConnection } from '../types.d';
 
 
 import { ROOT_PERMISSIONS_EXPLORER } from '@enonic/explorer-utils';

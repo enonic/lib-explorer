@@ -1,10 +1,10 @@
-import type {DocumentTypeFieldsObject} from '@enonic-types/lib-explorer';
 import type {
-	AnyObject,
-	DocumentTypeField
-} from '@enonic-types/lib-explorer/index.d'
+	DocumentTypeField,
+	DocumentTypeFieldsObject,
+} from '../types.d';
 
 
+import { startsWith } from '@enonic/js-utils/string/startsWith';
 // import {toStr} from '@enonic/js-utils/value/toStr';
 
 //import traverse from 'traverse'; //[!] Error: 'default' is not exported by node_modules/traverse/index.js
@@ -21,9 +21,9 @@ import traverse = require('traverse');
 
 
 interface CleanDataParameters {
-	cleanExtraFields?: boolean,
-	data: AnyObject,
-	fieldsObj?: DocumentTypeFieldsObject
+	cleanExtraFields?: boolean;
+	data: Record<string, unknown>;
+	fieldsObj?: DocumentTypeFieldsObject;
 }
 
 
@@ -33,9 +33,9 @@ export function cleanData(
 		data,
 		fieldsObj = {}
 	}: CleanDataParameters,
-): AnyObject {
+): Record<string, unknown> {
 	// log.debug('document.cleanData() data:%s', toStr(data));
-	const cleanedData: AnyObject = JSON.parse(JSON.stringify(data));
+	const cleanedData: Record<string, unknown> = JSON.parse(JSON.stringify(data));
 
 	if (cleanedData[FIELD_PATH_GLOBAL]) {
 		// log.debug('Cleaning path:%s from data:%s', FIELD_PATH_GLOBAL, cleanedData);
@@ -54,7 +54,7 @@ export function cleanData(
 			// log.debug('document.cleanData: this.path[0]:%s', toStr(this.path[0]));
 			if (
 				this.notRoot
-				&& !this.path[0].startsWith('_')
+				&& !startsWith(this.path[0], '_')
 				&& !this.circular // Why?
 			) {
 				const pathString = this.path.join('.');

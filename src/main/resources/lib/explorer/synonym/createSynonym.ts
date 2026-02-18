@@ -1,14 +1,12 @@
-import type {
-	RepoConnection,
-	RepoConnection as WriteConnection
-} from '/lib/xp/node';
+import type { RepoConnection } from '/lib/xp/node';
 import type {
 	InputTypeLanguageSynonym,
 	InputTypeSynonymLanguages,
 	SynonymNode,
 	SynonymNodeCreateParams,
-	Write_SynonymNode_LanguagesSynonymObject
-} from '@enonic-types/lib-explorer';
+	Write_SynonymNode_LanguagesSynonymObject,
+	WriteConnection
+} from '../types.d';
 
 
 import {
@@ -190,12 +188,12 @@ export function createSynonym({
 	refreshRepoIndexes = true // Set to false when bulk importing...
 }: {
 	// Required
-	explorerRepoWriteConnection: WriteConnection
+	explorerRepoWriteConnection: WriteConnection;
 	// Optional
-	checkInterfaceIds?: boolean
-	checkThesaurus?: boolean
-	interfaceIdsChecked?: Record<string,boolean>
-	refreshRepoIndexes?: boolean
+	checkInterfaceIds?: boolean;
+	checkThesaurus?: boolean;
+	interfaceIdsChecked?: Record<string,boolean>;
+	refreshRepoIndexes?: boolean;
 }) {
 	if (!thesaurusName || checkThesaurus) {
 		const thesaurusNode = getThesaurus({ // Will throw on error

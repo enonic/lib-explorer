@@ -1,7 +1,7 @@
 import type {
 	DocumentTypeField,
 	DocumentTypeFieldsObject
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {
@@ -11,6 +11,7 @@ import {
 	isNonNegativeIntegerString,
 	//isNotSet
 } from '@enonic/js-utils';
+import { startsWith } from '@enonic/js-utils/string/startsWith';
 // import {toStr} from '@enonic/js-utils/value/toStr';
 
 // [!] Error: 'default' is not exported by node_modules/traverse/index.js
@@ -92,9 +93,9 @@ export function addExtraFieldsToDocumentType(
 		// log.debug('document.addExtraFieldsToDocumentType: this.path[0]:%s', toStr(this.path[0]));
 		if (
 			this.notRoot
-			&& !this.path[0].startsWith('_')
-			&& !this.path[0].startsWith(FIELD_PATH_GLOBAL)
-			&& !this.path[0].startsWith(FIELD_PATH_META)
+			&& !startsWith(this.path[0], '_')
+			&& !startsWith(this.path[0], FIELD_PATH_GLOBAL)
+			&& !startsWith(this.path[0], FIELD_PATH_META)
 			&& !this.circular // Why?
 			&& !isNonNegativeIntegerString(this.path[this.path.length - 1]) // Do nothing on array items, just on the array itself.
 		) {

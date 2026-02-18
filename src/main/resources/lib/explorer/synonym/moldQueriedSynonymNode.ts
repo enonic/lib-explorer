@@ -2,7 +2,7 @@ import type {HighlightResult} from '@enonic/js-utils/types/node/query/Highlight'
 import type {
 	SynonymNode,
 	QueriedSynonym
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {moldSynonymNode} from '/lib/explorer/synonym/moldSynonymNode';

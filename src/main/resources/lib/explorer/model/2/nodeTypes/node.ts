@@ -1,4 +1,4 @@
-import type {NodeCreateParams} from '@enonic-types/lib-explorer';
+import type {NodeCreateParams} from '../../../types.d';
 
 
 import {ROOT_PERMISSIONS_EXPLORER} from '/lib/explorer/constants';

@@ -4,7 +4,7 @@ import type {
 	IndexConfigConfig,
 	//ThesaurusLanguage,
 	ThesaurusNodeCreateParams
-} from '@enonic-types/lib-explorer';
+} from '../../../types.d';
 
 import {
 	NT_THESAURUS

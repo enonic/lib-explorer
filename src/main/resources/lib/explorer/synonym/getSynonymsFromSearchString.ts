@@ -1,5 +1,7 @@
-import type { RepoConnection } from '@enonic-types/lib-explorer';
-import type { SynonymUse } from '@enonic-types/lib-explorer/Synonym.d';
+import type {
+	RepoConnection,
+	SynonymUse
+} from '../types.d';
 import type { Profiling } from '/lib/explorer/interface/graphql/output/index.d';
 import type { QuerySynonymsParams } from '/lib/explorer/synonym/query';
 import type { SynonymsArray } from './index.d';

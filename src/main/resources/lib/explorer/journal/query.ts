@@ -3,7 +3,7 @@ import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d
 import type {
 	JournalNode,
 	QueryFilters
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
 
 import {

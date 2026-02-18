@@ -4,15 +4,13 @@ import type {
 	NodeCreateParams,
 	ParentPath,
 	WriteConnection
-} from '@enonic-types/lib-explorer';
+} from '../types.d';
 
-
-import {
-	isNotSet,
-	toStr
-} from '@enonic/js-utils';
-import {getUser} from '/lib/xp/auth';
-import {sanitize as doSanitize} from '/lib/xp/common';
+import { isNotSet } from '@enonic/js-utils/value/isNotSet';
+import { startsWith } from '@enonic/js-utils/string/startsWith';
+import { toStr } from '@enonic/js-utils/value/toStr';
+import { getUser } from '/lib/xp/auth';
+import { sanitize as doSanitize } from '/lib/xp/common';
 //import {get as getContext} from '/lib/xp/context';
 import cleanPermissions from '/lib/explorer/node/cleanPermissions';
 
@@ -81,7 +79,7 @@ export function create<N extends NodeCreateParams & {
 	// 	_parentPath, _name, displayName, rest
 	// });
 	Object.keys(rest).forEach((k) => {
-		if (k.startsWith('__')) {
+		if (startsWith(k, '__')) {
 			log.warning(`Deprecation: Function signature changed. Added second argument for options.
 		Old: node.create({${k}, ...})
 		New: node.create({...}, {${k.substring(2)}})`);
