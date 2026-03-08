@@ -23,8 +23,8 @@ import {
 } from '@enonic/js-utils';
 
 export type InterfaceField = {
-	name:string
-	boost?: number
+	name: string;
+	boost?: number;
 }
 
 export type TermQuery = {
