@@ -18,6 +18,7 @@ import {
 	FIELD_PATH_META,
 	PRINCIPAL_EXPLORER_READ
 } from '/lib/explorer/constants';
+import { filterOutFalsyBy } from '/lib/explorer/array/filterOutFalsyBy';
 import {applyDocumentTypeToDocumentNode} from '/lib/explorer/document/applyDocumentTypeToDocumentNode';
 import {getDocumentTypeByName} from '/lib/explorer/documentType/getDocumentTypeByName';
 import {connect} from '/lib/explorer/repo/connect';
@@ -151,7 +152,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		aggregationsArg,
 		count,
 		doProfiling: profilingArg,
-		fields,
+		fields: filterOutFalsyBy(fields, (item) => item.name),
 		filtersArg,
 		highlightArg,
 		interfaceId,
