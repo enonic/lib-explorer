@@ -1,0 +1,7 @@
+kind: "Service"
+allow:
+  - "role:cms.admin"
+  - "role:cms.cm.app"
+  - "role:cms.expert"
+  - "role:system.admin"
+  - "role:system.admin.login"
