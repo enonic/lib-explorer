@@ -1,0 +1,17 @@
+[versions]
+graphql     = "2.1.0"
+guillotine  = "6.2.1"
+cache       = "2.2.1"
+httpClient  = "3.2.2"
+license     = "3.1.0"
+router      = "3.2.0"
+util        = "3.1.1"
+
+[libraries]
+lib-graphql     = { module = "com.enonic.lib:lib-graphql",     version.ref = "graphql" }
+lib-guillotine  = { module = "com.enonic.lib:lib-guillotine",  version.ref = "guillotine" }
+lib-cache       = { module = "com.enonic.lib:lib-cache",       version.ref = "cache" }
+lib-http-client = { module = "com.enonic.lib:lib-http-client", version.ref = "httpClient" }
+lib-license     = { module = "com.enonic.lib:lib-license",     version.ref = "license" }
+lib-router      = { module = "com.enonic.lib:lib-router",      version.ref = "router" }
+lib-util        = { module = "com.enonic.lib:lib-util",        version.ref = "util" }

@@ -28,6 +28,6 @@ public class ApplicationServiceBean implements ScriptBean {
 	}
 
 	public ApplicationKeys getInstalledApplicationKeys() {
-		return applicationServiceSupplier.get().getInstalledApplicationKeys();
+		return applicationServiceSupplier.get().getInstalledApplications().getApplicationKeys();
 	}
 }
