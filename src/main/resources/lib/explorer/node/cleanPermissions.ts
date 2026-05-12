@@ -18,7 +18,7 @@ export default function cleanPermissions({
 	node,
 }: {
 	_permissions: AccessControlEntry[]
-	node: Record<string, unknown>
+	node: unknown
 }): AccessControlEntry[] {
 	const safePermissions = [...ROOT_PERMISSIONS_EXPLORER]; // deref
 	if (!Array.isArray(_permissions)) {

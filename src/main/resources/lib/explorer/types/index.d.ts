@@ -1,3 +1,4 @@
+/// <reference path="./lib-node.augment.d.ts" />
 import type { RequestMethod } from '@enonic-types/core';
 import type {CollectionId as ImportedCollectionId} from './Collection.d';
 import type {CollectorId as ImportedCollectorId} from './Collector.d';

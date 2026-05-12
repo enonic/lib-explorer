@@ -31,9 +31,12 @@ export type RequiredNodeProperties = ExplorerAdminGQLInterfaceNodeCommonProps<{
 	// CreateNodeParams['_indexConfig']: Partial<NodeIndexConfigParams>
 	_indexConfig: NodeIndexConfigParams
 
-	_inheritsPermissions: Node['_inheritsPermissions']
+	// In XP 8 typings `_inheritsPermissions` lives on NodePropertiesOnCreate, not on read-shaped Node,
+	// and `_state` is no longer surfaced on the Node type. Both are still present at runtime, so we
+	// declare their types directly instead of indexing through Node.
+	_inheritsPermissions: boolean
 	_permissions: Node['_permissions']
-	_state: Node['_state']
+	_state: string
 	_ts: Node['_ts']
 }>
 
