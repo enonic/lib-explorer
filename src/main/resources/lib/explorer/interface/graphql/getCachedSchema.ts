@@ -42,7 +42,7 @@ listener({
 	callback: (event :CustomEvent<
 		typeof EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED
 		|typeof EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
-		DocumentTypeNode
+		DocumentTypeNode & Record<string, unknown>
 	>) => {
 		//log.debug('custom.* event:%s', toStr(event));
 		const {type} = event;
