@@ -1,10 +1,10 @@
 [versions]
-graphql     = "2.1.0"
+graphql     = "3.0.0-SNAPSHOT"
 guillotine  = "6.2.1"
-cache       = "2.2.1"
-httpClient  = "3.2.2"
-license     = "3.1.0"
-router      = "3.2.0"
+cache       = "3.0.0-SNAPSHOT"
+httpClient  = "4.0.0-SNAPSHOT"
+license     = "4.0.0-SNAPSHOT"
+router      = "4.0.0-SNAPSHOT"
 util        = "4.0.0-SNAPSHOT"
 
 [libraries]
