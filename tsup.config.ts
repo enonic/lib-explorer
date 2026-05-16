@@ -46,7 +46,6 @@ export default defineConfig((options: MyOptions) => {
 				'/lib/graphql-connection',
 				'/lib/http-client',
 				'/lib/router',
-				'/lib/util',
 				'/lib/vanilla',
 				'/lib/thymeleaf',
 				'/lib/xp/admin',

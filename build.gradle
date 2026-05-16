@@ -53,7 +53,6 @@ dependencies {
 	implementation libs.lib.router
 
 	//implementation 'com.enonic.lib:text-encoding:1.2.0'
-	implementation libs.lib.util
 
 	// WARNING: Do NOT use compile files, jar file will be missing dependencies!
 }
