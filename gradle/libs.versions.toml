@@ -5,7 +5,6 @@ cache       = "3.0.0-SNAPSHOT"
 httpClient  = "4.0.0-SNAPSHOT"
 license     = "4.0.0-SNAPSHOT"
 router      = "4.0.0-SNAPSHOT"
-util        = "4.0.0-SNAPSHOT"
 
 [libraries]
 lib-graphql     = { module = "com.enonic.lib:lib-graphql",     version.ref = "graphql" }
@@ -14,4 +13,3 @@ lib-cache       = { module = "com.enonic.lib:lib-cache",       version.ref = "ca
 lib-http-client = { module = "com.enonic.lib:lib-http-client", version.ref = "httpClient" }
 lib-license     = { module = "com.enonic.lib:lib-license",     version.ref = "license" }
 lib-router      = { module = "com.enonic.lib:lib-router",      version.ref = "router" }
-lib-util        = { module = "com.enonic.lib:lib-util",        version.ref = "util" }
