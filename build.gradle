@@ -2,7 +2,7 @@ plugins {
 	id 'java' // Needed for assemble and build
 	id 'maven-publish' // Provides publishToMavenLocal
 	id 'com.enonic.xp.base'
-	id 'com.enonic.defaults' version '2.1.6' // Publishing
+	id 'com.enonic.defaults' version '2.1.7' // Publishing
 	id 'com.github.node-gradle.node' version '7.1.0'
 }
 
