@@ -2,6 +2,7 @@ import {
 	arrayIncludes,
 	toStr
 } from '@enonic/js-utils';
+import { hasOperator } from './hasOperator';
 
 const TRACE = false;
 
@@ -15,10 +16,6 @@ const UNICODE_WORD_CHARACTERS_REGEXP = /[^\u0041-\u005a\u0061-\u007a\u00b5-\u00b
 // Rather that trying to do some complex parsing and processing, lets just skip removing stopwords,
 // if any character with special meaning exists within the search-string.
 // See https://developer.enonic.com/docs/xp/stable/storage/dsl#string_expressions
-function isAdvancedQuery(text: string): boolean {
-	return /[-+*|"~()]/.test(text);
-}
-
 export function removeStopWords({
 	_trace = TRACE,
 	removedStopWords = [],
@@ -38,7 +35,7 @@ export function removeStopWords({
 	if(!string) { return ''; }
 
 	// If user is using advanced query syntax → do NOT remove stop words
-	if (isAdvancedQuery(string)) {
+	if (hasOperator(string)) {
 		return string;
 	}
 
