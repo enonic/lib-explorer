@@ -27,10 +27,13 @@ import {
 // 	objectName: 'job'
 // });
 
+const TRACE = false;
+
 const USER = `user:${USER_EXPLORER_APP_ID_PROVIDER}:${USER_EXPLORER_APP_NAME}`;
 
 
 export function createOrModifyJob({
+	_trace = TRACE,
 	config,
 	descriptor,
 	enabled = true,
@@ -38,6 +41,7 @@ export function createOrModifyJob({
 	schedule,
 	user = USER
 }: {
+	_trace?: boolean;
 	config: CollectorTaskConfig
 	descriptor: string
 	enabled?: boolean
@@ -61,7 +65,7 @@ export function createOrModifyJob({
 		delete maybeExisitingJob.modifiedTime;
 
 		if (deepEqual(maybeExisitingJob, paramsObj)) {
-			log.debug(`No changes detected, not updating job with name:${name}`);
+			if (_trace) log.debug(`No changes detected, not updating job with name:${name}`);
 		} else {
 			log.info(`Changes detected in job with name:${name} diff:${toStr(detailedDiff(maybeExisitingJob, paramsObj))}`);
 			// log.info(`Changes detected in job with name:${name} diff:${toStr(diffJob(maybeExisitingJob, paramsObj))}`);

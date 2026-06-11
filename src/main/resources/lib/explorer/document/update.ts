@@ -57,6 +57,9 @@ export interface UpdateParameterObject extends CreateParameterObject {
 }
 
 
+const TRACE = false;
+
+
 export function update(
 	updateParameterObject: UpdateParameterObject,
 ) {
@@ -216,7 +219,7 @@ export function update(
 		notSet(fields) ||
 		notSet(language)
 	) {
-		log.debug('document.update: connecting to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
+		if (TRACE) log.debug('document.update: connecting to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
 		const explorerReadConnection = connect({
 			branch: BRANCH_ID_EXPLORER,
 			principals: [PRINCIPAL_EXPLORER_READ],
@@ -231,7 +234,7 @@ export function update(
 				log.warning('documentTypeNode._name:%s from documentTypeId:%s supersedes passed in documentTypeName:%s', documentTypeNode._name, documentTypeId, documentTypeName);
 			}
 			documentTypeName = documentTypeNode._name;
-			log.debug('document.update: sat documentTypeName:%s from documentTypeId:%s', documentTypeName, documentTypeId);
+			if (TRACE) log.debug('document.update: sat documentTypeName:%s from documentTypeId:%s', documentTypeName, documentTypeId);
 		} else if(
 			//!documentTypeId &&
 			documentTypeName
@@ -243,7 +246,7 @@ export function update(
 				throw new Error(`Something went wrong when trying to get documentTypeId from documentTypeName:${documentTypeName} via path:${documentTypeNodePath}`);
 			}
 			documentTypeId = documentTypeNode._id;
-			log.debug('document.update: sat documentTypeId:%s from documentTypeName:%s', documentTypeId, documentTypeName);
+			if (TRACE) log.debug('document.update: sat documentTypeId:%s from documentTypeName:%s', documentTypeId, documentTypeName);
 		}
 		// At this point both documentTypeId and documentTypeName can still be undefined.
 
@@ -257,10 +260,10 @@ export function update(
 			if (notSet(documentTypeId)) {
 				if (collectionNode['documentTypeId']) {
 					documentTypeId = collectionNode['documentTypeId'].toString();
-					log.debug('document.update: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
+					if (TRACE) log.debug('document.update: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
 				} else {
 					// collectionNode.documentTypeId is now called 'Default document type' in the GUI, and can be set to 'none'.
-					log.debug('document.update: collectionNode.documentTypeId is undefined');
+					if (TRACE) log.debug('document.update: collectionNode.documentTypeId is undefined');
 				}
 			}
 
@@ -268,7 +271,7 @@ export function update(
 				const languageFromCollection = collectionNode['language']; // This can be undefined
 				if (languageFromCollection) {
 					language = languageFromCollection;
-					log.debug('document.update: sat language:%s from collectionNode.language', language);
+					if (TRACE) log.debug('document.update: sat language:%s from collectionNode.language', language);
 				}
 				// NOTE: When no language is provided anywhere, there should be no stemming.
 			}

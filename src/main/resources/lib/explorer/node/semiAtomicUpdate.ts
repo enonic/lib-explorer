@@ -16,8 +16,10 @@ const { diff: diffNode } = new HumanDiff({
 	objectName: 'node'
 });
 
+const TRACE = false;
 
 export function semiAtomicUpdate({
+	_trace = TRACE,
 	data: {
 		_id,
 		_name,
@@ -90,7 +92,7 @@ node._path:${node._path} -> _path: ${_path}
 
 		});
 		if (boolRenamed) {
-			log.debug(`Moved/renamed id:${_id} from node._name:${node._name} to name:${_name}`);
+			if (_trace) log.debug(`Moved/renamed id:${_id} from node._name:${node._name} to name:${_name}`);
 			writeConnection.refresh();
 		} else {
 			const msg = `Something went wrong when trying to rename id:${_id} from node._name:${node._name} to name:${_name}!`;
@@ -110,7 +112,7 @@ node._path:${node._path} -> _path: ${_path}
 		...properties
 	});
 	if (deepEqual(node, enonified)) {
-		log.debug(`Diff empty, update avoided id:${_id} _path:${_path} _parentPath:${_parentPath} _name:${_name} _versionKey:${_versionKey}`);
+		if (_trace) log.debug(`Diff empty, update avoided id:${_id} _path:${_path} _parentPath:${_parentPath} _name:${_name} _versionKey:${_versionKey}`);
 		return node;
 	}
 	log.info(`diff:${toStr(diffNode(node, enonified))}`);

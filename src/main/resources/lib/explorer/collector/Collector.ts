@@ -103,19 +103,26 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 	private _collectionId: string; // New in lib-explorer-4.0.0
 	private _collectionName: string; // Private from lib-explorer-4.0.0
 	private _collectorId: string; // Private from lib-explorer-4.0.0
+	private _debug: boolean;
 	//_documentTypeObj: FieldsObject;
 	//_documentTypesObj;
 	private _language: string; // Private in lib-explorer-3.x
+	private _trace: boolean;
 
 	constructor({
+		_debug = DEBUG,
+		_trace = TRACE,
 		collectionId,
 		collectorId, // Present in lib-explorer-3.x
 		configJson, // Present in lib-explorer-3.x
 		language, // Present in lib-explorer-3.x
 		// @ts-expect-error Property 'name' does not exist on type 'CollectorTaskConfig'.ts(2339)
 		name // Removed in lib-explorer-4.x
-	}: CollectorTaskConfig) {
-		log.debug('Collector.constructor: collectionId:%s', collectionId);
+	}: CollectorTaskConfig & {
+		_debug?: boolean;
+		_trace?: boolean;
+	}) {
+		if (_trace) log.debug('Collector.constructor: collectionId:%s', collectionId);
 		//log.debug('Collector.constructor: collectorId:%s', collectorId);
 		//log.debug('Collector.constructor: configJson:%s', configJson);
 		//log.debug('Collector.constructor: language:%s', language);
@@ -130,6 +137,9 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 			throw new Error('Collector.constructor: You have to provide collectionId or name(deprecated)!');
 		}
 
+		this._debug = _debug;
+		this._trace = _trace;
+
 		const explorerRepoReadConnection = connect({
 			principals: [PRINCIPAL_EXPLORER_READ]
 		});
@@ -142,7 +152,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 
 				const jobName = `${APP_EXPLORER}.${collectionId}`;
 				const explorerJobsThatStartWithName = runAsSu(() => listExplorerJobsThatStartWithName({name: jobName}));
-				log.debug('collectionId:%s explorerJobsThatStartWithName:%s', collectionId, toStr(explorerJobsThatStartWithName));
+				if (this._trace) log.debug('collectionId:%s explorerJobsThatStartWithName:%s', collectionId, toStr(explorerJobsThatStartWithName));
 				explorerJobsThatStartWithName.forEach(({name}) => {
 					log.info(`Deleting job name:${name}, while deleting collection with id:${collectionId}`);
 					runAsSu(() => deleteJob({name}));
@@ -231,7 +241,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 	}
 
 	progress() {
-		TRACE && log.debug(`Collector.progress this.taskProgressObj:${toStr(this.taskProgressObj)}`);
+		if (this._trace) log.debug(`Collector.progress this.taskProgressObj:${toStr(this.taskProgressObj)}`);
 		progress(this.taskProgressObj);
 	}
 
@@ -274,7 +284,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 				startTime: this.startTime
 			}
 		};
-		DEBUG && log.debug(`Collector.start this.taskProgressObj:${toStr(this.taskProgressObj)}`);
+		if (this._debug) log.debug(`Collector.start this.taskProgressObj:${toStr(this.taskProgressObj)}`);
 		this.progress();
 		this.collection = new Collection({name: this._collectionName});
 		modifyTask({
@@ -414,7 +424,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 			//validateOccurrences // TODO Perhaps later
 			//validateTypes // TODO Perhaps later
 		};
-		log.debug('Collector.persistDocument: createOrUpdateParams:%s', toStr(createOrUpdateParams));
+		if (this._trace) log.debug('Collector.persistDocument: createOrUpdateParams:%s', toStr(createOrUpdateParams));
 
 		const persistedNode = createOrUpdate(createOrUpdateParams);
 		if (!persistedNode) {
@@ -442,7 +452,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 	}
 
 	stop() {
-		DEBUG && log.debug('Collector.stop');
+		if (this._debug) log.debug('Collector.stop');
 		this.journal.create();
 		this.taskProgressObj.current = this.taskProgressObj.total; // Make sure it ends at 100%
 		this.taskProgressObj.info.message = `Finished with ${this.journal.errors.length} errors.`;
@@ -454,10 +464,10 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 			}),
 			path: '/notifications'
 		}) || {}) as NotificationsNode;
-		DEBUG && log.debug('Collector.stop node:%s', toStr(node));
+		if (this._debug) log.debug('Collector.stop node:%s', toStr(node));
 
 		const {emails = []} = node;
-		DEBUG && log.debug('Collector.stop emails:%s', toStr(emails));
+		if (this._debug) log.debug('Collector.stop emails:%s', toStr(emails));
 
 		if (this.journal.errors.length) {
 			log.warning('Collector.stop errors:%s', toStr(this.journal.errors));
@@ -483,18 +493,18 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 				}
 			}
 
-			DEBUG && log.debug('Collector.stop this.taskProgressObj:%s', toStr(this.taskProgressObj));
+			if (this._debug) log.debug('Collector.stop this.taskProgressObj:%s', toStr(this.taskProgressObj));
 			throw new Error(JSON.stringify(this.taskProgressObj.info)); // Throw so task state becomes FAILED.
 			//throw new Error(this.taskProgressObj.info.message); // Throw so task state becomes FAILED.
 		}
 
-		DEBUG && log.debug('Collector.stop before modifyTask state:FINISHED');
+		if (this._debug) log.debug('Collector.stop before modifyTask state:FINISHED');
 		modifyTask({
 			connection: this.collection.connection,
 			state: 'FINISHED',
 			should: 'STOP'
 		});
-		DEBUG && log.debug('Collector.stop after modifyTask state:FINISHED');
+		if (this._debug) log.debug('Collector.stop after modifyTask state:FINISHED');
 
 		// Success Notifications
 		if (emails.length) {
