@@ -44,10 +44,12 @@ const { diff: diffDocumentTypeProperties } = new HumanDiff({
 	objectName: 'documentTypeProperties'
 });
 
+const TRACE = false;
 
 export function updateDocumentType({
 	_id: documentTypeId,
 	_name: newDocumentTypeName,
+	_trace = TRACE,
 	_versionKey,
 	addFields = true,
 	version, // Do not default to 0 here, see logic below
@@ -56,6 +58,7 @@ export function updateDocumentType({
 }: {
 	_id: string,
 	_name: string,
+	_trace?: boolean;
 	_versionKey: string,
 	addFields?: boolean,
 	version?: number,
@@ -91,7 +94,7 @@ export function updateDocumentType({
 
 		}); // NOTE: Will throw if _path already occupied :)
 		if (boolMovedOrRenamed) {
-			log.debug(`Moved/renamed id:${documentTypeId} from oldName:${oldName} to name:${newDocumentTypeName}`);
+			if (_trace) log.debug(`Moved/renamed id:${documentTypeId} from oldName:${oldName} to name:${newDocumentTypeName}`);
 			writeConnection.refresh();
 		} else {
 			throw new Error(`Something went wrong when trying to move/rename id:${documentTypeId} from oldName:${oldName} to name:${newDocumentTypeName}`);
@@ -131,7 +134,7 @@ export function updateDocumentType({
 		//log.debug(`Changes detected diff:${toStr(Diff.diffJson(oldNodePropertiesForDiff, enonifiedProperties))}`); // Too noisy
 
 		// Pretty good. (can crash on complicated data, perhaps circular structures, which we shouldn't have anyway)
-		log.debug(`Changes detected diff:${toStr(diffDocumentTypeProperties(oldNodePropertiesForDiff, enonifiedNodePropertiesToUpdate))}`);
+		if (_trace) log.debug(`Changes detected diff:${toStr(diffDocumentTypeProperties(oldNodePropertiesForDiff, enonifiedNodePropertiesToUpdate))}`);
 
 		const updatedNode: DocumentTypeNode = writeConnection.modify({
 			key: documentTypeId,

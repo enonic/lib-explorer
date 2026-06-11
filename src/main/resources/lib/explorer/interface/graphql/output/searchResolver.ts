@@ -42,7 +42,7 @@ const TRACE = false;
 
 
 export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType {
-	// log.debug('searchResolver env:%s', toStr(env));
+	if (TRACE) log.info('searchResolver env:%s', toStr(env));
 	const {
 		args,
 		args: {
@@ -92,6 +92,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		searchString = searchStringArg,
 		synonyms: synonymsSource
 	} = source;
+	if (TRACE) log.info('searchResolver searchString:%s', toStr(searchString));
 
 	const profiling: Profiling[] = [];
 	if (profilingArg) {
@@ -114,7 +115,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		termQueries,
 		thesauriNames
 	} = interfaceInfo;
-	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', interfaceName, searchString);
+	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', toStr(interfaceName), toStr(searchString));
 
 
 	const collectionNames = Object.keys(collectionNameToId);

@@ -14,7 +14,7 @@ import {
 	addQueryFilter,
 	forceArray,
 	isSet,
-	// toStr,
+	toStr,
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {
@@ -39,7 +39,11 @@ import {highlightGQLArgToEnonicXPQuery} from '/lib/explorer/interface/graphql/hi
 import {resolveFieldShortcuts} from './resolveFieldShortcuts';
 
 
+const TRACE = false;
+
+
 export function makeQueryParams({
+	_trace = TRACE,
 	aggregationsArg,
 	fields,
 	filtersArg,
@@ -64,6 +68,7 @@ export function makeQueryParams({
 	stemmingLanguages = [],
 	termQueries,
 }: {
+	_trace?: boolean;
 	aggregationsArg: AnyObject[]
 	doProfiling?: boolean
 	fields: InterfaceField[]
@@ -88,11 +93,11 @@ export function makeQueryParams({
 	stemmingLanguages?: StemmingLanguageCode[]
 	termQueries?: TermQuery[]
 }) {
-	// log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
+	if (_trace) log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
 
 	const aggregations = {};
 	if (aggregationsArg) {
-		// log.debug('makeQueryParams aggregationsArg:%s', toStr(aggregationsArg));
+		if (_trace) log.debug('makeQueryParams aggregationsArg:%s', toStr(aggregationsArg));
 		forceArray(resolveFieldShortcuts({
 			basicObject: aggregationsArg
 		})).forEach(aggregation => {
@@ -112,7 +117,7 @@ export function makeQueryParams({
 			// filters: {}
 		})
 	});
-	// log.debug('staticFilter:%s', toStr(staticFilter));
+	if (_trace) log.debug('staticFilter:%s', toStr(staticFilter));
 
 	let filtersArray: AnyObject[];
 	if (filtersArg) {
@@ -120,9 +125,9 @@ export function makeQueryParams({
 		filtersArray = createFilters(resolveFieldShortcuts({
 			basicObject: filtersArg
 		}));
-		// log.debug('filtersArray:%s', toStr(filtersArray));
+		if (_trace) log.debug('filtersArray:%s', toStr(filtersArray));
 		filtersArray.push(staticFilter as unknown as AnyObject);
-		// log.debug('filtersArray:%s', toStr(filtersArray));
+		if (_trace) log.debug('filtersArray:%s', toStr(filtersArray));
 	}
 
 	// let query = queryArg;
@@ -130,32 +135,39 @@ export function makeQueryParams({
 	// if (!queryArg) {
 	const explorerRepoReadConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
 
-	const washedSearchString = wash({string: searchString});
-	const listOfStopWords = [];
+	if (_trace) log.debug('searchString:%s', toStr(searchString));
+	const washedSearchString = wash({ string: searchString });
+	if (_trace) log.debug('washedSearchString:%s', toStr(washedSearchString));
+
+	const listOfStopWords: string[] = [];
 	if (stopWords && stopWords.length) {
-		// log.debug(`stopWords:${toStr(stopWords)}`);
+		if (_trace) log.debug('stopWords:%s', toStr(stopWords));
 		stopWords.forEach((name) => {
-			const {words} = getStopWordsList({ // Not a query
+			const maybeStopWordsList = getStopWordsList({ // Not a query
 				connection: explorerRepoReadConnection,
 				name
 			});
-			// log.debug(`words:${toStr(words)}`);
-			words.forEach((word) => {
-				if (!arrayIncludes(listOfStopWords, word)) {
-					listOfStopWords.push(word);
-				}
-			});
+			if (maybeStopWordsList) {
+				const { words } = maybeStopWordsList;
+				if (_trace) log.debug('words:%s', toStr(words));
+				words.forEach((word) => {
+					if (!arrayIncludes(listOfStopWords, word)) {
+						listOfStopWords.push(word);
+					}
+				});
+			}
 		});
 	}
-	// log.debug(`listOfStopWords:${toStr({listOfStopWords})}`);
-	const removedStopWords = [];
+	if (_trace) log.debug('listOfStopWords:%s', toStr(listOfStopWords));
+	const removedStopWords: string[] = [];
 	const searchStringWithoutStopWords = removeStopWords({
 		removedStopWords,
 		stopWords: listOfStopWords,
 		string: washedSearchString
 	});
+	if (_trace) log.debug('searchStringWithoutStopWords:%s', toStr(searchStringWithoutStopWords));
 
-	// log.debug('fields:%s', toStr(fields));
+	if (_trace) log.debug('fields:%s', toStr(fields));
 	const query = searchStringWithoutStopWords
 		? makeQuery({
 			fields,
@@ -166,7 +178,7 @@ export function makeQueryParams({
 		: {
 			matchAll: {}
 		};
-	// log.debug('query:%s', toStr(query));
+	if (_trace) log.debug('query:%s', toStr(query));
 
 	const synonyms = isSet(synonymsSource)
 		? synonymsSource
@@ -186,7 +198,7 @@ export function makeQueryParams({
 			showSynonyms: true, // TODO hardcode
 			thesauri: thesauriNames
 		});
-	// log.debug('synonyms:%s', toStr(synonyms));
+	if (_trace) log.debug('synonyms:%s', toStr(synonyms));
 
 	const appliedFulltext = [];
 	for (let i = 0; i < synonyms.length; i++) {

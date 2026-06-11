@@ -16,7 +16,7 @@ export const coerseStopWordType = ({
 	_versionKey, // Needed for common GraphQL Interface Node
 	words
 	//...rest // cleaned, not passed on
-} :StopwordNode) :Stopword => ({
+}: StopwordNode): Stopword => ({
 	_id, // Needed for common GraphQL Interface Node
 	_name, // Needed for common GraphQL Interface Node
 	_nodeType, // Needed for common GraphQL Interface Node
