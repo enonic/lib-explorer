@@ -17,6 +17,7 @@ import {
 	toStr,
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
+import { includes as strIncludes } from '@enonic/js-utils/string/includes';
 import {
 	FIELD_PATH_META,
 	NT_DOCUMENT,
@@ -73,7 +74,7 @@ export function makeQueryParams({
 	doProfiling?: boolean
 	fields: InterfaceField[]
 	filtersArg?: AnyObject[]
-	highlightArg?: GQL_InputType_Highlight
+	highlightArg?: GQL_InputType_Highlight;
 	interfaceId: string
 	languages: string[]
 	localesInSelectedThesauri: string[]
@@ -168,9 +169,29 @@ export function makeQueryParams({
 	if (_trace) log.debug('searchStringWithoutStopWords:%s', toStr(searchStringWithoutStopWords));
 
 	if (_trace) log.debug('fields:%s', toStr(fields));
+	let fieldsAndHighlight: InterfaceField[] | undefined;
+	if (highlightArg && highlightArg.fields.length) {
+		fieldsAndHighlight = JSON.parse(JSON.stringify(fields)) as InterfaceField[];
+		const lcInterfaceFieldNames = fields.map(({name}) => name.toLocaleLowerCase());
+		for (const {field} of highlightArg.fields as { field: string; }[]) {
+			const lcField = field.toLocaleLowerCase();
+			if (
+				!strIncludes(field, '._stemmed_')
+				&& !arrayIncludes(lcInterfaceFieldNames, lcField)
+				&& lcField !== '_alltext' // avoid double (since added in makeQuery)
+			) {
+				fieldsAndHighlight.push({
+					// boost: 1, // Flat no boost
+					name: field,
+				});
+			}
+		}
+		if (_trace) log.debug('fieldsAndHighlight:%s', toStr(fieldsAndHighlight));
+	}
+
 	const query = searchStringWithoutStopWords
 		? makeQuery({
-			fields,
+			fields: fieldsAndHighlight || fields,
 			searchStringWithoutStopWords,
 			stemmingLanguages,
 			termQueries
