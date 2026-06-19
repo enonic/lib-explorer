@@ -1,4 +1,9 @@
-import type {FieldSortDsl} from '/lib/xp/node';
+import type { Aggregations } from '@enonic-types/core';
+import type {
+	FieldSortDsl,
+	Filter,
+	QueryNodeParams,
+} from '/lib/xp/node';
 import type {
 	AnyObject,
 	InterfaceField
@@ -13,11 +18,11 @@ import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 import {
 	addQueryFilter,
 	forceArray,
-	isSet,
 	toStr,
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import { includes as strIncludes } from '@enonic/js-utils/string/includes';
+import { isSet } from '@enonic/js-utils/value/isSet';
 import {
 	FIELD_PATH_META,
 	NT_DOCUMENT,
@@ -27,9 +32,12 @@ import {connect} from '/lib/explorer/repo/connect';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {removeStopWords} from '/lib/explorer/query/removeStopWords';
 import {wash} from '/lib/explorer/query/wash';
+
 import {get as getStopWordsList} from '/lib/explorer/stopWords/get';
 import {getSynonymsFromSearchString} from '/lib/explorer/synonym/getSynonymsFromSearchString';
 import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
+import { isNotNil } from '/lib/explorer/typeGuards/isNotNil';
+
 import {
 	createAggregation,
 	createFilters
@@ -38,6 +46,7 @@ import {
 import {makeQuery} from './makeQuery';
 import {highlightGQLArgToEnonicXPQuery} from '/lib/explorer/interface/graphql/highlight/input/highlightGQLArgToEnonicXPQuery';
 import {resolveFieldShortcuts} from './resolveFieldShortcuts';
+import { noNilsArray } from '/lib/explorer/array/noNilsArray';
 
 
 const TRACE = false;
@@ -46,6 +55,7 @@ const TRACE = false;
 export function makeQueryParams({
 	_trace = TRACE,
 	aggregationsArg,
+	explainArg,
 	fields,
 	filtersArg,
 	highlightArg,
@@ -72,6 +82,7 @@ export function makeQueryParams({
 	_trace?: boolean;
 	aggregationsArg: AnyObject[]
 	doProfiling?: boolean
+	explainArg?: boolean;
 	fields: InterfaceField[]
 	filtersArg?: AnyObject[]
 	highlightArg?: GQL_InputType_Highlight;
@@ -107,7 +118,7 @@ export function makeQueryParams({
 		});
 	}
 
-	const staticFilter = addQueryFilter({
+	const staticFilters = noNilsArray(addQueryFilter({
 		filter: {
 			exists: {
 				field: `${FIELD_PATH_META}.documentType` // Avoid nullpointer exception, this is needed in interfaceTypeResolver
@@ -117,17 +128,19 @@ export function makeQueryParams({
 			filter: hasValue('_nodeType', [NT_DOCUMENT])// ,
 			// filters: {}
 		})
-	});
-	if (_trace) log.debug('staticFilter:%s', toStr(staticFilter));
+	}));
+	if (_trace) log.debug('staticFilters:%s', toStr(staticFilters));
 
-	let filtersArray: AnyObject[];
+	let filtersArray: Filter[] | undefined;
 	if (filtersArg) {
 		// This works magically because fieldType is an Enum?
 		filtersArray = createFilters(resolveFieldShortcuts({
 			basicObject: filtersArg
 		}));
 		if (_trace) log.debug('filtersArray:%s', toStr(filtersArray));
-		filtersArray.push(staticFilter as unknown as AnyObject);
+		for (const staticFilter of staticFilters) {
+			(filtersArray as Filter[]).push(staticFilter);
+		}
 		if (_trace) log.debug('filtersArray:%s', toStr(filtersArray));
 	}
 
@@ -264,19 +277,25 @@ export function makeQueryParams({
 	} // for synonyms[i]
 	// }
 
+	const queryParams: QueryNodeParams<Aggregations> = {
+		aggregations,
+		count,
+		filters: filtersArray ? filtersArray : staticFilters,
+		query,
+		sort,
+		start,
+	};
+
+	if (isNotNil(explainArg)) {
+		queryParams.explain = explainArg;
+	}
+
+	if (isNotNil(highlightArg)) {
+		queryParams.highlight = highlightGQLArgToEnonicXPQuery({ highlightArg });
+	}
+
 	return {
-		queryParams: {
-			aggregations,
-			count,
-			// explain: true,
-			filters: filtersArray ? filtersArray : staticFilter,
-			highlight: highlightArg
-				? highlightGQLArgToEnonicXPQuery({highlightArg})
-				: null,
-			query,
-			sort,
-			start,
-		},
+		queryParams,
 		synonyms
 	};
 }

@@ -48,6 +48,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		args: {
 			aggregations: aggregationsArg,
 			count, // ?:number
+			explain: explainArg,
 			filters: filtersArg,
 			highlight: highlightArg,
 			languages: languagesArg,
@@ -151,6 +152,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 	} = makeQueryParams({
 		aggregationsArg,
 		count,
+		explainArg,
 		doProfiling: profilingArg,
 		fields,
 		filtersArg,
@@ -203,6 +205,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		count: queryRes.count,
 		hits: queryRes.hits.map(({
 			branch,
+			explanation: maybeExplanationObj,
 			highlight: highlightObj,
 			id,
 			repoId,
@@ -243,6 +246,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 					undefined
 				>(collectionNode, [FIELD_PATH_META, 'createdTime'], undefined),
 				_documentType: documentTypeName,
+				_explanation: maybeExplanationObj,
 				_highlight: highlightObj, // queryResHighlightObjToArray({highlightObj}),
 				_json: typedDocumentNode, // washedNode,
 				_modifiedTime: getIn<

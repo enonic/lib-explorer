@@ -17,6 +17,7 @@ export function addOutputFieldsSearchResultHit({glue} :{glue :Glue}) {
 			_collection: { type: nonNull(GraphQLString) },
 			_createdTime: { type: GraphQLString }, // TODO nonNull?
 			_documentType: { type: GraphQLString }, // Nullable
+			_explanation: { type: GraphQLJson }, // Nullable
 			_json: { type: nonNull(GraphQLJson) },
 			_highlight: { type: GraphQLJson }, // Nullable
 			_modifiedTime: { type: GraphQLString }, // Nullable

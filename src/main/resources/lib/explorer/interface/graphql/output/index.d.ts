@@ -1,7 +1,10 @@
 import type {
 	HighlightResult
 } from '@enonic-types/core';
-import type {FieldSortDsl} from '/lib/xp/node';
+import type {
+	Explanation,
+	FieldSortDsl,
+} from '/lib/xp/node';
 import type {
 	AnyObject,
 	DocumentNode,
@@ -73,6 +76,7 @@ export type QuerySynonymsReturnType = {
 
 type SearchCommonArgs = {
 	aggregations?: AggregationsArg
+	explain?: boolean;
 	filters?: FiltersArg
 	highlight?: GQL_InputType_Highlight
 	languages?: string[]
@@ -116,6 +120,7 @@ export type Hit = {
 	_createdTime?: string // from FIELD_PATH_META
 	_documentType?: string // from FIELD_PATH_META
 	_highlight?: HighlightResult
+	_explanation?: Explanation;
 	_json: DocumentNode
 	_modifiedTime?: string // from FIELD_PATH_META
 	//_language?: string // from FIELD_PATH_META
