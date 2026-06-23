@@ -194,7 +194,13 @@ export function makeQueryParams({
 				&& lcField !== '_alltext' // avoid double (since added in makeQuery)
 			) {
 				fieldsAndHighlight.push({
-					// boost: 1, // Flat no boost
+					// For a very small positive impact: The smallest practical boost you should
+					// use is something like 0.01 or 0.001. Because scores are logarithmic,
+					// the difference between 0.001 and 0.0000001 is entirely negligible in final
+					// rankings.
+					// When logging the smallest I can see is 0.000000000000000001 (18 decimals)
+					// This will be multiplied by 1 (fulltext), 0.9 (stemmed) and 0.8 (ngram).
+					boost: 0.01,
 					name: field,
 				});
 			}
