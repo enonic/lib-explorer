@@ -301,6 +301,7 @@ export function makeQueryParams({
 	}
 
 	return {
+		decoratedSearchString: searchStringWithoutStopWords,
 		queryParams,
 		synonyms
 	};

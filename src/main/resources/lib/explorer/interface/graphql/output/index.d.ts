@@ -15,6 +15,7 @@ import type {
 	TermQuery,
 } from '@enonic-types/lib-explorer';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
+import type { QueryDslInput } from '../input/query/QueryDslInput';
 
 
 export type Profiling = {
@@ -81,18 +82,18 @@ type SearchCommonArgs = {
 	highlight?: GQL_InputType_Highlight
 	languages?: string[]
 	profiling?: boolean
-	// query?: QueryDsl
+	query?: QueryDslInput;
 	searchString: string
 	//synonyms?: SynonymsArray
 	sort?: FieldSortDsl[]
 }
 
 export type SearchResolverSource = {
-	interfaceInfo: InterfaceInfo // Used in backend, not returned to client
-	languages?: string[]
-	profiling?: Profiling[]
-	searchString?: string
-	synonyms?: SynonymsArray
+	interfaceInfo: InterfaceInfo; // Used in backend, not returned to client
+	languages?: string[];
+	profiling?: Profiling[];
+	searchString?: string;
+	synonyms?: SynonymsArray;
 }
 
 export type SearchConnectionResolverEnv = {

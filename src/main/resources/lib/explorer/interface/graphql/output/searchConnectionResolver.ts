@@ -20,6 +20,7 @@ export function searchConnectionResolver(env: SearchConnectionResolverEnv) {
 		highlight,
 		languages,
 		profiling,
+		query,
 		searchString//,
 		//synonyms
 	} = env.args;
@@ -41,6 +42,7 @@ export function searchConnectionResolver(env: SearchConnectionResolverEnv) {
 			highlight,
 			languages,
 			profiling,
+			query,
 			searchString,
 			start//,
 			//synonyms
