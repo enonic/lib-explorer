@@ -3,6 +3,7 @@ import type {
 	ParentPath,
 	Path,
 	RepoConnection,
+	Stopword,
 	StopwordNode,
 } from '@enonic-types/lib-explorer';
 
@@ -18,14 +19,14 @@ export function get({
 	name = '',
 	path = join(parentPath, name) as Path,
 	key = id || path
-} :{
+}: {
 	connection: RepoConnection
 	id?: string
 	parentPath?: ParentPath
 	name?: string
 	path?: Path
 	key?: Key
-}) {
+}): Stopword | null {
 	const node = connection.get(key) as StopwordNode;
 	if (!node) { // Handle ghost nodes
 		return null;

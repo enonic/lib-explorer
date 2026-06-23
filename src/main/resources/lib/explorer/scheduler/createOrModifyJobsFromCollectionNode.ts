@@ -26,12 +26,16 @@ import {listExplorerJobsThatStartWithName} from '/lib/explorer/scheduler/listExp
 import {delete as deleteJob} from '/lib/xp/scheduler';
 
 
+const TRACE = false;
+
 const USER = `user:${USER_EXPLORER_APP_ID_PROVIDER}:${USER_EXPLORER_APP_NAME}`;
 
 
 export function getCollectors({
+	_trace = TRACE,
 	connection
 }: {
+	_trace?: boolean;
 	connection: RepoConnection | WriteConnection
 }) {
 	const collectors: {
@@ -53,12 +57,14 @@ export function getCollectors({
 
 
 export function createOrModifyJobsFromCollectionNode({
+	_trace = TRACE,
 	connection,
 	collectors = getCollectors({connection}),
 	collectionNode,
 	timeZone = 'GMT+02:00' // CEST (Summer Time)
 	// timeZone = 'GMT+01:00' // CET
 }: {
+	_trace?: boolean;
 	connection: WriteConnection
 	collectors?: {
 		[taskDescriptor: string]: boolean
@@ -88,7 +94,7 @@ export function createOrModifyJobsFromCollectionNode({
 	// log.debug(`createOrModifyJobsFromCollectionNode collection name:${collectionNodeName} existingJobs:${toStr(existingJobs)}`);
 
 	if (!collectorId) {
-		log.debug(`Collection with name:${collectionNodeName} is missing a collector! (which may be ok)`);
+		if (_trace) log.debug(`Collection with name:${collectionNodeName} is missing a collector! (which may be ok)`);
 		existingJobs.forEach(({name}) => {
 			log.warning(`Deleting job name:${name}, because the collection with name:${collectionNodeName} doesn't specify a collectorId!`);
 			deleteJob({name});
@@ -120,7 +126,7 @@ export function createOrModifyJobsFromCollectionNode({
 
 	log.debug(`Deleting all scheduled jobs belonging to the collection with name:${collectionNodeName} (before creating new ones).`);
 	existingJobs.forEach(({name}) => {
-		log.debug(`Deleting job name:${name} belonging to the collection with name:${collectionNodeName} (before creating new ones).`);
+		if (_trace) log.debug(`Deleting job name:${name} belonging to the collection with name:${collectionNodeName} (before creating new ones).`);
 		deleteJob({name});
 	});
 

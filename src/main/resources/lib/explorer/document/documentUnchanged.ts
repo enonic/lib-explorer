@@ -44,6 +44,9 @@ const { diff: diffDocument } = new HumanDiff({
 });
 
 
+const TRACE = false;
+
+
 export function documentUnchanged(
 	exisitingDocument: DocumentNode,
 	maybeChangedDocument: ModifiedNode<DocumentNode>,
@@ -58,7 +61,7 @@ export function documentUnchanged(
 		delete dereffedMaybeChangedDocument[FIELD_PATH_META].modifiedTime;
 	}
 	if (fastDeepEqual(dereffedExisitingDocument, dereffedMaybeChangedDocument)) {
-		log.debug(`No changes detected, not updating document with id:${id}`);
+		if (TRACE) log.debug(`No changes detected, not updating document with id:${id}`);
 		return true;
 	}
 
@@ -66,10 +69,10 @@ export function documentUnchanged(
 	try {
 		// log.debug(`Changes detected in document with id:${id}`);
 		// log.debug(`Changes detected in document with id:${id} exisitingDocument:${toStr(exisitingDocument)} maybeChangedDocument:${toStr(maybeChangedDocument)}`);
-		log.debug(`Changes detected in document with id:${id} diff:${toStr(detailedDiff(exisitingDocument, maybeChangedDocument))}`);
+		if (TRACE) log.debug(`Changes detected in document with id:${id} diff:${toStr(detailedDiff(exisitingDocument, maybeChangedDocument))}`);
 	} catch (_e) {
 		try {
-			log.debug(`Changes detected in document with id:${id} diff:${toStr(diffDocument(exisitingDocument, maybeChangedDocument))}`);
+			if (TRACE) log.debug(`Changes detected in document with id:${id} diff:${toStr(diffDocument(exisitingDocument, maybeChangedDocument))}`);
 		} catch (_e) {
 			try {
 				//log.debug(`Changes detected in document with id:${id} diff:${toStr(diffJson(exisitingDocument, maybeChangedDocument))}`);

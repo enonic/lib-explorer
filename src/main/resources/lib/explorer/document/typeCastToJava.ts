@@ -52,13 +52,16 @@ import traverse = require('traverse');
 
 
 export interface TypeCastToJavaParameters {
+	_trace?: boolean;
 	data?: Record<string, unknown>
 	fieldsObj: DocumentTypeFieldsObject
 }
 
+const TRACE = false;
 
 export function typeCastToJava(
 	{
+		_trace = TRACE,
 		data = {},
 		fieldsObj = {}
 	}: TypeCastToJavaParameters,
@@ -186,7 +189,7 @@ export function typeCastToJava(
 				}
 			} else { // !valueTypeForPath
 				if (!arrayIncludes([FIELD_PATH_GLOBAL, FIELD_PATH_META] as string[], pathString)) {
-					log.debug(`Field without valueType path:${pathString} value:${toStr(value)}`);
+					if (_trace) log.debug(`Field without valueType path:${pathString} value:${toStr(value)}`);
 				}
 				// this.update(value, true);
 				setIn(typeCastedData, pathString, value);

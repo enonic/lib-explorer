@@ -15,8 +15,15 @@ import {
 
 import {getDocumentType} from '/lib/explorer/documentType/getDocumentType';
 
+const TRACE = false;
 
-export function reindexCollections({collectionIds}) {
+export function reindexCollections({
+	_trace = TRACE,
+	collectionIds
+}: {
+	_trace?: boolean;
+	collectionIds: string[];
+}) {
 	const reports = [];
 	const seenDocumentTypes = {};
 	const readConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
@@ -67,7 +74,7 @@ export function reindexCollections({collectionIds}) {
 						}
 					});
 					const message = `Started reindex of collection _id:${collectionId} _name:${_name} documentTypeId:${documentTypeId}`;
-					log.debug(message);
+					if (TRACE) log.debug(message);
 					reports.push({
 						collectionId,
 						collectionName: _name,

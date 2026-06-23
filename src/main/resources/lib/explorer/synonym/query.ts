@@ -22,6 +22,7 @@ import {moldQueriedSynonymNode} from '/lib/explorer/synonym/moldQueriedSynonymNo
 export type QuerySynonymsParams<
 	AggregationKeys extends undefined|string = undefined
 > = {
+	_trace?: boolean;
 	aggregations?: Aggregations<AggregationKeys>
 	connection: RepoConnection
 	count?: QueryNodeParams['count']
@@ -34,9 +35,13 @@ export type QuerySynonymsParams<
 }
 
 
+const TRACE = false;
+
+
 export function query<
 	AggregationKeys extends undefined|string = undefined
 >({
+	_trace = TRACE,
 	aggregations,
 	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
 	count = -1,
@@ -57,7 +62,7 @@ export function query<
 		direction: 'ASC'
 	},
 	start = 0
-} :QuerySynonymsParams<AggregationKeys>) {
+}: QuerySynonymsParams<AggregationKeys>) {
 	/*log.debug('synonym.query(%s)', toStr({
 		aggregations,
 		count,
@@ -84,7 +89,7 @@ export function query<
 		sort,
 		start
 	};
-	if (explain) {
+	if (explain && _trace) {
 		log.debug('synonym.query queryParams:%s', toStr(queryParams));
 	}
 

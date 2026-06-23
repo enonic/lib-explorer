@@ -96,6 +96,9 @@ export interface CreateParameterObject {
 }
 
 
+const TRACE = false;
+
+
 // dieOnError
 export function create(
 	createParameterObject: CreateParameterObject,
@@ -247,13 +250,13 @@ export function create(
 		notSet(fields) ||
 		notSet(language)
 	) {
-		log.debug('document.create: connecting to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
+		if (TRACE) log.debug('document.create: connecting to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
 		const explorerReadConnection = connect({
 			branch: BRANCH_ID_EXPLORER,
 			principals: [PRINCIPAL_EXPLORER_READ],
 			repoId: REPO_ID_EXPLORER
 		});
-		log.debug('document.create: connected to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
+		if (TRACE) log.debug('document.create: connected to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
 
 		// There are many valid ways to call document.create with regards to documentTypeId and documentTypeName.
 		// 1. Only documentTypeId provided.
@@ -273,7 +276,7 @@ export function create(
 				log.warning('documentTypeNode._name:%s from documentTypeId:%s supersedes passed in documentTypeName:%s', documentTypeNode._name, documentTypeId, documentTypeName);
 			}
 			documentTypeName = documentTypeNode._name;
-			log.debug('document.create: sat documentTypeName:%s from documentTypeId:%s', documentTypeName, documentTypeId);
+			if (TRACE) log.debug('document.create: sat documentTypeName:%s from documentTypeId:%s', documentTypeName, documentTypeId);
 		} else if(
 			// !documentTypeId &&
 			documentTypeName
@@ -285,7 +288,7 @@ export function create(
 				throw new Error(`Something went wrong when trying to get documentTypeId from documentTypeName:${documentTypeName} via path:${documentTypeNodePath}`);
 			}
 			documentTypeId = documentTypeNode._id; // NOTE: documentTypeId is needed when adding extra fields
-			log.debug('document.create: sat documentTypeId:%s from documentTypeName:%s', documentTypeId, documentTypeName);
+			if (TRACE) log.debug('document.create: sat documentTypeId:%s from documentTypeName:%s', documentTypeId, documentTypeName);
 		}
 		// At this point:
 		//  * either both documentTypeId and documentTypeName are undefined (so try default documentTypeId from collectionNode)
@@ -294,12 +297,12 @@ export function create(
 		let collectionNode: CollectionNode;
 		if (collectionId) {
 			collectionNode = explorerReadConnection.get(collectionId) as CollectionNode;
-			log.debug('collectionNode:%s', collectionNode);
+			if (TRACE) log.debug('collectionNode:%s', collectionNode);
 			if (collectionName && collectionName !== collectionNode._name) {
 				log.warning('collectionNode._name:%s from collectionId:%s supersedes passed in collectionName:%s', collectionNode._name, collectionId, collectionName);
 			}
 			collectionName = collectionNode._name;
-			log.debug('document.create: sat collectionName:%s from collectionId:%s', collectionName, collectionId);
+			if (TRACE) log.debug('document.create: sat collectionName:%s from collectionId:%s', collectionName, collectionId);
 		}
 
 		if (!collectionName) {
@@ -324,16 +327,16 @@ export function create(
 					throw new Error('!collectionName && !collectionId: This should never happen!');
 				}
 				const collectionPath = `${PATH_COLLECTIONS}/${collectionName}`;
-				log.debug('collectionPath:%s', collectionPath);
+				if (TRACE) log.debug('collectionPath:%s', collectionPath);
 				collectionNode = explorerReadConnection.get(collectionPath);
-				log.debug('collectionNode:%s', collectionNode);
+				if (TRACE) log.debug('collectionNode:%s', collectionNode);
 			}
 
 			if(notSet(language)) {
 				const languageFromCollection = collectionNode['language']; // This can be undefined
 				if (languageFromCollection) {
 					language = languageFromCollection;
-					log.debug('document.create: sat language:%s from collectionNode.language', language);
+					if (TRACE) log.debug('document.create: sat language:%s from collectionNode.language', language);
 				}
 				// NOTE: When no language is provided anywhere, there should be no stemming.
 			}
@@ -356,14 +359,14 @@ export function create(
 					// Get documentTypeName from default documentTypeId
 
 					documentTypeId = collectionNode['documentTypeId'].toString(); // NOTE: documentTypeId is needed when adding extra fields
-					log.debug('document.create: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
+					if (TRACE) log.debug('document.create: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
 
 					documentTypeNode = explorerReadConnection.get(documentTypeId);
 					if (!documentTypeNode) {
 						throw new Error(`Unable to get documentTypeNode with id:${documentTypeId}`);
 					}
 					documentTypeName = documentTypeNode._name;
-					log.debug('document.create: sat documentTypeName:%s from collectionNode.documentTypeId._name', documentTypeName);
+					if (TRACE) log.debug('document.create: sat documentTypeName:%s from collectionNode.documentTypeId._name', documentTypeName);
 				}
 			} // if need to read default documentTypeId from collectionNode
 		} // if need to read from collectionNode
@@ -372,7 +375,7 @@ export function create(
 			// log.debug("document.create: documentTypeNode:%s", toStr(documentTypeNode));
 			// log.debug("document.create: documentTypeNode['properties']:%s", toStr(documentTypeNode['properties'])); // undefined
 			fields = isSet(documentTypeNode['properties']) ? forceArray(documentTypeNode['properties']) : [];
-			log.debug('document.create: sat fields:%s from documentTypeNode.properties', toStr(fields));
+			if (TRACE) log.debug('document.create: sat fields:%s from documentTypeNode.properties', toStr(fields));
 		}
 	}
 
@@ -380,7 +383,7 @@ export function create(
 
 	if(notSet(stemmingLanguage) && isSet(language)) {
 		stemmingLanguage = stemmingLanguageFromLocale(language);
-		log.debug('document.create: sat stemmingLanguage:%s from language:%s', stemmingLanguage, language);
+		if (TRACE) log.debug('document.create: sat stemmingLanguage:%s from language:%s', stemmingLanguage, language);
 	}
 
 	//──────────────────────────────────────────────────────────────────────────

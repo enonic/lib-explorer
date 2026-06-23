@@ -14,11 +14,13 @@ export function searchConnectionResolver(env: SearchConnectionResolverEnv) {
 	const {
 		after,// = encodeCursor('0'), // encoded representation of start
 		aggregations,
+		explain,
 		filters,
 		first = 10, // count
 		highlight,
 		languages,
 		profiling,
+		query,
 		searchString//,
 		//synonyms
 	} = env.args;
@@ -35,10 +37,12 @@ export function searchConnectionResolver(env: SearchConnectionResolverEnv) {
 		args: {
 			aggregations,
 			count: first,
+			explain,
 			filters,
 			highlight,
 			languages,
 			profiling,
+			query,
 			searchString,
 			start//,
 			//synonyms

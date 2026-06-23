@@ -47,9 +47,13 @@ import {
 
 
 export interface ValidateTypesParameters {
+	_trace?: boolean;
 	data?: Record<string, unknown>
 	fields?: DocumentTypeFields
 }
+
+
+const TRACE = false;
 
 
 // Any Float number with a zero decimal part are implicitly cast to Integer,
@@ -66,6 +70,7 @@ function isFloat(n) {
 
 export function validateTypes(
 	{
+		_trace = TRACE,
 		data = {},
 		fields = []
 	}: ValidateTypesParameters = {},
@@ -172,9 +177,9 @@ export function validateTypes(
 
 		case VALUE_TYPE_SET: {
 			const valueArray = forceArray(value);
-			log.debug('valueArray', valueArray);
+			if (_trace) log.debug('valueArray', valueArray);
 			for (let j = 0; j < valueArray.length; j++) {
-				log.debug('valueArray[', j, ']', valueArray[j]);
+				if (_trace) log.debug('valueArray[', j, ']', valueArray[j]);
 				if (!isObject(valueArray[j])) {
 					// const msg = `Not a Set:${toStr(value)} at path:${name} in data:${toStr(data)}!`;
 					log.warning(

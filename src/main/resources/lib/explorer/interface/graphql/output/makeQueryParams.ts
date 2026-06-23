@@ -1,4 +1,9 @@
-import type {FieldSortDsl} from '/lib/xp/node';
+import type { Aggregations } from '@enonic-types/core';
+import type {
+	FieldSortDsl,
+	Filter,
+	QueryNodeParams,
+} from '/lib/xp/node';
 import type {
 	AnyObject,
 	InterfaceField
@@ -13,10 +18,11 @@ import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 import {
 	addQueryFilter,
 	forceArray,
-	isSet,
-	// toStr,
+	toStr,
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
+import { includes as strIncludes } from '@enonic/js-utils/string/includes';
+import { isSet } from '@enonic/js-utils/value/isSet';
 import {
 	FIELD_PATH_META,
 	NT_DOCUMENT,
@@ -26,9 +32,12 @@ import {connect} from '/lib/explorer/repo/connect';
 import {hasValue} from '/lib/explorer/query/hasValue';
 import {removeStopWords} from '/lib/explorer/query/removeStopWords';
 import {wash} from '/lib/explorer/query/wash';
+
 import {get as getStopWordsList} from '/lib/explorer/stopWords/get';
 import {getSynonymsFromSearchString} from '/lib/explorer/synonym/getSynonymsFromSearchString';
 import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
+import { isNotNil } from '/lib/explorer/typeGuards/isNotNil';
+
 import {
 	createAggregation,
 	createFilters
@@ -37,10 +46,16 @@ import {
 import {makeQuery} from './makeQuery';
 import {highlightGQLArgToEnonicXPQuery} from '/lib/explorer/interface/graphql/highlight/input/highlightGQLArgToEnonicXPQuery';
 import {resolveFieldShortcuts} from './resolveFieldShortcuts';
+import { noNilsArray } from '/lib/explorer/array/noNilsArray';
+
+
+const TRACE = false;
 
 
 export function makeQueryParams({
+	_trace = TRACE,
 	aggregationsArg,
+	explainArg,
 	fields,
 	filtersArg,
 	highlightArg,
@@ -64,11 +79,13 @@ export function makeQueryParams({
 	stemmingLanguages = [],
 	termQueries,
 }: {
+	_trace?: boolean;
 	aggregationsArg: AnyObject[]
 	doProfiling?: boolean
+	explainArg?: boolean;
 	fields: InterfaceField[]
 	filtersArg?: AnyObject[]
-	highlightArg?: GQL_InputType_Highlight
+	highlightArg?: GQL_InputType_Highlight;
 	interfaceId: string
 	languages: string[]
 	localesInSelectedThesauri: string[]
@@ -88,11 +105,11 @@ export function makeQueryParams({
 	stemmingLanguages?: StemmingLanguageCode[]
 	termQueries?: TermQuery[]
 }) {
-	// log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
+	if (_trace) log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
 
 	const aggregations = {};
 	if (aggregationsArg) {
-		// log.debug('makeQueryParams aggregationsArg:%s', toStr(aggregationsArg));
+		if (_trace) log.debug('makeQueryParams aggregationsArg:%s', toStr(aggregationsArg));
 		forceArray(resolveFieldShortcuts({
 			basicObject: aggregationsArg
 		})).forEach(aggregation => {
@@ -101,7 +118,7 @@ export function makeQueryParams({
 		});
 	}
 
-	const staticFilter = addQueryFilter({
+	const staticFilters = noNilsArray(addQueryFilter({
 		filter: {
 			exists: {
 				field: `${FIELD_PATH_META}.documentType` // Avoid nullpointer exception, this is needed in interfaceTypeResolver
@@ -111,18 +128,20 @@ export function makeQueryParams({
 			filter: hasValue('_nodeType', [NT_DOCUMENT])// ,
 			// filters: {}
 		})
-	});
-	// log.debug('staticFilter:%s', toStr(staticFilter));
+	}));
+	if (_trace) log.debug('staticFilters:%s', toStr(staticFilters));
 
-	let filtersArray: AnyObject[];
+	let filtersArray: Filter[] | undefined;
 	if (filtersArg) {
 		// This works magically because fieldType is an Enum?
 		filtersArray = createFilters(resolveFieldShortcuts({
 			basicObject: filtersArg
 		}));
-		// log.debug('filtersArray:%s', toStr(filtersArray));
-		filtersArray.push(staticFilter as unknown as AnyObject);
-		// log.debug('filtersArray:%s', toStr(filtersArray));
+		if (_trace) log.debug('filtersArray:%s', toStr(filtersArray));
+		for (const staticFilter of staticFilters) {
+			(filtersArray as Filter[]).push(staticFilter);
+		}
+		if (_trace) log.debug('filtersArray:%s', toStr(filtersArray));
 	}
 
 	// let query = queryArg;
@@ -130,35 +149,68 @@ export function makeQueryParams({
 	// if (!queryArg) {
 	const explorerRepoReadConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
 
-	const washedSearchString = wash({string: searchString});
-	const listOfStopWords = [];
+	if (_trace) log.debug('searchString:%s', toStr(searchString));
+	const washedSearchString = wash({ string: searchString });
+	if (_trace) log.debug('washedSearchString:%s', toStr(washedSearchString));
+
+	const listOfStopWords: string[] = [];
 	if (stopWords && stopWords.length) {
-		// log.debug(`stopWords:${toStr(stopWords)}`);
+		if (_trace) log.debug('stopWords:%s', toStr(stopWords));
 		stopWords.forEach((name) => {
-			const {words} = getStopWordsList({ // Not a query
+			const maybeStopWordsList = getStopWordsList({ // Not a query
 				connection: explorerRepoReadConnection,
 				name
 			});
-			// log.debug(`words:${toStr(words)}`);
-			words.forEach((word) => {
-				if (!arrayIncludes(listOfStopWords, word)) {
-					listOfStopWords.push(word);
-				}
-			});
+			if (maybeStopWordsList) {
+				const { words } = maybeStopWordsList;
+				if (_trace) log.debug('words:%s', toStr(words));
+				words.forEach((word) => {
+					if (!arrayIncludes(listOfStopWords, word)) {
+						listOfStopWords.push(word);
+					}
+				});
+			}
 		});
 	}
-	// log.debug(`listOfStopWords:${toStr({listOfStopWords})}`);
-	const removedStopWords = [];
+	if (_trace) log.debug('listOfStopWords:%s', toStr(listOfStopWords));
+	const removedStopWords: string[] = [];
 	const searchStringWithoutStopWords = removeStopWords({
 		removedStopWords,
 		stopWords: listOfStopWords,
 		string: washedSearchString
 	});
+	if (_trace) log.debug('searchStringWithoutStopWords:%s', toStr(searchStringWithoutStopWords));
 
-	// log.debug('fields:%s', toStr(fields));
+	if (_trace) log.debug('fields:%s', toStr(fields));
+	let fieldsAndHighlight: InterfaceField[] | undefined;
+	if (highlightArg && highlightArg.fields.length) {
+		fieldsAndHighlight = JSON.parse(JSON.stringify(fields)) as InterfaceField[];
+		const lcInterfaceFieldNames = fields.map(({name}) => name.toLocaleLowerCase());
+		for (const {field} of highlightArg.fields as { field: string; }[]) {
+			const lcField = field.toLocaleLowerCase();
+			if (
+				!strIncludes(field, '._stemmed_')
+				&& !arrayIncludes(lcInterfaceFieldNames, lcField)
+				&& lcField !== '_alltext' // avoid double (since added in makeQuery)
+			) {
+				fieldsAndHighlight.push({
+					// For a very small positive impact: The smallest practical boost you should
+					// use is something like 0.01 or 0.001. Because scores are logarithmic,
+					// the difference between 0.001 and 0.0000001 is entirely negligible in final
+					// rankings.
+					// When logging the smallest I can see is 0.000000000000000001 (18 decimals)
+					// This will be multiplied by 1 (fulltext), 0.9 (stemmed) and 0.8 (ngram).
+					boost: 0.01,
+					name: field,
+				});
+			}
+		}
+		if (_trace) log.debug('fieldsAndHighlight:%s', toStr(fieldsAndHighlight));
+	}
+
 	const query = searchStringWithoutStopWords
 		? makeQuery({
-			fields,
+			fields: fieldsAndHighlight || fields,
 			searchStringWithoutStopWords,
 			stemmingLanguages,
 			termQueries
@@ -166,7 +218,7 @@ export function makeQueryParams({
 		: {
 			matchAll: {}
 		};
-	// log.debug('query:%s', toStr(query));
+	if (_trace) log.debug('query:%s', toStr(query));
 
 	const synonyms = isSet(synonymsSource)
 		? synonymsSource
@@ -186,7 +238,7 @@ export function makeQueryParams({
 			showSynonyms: true, // TODO hardcode
 			thesauri: thesauriNames
 		});
-	// log.debug('synonyms:%s', toStr(synonyms));
+	if (_trace) log.debug('synonyms:%s', toStr(synonyms));
 
 	const appliedFulltext = [];
 	for (let i = 0; i < synonyms.length; i++) {
@@ -231,19 +283,26 @@ export function makeQueryParams({
 	} // for synonyms[i]
 	// }
 
+	const queryParams: QueryNodeParams<Aggregations> = {
+		aggregations,
+		count,
+		filters: filtersArray ? filtersArray : staticFilters,
+		query,
+		sort,
+		start,
+	};
+
+	if (isNotNil(explainArg)) {
+		queryParams.explain = explainArg;
+	}
+
+	if (isNotNil(highlightArg)) {
+		queryParams.highlight = highlightGQLArgToEnonicXPQuery({ highlightArg });
+	}
+
 	return {
-		queryParams: {
-			aggregations,
-			count,
-			// explain: true,
-			filters: filtersArray ? filtersArray : staticFilter,
-			highlight: highlightArg
-				? highlightGQLArgToEnonicXPQuery({highlightArg})
-				: null,
-			query,
-			sort,
-			start,
-		},
+		decoratedSearchString: searchStringWithoutStopWords,
+		queryParams,
 		synonyms
 	};
 }

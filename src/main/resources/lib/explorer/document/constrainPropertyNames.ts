@@ -13,6 +13,7 @@ import {
 // @ts-ignore Import assignment cannot be used when targeting ECMAScript modules.
 import traverse = require('traverse');
 
+const TRACE = false;
 
 // Alternatives:
 // 1. Allow illegal names (current behaviour)
@@ -21,9 +22,11 @@ import traverse = require('traverse');
 // 4. Lowercase, fold, whitelist (remove punctuation)
 // throw error or simply warn...
 export function constrainPropertyNames({
+	_trace = TRACE,
 	data
 }: {
-	data: unknown
+	_trace?: boolean;
+	data: unknown;
 }) {
 	// log.debug('constrainPropertyNames data:%s', toStr(data));
 
@@ -74,7 +77,7 @@ export function constrainPropertyNames({
 								if (hasOwnProperty(value, constrainedKey)) {
 									log.warning('Tried to constrain key:%s to:%s, but key already exist on parent! Dropping value:%s', key, constrainedKey, value[key]);
 								} else {
-									log.debug('Key:%s contrained to:%s :)', key, constrainedKey);
+									if (_trace) log.debug('Key:%s contrained to:%s :)', key, constrainedKey);
 									value[constrainedKey] = value[key];
 								}
 								delete value[key];
