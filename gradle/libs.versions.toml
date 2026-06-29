@@ -1,10 +1,10 @@
 [versions]
-graphql     = "3.0.0-SNAPSHOT"
+graphql     = "3.0.0"
 guillotine  = "6.2.1"
-cache       = "3.0.0-SNAPSHOT"
-httpClient  = "4.0.0-SNAPSHOT"
-license     = "4.0.0-SNAPSHOT"
-router      = "4.0.0-SNAPSHOT"
+cache       = "3.0.0"
+httpClient  = "4.0.0"
+license     = "4.0.0"
+router      = "4.0.0"
 
 [libraries]
 lib-graphql     = { module = "com.enonic.lib:lib-graphql",     version.ref = "graphql" }
