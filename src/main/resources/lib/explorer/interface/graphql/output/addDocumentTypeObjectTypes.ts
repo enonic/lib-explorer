@@ -67,6 +67,11 @@ export function addDocumentTypeObjectTypes({
 					_min: 1,
 					_valueType: VALUE_TYPE_STRING
 				},
+				_explanation: {
+					_max: 1,
+					_min: 0,
+					_valueType: VALUE_TYPE_JSON,
+				},
 				_json: {
 					_max: 1,
 					_min: 1,

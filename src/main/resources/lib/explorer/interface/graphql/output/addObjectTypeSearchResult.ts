@@ -14,8 +14,15 @@ import {GQL_INTERFACE_TYPE_DOCUMENT} from './constants';
 import {addObjectTypeProfiling} from '/lib/explorer/interface/graphql/output/addObjectTypeProfiling';
 import {addObjectTypeSearchResultSynonym} from '/lib/explorer/interface/graphql/output/addObjectTypeSearchResultSynonym';
 
+const TRACE = false;
 
-export function addObjectTypeSearchResult({glue} :{glue :Glue}) {
+export function addObjectTypeSearchResult({
+	_trace = TRACE,
+	glue
+}: {
+	_trace?: boolean;
+	glue: Glue
+}) {
 	return glue.addObjectType({
 		name: 'SearchResult',
 		fields: {
@@ -27,7 +34,7 @@ export function addObjectTypeSearchResult({glue} :{glue :Glue}) {
 			/*search: {
 				//args
 				resolve(env) {
-					log.debug('env:%s', toStr(env));
+					if (_trace) log.debug('env:%s', toStr(env));
 					return {
 						aggregationsAsJson: {}
 					}

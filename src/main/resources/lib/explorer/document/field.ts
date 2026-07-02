@@ -33,6 +33,7 @@ import {
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import { includes as stringIncludes } from '@enonic/js-utils/string/includes';
 
+const TRACE = false;
 
 const BOOLEAN_PROPS = [
 	'active', // TODO: From GUI
@@ -212,12 +213,12 @@ export function addMissingSetToFieldsArray(
 	for (let i = 0; i < fields.length; i++) {
 		const field = fields[i];
 		let {name: path} = field;
-		log.debug(`path:${path}`);
+		if (TRACE) log.debug(`path:${path}`);
 		while (stringIncludes(path, '.')) {
 			path = path.split('.').slice(0,-1).join('.');
-			log.debug(`path:${path}`);
+			if (TRACE) log.debug(`path:${path}`);
 			if (!fieldsObj[path]) {
-				log.debug(`Adding missing set at path:${path}`);
+				if (TRACE) log.debug(`Adding missing set at path:${path}`);
 				returnFields.push(applyDefaultsToField({
 					name: path,
 					valueType: VALUE_TYPE_SET

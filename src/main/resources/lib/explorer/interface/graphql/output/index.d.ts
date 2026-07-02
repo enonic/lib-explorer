@@ -1,7 +1,10 @@
 import type {
 	HighlightResult
 } from '@enonic-types/core';
-import type {FieldSortDsl} from '/lib/xp/node';
+import type {
+	Explanation,
+	FieldSortDsl,
+} from '/lib/xp/node';
 import type {
 	AnyObject,
 	DocumentNode,
@@ -12,6 +15,7 @@ import type {
 	TermQuery,
 } from '@enonic-types/lib-explorer';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
+import type { QueryDslInput } from '../input/query/QueryDslInput';
 
 
 export type Profiling = {
@@ -73,22 +77,23 @@ export type QuerySynonymsReturnType = {
 
 type SearchCommonArgs = {
 	aggregations?: AggregationsArg
+	explain?: boolean;
 	filters?: FiltersArg
 	highlight?: GQL_InputType_Highlight
 	languages?: string[]
 	profiling?: boolean
-	// query?: QueryDsl
+	query?: QueryDslInput;
 	searchString: string
 	//synonyms?: SynonymsArray
 	sort?: FieldSortDsl[]
 }
 
 export type SearchResolverSource = {
-	interfaceInfo: InterfaceInfo // Used in backend, not returned to client
-	languages?: string[]
-	profiling?: Profiling[]
-	searchString?: string
-	synonyms?: SynonymsArray
+	interfaceInfo: InterfaceInfo; // Used in backend, not returned to client
+	languages?: string[];
+	profiling?: Profiling[];
+	searchString?: string;
+	synonyms?: SynonymsArray;
 }
 
 export type SearchConnectionResolverEnv = {
@@ -116,6 +121,7 @@ export type Hit = {
 	_createdTime?: string // from FIELD_PATH_META
 	_documentType?: string // from FIELD_PATH_META
 	_highlight?: HighlightResult
+	_explanation?: Explanation;
 	_json: DocumentNode
 	_modifiedTime?: string // from FIELD_PATH_META
 	//_language?: string // from FIELD_PATH_META

@@ -19,12 +19,15 @@ const WHITELIST_PATTERN = `[^-+*|()~a-zA-Z0-9_ "ÆÐƎƏƐƔĲŊŒẞÞǷȜæð�
 /* eslint-disable-next-line no-misleading-character-class */
 const WHITELIST_REGEXP = new RegExp(WHITELIST_PATTERN, 'gi');
 
-
 export function wash({
 	string,
 	replacement = '',
 	whitelistRegEx = WHITELIST_REGEXP
-}) {
+}: {
+	string: string;
+	replacement?: string;
+	whitelistRegEx?: RegExp;
+}): string {
 	if(isSet(string)) {
 		return string.replace(whitelistRegEx, replacement).replace(/\s{2,}/g, ' ').trim();
 	}

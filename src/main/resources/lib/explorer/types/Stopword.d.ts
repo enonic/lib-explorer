@@ -21,7 +21,7 @@ export type Stopword = Omit<
 		| '_ts'
 		//| '_versionKey' // Needed for common GraphQL Interface Node
 > & Omit<StopwordNodeSpecific, 'words'> & {
-	words :Array<string>
+	words: string[];
 }
 
 export interface QueriedStopword extends Stopword {

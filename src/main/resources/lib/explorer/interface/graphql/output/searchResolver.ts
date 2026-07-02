@@ -27,6 +27,7 @@ import {multiConnect} from '/lib/explorer/repo/multiConnect';
 // This fails when tsup code splitting: true
 // import {currentTimeMillis} from '/lib/explorer/time/currentTimeMillis';
 
+import { queryArgToDsl } from '../input/query/queryArgToDsl';
 import {washDocumentNode} from '/lib/explorer/interface/graphql/utils/washDocumentNode';
 import {makeQueryParams} from './makeQueryParams';
 // import {queryResHighlightObjToArray} from '/lib/explorer/interface/graphql/highlight/output/queryResHighlightObjToArray';
@@ -43,16 +44,17 @@ const TRACE = false;
 
 
 export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType {
-	// log.debug('searchResolver env:%s', toStr(env));
+	if (TRACE) log.info('searchResolver env:%s', toStr(env));
 	const {
 		args,
 		args: {
 			aggregations: aggregationsArg,
 			count, // ?:number
+			explain: explainArg,
 			filters: filtersArg,
 			highlight: highlightArg,
-			languages: languagesArg,
-			// query: queryArg,
+			languages: languagesArg, // Currently not passed down from querySynonyms
+			query: queryArg,
 			searchString: searchStringArg = '',
 			sort,
 			start = 0
@@ -78,8 +80,9 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 	// log.debug('searchResolver logQuery:%s', toStr(logQuery));
 
 	const {
-		profiling: profilingArraySource = []
-	} = source;
+		profiling: profilingArraySource = [],
+		languages: sourceLanguages,
+	} = source as SearchResolverSource;
 	// log.debug('searchResolver profilingArraySource:%s', toStr(profilingArraySource));
 
 	const {
@@ -93,6 +96,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		searchString = searchStringArg,
 		synonyms: synonymsSource
 	} = source;
+	if (TRACE) log.info('searchResolver searchString:%s', toStr(searchString));
 
 	const profiling: Profiling[] = [];
 	if (profilingArg) {
@@ -115,7 +119,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		termQueries,
 		thesauriNames
 	} = interfaceInfo;
-	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', interfaceName, searchString);
+	DEBUG && log.debug('searchResolver interfaceName:%s searchString:%s', toStr(interfaceName), toStr(searchString));
 
 
 	const collectionNames = Object.keys(collectionNameToId);
@@ -146,11 +150,13 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 	const multiRepoReadConnection = multiConnect(multiRepoReadConnectParams);
 
 	const {
+		decoratedSearchString,
 		queryParams,
 		synonyms
 	} = makeQueryParams({
 		aggregationsArg,
 		count,
+		explainArg,
 		doProfiling: profilingArg,
 		fields: filterOutFalsyBy(fields, (item) => item.name),
 		filtersArg,
@@ -180,6 +186,16 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		});
 		// log.debug('profiling:%s', toStr(profiling));
 	}
+
+	if (queryArg) {
+		// Overwrite generated query with provided custom query
+		queryParams.query = queryArgToDsl({
+			decoratedSearchString,
+			languages: languagesArg || sourceLanguages,
+			queryArg,
+		});
+	}
+
 	if (logQuery) {
 		log.info('searchResolver interfaceName:%s queryParams:%s', interfaceName, toStr(queryParams));
 	}
@@ -203,6 +219,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		count: queryRes.count,
 		hits: queryRes.hits.map(({
 			branch,
+			explanation: maybeExplanationObj,
 			highlight: highlightObj,
 			id,
 			repoId,
@@ -243,6 +260,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 					undefined
 				>(collectionNode, [FIELD_PATH_META, 'createdTime'], undefined),
 				_documentType: documentTypeName,
+				_explanation: maybeExplanationObj,
 				_highlight: highlightObj, // queryResHighlightObjToArray({highlightObj}),
 				_json: typedDocumentNode, // washedNode,
 				_modifiedTime: getIn<
