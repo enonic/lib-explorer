@@ -61,10 +61,6 @@ tasks.withType( Copy ).configureEach {
 	includeEmptyDirs = false
 }
 
-wrapper {
-	distributionUrl = "${gradleDistributionUrl}"
-}
-
 node {
 	download = true
 	version = "${nodeVersion}"
