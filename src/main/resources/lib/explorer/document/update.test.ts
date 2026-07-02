@@ -2,7 +2,7 @@ import type { send } from '@enonic-types/lib-event';
 import type { connect } from '@enonic-types/lib-node';
 
 
-import { sortByProperty } from '@enonic/js-utils/array';
+import { sortByProperty } from '@enonic/js-utils/array/sortBy';
 import {
 	LibEvent,
 	LibNode,

@@ -55,19 +55,19 @@ describe('repo', () => {
 				[{
 					id: 'system-repo',
 					branches: ['master'],
-					settings: {}
+					transient: false
 				},{
 					id: 'com.enonic.cms.default',
 					branches: ['master','draft'],
-					settings: {}
+					transient: false
 				},{
 					id: 'com.enonic.app.explorer',
 					branches: ['master'],
-					settings: {}
+					transient: false
 				},{
 					id: REPO_ID,
 					branches: ['master'],
-					settings: {}
+					transient: false
 				}],
 				list({})
 			);
@@ -77,19 +77,19 @@ describe('repo', () => {
 				[{
 					id: 'system-repo',
 					branches: ['master'],
-					settings: {}
+					transient: false
 				},{
 					id: 'com.enonic.cms.default',
 					branches: ['master','draft'],
-					settings: {}
+					transient: false
 				},{
 					id: 'com.enonic.app.explorer',
 					branches: ['master'],
-					settings: {}
+					transient: false
 				},{
 					id: REPO_ID,
 					branches: ['master'],
-					settings: {}
+					transient: false
 				}],
 				list({
 					branch: 'master',
@@ -101,19 +101,19 @@ describe('repo', () => {
 				[{
 					id: 'system-repo',
 					branches: ['master'],
-					settings: {}
+					transient: false
 				},{
 					id: 'com.enonic.cms.default',
 					branches: ['master','draft'],
-					settings: {}
+					transient: false
 				},{
 					id: 'com.enonic.app.explorer',
 					branches: ['master'],
-					settings: {}
+					transient: false
 				},{
 					id: REPO_ID,
 					branches: ['master'],
-					settings: {}
+					transient: false
 				}],
 				list({
 					branches: ['master', 'draft'],
@@ -125,7 +125,7 @@ describe('repo', () => {
 				[{
 					id: 'com.enonic.cms.default',
 					branches: ['master','draft'],
-					settings: {}
+					transient: false
 				}],
 				list({
 					branch: 'draft'
@@ -137,11 +137,11 @@ describe('repo', () => {
 				[{
 					id: 'com.enonic.app.explorer',
 					branches: ['master'],
-					settings: {}
+					transient: false
 				},{
 					id: REPO_ID,
 					branches: ['master'],
-					settings: {}
+					transient: false
 				}],
 				list({
 					idStartsWith: 'com.enonic.app.explorer'

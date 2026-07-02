@@ -68,9 +68,9 @@ describe('documentType', () => {
 		it('modifies the documentType', () => {
 			const expected = {
 				...CREATED_DOCUMENT_TYPE_NODE,
-				_versionKey: '00000000-0000-4000-8000-000000000006',
-				properties: []
+				_versionKey: '00000000-0000-4000-8000-000000000006'
 			};
+			delete expected.properties;
 			const updateRes = update({
 				_id: CREATED_DOCUMENT_TYPE_NODE._id,
 				properties: []

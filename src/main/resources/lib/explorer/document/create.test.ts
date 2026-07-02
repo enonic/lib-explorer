@@ -301,7 +301,7 @@ describe('document', () => {
 				throws(
 					() => create(createParam),
 					{
-						message: "Node already exists at /a repository: com.enonic.app.explorer.collection.myCollectionName branch: master",
+						message: "Node already exists at path /a repository: com.enonic.app.explorer.collection.myCollectionName branch: master",
 						name: 'com.enonic.xp.node.NodeAlreadyExistAtPathException'
 					}
 				);
