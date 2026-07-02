@@ -39,10 +39,10 @@ import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '/lib/
 import { isNotNil } from '/lib/explorer/typeGuards/isNotNil';
 
 import {
+	type AggregationInput,
 	createAggregation,
-	createFilters
-	// @ts-ignore
-} from '/lib/guillotine/util/factory';
+} from '/lib/explorer/interface/graphql/aggregations/guillotine/createAggregation';
+import {createFilters} from '/lib/explorer/interface/graphql/filters/guillotine/createFilters';
 import {makeQuery} from './makeQuery';
 import {highlightGQLArgToEnonicXPQuery} from '/lib/explorer/interface/graphql/highlight/input/highlightGQLArgToEnonicXPQuery';
 import {resolveFieldShortcuts} from './resolveFieldShortcuts';
@@ -114,7 +114,7 @@ export function makeQueryParams({
 			basicObject: aggregationsArg
 		})).forEach(aggregation => {
 			// This works magically because fieldType is an Enum.
-			createAggregation(aggregations, aggregation);
+			createAggregation(aggregations, aggregation as AggregationInput);
 		});
 	}
 
@@ -136,7 +136,7 @@ export function makeQueryParams({
 		// This works magically because fieldType is an Enum?
 		filtersArray = createFilters(resolveFieldShortcuts({
 			basicObject: filtersArg
-		}));
+		}) as unknown as AnyObject[]); // filtersArg is an array, so the JSON deref in resolveFieldShortcuts returns an array
 		if (_trace) log.debug('filtersArray:%s', toStr(filtersArray));
 		for (const staticFilter of staticFilters) {
 			(filtersArray as Filter[]).push(staticFilter);

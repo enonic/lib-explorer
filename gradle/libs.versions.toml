@@ -1,6 +1,5 @@
 [versions]
 graphql     = "3.0.0"
-guillotine  = "6.2.1"
 cache       = "3.0.0"
 httpClient  = "4.0.0"
 license     = "4.0.0"
@@ -8,7 +7,6 @@ router      = "4.0.0"
 
 [libraries]
 lib-graphql     = { module = "com.enonic.lib:lib-graphql",     version.ref = "graphql" }
-lib-guillotine  = { module = "com.enonic.lib:lib-guillotine",  version.ref = "guillotine" }
 lib-cache       = { module = "com.enonic.lib:lib-cache",       version.ref = "cache" }
 lib-http-client = { module = "com.enonic.lib:lib-http-client", version.ref = "httpClient" }
 lib-license     = { module = "com.enonic.lib:lib-license",     version.ref = "license" }
