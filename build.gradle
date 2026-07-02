@@ -25,7 +25,6 @@ dependencies {
 	implementation xplibs.scheduler
 	implementation xplibs.value
 	implementation libs.lib.graphql
-	implementation libs.lib.guillotine
 
 	//──────────────────────────────────────────────────────────────────────────
 	// Same as lib-explorer-3.x.x
