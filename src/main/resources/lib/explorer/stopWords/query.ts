@@ -61,10 +61,10 @@ export function query<
 			const obj = get({
 				connection,
 				id: hit.id,
-			}) as QueriedStopword;
-			obj._score = hit.score;
-			return obj;
-		}).filter(x => x),
+			});
+			if (obj) (obj as QueriedStopword)._score = hit.score;
+			return obj as QueriedStopword | null;
+		}).filter(x => x) as QueriedStopword[],
 		total: queryRes.total,
 	};
 	// log.info('stopwordsQueryRes:%s', toStr(stopwordsQueryRes));

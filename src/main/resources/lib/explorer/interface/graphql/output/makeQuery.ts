@@ -13,6 +13,7 @@ import {
 	storage,
 	// toStr,
 } from '@enonic/js-utils';
+import { quoteWordsWithNumbers } from '/lib/explorer/query/quoteWordsWithNumbers';
 
 
 const bool = storage.query.dsl.bool;
@@ -46,12 +47,14 @@ export function makeQuery({
 	}
 	// log.info('fieldsArr:%s', toStr(fieldsArr));
 
+	const maybeQuotedWords = quoteWordsWithNumbers(searchStringWithoutStopWords);
+
 	const arr: Array<ReturnType<typeof fulltext | typeof stemmed | typeof ngram | typeof term>> = [fulltext(
 		// fields.map(({boost, name: field}) => ({boost: (
 		// 	parseInt(boost as unknown as string) // In case there are some old interface nodes with boost as string rather than number
 		// 	||1) + (fields.length * 2), field})),
 		fieldsArr,
-		searchStringWithoutStopWords,
+		maybeQuotedWords,
 		QUERY_OPERATOR_AND//,
 		//1 // no boost
 	)];
@@ -63,7 +66,7 @@ export function makeQuery({
 			// 	parseInt(boost as unknown as string) // In case there are some old interface nodes with boost as string rather than number
 			// 	||1) + fields.length, field})),
 			fieldsArr,
-			searchStringWithoutStopWords,
+			maybeQuotedWords,
 			QUERY_OPERATOR_AND,
 			stemmingLanguage,
 			0.9
@@ -72,7 +75,7 @@ export function makeQuery({
 
 	arr.push(ngram(
 		fieldsArr,
-		searchStringWithoutStopWords,
+		maybeQuotedWords,
 		QUERY_OPERATOR_AND,
 		0.8
 	));

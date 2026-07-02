@@ -93,8 +93,8 @@ export interface CollectorStateData {
 
 // Must be type not interface to satisfy Record<string, unknown> in /lib/xp/scheduler create/get/list/modify
 export type CollectorTaskConfig = {
-	collectionId: string
-	collectorId: string
-	configJson: string
-	language?: string
+	collectionId: string;
+	collectorId: string;
+	configJson: string;
+	language?: string;
 }

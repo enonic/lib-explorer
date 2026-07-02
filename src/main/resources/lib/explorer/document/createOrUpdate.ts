@@ -19,6 +19,7 @@ import {
 import {create} from './create';
 import {update} from './update';
 
+const TRACE = false;
 
 export function createOrUpdate(
 	createOrUpdateParameterObject: UpdateParameterObject,
@@ -61,7 +62,7 @@ export function createOrUpdate(
 	//──────────────────────────────────────────────────────────────────────────
 
 	if (notSet(collectionName)) {
-		log.debug('document.createOrUpdate: connecting to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
+		if (TRACE) log.debug('document.createOrUpdate: connecting to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
 		const explorerReadConnection = connect({
 			branch: BRANCH_ID_EXPLORER,
 			principals: [PRINCIPAL_EXPLORER_READ],
@@ -92,7 +93,7 @@ export function createOrUpdate(
 	}
 
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
-	log.debug('document.createOrUpdate: connecting to repoId:%s branch:%s with principals:%s', repoId, 'master', toStr([PRINCIPAL_EXPLORER_READ]));
+	if (TRACE) log.debug('document.createOrUpdate: connecting to repoId:%s branch:%s with principals:%s', repoId, 'master', toStr([PRINCIPAL_EXPLORER_READ]));
 	const collectionRepoReadConnection = connect({
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_READ],
