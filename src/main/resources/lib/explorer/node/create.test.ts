@@ -92,7 +92,7 @@ describe('node', () => {
                 ...ROOT_PERMISSIONS_EXPLORER,
                 {
                     principal: 'user:system:cwe',
-                    allow: 'READ'
+                    allow: ['READ']
                 }
             ]);
         });
