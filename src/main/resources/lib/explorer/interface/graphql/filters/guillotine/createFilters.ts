@@ -19,55 +19,55 @@ interface BooleanFilterInput {
 
 
 export function createFilters(inputFilters?: AnyObject[]): Filter[] {
-	return inputFilters && inputFilters.length > 0 ? inputFilters.map(inputFilter => {
-		const filter: AnyObject = {};
+    return inputFilters && inputFilters.length > 0 ? inputFilters.map(inputFilter => {
+        const filter: AnyObject = {};
 
-		Object.keys(inputFilter).forEach(filterName => {
-			if (filterName === 'hasValue') {
-				filter.hasValue = processHasValueFilter(inputFilter.hasValue as HasValueFilterInput);
-			} else if (filterName === 'boolean') {
-				filter.boolean = processBooleanFilter(inputFilter.boolean as BooleanFilterInput);
-			} else {
-				filter[filterName] = inputFilter[filterName];
-			}
-		});
+        Object.keys(inputFilter).forEach(filterName => {
+            if (filterName === 'hasValue') {
+                filter.hasValue = processHasValueFilter(inputFilter.hasValue as HasValueFilterInput);
+            } else if (filterName === 'boolean') {
+                filter.boolean = processBooleanFilter(inputFilter.boolean as BooleanFilterInput);
+            } else {
+                filter[filterName] = inputFilter[filterName];
+            }
+        });
 
-		return filter as unknown as Filter;
-	}) : [];
+        return filter as unknown as Filter;
+    }) : [];
 }
 
 function processHasValueFilter(hasValueFilter: HasValueFilterInput) {
-	if (hasValueFilter.hasOwnProperty('field') && Object.keys(hasValueFilter).length > 2) {
-		throw 'HasValueFilter must have only one type of values from ("stringValues, intValues, floatValues and booleanValues")';
-	}
+    if (Object.prototype.hasOwnProperty.call(hasValueFilter, 'field') && Object.keys(hasValueFilter).length > 2) {
+        throw 'HasValueFilter must have only one type of values from ("stringValues, intValues, floatValues and booleanValues")';
+    }
 
-	const filter: AnyObject = {
-		field: hasValueFilter['field']
-	};
+    const filter: AnyObject = {
+        field: hasValueFilter['field']
+    };
 
-	(['stringValues', 'intValues', 'floatValues', 'booleanValues'] as const).some(fieldName => {
-		if (hasValueFilter.hasOwnProperty(fieldName)) {
-			filter['values'] = hasValueFilter[fieldName];
-			return true;
-		}
-		return false;
-	});
+    (['stringValues', 'intValues', 'floatValues', 'booleanValues'] as const).some(fieldName => {
+        if (Object.prototype.hasOwnProperty.call(hasValueFilter, fieldName)) {
+            filter['values'] = hasValueFilter[fieldName];
+            return true;
+        }
+        return false;
+    });
 
-	return filter;
+    return filter;
 }
 
 function processBooleanFilter(booleanFilterInput: BooleanFilterInput) {
-	const booleanFilter: AnyObject = {};
+    const booleanFilter: AnyObject = {};
 
-	if (booleanFilterInput.hasOwnProperty('must')) {
-		booleanFilter.must = createFilters(booleanFilterInput.must);
-	}
-	if (booleanFilterInput.hasOwnProperty('mustNot')) {
-		booleanFilter.mustNot = createFilters(booleanFilterInput.mustNot);
-	}
-	if (booleanFilterInput.hasOwnProperty('should')) {
-		booleanFilter.should = createFilters(booleanFilterInput.should);
-	}
+    if (Object.prototype.hasOwnProperty.call(booleanFilterInput, 'must')) {
+        booleanFilter.must = createFilters(booleanFilterInput.must);
+    }
+    if (Object.prototype.hasOwnProperty.call(booleanFilterInput, 'mustNot')) {
+        booleanFilter.mustNot = createFilters(booleanFilterInput.mustNot);
+    }
+    if (Object.prototype.hasOwnProperty.call(booleanFilterInput, 'should')) {
+        booleanFilter.should = createFilters(booleanFilterInput.should);
+    }
 
-	return booleanFilter;
+    return booleanFilter;
 }

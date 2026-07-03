@@ -3,48 +3,48 @@ import type { connect } from '@enonic-types/lib-node';
 
 
 import {
-	Log,
-	LibEvent,
-	LibNode,
-	Server
+    Log,
+    LibEvent,
+    LibNode,
+    Server
 } from '@enonic/mock-xp';
 import {
-	describe,
-	// expect,
-	jest,
-	test as it
+    describe,
+    // expect,
+    jest,
+    test as it
 } from '@jest/globals';
 import { update } from './update';
 import {
-	DOCUMENT_TYPE,
-	DOCUMENT_TYPES_FOLDER
+    DOCUMENT_TYPE,
+    DOCUMENT_TYPES_FOLDER
 } from '../../../../../../test/testData';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-declare module globalThis {
+declare namespace globalThis {
 	let log: Log
 }
 
 const server = new Server({
-	loglevel: 'silent'
+    loglevel: 'silent'
 }).createRepo({
-	id: 'com.enonic.app.explorer'
+    id: 'com.enonic.app.explorer'
 });
 
 globalThis.log = server.log;
 
 
 const libEvent = new LibEvent({
-	server
+    server
 });
 
 const libNode = new LibNode({
-	server
+    server
 });
 
 const connection = libNode.connect({
-	repoId: 'com.enonic.app.explorer',
-	branch: 'master'
+    repoId: 'com.enonic.app.explorer',
+    branch: 'master'
 });
 connection.create(DOCUMENT_TYPES_FOLDER);
 const CREATED_DOCUMENT_TYPE_NODE = connection.create(DOCUMENT_TYPE);
@@ -64,21 +64,21 @@ jest.mock('/lib/xp/node', () => {
 
 
 describe('documentType', () => {
-	describe('update()', () => {
-		it('modifies the documentType', () => {
-			const expected = {
-				...CREATED_DOCUMENT_TYPE_NODE,
-				_versionKey: '00000000-0000-4000-8000-000000000006'
-			};
-			delete expected.properties;
-			const updateRes = update({
-				_id: CREATED_DOCUMENT_TYPE_NODE._id,
-				properties: []
-			});
-			// log.info('updateRes:%s', updateRes);
-			expect(updateRes).toStrictEqual(expected);
-			expect(connection.get(CREATED_DOCUMENT_TYPE_NODE._id))
-				.toStrictEqual(expected);
-		}); // it
-	}); // describe update()
+    describe('update()', () => {
+        it('modifies the documentType', () => {
+            const expected = {
+                ...CREATED_DOCUMENT_TYPE_NODE,
+                _versionKey: '00000000-0000-4000-8000-000000000006'
+            };
+            delete expected.properties;
+            const updateRes = update({
+                _id: CREATED_DOCUMENT_TYPE_NODE._id,
+                properties: []
+            });
+            // log.info('updateRes:%s', updateRes);
+            expect(updateRes).toStrictEqual(expected);
+            expect(connection.get(CREATED_DOCUMENT_TYPE_NODE._id))
+                .toStrictEqual(expected);
+        }); // it
+    }); // describe update()
 }); // describe documentType

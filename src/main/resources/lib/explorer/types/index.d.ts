@@ -52,188 +52,188 @@ export namespace HttpClient {
 
 
 export type {
-	Aggregation,
-	Aggregations,
-	AggregationsResponse,
-	AggregationsResponseBucket,
-	AggregationsResponseEntry,
-	DateHistogramAggregation,
-	DateRangeAggregation,
-	GeoDistanceAggregation,
-	MaxAggregation,
-	MinAggregation,
-	RangeAggregation,
-	StatsAggregation,
-	TermsAggregation,
-	ValueCountAggregation
+    Aggregation,
+    Aggregations,
+    AggregationsResponse,
+    AggregationsResponseBucket,
+    AggregationsResponseEntry,
+    DateHistogramAggregation,
+    DateRangeAggregation,
+    GeoDistanceAggregation,
+    MaxAggregation,
+    MinAggregation,
+    RangeAggregation,
+    StatsAggregation,
+    TermsAggregation,
+    ValueCountAggregation
 } from '@enonic/js-utils/types/node/query/Aggregation.d';
 export type {
-	PermissionsParams,
-	PrincipalKey,
-	PrincipalKeyRole,
-	PrincipalKeyUser
+    PermissionsParams,
+    PrincipalKey,
+    PrincipalKeyRole,
+    PrincipalKeyUser
 } from '@enonic/js-utils/types/Auth.d';
 export type {
-	Highlight
+    Highlight
 } from '@enonic/js-utils/types/node/query/Highlight.d';
 export type {
-	CreateRepoParams,
-	RepositoryConfig
+    CreateRepoParams,
+    RepositoryConfig
 } from '@enonic/js-utils/types/Repo.d';
 
 export type {
-	Collection,
-	CollectionFormValues,
-	CollectionNode,
-	CollectionNodeCreateParams,
-	CollectionNodeSpecific,
-	Cron,
-	CollectionWithCron,
-	QueriedCollection
+    Collection,
+    CollectionFormValues,
+    CollectionNode,
+    CollectionNodeCreateParams,
+    CollectionNodeSpecific,
+    Cron,
+    CollectionWithCron,
+    QueriedCollection
 } from './Collection.d';
 export type {
-	Collector,
-	CollectorComponentAfterResetFunction,
-	CollectorComponentImperativeHandle,
-	CollectorComponentRef,
-	CollectorComponentValidateFunction,
-	CollectorProps,
-	CollectorStateData,
-	CollectorTaskConfig
+    Collector,
+    CollectorComponentAfterResetFunction,
+    CollectorComponentImperativeHandle,
+    CollectorComponentRef,
+    CollectorComponentValidateFunction,
+    CollectorProps,
+    CollectorStateData,
+    CollectorTaskConfig
 } from './Collector.d';
 export type {
-	GetContext
+    GetContext
 } from './Context.d';
 export type {
-	DocumentNode
+    DocumentNode
 } from './Document.d';
 export type {
-	DocumentType,
-	DocumentTypeCreateParams,
-	DocumentTypeField,
-	DocumentTypeFields,
-	DocumentTypeFieldsObject,
-	DocumentTypeNode,
-	DocumentTypeNodeSpecific,
-	DocumentTypesJson,
-	DocumentTypesJsonDocumentType
+    DocumentType,
+    DocumentTypeCreateParams,
+    DocumentTypeField,
+    DocumentTypeFields,
+    DocumentTypeFieldsObject,
+    DocumentTypeNode,
+    DocumentTypeNodeSpecific,
+    DocumentTypesJson,
+    DocumentTypesJsonDocumentType
 } from './DocumentType.d';
 export type {
-	Field,
-	FieldNode
+    Field,
+    FieldNode
 } from './Field.d';
 export type {
-	QueryFilters
+    QueryFilters
 } from './Filters.d';
 export type {
-	GQL_InputType_Highlight
+    GQL_InputType_Highlight
 } from './GraphQL.d';
 export type {
-	IndexConfig,
-	IndexConfigConfig,
-	IndexConfigConfigsEntry,
-	IndexConfigObject,
-	IndexConfigTemplate
+    IndexConfig,
+    IndexConfigConfig,
+    IndexConfigConfigsEntry,
+    IndexConfigObject,
+    IndexConfigTemplate
 } from './IndexConfig.d';
 export type {
-	CreateJournalNodeParams,
-	JournalInterface,
-	JournalMessage,
-	JournalNode,
-	JournalType
+    CreateJournalNodeParams,
+    JournalInterface,
+    JournalMessage,
+    JournalNode,
+    JournalType
 } from './Journal.d';
 export type {
-	ChildOrder,
-	ExplorerAdminGQLInterfaceNodeCommonProps,
-	Id,
-	Key,
-	MultiRepoConnectionQueryNode,
-	Name,
-	Node,
-	NodeCreate,
-	NodeCreateParams,
-	NodeGetParams,
-	NodeModifyParams,
-	NodeType,
-	ParentPath,
-	Path,
-	RequiredNodeProperties,
-	ScoreOptional,
-	ScoreRequired,
-	State,
-	TimeStamp,
-	VersionKey
+    ChildOrder,
+    ExplorerAdminGQLInterfaceNodeCommonProps,
+    Id,
+    Key,
+    MultiRepoConnectionQueryNode,
+    Name,
+    Node,
+    NodeCreate,
+    NodeCreateParams,
+    NodeGetParams,
+    NodeModifyParams,
+    NodeType,
+    ParentPath,
+    Path,
+    RequiredNodeProperties,
+    ScoreOptional,
+    ScoreRequired,
+    State,
+    TimeStamp,
+    VersionKey
 } from './Node.d';
 export type {
-	Notifications,
-	NotificationsNode,
-	NotificationsNodeCreateParams,
-	NotificationsNodeSpecific
+    Notifications,
+    NotificationsNode,
+    NotificationsNodeCreateParams,
+    NotificationsNodeSpecific
 } from './Notifications.d';
 export type {
-	Interface,
-	InterfaceSpecific,
-	InterfaceField,
-	InterfaceNode,
-	InterfaceNodeCreateParams,
-	InterfaceNodeSpecific,
-	TermQuery,
+    Interface,
+    InterfaceSpecific,
+    InterfaceField,
+    InterfaceNode,
+    InterfaceNodeCreateParams,
+    InterfaceNodeSpecific,
+    TermQuery,
 } from './Interface.d';
 export type {
-	Repo
+    Repo
 } from './Repo.d';
 export type {
-	RepoConnection
+    RepoConnection
 } from './RepoConnection.d';
 export type { HttpClientRequest } from './Request.d';
 export type { Http2Response } from './Response.d';
 export type {
-	ScheduledJob
+    ScheduledJob
 } from './Scheduler.d';
 export type {
-	QueriedStopword,
-	Stopword,
-	StopwordNode
+    QueriedStopword,
+    Stopword,
+    StopwordNode
 } from './Stopword.d';
 export type {
-	InputTypeLanguageSynonym,
-	InputTypeSynonymLanguages,
-	QueriedSynonym,
-	Synonym,
-	Synonym_Common,
-	Synonym_Language,
-	Synonym_LanguagesSynonymObject,
-	SynonymGUI,
-	SynonymGUI_Language,
-	SynonymGUI_LanguagesSynonymObject,
-	SynonymNode,
-	SynonymNode_Languages,
-	SynonymNode_LanguagesSynonymObject,
-	SynonymNodeCreateParams,
-	SynonymNodeModifyParams,
-	SynonymUse,
-	Write_SynonymNode_LanguagesSynonymObject
+    InputTypeLanguageSynonym,
+    InputTypeSynonymLanguages,
+    QueriedSynonym,
+    Synonym,
+    Synonym_Common,
+    Synonym_Language,
+    Synonym_LanguagesSynonymObject,
+    SynonymGUI,
+    SynonymGUI_Language,
+    SynonymGUI_LanguagesSynonymObject,
+    SynonymNode,
+    SynonymNode_Languages,
+    SynonymNode_LanguagesSynonymObject,
+    SynonymNodeCreateParams,
+    SynonymNodeModifyParams,
+    SynonymUse,
+    Write_SynonymNode_LanguagesSynonymObject
 } from './Synonym.d';
 export type {
-	Task,
-	TaskDescriptor,
-	TaskName,
-	TaskShouldType
+    Task,
+    TaskDescriptor,
+    TaskName,
+    TaskShouldType
 } from './Task.d';
 export type {
-	Thesaurus,
-	ThesaurusNode,
-	ThesaurusNodeCreateParams,
-	ThesaurusSpecific
+    Thesaurus,
+    ThesaurusNode,
+    ThesaurusNodeCreateParams,
+    ThesaurusSpecific
 } from './Thesaurus.d';
 export type {
-	AnyObject,
-	EmptyObject,
-	NestedRecordInterface,
-	NestedRecordType,
-	OneOrMore,
-	ZeroOrMore
+    AnyObject,
+    EmptyObject,
+    NestedRecordInterface,
+    NestedRecordType,
+    OneOrMore,
+    ZeroOrMore
 } from './Utility.d';
 export type {
-	WriteConnection
+    WriteConnection
 } from './WriteConnection.d';

@@ -1,18 +1,17 @@
 import type {
-	HighlightResult
+    HighlightResult
 } from '@enonic-types/core';
 import type {
-	Explanation,
-	FieldSortDsl,
+    Explanation,
+    FieldSortDsl,
 } from '/lib/xp/node';
 import type {
-	AnyObject,
-	DocumentNode,
-	EmptyObject,
-	GQL_InputType_Highlight,
-	InterfaceField,
-	SynonymsArray,
-	TermQuery,
+    AnyObject,
+    DocumentNode,
+    GQL_InputType_Highlight,
+    InterfaceField,
+    SynonymsArray,
+    TermQuery,
 } from '@enonic-types/lib-explorer';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 import type { QueryDslInput } from '../input/query/QueryDslInput';

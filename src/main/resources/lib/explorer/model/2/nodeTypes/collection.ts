@@ -37,6 +37,13 @@ export function collection({
 	const obj: CleanedCollectionNodeWithParentPath = {
 		...rest,
 		_indexConfig: {
+			// The XP defaults, listed because allText is required in NodeIndexConfig
+			allText: {
+				enabled: true,
+				fulltext: true,
+				languages: [],
+				nGram: true,
+			},
 			default: indexTemplateToConfig({
 				template:'byType'
 			}),

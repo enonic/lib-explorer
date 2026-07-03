@@ -4,9 +4,9 @@
  * Removes null and undefined values from an array, narrowing to NonNullable<T>.
  */
 export function filterNils<T>(arr: readonly (T | null | undefined)[]): NonNullable<T>[] {
-  if (!Array.isArray(arr)) {
-    throw new TypeError(`filterNils expects an array, got ${typeof arr}`);
-  }
-  return (arr as readonly (T | null | undefined)[])
-    .filter((item): item is NonNullable<T> => item != null);
+    if (!Array.isArray(arr)) {
+        throw new TypeError(`filterNils expects an array, got ${typeof arr}`);
+    }
+    return (arr as readonly (T | null | undefined)[])
+        .filter((item): item is NonNullable<T> => item != null);
 }
