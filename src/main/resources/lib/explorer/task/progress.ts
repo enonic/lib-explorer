@@ -43,15 +43,15 @@ export interface Progress<Info extends AnyObject = {
 // Public function
 //──────────────────────────────────────────────────────────────────────────────
 export function progress({
-	current = undefined,
-	total = undefined,
-	info = {}
+    current = undefined,
+    total = undefined,
+    info = {}
 } : Progress = {}) {
-	info.currentTime = currentTimeMillis(); // eslint-disable-line no-param-reassign
-	if (!info.startTime) { info.startTime = info.currentTime; } // eslint-disable-line no-param-reassign
-	return _progress({
-		current,
-		total,
-		info: info ? JSON.stringify(info) : undefined
-	});
+    info.currentTime = currentTimeMillis();  
+    if (!info.startTime) { info.startTime = info.currentTime; }  
+    return _progress({
+        current,
+        total,
+        info: info ? JSON.stringify(info) : undefined
+    });
 }

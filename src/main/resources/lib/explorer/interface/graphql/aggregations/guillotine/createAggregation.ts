@@ -3,15 +3,15 @@ import type {AnyObject} from '@enonic-types/lib-explorer';
 
 
 const SUPPORTED_AGGREGATIONS = [
-	'terms',
-	'stats',
-	'range',
-	'dateRange',
-	'dateHistogram',
-	'geoDistance',
-	'min',
-	'max',
-	'count'
+    'terms',
+    'stats',
+    'range',
+    'dateRange',
+    'dateHistogram',
+    'geoDistance',
+    'min',
+    'max',
+    'count'
 ] as const;
 
 
@@ -22,25 +22,25 @@ export interface AggregationInput extends AnyObject {
 
 
 export function createAggregation(holder: AnyObject, aggregation: AggregationInput): AnyObject {
-	const aggregationHolder: AnyObject = {};
-	holder[aggregation.name] = aggregationHolder;
+    const aggregationHolder: AnyObject = {};
+    holder[aggregation.name] = aggregationHolder;
 
-	SUPPORTED_AGGREGATIONS.some(aggregationName => {
-		if (aggregation.hasOwnProperty(aggregationName)) {
-			aggregationHolder[aggregationName] = aggregation[aggregationName];
-			return true;
-		}
-		return false;
-	});
+    SUPPORTED_AGGREGATIONS.some(aggregationName => {
+        if (Object.prototype.hasOwnProperty.call(aggregation, aggregationName)) {
+            aggregationHolder[aggregationName] = aggregation[aggregationName];
+            return true;
+        }
+        return false;
+    });
 
-	if (aggregation.subAggregations && aggregation.subAggregations.length > 0) {
-		const subAggregationsHolder: AnyObject = {};
-		aggregationHolder['aggregations'] = subAggregationsHolder;
+    if (aggregation.subAggregations && aggregation.subAggregations.length > 0) {
+        const subAggregationsHolder: AnyObject = {};
+        aggregationHolder['aggregations'] = subAggregationsHolder;
 
-		aggregation.subAggregations.forEach(subAggregation => {
-			createAggregation(subAggregationsHolder, subAggregation);
-		});
-	}
+        aggregation.subAggregations.forEach(subAggregation => {
+            createAggregation(subAggregationsHolder, subAggregation);
+        });
+    }
 
-	return holder;
+    return holder;
 }

@@ -10,14 +10,14 @@ import { filterNils } from './filterNils';
  * - If input is a single non-nillish value → returns [value]
  */
 export function noNilsArray<T>(value: T | T[] | null | undefined): NonNullable<T>[] {
-  if (value == null) {
-    return [];
-  }
+    if (value == null) {
+        return [];
+    }
 
-  if (Array.isArray(value)) {
-    return filterNils(value);
-  }
+    if (Array.isArray(value)) {
+        return filterNils(value);
+    }
 
-  // single non-nullish value
-  return [value];
+    // single non-nullish value
+    return [value];
 }

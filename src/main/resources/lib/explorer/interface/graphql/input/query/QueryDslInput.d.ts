@@ -1,7 +1,3 @@
-import type {
-	QueryDsl
-} from '@enonic-types/lib-node';
-
 export interface BooleanDslExpressionInput {
     should?: QueryDslInput[];
     must?: QueryDslInput[];

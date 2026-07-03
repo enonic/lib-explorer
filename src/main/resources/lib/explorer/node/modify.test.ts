@@ -4,56 +4,56 @@ import type { WriteConnection } from '/lib/explorer/types/index.d';
 
 import { ROOT_PERMISSIONS_EXPLORER } from '@enonic/explorer-utils';
 import {
-	Log,
-	Server,
+    Log,
+    Server,
 } from '@enonic/mock-xp';
 import {
-	describe,
-	expect,
-	jest,
-	test as it
+    describe,
+    expect,
+    jest,
+    test as it
 } from '@jest/globals';
 import { modify } from './modify';
 
 
 const server = new Server({
-	loglevel: 'silent'
+    loglevel: 'silent'
 }).createRepo({
-	id: 'com.enonic.app.explorer'
+    id: 'com.enonic.app.explorer'
 });
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-declare module globalThis {
+declare namespace globalThis {
 	let log: Log
 }
 
 globalThis.log = server.log;
 
 const writeConnection = server.connect({
-	branchId: 'master',
-	repoId: 'com.enonic.app.explorer',
+    branchId: 'master',
+    repoId: 'com.enonic.app.explorer',
 }) as unknown as WriteConnection;
 
 const createdNode = writeConnection.create({
-	_name: 'node_name',
+    _name: 'node_name',
 });
 
 // log.debug('createdNode:%s', createdNode);
 
 jest.mock('/lib/xp/common', () => ({
-	sanitize: jest.fn<typeof sanitize>((text) => text)
+    sanitize: jest.fn<typeof sanitize>((text) => text)
 }), { virtual: true });
 
 describe('node', () => {
-	describe('modify()', () => {
-		it('fixes missing permissions', () => {
-			const modifyRes = modify({
-				_id: createdNode._id,
-			}, {
-				connection: writeConnection,
-			});
-			// log.debug('modifyRes:%s', modifyRes);
-			expect(modifyRes['_permissions']).toStrictEqual(ROOT_PERMISSIONS_EXPLORER);
-		});
-	});
+    describe('modify()', () => {
+        it('fixes missing permissions', () => {
+            const modifyRes = modify({
+                _id: createdNode._id,
+            }, {
+                connection: writeConnection,
+            });
+            // log.debug('modifyRes:%s', modifyRes);
+            expect(modifyRes['_permissions']).toStrictEqual(ROOT_PERMISSIONS_EXPLORER);
+        });
+    });
 });
