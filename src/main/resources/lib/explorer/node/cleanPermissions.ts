@@ -50,7 +50,7 @@ export default function cleanPermissions({
 				if (arrayIncludes(allow, 'READ')) {
 					safePermissions.push({
 						principal,
-						allow: 'READ'
+						allow: ['READ']
 					});
 				}
 			}
