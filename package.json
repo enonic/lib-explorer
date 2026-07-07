@@ -26,7 +26,7 @@
     "@enonic-types/lib-scheduler": "^8",
     "@enonic-types/lib-task": "^8",
     "@enonic-types/lib-value": "^8",
-    "@enonic/explorer-utils": "^1.0.0",
+    "@enonic/explorer-utils": "^1.0.1",
     "@enonic/mock-xp": "^2.0.1",
     "@enonic/test-data": "^1",
     "@eslint/js": "^10",
