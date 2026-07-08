@@ -5,20 +5,20 @@ import type {
 
 import type { ExplorerAdminGQLInterfaceNodeCommonProps } from './Node.d';
 
-
+// Similar to NodeConfigEntry, but without indexValueProcessors and languages;
 export type DocumentTypeField = {
-	active?: boolean // From GUI
-	enabled?: boolean
-	decideByType?: boolean
-	fulltext?: boolean
-	includeInAllText?: boolean
-	max?: number
-	min?: number
-	name: string
-	nGram?: boolean
-	path?: boolean
-	stemmed?: boolean
-	valueType?: string
+	active?: boolean; // From GUI
+	enabled?: boolean; // Required in NodeConfigEntry.
+	decideByType?: boolean; // Required in NodeConfigEntry.
+	fulltext?: boolean; // Required in NodeConfigEntry.
+	includeInAllText?: boolean; // Required in NodeConfigEntry.
+	max?: number;
+	min?: number;
+	name: string;
+	nGram?: boolean; // Required in NodeConfigEntry.
+	path?: boolean; // Required in NodeConfigEntry.
+	stemmed?: boolean;
+	valueType?: string;
 }
 
 export type DocumentTypeFields = DocumentTypeField[];

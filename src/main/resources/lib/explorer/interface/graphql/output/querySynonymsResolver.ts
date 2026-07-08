@@ -1,5 +1,6 @@
 import type {
 	Profiling,
+	QuerySynonymsResolverEnv,
 	QuerySynonymsReturnType
 } from '/lib/explorer/interface/graphql/output/index.d';
 
@@ -20,7 +21,7 @@ const {currentTimeMillis} = Java.type('java.lang.System') as {
 }
 
 
-export function querySynonymsResolver(env) {
+export function querySynonymsResolver(env: QuerySynonymsResolverEnv) {
 	const {
 		args: {
 			languages,
@@ -33,11 +34,10 @@ export function querySynonymsResolver(env) {
 			logSynonymsQueryResult = false//,
 			//query: graphqlFieldsString
 		},
-		// source = {} // Doesn't handle null!!!
+		source
 	} = env;
-	let {source} = env;
-	if (!isSet(source)) { // handles null :)
-		source = {};
+	if (!isSet(source)) {
+		throw new Error(`Can't continue querySynonyms without source?`);
 	}
 	// log.debug('querySynonyms resolver interfaceName: %s', toStr(interfaceName));
 
@@ -51,7 +51,7 @@ export function querySynonymsResolver(env) {
 		//log.debug('profiling:%s', toStr(profiling));
 	}
 
-	const {interfaceInfo} = source;
+	const { interfaceInfo } = source;
 	//log.debug('querySynonyms resolver source: %s', toStr(source)); // null
 
 	//log.debug('querySynonyms resolver graphqlFieldsString: %s', toStr(graphqlFieldsString));
@@ -90,7 +90,7 @@ export function querySynonymsResolver(env) {
 	}
 
 	// TODO reuse interface information?
-	const rv :QuerySynonymsReturnType = {
+	const rv: QuerySynonymsReturnType = {
 		interfaceInfo,
 		languages: languages ? languages : localesInSelectedThesauri,
 		searchString,

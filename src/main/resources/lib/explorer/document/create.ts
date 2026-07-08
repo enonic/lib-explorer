@@ -72,6 +72,8 @@ import {typeCastToJava} from './typeCastToJava';
 
 
 export interface CreateParameterObject {
+	_debug?: boolean;
+	_trace?: boolean;
 	addExtraFields?: boolean
 	cleanExtraFields?: boolean
 	collectionId?: string // TODO Scalar Regexp?
@@ -89,14 +91,16 @@ export interface CreateParameterObject {
 	fields?: DocumentTypeFields
 	language?: string
 	requireValid?: boolean
-	//repoName?: string
+	// repoName?: string
 	stemmingLanguage?: string
 	validateOccurrences?: boolean
 	validateTypes?: boolean
 }
 
 
+const DEBUG = false;
 const TRACE = false;
+const LOG_PREFIX = 'document.create:';
 
 
 // dieOnError
@@ -113,8 +117,10 @@ export function create(
 		collectorVersion,
 		data = {},
 		// Options
+		_debug = DEBUG,
+		_trace = TRACE,
 		cleanExtraFields = false, // If true, extra fields can't cause error nor addType, because extra fields are deleted.
-		//denyExtraFields = cleanExtraFields, // If false, extra fields cause error and not persisted
+		// denyExtraFields = cleanExtraFields, // If false, extra fields cause error and not persisted
 		addExtraFields = !cleanExtraFields,
 		requireValid = false,
 		validateOccurrences = false,
@@ -130,22 +136,24 @@ export function create(
 		stemmingLanguage, // If empty gotten from language
 	} = createParameterObject;
 
-	// log.debug('document.create: collectionId:%s', collectionId);
-	// log.debug('document.create: collectionName:%s', collectionName);
-	// log.debug('document.create: collectorId:%s', collectorId);
-	// log.debug('document.create: collectorVersion:%s', collectorVersion);
-	// log.debug('document.create: data:%s', toStr(data));
-	// log.debug('document.create: documentTypeId:%s', documentTypeId);
-	// log.debug('document.create: documentTypeName:%s', documentTypeName);
-	// log.debug('document.create: fields:%s', toStr(fields));
-	// log.debug('document.create: language:%s', language);
-	// log.debug('document.create: stemmingLanguage:%s', stemmingLanguage);
+	if (_trace) {
+		log.debug('%s collectionId:%s', LOG_PREFIX, collectionId);
+		log.debug('%s collectionName:%s', LOG_PREFIX, collectionName);
+		log.debug('%s collectorId:%s', LOG_PREFIX, collectorId);
+		log.debug('%s collectorVersion:%s', LOG_PREFIX, collectorVersion);
+		log.debug('%s data:%s', LOG_PREFIX, toStr(data));
+		log.debug('%s documentTypeId:%s', LOG_PREFIX, documentTypeId);
+		log.debug('%s documentTypeName:%s', LOG_PREFIX, documentTypeName);
+		log.debug('%s fields:%s', LOG_PREFIX, toStr(fields));
+		log.debug('%s language:%s', LOG_PREFIX, language);
+		log.debug('%s stemmingLanguage:%s', LOG_PREFIX, stemmingLanguage);
 
-	// log.debug('document.create: addExtraFields:%s', addExtraFields);
-	// log.debug('document.create: cleanExtraFields:%s', cleanExtraFields);
-	// log.debug('document.create: requireValid:%s', requireValid);
-	// log.debug('document.create: validateOccurrences:%s', validateOccurrences);
-	// log.debug('document.create: validateTypes:%s', validateTypes);
+		log.debug('%s addExtraFields:%s', LOG_PREFIX, addExtraFields);
+		log.debug('%s cleanExtraFields:%s', LOG_PREFIX, cleanExtraFields);
+		log.debug('%s requireValid:%s', LOG_PREFIX, requireValid);
+		log.debug('%s validateOccurrences:%s', LOG_PREFIX, validateOccurrences);
+		log.debug('%s validateTypes:%s', LOG_PREFIX, validateTypes);
+	}
 
 	//──────────────────────────────────────────────────────────────────────────
 	// Checking required parameters
@@ -165,7 +173,7 @@ export function create(
 			validateTypes
 			|| validateOccurrences
 			|| cleanExtraFields
-			//|| requireValid
+			// || requireValid
 		)
 		&& notSet(collectionId)
 		&& notSet(collectionName)
@@ -250,13 +258,19 @@ export function create(
 		notSet(fields) ||
 		notSet(language)
 	) {
-		if (TRACE) log.debug('document.create: connecting to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
+		if (_trace) log.debug(
+			'%s connecting to repoId:%s branch:%s with principals:%s',
+			LOG_PREFIX, REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ])
+		);
 		const explorerReadConnection = connect({
 			branch: BRANCH_ID_EXPLORER,
 			principals: [PRINCIPAL_EXPLORER_READ],
 			repoId: REPO_ID_EXPLORER
 		});
-		if (TRACE) log.debug('document.create: connected to repoId:%s branch:%s with principals:%s', REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ]));
+		if (_trace) log.debug(
+			'%s connected to repoId:%s branch:%s with principals:%s',
+			LOG_PREFIX, REPO_ID_EXPLORER, BRANCH_ID_EXPLORER, toStr([PRINCIPAL_EXPLORER_READ])
+		);
 
 		// There are many valid ways to call document.create with regards to documentTypeId and documentTypeName.
 		// 1. Only documentTypeId provided.
@@ -271,24 +285,33 @@ export function create(
 		let documentTypeNode: DocumentTypeNode;
 		if (documentTypeId) { // This covers 1 and 3.
 			documentTypeNode = explorerReadConnection.get(documentTypeId);
-			// log.debug("document.create: documentTypeNode(A):%s", toStr(documentTypeNode));
+			if (_trace) log.debug('%s documentTypeNode(A):%s', LOG_PREFIX, toStr(documentTypeNode));
 			if (documentTypeName && documentTypeName !== documentTypeNode._name) {
-				log.warning('documentTypeNode._name:%s from documentTypeId:%s supersedes passed in documentTypeName:%s', documentTypeNode._name, documentTypeId, documentTypeName);
+				log.warning(
+					'%s documentTypeNode._name:%s from documentTypeId:%s supersedes passed in documentTypeName:%s',
+					LOG_PREFIX, documentTypeNode._name, documentTypeId, documentTypeName
+				);
 			}
 			documentTypeName = documentTypeNode._name;
-			if (TRACE) log.debug('document.create: sat documentTypeName:%s from documentTypeId:%s', documentTypeName, documentTypeId);
+			if (_trace) log.debug(
+				'%s sat documentTypeName:%s from documentTypeId:%s',
+				LOG_PREFIX, documentTypeName, documentTypeId
+			);
 		} else if(
 			// !documentTypeId &&
 			documentTypeName
 		) {
 			const documentTypeNodePath = documentTypeNameToPath(documentTypeName);
 			documentTypeNode = explorerReadConnection.get(documentTypeNodePath);
-			// log.debug("document.create: documentTypeNode(B):%s", toStr(documentTypeNode));
+			if (_trace) log.debug('%s documentTypeNode(B):%s', LOG_PREFIX, toStr(documentTypeNode));
 			if (!documentTypeNode) {
 				throw new Error(`Something went wrong when trying to get documentTypeId from documentTypeName:${documentTypeName} via path:${documentTypeNodePath}`);
 			}
 			documentTypeId = documentTypeNode._id; // NOTE: documentTypeId is needed when adding extra fields
-			if (TRACE) log.debug('document.create: sat documentTypeId:%s from documentTypeName:%s', documentTypeId, documentTypeName);
+			if (_trace) log.debug(
+				'%s sat documentTypeId:%s from documentTypeName:%s',
+				LOG_PREFIX, documentTypeId, documentTypeName
+			);
 		}
 		// At this point:
 		//  * either both documentTypeId and documentTypeName are undefined (so try default documentTypeId from collectionNode)
@@ -297,12 +320,18 @@ export function create(
 		let collectionNode: CollectionNode;
 		if (collectionId) {
 			collectionNode = explorerReadConnection.get(collectionId) as CollectionNode;
-			if (TRACE) log.debug('collectionNode:%s', collectionNode);
+			if (_trace) log.debug('%s collectionNode:%s', LOG_PREFIX, collectionNode);
 			if (collectionName && collectionName !== collectionNode._name) {
-				log.warning('collectionNode._name:%s from collectionId:%s supersedes passed in collectionName:%s', collectionNode._name, collectionId, collectionName);
+				log.warning(
+					'%s collectionNode._name:%s from collectionId:%s supersedes passed in collectionName:%s',
+					LOG_PREFIX, collectionNode._name, collectionId, collectionName
+				);
 			}
 			collectionName = collectionNode._name;
-			if (TRACE) log.debug('document.create: sat collectionName:%s from collectionId:%s', collectionName, collectionId);
+			if (_trace) log.debug(
+				'%s sat collectionName:%s from collectionId:%s',
+				LOG_PREFIX, collectionName, collectionId
+			);
 		}
 
 		if (!collectionName) {
@@ -327,16 +356,18 @@ export function create(
 					throw new Error('!collectionName && !collectionId: This should never happen!');
 				}
 				const collectionPath = `${PATH_COLLECTIONS}/${collectionName}`;
-				if (TRACE) log.debug('collectionPath:%s', collectionPath);
+				if (_trace) log.debug('%s collectionPath:%s', LOG_PREFIX, collectionPath);
 				collectionNode = explorerReadConnection.get(collectionPath);
-				if (TRACE) log.debug('collectionNode:%s', collectionNode);
+				if (_trace) log.debug('%s collectionNode:%s', LOG_PREFIX, toStr(collectionNode));
 			}
 
 			if(notSet(language)) {
 				const languageFromCollection = collectionNode['language']; // This can be undefined
 				if (languageFromCollection) {
 					language = languageFromCollection;
-					if (TRACE) log.debug('document.create: sat language:%s from collectionNode.language', language);
+					if (_trace) log.debug(
+						'%s sat language:%s from collectionNode.language', LOG_PREFIX, language
+					);
 				}
 				// NOTE: When no language is provided anywhere, there should be no stemming.
 			}
@@ -359,23 +390,34 @@ export function create(
 					// Get documentTypeName from default documentTypeId
 
 					documentTypeId = collectionNode['documentTypeId'].toString(); // NOTE: documentTypeId is needed when adding extra fields
-					if (TRACE) log.debug('document.create: sat documentTypeId:%s from collectionNode.documentTypeId', documentTypeId);
+					if (_trace) log.debug(
+						'%s sat documentTypeId:%s from collectionNode.documentTypeId',
+						LOG_PREFIX, documentTypeId
+					);
 
 					documentTypeNode = explorerReadConnection.get(documentTypeId);
 					if (!documentTypeNode) {
 						throw new Error(`Unable to get documentTypeNode with id:${documentTypeId}`);
 					}
 					documentTypeName = documentTypeNode._name;
-					if (TRACE) log.debug('document.create: sat documentTypeName:%s from collectionNode.documentTypeId._name', documentTypeName);
+					if (_trace) log.debug(
+						'%s sat documentTypeName:%s from collectionNode.documentTypeId._name',
+						LOG_PREFIX, documentTypeName
+					);
 				}
 			} // if need to read default documentTypeId from collectionNode
 		} // if need to read from collectionNode
 
 		if (notSet(fields)) {
-			// log.debug("document.create: documentTypeNode:%s", toStr(documentTypeNode));
-			// log.debug("document.create: documentTypeNode['properties']:%s", toStr(documentTypeNode['properties'])); // undefined
+			if (_trace) log.debug('%s documentTypeNode:%s', LOG_PREFIX, toStr(documentTypeNode));
+			if (_trace) log.debug(
+				"%s documentTypeNode['properties']:%s",
+				LOG_PREFIX, toStr(documentTypeNode['properties'])
+			); // undefined
 			fields = isSet(documentTypeNode['properties']) ? forceArray(documentTypeNode['properties']) : [];
-			if (TRACE) log.debug('document.create: sat fields:%s from documentTypeNode.properties', toStr(fields));
+			if (_trace) log.debug(
+				'%s sat fields:%s from documentTypeNode.properties', LOG_PREFIX, toStr(fields)
+			);
 		}
 	}
 
@@ -383,25 +425,32 @@ export function create(
 
 	if(notSet(stemmingLanguage) && isSet(language)) {
 		stemmingLanguage = stemmingLanguageFromLocale(language);
-		if (TRACE) log.debug('document.create: sat stemmingLanguage:%s from language:%s', stemmingLanguage, language);
+		if (_trace) log.debug(
+			'%s sat stemmingLanguage:%s from language:%s', LOG_PREFIX, stemmingLanguage, language
+		);
 	}
 
 	//──────────────────────────────────────────────────────────────────────────
 
-	// log.debug('document.create: collectionId:%s', collectionId);
-	// log.debug('document.create: collectorId:%s', collectorId);
-	// log.debug('document.create: collectorVersion:%s', collectorVersion);
-	// log.debug('document.create: data:%s', toStr(data));
-	// log.debug('document.create: fields:%s', toStr(fields));
+	if (_trace) {
+		log.debug('%s collectionId:%s', LOG_PREFIX, collectionId);
+		log.debug('%s collectorId:%s', LOG_PREFIX, collectorId);
+		log.debug('%s collectorVersion:%s', LOG_PREFIX, collectorVersion);
+		log.debug('%s data:%s', LOG_PREFIX, toStr(data));
+		log.debug('%s fields:%s', LOG_PREFIX, toStr(fields));
+	}
 
-	//let myFields = JSON.parse(JSON.stringify(fields));
+	// let myFields = JSON.parse(JSON.stringify(fields));
 	let fieldsObj = fieldsArrayToObj(fields);
-	// log.debug('document.create: fieldsObj:%s', toStr(fieldsObj));
+	if (_trace) log.debug('%s fieldsObj:%s', LOG_PREFIX, toStr(fieldsObj));
 
 	const dataWithConstrainedPropertyNames = constrainPropertyNames({
 		data
 	});
-	// log.debug('document.create: dataWithConstrainedPropertyNames:%s', toStr(dataWithConstrainedPropertyNames));
+	if (_trace) log.debug(
+		'%s dataWithConstrainedPropertyNames:%s',
+		LOG_PREFIX, toStr(dataWithConstrainedPropertyNames)
+	);
 
 	if (addExtraFields) {
 		fieldsObj = addExtraFieldsToDocumentType({
@@ -410,14 +459,14 @@ export function create(
 			fieldsObj,
 		});
 	}
-	// log.debug(`fieldsObj:${toStr(fieldsObj)}`);
+	if (_trace) log.debug('%s fieldsObj:%s', LOG_PREFIX, toStr(fieldsObj));
 
 	const cleanedData = cleanData({
 		cleanExtraFields,
 		data: dataWithConstrainedPropertyNames,
 		fieldsObj
 	});
-	// log.debug(`cleanedData:${toStr(cleanedData)}`);
+	if (_trace) log.debug('%s cleanedData:%s', LOG_PREFIX, toStr(cleanedData));
 
 	const isValid = validate({
 		data: cleanedData,
@@ -425,7 +474,7 @@ export function create(
 		validateOccurrences,
 		validateTypes
 	});
-	// log.debug(`isValid:${toStr(isValid)}`);
+	if (_trace) log.debug('%s isValid:%s', LOG_PREFIX, toStr(isValid));
 	if (requireValid && !isValid) {
 		throw new Error(`validation failed! requireValid:${requireValid} validateOccurrences:${validateOccurrences} validateTypes:${validateTypes} cleanedData:${toStr(cleanedData)} fieldsObj:${toStr(fieldsObj)}`);
 	}
@@ -434,7 +483,7 @@ export function create(
 		data: cleanedData,
 		fieldsObj
 	});
-	// log.debug('dataWithJavaTypes %s', dataWithJavaTypes);
+	if (_trace) log.debug('%s dataWithJavaTypes %s', LOG_PREFIX, toStr(dataWithJavaTypes));
 
 	const languages: string[] = [];
 	if (stemmingLanguage) {
@@ -442,11 +491,12 @@ export function create(
 	}
 
 	const indexConfig = buildIndexConfig({
-		//data,
+		// data,
 		fieldsObj,
 		languages
 	});
-	// log.debug('indexConfig %s', indexConfig);
+	if (_trace) log.debug('%s indexConfig %s', LOG_PREFIX, toStr(indexConfig));
+
 	dataWithJavaTypes['_indexConfig'] = indexConfig;
 	dataWithJavaTypes._inheritsPermissions = false; // false is the default and the fastest, since it doesn't have to read parent to apply permissions.
 	dataWithJavaTypes._permissions = ROOT_PERMISSIONS_EXPLORER;
@@ -466,18 +516,21 @@ export function create(
 	dataWithJavaTypes._nodeType = NT_DOCUMENT;
 
 	const sortedDataWithIndexConfig = sortKeys(dataWithJavaTypes);
-	// log.debug('sortedDataWithIndexConfig %s', sortedDataWithIndexConfig);
+	if (_trace) log.debug('%s sortedDataWithIndexConfig %s', LOG_PREFIX, sortedDataWithIndexConfig);
 
 	const repoId = `${COLLECTION_REPO_PREFIX}${collectionName}`;
-	// log.debug('repoId:%s', repoId);
+	if (_trace) log.debug('%s repoId:%s', LOG_PREFIX, repoId);
 
-	// log.debug('document.create: connecting to repoId:%s branch:%s with principals:%s', repoId, 'master', toStr([PRINCIPAL_EXPLORER_WRITE]));
+	if (_trace) log.debug(
+		'%s connecting to repoId:%s branch:%s with principals:%s',
+		LOG_PREFIX, repoId, 'master', toStr([PRINCIPAL_EXPLORER_WRITE])
+	);
 	const collectionRepoWriteConnection = connect({
 		branch: 'master',
 		principals: [PRINCIPAL_EXPLORER_WRITE],
 		repoId
 	});
 
-	// log.debug('creating node:%s', sortedDataWithIndexConfig);
+	if (_debug) log.debug('%s creating node:%s', LOG_PREFIX, toStr(sortedDataWithIndexConfig));
 	return collectionRepoWriteConnection.create(sortedDataWithIndexConfig);
 }

@@ -4,16 +4,22 @@ import {
 	// jest,
 	test as it
 } from '@jest/globals';
-// import {Log} from '@enonic/mock-xp';
+import {Log} from '@enonic/mock-xp';
 import {makeQuery} from './makeQuery';
 
-// const logger = Log.createLogger({
-// 	loglevel: 'debug'
-// });
+const logger = Log.createLogger({
+	loglevel: 'debug'
+});
+
+declare namespace globalThis {
+	let log: Log
+}
+globalThis.log = logger;
 
 describe('makeQuery', () => {
 	it('should make a minimal query for minimal input', () => {
 		expect(makeQuery({
+			// _trace: true,
 			fields: [],
 			searchStringWithoutStopWords: 'god',
 		})).toEqual({

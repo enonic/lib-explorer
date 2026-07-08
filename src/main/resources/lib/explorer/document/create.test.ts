@@ -321,7 +321,8 @@ describe('document', () => {
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
-						// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language is passed
+						indexValueProcessors: [],
+						languages: [],
 						nGram: false,
 						path: false
 					}
@@ -333,7 +334,8 @@ describe('document', () => {
 						enabled: true,
 						fulltext: true,
 						includeInAllText: true,
-						// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language is passed
+						indexValueProcessors: [],
+						languages: [],
 						nGram: true,
 						path: false
 					}
@@ -400,7 +402,8 @@ describe('document', () => {
 						enabled: true,
 						fulltext: true,
 						includeInAllText: true,
-						// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language is passed
+						indexValueProcessors: [],
+						languages: [],
 						nGram: true,
 						path: false
 					}

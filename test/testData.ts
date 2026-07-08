@@ -509,6 +509,12 @@ export const DOCUMENT_TYPE = {
 export const CREATED_TIME = new Date();
 
 export const INDEX_CONFIG = {
+	allText: {
+		enabled: true,
+		fulltext: true,
+		languages: ['en'],
+		nGram: true,
+	},
 	configs: [{
 		path: 'document_metadata.collection',
 		config: {
@@ -516,6 +522,8 @@ export const INDEX_CONFIG = {
 			enabled: true,
 			fulltext: true,
 			includeInAllText: false,
+			indexValueProcessors: [],
+			languages: [],
 			nGram: true,
 			path: false
 		}
@@ -556,6 +564,8 @@ export const INDEX_CONFIG = {
 			enabled: true,
 			fulltext: true,
 			includeInAllText: false,
+			indexValueProcessors: [],
+			languages: [],
 			nGram: true,
 			path: false
 		}
@@ -566,6 +576,8 @@ export const INDEX_CONFIG = {
 			enabled: true,
 			fulltext: true,
 			includeInAllText: false,
+			indexValueProcessors: [],
+			languages: [],
 			nGram: true,
 			path: false
 		}
@@ -576,6 +588,8 @@ export const INDEX_CONFIG = {
 			enabled: true,
 			fulltext: true,
 			includeInAllText: false,
+			indexValueProcessors: [],
+			languages: [],
 			nGram: true,
 			path: false
 		}
