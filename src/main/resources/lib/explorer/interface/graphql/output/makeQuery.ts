@@ -14,7 +14,10 @@ import {
 	// toStr,
 } from '@enonic/js-utils';
 import { quoteWordsWithNumbers } from '/lib/explorer/query/quoteWordsWithNumbers';
+import { toStr } from '@enonic/js-utils/value/toStr';
 
+const TRACE = false;
+const LOG_PREFIX = 'makeQuery:';
 
 const bool = storage.query.dsl.bool;
 const fulltext = storage.query.dsl.fulltext;
@@ -26,12 +29,14 @@ const term = storage.query.dsl.term;
 
 
 export function makeQuery({
+	_trace = TRACE,
 	fields,
 	searchStringWithoutStopWords,
 	// Optional
 	stemmingLanguages = [],
 	termQueries = [],
 }: {
+	_trace?: boolean;
 	fields: InterfaceField[]
 	searchStringWithoutStopWords: string
 	// Optional
@@ -45,7 +50,7 @@ export function makeQuery({
 			field: '_alltext'
 		})
 	}
-	// log.info('fieldsArr:%s', toStr(fieldsArr));
+	if (_trace) log.debug('%s fieldsArr:%s', LOG_PREFIX, toStr(fieldsArr));
 
 	const maybeQuotedWords = quoteWordsWithNumbers(searchStringWithoutStopWords);
 
@@ -55,8 +60,8 @@ export function makeQuery({
 		// 	||1) + (fields.length * 2), field})),
 		fieldsArr,
 		maybeQuotedWords,
-		QUERY_OPERATOR_AND//,
-		//1 // no boost
+		QUERY_OPERATOR_AND,
+		1
 	)];
 
 	for (let i = 0; i < stemmingLanguages.length; i++) {
@@ -81,6 +86,7 @@ export function makeQuery({
 	));
 
 	const mainQuery = bool(some(arr)) as QueryDsl;
+	if (_trace) log.debug('%s mainQuery:%s', LOG_PREFIX, toStr(mainQuery));
 
 	if (!termQueries.length) {
 		return mainQuery;
@@ -116,11 +122,13 @@ export function makeQuery({
 	// A || B would give too much results (stuff outside A)
 	// A && B would give too few results (exclude everything without source:specific)
 	// A || (A && B) is the way to go.
-	return bool(some(
+	const nestedQuery = bool(some(
 		mainQuery,
 		bool(all(
 			mainQuery,
 			bool(some(expressions))
 		))
 	)) as QueryDsl;
+	if (_trace) log.debug('%s nestedQuery:%s', LOG_PREFIX, toStr(nestedQuery));
+	return nestedQuery;
 }

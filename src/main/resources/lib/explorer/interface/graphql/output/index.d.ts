@@ -51,67 +51,74 @@ export type InterfaceInfo = {
 	termQueries?: TermQuery[]
 };
 
+export type InterfaceResolverReturnType = {
+	interfaceInfo: InterfaceInfo;
+}
+
 //──────────────────────────────────────────────────────────────────────────────
 
 export type QuerySynonymsResolverEnv = {
 	args: {
 		// Required
-		searchString: string
+		searchString: string;
 		// Optional
-		languages?: string[]
-		profiling?: boolean
+		languages?: string[];
+		profiling?: boolean;
 	}
-	context: GraphQLContext
-	source?: AnyObject // Currently null
+	context: GraphQLContext;
+	source: InterfaceResolverReturnType;
 }
 
 export type QuerySynonymsReturnType = {
-	interfaceInfo?: InterfaceInfo // Used in backend, not returned to client
-	languages?: string[]
-	profiling?: Profiling[]
-	searchString?: string // Used in backend, not returned to client
-	synonyms: SynonymsArray
+	interfaceInfo: InterfaceInfo; // Used in backend, not returned to client
+	languages?: string[];
+	profiling?: Profiling[];
+	searchString?: string; // Used in backend, not returned to client
+	synonyms: SynonymsArray;
 }
 
 //──────────────────────────────────────────────────────────────────────────────
 
 type SearchCommonArgs = {
-	aggregations?: AggregationsArg
+	aggregations?: AggregationsArg;
 	explain?: boolean;
-	filters?: FiltersArg
-	highlight?: GQL_InputType_Highlight
-	languages?: string[]
-	profiling?: boolean
+	filters?: FiltersArg;
+	highlight?: GQL_InputType_Highlight;
+	languages?: string[];
+	profiling?: boolean;
 	query?: QueryDslInput;
-	searchString: string
-	//synonyms?: SynonymsArray
-	sort?: FieldSortDsl[]
+	searchString: string;
+	sort?: FieldSortDsl[];
+	//synonyms?: SynonymsArray;
 }
 
-export type SearchResolverSource = {
-	interfaceInfo: InterfaceInfo; // Used in backend, not returned to client
+// InterfaceResolverReturnType | QuerySynonymsReturnType;
+export interface SearchResolverSource {
+	// Common in InterfaceResolverReturnType and QuerySynonymsReturnType
+	interfaceInfo: InterfaceInfo;
+	// Only QuerySynonymsReturnType
 	languages?: string[];
 	profiling?: Profiling[];
-	searchString?: string;
+	searchString?: string; // Used in backend, not returned to client
 	synonyms?: SynonymsArray;
 }
 
 export type SearchConnectionResolverEnv = {
 	args: SearchCommonArgs & {
-		after?: string
-		first?: number
+		after?: string;
+		first?: number;
 	}
-	context: GraphQLContext
-	source?: SearchResolverSource
+	context: GraphQLContext;
+	source: SearchResolverSource;
 }
 
 export type SearchResolverEnv = {
 	args: SearchCommonArgs & {
-		count?: number
-		start?: number
+		count?: number;
+		start?: number;
 	}
-	context: GraphQLContext
-	source?: SearchResolverSource
+	context: GraphQLContext;
+	source: SearchResolverSource;
 }
 
 export type Hit = {

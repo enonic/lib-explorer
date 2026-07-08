@@ -64,12 +64,11 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 			logSynonymsQuery = false,
 			logSynonymsQueryResult = false
 		},
-		// source = {} // Doesn't handle null!!!
+		source
 	} = env; // avoid deconstrution error when source is null
 
-	let {source} = env;
-	if (!isSet(source)) { // handles null :)
-		source = {} as SearchResolverSource;
+	if (!isSet(source)) {
+		throw new Error(`Can't continue searchResolver without source?`);
 	}
 	// log.debug('searchResolver args:%s', toStr(args));
 	// log.debug('searchResolver source:%s', toStr(source));
@@ -81,7 +80,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 	const {
 		profiling: profilingArraySource = [],
 		languages: sourceLanguages,
-	} = source as SearchResolverSource;
+	} = source;
 	// log.debug('searchResolver profilingArraySource:%s', toStr(profilingArraySource));
 
 	const {

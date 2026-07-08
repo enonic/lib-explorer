@@ -72,6 +72,8 @@ export function get({
 		},
 		query: query
 			.split(' ')
+			// NOTE: A boost of 1 does NOT mean no boost, which is fine in this case,
+			// since fulltext should be boosted above ngram.
 			.map(word => `(
 				fulltext('name^7, _name^5, displayName^3, _alltext^1', '${word}', 'OR')
 				OR ${QUERY_FUNCTION_NGRAM}('name^6, _name^4, displayName^2, _alltext', '${word}', 'OR')

@@ -22,25 +22,25 @@ import {
 	VALUE_TYPE_STRING,
 } from '@enonic/js-utils';
 
+// NOTE: Not identical to FieldObject in js-utils which has 'field' rather than 'name'
 export type InterfaceField = {
-	name:string
-	boost?: number
+	name: string;
+	boost?: number;
 }
 
 export type TermQuery = {
-	boost?: TermDslExpression['boost']
-	field?: TermDslExpression['field']
-	type?:
+	boost: TermDslExpression['boost'];
+	field: TermDslExpression['field'];
+	type:
 		| typeof VALUE_TYPE_BOOLEAN
 		| typeof VALUE_TYPE_DOUBLE
 		| typeof VALUE_TYPE_LONG
 		// | 'number' // covers VALUE_TYPE_DOUBLE and VALUE_TYPE_LONG
-		| typeof VALUE_TYPE_STRING
-	booleanValue?: boolean
-	doubleValue?: number
-	longValue?: number
-	stringValue?: string
-
+		| typeof VALUE_TYPE_STRING;
+	booleanValue?: boolean;
+	doubleValue?: number;
+	longValue?: number;
+	stringValue?: string;
 }
 
 export type InterfaceNodeSpecific = {

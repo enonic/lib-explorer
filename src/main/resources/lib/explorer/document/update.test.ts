@@ -481,6 +481,7 @@ describe('document', () => {
 					updateRes
 				) // deepStrictEqual
 			}); // it
+
 			it(`adds indexconfig for new fields`, () => {
 				// log.info('CREATED_DOCUMENT_NODE:%s', CREATED_DOCUMENT_NODE);
 				// log.info('CREATED_DOCUMENT_NODE._indexConfig.configs:%s', CREATED_DOCUMENT_NODE._indexConfig.configs);
@@ -505,7 +506,8 @@ describe('document', () => {
 						enabled: true,
 						fulltext: false,
 						includeInAllText: false,
-						// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language is passed.
+						indexValueProcessors: [],
+						languages: [],
 						nGram: false,
 						path: false
 					}

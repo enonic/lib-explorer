@@ -148,7 +148,8 @@ describe('document', () => {
 					enabled: true,
 					fulltext: true,
 					includeInAllText: true,
-					// languages: [COLLECTION_STEMMING_LANGUAGE], // Only when stemmed is true and language passed.
+					indexValueProcessors: [],
+					languages: [],
 					nGram: true,
 					path: false
 				}
@@ -164,7 +165,7 @@ describe('document', () => {
 				},
 				partial: true
 			});
-			expect(updateRes).toStrictEqual({
+			const expected = {
 				...CREATED_DOCUMENT_NODE,
 				_indexConfig,
 				_versionKey: updateRes._versionKey,
@@ -172,7 +173,8 @@ describe('document', () => {
 					...CREATED_DOCUMENT_NODE[FieldPath.META],
 					modifiedTime: updateRes[FieldPath.META].modifiedTime
 				}
-			});
+			};
+			expect(updateRes).toStrictEqual(expected);
 		}); // it
 	}); // describe update()
 }); // describe document
