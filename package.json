@@ -4,7 +4,7 @@
     "@enonic/fnv-plus": "^1",
     "@enonic/js-utils": "^2.0.0",
     "core-js": "^3",
-    "cross-env": "^7",
+    "cross-env": "^10",
     "d3-dsv": "^3",
     "deep-object-diff": "^1",
     "fast-deep-equal": "^3",
