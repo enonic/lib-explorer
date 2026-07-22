@@ -52,7 +52,7 @@
     "parallel": "^1",
     "path": "^0",
     "q-i": "^2",
-    "rimraf": "^5",
+    "rimraf": "^6",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "ts-toolbelt": "^9",
