@@ -31,7 +31,7 @@
     "@enonic/test-data": "^1",
     "@eslint/js": "^10",
     "@jest/globals": "^30.2.0",
-    "@swc/core": "^1.4.13",
+    "@swc/core": "^1.15.46",
     "@types/bluebird": "*",
     "@types/d3-dsv": "^3",
     "@types/diff": "^5.0.9",
