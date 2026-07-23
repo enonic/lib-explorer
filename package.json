@@ -38,7 +38,7 @@
     "@types/human-object-diff": "^3.0.0",
     "@types/jest": "^30",
     "@types/node": "^26",
-    "@types/react": "^18",
+    "@types/react": "^19",
     "@types/set-value": "^4",
     "@types/traverse": "^0",
     "assert": "^2",
