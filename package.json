@@ -34,7 +34,7 @@
     "@swc/core": "^1.15.46",
     "@types/bluebird": "*",
     "@types/d3-dsv": "^3",
-    "@types/diff": "^5.0.9",
+    "@types/diff": "^8.0.0",
     "@types/human-object-diff": "^3.0.0",
     "@types/jest": "^30",
     "@types/node": "^26",
