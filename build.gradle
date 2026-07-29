@@ -54,6 +54,14 @@ dependencies {
 	//implementation 'com.enonic.lib:text-encoding:1.2.0'
 
 	// WARNING: Do NOT use compile files, jar file will be missing dependencies!
+
+	//──────────────────────────────────────────────────────────────────────────
+	// Test
+	//──────────────────────────────────────────────────────────────────────────
+	testImplementation "com.enonic.xp:testing:${xpVersion}"
+	testImplementation 'org.junit.jupiter:junit-jupiter:6.1.1'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testRuntimeOnly 'org.graalvm.polyglot:js:25.0.3'
 }
 
 tasks.withType( Copy ).configureEach {
@@ -117,3 +125,24 @@ processResources {
 
 jar.dependsOn npmBuild
 javadoc.dependsOn npmBuild
+
+tasks.named('compileTestJava') {
+	dependsOn npmBuild
+}
+
+test {
+	dependsOn npmBuild
+	useJUnitPlatform()
+}
+
+def testGraalJs = tasks.register('testGraalJs', Test) {
+	group = 'verification'
+	description = 'Runs tests with the GraalJS script engine.'
+	dependsOn npmBuild
+	useJUnitPlatform()
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+	systemProperty 'xp.script-engine', 'GraalJS'
+	shouldRunAfter test
+}
+check.dependsOn testGraalJs
