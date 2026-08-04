@@ -16,6 +16,12 @@ interface StateRef {
 
 //@ts-ignore TODO Add global types in tsconfig.json
 const {currentTimeMillis} = Java.type('java.lang.System');
+//@ts-ignore
+const ConnectException = Java.type('java.net.ConnectException');
+//@ts-ignore
+const SocketTimeoutException = Java.type('java.net.SocketTimeoutException');
+//@ts-ignore
+const NullPointerException = Java.type('java.lang.NullPointerException');
 
 
 type SmartRequestParams = HttpClient.Request & {
@@ -96,11 +102,9 @@ export function smartRequest(smartRequestParams: SmartRequestParams) {
 	} catch (e) {
 		stateRef.prevReqFinishedAtMillis = currentTimeMillis();
 
-		//@ts-ignore
-		if (e instanceof java.net.ConnectException) {
+		if (e instanceof ConnectException) {
 			log.warning(e.message + ': on url:' + url/*, e*/); // Don't want stacktrace
-			//@ts-ignore
-		} else if (e instanceof java.net.SocketTimeoutException) {
+		} else if (e instanceof SocketTimeoutException) {
 			if(e.message === 'connect timed out') {
 				log.warning(e.message + ': connectionTimeout ' + connectionTimeout + 'ms exceeded on url ' + url/*, e*/); // Don't want stacktrace
 			} else if (e.message === 'timeout') {
@@ -108,8 +112,7 @@ export function smartRequest(smartRequestParams: SmartRequestParams) {
 			} else {
 				log.warning('java.net.SocketTimeoutException with unknown message:' + e.message, e);
 			}
-			//@ts-ignore
-		} else if (e instanceof java.lang.NullPointerException) {
+		} else if (e instanceof NullPointerException) {
 			log.error('java.lang.NullPointerException with message:' + e.message, e);
 		} else {
 			// TODO java.lang.RuntimeException: SSL peer shut down incorrectly

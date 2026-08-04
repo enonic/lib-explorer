@@ -54,6 +54,13 @@ dependencies {
 	//implementation 'com.enonic.lib:text-encoding:1.2.0'
 
 	// WARNING: Do NOT use compile files, jar file will be missing dependencies!
+
+	//──────────────────────────────────────────────────────────────────────────
+	// Test
+	//──────────────────────────────────────────────────────────────────────────
+	testImplementation "com.enonic.xp:testing:${xpVersion}"
+	testImplementation 'org.junit.jupiter:junit-jupiter:6.1.1'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.withType( Copy ).configureEach {
@@ -117,3 +124,16 @@ processResources {
 
 jar.dependsOn npmBuild
 javadoc.dependsOn npmBuild
+
+tasks.named('compileTestJava') {
+	dependsOn npmBuild
+}
+
+xp {
+	scriptEngines = ['Nashorn', 'GraalJS']
+}
+
+test {
+	dependsOn npmBuild
+	useJUnitPlatform()
+}
