@@ -3,31 +3,33 @@ import type {
 	InterfaceField,
 	InterfaceNode,
 } from '@enonic-types/lib-explorer';
-import type {TermQuery} from '@enonic-types/lib-explorer/Interface.d';
+import type { InterfaceExpressions, TermQuery } from '@enonic-types/lib-explorer/Interface.d';
 
 
-import {
-	forceArray,
-	isNotSet
-} from '@enonic/js-utils';
+import { noNilsArray } from '@enonic/js-utils/array/noNilsArray';
 import {reference} from '/lib/xp/value';
+
+
+interface InterfaceUpdateParams {
+	_id: string;
+	collectionIds: string[];
+	expressions?: InterfaceExpressions;
+	fields: InterfaceField[];
+	stopWords: string[];
+	synonymIds: string[];
+	termQueries?: TermQuery[];
+};
 
 
 export function update({
 	_id,
 	collectionIds,
+	expressions,
 	fields,
 	stopWords,
 	synonymIds,
 	termQueries,
-} :{
-	_id: string
-	collectionIds: string[]
-	fields: InterfaceField[]
-	stopWords: string[]
-	synonymIds: string[]
-	termQueries?: TermQuery[]
-}, {
+} :InterfaceUpdateParams, {
 	writeConnection
 } :{
 	writeConnection: WriteConnection
@@ -35,17 +37,18 @@ export function update({
 	const updatedInterface = writeConnection.modify<InterfaceNode>({
 		key: _id,
 		editor: (interfaceNode) => {
-			interfaceNode.collectionIds = isNotSet(collectionIds) ? [] : forceArray(collectionIds).map((collectionId) => reference(collectionId)); // empty array allowed,
-			interfaceNode.fields = isNotSet(fields) ? [] : forceArray(fields).map(({ // empty array allowed
+			interfaceNode.collectionIds = noNilsArray(collectionIds).map((collectionId) => reference(collectionId)); // empty array allowed,
+			interfaceNode.expressions = expressions;
+			interfaceNode.fields = noNilsArray(fields).map(({ // empty array allowed
 				boost, // undefined allowed
 				name
 			}) => ({
 				boost,
 				name
 			}));
-			interfaceNode.stopWords = isNotSet(stopWords) ? [] : forceArray(stopWords);
-			interfaceNode.synonymIds = isNotSet(synonymIds) ? [] : forceArray(synonymIds).map((synonymId) => reference(synonymId)); // empty array allowed,
-			interfaceNode.termQueries = isNotSet(termQueries) ? [] : forceArray(termQueries); // empty array allowed
+			interfaceNode.stopWords = noNilsArray(stopWords);
+			interfaceNode.synonymIds = noNilsArray(synonymIds).map((synonymId) => reference(synonymId)); // empty array allowed,
+			interfaceNode.termQueries = noNilsArray(termQueries); // empty array allowed
 			return interfaceNode;
 		}
 	});
