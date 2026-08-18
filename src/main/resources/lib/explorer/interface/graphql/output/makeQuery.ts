@@ -20,17 +20,16 @@ import { toStr } from '@enonic/js-utils/value/toStr';
 import { quoteWordsWithNumbers } from '/lib/explorer/query/quoteWordsWithNumbers';
 import { getSynonymsFromSearchString } from '/lib/explorer/synonym/getSynonymsFromSearchString';
 import { javaLocaleToSupportedLanguage as stemmingLanguageFromLocale } from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
+import boostedQuery from '/lib/explorer/query/boostedQuery';
 
 
 const TRACE = false;
 const LOG_PREFIX = 'makeQuery:';
 
+const MATCH_ALL: QueryDsl = { matchAll: {} };
+
 const bool = storage.query.dsl.bool;
 
-// ref: https://developer.enonic.com/docs/platform/7.x/storage/dsl
-// must: All expressions must evaluate to true to include a node in the result.
-// should: One or more expressions must evaluate to true to include a node in the result.
-const allMustBeTrue = storage.query.dsl.must;
 const atLeastOneMustBeTrue = storage.query.dsl.should;
 
 const term = storage.query.dsl.term;
@@ -62,25 +61,6 @@ interface MakeQueryParams {
 }
 
 
-// There is no zeroOrMoreCanBeTrue "expression", so query becomes a little complicated.
-// S: SelectionExpressions
-// T: TermExpressions
-// S || T would give too much results (stuff outside Selection)
-// S && T would give too few results (exclude everything without TermBoost)
-// S || (S && T) is the way to go.
-function boostedQuery(selectionExpressions: QueryDsl[], boostExpressions: QueryDsl[]): QueryDsl {
-	const S = bool(atLeastOneMustBeTrue(selectionExpressions));
-	const T = bool(atLeastOneMustBeTrue(boostExpressions));
-	return bool(atLeastOneMustBeTrue([
-		S,
-		bool(allMustBeTrue([
-			S, // Both selection
-			T // And at least one boost expression must match
-		])),
-	]));
-}
-
-
 // There are several variations of the QueryDslObject:
 // 1. When the searchString is empty: Just a matchAll.
 // 2. When there are NO term boost(s), NOR synoyms.
@@ -109,7 +89,7 @@ export function makeQuery({
 	termQueries = [],
 }: MakeQueryParams): QueryDsl {
 	// No need to build query or process synonyms when searchString is ''.
-	if (!searchStringWithoutStopWords) return { matchAll: {} };
+	if (!searchStringWithoutStopWords) return MATCH_ALL;
 
 	const {
 		fulltext: fulltextExpression = {},
