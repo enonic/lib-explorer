@@ -11,7 +11,7 @@ const bool = storage.query.dsl.bool;
 // mustNot: All expressions in the mustNot must evaluate to false for nodes to match.
 // const must = storage.query.dsl.must;
 // const mustNot = storage.query.dsl.mustNot;
-// const should = storage.query.dsl.should;
+const should = storage.query.dsl.should;
 
 // My thinking:
 // S: SelectionExpressions
@@ -63,7 +63,7 @@ export default function boostedQuery(
 	boostExpressions: QueryDsl[]
 ): QueryDsl {
 	return bool({
-		must: selectionExpressions,
+		must: bool(should(selectionExpressions)),
 		should: boostExpressions
 	});
 	// Correct but slower

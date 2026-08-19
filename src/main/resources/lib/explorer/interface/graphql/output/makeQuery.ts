@@ -60,6 +60,8 @@ interface MakeQueryParams {
 	termQueries?: TermQuery[];
 }
 
+const SYNOYMS_BOOST_MULTIPLIER = 0.9; // Make synonyms less relevant than direct match.
+
 
 // There are several variations of the QueryDslObject:
 // 1. When the searchString is empty: Just a matchAll.
@@ -186,29 +188,25 @@ export function makeQuery({
 				synonym
 			} = synonymsToApply[j];
 			if (!fulltextExpression.disabled && !arrayIncludes(appliedFulltext, synonym)) {
-				const aSynonymFulltextQuery: QueryDsl = {
-					fulltext: {
-						fields: fields.map(({name}) => name), // NOTE: No boosting
-						operator: 'AND',
-						query: synonym,
-						boost: fulltextBoost,
-					}
-				};
+				const aSynonymFulltextQuery: QueryDsl = fulltext(
+					fieldsArr,
+					synonym,
+					QUERY_OPERATOR_AND,
+					fulltextBoost
+				);
 				synonymExpressions.push(aSynonymFulltextQuery);
 				appliedFulltext.push(synonym);
 			}
 			if (!stemmedExpression.disabled && locale !== 'zxx') {
 				const stemmingLanguage = stemmingLanguageFromLocale(locale);
 				if (stemmingLanguage) {
-					const aSynonymStemmedQuery: QueryDsl = {
-						stemmed: {
-							fields: fields.map(({name}) => name), // NOTE: No boosting
-							operator: 'AND',
-							query: synonym,
-							language: stemmingLanguageFromLocale(locale),
-							boost: stemmedBoost,
-						}
-					};
+					const aSynonymStemmedQuery: QueryDsl = stemmed(
+						fieldsArr,
+						synonym,
+						stemmingLanguage as StemmingLanguageCode,
+						QUERY_OPERATOR_AND,
+						stemmedBoost
+					);
 					synonymExpressions.push(aSynonymStemmedQuery);
 				} else {
 					log.warning(`Unable to guess stemmingLanguage from locale:${locale}`);
@@ -219,7 +217,7 @@ export function makeQuery({
 
 	if (synonymExpressions.length) {
 		selectionExpressions.push(bool({
-			boost: 0.9, // Make synonyms less relevant than direct match.
+			boost: SYNOYMS_BOOST_MULTIPLIER,
 			should: synonymExpressions,
 		}));
 	}
