@@ -203,8 +203,14 @@ export function makeQueryParams({
 					// the difference between 0.001 and 0.0000001 is entirely negligible in final
 					// rankings.
 					// When logging the smallest I can see is 0.000000000000000001 (18 decimals)
-					// This will be multiplied by 1 (fulltext), 0.9 (stemmed) and 0.8 (ngram).
-					boost: 1.01, // Can be overridden in GUI by adding a field boost.
+					//
+					// HOWEVER: I have tested what happens if one uses a boost of 0.
+					// Even if the searchString is only present in that field, not even in _alltext.
+					// One will get a hit with highlight, but the field will have no impact on the
+					// score. Just because one wants a highlight from a field doesn't automatically
+					// mean that that field is relevant in terms of scoring. So, zero is the way to
+					// go. Can be overriden by adding a field boost in the Interface GUI.
+					boost: 0,
 					name: field,
 				});
 			}
