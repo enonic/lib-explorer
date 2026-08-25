@@ -14,6 +14,7 @@ import type {
 	SynonymsArray,
 	TermQuery,
 } from '@enonic-types/lib-explorer';
+import type { InterfaceExpressions } from '@enonic-types/lib-explorer/Interface';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 import type { QueryDslInput } from '../input/query/QueryDslInput';
 
@@ -40,15 +41,16 @@ type AggregationsArg = AnyObject[] // TODO?
 type FiltersArg = AnyObject[] // TODO?
 
 export type InterfaceInfo = {
-	collectionNameToId: Record<string,string>
-	fields: InterfaceField[]
-	interfaceId: string
-	interfaceName: string
-	localesInSelectedThesauri: string[]
-	stemmingLanguages: StemmingLanguageCode[] // Can be an empty array
-	stopWords: string[]
-	thesauriNames: string[]
-	termQueries?: TermQuery[]
+	collectionNameToId: Record<string,string>;
+	fields: InterfaceField[];
+	expressions?: InterfaceExpressions;
+	interfaceId: string;
+	interfaceName: string;
+	localesInSelectedThesauri: string[];
+	stemmingLanguages: StemmingLanguageCode[]; // Can be an empty array
+	stopWords: string[];
+	thesauriNames: string[];
+	termQueries?: TermQuery[];
 };
 
 export type InterfaceResolverReturnType = {

@@ -109,6 +109,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 	const {
 		collectionNameToId,
 		fields,
+		expressions,
 		interfaceId,
 		interfaceName,
 		localesInSelectedThesauri,
@@ -155,6 +156,7 @@ export function searchResolver(env: SearchResolverEnv): SearchResolverReturnType
 		aggregationsArg,
 		count,
 		explainArg,
+		expressions,
 		doProfiling: profilingArg,
 		fields,
 		filtersArg,

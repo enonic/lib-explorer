@@ -26,7 +26,7 @@ import {
 export type InterfaceField = {
 	name: string;
 	boost?: number;
-}
+};
 
 export type TermQuery = {
 	boost: TermDslExpression['boost'];
@@ -41,27 +41,40 @@ export type TermQuery = {
 	doubleValue?: number;
 	longValue?: number;
 	stringValue?: string;
-}
+};
+
+export interface InterfaceExpression {
+	boost?: number;
+	disabled?: boolean;
+};
+
+export interface InterfaceExpressions {
+	fulltext: InterfaceExpression;
+	stemmed: InterfaceExpression;
+	nGram: InterfaceExpression;
+};
 
 export type InterfaceNodeSpecific = {
-	collectionIds?: OneOrMore<string|Reference>
-	fields?: OneOrMore<InterfaceField>
-	modifiedTime?: Date|string
-	stopWords?: OneOrMore<string>
-	synonymIds?: OneOrMore<string|Reference>
-	termQueries?: OneOrMore<TermQuery>
+	collectionIds?: OneOrMore<string|Reference>;
+	expressions?: InterfaceExpressions;
+	fields?: OneOrMore<InterfaceField>;
+	modifiedTime?: Date|string;
+	stopWords?: OneOrMore<string>;
+	synonymIds?: OneOrMore<string|Reference>;
+	termQueries?: OneOrMore<TermQuery>;
 }
 
-export type InterfaceNode = Node<InterfaceNodeSpecific>
+export type InterfaceNode = Node<InterfaceNodeSpecific>;
 
-export type InterfaceNodeCreateParams = NodeCreate<InterfaceNodeSpecific>
+export type InterfaceNodeCreateParams = NodeCreate<InterfaceNodeSpecific>;
 
 export type InterfaceSpecific = {
-	collectionIds?: (string|Reference)[]
-	fields?: InterfaceField[]
-	stopWords?: string[]
-	synonymIds?: (string|Reference)[]
-	termQueries?: TermQuery[]
+	collectionIds?: (string|Reference)[];
+	fields?: InterfaceField[];
+	expressions?: InterfaceExpressions;
+	stopWords: string[];
+	synonymIds: (string|Reference)[];
+	termQueries?: TermQuery[];
 }
 
 export type Interface = ExplorerAdminGQLInterfaceNodeCommonProps<
