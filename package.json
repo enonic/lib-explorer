@@ -2,7 +2,7 @@
   "author": "Christian Andreas Westgaard <cwe@enonic.com>",
   "dependencies": {
     "@enonic/fnv-plus": "^1",
-    "@enonic/js-utils": "^2.0.0",
+    "@enonic/js-utils": "^2.1.0",
     "core-js": "^3",
     "cross-env": "^10",
     "d3-dsv": "^3",
