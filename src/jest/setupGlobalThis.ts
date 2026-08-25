@@ -1,4 +1,4 @@
-import type { Java, JavaPackage } from './types';
+import type { Java } from './types';
 
 declare global {
     interface GlobalThis {

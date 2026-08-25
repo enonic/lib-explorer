@@ -209,7 +209,7 @@ export function makeQueryParams({
 					// One will get a hit with highlight, but the field will have no impact on the
 					// score. Just because one wants a highlight from a field doesn't automatically
 					// mean that that field is relevant in terms of scoring. So, zero is the way to
-					// go. Can be overriden by adding a field boost in the Interface GUI.
+				// go. Can be overridden by adding a field boost in the Interface GUI.
 					boost: 0,
 					name: field,
 				});

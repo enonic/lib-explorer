@@ -1,4 +1,4 @@
-import type { BooleanDslExpression, QueryDsl, RepoConnection } from '/lib/xp/node';
+import type { QueryDsl, RepoConnection } from '/lib/xp/node';
 import type { InterfaceField } from '@enonic-types/lib-explorer';
 import type { InterfaceExpressions, TermQuery } from '@enonic-types/lib-explorer/Interface.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
