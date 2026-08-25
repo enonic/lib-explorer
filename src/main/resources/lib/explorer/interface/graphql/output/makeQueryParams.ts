@@ -1,4 +1,4 @@
-import type { Aggregations, QueryDsl } from '@enonic-types/core';
+import type { Aggregations } from '@enonic-types/core';
 import type {
 	FieldSortDsl,
 	Filter,
