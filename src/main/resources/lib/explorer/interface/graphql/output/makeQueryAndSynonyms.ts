@@ -39,7 +39,7 @@ const ngram = storage.querying.ngram;
 const stemmed = storage.querying.stemmed;
 
 
-interface MakeQueryParams {
+interface MakeQueryAndSynonymsParams {
 	_trace?: boolean;
 	doProfiling?: boolean;
 	fields: InterfaceField[];
@@ -60,6 +60,11 @@ interface MakeQueryParams {
 	termQueries?: TermQuery[];
 }
 
+interface QueryAndSynonyms {
+	query: QueryDsl;
+	synonyms: SynonymsArray;
+}
+
 const SYNOYMS_BOOST_MULTIPLIER = 0.9; // Make synonyms less relevant than direct match.
 
 
@@ -70,7 +75,7 @@ const SYNOYMS_BOOST_MULTIPLIER = 0.9; // Make synonyms less relevant than direct
 // 4. When there are NO term boost(s), but synonyms.
 // 5. When there are BOTH term boost(s), and synonyms.
 
-export function makeQuery({
+export function makeQueryAndSynonyms({
 	_trace = TRACE,
 	doProfiling = false,
 	explorerRepoReadConnection,
@@ -89,17 +94,20 @@ export function makeQuery({
 	// Optional
 	stemmingLanguages = [],
 	termQueries = [],
-}: MakeQueryParams): QueryDsl {
+}: MakeQueryAndSynonymsParams): QueryAndSynonyms {
 	// No need to build query or process synonyms when searchString is ''.
-	if (!searchStringWithoutStopWords) return MATCH_ALL;
+	if (!searchStringWithoutStopWords) return {
+		query: MATCH_ALL,
+		synonyms: []
+	};
 
 	const {
 		fulltext: fulltextExpression = {},
 		stemmed: stemmedExpression = {},
 		nGram: nGramExpression = {},
 	} = expressions || {};
-	const fulltextBoost = fulltextExpression.boost || 1; // This makes 0 impossible (which is ok, can use disabled instead)
-	const stemmedBoost = stemmedExpression.boost || 0.9 // This makes 0 impossible (which is ok, can use disabled instead)
+	const fulltextBoost = isSet(fulltextExpression.boost) ? fulltextExpression.boost : 1;
+	const stemmedBoost = isSet(stemmedExpression.boost) ? stemmedExpression.boost : 0.9;
 
 	const fieldsArr = fields.map(({boost, name: field}) => ({boost, field}));
 	if (!fieldsArr.filter(({field}) => field === '_alltext').length) {
@@ -147,7 +155,7 @@ export function makeQuery({
 			fieldsArr,
 			maybeQuotedWords,
 			QUERY_OPERATOR_AND,
-			nGramExpression.boost || 0.8 // This makes 0 impossible (which is ok, can use disabled instead)
+			isSet(nGramExpression.boost) ? nGramExpression.boost : 0.8
 		));
 	}
 
@@ -174,7 +182,10 @@ export function makeQuery({
 	if (
 		!termQueries.length
 		&& !synonyms.length
-	) return bool(atLeastOneMustBeTrue(selectionExpressions));
+	) return {
+		query: bool(atLeastOneMustBeTrue(selectionExpressions)),
+		synonyms
+	}
 
 	const synonymExpressions: QueryDsl[] = [];
 	const appliedFulltext = [];
@@ -223,7 +234,10 @@ export function makeQuery({
 	}
 
 	if (!termQueries.length) {
-		return bool(atLeastOneMustBeTrue(selectionExpressions));
+		return {
+			query: bool(atLeastOneMustBeTrue(selectionExpressions)),
+			synonyms
+		}
 	}
 
 	const termExpressions = [];
@@ -254,5 +268,8 @@ export function makeQuery({
 	const nestedQuery = boostedQuery(selectionExpressions, termExpressions);
 
 	if (_trace) log.debug('%s nestedQuery:%s', LOG_PREFIX, toStr(nestedQuery));
-	return nestedQuery;
+	return {
+		query: nestedQuery,
+		synonyms
+	}
 }

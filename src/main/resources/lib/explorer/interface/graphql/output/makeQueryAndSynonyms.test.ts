@@ -2,7 +2,7 @@ import type {
 	Log,
 	LibNode,
 } from '@enonic/mock-xp';
-import type { SynonymsArray } from '../../../synonym/index.d';
+import type { SynonymsArray } from '../../../synonym';
 import type { Java } from '../../../../../../../jest/types';
 
 import {
@@ -16,7 +16,7 @@ import {
 	PRINCIPAL_EXPLORER_READ,
 	REPO_ID_EXPLORER
 } from '../../../constants';
-import {makeQuery} from './makeQuery';
+import { makeQueryAndSynonyms } from './makeQueryAndSynonyms';
 
 
 declare namespace globalThis {
@@ -42,7 +42,7 @@ const explorerRepoReadConnection = globalThis.libNode.connect({
 
 describe('makeQuery', () => {
 	it('should make a minimal query for minimal input', () => {
-		expect(makeQuery({
+		const actual = makeQueryAndSynonyms({
 			// _trace: true,
 			explorerRepoReadConnection,
 			fields: [],
@@ -52,7 +52,8 @@ describe('makeQuery', () => {
 			searchStringWithoutStopWords: 'god',
 			synonymsSource: TEST_SYNONYMS_SOURCE,
 			thesauriNames: TEST_THESAURI_NAMES,
-		})).toEqual({
+		});
+		expect(actual.query).toEqual({
 			boolean: {
 				should: [{
 					fulltext: {
@@ -74,7 +75,7 @@ describe('makeQuery', () => {
 	});
 
 	it('should handle field boosting', () => {
-		const actual = makeQuery({
+		const actual = makeQueryAndSynonyms({
 			explorerRepoReadConnection,
 			fields: [{
 				boost: 1.1,
@@ -107,11 +108,11 @@ describe('makeQuery', () => {
 				}]
 			}
 		};
-		expect(actual).toEqual(expected);
+		expect(actual.query).toEqual(expected);
 	});
 
 	it('should handle stemming', () => {
-		const actual = makeQuery({
+		const actual = makeQueryAndSynonyms({
 			explorerRepoReadConnection,
 			fields: [],
 			interfaceId: TEST_INTERFACE_ID,
@@ -123,7 +124,7 @@ describe('makeQuery', () => {
 			thesauriNames: TEST_THESAURI_NAMES,
 		});
 		// log.debug('actual:%s', actual);
-		expect(actual).toEqual({
+		expect(actual.query).toEqual({
 			boolean: {
 				should: [{
 					fulltext: {
@@ -161,7 +162,7 @@ describe('makeQuery', () => {
 	});
 
 	it('should handle term boosting', () => {
-		const actual = makeQuery({
+		const actual = makeQueryAndSynonyms({
 			explorerRepoReadConnection,
 			fields: [],
 			interfaceId: TEST_INTERFACE_ID,
@@ -237,7 +238,7 @@ describe('makeQuery', () => {
 				value: 'Jesus'
 			}
 		}];
-		expect(actual).toEqual({
+		expect(actual.query).toEqual({
 			boolean: {
 				must: mainQuery,
 				should: termQueries
@@ -246,7 +247,7 @@ describe('makeQuery', () => {
 	});
 
 	it('should handle everything all at once', () => {
-		const actual = makeQuery({
+		const actual = makeQueryAndSynonyms({
 			explorerRepoReadConnection,
 			fields: [{
 				boost: 1.1,
@@ -342,7 +343,7 @@ describe('makeQuery', () => {
 				value: 'Jesus'
 			}
 		}];
-		expect(actual).toEqual({
+		expect(actual.query).toEqual({
 			boolean: {
 				must: mainQuery,
 				should: termQueries

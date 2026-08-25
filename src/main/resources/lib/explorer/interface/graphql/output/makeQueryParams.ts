@@ -40,7 +40,7 @@ import {
 	createFilters
 	// @ts-ignore
 } from '/lib/guillotine/util/factory';
-import {makeQuery} from './makeQuery';
+import {makeQueryAndSynonyms} from './makeQueryAndSynonyms';
 import {highlightGQLArgToEnonicXPQuery} from '/lib/explorer/interface/graphql/highlight/input/highlightGQLArgToEnonicXPQuery';
 import {resolveFieldShortcuts} from './resolveFieldShortcuts';
 
@@ -218,34 +218,39 @@ export function makeQueryParams({
 		if (_trace) log.debug('fieldsAndHighlight:%s', toStr(fieldsAndHighlight));
 	}
 
+	const {
+		query,
+		synonyms,
+	} = makeQueryAndSynonyms({
+		doProfiling,
+		explorerRepoReadConnection,
+		expressions,
+		fields: fieldsAndHighlight || fields,
+		interfaceId,
+		languages,
+		localesInSelectedThesauri,
+		logSynonymsQuery,
+		logSynonymsQueryResult,
+		profilingArray,
+		profilingLabel,
+		searchStringWithoutStopWords,
+		stemmingLanguages,
+		synonymsSource,
+		termQueries,
+		thesauriNames,
+	});
+
 	const rv: MakeQueryParamsReturnValue = {
 		decoratedSearchString: searchStringWithoutStopWords,
 		queryParams: {
 			aggregations,
 			count,
 			filters: filtersArray,
-			query: makeQuery({
-				doProfiling,
-				explorerRepoReadConnection,
-				expressions,
-				fields: fieldsAndHighlight || fields,
-				interfaceId,
-				languages,
-				localesInSelectedThesauri,
-				logSynonymsQuery,
-				logSynonymsQueryResult,
-				profilingArray,
-				profilingLabel,
-				searchStringWithoutStopWords,
-				stemmingLanguages,
-				synonymsSource,
-				termQueries,
-				thesauriNames,
-			}),
+			query,
 			sort,
 			start
 		},
-		synonyms: []
+		synonyms
 	};
 
 	if (isNotNil(explainArg)) rv.queryParams.explain = explainArg;
