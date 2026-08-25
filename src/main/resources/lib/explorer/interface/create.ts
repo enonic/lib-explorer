@@ -5,13 +5,11 @@ import type {
 	InterfaceNodeCreateParams,
 	TermQuery
 } from '@enonic-types/lib-explorer';
+import type { InterfaceExpressions } from '@enonic-types/lib-explorer/Interface';
 
 
-import {
-	INDEX_CONFIG_N_GRAM,
-	forceArray,
-	isNotSet
-} from '@enonic/js-utils';
+import { INDEX_CONFIG_N_GRAM } from '@enonic/js-utils';
+import { noNilsArray } from '@enonic/js-utils/array/noNilsArray';
 import {
 	INTERFACES_FOLDER,
 	NT_INTERFACE,
@@ -20,21 +18,26 @@ import {
 import {reference} from '/lib/xp/value';
 
 
+interface InterfaceCreateParams {
+	_name: string;
+	collectionIds?: string[];
+	expressions?: InterfaceExpressions;
+	fields?: InterfaceField[];
+	stopWords?: string[];
+	synonymIds?: string[];
+	termQueries?: TermQuery[];
+};
+
+
 export function create({
 	_name,
 	collectionIds,
+	expressions,
 	fields,
 	stopWords,
 	synonymIds,
 	termQueries,
-}: {
-	_name: string
-	collectionIds?: string[]
-	fields?: InterfaceField[]
-	stopWords?: string[]
-	synonymIds?: string[]
-	termQueries?: TermQuery[]
-}, {
+}: InterfaceCreateParams, {
 	writeConnection
 }: {
 	writeConnection: WriteConnection
@@ -57,17 +60,18 @@ export function create({
 		_nodeType: NT_INTERFACE,
 		_parentPath: `/${INTERFACES_FOLDER}`,
 		_permissions: ROOT_PERMISSIONS_EXPLORER,
-		collectionIds: isNotSet(collectionIds) ? [] : forceArray(collectionIds).map((collectionId) => reference(collectionId)), // empty array allowed,
-		fields: isNotSet(fields) ? [] : forceArray(fields).map(({ // empty array allowed
+		collectionIds: noNilsArray(collectionIds).map((collectionId) => reference(collectionId)), // empty array allowed,
+		fields: noNilsArray(fields).map(({ // empty array allowed
 			boost, // undefined allowed
 			name
 		}) => ({
 			boost,
 			name
 		})),
-		stopWords: isNotSet(stopWords) ? [] : forceArray(stopWords),
-		synonymIds: isNotSet(synonymIds) ? [] : forceArray(synonymIds).map((synonymId) => reference(synonymId)), // empty array allowed
-		termQueries: isNotSet(termQueries) ? [] : forceArray(termQueries), // empty array allowed
+		expressions,
+		stopWords: noNilsArray(stopWords),
+		synonymIds: noNilsArray(synonymIds).map((synonymId) => reference(synonymId)), // empty array allowed
+		termQueries: noNilsArray(termQueries), // empty array allowed
 	}) as InterfaceNode;
 	writeConnection.refresh(); // So the data becomes immidiately searchable
 	return createdInterface;

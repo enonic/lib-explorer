@@ -7,12 +7,12 @@ import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 import {
 	addQueryFilter,
-	forceArray,
 	isSet,
 	storage,
 	toStr
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
+import { noNilsArray } from '@enonic/js-utils/array/noNilsArray';
 import { includes as stringIncludes } from '@enonic/js-utils/string/includes';
 import { hasValue } from '/lib/explorer/query/hasValue';
 import { replaceSyntax } from '/lib/explorer/query/replaceSyntax';
@@ -25,17 +25,17 @@ import { query as queryThesauri } from '/lib/explorer/thesaurus/query';
 // This fails when tsup code splitting: true
 // import { currentTimeMillis } from '/lib/explorer/time/currentTimeMillis';
 
-//@ts-ignore
+// @ts-ignore
 const { currentTimeMillis } = Java.type('java.lang.System') as {
 	currentTimeMillis: () => number
 }
 
+// const inQuery = storage.query.dsl.inQuery;
+// const or = storage.query.dsl.or;
 
-const fulltext = storage.query.dsl.fulltext;
-//const inQuery = storage.query.dsl.inQuery;
-const ngram = storage.query.dsl.ngram;
-//const or = storage.query.dsl.or;
-const stemmed = storage.query.dsl.stemmed;
+const fulltext = storage.querying.fulltext;
+const ngram = storage.querying.ngram;
+const stemmed = storage.querying.stemmed;
 
 
 const MAX_COUNT = 100;
@@ -82,7 +82,7 @@ export function getSynonymsFromSearchString({
 	thesauri ?:Array<string>
 	useNgram ?:boolean
 }) :SynonymsArray {
-	//log.debug('getSynonymsFromSearchString defaultLocales:%s', toStr(defaultLocales));
+	// log.debug('getSynonymsFromSearchString defaultLocales:%s', toStr(defaultLocales));
 	// log.debug('getSynonymsFromSearchString thesauri:%s', toStr(thesauri));
 
 	if (!searchString || !thesauri.length) {
@@ -103,9 +103,9 @@ export function getSynonymsFromSearchString({
 			label: profilingLabel,
 			operation: 'queryThesauri'
 		});
-		//log.debug('profilingArray:%s', toStr(profilingArray));
+		// log.debug('profilingArray:%s', toStr(profilingArray));
 	}
-	//log.debug('activeThesauri:%s', toStr(activeThesauri));
+	// log.debug('activeThesauri:%s', toStr(activeThesauri));
 
 	const washedSearchString = ws(replaceSyntax({ string: searchString.toLowerCase() }));
 
@@ -117,12 +117,12 @@ export function getSynonymsFromSearchString({
 	];
 	if (expand) {
 		useArray.push('to');
-		//resultUseArray.push('from'); // expand handeled in flattenSynonyms
+		// resultUseArray.push('from'); // expand handeled in flattenSynonyms
 	}
-	//log.debug('getSynonymsFromSearchString useArray:%s', toStr(useArray));
+	// log.debug('getSynonymsFromSearchString useArray:%s', toStr(useArray));
 
-	const localesArray = isSet(locales) ? forceArray(locales) : defaultLocales;
-	//log.debug('getSynonymsFromSearchString localesArray:%s', toStr(localesArray));
+	const localesArray = isSet(locales) ? noNilsArray(locales) : defaultLocales;
+	// log.debug('getSynonymsFromSearchString localesArray:%s', toStr(localesArray));
 
 	const fulltextShouldQueries = [];
 	const stemmedShouldQueries = [];
@@ -148,18 +148,18 @@ export function getSynonymsFromSearchString({
 				stemmedShouldQueries.push(stemmed(
 					useArray.map((use) => `languages.${locale}.${use}.synonym`),
 					washedSearchString,
+					javaLocaleToSupportedLanguage(locale) as StemmingLanguageCode,
 					'AND',
-					javaLocaleToSupportedLanguage(locale) as StemmingLanguageCode
 				));
 			}
 		} // for localesArray
-		//log.debug('fields:%s', toStr(fields));
+		// log.debug('fields:%s', toStr(fields));
 		fulltextShouldQueries.push(fulltext(fields, washedSearchString, 'AND'));
 		if (useNgram) {
 			ngramShouldQueries.push(ngram(fields, washedSearchString, 'AND'));
 		}
 
-		//shouldQueries.push(ngram(fields, searchString, 'AND'));
+		// shouldQueries.push(ngram(fields, searchString, 'AND'));
 	} else { // if !localesArray
 		fulltextShouldQueries.push(fulltext(
 			useArray.map((use) => `languages.*.${use}.synonym`),
@@ -220,22 +220,22 @@ export function getSynonymsFromSearchString({
 		}),
 		query: {
 			boolean: {
-				/*must: {
-					in: { // Limit which thesauri to search
-						field: '_parentPath',
-						values: activeThesauri.map(n => `/thesauri/${n}`)
-					},
-					term: {
-						field: 'enabled',
-						value: true
-					}
-				},
-				mustNot: {
-					term: {
-						field: 'disabledInInterfaces',
-						value: interfaceId
-					}
-				}*/
+				// must: {
+				// 	in: { // Limit which thesauri to search
+				// 		field: '_parentPath',
+				// 		values: activeThesauri.map(n => `/thesauri/${n}`)
+				// 	},
+				// 	term: {
+				// 		field: 'enabled',
+				// 		value: true
+				// 	}
+				// },
+				// mustNot: {
+				// 	term: {
+				// 		field: 'disabledInInterfaces',
+				// 		value: interfaceId
+				// 	}
+				// }
 				should: rootShouldQueries,
 			}
 		},
@@ -285,11 +285,11 @@ export function getSynonymsFromSearchString({
 			languages,
 			thesaurus: thesaurusName,
 		} = querySynonymsRes.hits[i];
-		//log.debug('_highlight:%s', toStr(_highlight));
-		//log.debug('languages:%s', toStr(languages));
+		// log.debug('_highlight:%s', toStr(_highlight));
+		// log.debug('languages:%s', toStr(languages));
 
-		//const from :Array<string> = [];
-		//const to :Array<string> = [];
+		// const from :Array<string> = [];
+		// const to :Array<string> = [];
 		const synonymsToApply :{
 			locale :string
 			synonym :string
@@ -301,7 +301,7 @@ export function getSynonymsFromSearchString({
 				disabledInInterfaces: languageDisabledInInterfaces,
 				locale
 			} = language;
-			//log.debug('locale:%s', toStr(locale));
+			// log.debug('locale:%s', toStr(locale));
 			if (
 				languageEnabled
 				&& !arrayIncludes(languageDisabledInInterfaces, interfaceId)
@@ -309,9 +309,9 @@ export function getSynonymsFromSearchString({
 			) {
 				for (let j = 0; j < resultUseArray.length; j++) {
 					const use = resultUseArray[j];
-					//log.debug('use:%s', toStr(use));
+					// log.debug('use:%s', toStr(use));
 					const synonymsArray = language[use];
-					//log.debug('synonymsArray:%s', toStr(synonymsArray));
+					// log.debug('synonymsArray:%s', toStr(synonymsArray));
 					for (let k = 0; k < synonymsArray.length; k++) {
 						const {
 							enabled,
@@ -323,26 +323,26 @@ export function getSynonymsFromSearchString({
 							&& !arrayIncludes(disabledInInterfaces, interfaceId)
 						) {
 							const washedSynonym = washSynonyms(synonym);
-							//log.debug('washedSynonym:%s', toStr(washedSynonym));
+							// log.debug('washedSynonym:%s', toStr(washedSynonym));
 							if (!stringIncludes(washedSearchString, washedSynonym)) {
 								if (use === 'from') {
-									//if (!arrayIncludes(from, washedSynonym)) {
-									//from.push(washedSynonym);
+									// if (!arrayIncludes(from, washedSynonym)) {
+									// from.push(washedSynonym);
 									if (expand) {
 										synonymsToApply.push({
 											locale,
 											synonym: washedSynonym
 										});
 									}
-									//}
+									// }
 								} else { // both, to
-									//if (!arrayIncludes(to, washedSynonym)) {
-									//to.push(washedSynonym);
+									// if (!arrayIncludes(to, washedSynonym)) {
+									// to.push(washedSynonym);
 									synonymsToApply.push({
 										locale,
 										synonym: washedSynonym
 									});
-									//}
+									// }
 								}
 							}
 						}
@@ -350,15 +350,15 @@ export function getSynonymsFromSearchString({
 				} // for resultUseArray
 			}
 		} // for languages
-		//log.debug('from:%s', toStr(from));
-		//log.debug('to:%s', toStr(to));
+		// log.debug('from:%s', toStr(from));
+		// log.debug('to:%s', toStr(to));
 		synonyms.push({
 			//from,
 			_highlight,
 			_score,
 			synonyms: synonymsToApply,
 			thesaurusName,
-			//to
+			// to
 		});
 	} // for
 	if (doProfiling) {
@@ -367,7 +367,7 @@ export function getSynonymsFromSearchString({
 			label: profilingLabel,
 			operation: 'process synonyms'
 		});
-		//log.debug('profilingArray:%s', toStr(profilingArray));
+		// log.debug('profilingArray:%s', toStr(profilingArray));
 	}
 	if (logQueryResult) {
 		log.info(

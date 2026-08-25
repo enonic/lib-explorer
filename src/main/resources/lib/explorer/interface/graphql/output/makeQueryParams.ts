@@ -10,19 +10,18 @@ import type {
 } from '@enonic-types/lib-explorer';
 import type {Profiling} from '/lib/explorer/interface/graphql/output/index.d';
 import type {SynonymsArray} from '/lib/explorer/synonym/index.d';
-import type {TermQuery} from '@enonic-types/lib-explorer/Interface.d';
+import type {InterfaceExpressions, TermQuery} from '@enonic-types/lib-explorer/Interface.d';
 import type {GQL_InputType_Highlight} from '@enonic-types/lib-explorer/GraphQL.d';
 import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 
 
 import {
 	addQueryFilter,
-	forceArray,
 	toStr,
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
+import { noNilsArray } from '@enonic/js-utils/array/noNilsArray';
 import { includes as strIncludes } from '@enonic/js-utils/string/includes';
-import { isSet } from '@enonic/js-utils/value/isSet';
 import {
 	FIELD_PATH_META,
 	NT_DOCUMENT,
@@ -34,20 +33,52 @@ import {removeStopWords} from '/lib/explorer/query/removeStopWords';
 import {wash} from '/lib/explorer/query/wash';
 
 import {get as getStopWordsList} from '/lib/explorer/stopWords/get';
-import {getSynonymsFromSearchString} from '/lib/explorer/synonym/getSynonymsFromSearchString';
-import {javaLocaleToSupportedLanguage as stemmingLanguageFromLocale} from '/lib/explorer/stemming/javaLocaleToSupportedLanguage';
 import { isNotNil } from '/lib/explorer/typeGuards/isNotNil';
 
 import {
 	type AggregationInput,
 	createAggregation,
-} from '/lib/explorer/interface/graphql/aggregations/guillotine/createAggregation';
-import {createFilters} from '/lib/explorer/interface/graphql/filters/guillotine/createFilters';
-import {makeQuery} from './makeQuery';
+	createFilters
+	// @ts-ignore
+} from '/lib/guillotine/util/factory';
+import {makeQueryAndSynonyms} from './makeQueryAndSynonyms';
 import {highlightGQLArgToEnonicXPQuery} from '/lib/explorer/interface/graphql/highlight/input/highlightGQLArgToEnonicXPQuery';
 import {resolveFieldShortcuts} from './resolveFieldShortcuts';
-import { noNilsArray } from '/lib/explorer/array/noNilsArray';
 
+
+interface MakeQueryParamsParams {
+	_trace?: boolean;
+	aggregationsArg: AnyObject[];
+	doProfiling?: boolean;
+	expressions?: InterfaceExpressions;
+	explainArg?: boolean;
+	fields: InterfaceField[];
+	filtersArg?: AnyObject[];
+	highlightArg?: GQL_InputType_Highlight;
+	interfaceId: string;
+	languages: string[];
+	localesInSelectedThesauri: string[];
+	profilingArray?: Profiling[];
+	profilingLabel?: string;
+	searchString: string;
+	stopWords: string[];
+	synonymsSource: SynonymsArray;
+	thesauriNames: string[];
+	// Optional
+	count?: number;
+	logSynonymsQuery?: boolean;
+	logSynonymsQueryResult?: boolean;
+	sort?: FieldSortDsl[];
+	start?: number;
+	stemmingLanguages?: StemmingLanguageCode[];
+	termQueries?: TermQuery[];
+}
+
+interface MakeQueryParamsReturnValue {
+	decoratedSearchString: string; // Can be ''
+	queryParams: QueryNodeParams<Aggregations>;
+	synonyms: SynonymsArray;
+}
 
 const TRACE = false;
 
@@ -56,6 +87,7 @@ export function makeQueryParams({
 	_trace = TRACE,
 	aggregationsArg,
 	explainArg,
+	expressions,
 	fields,
 	filtersArg,
 	highlightArg,
@@ -78,39 +110,13 @@ export function makeQueryParams({
 	start, // default is undefined which means 0
 	stemmingLanguages = [],
 	termQueries,
-}: {
-	_trace?: boolean;
-	aggregationsArg: AnyObject[]
-	doProfiling?: boolean
-	explainArg?: boolean;
-	fields: InterfaceField[]
-	filtersArg?: AnyObject[]
-	highlightArg?: GQL_InputType_Highlight;
-	interfaceId: string
-	languages: string[]
-	localesInSelectedThesauri: string[]
-	profilingArray?: Profiling[]
-	profilingLabel?: string
-	searchString: string
-	stopWords: string[]
-	synonymsSource: SynonymsArray
-	thesauriNames: string[]
-	// Optional
-	count?: number
-	logSynonymsQuery?: boolean
-	logSynonymsQueryResult?: boolean
-	// queryArg?: QueryDsl,
-	sort?: FieldSortDsl[]
-	start?: number
-	stemmingLanguages?: StemmingLanguageCode[]
-	termQueries?: TermQuery[]
-}) {
+}: MakeQueryParamsParams): MakeQueryParamsReturnValue {
 	if (_trace) log.debug('makeQueryParams highlightArg:%s', toStr(highlightArg));
 
 	const aggregations = {};
 	if (aggregationsArg) {
 		if (_trace) log.debug('makeQueryParams aggregationsArg:%s', toStr(aggregationsArg));
-		forceArray(resolveFieldShortcuts({
+		noNilsArray(resolveFieldShortcuts({
 			basicObject: aggregationsArg
 		})).forEach(aggregation => {
 			// This works magically because fieldType is an Enum.
@@ -131,7 +137,7 @@ export function makeQueryParams({
 	}));
 	if (_trace) log.debug('staticFilters:%s', toStr(staticFilters));
 
-	let filtersArray: Filter[] | undefined;
+	let filtersArray: Filter[];
 	if (filtersArg) {
 		// This works magically because fieldType is an Enum?
 		filtersArray = createFilters(resolveFieldShortcuts({
@@ -142,11 +148,10 @@ export function makeQueryParams({
 			(filtersArray as Filter[]).push(staticFilter);
 		}
 		if (_trace) log.debug('filtersArray:%s', toStr(filtersArray));
+	} else {
+		filtersArray = staticFilters;
 	}
 
-	// let query = queryArg;
-	// let synonyms = [];
-	// if (!queryArg) {
 	const explorerRepoReadConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
 
 	if (_trace) log.debug('searchString:%s', toStr(searchString));
@@ -199,8 +204,14 @@ export function makeQueryParams({
 					// the difference between 0.001 and 0.0000001 is entirely negligible in final
 					// rankings.
 					// When logging the smallest I can see is 0.000000000000000001 (18 decimals)
-					// This will be multiplied by 1 (fulltext), 0.9 (stemmed) and 0.8 (ngram).
-					boost: 0.01,
+					//
+					// HOWEVER: I have tested what happens if one uses a boost of 0.
+					// Even if the searchString is only present in that field, not even in _alltext.
+					// One will get a hit with highlight, but the field will have no impact on the
+					// score. Just because one wants a highlight from a field doesn't automatically
+					// mean that that field is relevant in terms of scoring. So, zero is the way to
+				// go. Can be overridden by adding a field boost in the Interface GUI.
+					boost: 0,
 					name: field,
 				});
 			}
@@ -208,101 +219,46 @@ export function makeQueryParams({
 		if (_trace) log.debug('fieldsAndHighlight:%s', toStr(fieldsAndHighlight));
 	}
 
-	const query = searchStringWithoutStopWords
-		? makeQuery({
-			fields: fieldsAndHighlight || fields,
-			searchStringWithoutStopWords,
-			stemmingLanguages,
-			termQueries
-		})
-		: {
-			matchAll: {}
-		};
-	if (_trace) log.debug('query:%s', toStr(query));
-
-	const synonyms = isSet(synonymsSource)
-		? synonymsSource
-		: getSynonymsFromSearchString({
-			// expand,
-			// explain,
-			explorerRepoReadConnection,
-			defaultLocales: localesInSelectedThesauri,
-			doProfiling,
-			interfaceId,
-			locales: languages,
-			logQuery: logSynonymsQuery,
-			logQueryResult: logSynonymsQueryResult,
-			profilingArray,
-			profilingLabel,
-			searchString: searchStringWithoutStopWords,
-			showSynonyms: true, // TODO hardcode
-			thesauri: thesauriNames
-		});
-	if (_trace) log.debug('synonyms:%s', toStr(synonyms));
-
-	const appliedFulltext = [];
-	for (let i = 0; i < synonyms.length; i++) {
-		const {
-			synonyms: synonymsToApply
-		} = synonyms[i];
-		for (let j = 0; j < synonymsToApply.length; j++) {
-			const {
-				locale,
-				synonym
-			} = synonymsToApply[j];
-			if (!arrayIncludes(appliedFulltext, synonym)) {
-				const aSynonymFulltextQuery = {
-					fulltext: {
-						fields: fields.map(({name}) => name), // NOTE: No boosting
-						operator: 'AND',
-						query: synonym
-					}
-				};
-				// @ts-ignore // We know it's a list
-				query.boolean.should.push(aSynonymFulltextQuery);
-				appliedFulltext.push(synonym);
-			}
-			if (locale !== 'zxx') {
-				const stemmingLanguage = stemmingLanguageFromLocale(locale);
-				if (stemmingLanguage) {
-					const aSynonymStemmedQuery = {
-						stemmed: {
-							fields: fields.map(({name}) => name), // NOTE: No boosting
-							operator: 'AND',
-							query: synonym,
-							language: stemmingLanguageFromLocale(locale)
-						}
-					};
-					// @ts-ignore // We know it's a list
-					query.boolean.should.push(aSynonymStemmedQuery);
-				} else {
-					log.warning(`Unable to guess stemmingLanguage from locale:${locale}`);
-				} // stemmingLanguage
-			} // !zxx
-		} // for synonymsToApply[j]
-	} // for synonyms[i]
-	// }
-
-	const queryParams: QueryNodeParams<Aggregations> = {
-		aggregations,
-		count,
-		filters: filtersArray ? filtersArray : staticFilters,
+	const {
 		query,
-		sort,
-		start,
-	};
+		synonyms,
+	} = makeQueryAndSynonyms({
+		doProfiling,
+		explorerRepoReadConnection,
+		expressions,
+		fields: fieldsAndHighlight || fields,
+		interfaceId,
+		languages,
+		localesInSelectedThesauri,
+		logSynonymsQuery,
+		logSynonymsQueryResult,
+		profilingArray,
+		profilingLabel,
+		searchStringWithoutStopWords,
+		stemmingLanguages,
+		synonymsSource,
+		termQueries,
+		thesauriNames,
+	});
 
-	if (isNotNil(explainArg)) {
-		queryParams.explain = explainArg;
-	}
-
-	if (isNotNil(highlightArg)) {
-		queryParams.highlight = highlightGQLArgToEnonicXPQuery({ highlightArg });
-	}
-
-	return {
+	const rv: MakeQueryParamsReturnValue = {
 		decoratedSearchString: searchStringWithoutStopWords,
-		queryParams,
+		queryParams: {
+			aggregations,
+			count,
+			filters: filtersArray,
+			query,
+			sort,
+			start
+		},
 		synonyms
 	};
+
+	if (isNotNil(explainArg)) rv.queryParams.explain = explainArg;
+
+	if (isNotNil(highlightArg)) {
+		rv.queryParams.highlight = highlightGQLArgToEnonicXPQuery({ highlightArg });
+	}
+
+	return rv;
 }

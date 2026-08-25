@@ -1,7 +1,9 @@
+import type { StemmingLanguageCode } from '@enonic/js-utils/types';
 import type {
 	CollectionNode,
 	InterfaceField,
 } from '@enonic-types/lib-explorer';
+import type { InterfaceInfo } from '.';
 
 
 import {
@@ -10,6 +12,7 @@ import {
 	// toStr,
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
+import { filterNils } from '@enonic/js-utils/array/filterNils';
 import {
 	COLLECTION_REPO_PREFIX,
 	DEFAULT_INTERFACE_FIELDS,
@@ -24,11 +27,12 @@ import {multiConnect} from '/lib/explorer/repo/multiConnect';
 import {getThesaurus} from '/lib/explorer/thesaurus/getThesaurus';
 
 
-export function getInterfaceInfo({
-	interfaceName
-}: {
+interface GetInterfaceInfoParams {
 	interfaceName: string
-}) {
+};
+
+
+export function getInterfaceInfo({ interfaceName }: GetInterfaceInfoParams): InterfaceInfo {
 	const explorerRepoReadConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
 
 	const interfaceNode = getInterface({
@@ -41,6 +45,7 @@ export function getInterfaceInfo({
 
 	const {
 		_id: interfaceId,
+		expressions,
 		stopWords,
 		synonymIds,
 		termQueries,
@@ -109,7 +114,7 @@ export function getInterfaceInfo({
 
 	// Multiconnect will fail when an interface has no existing collection nodes,
 	// or TODO: no collection repos.
-	const stemmingLanguages: string[] = [];
+	const stemmingLanguages: StemmingLanguageCode[] = [];
 	if (collectionIdsWithNames.length) {
 		const multiRepoReadConnection = multiConnect({
 			principals: [PRINCIPAL_EXPLORER_READ],
@@ -153,8 +158,8 @@ export function getInterfaceInfo({
 		if (buckets) {
 			for (let i = 0; i < buckets.length; i++) {
 				const {key} = buckets[i];
-				if (!arrayIncludes(stemmingLanguages, key)) {
-					stemmingLanguages.push(key);
+				if (!arrayIncludes(stemmingLanguages, key as StemmingLanguageCode)) {
+					stemmingLanguages.push(key as StemmingLanguageCode);
 				}
 			}
 		}
@@ -163,8 +168,8 @@ export function getInterfaceInfo({
 	//──────────────────────────────────────────────────────────────────────────
 
 	const localesInSelectedThesauri: string[] = [];
-	const thesauriNames = synonymIds.length // Avoid: Cannot build empty 'IN' statements"
-		? explorerRepoReadConnection.query({
+	const thesauriNames: string[] = synonymIds.length // Avoid: Cannot build empty 'IN' statements"
+		? filterNils(explorerRepoReadConnection.query({
 			count: -1,
 			query: {
 				boolean: {
@@ -194,13 +199,14 @@ export function getInterfaceInfo({
 			} catch (_e) {
 				log.warning(`Interface ${interfaceName} refers to an thesarusId:${synonymIds} that doesn't exist?!`);
 			}
-		}).filter((x) => x)
-		: []; // Remove missing thesauri.
-	//log.debug('getInterfaceInfo thesauriNames:%s', toStr(thesauriNames));
-	//log.debug('getInterfaceInfo localesInSelectedThesauri:%s', toStr(localesInSelectedThesauri));
+		}))
+		: [];
+	// log.debug('getInterfaceInfo thesauriNames:%s', toStr(thesauriNames));
+	// log.debug('getInterfaceInfo localesInSelectedThesauri:%s', toStr(localesInSelectedThesauri));
 
 	return {
 		collectionNameToId,
+		expressions,
 		fields,
 		interfaceId,
 		interfaceName,
