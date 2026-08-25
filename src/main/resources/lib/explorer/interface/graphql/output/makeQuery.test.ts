@@ -1,39 +1,70 @@
+import type {
+	Log,
+	LibNode,
+} from '@enonic/mock-xp';
+import type { SynonymsArray } from '../../../synonym/index.d';
+import type { Java } from '../../../../../../../jest/types';
+
 import {
 	describe,
 	expect,
 	// jest,
 	test as it
 } from '@jest/globals';
-import {Log} from '@enonic/mock-xp';
+import {
+	BRANCH_ID_EXPLORER,
+	PRINCIPAL_EXPLORER_READ,
+	REPO_ID_EXPLORER
+} from '../../../constants';
 import {makeQuery} from './makeQuery';
 
-const logger = Log.createLogger({
-	loglevel: 'debug'
-});
 
 declare namespace globalThis {
-	let log: Log
+	let log: Log;
+	let libNode: LibNode;
+	let Java: Java;
 }
-globalThis.log = logger;
+
+
+const TEST_INTERFACE_ID = 'test_interface';
+const TEST_LANGUAGES = ['no'];
+const TEST_LOCALES_IN_SELECTED_THESAURI = ['no'];
+const TEST_SYNONYMS_SOURCE: SynonymsArray = [];
+const TEST_THESAURI_NAMES: string[] = [];
+
+const explorerRepoReadConnection = globalThis.libNode.connect({
+	branch: BRANCH_ID_EXPLORER,
+	repoId: REPO_ID_EXPLORER,
+	principals: [PRINCIPAL_EXPLORER_READ],
+	// user: {}
+});
+
 
 describe('makeQuery', () => {
 	it('should make a minimal query for minimal input', () => {
 		expect(makeQuery({
 			// _trace: true,
+			explorerRepoReadConnection,
 			fields: [],
+			interfaceId: TEST_INTERFACE_ID,
+			languages: TEST_LANGUAGES,
+			localesInSelectedThesauri: TEST_LOCALES_IN_SELECTED_THESAURI,
 			searchStringWithoutStopWords: 'god',
+			synonymsSource: TEST_SYNONYMS_SOURCE,
+			thesauriNames: TEST_THESAURI_NAMES,
 		})).toEqual({
 			boolean: {
 				should: [{
 					fulltext: {
-						fields: ['_alltext'],
+						boost: 1,
+						fields: ['_alltext^1'],
 						operator: 'AND',
 						query: 'god',
 					}
 				}, {
 					ngram: {
 						boost: 0.8,
-						fields: ['_alltext'],
+						fields: ['_alltext^1'],
 						operator: 'AND',
 						query: 'god',
 					}
@@ -43,71 +74,68 @@ describe('makeQuery', () => {
 	});
 
 	it('should handle field boosting', () => {
-		expect(makeQuery({
+		const actual = makeQuery({
+			explorerRepoReadConnection,
 			fields: [{
 				boost: 1.1,
 				name: 'title',
 			}],
+			interfaceId: TEST_INTERFACE_ID,
+			languages: TEST_LANGUAGES,
+			localesInSelectedThesauri: TEST_LOCALES_IN_SELECTED_THESAURI,
 			searchStringWithoutStopWords: 'god',
-		})).toEqual({
-			boolean: {
-				should: [{
-					boolean: {
-						should: [{
-							fulltext: {
-								boost: 1.1,
-								fields: ['title'],
-								operator: 'AND',
-								query: 'god'
-							}
-						}, {
-							fulltext: {
-								fields: ['_alltext'],
-								operator: 'AND',
-								query: 'god'
-							}
-						}]
-					}
-				},{
-					boolean: {
-						should: [{
-							ngram: {
-								boost: 0.8800000000000001,
-								fields: ['title'],
-								operator: 'AND',
-								query: 'god'
-							}
-						}, {
-							ngram: {
-								boost: 0.8,
-								fields: ['_alltext'],
-								operator: 'AND',
-								query: 'god'
-							}
-						}]
-					}
-				}]
-			}
+			synonymsSource: TEST_SYNONYMS_SOURCE,
+			thesauriNames: TEST_THESAURI_NAMES,
 		});
-	});
-
-	it('should handle stemming', () => {
-		expect(makeQuery({
-			fields: [],
-			searchStringWithoutStopWords: 'god',
-			stemmingLanguages: ['no', 'en'],
-		})).toEqual({
+		// log.debug('actual:%s', actual);
+		const expected = {
 			boolean: {
 				should: [{
 					fulltext: {
-						fields: ['_alltext'],
+						boost: 1,
+						fields: ['title^1.1', '_alltext^1'],
+						operator: 'AND',
+						query: 'god'
+					}
+				}, {
+					ngram: {
+						boost: 0.8,
+						fields: ['title^1.1', '_alltext^1'],
+						operator: 'AND',
+						query: 'god'
+					}
+				}]
+			}
+		};
+		expect(actual).toEqual(expected);
+	});
+
+	it('should handle stemming', () => {
+		const actual = makeQuery({
+			explorerRepoReadConnection,
+			fields: [],
+			interfaceId: TEST_INTERFACE_ID,
+			languages: TEST_LANGUAGES,
+			localesInSelectedThesauri: TEST_LOCALES_IN_SELECTED_THESAURI,
+			searchStringWithoutStopWords: 'god',
+			stemmingLanguages: ['no', 'en'],
+			synonymsSource: TEST_SYNONYMS_SOURCE,
+			thesauriNames: TEST_THESAURI_NAMES,
+		});
+		// log.debug('actual:%s', actual);
+		expect(actual).toEqual({
+			boolean: {
+				should: [{
+					fulltext: {
+						boost: 1,
+						fields: ['_alltext^1'],
 						operator: 'AND',
 						query: 'god'
 					}
 				}, {
 					stemmed: {
 						boost: 0.9,
-						fields: ['_alltext'],
+						fields: ['_alltext^1'],
 						language: 'no',
 						operator: 'AND',
 						query: 'god'
@@ -115,7 +143,7 @@ describe('makeQuery', () => {
 				}, {
 					stemmed: {
 						boost: 0.9,
-						fields: ['_alltext'],
+						fields: ['_alltext^1'],
 						language: 'en',
 						operator: 'AND',
 						query: 'god'
@@ -123,7 +151,7 @@ describe('makeQuery', () => {
 				}, {
 					ngram: {
 						boost: 0.8,
-						fields: ['_alltext'],
+						fields: ['_alltext^1'],
 						operator: 'AND',
 						query: 'god'
 					}
@@ -133,9 +161,14 @@ describe('makeQuery', () => {
 	});
 
 	it('should handle term boosting', () => {
-		const res = makeQuery({
+		const actual = makeQuery({
+			explorerRepoReadConnection,
 			fields: [],
+			interfaceId: TEST_INTERFACE_ID,
+			languages: TEST_LANGUAGES,
+			localesInSelectedThesauri: TEST_LOCALES_IN_SELECTED_THESAURI,
 			searchStringWithoutStopWords: 'god',
+			synonymsSource: TEST_SYNONYMS_SOURCE,
 			termQueries: [{
 				boost: 1.2,
 				field: 'divine',
@@ -156,21 +189,23 @@ describe('makeQuery', () => {
 				field: 'name',
 				stringValue: 'Jesus',
 				type: 'string'
-			}]
+			}],
+			thesauriNames: TEST_THESAURI_NAMES,
 		});
-		// logger.debug('res:%s', res);
+		// log.debug('actual:%s', actual);
 		const mainQuery = {
 			boolean: {
 				should: [{
 					fulltext: {
-						fields: ['_alltext'],
+						boost: 1,
+						fields: ['_alltext^1'],
 						operator: 'AND',
 						query: 'god'
 					}
 				}, {
 					ngram: {
 						boost: 0.8,
-						fields: ['_alltext'],
+						fields: ['_alltext^1'],
 						operator: 'AND',
 						query: 'god'
 					}
@@ -202,36 +237,27 @@ describe('makeQuery', () => {
 				value: 'Jesus'
 			}
 		}];
-		const termQuery = {
+		expect(actual).toEqual({
 			boolean: {
+				must: mainQuery,
 				should: termQueries
-			}
-		};
-		expect(res).toEqual({
-			boolean: {
-				should: [
-					mainQuery,
-					{
-						boolean: {
-							must: [
-								mainQuery,
-								termQuery
-							]
-						}
-					}
-				]
 			}
 		});
 	});
 
 	it('should handle everything all at once', () => {
-		const res = makeQuery({
+		const actual = makeQuery({
+			explorerRepoReadConnection,
 			fields: [{
 				boost: 1.1,
 				name: 'title',
 			}],
+			interfaceId: TEST_INTERFACE_ID,
+			languages: TEST_LANGUAGES,
+			localesInSelectedThesauri: TEST_LOCALES_IN_SELECTED_THESAURI,
 			searchStringWithoutStopWords: 'god',
 			stemmingLanguages: ['no', 'en'],
+			synonymsSource: TEST_SYNONYMS_SOURCE,
 			termQueries: [{
 				boost: 1.2,
 				field: 'divine',
@@ -252,89 +278,45 @@ describe('makeQuery', () => {
 				field: 'name',
 				stringValue: 'Jesus',
 				type: 'string'
-			}]
+			}],
+			thesauriNames: TEST_THESAURI_NAMES,
 		});
-		// logger.debug('res:%s', res);
+		// log.debug('actual:%s', actual);
 		const mainQuery = {
 			boolean: {
 				should: [{
-					boolean: {
-						should: [{
-							fulltext: {
-								boost: 1.1,
-								fields: ['title'],
-								operator: 'AND',
-								query: 'god'
-							}
-						}, {
-							fulltext: {
-								fields: ['_alltext'],
-								operator: 'AND',
-								query: 'god'
-							}
-						}] // nested should
-					} // nested boolean
-				}, {
-					boolean: {
-						should: [{
-							stemmed: {
-								boost: 0.9900000000000001,
-								fields: ['title'],
-								language: 'no',
-								operator: 'AND',
-								query: 'god'
-							}
-						}, {
-							stemmed: {
-								boost: 0.9,
-								fields: ['_alltext'],
-								language: 'no',
-								operator: 'AND',
-								query: 'god'
-							}
-						}]
+					fulltext: {
+						boost: 1,
+						fields: ['title^1.1', '_alltext^1'],
+						operator: 'AND',
+						query: 'god'
 					}
 				}, {
-					boolean: {
-						should: [{
-							stemmed: {
-								boost: 0.9900000000000001,
-								fields: ['title'],
-								language: 'en',
-								operator: 'AND',
-								query: 'god'
-							}
-						}, {
-							stemmed: {
-								boost: 0.9,
-								fields: ['_alltext'],
-								language: 'en',
-								operator: 'AND',
-								query: 'god'
-							}
-						}]
+					stemmed: {
+						boost: 0.9,
+						fields: ['title^1.1', '_alltext^1'],
+						language: 'no',
+						operator: 'AND',
+						query: 'god'
 					}
 				}, {
-					boolean: {
-						should: [{
-							ngram: {
-								boost: 0.8800000000000001,
-								fields: ['title'],
-								operator: 'AND',
-								query: 'god'
-							}
-						}, {
-							ngram: {
-								boost: 0.8,
-								fields: ['_alltext'],
-								operator: 'AND',
-								query: 'god'
-							}
-						}]
+					stemmed: {
+						boost: 0.9,
+						fields: ['title^1.1','_alltext^1'],
+						language: 'en',
+						operator: 'AND',
+						query: 'god'
+					}
+				}, {
+					ngram: {
+						boost: 0.8,
+						fields: ['title^1.1', '_alltext^1'],
+						operator: 'AND',
+						query: 'god'
 					}
 				}]
 			}
-		}
+		};
 		const termQueries = [{
 			term: {
 				boost: 1.2,
@@ -360,24 +342,10 @@ describe('makeQuery', () => {
 				value: 'Jesus'
 			}
 		}];
-		const termQuery = {
+		expect(actual).toEqual({
 			boolean: {
+				must: mainQuery,
 				should: termQueries
-			}
-		};
-		expect(res).toEqual({
-			boolean: {
-				should: [
-					mainQuery,
-					{
-						boolean: {
-							must: [
-								mainQuery,
-								termQuery
-							]
-						}
-					}
-				]
 			}
 		});
 	}); // it
