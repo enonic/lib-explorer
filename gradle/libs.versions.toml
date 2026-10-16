@@ -1,7 +1,7 @@
 [versions]
 graphql     = "3.0.0"
 cache       = "3.0.0"
-httpClient  = "4.0.0"
+httpClient  = "4.0.1"
 license     = "4.0.0"
 router      = "4.0.0"
 
