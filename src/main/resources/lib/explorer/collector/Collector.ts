@@ -481,7 +481,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
             if (emails.length) {
                 try {
                     const emailParams = {
-                        from: 'explorer-noreply@enonic.com',
+                        from: '<>',
                         to: emails,
                         subject: `Collecting to ${this._collectionName} had ${this.journal.errors.length} errors!`,
                         body: `${toStr(this.journal.errors)}`
@@ -510,7 +510,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
         if (emails.length) {
             try {
                 const emailParams = {
-                    from: 'explorer-noreply@enonic.com',
+                    from: '<>',
                     to: emails,
                     subject: `Collecting to ${this._collectionName} successful :)`,
                     body: `:)`
