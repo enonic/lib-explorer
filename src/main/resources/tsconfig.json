@@ -1,21 +1,14 @@
 {
-	// This file is used by your code editor and tsup when builing
+	// This file is used by your code editor and tsdown when builing
 	// https://www.typescriptlang.org/tsconfig
 	"compilerOptions": {
 
-		// Sets a base directory from which to resolve bare specifier module names.
-		// This resolution has higher priority than lookups from node_modules.
-		// This feature was designed for use in conjunction with AMD module
-		// loaders in the browser, and is not recommended in any other context.
-		// As of TypeScript 4.1, baseUrl is no longer required to be set when
-		// using paths.
-		"baseUrl": ".",
 		"checkJs": false,
 		"declaration": false,
 		"declarationMap": false,
 		"esModuleInterop": true,
 		"lib": ["ES2015", "DOM"],
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"inlineSourceMap": false,
 		"inlineSources": false,
 		"listEmittedFiles": false,
@@ -24,6 +17,8 @@
 		// A series of entries which re-map imports to lookup locations relative
 		// to the baseUrl if set, or to the tsconfig file itself otherwise.
 		"paths": {
+			"@enonic/js-utils/types": ["../../../node_modules/@enonic/js-utils/types"],
+			"@enonic/js-utils/types/*": ["../../../node_modules/@enonic/js-utils/types/*"],
 			"@enonic-types/lib-explorer": ["./lib/explorer/types/index.d.ts"],
 			"@enonic-types/lib-explorer/*": ["./lib/explorer/types/*"],
 			"@enonic-types/lib-*": ["../../../node_modules/@enonic-types/lib-*"],
@@ -35,9 +30,10 @@
 
 		"skipLibCheck": true,
 		"sourceMap": false,
+		"strict": false,
 
-		// Build for Nashorn
-		"target": "es5",
+		// Lowered to ES5 by swc in tsdown.config.ts for Nashorn
+		"target": "ES2015",
 
 		// By default all visible ”@types” packages are included in your compilation.
 		// Packages in node_modules/@types of any enclosing folder are considered visible.

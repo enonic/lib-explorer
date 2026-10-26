@@ -1,11 +1,11 @@
 {
-	// This file is used by bundle-require to transpile the tsup.config.ts file
+	// This file is used by your code editor for the tsdown.config.ts file
 	// https://www.typescriptlang.org/tsconfig
 	"compilerOptions": {
 		// There are actually two "targets"
-		// 1. The environment tsup runs in (set in this file)
-		// 2. The environment tsup transpiles to (set in src/main/resources/tsconfig.json via tsup.config.ts)
-		"target": "ES2020", // What bundle-require inside tsup uses to load tsup.config.ts
+		// 1. The environment tsdown runs in (set in this file)
+		// 2. The environment tsdown transpiles to (set in src/main/resources/tsconfig.json via tsdown.config.ts)
+		"target": "ES2020", // What tsdown uses to load tsdown.config.ts
 	},
 
 	// Specifies an allowlist of files to include in the program. An error
@@ -13,7 +13,7 @@
 	// have a small number of files and don’t need to use a glob to reference
 	// many files. If you need that then use include.
 	"files": [
-		"tsup.config.ts",
+		"tsdown.config.ts",
 	],
 
 	// "include": [],
