@@ -38,9 +38,8 @@ import { isNotNil } from '/lib/explorer/typeGuards/isNotNil';
 import {
 	type AggregationInput,
 	createAggregation,
-	createFilters
-	// @ts-ignore
-} from '/lib/guillotine/util/factory';
+} from '/lib/explorer/interface/graphql/aggregations/guillotine/createAggregation';
+import {createFilters} from '/lib/explorer/interface/graphql/filters/guillotine/createFilters';
 import {makeQueryAndSynonyms} from './makeQueryAndSynonyms';
 import {highlightGQLArgToEnonicXPQuery} from '/lib/explorer/interface/graphql/highlight/input/highlightGQLArgToEnonicXPQuery';
 import {resolveFieldShortcuts} from './resolveFieldShortcuts';

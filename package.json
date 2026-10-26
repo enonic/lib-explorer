@@ -31,6 +31,7 @@
     "@enonic/test-data": "^1",
     "@eslint/js": "^10",
     "@jest/globals": "^30.5.2",
+    "@jspm/core": "2.0.1",
     "@swc/core": "^1.16.18",
     "@types/bluebird": "*",
     "@types/d3-dsv": "^3",
@@ -57,9 +58,9 @@
     "ts-node": "^10.9.2",
     "ts-toolbelt": "^9",
     "tsconfig-paths": "^4",
+    "tsdown": "^0.23.2",
     "tslib": "^2",
-    "tsup": "^9",
-    "typescript": "^5",
+    "typescript": "^6",
     "typescript-eslint": "^8"
   },
   "license": "Apache-2.0",
@@ -72,7 +73,7 @@
     "url": "git+https://github.com/enonic/lib-explorer"
   },
   "scripts": {
-    "build": "npx tsup -d build/resources/main",
+    "build": "npx tsdown",
     "check": "npx tsc --noEmit -p src/main/resources/tsconfig.json",
     "clean": "rimraf build",
     "cov": "jest --no-cache --coverage",

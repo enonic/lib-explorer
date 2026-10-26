@@ -3,7 +3,6 @@
 	// https://www.typescriptlang.org/tsconfig
 	"compilerOptions": {
 		"allowJs": true,
-		"baseUrl": ".",
 		"checkJs": false,
 		"declaration": false,
 		"declarationMap": false,
@@ -11,7 +10,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"inlineSourceMap": false,
 		"inlineSources": false,
-		"moduleResolution": "node",
+		"module": "commonjs",
 		"noEmit": true,
 		"noImplicitAny": false,
 		"noUnusedLocals": false, // Annoying while writing tests
@@ -45,11 +44,11 @@
 			"../node_modules/@types",
 		 	"../node_modules/@enonic-types",
 		],
-		// "types": [
-		// 	"@enonic-types/global",
-		// 	"node",
-		// 	"traverse"
-		// ],
+		"types": [
+			"@enonic-types/global",
+			"jest",
+			"node",
+		],
 	},
 	"include": [
 		"./**/*.ts"
