@@ -58,7 +58,7 @@
     "ts-toolbelt": "^9",
     "tsconfig-paths": "^4",
     "tslib": "^2",
-    "tsup": "^8",
+    "tsup": "^9",
     "typescript": "^5",
     "typescript-eslint": "^8"
   },
