@@ -32,7 +32,7 @@ function getInterface(key :string) {
 }
 
 
-export function get({
+export function GET({
 	params: {
 		count,
 		//ids = '[]', // NOTE Json in Enonic XP 6.x
@@ -49,12 +49,12 @@ export function get({
 		const idArray = forceArray(ids); // Enonic XP 7.x
 		if (idArray.length) {
 			return {
-				body: {
-					count: ids.length,
-					total: ids.length,
+				body: JSON.stringify({
+					count: idArray.length,
+					total: idArray.length,
 					hits: idArray.map(id => getInterface(`${PATH_INTERFACES}/${id}`))
-				},
-				contentType: 'text/json; charset=utf-8'
+				}),
+				contentType: 'application/json'
 			};
 		}
 	} // if ids
@@ -88,7 +88,7 @@ export function get({
 		hits: result.hits.map(({id}) => getInterface(id))
 	}; //log.info(toStr({body}));
 	return {
-		body,
-		contentType: 'text/json; charset=utf-8'
+		body: JSON.stringify(body),
+		contentType: 'application/json'
 	};
 }

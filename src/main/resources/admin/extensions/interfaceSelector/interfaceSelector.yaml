@@ -1,0 +1,11 @@
+kind: "AdminExtension"
+title: "Explorer interface selector"
+description: "Provides Explorer interfaces as options for a CustomSelector"
+interfaces:
+  - "contentstudio.customselector"
+allow:
+  - "role:cms.admin"
+  - "role:cms.cm.app"
+  - "role:cms.expert"
+  - "role:system.admin"
+  - "role:system.admin.login"
