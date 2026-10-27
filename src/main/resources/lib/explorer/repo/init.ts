@@ -16,7 +16,7 @@ import {
 
 
 export function init({
-	repoId = REPO_ID_EXPLORER,
+	repoId = REPO_ID_EXPLORER as string,
 	branchId = BRANCH_ID_EXPLORER,
 	rootPermissions = ROOT_PERMISSIONS_EXPLORER
 } = {}) {

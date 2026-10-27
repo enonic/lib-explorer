@@ -53,9 +53,9 @@ export function getSites({
 		start
 	};
 
-	const childRes = run(context, () => queryContent(queryParams));
+	const childRes = run(context, () => queryContent(queryParams as unknown as Parameters<typeof queryContent>[0]));
 	if (typeof map === 'function') {
-		childRes.hits = childRes.hits.map((c: unknown) => map(c));
+		childRes.hits = childRes.hits.map((c: unknown) => map(c)) as typeof childRes.hits;
 	}
 	return childRes;
 }

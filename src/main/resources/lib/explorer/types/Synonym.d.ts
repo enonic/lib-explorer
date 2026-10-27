@@ -1,5 +1,6 @@
 export {
 	InputTypeLanguageSynonym,
+	InputTypeSynonymLanguage,
 	InputTypeSynonymLanguages,
 	QueriedSynonym,
 	Synonym,

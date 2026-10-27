@@ -194,7 +194,7 @@ export type {
     QueriedStopword,
     Stopword,
     StopwordNode
-} from './Stopword.d';
+} from './StopWord.d';
 export type {
     InputTypeLanguageSynonym,
     InputTypeSynonymLanguages,
