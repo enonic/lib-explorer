@@ -34,7 +34,6 @@ export default {
 		'/lib/explorer/(.*)': '<rootDir>/src/main/resources/lib/explorer/$1'
 	},
 
-	preset: 'ts-jest/presets/js-with-babel-legacy',
 	// preset: 'ts-jest/presets/js-with-babel',
 
 	// Each setup file will be run once per test file.
@@ -60,11 +59,18 @@ export default {
 
 	transform: {
 		'^.+\\.(js|jsx|ts|tsx)$': [
-			'ts-jest',
+			'@swc/jest',
 			{
-				tsconfig: 'test/tsconfig.json'
-			}
-		]
+				jsc: {
+					parser: {
+						syntax: 'typescript',
+						tsx: true,
+					},
+					target: 'es2022',
+				},
+				sourceMaps: 'inline',
+			},
+		],
 	},
 
 	transformIgnorePatterns: [

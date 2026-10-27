@@ -11,7 +11,6 @@ import {
 import {
     describe,
     // expect,
-    jest,
     test as it
 } from '@jest/globals';
 import { update } from './update';
@@ -20,18 +19,13 @@ import {
     DOCUMENT_TYPES_FOLDER
 } from '../../../../../../test/testData';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace globalThis {
-	let log: Log
-}
-
 const server = new Server({
     loglevel: 'silent'
 }).createRepo({
     id: 'com.enonic.app.explorer'
 });
 
-globalThis.log = server.log;
+(globalThis as unknown as {log: Log}).log = server.log;
 
 
 const libEvent = new LibEvent({

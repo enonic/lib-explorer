@@ -29,11 +29,7 @@ const server = new Server({
 });
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace globalThis {
-	let log: Log
-}
-
-globalThis.log = server.log;
+(globalThis as unknown as {log: Log}).log = server.log;
 
 //function toStr(v :unknown) { return JSON.stringify(v); }
 

@@ -12,7 +12,6 @@ import {
 import {
     describe,
     // expect,
-    jest,
     test as it
 } from '@jest/globals';
 import {throws} from 'assert';
@@ -37,11 +36,7 @@ const server = new Server({
     .createRepo({id: `${COLLECTION_REPO_PREFIX}${COLLECTION_NAME}`});
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace globalThis {
-	let log: Log
-}
-
-globalThis.log = server.log;
+(globalThis as unknown as {log: Log}).log = server.log;
 
 const libEvent = new LibEvent({
     server

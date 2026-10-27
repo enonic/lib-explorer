@@ -10,7 +10,8 @@
 		"forceConsistentCasingInFileNames": true,
 		"inlineSourceMap": false,
 		"inlineSources": false,
-		"module": "commonjs",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
 		"noEmit": true,
 		"noImplicitAny": false,
 		"noUnusedLocals": false, // Annoying while writing tests

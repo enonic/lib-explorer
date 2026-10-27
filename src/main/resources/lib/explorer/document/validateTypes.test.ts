@@ -35,11 +35,7 @@ const server = new Server({
 });
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace globalThis {
-	let log: Log
-}
-
-globalThis.log = server.log;
+(globalThis as unknown as {log: Log}).log = server.log;
 
 //export const VALUE_TYPE_ANY:string = 'any';
 const VALUE_TYPE_BOOLEAN = 'boolean';

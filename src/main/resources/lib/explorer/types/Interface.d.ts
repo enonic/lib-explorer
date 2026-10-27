@@ -45,13 +45,13 @@ export type TermQuery = {
 export interface InterfaceExpression {
 	boost?: number;
 	disabled?: boolean;
-};
+}
 
 export interface InterfaceExpressions {
 	fulltext: InterfaceExpression;
 	stemmed: InterfaceExpression;
 	nGram: InterfaceExpression;
-};
+}
 
 export type InterfaceNodeSpecific = {
 	collectionIds?: OneOrMore<string|Reference>;

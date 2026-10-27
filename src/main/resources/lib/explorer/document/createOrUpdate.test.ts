@@ -12,7 +12,6 @@ import {
 import {
     describe,
     // expect,
-    jest,
     test as it
 } from '@jest/globals';
 import {
@@ -43,11 +42,7 @@ const server = new Server({
 });
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace globalThis {
-	let log: Log
-}
-
-globalThis.log = server.log;
+(globalThis as unknown as {log: Log}).log = server.log;
 
 const libEvent = new LibEvent({
     server

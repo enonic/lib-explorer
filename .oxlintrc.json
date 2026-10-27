@@ -1,0 +1,41 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "oxc"],
+  "categories": {
+    "correctness": "error"
+  },
+  "ignorePatterns": [
+    "**/build/**",
+    "**/node_modules/**",
+    "test/lib/**",
+    "test/*.test.js"
+  ],
+  "globals": {
+    "__": "readonly",
+    "Java": "readonly",
+    "java": "readonly",
+    "app": "readonly",
+    "log": "readonly",
+    "resolve": "readonly"
+  },
+  "rules": {
+    "no-unused-vars": ["error", {
+      "args": "all",
+      "argsIgnorePattern": "^_",
+      "caughtErrors": "all",
+      "caughtErrorsIgnorePattern": "^_",
+      "destructuredArrayIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
+      "ignoreRestSiblings": true
+    }],
+    "no-unused-expressions": ["error", { "allowShortCircuit": true, "allowTernary": true }],
+    "typescript/ban-ts-comment": ["error", {
+      "ts-expect-error": false,
+      "ts-ignore": false,
+      "ts-nocheck": true,
+      "ts-check": true
+    }],
+    "typescript/no-require-imports": "off",
+    "typescript/triple-slash-reference": ["error", { "path": "always" }]
+  }
+}
