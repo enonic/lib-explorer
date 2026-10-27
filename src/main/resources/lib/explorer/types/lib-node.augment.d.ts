@@ -5,8 +5,8 @@
 // the runtime-supported behaviour. Drop this augmentation once all call sites
 // (and `@enonic/mock-xp`) move to `update`.
 import type {
-	ModifyNodeParams,
-	Node,
+    ModifyNodeParams,
+    Node,
 } from '@enonic-types/lib-node';
 
 

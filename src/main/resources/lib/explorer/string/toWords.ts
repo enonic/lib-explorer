@@ -6,19 +6,19 @@ const UNICODE_WORD_CHARACTERS_REGEXP = new RegExp(UNICODE_WORD_CHARACTERS_PATTER
 
 
 export const toWords = (str, {
-	uniq = false,
-	splitRegexp = UNICODE_WORD_CHARACTERS_REGEXP
+    uniq = false,
+    splitRegexp = UNICODE_WORD_CHARACTERS_REGEXP
 } = {}) => {
-	const arr = str.split(splitRegexp)
-		.filter(Boolean); // Remove false, 0, -0, 0n, "", null, undefined, NaN
-	if (!uniq) {
-		return arr;
-	}
-	const uniqWords = [];
-	arr.forEach((word) => {
-		if (!arrayIncludes(uniqWords, word)) {
-			uniqWords.push(word);
-		}
-	});
-	return uniqWords;
+    const arr = str.split(splitRegexp)
+        .filter(Boolean); // Remove false, 0, -0, 0n, "", null, undefined, NaN
+    if (!uniq) {
+        return arr;
+    }
+    const uniqWords = [];
+    arr.forEach((word) => {
+        if (!arrayIncludes(uniqWords, word)) {
+            uniqWords.push(word);
+        }
+    });
+    return uniqWords;
 }; // toWords

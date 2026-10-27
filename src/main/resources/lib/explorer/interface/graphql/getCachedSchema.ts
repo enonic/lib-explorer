@@ -5,9 +5,9 @@ import type {DocumentTypeNode} from '@enonic-types/lib-explorer';
 //@ts-ignore
 import {newCache} from '/lib/cache';
 import {
-	EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED,
-	EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED//,
-	//FIELD_PATH_META
+    EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED,
+    EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED//,
+    //FIELD_PATH_META
 } from '/lib/explorer/constants';
 import {makeSchema} from '/lib/explorer/interface/graphql/makeSchema';
 //@ts-ignore
@@ -18,16 +18,16 @@ const SECONDS_TO_CACHE = 3600; // One hour
 
 
 const schemaCache = newCache({
-	size: 1,
-	expire: SECONDS_TO_CACHE
+    size: 1,
+    expire: SECONDS_TO_CACHE
 });
 
 
 export function getCachedSchema() {
-	return schemaCache.get('static-key', () => {
-		//log.debug('Caching a new Interface GraphQL Schema for %s seconds', SECONDS_TO_CACHE);
-		return makeSchema();
-	});
+    return schemaCache.get('static-key', () => {
+        //log.debug('Caching a new Interface GraphQL Schema for %s seconds', SECONDS_TO_CACHE);
+        return makeSchema();
+    });
 }
 
 
@@ -37,23 +37,23 @@ export function getCachedSchema() {
 	EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED
 );*/
 listener({
-	type: 'custom.*',
-	localOnly: false,
-	callback: (event :CustomEvent<
+    type: 'custom.*',
+    localOnly: false,
+    callback: (event :CustomEvent<
 		typeof EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED
 		|typeof EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
 		DocumentTypeNode & Record<string, unknown>
 	>) => {
-		//log.debug('custom.* event:%s', toStr(event));
-		const {type} = event;
-		if (
-			type === EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED
+        //log.debug('custom.* event:%s', toStr(event));
+        const {type} = event;
+        if (
+            type === EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED
 			|| type === EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED
-		) {
-			//const {_id} = event.data;
-			//log.debug('_id:%s', _id);
-			//log.debug('Clearing cached Interface GraphQL Schema');
-			schemaCache.clear();
-		}
-	}
+        ) {
+            //const {_id} = event.data;
+            //log.debug('_id:%s', _id);
+            //log.debug('Clearing cached Interface GraphQL Schema');
+            schemaCache.clear();
+        }
+    }
 });

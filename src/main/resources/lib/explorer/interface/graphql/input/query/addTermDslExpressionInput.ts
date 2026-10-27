@@ -10,13 +10,13 @@ import { addDslQueryTypeEnum } from "./addDslQueryTypeEnum";
 import { addValueDslExpressionInput } from "./addValueDslExpressionInput";
 
 export function addTermDslExpressionInput({ glue }: { glue: Glue; }) {
-	return glue.addInputType({
-		name: GQL_INPUT_TYPE.TERM_DSL_EXPRESSION,
-		fields: {
-			field: { type: nonNull(GraphQLString) },
-			value: { type: nonNull(addValueDslExpressionInput({ glue })) },
-			type: { type: addDslQueryTypeEnum({ glue }) },
-			boost: { type: GraphQLFloat },
-		}
-	});
+    return glue.addInputType({
+        name: GQL_INPUT_TYPE.TERM_DSL_EXPRESSION,
+        fields: {
+            field: { type: nonNull(GraphQLString) },
+            value: { type: nonNull(addValueDslExpressionInput({ glue })) },
+            type: { type: addDslQueryTypeEnum({ glue }) },
+            boost: { type: GraphQLFloat },
+        }
+    });
 }

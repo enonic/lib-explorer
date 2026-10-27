@@ -1,8 +1,8 @@
 import type {
-	ByteSource,
-	DefaultResponseHeaders,
-	Response,
-	ResponseHeaders
+    ByteSource,
+    DefaultResponseHeaders,
+    Response,
+    ResponseHeaders
 } from '@enonic-types/core';
 
 type LowercaseKeys<T extends object> = {

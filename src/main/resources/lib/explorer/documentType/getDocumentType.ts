@@ -1,6 +1,6 @@
 import type {
-	DocumentTypeNode,
-	RepoConnection
+    DocumentTypeNode,
+    RepoConnection
 } from '@enonic-types/lib-explorer';
 
 
@@ -10,15 +10,15 @@ import {coerseDocumentType} from '/lib/explorer/documentType/coerseDocumentType'
 
 
 export function getDocumentType({
-	_id,
-	connection = connect({ principals: [PRINCIPAL_EXPLORER_READ] })
+    _id,
+    connection = connect({ principals: [PRINCIPAL_EXPLORER_READ] })
 }: {
 	_id: string
 	connection?: RepoConnection
 }) {
-	const documentTypeNode = connection.get(_id) as DocumentTypeNode;
-	if (!documentTypeNode) {
-		throw new Error(`Unable to get documentType with _id:${_id}!`);
-	}
-	return coerseDocumentType(documentTypeNode);
+    const documentTypeNode = connection.get(_id) as DocumentTypeNode;
+    if (!documentTypeNode) {
+        throw new Error(`Unable to get documentType with _id:${_id}!`);
+    }
+    return coerseDocumentType(documentTypeNode);
 }

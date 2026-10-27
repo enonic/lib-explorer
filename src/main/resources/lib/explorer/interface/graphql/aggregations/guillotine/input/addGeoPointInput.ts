@@ -7,20 +7,20 @@ import {GQL_INPUT_TYPE_GEO_POINT} from '/lib/explorer/interface/graphql/aggregat
 
 
 export function addGeoPointInput({
-	glue
+    glue
 }: {
 	glue: Glue
 }) {
-	return glue.addInputType({
-		name: GQL_INPUT_TYPE_GEO_POINT,
-		description: 'GeoPoint range input type',
-		fields: {
-			lat: {
-				type: GraphQLString
-			},
-			lon: {
-				type: GraphQLString
-			}
-		}
-	});
+    return glue.addInputType({
+        name: GQL_INPUT_TYPE_GEO_POINT,
+        description: 'GeoPoint range input type',
+        fields: {
+            lat: {
+                type: GraphQLString
+            },
+            lon: {
+                type: GraphQLString
+            }
+        }
+    });
 }

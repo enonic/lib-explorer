@@ -7,20 +7,20 @@ import {GQL_INPUT_TYPE_NUMBER_RANGE} from '/lib/explorer/interface/graphql/aggre
 
 
 export function addNumberRangeInput({
-	glue
+    glue
 }: {
 	glue: Glue
 }) {
-	return glue.addInputType({
-		name: GQL_INPUT_TYPE_NUMBER_RANGE,
-		description: 'Number range input type',
-		fields: {
-			from: {
-				type: GraphQLFloat
-			},
-			to: {
-				type: GraphQLFloat
-			}
-		}
-	});
+    return glue.addInputType({
+        name: GQL_INPUT_TYPE_NUMBER_RANGE,
+        description: 'Number range input type',
+        fields: {
+            from: {
+                type: GraphQLFloat
+            },
+            to: {
+                type: GraphQLFloat
+            }
+        }
+    });
 }

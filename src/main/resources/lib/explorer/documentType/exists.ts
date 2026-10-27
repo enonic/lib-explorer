@@ -8,13 +8,13 @@ import {documentTypeNameToPath} from '/lib/explorer/documentType/documentTypeNam
 
 
 export function exists({
-	_name
+    _name
 }: {
 	_name: string
 }) {
-	// log.debug('exists({ _name:%s })', _name);
-	const readConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] }) as RepoConnection;
-	const path = documentTypeNameToPath(_name);
-	// log.debug('exists({ _name:%s }) path:%s', _name, path);
-	return readConnection.exists(path);
+    // log.debug('exists({ _name:%s })', _name);
+    const readConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] }) as RepoConnection;
+    const path = documentTypeNameToPath(_name);
+    // log.debug('exists({ _name:%s }) path:%s', _name, path);
+    return readConnection.exists(path);
 }

@@ -1,9 +1,9 @@
 export function ids(
-	values
+    values
 ) {
-	return {
-		ids: {
-			values
-		}
-	};
+    return {
+        ids: {
+            values
+        }
+    };
 }

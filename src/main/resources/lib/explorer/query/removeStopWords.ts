@@ -1,6 +1,6 @@
 import {
-	arrayIncludes,
-	toStr
+    arrayIncludes,
+    toStr
 } from '@enonic/js-utils';
 import { hasOperator } from './hasOperator';
 
@@ -17,14 +17,14 @@ const UNICODE_WORD_CHARACTERS_REGEXP = /[^\u0041-\u005a\u0061-\u007a\u00b5-\u00b
 // if any character with special meaning exists within the search-string.
 // See https://developer.enonic.com/docs/xp/stable/storage/dsl#string_expressions
 export function removeStopWords({
-	_trace = TRACE,
-	removedStopWords = [],
-	string,
-	stopWords = [
-		'at', 'av', 'de', 'den', 'der', 'det', 'du', 'en', 'er', 'et', 'for',
-		'fra', 'før', 'med', 'og', 'om', 'over', 'på', 'som', 'til', 'ved', 'år'
-	],
-	wordSplitRegexp = UNICODE_WORD_CHARACTERS_REGEXP
+    _trace = TRACE,
+    removedStopWords = [],
+    string,
+    stopWords = [
+        'at', 'av', 'de', 'den', 'der', 'det', 'du', 'en', 'er', 'et', 'for',
+        'fra', 'før', 'med', 'og', 'om', 'over', 'på', 'som', 'til', 'ved', 'år'
+    ],
+    wordSplitRegexp = UNICODE_WORD_CHARACTERS_REGEXP
 }: {
 	_trace?: boolean;
 	removedStopWords?: string[];
@@ -32,25 +32,25 @@ export function removeStopWords({
 	string: string;
 	wordSplitRegexp?: RegExp;
 }) {
-	if(!string) { return ''; }
+    if(!string) { return ''; }
 
-	// If user is using advanced query syntax → do NOT remove stop words
-	if (hasOperator(string)) {
-		return string;
-	}
+    // If user is using advanced query syntax → do NOT remove stop words
+    if (hasOperator(string)) {
+        return string;
+    }
 
-	return string
-		.split(wordSplitRegexp) // NOTE: This removes double quotes.
-		.filter(Boolean)
-		.filter(word => {
-			if (_trace) log.debug('removeStopWords word:%s', toStr(word));
-			if (arrayIncludes(stopWords, word)) {
-				removedStopWords.push(word);
-				return false;
-			}
-			return true;
-		})
-		.join(' ') // NOTE: Double quotes are not re-added here.
-		.replace(/\s\s+/g, ' ') // Replace double whitespace with single space
-		.trim(); // Remove whitespace at start or end of searchString
+    return string
+        .split(wordSplitRegexp) // NOTE: This removes double quotes.
+        .filter(Boolean)
+        .filter(word => {
+            if (_trace) log.debug('removeStopWords word:%s', toStr(word));
+            if (arrayIncludes(stopWords, word)) {
+                removedStopWords.push(word);
+                return false;
+            }
+            return true;
+        })
+        .join(' ') // NOTE: Double quotes are not re-added here.
+        .replace(/\s\s+/g, ' ') // Replace double whitespace with single space
+        .trim(); // Remove whitespace at start or end of searchString
 }

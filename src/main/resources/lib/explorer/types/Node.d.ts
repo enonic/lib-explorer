@@ -1,18 +1,18 @@
 import type {
-	CreateNodeParams,
-	GetNodeParams,
-	ModifyNodeParams,
-	Node,
-	// NodeIndexConfig,
-	NodeIndexConfigParams,
-	NodeMultiRepoQueryResult,
-	NodeQueryResultHit,
+    CreateNodeParams,
+    GetNodeParams,
+    ModifyNodeParams,
+    Node,
+    // NodeIndexConfig,
+    NodeIndexConfigParams,
+    NodeMultiRepoQueryResult,
+    NodeQueryResultHit,
 } from '/lib/xp/node';
 import type {Explorer} from './Application';
 import type {Unwrapped} from './Utility';
 
 export type {
-	Node
+    Node
 } from '/lib/xp/node';
 
 

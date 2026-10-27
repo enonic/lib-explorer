@@ -7,12 +7,12 @@ import type { Profiling } from '/lib/explorer/interface/graphql/output/index.d';
 
 
 import {
-	VALUE_TYPE_BOOLEAN,
-	VALUE_TYPE_DOUBLE,
-	VALUE_TYPE_LONG,
-	// VALUE_TYPE_STRING,
-	QUERY_OPERATOR_AND,
-	storage,
+    VALUE_TYPE_BOOLEAN,
+    VALUE_TYPE_DOUBLE,
+    VALUE_TYPE_LONG,
+    // VALUE_TYPE_STRING,
+    QUERY_OPERATOR_AND,
+    storage,
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import { isSet } from '@enonic/js-utils/value/isSet';
@@ -76,200 +76,200 @@ const SYNOYMS_BOOST_MULTIPLIER = 0.9; // Make synonyms less relevant than direct
 // 5. When there are BOTH term boost(s), and synonyms.
 
 export function makeQueryAndSynonyms({
-	_trace = TRACE,
-	doProfiling = false,
-	explorerRepoReadConnection,
-	expressions,
-	fields,
-	interfaceId,
-	languages,
-	localesInSelectedThesauri,
-	logSynonymsQuery = false,
-	logSynonymsQueryResult = false,
-	profilingArray = [],
-	profilingLabel = '',
-	searchStringWithoutStopWords,
-	synonymsSource,
-	thesauriNames,
-	// Optional
-	stemmingLanguages = [],
-	termQueries = [],
+    _trace = TRACE,
+    doProfiling = false,
+    explorerRepoReadConnection,
+    expressions,
+    fields,
+    interfaceId,
+    languages,
+    localesInSelectedThesauri,
+    logSynonymsQuery = false,
+    logSynonymsQueryResult = false,
+    profilingArray = [],
+    profilingLabel = '',
+    searchStringWithoutStopWords,
+    synonymsSource,
+    thesauriNames,
+    // Optional
+    stemmingLanguages = [],
+    termQueries = [],
 }: MakeQueryAndSynonymsParams): QueryAndSynonyms {
-	// No need to build query or process synonyms when searchString is ''.
-	if (!searchStringWithoutStopWords) return {
-		query: MATCH_ALL,
-		synonyms: []
-	};
+    // No need to build query or process synonyms when searchString is ''.
+    if (!searchStringWithoutStopWords) return {
+        query: MATCH_ALL,
+        synonyms: []
+    };
 
-	const {
-		fulltext: fulltextExpression = {},
-		stemmed: stemmedExpression = {},
-		nGram: nGramExpression = {},
-	} = expressions || {};
-	const fulltextBoost = isSet(fulltextExpression.boost) ? fulltextExpression.boost : 1;
-	const stemmedBoost = isSet(stemmedExpression.boost) ? stemmedExpression.boost : 0.9;
+    const {
+        fulltext: fulltextExpression = {},
+        stemmed: stemmedExpression = {},
+        nGram: nGramExpression = {},
+    } = expressions || {};
+    const fulltextBoost = isSet(fulltextExpression.boost) ? fulltextExpression.boost : 1;
+    const stemmedBoost = isSet(stemmedExpression.boost) ? stemmedExpression.boost : 0.9;
 
-	const fieldsArr = fields.map(({boost, name: field}) => ({boost, field}));
-	if (!fieldsArr.filter(({field}) => field === '_alltext').length) {
-		fieldsArr.push({
-			boost: 1, // Can be overridden in GUI by adding a field boost for _alltext.
-			field: '_alltext'
-		})
-	}
-	if (_trace) log.debug('%s fieldsArr:%s', LOG_PREFIX, toStr(fieldsArr));
+    const fieldsArr = fields.map(({boost, name: field}) => ({boost, field}));
+    if (!fieldsArr.filter(({field}) => field === '_alltext').length) {
+        fieldsArr.push({
+            boost: 1, // Can be overridden in GUI by adding a field boost for _alltext.
+            field: '_alltext'
+        })
+    }
+    if (_trace) log.debug('%s fieldsArr:%s', LOG_PREFIX, toStr(fieldsArr));
 
-	const maybeQuotedWords = quoteWordsWithNumbers(searchStringWithoutStopWords);
+    const maybeQuotedWords = quoteWordsWithNumbers(searchStringWithoutStopWords);
 
-	const selectionExpressions: QueryDsl[] = [];
+    const selectionExpressions: QueryDsl[] = [];
 
-	if (!fulltextExpression.disabled) {
-		selectionExpressions.push(fulltext(
-			// fields.map(({boost, name: field}) => ({boost: (
-			// 	parseInt(boost as unknown as string) // In case there are some old interface nodes with boost as string rather than number
-			// 	||1) + (fields.length * 2), field})),
-			fieldsArr,
-			maybeQuotedWords,
-			QUERY_OPERATOR_AND,
-			fulltextBoost
-		));
-	}
+    if (!fulltextExpression.disabled) {
+        selectionExpressions.push(fulltext(
+            // fields.map(({boost, name: field}) => ({boost: (
+            // 	parseInt(boost as unknown as string) // In case there are some old interface nodes with boost as string rather than number
+            // 	||1) + (fields.length * 2), field})),
+            fieldsArr,
+            maybeQuotedWords,
+            QUERY_OPERATOR_AND,
+            fulltextBoost
+        ));
+    }
 
-	if (!stemmedExpression.disabled) {
-		for (let i = 0; i < stemmingLanguages.length; i++) {
-			const stemmingLanguage = stemmingLanguages[i];
-			selectionExpressions.push(stemmed(
-				// fields.map(({boost, name: field}) => ({boost: (
-				// 	parseInt(boost as unknown as string) // In case there are some old interface nodes with boost as string rather than number
-				// 	||1) + fields.length, field})),
-				fieldsArr,
-				maybeQuotedWords,
-				stemmingLanguage,
-				QUERY_OPERATOR_AND,
-				stemmedBoost
-			));
-		}
-	}
+    if (!stemmedExpression.disabled) {
+        for (let i = 0; i < stemmingLanguages.length; i++) {
+            const stemmingLanguage = stemmingLanguages[i];
+            selectionExpressions.push(stemmed(
+                // fields.map(({boost, name: field}) => ({boost: (
+                // 	parseInt(boost as unknown as string) // In case there are some old interface nodes with boost as string rather than number
+                // 	||1) + fields.length, field})),
+                fieldsArr,
+                maybeQuotedWords,
+                stemmingLanguage,
+                QUERY_OPERATOR_AND,
+                stemmedBoost
+            ));
+        }
+    }
 
-	if (!nGramExpression.disabled) {
-		selectionExpressions.push(ngram(
-			fieldsArr,
-			maybeQuotedWords,
-			QUERY_OPERATOR_AND,
-			isSet(nGramExpression.boost) ? nGramExpression.boost : 0.8
-		));
-	}
+    if (!nGramExpression.disabled) {
+        selectionExpressions.push(ngram(
+            fieldsArr,
+            maybeQuotedWords,
+            QUERY_OPERATOR_AND,
+            isSet(nGramExpression.boost) ? nGramExpression.boost : 0.8
+        ));
+    }
 
-	const synonyms = isSet(synonymsSource)
-		? synonymsSource
-		: getSynonymsFromSearchString({
-			// expand,
-			// explain,
-			explorerRepoReadConnection,
-			defaultLocales: localesInSelectedThesauri,
-			doProfiling,
-			interfaceId,
-			locales: languages,
-			logQuery: logSynonymsQuery,
-			logQueryResult: logSynonymsQueryResult,
-			profilingArray,
-			profilingLabel,
-			searchString: searchStringWithoutStopWords,
-			showSynonyms: true, // TODO hardcode
-			thesauri: thesauriNames
-		});
-	if (_trace) log.debug('synonyms:%s', toStr(synonyms));
+    const synonyms = isSet(synonymsSource)
+        ? synonymsSource
+        : getSynonymsFromSearchString({
+            // expand,
+            // explain,
+            explorerRepoReadConnection,
+            defaultLocales: localesInSelectedThesauri,
+            doProfiling,
+            interfaceId,
+            locales: languages,
+            logQuery: logSynonymsQuery,
+            logQueryResult: logSynonymsQueryResult,
+            profilingArray,
+            profilingLabel,
+            searchString: searchStringWithoutStopWords,
+            showSynonyms: true, // TODO hardcode
+            thesauri: thesauriNames
+        });
+    if (_trace) log.debug('synonyms:%s', toStr(synonyms));
 
-	if (
-		!termQueries.length
+    if (
+        !termQueries.length
 		&& !synonyms.length
-	) return {
-		query: bool(atLeastOneMustBeTrue(selectionExpressions)),
-		synonyms
-	}
+    ) return {
+        query: bool(atLeastOneMustBeTrue(selectionExpressions)),
+        synonyms
+    }
 
-	const synonymExpressions: QueryDsl[] = [];
-	const appliedFulltext = [];
-	for (let i = 0; i < synonyms.length; i++) { // synonyms can still be an empty array.
-		const {
-			synonyms: synonymsToApply
-		} = synonyms[i];
-		for (let j = 0; j < synonymsToApply.length; j++) {
-			const {
-				locale,
-				synonym
-			} = synonymsToApply[j];
-			if (!fulltextExpression.disabled && !arrayIncludes(appliedFulltext, synonym)) {
-				const aSynonymFulltextQuery: QueryDsl = fulltext(
-					fieldsArr,
-					synonym,
-					QUERY_OPERATOR_AND,
-					fulltextBoost
-				);
-				synonymExpressions.push(aSynonymFulltextQuery);
-				appliedFulltext.push(synonym);
-			}
-			if (!stemmedExpression.disabled && locale !== 'zxx') {
-				const stemmingLanguage = stemmingLanguageFromLocale(locale);
-				if (stemmingLanguage) {
-					const aSynonymStemmedQuery: QueryDsl = stemmed(
-						fieldsArr,
-						synonym,
+    const synonymExpressions: QueryDsl[] = [];
+    const appliedFulltext = [];
+    for (let i = 0; i < synonyms.length; i++) { // synonyms can still be an empty array.
+        const {
+            synonyms: synonymsToApply
+        } = synonyms[i];
+        for (let j = 0; j < synonymsToApply.length; j++) {
+            const {
+                locale,
+                synonym
+            } = synonymsToApply[j];
+            if (!fulltextExpression.disabled && !arrayIncludes(appliedFulltext, synonym)) {
+                const aSynonymFulltextQuery: QueryDsl = fulltext(
+                    fieldsArr,
+                    synonym,
+                    QUERY_OPERATOR_AND,
+                    fulltextBoost
+                );
+                synonymExpressions.push(aSynonymFulltextQuery);
+                appliedFulltext.push(synonym);
+            }
+            if (!stemmedExpression.disabled && locale !== 'zxx') {
+                const stemmingLanguage = stemmingLanguageFromLocale(locale);
+                if (stemmingLanguage) {
+                    const aSynonymStemmedQuery: QueryDsl = stemmed(
+                        fieldsArr,
+                        synonym,
 						stemmingLanguage as StemmingLanguageCode,
 						QUERY_OPERATOR_AND,
 						stemmedBoost
-					);
-					synonymExpressions.push(aSynonymStemmedQuery);
-				} else {
-					log.warning(`Unable to guess stemmingLanguage from locale:${locale}`);
-				} // stemmingLanguage
-			} // !zxx
-		} // for synonymsToApply[j]
-	} // for synonyms[i]
+                    );
+                    synonymExpressions.push(aSynonymStemmedQuery);
+                } else {
+                    log.warning(`Unable to guess stemmingLanguage from locale:${locale}`);
+                } // stemmingLanguage
+            } // !zxx
+        } // for synonymsToApply[j]
+    } // for synonyms[i]
 
-	if (synonymExpressions.length) {
-		selectionExpressions.push(bool({
-			boost: SYNOYMS_BOOST_MULTIPLIER,
-			should: synonymExpressions,
-		}));
-	}
+    if (synonymExpressions.length) {
+        selectionExpressions.push(bool({
+            boost: SYNOYMS_BOOST_MULTIPLIER,
+            should: synonymExpressions,
+        }));
+    }
 
-	if (!termQueries.length) {
-		return {
-			query: bool(atLeastOneMustBeTrue(selectionExpressions)),
-			synonyms
-		}
-	}
+    if (!termQueries.length) {
+        return {
+            query: bool(atLeastOneMustBeTrue(selectionExpressions)),
+            synonyms
+        }
+    }
 
-	const termExpressions = [];
-	for (let i = 0; i < termQueries.length; i++) {
-		const {
-			booleanValue,
-			boost,
-			doubleValue,
-			field,
-			longValue,
-			stringValue,
-			type
-		} = termQueries[i];
-		const value = type === VALUE_TYPE_BOOLEAN
-			? booleanValue
-			: type === VALUE_TYPE_DOUBLE
-				? doubleValue
-				: type === VALUE_TYPE_LONG
-					? longValue
-					: stringValue;
-		termExpressions.push(term(
-			field,
-			value,
-			boost
-		));
-	} // for termQueries
+    const termExpressions = [];
+    for (let i = 0; i < termQueries.length; i++) {
+        const {
+            booleanValue,
+            boost,
+            doubleValue,
+            field,
+            longValue,
+            stringValue,
+            type
+        } = termQueries[i];
+        const value = type === VALUE_TYPE_BOOLEAN
+            ? booleanValue
+            : type === VALUE_TYPE_DOUBLE
+                ? doubleValue
+                : type === VALUE_TYPE_LONG
+                    ? longValue
+                    : stringValue;
+        termExpressions.push(term(
+            field,
+            value,
+            boost
+        ));
+    } // for termQueries
 
-	const nestedQuery = boostedQuery(selectionExpressions, termExpressions);
+    const nestedQuery = boostedQuery(selectionExpressions, termExpressions);
 
-	if (_trace) log.debug('%s nestedQuery:%s', LOG_PREFIX, toStr(nestedQuery));
-	return {
-		query: nestedQuery,
-		synonyms
-	}
+    if (_trace) log.debug('%s nestedQuery:%s', LOG_PREFIX, toStr(nestedQuery));
+    return {
+        query: nestedQuery,
+        synonyms
+    }
 }

@@ -1,6 +1,6 @@
 import type {
-	QueryNodeParams,
-	RepoConnection,
+    QueryNodeParams,
+    RepoConnection,
 } from '/lib/xp/node';
 //import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d';
 
@@ -12,21 +12,21 @@ import {hasValue} from '/lib/explorer/query/hasValue';
 export function query/*<
 	AggregationKey extends undefined|string = undefined
 >*/({
-	// Required
-	connection,
-	// Optional
-	//aggregations,
-	count = -1,
-	filters,
-	//highlight,
-	nodeTypes = [],
-	parentPaths = [],
-	query: queryArg,
-	sort = {
-		field: '_path',
-		direction: 'ASC'
-	},
-	start
+    // Required
+    connection,
+    // Optional
+    //aggregations,
+    count = -1,
+    filters,
+    //highlight,
+    nodeTypes = [],
+    parentPaths = [],
+    query: queryArg,
+    sort = {
+        field: '_path',
+        direction: 'ASC'
+    },
+    start
 } :{
 	// Required
 	connection: RepoConnection
@@ -41,25 +41,25 @@ export function query/*<
 	sort?: QueryNodeParams['sort']
 	start?: QueryNodeParams['start']
 }) {
-	if (nodeTypes.length) {
-		filters = addQueryFilter({
-			filter: hasValue('_nodeType', nodeTypes),
-			filters
-		});
-	}
-	if (parentPaths.length) {
-		filters = addQueryFilter({
-			filter: hasValue('_parentPath', parentPaths),
-			filters
-		});
-	}
-	return connection.query/*<AggregationKey>*/({
-		//aggregations,
-		count,
-		filters,
-		//highlight,
-		query: queryArg,
-		sort,
-		start
-	});
+    if (nodeTypes.length) {
+        filters = addQueryFilter({
+            filter: hasValue('_nodeType', nodeTypes),
+            filters
+        });
+    }
+    if (parentPaths.length) {
+        filters = addQueryFilter({
+            filter: hasValue('_parentPath', parentPaths),
+            filters
+        });
+    }
+    return connection.query/*<AggregationKey>*/({
+        //aggregations,
+        count,
+        filters,
+        //highlight,
+        query: queryArg,
+        sort,
+        start
+    });
 }

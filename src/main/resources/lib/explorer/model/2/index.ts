@@ -11,6 +11,6 @@ export {thesaurus} from '/lib/explorer/model/2/nodeTypes/thesaurus';
 
 
 export {
-	FOLDERS, // TODO perhaps remove
-	INTERFACES_FOLDER
+    FOLDERS, // TODO perhaps remove
+    INTERFACES_FOLDER
 } from '/lib/explorer/constants';

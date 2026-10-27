@@ -7,4 +7,4 @@ import fnvPlus = require('@enonic/fnv-plus');
 const {hash: fnv} = fnvPlus;
 
 export const hash = (string :string, bitlength = 128) :string =>
-	fnv(string, bitlength).str();
+    fnv(string, bitlength).str();

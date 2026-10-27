@@ -29,33 +29,33 @@ export interface GetSitesParams {
 
 
 export function getSites({
-	aggregations,
-	branch,
-	context = (() => {
-		const c = getContext() as unknown as Record<string, unknown>;
-		if (branch) { c.branch = branch; }
-		return c;
-	})(),
-	count = -1,
-	filters,
-	map,
-	query,
-	sort,
-	start
+    aggregations,
+    branch,
+    context = (() => {
+        const c = getContext() as unknown as Record<string, unknown>;
+        if (branch) { c.branch = branch; }
+        return c;
+    })(),
+    count = -1,
+    filters,
+    map,
+    query,
+    sort,
+    start
 }: GetSitesParams = {}) {
-	const queryParams: QueryContentParams = {
-		aggregations,
-		count,
-		contentTypes: ['portal:site'],
-		filters,
-		query,
-		sort,
-		start
-	};
+    const queryParams: QueryContentParams = {
+        aggregations,
+        count,
+        contentTypes: ['portal:site'],
+        filters,
+        query,
+        sort,
+        start
+    };
 
-	const childRes = run(context, () => queryContent(queryParams as unknown as Parameters<typeof queryContent>[0]));
-	if (typeof map === 'function') {
-		childRes.hits = childRes.hits.map((c: unknown) => map(c)) as typeof childRes.hits;
-	}
-	return childRes;
+    const childRes = run(context, () => queryContent(queryParams as unknown as Parameters<typeof queryContent>[0]));
+    if (typeof map === 'function') {
+        childRes.hits = childRes.hits.map((c: unknown) => map(c)) as typeof childRes.hits;
+    }
+    return childRes;
 }

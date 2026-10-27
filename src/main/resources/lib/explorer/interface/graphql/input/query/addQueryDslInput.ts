@@ -7,20 +7,20 @@ import { addStemmedDslExpressionInput } from "./addStemmedDslExpressionInput";
 import { addTermDslExpressionInput } from "./addTermDslExpressionInput";
 
 export function addQueryDslInput({ glue }: { glue: Glue; }) {
-	return glue.addInputType({
-		name: GQL_INPUT_TYPE.QUERY_DSL,
-		fields: {
-			boolean: { type: addBooleanDslExpressionInput({ glue }) },
-			// exists,
-			fulltext: { type: addFulltextDslExpressionInput({ glue }) },
-			// in,
-			// like,
-			// matchAll,
-			ngram: { type: addNgramDslExpressionInput({ glue }) },
-			// pathMatch,
-			// range,
-			stemmed: { type: addStemmedDslExpressionInput({ glue }) },
-			term: { type: addTermDslExpressionInput({ glue }) },
-		}
-	});
+    return glue.addInputType({
+        name: GQL_INPUT_TYPE.QUERY_DSL,
+        fields: {
+            boolean: { type: addBooleanDslExpressionInput({ glue }) },
+            // exists,
+            fulltext: { type: addFulltextDslExpressionInput({ glue }) },
+            // in,
+            // like,
+            // matchAll,
+            ngram: { type: addNgramDslExpressionInput({ glue }) },
+            // pathMatch,
+            // range,
+            stemmed: { type: addStemmedDslExpressionInput({ glue }) },
+            term: { type: addTermDslExpressionInput({ glue }) },
+        }
+    });
 }

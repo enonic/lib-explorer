@@ -1,7 +1,7 @@
 import type {
-	GetContext,
-	PrincipalKeyRole,
-	RepoConnection
+    GetContext,
+    PrincipalKeyRole,
+    RepoConnection
 } from '@enonic-types/lib-explorer';
 
 
@@ -11,16 +11,16 @@ import {connect} from '/lib/explorer/repo/connect';
 
 
 export function getModel({
-	branch,
-	context,
-	principals,
-	repoId,
-	connection = connect({
-		branch,
-		context,
-		principals,
-		repoId
-	})
+    branch,
+    context,
+    principals,
+    repoId,
+    connection = connect({
+        branch,
+        context,
+        principals,
+        repoId
+    })
 } :{
 	branch? :string
 	context? :GetContext
@@ -28,11 +28,11 @@ export function getModel({
 	repoId? :string
 	connection :RepoConnection
 }) {
-	const rootNode = connection.get('/') as {
+    const rootNode = connection.get('/') as {
 		model :number
 	};
-	//log.debug(`rootNode:${toStr(rootNode)}`);
-	const {model = -1} = rootNode;
-	//log.debug(`model:${toStr(model)}`);
-	return model;
+    //log.debug(`rootNode:${toStr(rootNode)}`);
+    const {model = -1} = rootNode;
+    //log.debug(`model:${toStr(model)}`);
+    return model;
 }

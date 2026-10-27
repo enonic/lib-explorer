@@ -7,20 +7,20 @@ import {GQL_INPUT_TYPE_DATE_RANGE} from '/lib/explorer/interface/graphql/aggrega
 
 
 export function addDateRangeInput({
-	glue
+    glue
 }: {
 	glue: Glue
 }) {
-	return glue.addInputType({
-		name: GQL_INPUT_TYPE_DATE_RANGE,
-		description: 'Number range input type',
-		fields: {
-			from: {
-				type: GraphQLString
-			},
-			to: {
-				type: GraphQLString
-			}
-		}
-	});
+    return glue.addInputType({
+        name: GQL_INPUT_TYPE_DATE_RANGE,
+        description: 'Number range input type',
+        fields: {
+            from: {
+                type: GraphQLString
+            },
+            to: {
+                type: GraphQLString
+            }
+        }
+    });
 }

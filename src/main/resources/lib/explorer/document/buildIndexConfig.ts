@@ -1,13 +1,13 @@
 import type {DocumentTypeFieldsObject} from '@enonic-types/lib-explorer';
 import type {
-	IndexConfig,
-	IndexConfigConfig,
-	IndexConfigObject
+    IndexConfig,
+    IndexConfigConfig,
+    IndexConfigObject
 } from '@enonic-types/lib-explorer/IndexConfig';
 
 
 import {
-	/*VALUE_TYPE_ANY,
+    /*VALUE_TYPE_ANY,
 	VALUE_TYPE_BOOLEAN,
 	VALUE_TYPE_DOUBLE,
 	VALUE_TYPE_GEO_POINT,
@@ -18,9 +18,9 @@ import {
 	VALUE_TYPE_LONG,
 	VALUE_TYPE_REFERENCE,
 	VALUE_TYPE_SET,*/
-	VALUE_TYPE_STRING,
-	indexTemplateToConfig,
-	sortByProperty
+    VALUE_TYPE_STRING,
+    indexTemplateToConfig,
+    sortByProperty
 } from '@enonic/js-utils';
 import { includes as arrayIncludes } from '@enonic/js-utils/array/includes';
 import {FIELD_PATH_META} from '/lib/explorer/constants';
@@ -34,10 +34,10 @@ export interface BuildIndexConfigParameterObject {
 
 
 function decideByTypeFromValueType(valueType: string): boolean {
-	if (arrayIncludes([VALUE_TYPE_STRING], valueType)) {
-		return false;
-	}
-	/*if (arrayIncludes([
+    if (arrayIncludes([VALUE_TYPE_STRING], valueType)) {
+        return false;
+    }
+    /*if (arrayIncludes([
 		VALUE_TYPE_ANY,
 		VALUE_TYPE_BOOLEAN,
 		VALUE_TYPE_DOUBLE,
@@ -52,127 +52,127 @@ function decideByTypeFromValueType(valueType: string): boolean {
 	], valueType)) {
 		return true;
 	}*/
-	return true;
+    return true;
 }
 
 export function buildIndexConfig(
-	{
-		// data,
-		fieldsObj,
-		languages = []
-	}: BuildIndexConfigParameterObject,
+    {
+        // data,
+        fieldsObj,
+        languages = []
+    }: BuildIndexConfigParameterObject,
 ): IndexConfig {
-	const indexConfig: IndexConfig = {
-		configs: [{
-			path: `${FIELD_PATH_META}.collection`,
-			config: {
-				decideByType: false,
-				enabled: true,
-				fulltext: true,
-				includeInAllText: false,
-				//languages // This field is not stemmed
-				nGram: true,
-				path: false
-			}
-		},{
-			path: `${FIELD_PATH_META}.collector.id`,
-			config: indexTemplateToConfig({template: 'minimal'}) as IndexConfigObject // This field is not stemmed
-		},{
-			path: `${FIELD_PATH_META}.collector.version`,
-			config: indexTemplateToConfig({template: 'minimal'}) as IndexConfigObject // This field is not stemmed
-		},{
-			path: `${FIELD_PATH_META}.createdTime`,
-			config: indexTemplateToConfig({template: 'byType'}) as IndexConfigObject // This field is not stemmed
-		},{
-			path: `${FIELD_PATH_META}.documentType`,
-			config: {
-				decideByType: false,
-				enabled: true,
-				fulltext: true,
-				includeInAllText: false,
-				//languages // This field is not stemmed
-				nGram: true,
-				path: false
-			}
-		},{
-			path: `${FIELD_PATH_META}.language`,
-			config: {
-				decideByType: false,
-				enabled: true,
-				fulltext: true,
-				includeInAllText: false,
-				//languages // This field is not stemmed
-				nGram: true,
-				path: false
-			}
-		},{
-			path: `${FIELD_PATH_META}.stemmingLanguage`,
-			config: {
-				decideByType: false,
-				enabled: true,
-				fulltext: true,
-				includeInAllText: false,
-				//languages // This field is not stemmed
-				nGram: true,
-				path: false
-			}
-		},{
-			path: `${FIELD_PATH_META}.valid`,
-			config: indexTemplateToConfig({template: 'byType'}) as IndexConfigObject // This field is not stemmed
-		}],
-		default: indexTemplateToConfig({
-			template: 'byType', // TODO Perhaps minimal?
-			indexValueProcessors: [],
+    const indexConfig: IndexConfig = {
+        configs: [{
+            path: `${FIELD_PATH_META}.collection`,
+            config: {
+                decideByType: false,
+                enabled: true,
+                fulltext: true,
+                includeInAllText: false,
+                //languages // This field is not stemmed
+                nGram: true,
+                path: false
+            }
+        },{
+            path: `${FIELD_PATH_META}.collector.id`,
+            config: indexTemplateToConfig({template: 'minimal'}) as IndexConfigObject // This field is not stemmed
+        },{
+            path: `${FIELD_PATH_META}.collector.version`,
+            config: indexTemplateToConfig({template: 'minimal'}) as IndexConfigObject // This field is not stemmed
+        },{
+            path: `${FIELD_PATH_META}.createdTime`,
+            config: indexTemplateToConfig({template: 'byType'}) as IndexConfigObject // This field is not stemmed
+        },{
+            path: `${FIELD_PATH_META}.documentType`,
+            config: {
+                decideByType: false,
+                enabled: true,
+                fulltext: true,
+                includeInAllText: false,
+                //languages // This field is not stemmed
+                nGram: true,
+                path: false
+            }
+        },{
+            path: `${FIELD_PATH_META}.language`,
+            config: {
+                decideByType: false,
+                enabled: true,
+                fulltext: true,
+                includeInAllText: false,
+                //languages // This field is not stemmed
+                nGram: true,
+                path: false
+            }
+        },{
+            path: `${FIELD_PATH_META}.stemmingLanguage`,
+            config: {
+                decideByType: false,
+                enabled: true,
+                fulltext: true,
+                includeInAllText: false,
+                //languages // This field is not stemmed
+                nGram: true,
+                path: false
+            }
+        },{
+            path: `${FIELD_PATH_META}.valid`,
+            config: indexTemplateToConfig({template: 'byType'}) as IndexConfigObject // This field is not stemmed
+        }],
+        default: indexTemplateToConfig({
+            template: 'byType', // TODO Perhaps minimal?
+            indexValueProcessors: [],
 
-			// Default is no stemming.
-			// Does not affect stemming of _alltext, which isn't currently possible on the node layer.
-			// https://github.com/enonic/xp/issues/8876
-			// languages: languages as []
+            // Default is no stemming.
+            // Does not affect stemming of _alltext, which isn't currently possible on the node layer.
+            // https://github.com/enonic/xp/issues/8876
+            // languages: languages as []
 
-		}) as IndexConfigObject
-	};
+        }) as IndexConfigObject
+    };
 
-	const fieldKeys = Object.keys(fieldsObj);
-	for (let i = 0; i < fieldKeys.length; i++) {
-		const fieldPath = fieldKeys[i];
-		//log.debug('fieldPath %s', fieldPath);
+    const fieldKeys = Object.keys(fieldsObj);
+    for (let i = 0; i < fieldKeys.length; i++) {
+        const fieldPath = fieldKeys[i];
+        //log.debug('fieldPath %s', fieldPath);
 
-		const {
-			//decideByType,
-			enabled,
-			fulltext,
-			includeInAllText,
-			nGram,
-			path,
-			stemmed,
-			valueType
-		} = fieldsObj[fieldPath];
-		// log.info('buildIndexConfig fieldPath:%s stemmed:%s', fieldPath, stemmed);
+        const {
+            //decideByType,
+            enabled,
+            fulltext,
+            includeInAllText,
+            nGram,
+            path,
+            stemmed,
+            valueType
+        } = fieldsObj[fieldPath];
+        // log.info('buildIndexConfig fieldPath:%s stemmed:%s', fieldPath, stemmed);
 
-		const config: IndexConfigConfig = {
-			decideByType: decideByTypeFromValueType(valueType),
-			enabled,
-			fulltext: valueType === VALUE_TYPE_STRING ? fulltext : false,
-			includeInAllText,
-			nGram: valueType === VALUE_TYPE_STRING ? nGram : false,
-			path: valueType === VALUE_TYPE_STRING ? path : false
-		};
-		//log.debug('config %s', config);
+        const config: IndexConfigConfig = {
+            decideByType: decideByTypeFromValueType(valueType),
+            enabled,
+            fulltext: valueType === VALUE_TYPE_STRING ? fulltext : false,
+            includeInAllText,
+            nGram: valueType === VALUE_TYPE_STRING ? nGram : false,
+            path: valueType === VALUE_TYPE_STRING ? path : false
+        };
+        //log.debug('config %s', config);
 
-		if (valueType === VALUE_TYPE_STRING && stemmed) {
-			config.languages = languages;
-		}
-		//log.debug('config %s', config);
+        if (valueType === VALUE_TYPE_STRING && stemmed) {
+            config.languages = languages;
+        }
+        //log.debug('config %s', config);
 
-		indexConfig.configs.push({
-			path: fieldPath,
-			config: config as IndexConfigConfig
-		});
-		//log.debug('indexConfig %s', indexConfig);
-	}
+        indexConfig.configs.push({
+            path: fieldPath,
+            config: config as IndexConfigConfig
+        });
+        //log.debug('indexConfig %s', indexConfig);
+    }
 
-	indexConfig.configs = sortByProperty(indexConfig.configs, 'path');
+    indexConfig.configs = sortByProperty(indexConfig.configs, 'path');
 
-	//log.debug('indexConfig %s', indexConfig);
-	return indexConfig;
+    //log.debug('indexConfig %s', indexConfig);
+    return indexConfig;
 }

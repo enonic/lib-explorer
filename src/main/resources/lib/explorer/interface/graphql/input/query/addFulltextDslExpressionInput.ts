@@ -7,16 +7,16 @@ import { GQL_INPUT_TYPE } from "../constants";
 import { addDslOperatorEnum } from "./addDslOperatorEnum";
 
 export function addFulltextDslExpressionInput({ glue }: { glue: Glue; }) {
-	return glue.addInputType({
-		name: GQL_INPUT_TYPE.FULLTEXT_DSL_EXPRESSION,
-		fields: {
-			fields: { type: nonNull(list(GraphQLString)) },
+    return glue.addInputType({
+        name: GQL_INPUT_TYPE.FULLTEXT_DSL_EXPRESSION,
+        fields: {
+            fields: { type: nonNull(list(GraphQLString)) },
 
-			// Optional, will fallback to decoratedSearchString
-			query: { type: GraphQLString },
+            // Optional, will fallback to decoratedSearchString
+            query: { type: GraphQLString },
 
-			operator: { type: addDslOperatorEnum({ glue }) },
-			boost: { type: GraphQLFloat },
-		}
-	});
+            operator: { type: addDslOperatorEnum({ glue }) },
+            boost: { type: GraphQLFloat },
+        }
+    });
 }

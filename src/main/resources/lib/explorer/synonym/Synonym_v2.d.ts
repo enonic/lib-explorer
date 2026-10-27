@@ -1,9 +1,9 @@
 import type {CreateNodeParams} from '@enonic-types/lib-node';
 import type {Reference} from '/lib/xp/value';
 import type {
-	ExplorerAdminGQLInterfaceNodeCommonProps,
-	OneOrMore,
-	RequiredNodeProperties
+    ExplorerAdminGQLInterfaceNodeCommonProps,
+    OneOrMore,
+    RequiredNodeProperties
 } from '@enonic-types/lib-explorer';
 import type {HighlightResult} from '@enonic/js-utils/types/node/query/Highlight';
 

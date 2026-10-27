@@ -1,25 +1,25 @@
 import type {Reference} from '@enonic-types/core';
 import type {
-	TermDslExpression,
-	// InDslExpression,
-	// LikeDslExpression,
-	// RangeDslExpression,
-	// PathMatchDslExpression,
-	// ExistsDslExpression,
+    TermDslExpression,
+    // InDslExpression,
+    // LikeDslExpression,
+    // RangeDslExpression,
+    // PathMatchDslExpression,
+    // ExistsDslExpression,
 } from '/lib/xp/node';
 import type {
-	ExplorerAdminGQLInterfaceNodeCommonProps,
-	Node,
-	NodeCreate
+    ExplorerAdminGQLInterfaceNodeCommonProps,
+    Node,
+    NodeCreate
 } from '@enonic-types/lib-explorer/Node.d';
 import type {OneOrMore} from '@enonic-types/lib-explorer/Utility.d';
 
 
 import {
-	VALUE_TYPE_BOOLEAN,
-	VALUE_TYPE_DOUBLE,
-	VALUE_TYPE_LONG,
-	VALUE_TYPE_STRING,
+    VALUE_TYPE_BOOLEAN,
+    VALUE_TYPE_DOUBLE,
+    VALUE_TYPE_LONG,
+    VALUE_TYPE_STRING,
 } from '@enonic/js-utils';
 
 export type InterfaceField = {

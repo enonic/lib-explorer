@@ -1,18 +1,18 @@
 import type {
-	QueryNodeParams,
-	RepoConnection,
+    QueryNodeParams,
+    RepoConnection,
 } from '/lib/xp/node';
 import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d';
 import type {
-	Highlight,
-	SynonymNode
+    Highlight,
+    SynonymNode
 } from '@enonic-types/lib-explorer';
 
 
 import {
-	addQueryFilter,
-	//forceArray,
-	toStr
+    addQueryFilter,
+    //forceArray,
+    toStr
 } from '@enonic/js-utils';
 import {NT_SYNONYM} from '/lib/explorer/constants';
 import {hasValue} from '/lib/explorer/query/hasValue';
@@ -41,29 +41,29 @@ const TRACE = false;
 export function query<
 	AggregationKeys extends undefined|string = undefined
 >({
-	_trace = TRACE,
-	aggregations,
-	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
-	count = -1,
-	explain = false,
-	filters,
-	highlight = {
-		/*numberOfFragments: 10,
+    _trace = TRACE,
+    aggregations,
+    connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
+    count = -1,
+    explain = false,
+    filters,
+    highlight = {
+        /*numberOfFragments: 10,
 		postTag: '</b>',
 		preTag: '<b>',
 		properties: {
 			from: {},
 			to: {}
 		}*/
-	},
-	query,
-	sort = {
-		field: '_name',
-		direction: 'ASC'
-	},
-	start = 0
+    },
+    query,
+    sort = {
+        field: '_name',
+        direction: 'ASC'
+    },
+    start = 0
 }: QuerySynonymsParams<AggregationKeys>) {
-	/*log.debug('synonym.query(%s)', toStr({
+    /*log.debug('synonym.query(%s)', toStr({
 		aggregations,
 		count,
 		filters,
@@ -71,57 +71,57 @@ export function query<
 		sort,
 		start
 	}));*/
-	//log.debug('highlight:%s', toStr(highlight));
+    //log.debug('highlight:%s', toStr(highlight));
 
-	filters = addQueryFilter({
-		filter: hasValue('_nodeType', [NT_SYNONYM]),
-		filters
-	});
-	//log.debug('synonym.query filters:%s', toStr(filters));
+    filters = addQueryFilter({
+        filter: hasValue('_nodeType', [NT_SYNONYM]),
+        filters
+    });
+    //log.debug('synonym.query filters:%s', toStr(filters));
 
-	const queryParams = {
-		aggregations,
-		count,
-		explain,
-		filters,
-		highlight,
-		query,
-		sort,
-		start
-	};
-	if (explain && _trace) {
-		log.debug('synonym.query queryParams:%s', toStr(queryParams));
-	}
+    const queryParams = {
+        aggregations,
+        count,
+        explain,
+        filters,
+        highlight,
+        query,
+        sort,
+        start
+    };
+    if (explain && _trace) {
+        log.debug('synonym.query queryParams:%s', toStr(queryParams));
+    }
 
-	const queryRes = connection.query(queryParams);
-	//log.debug('synonym.query queryRes:%s', toStr(queryRes));
+    const queryRes = connection.query(queryParams);
+    //log.debug('synonym.query queryRes:%s', toStr(queryRes));
 
-	const synonymQueryRes = {
-		aggregations: queryRes.aggregations,
-		count: queryRes.count,
-		hits: queryRes.hits.map((hit) => {
-			//log.debug('synonym.query hit:%s', toStr(hit));
+    const synonymQueryRes = {
+        aggregations: queryRes.aggregations,
+        count: queryRes.count,
+        hits: queryRes.hits.map((hit) => {
+            //log.debug('synonym.query hit:%s', toStr(hit));
 
-			const {
-				id: _id,
-				highlight: _highlight,
-				score: _score
-			} = hit;
+            const {
+                id: _id,
+                highlight: _highlight,
+                score: _score
+            } = hit;
 
-			const node = connection.get(_id) as SynonymNode;
-			//log.info('synonym.query node:%s', toStr(node));
-			if (!node) { // Handle ghost nodes
-				return null;
-			}
+            const node = connection.get(_id) as SynonymNode;
+            //log.info('synonym.query node:%s', toStr(node));
+            if (!node) { // Handle ghost nodes
+                return null;
+            }
 
-			return moldQueriedSynonymNode({
-				...node,
-				_highlight,
-				_score
-			});
-		}).filter(x => x),// as Array<QueriedSynonym>,
-		total: queryRes.total
-	};
-	//log.info(`synonymQueryRes:${toStr(synonymQueryRes)}`);
-	return synonymQueryRes;
+            return moldQueriedSynonymNode({
+                ...node,
+                _highlight,
+                _score
+            });
+        }).filter(x => x),// as Array<QueriedSynonym>,
+        total: queryRes.total
+    };
+    //log.info(`synonymQueryRes:${toStr(synonymQueryRes)}`);
+    return synonymQueryRes;
 } // function query

@@ -1,8 +1,8 @@
 import type {AnyObject} from '@enonic/js-utils/types';
 import type { TaskStateType } from '/lib/xp/task';
 import type {
-	TaskName,
-	TaskShouldType
+    TaskName,
+    TaskShouldType
 } from './Task.d';
 
 //──────────────────────────────────────────────────────────────────────────────

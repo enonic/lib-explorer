@@ -6,9 +6,9 @@ import {list as listJobs} from '/lib/xp/scheduler';
 
 
 export function listExplorerJobs() {
-	const jobList = listJobs<CollectorTaskConfig>();
-	// log.info(`jobList:${toStr(jobList)}`);
-	const explorerJobsList = jobList.filter(({descriptor}) => descriptor.startsWith(APP_EXPLORER));
-	// log.info(`explorerJobsList:${toStr(explorerJobsList)}`);
-	return explorerJobsList;
+    const jobList = listJobs<CollectorTaskConfig>();
+    // log.info(`jobList:${toStr(jobList)}`);
+    const explorerJobsList = jobList.filter(({descriptor}) => descriptor.startsWith(APP_EXPLORER));
+    // log.info(`explorerJobsList:${toStr(explorerJobsList)}`);
+    return explorerJobsList;
 }

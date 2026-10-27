@@ -1,7 +1,7 @@
 import type { RequestMethod } from '@enonic-types/core';
 import type {
-	AnyObject,
-	StringObject
+    AnyObject,
+    StringObject
 } from './Utility';
 
 

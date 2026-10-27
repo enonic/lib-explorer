@@ -3,6 +3,6 @@ import {resolve as _resolve} from 'uri-js';
 
 
 export function resolve({base, uri}) {
-	//log.info(toStr({base, uri}));
-	return _resolve(base, uri);
+    //log.info(toStr({base, uri}));
+    return _resolve(base, uri);
 }

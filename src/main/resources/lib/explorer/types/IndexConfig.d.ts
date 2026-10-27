@@ -3,16 +3,16 @@
 //──────────────────────────────────────────────────────────────────────────────
 import type {IterableElement} from 'type-fest';
 import type {
-	NodeIndexConfig,
-	NodeConfigEntry,
-	NodeIndexConfigTemplates
+    NodeIndexConfig,
+    NodeConfigEntry,
+    NodeIndexConfigTemplates
 } from '/lib/xp/node';
 
 
 export type {
-	NodeConfigEntry as IndexConfigObject,
-	NodeIndexConfigParams as IndexConfig,
-	NodeIndexConfigTemplates as IndexConfigTemplate
+    NodeConfigEntry as IndexConfigObject,
+    NodeIndexConfigParams as IndexConfig,
+    NodeIndexConfigTemplates as IndexConfigTemplate
 } from '/lib/xp/node';
 
 export type IndexConfigConfig = Omit<NodeConfigEntry,'indexValueProcessors'|'languages'> & {

@@ -1,12 +1,12 @@
 import type {
-	Aggregations,
-	AggregationsToAggregationResults,
-	Filter
+    Aggregations,
+    AggregationsToAggregationResults,
+    Filter
 } from '@enonic-types/core';
 import type {
-	CollectionNode,
-	QueriedCollection,
-	RepoConnection
+    CollectionNode,
+    QueriedCollection,
+    RepoConnection
 } from '@enonic-types/lib-explorer';
 
 
@@ -22,15 +22,15 @@ import {hasValue} from '/lib/explorer/query/hasValue';
 
 
 export function query({
-	aggregations,
-	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
-	count,// = -1, // This is almost the same as perPage.
-	filters = [],
-	query = '', //"_parentPath = '/collections'",
-	page,// = '1', // NOTE First index is 1 not 0
-	perPage = '10', // This is almost the same as count.
-	sort = '_name ASC',
-	start = 0
+    aggregations,
+    connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
+    count,// = -1, // This is almost the same as perPage.
+    filters = [],
+    query = '', //"_parentPath = '/collections'",
+    page,// = '1', // NOTE First index is 1 not 0
+    perPage = '10', // This is almost the same as count.
+    sort = '_name ASC',
+    start = 0
 }: {
 	// Required
 	connection: RepoConnection
@@ -44,43 +44,43 @@ export function query({
 	sort?: string
 	start?: number
 }) {
-	//log.info(toStr({count,page,perPage,sort,start}));
-	// When neither count nor page is passed: count=-1 page=null
-	// When both count and page is passed: count=-1 page=null
-	// When only count is passed: page=null
-	// When only page is passed: count=perPage
-	// Summary: Count rules
-	let intPerPage: number;
-	let intPage: number;
-	if (isNotSet(count)) {
-		if(isSet(page)) {
-			intPerPage = parseInt(perPage, 10);
-			count = intPerPage;
-			intPage = parseInt(page, 10);
-			start = (intPage - 1 ) * intPerPage;
-		} else {
-			count=-1;
-		}
-	}
-	// log.info(toStr({count,sort,start}));
+    //log.info(toStr({count,page,perPage,sort,start}));
+    // When neither count nor page is passed: count=-1 page=null
+    // When both count and page is passed: count=-1 page=null
+    // When only count is passed: page=null
+    // When only page is passed: count=perPage
+    // Summary: Count rules
+    let intPerPage: number;
+    let intPage: number;
+    if (isNotSet(count)) {
+        if(isSet(page)) {
+            intPerPage = parseInt(perPage, 10);
+            count = intPerPage;
+            intPage = parseInt(page, 10);
+            start = (intPage - 1 ) * intPerPage;
+        } else {
+            count=-1;
+        }
+    }
+    // log.info(toStr({count,sort,start}));
 
-	const queryParams = {
-		aggregations,
-		count,
-		filters: addQueryFilter({
-			clause: 'must',
-			filter: hasValue('_nodeType', [NT_COLLECTION]),
-			filters
-		}),
-		query,
-		sort,
-		start
-	};
-	// log.debug('queryParams:%s', toStr(queryParams));
+    const queryParams = {
+        aggregations,
+        count,
+        filters: addQueryFilter({
+            clause: 'must',
+            filter: hasValue('_nodeType', [NT_COLLECTION]),
+            filters
+        }),
+        query,
+        sort,
+        start
+    };
+    // log.debug('queryParams:%s', toStr(queryParams));
 
-	const queryRes = connection.query(queryParams);
+    const queryRes = connection.query(queryParams);
 
-	const collectionQueryRes: {
+    const collectionQueryRes: {
 		aggregations: AggregationsToAggregationResults<Aggregations>
 		count: number
 		hits: QueriedCollection[]
@@ -91,25 +91,25 @@ export function query({
 		pageEnd?: number
 		pagesTotal?: number
 	} = {
-		aggregations: queryRes.aggregations,
-		count: queryRes.count,
-		hits: queryRes.hits.map(({
-			id,
-			score
-		}) => ({
-			...connection.get(id) as CollectionNode,
-			_score: score
-		} as QueriedCollection)),
-		total: queryRes.total
+	    aggregations: queryRes.aggregations,
+	    count: queryRes.count,
+	    hits: queryRes.hits.map(({
+	        id,
+	        score
+	    }) => ({
+	        ...connection.get(id) as CollectionNode,
+	        _score: score
+	    } as QueriedCollection)),
+	    total: queryRes.total
 	};
 
-	if(isSet(intPage)) {
-		collectionQueryRes.page = intPage;
-		collectionQueryRes.pageStart = start + 1;
-		collectionQueryRes.pageEnd = Math.min(start + intPerPage, queryRes.total);
-		collectionQueryRes.pagesTotal = Math.ceil(queryRes.total / intPerPage);
-	}
+    if(isSet(intPage)) {
+        collectionQueryRes.page = intPage;
+        collectionQueryRes.pageStart = start + 1;
+        collectionQueryRes.pageEnd = Math.min(start + intPerPage, queryRes.total);
+        collectionQueryRes.pagesTotal = Math.ceil(queryRes.total / intPerPage);
+    }
 
-	//log.debug('queryParams:%s', toStr(queryParams));
-	return collectionQueryRes;
+    //log.debug('queryParams:%s', toStr(queryParams));
+    return collectionQueryRes;
 }

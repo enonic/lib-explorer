@@ -1,6 +1,6 @@
 import type {
-	CollectorStateData,
-	RepoConnection
+    CollectorStateData,
+    RepoConnection
 } from '@enonic-types/lib-explorer';
 
 
@@ -9,16 +9,16 @@ import {get as getNode} from '/lib/explorer/node/get';
 
 
 export function get({
-	connection
+    connection
 }: {
 	connection: RepoConnection
 }) {
-	const node = getNode<CollectorStateData>({
-		connection,
-		_name: '' // The repo root node
-	});
-	//log.info(toStr({node}));
-	const {should, state} = node as CollectorStateData;
-	//log.info(toStr({should, state}));
-	return {should, state};
+    const node = getNode<CollectorStateData>({
+        connection,
+        _name: '' // The repo root node
+    });
+    //log.info(toStr({node}));
+    const {should, state} = node as CollectorStateData;
+    //log.info(toStr({should, state}));
+    return {should, state};
 }

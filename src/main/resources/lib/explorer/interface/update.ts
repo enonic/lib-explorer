@@ -1,7 +1,7 @@
 import type {RepoConnection as WriteConnection} from '/lib/xp/node';
 import type {
-	InterfaceField,
-	InterfaceNode,
+    InterfaceField,
+    InterfaceNode,
 } from '@enonic-types/lib-explorer';
 import type { InterfaceExpressions, TermQuery } from '@enonic-types/lib-explorer/Interface.d';
 
@@ -22,36 +22,36 @@ interface InterfaceUpdateParams {
 
 
 export function update({
-	_id,
-	collectionIds,
-	expressions,
-	fields,
-	stopWords,
-	synonymIds,
-	termQueries,
+    _id,
+    collectionIds,
+    expressions,
+    fields,
+    stopWords,
+    synonymIds,
+    termQueries,
 } :InterfaceUpdateParams, {
-	writeConnection
+    writeConnection
 } :{
 	writeConnection: WriteConnection
 }) {
-	const updatedInterface = writeConnection.modify<InterfaceNode>({
-		key: _id,
-		editor: (interfaceNode) => {
-			interfaceNode.collectionIds = noNilsArray(collectionIds).map((collectionId) => reference(collectionId)); // empty array allowed,
-			interfaceNode.expressions = expressions;
-			interfaceNode.fields = noNilsArray(fields).map(({ // empty array allowed
-				boost, // undefined allowed
-				name
-			}) => ({
-				boost,
-				name
-			}));
-			interfaceNode.stopWords = noNilsArray(stopWords);
-			interfaceNode.synonymIds = noNilsArray(synonymIds).map((synonymId) => reference(synonymId)); // empty array allowed,
-			interfaceNode.termQueries = noNilsArray(termQueries); // empty array allowed
-			return interfaceNode;
-		}
-	});
-	writeConnection.refresh(); // So the data becomes immidiately searchable
-	return updatedInterface;
+    const updatedInterface = writeConnection.modify<InterfaceNode>({
+        key: _id,
+        editor: (interfaceNode) => {
+            interfaceNode.collectionIds = noNilsArray(collectionIds).map((collectionId) => reference(collectionId)); // empty array allowed,
+            interfaceNode.expressions = expressions;
+            interfaceNode.fields = noNilsArray(fields).map(({ // empty array allowed
+                boost, // undefined allowed
+                name
+            }) => ({
+                boost,
+                name
+            }));
+            interfaceNode.stopWords = noNilsArray(stopWords);
+            interfaceNode.synonymIds = noNilsArray(synonymIds).map((synonymId) => reference(synonymId)); // empty array allowed,
+            interfaceNode.termQueries = noNilsArray(termQueries); // empty array allowed
+            return interfaceNode;
+        }
+    });
+    writeConnection.refresh(); // So the data becomes immidiately searchable
+    return updatedInterface;
 }

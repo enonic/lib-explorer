@@ -1,6 +1,6 @@
 import type {
-	ParentPath,
-	RepoConnection
+    ParentPath,
+    RepoConnection
 } from '@enonic-types/lib-explorer';
 
 
@@ -9,12 +9,12 @@ import {join}  from '/lib/explorer/path/join';
 
 
 export function get<T>({
-	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
-	_parentPath = '/',
-	_name = '',
-	path = join(_parentPath, _name),
-	key = path,
-	keys = [key]
+    connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
+    _parentPath = '/',
+    _name = '',
+    path = join(_parentPath, _name),
+    key = path,
+    keys = [key]
 } :{
 	connection :RepoConnection
 	_name ?:string
@@ -23,12 +23,12 @@ export function get<T>({
 	key ?:string
 	keys ?:Array<string>
 }) {
-	/*log.info(toStr({
+    /*log.info(toStr({
 		_parentPath,
 		_name,
 		path,
 		key,
 		keys
 	}));*/
-	return connection.get<T>(...keys);
+    return connection.get<T>(...keys);
 } // get

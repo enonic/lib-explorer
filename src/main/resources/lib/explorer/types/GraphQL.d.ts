@@ -1,5 +1,5 @@
 import type {
-	Highlight as LibNodeHighlight
+    Highlight as LibNodeHighlight
 } from '/lib/xp/node';
 
 

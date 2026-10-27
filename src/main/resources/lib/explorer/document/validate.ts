@@ -29,27 +29,27 @@ export interface ValidateParameters {
 
 
 export function validate(
-	{
-		data,
-		fieldsObj,
-		partial = false,
-		validateOccurrences: boolValidateOccurrences = false,
-		validateTypes: boolValidateTypes = true
-	}: ValidateParameters,
+    {
+        data,
+        fieldsObj,
+        partial = false,
+        validateOccurrences: boolValidateOccurrences = false,
+        validateTypes: boolValidateTypes = true
+    }: ValidateParameters,
 ) {
-	// log.debug(`data:${toStr(data)}`);
-	// log.debug(`fields:${toStr(fields)}`);
-	// log.debug(`boolValidateOccurrences:${toStr(boolValidateOccurrences)}`);
-	const fields = fieldsObjToArray(fieldsObj);
+    // log.debug(`data:${toStr(data)}`);
+    // log.debug(`fields:${toStr(fields)}`);
+    // log.debug(`boolValidateOccurrences:${toStr(boolValidateOccurrences)}`);
+    const fields = fieldsObjToArray(fieldsObj);
 
-	if (boolValidateOccurrences) {
-		if (!validateOccurrences({ data, fields, partial })) {
-			return false;
-		}
-	}
-	// log.debug(`boolValidateTypes:${toStr(boolValidateTypes)}`);
-	if (boolValidateTypes) {
-		return validateTypes({ data, fields });
-	}
-	return true;
+    if (boolValidateOccurrences) {
+        if (!validateOccurrences({ data, fields, partial })) {
+            return false;
+        }
+    }
+    // log.debug(`boolValidateTypes:${toStr(boolValidateTypes)}`);
+    if (boolValidateTypes) {
+        return validateTypes({ data, fields });
+    }
+    return true;
 }

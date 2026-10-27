@@ -59,19 +59,19 @@ const should = storage.query.dsl.should;
 // (which can be slow depending on the size of the T set).
 
 export default function boostedQuery(
-	selectionExpressions: QueryDsl[],
-	boostExpressions: QueryDsl[]
+    selectionExpressions: QueryDsl[],
+    boostExpressions: QueryDsl[]
 ): QueryDsl {
-	return bool({
-		must: bool(should(selectionExpressions)),
-		should: boostExpressions
-	});
-	// Correct but slower
-	// const s = bool(should(selectionExpressions));
-	// const b = bool(should(boostExpressions));
-	// const notB = bool(mustNot(boostExpressions));
-	// return bool(should([
-	// 	bool(must([s, notB])),
-	// 	bool(must([s, b])),
-	// ]));
+    return bool({
+        must: bool(should(selectionExpressions)),
+        should: boostExpressions
+    });
+    // Correct but slower
+    // const s = bool(should(selectionExpressions));
+    // const b = bool(should(boostExpressions));
+    // const notB = bool(mustNot(boostExpressions));
+    // return bool(should([
+    // 	bool(must([s, notB])),
+    // 	bool(must([s, b])),
+    // ]));
 }

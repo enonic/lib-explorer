@@ -1,6 +1,6 @@
 import type {
-	Synonym,
-	SynonymNode
+    Synonym,
+    SynonymNode
 } from '@enonic-types/lib-explorer';
 
 
@@ -9,32 +9,32 @@ import {languagesObjectToArray} from '/lib/explorer/synonym/languagesObjectToArr
 
 
 export function moldSynonymNode({
-	_id,
-	_name,
-	_nodeType,
-	_path,
-	_versionKey,
-	comment = '',
-	enabled = true,
-	disabledInInterfaces = [],
-	languages: languagesObject = {},
-	nodeTypeVersion,
-	thesaurusReference
+    _id,
+    _name,
+    _nodeType,
+    _path,
+    _versionKey,
+    comment = '',
+    enabled = true,
+    disabledInInterfaces = [],
+    languages: languagesObject = {},
+    nodeTypeVersion,
+    thesaurusReference
 }: SynonymNode): Synonym {
-	return {
-		_id,
-		_name,
-		_nodeType,
-		_nodeTypeVersion: nodeTypeVersion,
-		_path,
-		_versionKey,
-		comment,
-		enabled,
-		disabledInInterfaces: disabledInInterfaces ? forceArray(disabledInInterfaces) : [],
-		languages: languagesObjectToArray({
-			languagesObject
-		}),
-		thesaurus: _path.match(/[^/]+/g)[1],
-		thesaurusReference
-	};
+    return {
+        _id,
+        _name,
+        _nodeType,
+        _nodeTypeVersion: nodeTypeVersion,
+        _path,
+        _versionKey,
+        comment,
+        enabled,
+        disabledInInterfaces: disabledInInterfaces ? forceArray(disabledInInterfaces) : [],
+        languages: languagesObjectToArray({
+            languagesObject
+        }),
+        thesaurus: _path.match(/[^/]+/g)[1],
+        thesaurusReference
+    };
 }

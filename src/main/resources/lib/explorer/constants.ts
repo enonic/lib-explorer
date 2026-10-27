@@ -1,26 +1,26 @@
 import {
-	FieldPath,
-	Folder,
-	NodeType,
-	Path,
-	Principal,
-	Repo,
-	Role,
-	RootPermission
+    FieldPath,
+    Folder,
+    NodeType,
+    Path,
+    Principal,
+    Repo,
+    Role,
+    RootPermission
 } from '@enonic/explorer-utils';
 
 export {
-	APP_EXPLORER,
-	BRANCH_ID_EXPLORER,
-	COLLECTION_REPO_PREFIX,
-	EVENT_TYPE_PREFIX_CUSTOM,
-	EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED,
-	EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
-	EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED,
-	EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
-	FOLDERS,
-	PERMISSION_SYSTEM_ADMIN,
-	ROOT_PERMISSIONS_EXPLORER,
+    APP_EXPLORER,
+    BRANCH_ID_EXPLORER,
+    COLLECTION_REPO_PREFIX,
+    EVENT_TYPE_PREFIX_CUSTOM,
+    EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED,
+    EVENT_SEND_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
+    EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_CREATED,
+    EVENT_LISTEN_TYPE_CUSTOM_EXPLORER_DOCUMENTTYPE_UPDATED,
+    FOLDERS,
+    PERMISSION_SYSTEM_ADMIN,
+    ROOT_PERMISSIONS_EXPLORER,
 } from '@enonic/explorer-utils';
 
 
@@ -85,6 +85,6 @@ export const ROOT_PERMISSION_EXPLORER_WRITE = RootPermission.EXPLORER_WRITE;
 // NOTE: This constant is duplicated in app-explorer/src/main/resources/assets/react/constants.ts
 // TODO: I don't even think this is in use anymore
 export const DEFAULT_INTERFACE_FIELDS = [{
-	name: '_alltext',
-	boost: 1
+    name: '_alltext',
+    boost: 1
 }];

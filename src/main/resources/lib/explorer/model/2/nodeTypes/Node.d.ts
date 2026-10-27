@@ -1,6 +1,6 @@
 import type {
-	ParentPath,
-	Path
+    ParentPath,
+    Path
 } from '/lib/explorer/types.d';
 
 export type IndexConfigTemplate = 'none' | 'byType' | 'fulltext' | 'path' | 'minimal';

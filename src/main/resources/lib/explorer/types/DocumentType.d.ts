@@ -1,6 +1,6 @@
 import type {
-	CreateNodeParams,
-	Node,
+    CreateNodeParams,
+    Node,
 } from '/lib/xp/node';
 
 import type { ExplorerAdminGQLInterfaceNodeCommonProps } from './Node.d';

@@ -5,7 +5,7 @@ import type {CollectionNode} from '@enonic-types/lib-explorer/Collection.d';
 
 import {indexTemplateToConfig} from '@enonic/js-utils/storage/indexing/indexTemplateToConfig';
 import {
-	NT_COLLECTION
+    NT_COLLECTION
 } from '/lib/explorer/model/2/constants';
 import {node} from '/lib/explorer/model/2/nodeTypes/node';
 import {reference} from '/lib/xp/value';
@@ -22,40 +22,40 @@ type CleanedCollectionNodeWithParentPath = Omit<CollectionNode,
 
 
 export function collection({
-	_id, // avoid from ...rest
-	_path, // avoid from ...rest
-	_permissions, // avoid from ...rest
-	displayName, // avoid from ...rest
-	_parentPath = '/collections',
-	collector,
-	documentTypeId,
-	...rest
+    _id, // avoid from ...rest
+    _path, // avoid from ...rest
+    _permissions, // avoid from ...rest
+    displayName, // avoid from ...rest
+    _parentPath = '/collections',
+    collector,
+    documentTypeId,
+    ...rest
 }: Omit<CollectionNode, '_parentPath'> & {
 	displayName?: string
 	_parentPath?: ParentPath
 }) {
-	const obj: CleanedCollectionNodeWithParentPath = {
-		...rest,
-		_indexConfig: {
-			// The XP defaults, listed because allText is required in NodeIndexConfig
-			allText: {
-				enabled: true,
-				fulltext: true,
-				languages: [],
-				nGram: true,
-			},
-			default: indexTemplateToConfig({
-				template:'byType'
-			}),
-			configs: [],
-		},
-		_nodeType: NT_COLLECTION,
-		_parentPath,
-		collector
-	};
-	if (documentTypeId) {
-		obj.documentTypeId = reference(documentTypeId.toString());
-	}
-	//@ts-ignore
-	return node(obj);
+    const obj: CleanedCollectionNodeWithParentPath = {
+        ...rest,
+        _indexConfig: {
+            // The XP defaults, listed because allText is required in NodeIndexConfig
+            allText: {
+                enabled: true,
+                fulltext: true,
+                languages: [],
+                nGram: true,
+            },
+            default: indexTemplateToConfig({
+                template:'byType'
+            }),
+            configs: [],
+        },
+        _nodeType: NT_COLLECTION,
+        _parentPath,
+        collector
+    };
+    if (documentTypeId) {
+        obj.documentTypeId = reference(documentTypeId.toString());
+    }
+    //@ts-ignore
+    return node(obj);
 } // field

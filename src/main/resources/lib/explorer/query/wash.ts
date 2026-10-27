@@ -2,8 +2,8 @@
 
 // Inlined to ava tests can run
 function isSet(value) {
-	if (typeof value === 'boolean') { return true; } // If value is true/false it is set
-	return value !== null && typeof value !== 'undefined';
+    if (typeof value === 'boolean') { return true; } // If value is true/false it is set
+    return value !== null && typeof value !== 'undefined';
 }
 
 // WARN: Not certain that Nashorn supports "Unicode" RegExp!
@@ -20,16 +20,16 @@ const WHITELIST_PATTERN = `[^-+*|()~a-zA-Z0-9_ "ÆÐƎƏƐƔĲŊŒẞÞǷȜæð�
 const WHITELIST_REGEXP = new RegExp(WHITELIST_PATTERN, 'gi');
 
 export function wash({
-	string,
-	replacement = '',
-	whitelistRegEx = WHITELIST_REGEXP
+    string,
+    replacement = '',
+    whitelistRegEx = WHITELIST_REGEXP
 }: {
 	string: string;
 	replacement?: string;
 	whitelistRegEx?: RegExp;
 }): string {
-	if(isSet(string)) {
-		return string.replace(whitelistRegEx, replacement).replace(/\s{2,}/g, ' ').trim();
-	}
-	return string;
+    if(isSet(string)) {
+        return string.replace(whitelistRegEx, replacement).replace(/\s{2,}/g, ' ').trim();
+    }
+    return string;
 }

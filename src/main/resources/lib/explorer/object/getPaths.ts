@@ -7,8 +7,8 @@ import traverse = require('traverse');
 
 
 export function getPaths(obj) {
-	// log.debug('getPaths obj:%s', toStr(obj));
-	const paths = traverse(obj).paths();
-	// log.debug('getPaths paths:%s', toStr(paths));
-	return paths;
+    // log.debug('getPaths obj:%s', toStr(obj));
+    const paths = traverse(obj).paths();
+    // log.debug('getPaths paths:%s', toStr(paths));
+    return paths;
 }

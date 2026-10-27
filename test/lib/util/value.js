@@ -1,5 +1,5 @@
 export function isInt(value) {
-	return !isNaN(value)
+    return !isNaN(value)
 		&& parseInt(Number(value), 10) === value
 		&& !isNaN(parseInt(value, 10));
 }

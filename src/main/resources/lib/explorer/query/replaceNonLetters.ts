@@ -15,12 +15,12 @@ const WHITELIST_REGEXP = new RegExp(WHITELIST_PATTERN, 'gi');
 
 
 export function replaceNonLetters({
-	string,
-	replacement = '',
-	whitelistRegEx = WHITELIST_REGEXP
+    string,
+    replacement = '',
+    whitelistRegEx = WHITELIST_REGEXP
 }) {
-	if(isSet(string)) {
-		return string.replace(whitelistRegEx, replacement).replace(/\s\s+/g, ' ').trim();
-	}
-	return string;
+    if(isSet(string)) {
+        return string.replace(whitelistRegEx, replacement).replace(/\s\s+/g, ' ').trim();
+    }
+    return string;
 }

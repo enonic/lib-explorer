@@ -4,8 +4,8 @@ import type {DocumentNode} from '@enonic-types/lib-explorer/Document.d';
 
 
 import {
-	//enonify,
-	toStr
+    //enonify,
+    toStr
 } from '@enonic/js-utils';
 import { detailedDiff } from 'deep-object-diff';
 //import {detailedDiff} from 'deep-object-diff/dist/detailed'; // [!] Error: 'detailedDiff' is not exported by node_modules/deep-object-diff/dist/detailed/index.js
@@ -40,7 +40,7 @@ import HumanDiff = require('human-object-diff');
 //const {diffJson} = Diff;
 
 const { diff: diffDocument } = new HumanDiff({
-	objectName: 'document'
+    objectName: 'document'
 });
 
 
@@ -48,38 +48,38 @@ const TRACE = false;
 
 
 export function documentUnchanged(
-	exisitingDocument: DocumentNode,
-	maybeChangedDocument: ModifiedNode<DocumentNode>,
+    exisitingDocument: DocumentNode,
+    maybeChangedDocument: ModifiedNode<DocumentNode>,
 ): boolean {
-	const id = exisitingDocument._id;
-	const dereffedExisitingDocument = JSON.parse(JSON.stringify(exisitingDocument));
-	const dereffedMaybeChangedDocument = JSON.parse(JSON.stringify(maybeChangedDocument));
-	if (dereffedExisitingDocument[FIELD_PATH_META] && dereffedExisitingDocument[FIELD_PATH_META].modifiedTime) {
-		delete dereffedExisitingDocument[FIELD_PATH_META].modifiedTime;
-	}
-	if (dereffedMaybeChangedDocument[FIELD_PATH_META] && dereffedMaybeChangedDocument[FIELD_PATH_META].modifiedTime) {
-		delete dereffedMaybeChangedDocument[FIELD_PATH_META].modifiedTime;
-	}
-	if (fastDeepEqual(dereffedExisitingDocument, dereffedMaybeChangedDocument)) {
-		if (TRACE) log.debug(`No changes detected, not updating document with id:${id}`);
-		return true;
-	}
+    const id = exisitingDocument._id;
+    const dereffedExisitingDocument = JSON.parse(JSON.stringify(exisitingDocument));
+    const dereffedMaybeChangedDocument = JSON.parse(JSON.stringify(maybeChangedDocument));
+    if (dereffedExisitingDocument[FIELD_PATH_META] && dereffedExisitingDocument[FIELD_PATH_META].modifiedTime) {
+        delete dereffedExisitingDocument[FIELD_PATH_META].modifiedTime;
+    }
+    if (dereffedMaybeChangedDocument[FIELD_PATH_META] && dereffedMaybeChangedDocument[FIELD_PATH_META].modifiedTime) {
+        delete dereffedMaybeChangedDocument[FIELD_PATH_META].modifiedTime;
+    }
+    if (fastDeepEqual(dereffedExisitingDocument, dereffedMaybeChangedDocument)) {
+        if (TRACE) log.debug(`No changes detected, not updating document with id:${id}`);
+        return true;
+    }
 
-	// These will reflect modifiedTime, but that's ok?
-	try {
-		// log.debug(`Changes detected in document with id:${id}`);
-		// log.debug(`Changes detected in document with id:${id} exisitingDocument:${toStr(exisitingDocument)} maybeChangedDocument:${toStr(maybeChangedDocument)}`);
-		if (TRACE) log.debug(`Changes detected in document with id:${id} diff:${toStr(detailedDiff(exisitingDocument, maybeChangedDocument))}`);
-	} catch (_e) {
-		try {
-			if (TRACE) log.debug(`Changes detected in document with id:${id} diff:${toStr(diffDocument(exisitingDocument, maybeChangedDocument))}`);
-		} catch (_e) {
-			try {
-				//log.debug(`Changes detected in document with id:${id} diff:${toStr(diffJson(exisitingDocument, maybeChangedDocument))}`);
-			} catch (_e) {
-				// No-op :)
-			} // catch3
-		} // catch2
-	} // catch1
-	return false;
+    // These will reflect modifiedTime, but that's ok?
+    try {
+        // log.debug(`Changes detected in document with id:${id}`);
+        // log.debug(`Changes detected in document with id:${id} exisitingDocument:${toStr(exisitingDocument)} maybeChangedDocument:${toStr(maybeChangedDocument)}`);
+        if (TRACE) log.debug(`Changes detected in document with id:${id} diff:${toStr(detailedDiff(exisitingDocument, maybeChangedDocument))}`);
+    } catch (_e) {
+        try {
+            if (TRACE) log.debug(`Changes detected in document with id:${id} diff:${toStr(diffDocument(exisitingDocument, maybeChangedDocument))}`);
+        } catch (_e) {
+            try {
+                //log.debug(`Changes detected in document with id:${id} diff:${toStr(diffJson(exisitingDocument, maybeChangedDocument))}`);
+            } catch (_e) {
+                // No-op :)
+            } // catch3
+        } // catch2
+    } // catch1
+    return false;
 }

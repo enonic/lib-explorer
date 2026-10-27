@@ -1,5 +1,5 @@
 import type {
-	CollectionNode,
+    CollectionNode,
 } from '@enonic-types/lib-explorer';
 
 // import {toStr} from '@enonic/js-utils';
@@ -10,25 +10,25 @@ import {PRINCIPAL_EXPLORER_READ} from '/lib/explorer/model/2/constants';
 
 
 export function getDocumentTypeFromCollectionName({collectionName}) {
-	//log.debug(`getDocumentTypeFromCollectionName collectionName:${toStr(collectionName)}`);
-	const readConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
-	const collectionNode = getCollection({
-		connection: readConnection,
-		name: collectionName
-	}) as CollectionNode;
-	//log.debug(`getDocumentTypeFromCollectionName collectionNode:${toStr(collectionNode)}`);
+    //log.debug(`getDocumentTypeFromCollectionName collectionName:${toStr(collectionName)}`);
+    const readConnection = connect({ principals: [PRINCIPAL_EXPLORER_READ] });
+    const collectionNode = getCollection({
+        connection: readConnection,
+        name: collectionName
+    }) as CollectionNode;
+    //log.debug(`getDocumentTypeFromCollectionName collectionNode:${toStr(collectionNode)}`);
 
-	const {documentTypeId} = collectionNode;
-	//log.debug(`getDocumentTypeFromCollectionName documentTypeId:${toStr(documentTypeId)}`);
-	if (!documentTypeId) {
-		throw new Error(`Collection name:${collectionName} doesn't contain a documentTypeId!`);
-	}
+    const {documentTypeId} = collectionNode;
+    //log.debug(`getDocumentTypeFromCollectionName documentTypeId:${toStr(documentTypeId)}`);
+    if (!documentTypeId) {
+        throw new Error(`Collection name:${collectionName} doesn't contain a documentTypeId!`);
+    }
 
-	const documentTypeNode = getDocumentType({
-		_id: documentTypeId.toString(),
-		connection: readConnection
-	});
+    const documentTypeNode = getDocumentType({
+        _id: documentTypeId.toString(),
+        connection: readConnection
+    });
 
-	//log.debug(`getDocumentTypeFromCollectionName documentTypeNode:${toStr(documentTypeNode)}`);
-	return documentTypeNode;
+    //log.debug(`getDocumentTypeFromCollectionName documentTypeNode:${toStr(documentTypeNode)}`);
+    return documentTypeNode;
 }

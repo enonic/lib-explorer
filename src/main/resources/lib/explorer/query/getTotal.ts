@@ -1,11 +1,11 @@
 export function getTotal({
-	connection,
-	filters,
-	query = ''
+    connection,
+    filters,
+    query = ''
 }) {
-	return connection.query({
-		count: 0,
-		filters,
-		query
-	}).total;
+    return connection.query({
+        count: 0,
+        filters,
+        query
+    }).total;
 }

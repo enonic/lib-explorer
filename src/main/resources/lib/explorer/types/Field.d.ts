@@ -1,6 +1,6 @@
 import type {
-	ExplorerAdminGQLInterfaceNodeCommonProps,
-	Node
+    ExplorerAdminGQLInterfaceNodeCommonProps,
+    Node
 } from './Node.d';
 
 

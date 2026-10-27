@@ -4,7 +4,7 @@ import {ROLE as ROLE3} from '/lib/explorer/model/2/roles/write';
 
 
 export const ROLES = [
-	ROLE1,
-	ROLE2,
-	ROLE3
+    ROLE1,
+    ROLE2,
+    ROLE3
 ];

@@ -1,10 +1,10 @@
 import type {
-	Key,
-	ParentPath,
-	Path,
-	RepoConnection,
-	Stopword,
-	StopwordNode,
+    Key,
+    ParentPath,
+    Path,
+    RepoConnection,
+    Stopword,
+    StopwordNode,
 } from '@enonic-types/lib-explorer';
 
 // import {toStr} from '@enonic/js-utils';
@@ -13,12 +13,12 @@ import {coerseStopWordType} from '/lib/explorer/stopWords/coerseStopWordType';
 
 
 export function get({
-	connection,
-	id,
-	parentPath = '/stopwords',
-	name = '',
-	path = join(parentPath, name) as Path,
-	key = id || path
+    connection,
+    id,
+    parentPath = '/stopwords',
+    name = '',
+    path = join(parentPath, name) as Path,
+    key = id || path
 }: {
 	connection: RepoConnection
 	id?: string
@@ -27,9 +27,9 @@ export function get({
 	path?: Path
 	key?: Key
 }): Stopword | null {
-	const node = connection.get(key) as StopwordNode;
-	if (!node) { // Handle ghost nodes
-		return null;
-	}
-	return coerseStopWordType(node);
+    const node = connection.get(key) as StopwordNode;
+    if (!node) { // Handle ghost nodes
+        return null;
+    }
+    return coerseStopWordType(node);
 }

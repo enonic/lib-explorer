@@ -1,7 +1,7 @@
 import type {
-	NodeCreate,
-	OneOrMore,
-	RequiredNodeProperties
+    NodeCreate,
+    OneOrMore,
+    RequiredNodeProperties
 } from '@enonic-types/lib-explorer';
 
 

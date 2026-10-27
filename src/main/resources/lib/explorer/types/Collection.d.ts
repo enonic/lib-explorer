@@ -1,12 +1,12 @@
 import type {
-	CreateNodeParams,
-	Node
+    CreateNodeParams,
+    Node
 } from '/lib/xp/node';
 import type { Reference } from '/lib/xp/value';
 import type {
-	ExplorerAdminGQLInterfaceNodeCommonProps,
-	NodeTypeGeneric,
-	ScoreRequired
+    ExplorerAdminGQLInterfaceNodeCommonProps,
+    NodeTypeGeneric,
+    ScoreRequired
 } from './Node.d';
 import type { AnyObject } from './Utility';
 

@@ -6,12 +6,12 @@ import {join} from '/lib/explorer/path/join';
 
 
 export function remove({
-	connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
-	_parentPath = '/',
-	_name = '',
-	path = join(_parentPath, _name),
-	key = path,
-	keys = [key]
+    connection, // Connecting many places leeds to loss of control over principals, so pass a connection around.
+    _parentPath = '/',
+    _name = '',
+    path = join(_parentPath, _name),
+    key = path,
+    keys = [key]
 }: {
 	_name?: string
 	_parentPath?: string
@@ -20,8 +20,8 @@ export function remove({
 	key?: string
 	keys?: string[]
 }) {
-	// log.info('keys:%s', toStr(keys));
-	const res = connection.delete(keys); // Array
-	connection.refresh();
-	return res;
+    // log.info('keys:%s', toStr(keys));
+    const res = connection.delete(keys); // Array
+    connection.refresh();
+    return res;
 }

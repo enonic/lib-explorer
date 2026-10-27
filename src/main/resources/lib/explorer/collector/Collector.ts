@@ -28,33 +28,33 @@
 //──────────────────────────────────────────────────────────────────────────────
 // import type { Node } from '/lib/xp/node';
 import type {
-	QueryDSL,
-	SortDSLExpression
+    QueryDSL,
+    SortDSLExpression
 } from '@enonic/js-utils/types';
 import type {
-	Aggregations,
-	CollectionNode,
-	// CollectionNodeSpecific,
-	CollectorTaskConfig,
-	DocumentNode,
-	Id,
-	JournalMessage,
-	Name,
-	NestedRecordType,
-	NotificationsNode,
-	ParentPath,
-	QueryFilters//,
-	//RequiredNodeProperties
+    Aggregations,
+    CollectionNode,
+    // CollectionNodeSpecific,
+    CollectorTaskConfig,
+    DocumentNode,
+    Id,
+    JournalMessage,
+    Name,
+    NestedRecordType,
+    NotificationsNode,
+    ParentPath,
+    QueryFilters//,
+    //RequiredNodeProperties
 } from '@enonic-types/lib-explorer';
 import type {Progress} from '/lib/explorer/task/progress';
 
 
 import { APP_EXPLORER } from '@enonic/explorer-utils';
 import {
-	//VALUE_TYPE_STRING,
-	isNotSet,
-	toStr//,
-	//uniqueId
+    //VALUE_TYPE_STRING,
+    isNotSet,
+    toStr//,
+    //uniqueId
 } from '@enonic/js-utils';
 
 //import {validateLicense} from '/lib/license';
@@ -91,108 +91,108 @@ const {currentTimeMillis} = Java.type('java.lang.System') as {
 
 
 export class Collector<Config extends NestedRecordType = NestedRecordType> {
-	public collection: Collection // Public in lib-explorer-3.x
-	public config: Config // Public in lib-explorer-3.x // TODO
-	public journal: Journal // Public in lib-explorer-3.x
-	public startTime: number // Public in lib-explorer-3.x
-	public taskProgressObj: Progress // Public in lib-explorer-3.x
+    public collection: Collection // Public in lib-explorer-3.x
+    public config: Config // Public in lib-explorer-3.x // TODO
+    public journal: Journal // Public in lib-explorer-3.x
+    public startTime: number // Public in lib-explorer-3.x
+    public taskProgressObj: Progress // Public in lib-explorer-3.x
 
-	// "#" is js runtime and better than "private" typescript compiletime
-	// but cannot be used when target < "es6"
-	//_collectionDefaultDocumentTypeId;
-	private _collectionId: string; // New in lib-explorer-4.0.0
-	private _collectionName: string; // Private from lib-explorer-4.0.0
-	private _collectorId: string; // Private from lib-explorer-4.0.0
-	private _debug: boolean;
-	//_documentTypeObj: FieldsObject;
-	//_documentTypesObj;
-	private _language: string; // Private in lib-explorer-3.x
-	private _trace: boolean;
+    // "#" is js runtime and better than "private" typescript compiletime
+    // but cannot be used when target < "es6"
+    //_collectionDefaultDocumentTypeId;
+    private _collectionId: string; // New in lib-explorer-4.0.0
+    private _collectionName: string; // Private from lib-explorer-4.0.0
+    private _collectorId: string; // Private from lib-explorer-4.0.0
+    private _debug: boolean;
+    //_documentTypeObj: FieldsObject;
+    //_documentTypesObj;
+    private _language: string; // Private in lib-explorer-3.x
+    private _trace: boolean;
 
-	constructor({
-		_debug = DEBUG,
-		_trace = TRACE,
-		collectionId,
-		collectorId, // Present in lib-explorer-3.x
-		configJson, // Present in lib-explorer-3.x
-		language, // Present in lib-explorer-3.x
-		// @ts-expect-error Property 'name' does not exist on type 'CollectorTaskConfig'.ts(2339)
-		name // Removed in lib-explorer-4.x
-	}: CollectorTaskConfig & {
+    constructor({
+        _debug = DEBUG,
+        _trace = TRACE,
+        collectionId,
+        collectorId, // Present in lib-explorer-3.x
+        configJson, // Present in lib-explorer-3.x
+        language, // Present in lib-explorer-3.x
+        // @ts-expect-error Property 'name' does not exist on type 'CollectorTaskConfig'.ts(2339)
+        name // Removed in lib-explorer-4.x
+    }: CollectorTaskConfig & {
 		_debug?: boolean;
 		_trace?: boolean;
 	}) {
-		if (_trace) log.debug('Collector.constructor: collectionId:%s', collectionId);
-		//log.debug('Collector.constructor: collectorId:%s', collectorId);
-		//log.debug('Collector.constructor: configJson:%s', configJson);
-		//log.debug('Collector.constructor: language:%s', language);
-		//log.debug('Collector.constructor: name:%s', name);
+        if (_trace) log.debug('Collector.constructor: collectionId:%s', collectionId);
+        //log.debug('Collector.constructor: collectorId:%s', collectorId);
+        //log.debug('Collector.constructor: configJson:%s', configJson);
+        //log.debug('Collector.constructor: language:%s', language);
+        //log.debug('Collector.constructor: name:%s', name);
 
-		/*if (!collectionId) { // TODO lib-explorer-5.0.0
+        /*if (!collectionId) { // TODO lib-explorer-5.0.0
 			throw new Error('Collector.constructor: Missing required parameter collectionId!');
 		}*/
-		if (!collectorId) { throw new Error('Missing required parameter collectorId!'); }
-		if (!configJson) { throw new Error('Missing required parameter configJson!'); }
-		if (!collectionId && !name) { // TODO remove in lib-explorer-5.0.0
-			throw new Error('Collector.constructor: You have to provide collectionId or name(deprecated)!');
-		}
+        if (!collectorId) { throw new Error('Missing required parameter collectorId!'); }
+        if (!configJson) { throw new Error('Missing required parameter configJson!'); }
+        if (!collectionId && !name) { // TODO remove in lib-explorer-5.0.0
+            throw new Error('Collector.constructor: You have to provide collectionId or name(deprecated)!');
+        }
 
-		this._debug = _debug;
-		this._trace = _trace;
+        this._debug = _debug;
+        this._trace = _trace;
 
-		const explorerRepoReadConnection = connect({
-			principals: [PRINCIPAL_EXPLORER_READ]
-		});
+        const explorerRepoReadConnection = connect({
+            principals: [PRINCIPAL_EXPLORER_READ]
+        });
 
-		let collectionNode: CollectionNode;
-		if (collectionId) {
-			collectionNode = explorerRepoReadConnection.get(collectionId);
-			if (!collectionNode) {
-				log.error('Collector.constructor: Unable to get collection node with id:%s!', collectionId);
+        let collectionNode: CollectionNode;
+        if (collectionId) {
+            collectionNode = explorerRepoReadConnection.get(collectionId);
+            if (!collectionNode) {
+                log.error('Collector.constructor: Unable to get collection node with id:%s!', collectionId);
 
-				const jobName = `${APP_EXPLORER}.${collectionId}`;
-				const explorerJobsThatStartWithName = runAsSu(() => listExplorerJobsThatStartWithName({name: jobName}));
-				if (this._trace) log.debug('collectionId:%s explorerJobsThatStartWithName:%s', collectionId, toStr(explorerJobsThatStartWithName));
-				explorerJobsThatStartWithName.forEach(({name}) => {
-					log.info(`Deleting job name:${name}, while deleting collection with id:${collectionId}`);
-					runAsSu(() => deleteJob({name}));
-				});
+                const jobName = `${APP_EXPLORER}.${collectionId}`;
+                const explorerJobsThatStartWithName = runAsSu(() => listExplorerJobsThatStartWithName({name: jobName}));
+                if (this._trace) log.debug('collectionId:%s explorerJobsThatStartWithName:%s', collectionId, toStr(explorerJobsThatStartWithName));
+                explorerJobsThatStartWithName.forEach(({name}) => {
+                    log.info(`Deleting job name:${name}, while deleting collection with id:${collectionId}`);
+                    runAsSu(() => deleteJob({name}));
+                });
 
-				// If this is catched and added to journal.errors, then this message will end up in a notification email, so make the message understandable.
-				throw new Error(`Unable to get collection node with id:${collectionId}, while trying to run collector with id:${collectorId}! Removed ${explorerJobsThatStartWithName.length} schedule(s).`);
-			}
-			//log.debug(`collectionNode:${toStr(collectionNode)}`);
-			this._collectionId = collectionId;
-			this._collectionName = collectionNode._name;
-		} else { // !collectionId // TODO remove in lib-explorer-5.0.0
-			if (name) {
-				log.warning(`Collector constructor: Parameter 'name' is deprecated in lib-explorer-4.0.0 and will be removed in lib-explorer-5.0.0, use collectionId instead!`);
-				collectionNode = getCollection({
-					connection: explorerRepoReadConnection,
-					name
-				}) as CollectionNode;
-				if (!collectionNode) {
-					throw new Error(`Collector.constructor: Unable to find collection from name:${name}!`);
-				}
-				//log.debug(`collectionNode from name:${toStr(collectionNode)}`);
-				this._collectionId = collectionNode._id;
-				this._collectionName = name;
-			}
-		}
-		//log.debug(`this._collectionId:${this._collectionId}`);
-		//log.debug(`this._collectionName:${this._collectionName}`);
+                // If this is catched and added to journal.errors, then this message will end up in a notification email, so make the message understandable.
+                throw new Error(`Unable to get collection node with id:${collectionId}, while trying to run collector with id:${collectorId}! Removed ${explorerJobsThatStartWithName.length} schedule(s).`);
+            }
+            //log.debug(`collectionNode:${toStr(collectionNode)}`);
+            this._collectionId = collectionId;
+            this._collectionName = collectionNode._name;
+        } else { // !collectionId // TODO remove in lib-explorer-5.0.0
+            if (name) {
+                log.warning(`Collector constructor: Parameter 'name' is deprecated in lib-explorer-4.0.0 and will be removed in lib-explorer-5.0.0, use collectionId instead!`);
+                collectionNode = getCollection({
+                    connection: explorerRepoReadConnection,
+                    name
+                }) as CollectionNode;
+                if (!collectionNode) {
+                    throw new Error(`Collector.constructor: Unable to find collection from name:${name}!`);
+                }
+                //log.debug(`collectionNode from name:${toStr(collectionNode)}`);
+                this._collectionId = collectionNode._id;
+                this._collectionName = name;
+            }
+        }
+        //log.debug(`this._collectionId:${this._collectionId}`);
+        //log.debug(`this._collectionName:${this._collectionName}`);
 
-		this._collectorId = collectorId;
-		//log.debug(`this._collectorId:${this._collectorId}`);
+        this._collectorId = collectorId;
+        //log.debug(`this._collectorId:${this._collectorId}`);
 
-		if (language) {
-			//this._language = javaLocaleToSupportedLanguage(language);
-			this._language = language; // Reducing to stemmingLanguage happens inside create and update
-		}
-		//log.debug(`this._language:${this._language}`);
+        if (language) {
+            //this._language = javaLocaleToSupportedLanguage(language);
+            this._language = language; // Reducing to stemmingLanguage happens inside create and update
+        }
+        //log.debug(`this._language:${this._language}`);
 
-		// Collections created by Collectors doesn't have documentType...
-		/*if (collectionNode.documentTypeId) {
+        // Collections created by Collectors doesn't have documentType...
+        /*if (collectionNode.documentTypeId) {
 			throw new Error(`The collection with id:${this._collectionId} is missing a documentTypeId!`);
 		}
 		this._collectionDefaultDocumentTypeId = collectionNode.documentTypeId;
@@ -200,7 +200,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		this._documentTypesObj[this._collectionDefaultDocumentTypeId] = documentTypeNode;
 		log.debug(`this._documentTypesObj:${this._documentTypesObj}`);*/
 
-		/*const collectionsTotalCount = getTotalCount({ connection: explorerRepoReadConnection });
+        /*const collectionsTotalCount = getTotalCount({ connection: explorerRepoReadConnection });
 		//log.info(`collectionsTotalCount:${collectionsTotalCount}`);
 
         // WARNING https://github.com/enonic/lib-license/issues/21
@@ -218,43 +218,43 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 			}
 		}*/
 
-		try {
-			this.config = JSON.parse(configJson); //log.info(toStr({config}));
-		} catch (_e) {
-			throw new Error(`${name}: JSON.parse(configJson) failed!`);
-		}
-	} // constructor
+        try {
+            this.config = JSON.parse(configJson); //log.info(toStr({config}));
+        } catch (_e) {
+            throw new Error(`${name}: JSON.parse(configJson) failed!`);
+        }
+    } // constructor
 
-	deleteDocument<T extends string|Array<string>>(keys: T): T
-	deleteDocument(...keys: Array<string>) {
-		const deleteRes = this.collection.connection.delete(...keys) as string|Array<string>;
-		this.collection.connection.refresh();
-		return deleteRes;
-	}
+    deleteDocument<T extends string|Array<string>>(keys: T): T
+    deleteDocument(...keys: Array<string>) {
+        const deleteRes = this.collection.connection.delete(...keys) as string|Array<string>;
+        this.collection.connection.refresh();
+        return deleteRes;
+    }
 
-	getDocumentNode<
+    getDocumentNode<
 		DocumentNode extends NestedRecordType,
 		T extends string|Array<string>
 	>(keys: T): T extends string ? DocumentNode: Array<DocumentNode>
-	getDocumentNode<DocumentNode = unknown>(...keys: Array<string>): DocumentNode|Array<DocumentNode> {
-		return this.collection.connection.get<DocumentNode>(...keys);
-	}
+    getDocumentNode<DocumentNode = unknown>(...keys: Array<string>): DocumentNode|Array<DocumentNode> {
+        return this.collection.connection.get<DocumentNode>(...keys);
+    }
 
-	progress() {
-		if (this._trace) log.debug(`Collector.progress this.taskProgressObj:${toStr(this.taskProgressObj)}`);
-		progress(this.taskProgressObj);
-	}
+    progress() {
+        if (this._trace) log.debug(`Collector.progress this.taskProgressObj:${toStr(this.taskProgressObj)}`);
+        progress(this.taskProgressObj);
+    }
 
-	queryDocuments<
+    queryDocuments<
 		AggregationKey extends undefined|string = undefined
 	>({
-		aggregations,
-		count,
-		filters,
-		query,
-		sort,
-		start
-	}: {
+        aggregations,
+        count,
+        filters,
+        query,
+        sort,
+        start
+    }: {
 		aggregations?: Aggregations<AggregationKey>
 		count?: number
 		filters?: QueryFilters
@@ -262,266 +262,266 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		sort?: SortDSLExpression
 		start?: number
 	}) {
-		return queryDocuments({
-			aggregations,
-			collectionRepoReadConnection: this.collection.connection,
-			count,
-			filters,
-			query,
-			sort,
-			start
-		});
-	} // queryDocuments
+        return queryDocuments({
+            aggregations,
+            collectionRepoReadConnection: this.collection.connection,
+            count,
+            filters,
+            query,
+            sort,
+            start
+        });
+    } // queryDocuments
 
-	start() {
-		this.startTime = currentTimeMillis();
-		this.taskProgressObj = {
-			current: 0,
-			total: 1, // Or it will appear as there is nothing to do.
-			info: {
-				name: this._collectionName,
-				message: 'Initializing...',
-				startTime: this.startTime
-			}
-		};
-		if (this._debug) log.debug(`Collector.start this.taskProgressObj:${toStr(this.taskProgressObj)}`);
-		this.progress();
-		this.collection = new Collection({name: this._collectionName});
-		modifyTask({
-			connection: this.collection.connection,
-			state: 'RUNNING',
-			should: 'RUN'
-		});
-		this.journal = new Journal({
-			name: this._collectionName,
-			startTime: this.startTime
-		});
-	} // start
-
-
-	shouldStop() {
-		const task = getTask({connection: this.collection.connection}); //log.info(toStr({task}));
-		const {should} = task;
-		if (should === 'STOP') {
-			log.warning(`Got message to stop task: ${toStr(this.taskProgressObj)}`);
-			return true;
-		}
-		return false;
-	} // shouldStop
+    start() {
+        this.startTime = currentTimeMillis();
+        this.taskProgressObj = {
+            current: 0,
+            total: 1, // Or it will appear as there is nothing to do.
+            info: {
+                name: this._collectionName,
+                message: 'Initializing...',
+                startTime: this.startTime
+            }
+        };
+        if (this._debug) log.debug(`Collector.start this.taskProgressObj:${toStr(this.taskProgressObj)}`);
+        this.progress();
+        this.collection = new Collection({name: this._collectionName});
+        modifyTask({
+            connection: this.collection.connection,
+            state: 'RUNNING',
+            should: 'RUN'
+        });
+        this.journal = new Journal({
+            name: this._collectionName,
+            startTime: this.startTime
+        });
+    } // start
 
 
-	persistDocument({
-		_id,
-		_name,
-		_parentPath = '/', // Present in lib-explorer-3.x
-		/*document_metadata: {
+    shouldStop() {
+        const task = getTask({connection: this.collection.connection}); //log.info(toStr({task}));
+        const {should} = task;
+        if (should === 'STOP') {
+            log.warning(`Got message to stop task: ${toStr(this.taskProgressObj)}`);
+            return true;
+        }
+        return false;
+    } // shouldStop
+
+
+    persistDocument({
+        _id,
+        _name,
+        _parentPath = '/', // Present in lib-explorer-3.x
+        /*document_metadata: {
 			...document_metadata_props
 		} = {},*/
-		...rest // Slurps properties
-	}: {
+        ...rest // Slurps properties
+    }: {
 		_id?: Id
 		_name?: Name
 		_parentPath?: ParentPath
 	}, {
-		//cleanExtraFields // TODO Perhaps later
-		//addExtraFields // TODO Perhaps later
-		boolRequireValid, // Present in lib-explorer-3.x
+        //cleanExtraFields // TODO Perhaps later
+        //addExtraFields // TODO Perhaps later
+        boolRequireValid, // Present in lib-explorer-3.x
 
-		// When configuring a collection, after having selected a collector,
-		// it's no longer possible to select documentType.
-		// Thus documentTypeName MUST be provided when persisting a document.
-		documentTypeName,
+        // When configuring a collection, after having selected a collector,
+        // it's no longer possible to select documentType.
+        // Thus documentTypeName MUST be provided when persisting a document.
+        documentTypeName,
 
-		language,
+        language,
 
-		//validateOccurrences, // TODO Perhaps later
-		//validateTypes // TODO Perhaps later
-		...ignoredOptions
-	}: {
+        //validateOccurrences, // TODO Perhaps later
+        //validateTypes // TODO Perhaps later
+        ...ignoredOptions
+    }: {
 		boolRequireValid?: boolean
 		documentTypeName: string
 		language?: string
 	}) {
-		//log.debug(`document_metadata_props:${toStr(document_metadata_props)}`);
-		//log.debug(`rest:${toStr(rest)}`);
-		//log.debug(`ignoredOptions:${toStr(ignoredOptions)}`);
+        //log.debug(`document_metadata_props:${toStr(document_metadata_props)}`);
+        //log.debug(`rest:${toStr(rest)}`);
+        //log.debug(`ignoredOptions:${toStr(ignoredOptions)}`);
 
-		Object.keys(rest).forEach((k) => {
-			if (k.startsWith('__')) {
-				log.warning(`Deprecation: Function signature changed. Added second argument for options.
+        Object.keys(rest).forEach((k) => {
+            if (k.startsWith('__')) {
+                log.warning(`Deprecation: Function signature changed. Added second argument for options.
 			Old: collector.persistDocument({${k}, ...})
 			New: collector.persistDocument({...}, {${k.substring(2)}})`);
-				if(k === '__boolRequireValid') {
-					if (isNotSet(boolRequireValid)) {
-						boolRequireValid = rest[k];
-					}
-				} else {
-					log.warning(`collector.persistDocument: Ignored option:${k} value:${toStr(rest[k])}`);
-				}
-				delete rest[k];
-			}
-		});
+                if(k === '__boolRequireValid') {
+                    if (isNotSet(boolRequireValid)) {
+                        boolRequireValid = rest[k];
+                    }
+                } else {
+                    log.warning(`collector.persistDocument: Ignored option:${k} value:${toStr(rest[k])}`);
+                }
+                delete rest[k];
+            }
+        });
 
-		if (isNotSet(boolRequireValid)) {
-			boolRequireValid = false;
-		}
+        if (isNotSet(boolRequireValid)) {
+            boolRequireValid = false;
+        }
 
-		if (Object.keys(ignoredOptions).length) {
-			log.warning(`collector.persistDocument: Ignored options:${toStr(ignoredOptions)}`);
-		}
+        if (Object.keys(ignoredOptions).length) {
+            log.warning(`collector.persistDocument: Ignored options:${toStr(ignoredOptions)}`);
+        }
 
-		if (!documentTypeName) {
-			throw new Error('persistDocument(): Missing required parameter documentTypeName!');
-		}
+        if (!documentTypeName) {
+            throw new Error('persistDocument(): Missing required parameter documentTypeName!');
+        }
 
-		const documentToPersist: {
+        const documentToPersist: {
 			_id?: Id
 			_name?: Name
 			_parentPath: ParentPath
 		} = {
-			...rest,
+		    ...rest,
 
-			// TODO? lib-explorer-4.0.0 Allow advanced collectors to pass their own.
-			//_indexConfig, // Built automatically
+		    // TODO? lib-explorer-4.0.0 Allow advanced collectors to pass their own.
+		    //_indexConfig, // Built automatically
 
-			_parentPath
+		    _parentPath
 		} ;
-		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
+        //log.debug(`documentToPersist:${toStr(documentToPersist)}`);
 
-		if (_id) {
-			// log.debug('_id:%s', _id);
-			documentToPersist._id = _id;
-		} else if (_name) {
-			const path = `${_parentPath}${_name}`;
-			// log.debug('path:%s', path);
+        if (_id) {
+            // log.debug('_id:%s', _id);
+            documentToPersist._id = _id;
+        } else if (_name) {
+            const path = `${_parentPath}${_name}`;
+            // log.debug('path:%s', path);
 
-			const existingNode = this.collection.connection.get(path) as DocumentNode;
-			//log.debug(`existingNode:${toStr(existingNode)}`);
+            const existingNode = this.collection.connection.get(path) as DocumentNode;
+            //log.debug(`existingNode:${toStr(existingNode)}`);
 
-			if (existingNode) {
-				documentToPersist._id = existingNode._id; // createOrUpdate doesn't support _path only _id
-			}
-		}
+            if (existingNode) {
+                documentToPersist._id = existingNode._id; // createOrUpdate doesn't support _path only _id
+            }
+        }
 
-		//log.debug(`documentToPersist:${toStr(documentToPersist)}`);
+        //log.debug(`documentToPersist:${toStr(documentToPersist)}`);
 
-		const createOrUpdateParams = {
-			collectionId: this._collectionId,
-			//collectionName: this.collectionName, // Perhaps later
-			collectorId: this._collectorId,
-			collectorVersion: app.version,
-			//connection: this.collection.connection, // No longer needed in lib-explorer-4.0.0
-			data: documentToPersist,
-			//documentTypeId // Perhaps later
-			documentTypeName,
-			//fields: // Perhaps later
-			language: language || this._language,
-			//stemmingLanguage: // Perhaps later
+        const createOrUpdateParams = {
+            collectionId: this._collectionId,
+            //collectionName: this.collectionName, // Perhaps later
+            collectorId: this._collectorId,
+            collectorVersion: app.version,
+            //connection: this.collection.connection, // No longer needed in lib-explorer-4.0.0
+            data: documentToPersist,
+            //documentTypeId // Perhaps later
+            documentTypeName,
+            //fields: // Perhaps later
+            language: language || this._language,
+            //stemmingLanguage: // Perhaps later
 
-			//cleanExtraFields // TODO Perhaps later
-			//addExtraFields // TODO Perhaps later
-			requireValid: boolRequireValid//,
-			//validateOccurrences // TODO Perhaps later
-			//validateTypes // TODO Perhaps later
-		};
-		if (this._trace) log.debug('Collector.persistDocument: createOrUpdateParams:%s', toStr(createOrUpdateParams));
+            //cleanExtraFields // TODO Perhaps later
+            //addExtraFields // TODO Perhaps later
+            requireValid: boolRequireValid//,
+            //validateOccurrences // TODO Perhaps later
+            //validateTypes // TODO Perhaps later
+        };
+        if (this._trace) log.debug('Collector.persistDocument: createOrUpdateParams:%s', toStr(createOrUpdateParams));
 
-		const persistedNode = createOrUpdate(createOrUpdateParams);
-		if (!persistedNode) {
-			throw new Error('Something went wrong when trying to persist a document!');
-		}
-		//log.debug('persistedNode:%s', toStr(persistedNode));
-		return persistedNode;
-	} // persistDocument
+        const persistedNode = createOrUpdate(createOrUpdateParams);
+        if (!persistedNode) {
+            throw new Error('Something went wrong when trying to persist a document!');
+        }
+        //log.debug('persistedNode:%s', toStr(persistedNode));
+        return persistedNode;
+    } // persistDocument
 
 
-	addError(error: JournalMessage) {
-		this.journal.addError(error);
-	}
+    addError(error: JournalMessage) {
+        this.journal.addError(error);
+    }
 
-	addInformation(information: JournalMessage) {
-		this.journal.addInformation(information);
-	}
+    addInformation(information: JournalMessage) {
+        this.journal.addInformation(information);
+    }
 
-	addSuccess(success: JournalMessage) {
-		this.journal.addSuccess(success);
-	}
+    addSuccess(success: JournalMessage) {
+        this.journal.addSuccess(success);
+    }
 
-	addWarning(warning: JournalMessage) {
-		this.journal.addWarning(warning);
-	}
+    addWarning(warning: JournalMessage) {
+        this.journal.addWarning(warning);
+    }
 
-	stop() {
-		if (this._debug) log.debug('Collector.stop');
-		this.journal.create();
-		this.taskProgressObj.current = this.taskProgressObj.total; // Make sure it ends at 100%
-		this.taskProgressObj.info.message = `Finished with ${this.journal.errors.length} errors.`;
-		this.progress(); // This also implicitly sets final currentTime and duration
+    stop() {
+        if (this._debug) log.debug('Collector.stop');
+        this.journal.create();
+        this.taskProgressObj.current = this.taskProgressObj.total; // Make sure it ends at 100%
+        this.taskProgressObj.info.message = `Finished with ${this.journal.errors.length} errors.`;
+        this.progress(); // This also implicitly sets final currentTime and duration
 
-		const node = (getNode<NotificationsNode>({
-			connection: connect({
-				principals: [PRINCIPAL_EXPLORER_READ]
-			}),
-			path: '/notifications'
-		}) || {}) as NotificationsNode;
-		if (this._debug) log.debug('Collector.stop node:%s', toStr(node));
+        const node = (getNode<NotificationsNode>({
+            connection: connect({
+                principals: [PRINCIPAL_EXPLORER_READ]
+            }),
+            path: '/notifications'
+        }) || {}) as NotificationsNode;
+        if (this._debug) log.debug('Collector.stop node:%s', toStr(node));
 
-		const {emails = []} = node;
-		if (this._debug) log.debug('Collector.stop emails:%s', toStr(emails));
+        const {emails = []} = node;
+        if (this._debug) log.debug('Collector.stop emails:%s', toStr(emails));
 
-		if (this.journal.errors.length) {
-			log.warning('Collector.stop errors:%s', toStr(this.journal.errors));
-			modifyTask({
-				connection: this.collection.connection,
-				state: 'FAILED',
-				should: 'STOP'
-			});
+        if (this.journal.errors.length) {
+            log.warning('Collector.stop errors:%s', toStr(this.journal.errors));
+            modifyTask({
+                connection: this.collection.connection,
+                state: 'FAILED',
+                should: 'STOP'
+            });
 
-			// Error Notifications
-			if (emails.length) {
-				try {
-					const emailParams = {
-						from: 'explorer-noreply@enonic.com',
-						to: emails,
-						subject: `Collecting to ${this._collectionName} had ${this.journal.errors.length} errors!`,
-						body: `${toStr(this.journal.errors)}`
-					};
-					log.info(`Collector.stop emailParams:${toStr(emailParams)}`);
-					send(emailParams);
-				} catch (e) {
-					log.warning(e.message, e);
-				}
-			}
+            // Error Notifications
+            if (emails.length) {
+                try {
+                    const emailParams = {
+                        from: 'explorer-noreply@enonic.com',
+                        to: emails,
+                        subject: `Collecting to ${this._collectionName} had ${this.journal.errors.length} errors!`,
+                        body: `${toStr(this.journal.errors)}`
+                    };
+                    log.info(`Collector.stop emailParams:${toStr(emailParams)}`);
+                    send(emailParams);
+                } catch (e) {
+                    log.warning(e.message, e);
+                }
+            }
 
-			if (this._debug) log.debug('Collector.stop this.taskProgressObj:%s', toStr(this.taskProgressObj));
-			throw new Error(JSON.stringify(this.taskProgressObj.info)); // Throw so task state becomes FAILED.
-			//throw new Error(this.taskProgressObj.info.message); // Throw so task state becomes FAILED.
-		}
+            if (this._debug) log.debug('Collector.stop this.taskProgressObj:%s', toStr(this.taskProgressObj));
+            throw new Error(JSON.stringify(this.taskProgressObj.info)); // Throw so task state becomes FAILED.
+            //throw new Error(this.taskProgressObj.info.message); // Throw so task state becomes FAILED.
+        }
 
-		if (this._debug) log.debug('Collector.stop before modifyTask state:FINISHED');
-		modifyTask({
-			connection: this.collection.connection,
-			state: 'FINISHED',
-			should: 'STOP'
-		});
-		if (this._debug) log.debug('Collector.stop after modifyTask state:FINISHED');
+        if (this._debug) log.debug('Collector.stop before modifyTask state:FINISHED');
+        modifyTask({
+            connection: this.collection.connection,
+            state: 'FINISHED',
+            should: 'STOP'
+        });
+        if (this._debug) log.debug('Collector.stop after modifyTask state:FINISHED');
 
-		// Success Notifications
-		if (emails.length) {
-			try {
-				const emailParams = {
-					from: 'explorer-noreply@enonic.com',
-					to: emails,
-					subject: `Collecting to ${this._collectionName} successful :)`,
-					body: `:)`
-				};
-				log.info(`emailParams:${toStr(emailParams)}`);
-				send(emailParams);
-			} catch (e) {
-				log.warning(e.message, e);
-			}
-		}
-	} // stop
+        // Success Notifications
+        if (emails.length) {
+            try {
+                const emailParams = {
+                    from: 'explorer-noreply@enonic.com',
+                    to: emails,
+                    subject: `Collecting to ${this._collectionName} successful :)`,
+                    body: `:)`
+                };
+                log.info(`emailParams:${toStr(emailParams)}`);
+                send(emailParams);
+            } catch (e) {
+                log.warning(e.message, e);
+            }
+        }
+    } // stop
 
 
 } // class Collector

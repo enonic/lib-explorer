@@ -1,7 +1,7 @@
 import {
-	NodeType,
-	Folder,
-	Path
+    NodeType,
+    Folder,
+    Path
 } from '@enonic/explorer-utils';
 
 

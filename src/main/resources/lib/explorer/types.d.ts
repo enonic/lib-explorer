@@ -1,18 +1,18 @@
 export type {
-	RoleKey as PrincipalKeyRole,
-	UserKey as PrincipalKeyUser,
+    RoleKey as PrincipalKeyRole,
+    UserKey as PrincipalKeyUser,
 } from '/lib/xp/auth';
 export type {
-	Aggregation,
-	AggregationsResult as AggregationsResponse,
-	AccessControlEntry as PermissionsParams,
-	NodeConfigEntry as IndexConfigObject,
-	NodeIndexConfigParams as IndexConfig
+    Aggregation,
+    AggregationsResult as AggregationsResponse,
+    AccessControlEntry as PermissionsParams,
+    NodeConfigEntry as IndexConfigObject,
+    NodeIndexConfigParams as IndexConfig
 } from '/lib/xp/node';
 export type {PrincipalKey} from '@enonic/js-utils/types/Auth.d';
 export type {
-	CreateRepoParams,
-	RepositoryConfig
+    CreateRepoParams,
+    RepositoryConfig
 } from '@enonic/js-utils/types/Repo.d';
 export type {RequiredNodeProperties} from './types/index.d';
 
