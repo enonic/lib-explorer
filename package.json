@@ -30,7 +30,7 @@
     "@enonic/test-data": "^1",
     "@jest/globals": "^30.5.2",
     "@jspm/core": "2.0.1",
-    "@swc/core": "^1.16.18",
+    "@swc/core": "^1.16.20",
     "@swc/jest": "^0.2.39",
     "@types/d3-dsv": "^3",
     "@types/human-object-diff": "^3.0.0",
