@@ -39,7 +39,7 @@
     "@types/react": "^19",
     "@types/set-value": "^4",
     "@types/traverse": "^0",
-    "glob": "^13",
+    "glob": "^14",
     "jest": "^30.5.2",
     "oxlint": "^1.90.0",
     "rimraf": "^6",
