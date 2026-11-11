@@ -1,6 +1,8 @@
 import type {
+    AggregationsToAggregationResults,
     QueryDsl
 } from '@enonic-types/core';
+import type {NodeQueryResult} from '/lib/xp/node';
 import type {
     // QueryDSL,
     SortDSLExpression
@@ -47,7 +49,7 @@ export function queryDocuments<
 	query?: QueryDsl
 	sort?: SortDSLExpression
 	start?: number
-}) {
+}): NodeQueryResult<AggregationsToAggregationResults<Aggregations<AggregationKey>>> {
     const query: QueryDsl = {
         boolean: {
             must: [{

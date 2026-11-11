@@ -122,7 +122,45 @@ processResources {
 	exclude '**/*.ts' // Handeled by tsdown
 }
 
+tasks.register('npmTypes', NpmTask) {
+	dependsOn npmInstall
+	args = [
+		'run',
+		'types'
+	]
+	inputs.dir 'src/main/resources'
+	outputs.dir 'build/dts'
+}
+
+tasks.register('assembleTypes', Copy) {
+	dependsOn npmTypes
+	from 'build/dts/lib/explorer'
+	from('src/main/resources/lib/explorer') {
+		include '**/*.d.ts'
+	}
+	from 'types'
+	from 'LICENSE.txt'
+	into layout.buildDirectory.dir('types')
+	filesMatching('package.json') {
+		filter { line ->
+			line.replaceAll(/"version":\s*"[^"]*"/, "\"version\": \"${project.version}\"")
+		}
+	}
+	filesMatching('**/*.d.ts') { details ->
+		def root = '../' * (details.relativePath.segments.length - 1) ?: './'
+		def specifier = /((?:from |import\(|require\()['"])/
+		filter { line ->
+			line.replaceAll(specifier + /\/lib\/xp\//, '$1@enonic-types/lib-')
+				.replaceAll(specifier + /@enonic-types\/lib-explorer\/?(?=['"])/, '$1' + root + 'types/index')
+				.replaceAll(specifier + /@enonic-types\/lib-explorer\//, '$1' + root + 'types/')
+				.replaceAll(specifier + /\/lib\/explorer(?=['"])/, '$1' + root + 'index')
+				.replaceAll(specifier + /\/lib\/explorer\//, '$1' + root)
+		}
+	}
+}
+
 jar.dependsOn npmBuild
+jar.dependsOn assembleTypes
 javadoc.dependsOn npmBuild
 
 tasks.named('compileTestJava') {
