@@ -41,7 +41,7 @@
     "@types/traverse": "^0",
     "glob": "^14",
     "jest": "^30.5.2",
-    "oxlint": "^1.90.0",
+    "oxlint": "^1.92.0",
     "rimraf": "^6",
     "tsdown": "^0.23.4",
     "typescript": "^7"
