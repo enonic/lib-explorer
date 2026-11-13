@@ -1,3 +1,4 @@
+import type {AggregationsToAggregationResults} from '@enonic-types/core';
 import type {
     QueryNodeParams,
     RepoConnection,
@@ -5,6 +6,7 @@ import type {
 import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d';
 import type {
     Highlight,
+    QueriedSynonym,
     SynonymNode
 } from '@enonic-types/lib-explorer';
 
@@ -62,7 +64,12 @@ export function query<
         direction: 'ASC'
     },
     start = 0
-}: QuerySynonymsParams<AggregationKeys>) {
+}: QuerySynonymsParams<AggregationKeys>): {
+	aggregations: AggregationsToAggregationResults<Aggregations<AggregationKeys>>
+	count: number
+	hits: QueriedSynonym[]
+	total: number
+} {
     /*log.debug('synonym.query(%s)', toStr({
 		aggregations,
 		count,

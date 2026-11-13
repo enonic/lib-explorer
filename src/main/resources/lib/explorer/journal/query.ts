@@ -1,7 +1,9 @@
+import type {AggregationsToAggregationResults} from '@enonic-types/core';
 import type {Filter} from '/lib/xp/node';
 import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d';
 import type {
     JournalNode,
+    JournalType,
     QueryFilters
 } from '@enonic-types/lib-explorer';
 
@@ -36,7 +38,12 @@ export function query<
 	query?: string
 	sort?: string
 	start?: number
-} = {}) {
+} = {}): {
+	aggregations: AggregationsToAggregationResults<Aggregations<AggregationKeys>>
+	count: number
+	hits: JournalType[]
+	total: number
+} {
     const connection = connect({
         repoId: REPO_JOURNALS,
         principals: [PRINCIPAL_EXPLORER_READ]
