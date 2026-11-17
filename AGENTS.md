@@ -11,41 +11,6 @@ User documentation lives in `../doc-explorer/docs` (AsciiDoc). `lib-explorer.ado
 
 ## Repository layout
 
-```
-src/main/resources/
-  lib/explorer/            the library (283 .ts source files, 22 *.test.ts, 40 *.d.ts)
-  lib/@types/q-i/          local type stub for the `q-i` debug printer
-  admin/extensions/interfaceSelector/   Content Studio CustomSelector extension (see Extensions)
-  global.d.ts              declares module 'q-i'
-  tsconfig.json            tsconfig for the library source (used by tsc and tsdown)
-src/main/java/com/enonic/explorer/   three XP script beans (see Java)
-src/jest/                  jest setup files (setupGlobalThis.ts, setupMockXp.ts, types.ts)
-src/test/java, src/test/resources   JUnit test that runs bundled JS on Nashorn and GraalJS
-test/                      shared test fixtures (testData.ts, fields.ts) plus dead legacy files (see Legacy)
-tsdown.config.ts           the bundler config (see Build)
-jest.config.mjs            jest config (@swc/jest transform; plain JS so no TS loader is needed)
-.oxlintrc.json             oxlint config (not part of CI or Gradle)
-build.gradle               Gradle: npm install/check/test/build + jar + publish
-```
-
-`lib/explorer` sub-directories, largest first:
-
-| Dir | Purpose |
-|---|---|
-| `interface/` | Interface node CRUD and `interface/graphql/`, the generated search API |
-| `document/` | Document create/update pipeline, validation, type casting, index config |
-| `types/` | Shared `.d.ts` types, re-exported by `types/index.d.ts` |
-| `model/` | Model 2: constants, node-type factories, repositories, roles, users; `getModel`, `setModel`, `isModelLessThan` |
-| `documentType/` | Document type CRUD, cache, managed document types |
-| `node/` | Thin wrappers over `/lib/xp/node` (`create`, `modify`, `createOrModify`, `semiAtomicUpdate`, `referencedBy`, `cleanPermissions`) |
-| `synonym/`, `thesaurus/`, `stopWords/`, `stemming/` | Search tuning data and lookups |
-| `collection/`, `collector/`, `journal/`, `task/`, `scheduler/` | Collections, the Collector API, journals, task state, scheduled jobs |
-| `repo/` | `connect`, `multiConnect`, `connectToCollection`, `init`, `maybeCreate`, `copy`, `rename`, `list` |
-| `query/`, `field/`, `string/`, `array/`, `object/`, `url/`, `util/`, `path/`, `time/`, `typeGuards/`, `number/` | Helpers |
-| `http/client/smartRequest.ts` | http-client wrapper with retries (covered by the Java test) |
-| `application/`, `locale/` | Wrappers over the Java beans |
-| `nodeTypes/`, `indexing/templateToConfig.ts` | Legacy; `templateToConfig` is marked deprecated |
-
 `lib/explorer/index.ts` re-exports the constants plus `create`, `update`, `register`, `unregister`, `Collector`, `getSites`, `ids`, `toStr`. Consumers mostly import deep paths (`/lib/explorer/repo/connect` etc.) rather than the index.
 
 ## Build
@@ -116,7 +81,7 @@ Search path: `searchResolver` → `getInterfaceInfo` (collections, field boosts,
 
 ### Types
 
-`lib/explorer/types/index.d.ts` re-exports all `.d.ts` files and references `lib-node.augment.d.ts`, which re-adds `RepoConnection.modify` removed from the public XP 8 types. The `@enonic-types/lib-explorer` npm package is generated at build time: `npm run types` emits declarations for every module into `build/dts`, and the Gradle `assembleTypes` task copies them, the hand-written `.d.ts` files and `types/` (`package.json`, `README.md`) into `build/types`, rewriting `/lib/explorer/*`, `@enonic-types/lib-explorer*` and `/lib/xp/*` specifiers to relative paths and `@enonic-types/lib-*`. CI publishes `build/types` on release (`npmPublish: true`). Declaration emit fails on exported functions whose inferred return type cannot be named, so those need an explicit return type. Inside this repo and in `app-explorer` the name is still a `paths` alias for `lib/explorer/types/`; `app-explorer` reaches these files through the symlink `app-explorer/symlinks/lib-explorer -> ../../lib-explorer` (CI checks this repo out into that path). Changing a type here can break `app-explorer`'s `verify:types` even though no package is published, and app-explorer also compiles this library's `.ts` sources under its own tsconfig, so `npm run check` passing here is not sufficient; run `npm run verify:types` in app-explorer after type changes.
+`lib/explorer/types/index.d.ts` re-exports all `.d.ts` files and references `lib-node.augment.d.ts`, which re-adds `RepoConnection.modify` removed from the public XP 8 types. The `@enonic-types/lib-explorer` npm package is generated at build time: `npm run types` emits declarations for every module into `build/dts`, and the Gradle `assembleTypes` task copies them, the hand-written `.d.ts` files and `types/` (`package.json`, `README.md`) into `build/types`, rewriting `/lib/explorer/*`, `@enonic-types/lib-explorer*` and `/lib/xp/*` specifiers to relative paths and `@enonic-types/lib-*`. CI publishes `build/types` on release (`npmPublish: true`). Declaration emit fails on exported functions whose inferred return type cannot be named, so those need an explicit return type. Inside this repo the name is a `paths` alias for `lib/explorer/types/`. `app-explorer` takes its types from the published npm package (an exact-pinned devDependency, with `/lib/explorer/*` mapped into it), so a type change here reaches it only after a release and a version bump there. Its jest still runs this library's `.ts` sources through the symlink `app-explorer/symlinks/lib-explorer -> ../../lib-explorer` (CI checks this repo out into that path), so runtime changes here can break its tests before any release. Root `index.d.ts` of the package exports the `Collector` class, which shadows the `Collector` form type; consumers needing the form types, or names the types index does not re-export (`Headers`, `MetaData`, `InputTypeSynonymLanguage`), import from `@enonic-types/lib-explorer/types/<File>`.
 
 ### Extensions
 
@@ -130,11 +95,7 @@ Search path: `searchResolver` → `getInterfaceInfo` (collections, field boosts,
 
 Runtime code is bundled into the jar; nothing is resolved from node_modules at runtime. The jar's runtime needs are the Gradle `implementation` XP libraries listed in `build.gradle` (`xplibs.*`, `libs.lib.graphql`, `libs.lib.cache`, `libs.lib.http.client`, `libs.lib.license`, `libs.lib.router`), which the consuming app must also `include`.
 
-npm packages imported by library code (all bundled): `@enonic/js-utils` (everywhere), `@enonic/explorer-utils` (constants; declared as a devDependency but is runtime code), `@enonic/fnv-plus` (`string/hash.ts`), `traverse` (document pipeline), `fast-deep-equal`, `deep-object-diff`, `human-object-diff` (change detection in `documentUnchanged`, `updateDocumentType`, `semiAtomicUpdate`, `createOrModifyJob`), `set-value` and `core-js` (`interface/graphql/utils/mergeFields.ts`), `uri-js` (`url/`), `d3-dsv` (`parseCsv.ts`).
-
 Type-only imports: `@enonic-types/core`, `@enonic-types/lib-{node,auth,common,event,repo,value}`, and `type-fest` (`types/IndexConfig.d.ts`), which is not declared in package.json and resolves only as a transitive install.
-
-Build and test tooling actually referenced: `tsdown`, `@swc/core`, `glob`, `@jspm/core` (all `tsdown.config.ts`); `typescript`, `jest`, `@swc/jest`, `@jest/globals`, `@enonic/mock-xp`, `@enonic/test-data`, `@types/jest`, `@types/node`, `@types/react`, `@enonic-types/global`; `oxlint`; `rimraf` (`npm run clean`).
 
 `@types/d3-dsv`, `@types/human-object-diff`, `@types/set-value` and `@types/traverse` have no explicit references but TypeScript picks them up for the matching runtime packages; `npm run check` fails without them. Everything else declared is referenced. The October 2026 clean-up removed `cross-env`, `parallel`, `path`, `ts-toolbelt`, `tsconfig-paths`, `ts-node`, `tslib`, `jest-environment-jsdom`, `@types/bluebird`, `@types/diff`, `cli-color`, `colors`, `assert` (tests use the Node built-in), `q-i`, and with the TypeScript 7 move `ts-jest`, `eslint`, `@eslint/js`, `globals` and `typescript-eslint`; the `q-i` type stubs and the dead `test/*.test.js` files that imported those packages are still in the tree.
 
