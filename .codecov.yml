@@ -1,12 +1,4 @@
 coverage:
   status:
-    project:
-      default:
-        target: auto
-        threshold: 100%
-        informational: true
-    patch:
-      default:
-        target: auto
-        threshold: 100%
-        informational: true
+    project: off
+    patch: off
