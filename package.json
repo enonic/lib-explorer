@@ -50,6 +50,10 @@
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "*"
   },
+  "overrides": {
+    "glob": "$glob",
+    "minimatch": "^11.0.9"
+  },
   "private": true,
   "repository": {
     "type": "git",
