@@ -1,4 +1,7 @@
-import type {Filter} from '@enonic-types/core';
+import type {
+    AggregationsToAggregationResults,
+    Filter
+} from '@enonic-types/core';
 import type {Aggregations} from '@enonic/js-utils/types/node/query/Aggregation.d';
 import type {
     Highlight,
@@ -36,7 +39,12 @@ export function query<
 	query?: string
 	sort?: string
 	start?: number
-}) {
+}): {
+	aggregations: AggregationsToAggregationResults<Aggregations<AggregationKeys>>
+	count: number
+	hits: QueriedStopword[]
+	total: number
+} {
     filters = addQueryFilter({
         filter: hasValue('_nodeType', [NT_STOP_WORDS]),
         filters

@@ -27,6 +27,8 @@
 // leave the pitfalls in the hands of the Collector developer.
 //──────────────────────────────────────────────────────────────────────────────
 // import type { Node } from '/lib/xp/node';
+import type {AggregationsToAggregationResults} from '@enonic-types/core';
+import type {NodeQueryResult} from '/lib/xp/node';
 import type {
     QueryDSL,
     SortDSLExpression
@@ -261,7 +263,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		query?: QueryDSL
 		sort?: SortDSLExpression
 		start?: number
-	}) {
+	}): NodeQueryResult<AggregationsToAggregationResults<Aggregations<AggregationKey>>> {
         return queryDocuments({
             aggregations,
             collectionRepoReadConnection: this.collection.connection,
@@ -322,6 +324,7 @@ export class Collector<Config extends NestedRecordType = NestedRecordType> {
 		_id?: Id
 		_name?: Name
 		_parentPath?: ParentPath
+		[key: string]: any
 	}, {
         //cleanExtraFields // TODO Perhaps later
         //addExtraFields // TODO Perhaps later

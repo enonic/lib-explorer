@@ -61,6 +61,7 @@
     "clean": "rimraf build",
     "cov": "jest --no-cache --coverage",
     "lint": "oxlint src/main/resources test",
-    "test": "jest --no-cache"
+    "test": "jest --no-cache",
+    "types": "npx tsc -p src/main/resources/tsconfig.json --declaration --emitDeclarationOnly --outDir build/dts"
   }
 }

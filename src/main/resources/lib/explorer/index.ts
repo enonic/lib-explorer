@@ -9,5 +9,6 @@ export {register, unregister, Collector} from '/lib/explorer/collector';
 export {getSites} from '/lib/explorer/content/getSites';
 export {ids} from '/lib/explorer/query/ids';
 export {toStr} from '/lib/explorer/util/toStr';
+export type * from '/lib/explorer/types/index';
 
 //export * as repo from './repo';
