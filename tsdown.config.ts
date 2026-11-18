@@ -96,7 +96,7 @@ export default defineConfig({
 	minify: false, // Minifying server files makes debugging harder
 	outputOptions: {
 		chunkFileNames: 'lib/explorer/_chunks/[name]-[hash].js',
-		intro: `var globalThis = (1, eval)('this');`, // buffer polyfill needs this
+		intro: `var globalThis = (1, eval)('this'); var self = globalThis; var global = globalThis;`, // buffer polyfill needs globalThis, @jspm/core util needs self, typed array helpers under traverse need global
 		esModule: true,
 		generatedCode: {
 			symbols: false,

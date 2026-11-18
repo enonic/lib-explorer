@@ -18,6 +18,8 @@ updates:
       - "alansemenov"
     reviewers:
       - "alansemenov"
+    ignore:
+      - dependency-name: "@jspm/core"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

@@ -113,6 +113,7 @@ tasks.register('npmBuild', NpmTask) {
 		'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
 	]
 	inputs.dir 'src/main/resources'
+	inputs.files 'tsdown.config.ts', 'package-lock.json'
 	outputs.dir 'build/resources/main' // processResources will delete the directory if this is not present
 }
 
