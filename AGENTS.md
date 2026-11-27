@@ -3,11 +3,11 @@
 Server-side library for Enonic Explorer. It owns the data model, the collector API and the search (GraphQL) engine. It is consumed by two kinds of code:
 
 - `app-explorer` (sibling repo `../app-explorer`), the admin application, which `include`s this jar and imports `/lib/explorer/*` at runtime.
-- Custom collector applications, which `include "com.enonic.lib:lib-explorer:<version>"` and use the `Collector` class from `/lib/explorer`.
+- Custom collector applications, which `include "com.enonic.lib:lib-explorer:<version>"` and use the `Collector` class from `/lib/explorer`. `enonic/starter-collector` (`../starter-collector`) is the template for them: its `xp7` branch is the XP 7 starter (lib-explorer 4.7.0, created with `enonic project create -r starter-collector -b xp7`), `master` is what the CLI uses by default and is where the XP 8 starter belongs, but as of November 2026 it is not upgraded (XP 8 Gradle plugin with `xpVersion=7.13.2` and lib-explorer 4.5.0) and does not build. The repo has no release workflow; the branches are what users get.
 
-Published as Maven artifact `com.enonic.lib:lib-explorer` (`gradle.properties`: `version=5.0.0-SNAPSHOT`, `xpVersion=8.1.1`, `nodeVersion=24.18.0`). The 5.x line targets XP 8. The last release line for XP 7 is `4.x` (branch `4.x`, latest tag `v4.5.0`).
+Published as Maven artifact `com.enonic.lib:lib-explorer` (`gradle.properties`: `version=5.0.1-SNAPSHOT`, `xpVersion=8.1.1`, `nodeVersion=24.18.0`). The 5.x line targets XP 8. The last release line for XP 7 is `4.x` (branch `4.x`, latest tag `v4.7.0`).
 
-User documentation lives in `../doc-explorer/docs` (AsciiDoc). `lib-explorer.adoc` there documents the Collector API; `upgrade-collector.adoc` documents the 3.x→4.x collector migration.
+User documentation lives in `../doc-explorer/docs` (AsciiDoc). `lib-explorer.adoc` there documents the Collector API; `upgrade-collector.adoc` documents the 4.x→5.x collector migration and links to the 4.x docs for older ones.
 
 ## Repository layout
 
